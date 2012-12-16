@@ -1,4 +1,6 @@
-window.App = Ember.Application.create()
+window.App = Ember.Application.create
+  customEvents:
+    blur:   'blur'
 
 App.ApplicationView = Ember.View.extend
   classNames: 'ember-app'
@@ -19,6 +21,10 @@ App.ApplicationController = Ember.Controller.extend
 
   tableSimpleExampleController: Ember.computed ->
     Ember.get('App.TableSimpleExample.TableController').create()
+  .property()
+
+  tableEditableExampleController: Ember.computed ->
+    Ember.get('App.TableEditableExample.TableController').create()
   .property()
 
   treeTableExampleController: Ember.computed ->
