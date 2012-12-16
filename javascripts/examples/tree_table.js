@@ -41,13 +41,15 @@
     templateName: 'table-header-tree-cell'
   });
 
-  App.TreeTableExample.TreeTableController = Ember.Table.TableController.extend({
+  App.TreeTableExample.TableController = Ember.Table.TableController.extend({
     numFixedColumns: 1,
     isCollapsed: false,
     data: null,
     rowHeight: 30,
     hasHeader: true,
     hasFooter: true,
+    sortAscending: false,
+    sortColumn: null,
     bodyContent: Ember.computed(function() {
       var rows;
       rows = this.get('rows');
@@ -71,7 +73,7 @@
       name = groupingFactors.getEach('display_name').join(' ▸ ');
       return Ember.Table.ColumnDefinition.create({
         headerCellName: name,
-        columnWidth: 250,
+        columnWidth: 200,
         isTreeColumn: true,
         headerCellViewClass: 'App.TreeTableExample.HeaderTreeCell',
         tableCellViewClass: 'App.TreeTableExample.TreeCell',

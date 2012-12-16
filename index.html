@@ -131,7 +131,7 @@
   <h4>Simple Table With Many Rows</h4>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
-      controllerBinding="simpleTableExampleController"}}
+      controllerBinding="tableSimpleExampleController"}}
   </div>
 
   <h4>Tree Table</h4>
@@ -143,19 +143,19 @@
   <h4>Table with Bars</h4>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
-      controllerBinding="barsTableExampleController"}}
+      controllerBinding="tableBarExampleController"}}
   </div>
 
   <h4>Table with D3 Sparkline</h4>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
-      controllerBinding="sparklineTableExampleController"}}
+      controllerBinding="tableSparklineExampleController"}}
   </div>
 
   <h4>Table with D3 Horizon</h4>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
-      controllerBinding="horizonTableExampleController"}}
+      controllerBinding="tableHorizonExampleController"}}
   </div>
 
   <h3>Getting Started</h3>
@@ -216,10 +216,14 @@
 <script src="javascripts/lib/d3.v2.js"></script>
 <script src="javascripts/lib/horizon.js"></script>
 <script src="javascripts/ember-table.js"></script>
-<script type="text/javascript">window.App = Ember.Application.create()</script>
-<script src="javascripts/tree-table.js"></script>
 <script src="javascripts/data.js"></script>
 <script src="javascripts/app.js"></script>
+<script src="javascripts/examples/table_bar.js"></script>
+<script src="javascripts/examples/table_editable.js"></script>
+<script src="javascripts/examples/table_horizon.js"></script>
+<script src="javascripts/examples/table_simple.js"></script>
+<script src="javascripts/examples/table_sparkline.js"></script>
+<script src="javascripts/examples/tree_table.js"></script>
 
 </body>
 </html>
