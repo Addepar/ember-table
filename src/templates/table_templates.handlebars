@@ -1,0 +1,94 @@
+<script type="text/x-handlebars" data-template-name="tables-container">
+  {{#if controller.hasHeader}}
+    {{view Ember.Table.HeaderTableContainer}}
+  {{/if}}
+  {{view Ember.Table.BodyTableContainer}}
+  {{#if controller.hasFooter}}
+    {{view Ember.Table.FooterTableContainer}}
+  {{/if}}
+  {{view Ember.Table.ScrollContainer}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="scroll-container">
+  {{view Ember.Table.ScrollPanel}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="header-container">
+  <div class='table-fixed-wrapper'>
+    {{view Ember.Table.HeaderBlock
+      columnsBinding="controller.fixedColumns"
+      widthBinding="controller._fixedBlockWidth"
+      heightBinding="controller.headerHeight"
+    }}
+    {{view Ember.Table.HeaderBlock
+      columnsBinding="controller.tableColumns"
+      scrollLeftBinding="controller._tableScrollLeft"
+      widthBinding="controller._tableBlockWidth"
+      heightBinding="controller.headerHeight"
+    }}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="body-container">
+  <div class='table-scrollable-wrapper'>
+    {{view Ember.Table.LazyTableBlock
+      contentBinding="controller.bodyContent"
+      columnsBinding="controller.fixedColumns"
+      scrollTopBinding="controller._tableScrollTop"
+      widthBinding="controller._fixedBlockWidth"
+      viewportHeightBinding="controller._bodyHeight"
+    }}
+    {{view Ember.Table.LazyTableBlock classNames="right-table-block"
+      contentBinding="controller.bodyContent"
+      columnsBinding="controller.tableColumns"
+      scrollTopBinding="controller._tableScrollTop"
+      scrollLeftBinding="controller._tableScrollLeft"
+      widthBinding="controller._tableBlockWidth"
+      viewportHeightBinding="controller._bodyHeight"
+    }}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="footer-container">
+  <div class='table-fixed-wrapper'>
+    {{view Ember.Table.TableBlock
+      contentBinding="controller.footerContent"
+      columnsBinding="controller.fixedColumns"
+      widthBinding="controller._fixedBlockWidth"
+      heightBinding="controller.footerHeight"
+    }}
+    {{view Ember.Table.TableBlock
+      contentBinding="controller.footerContent"
+      columnsBinding="controller.tableColumns"
+      scrollLeftBinding="controller._tableScrollLeft"
+      widthBinding="controller._tableBlockWidth"
+      heightBinding="controller.footerHeight"
+    }}
+  </div>
+</script>
+
+<script type="text/x-handlebars" data-template-name="table-row">
+  {{view Ember.MultiItemViewCollectionView
+    rowBinding="view.row"
+    contentBinding="view.columns"
+    itemViewClassField="tableCellViewClass"
+    widthBinding="controller._tableColumnsWidth"
+  }}
+</script>
+
+<script type="text/x-handlebars" data-template-name="table-cell">
+  <span class='content'>{{view.cellContent}}</span>
+</script>
+
+<script type="text/x-handlebars" data-template-name="header-row">
+  {{view Ember.MultiItemViewCollectionView
+    contentBinding="view.content"
+    itemViewClassField="headerCellViewClass"
+  }}
+</script>
+
+<script type="text/x-handlebars" data-template-name="header-cell">
+  <span {{action sortByColumn target="controller"}}>
+    {{view.content.headerCellName}}
+  </span>
+</script>

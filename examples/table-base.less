@@ -18,18 +18,16 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-
+    /*
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
     -o-user-select: none;
     user-select: none;
+    */
   }
   a{
-    color: #777;
-  }
-  a:hover{
-    text-decoration: none
+    color: #333;
   }
   .table-container{
     // Height and Width defined dynamically through JS
@@ -68,10 +66,6 @@
             .content{
               padding: 0 5px;
             }
-            .bar-cell{
-              margin-top: 8px;
-              height: 15px;
-            }
           }
           .header-cell{
             padding: 0px;
@@ -79,6 +73,9 @@
             span{
               padding: 5px;
               line-height: 50px;
+            }
+            .column-title{
+              padding: 0;
             }
           }
         }
@@ -160,36 +157,28 @@
 }
 
 // Tree Table
-.tree-table{
-  .header-cell{
-    .toggle{
-      margin-top: 3px;
-      padding-left: 6px;
-    }
+.header-cell{
+  .toggle{
+    margin-top: 3px;
+    padding-left: 16px;
   }
-  .toggle-icon {
-      display: none
-  }
-  .toggle .toggle-icon {
-    display: inline-block;
-    cursor: pointer;
-    width: 14px;
-    padding-left: 3px;
-  }
-  .expand .toggle-icon{
-    transform: rotate(-90deg);
-    -webkit-transform: rotate(-90deg);
-    -moz-transform: rotate(-90deg);
-    -ms-transform: rotate(-90deg);
-    -o-transform: rotate(-90deg);
-    margin-top: -3px;
-    padding-left: 0;
-    vertical-align: text-top;
-  }
-  .right-table-block{
-    text-align: right;
-  }
-  .footer-container .table-cell .toggle{
-    display: none;
-  }
+}
+.toggle-icon {
+    display: none
+}
+.toggle .toggle-icon {
+  display: inline-block;
+  cursor: pointer;
+  width: 14px;
+  padding-left: 3px;
+}
+.expand .toggle-icon{
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  margin-top: -3px;
+  padding-left: 0;
+  vertical-align: text-top;
 }

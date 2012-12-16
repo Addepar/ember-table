@@ -1,2 +1,6 @@
-.DS_Store
+*.DS_Store
+*.swp
 node_modules
+build
+examples/*/*.js
+ember-table.js

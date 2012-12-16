@@ -8,6 +8,8 @@ Number.prototype.toPercent = ->
   return '-' if isNaN(@) or not isFinite(@)
   Math.abs(this * 100).toFixed(2) + "%"
 
+window.App = Ember.Application.create()
+
 App.TreeTableExample = Ember.Namespace.create()
 
 App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
@@ -27,12 +29,17 @@ App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
 
 App.TreeTableExample.TreeTableController =
 Ember.Table.TableController.extend
+  # overridding default properties
   numFixedColumns: 1
   isCollapsed: no
   data: null
   rowHeight: 30
   hasHeader: yes
   hasFooter: yes
+
+  # custom properties
+  sortAscending: no
+  sortColumn: null
 
   bodyContent: Ember.computed ->
     rows = @get('rows')
@@ -52,7 +59,7 @@ Ember.Table.TableController.extend
     name = groupingFactors.getEach('display_name').join ' ▸ '
     Ember.Table.ColumnDefinition.create
       headerCellName: name
-      columnWidth: 250
+      columnWidth: 400
       isTreeColumn: yes
       headerCellViewClass:  'App.TreeTableExample.HeaderTreeCell'
       tableCellViewClass:   'App.TreeTableExample.TreeCell'
