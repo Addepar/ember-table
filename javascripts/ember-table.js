@@ -32,11 +32,11 @@
     },
     didInsertElement: function() {
       this._super();
-      return this.$(window).bind('resize', this.get("resizeHandler"));
+      return $(window).bind('resize', this.get("resizeHandler"));
     },
     willDestroy: function() {
-      this._super();
-      return this.$(window).unbind('resize', this.get("resizeHandler"));
+      $(window).unbind('resize', this.get("resizeHandler"));
+      return this._super();
     }
   });
 
@@ -227,36 +227,36 @@
   Ember.MouseWheelHandlerMixin = Ember.Mixin.create({
     onMouseWheel: Ember.K,
     didInsertElement: function() {
-      this._super();
-      return this.bindMouseWheel();
-    },
-    willDestroy: function() {
-      this._super();
-      return this.$().unbind('mousewheel');
-    },
-    bindMouseWheel: function() {
       var _this = this;
+      this._super();
       return this.$().bind('mousewheel', function(event, delta, deltaX, deltaY) {
         return Ember.run(_this, _this.onMouseWheel, event, delta, deltaX, deltaY);
       });
+    },
+    willDestroy: function() {
+      var _ref;
+      if ((_ref = this.$()) != null) {
+        _ref.unbind('mousewheel');
+      }
+      return this._super();
     }
   });
 
   Ember.ScrollHandlerMixin = Ember.Mixin.create({
     onScroll: Ember.K,
     didInsertElement: function() {
-      this._super();
-      return this.bindScroll();
-    },
-    willDestroy: function() {
-      this._super();
-      return this.$().unbind('scroll');
-    },
-    bindScroll: function() {
       var _this = this;
+      this._super();
       return this.$().bind('scroll', function(event) {
         return Ember.run(_this, _this.onScroll, event);
       });
+    },
+    willDestroy: function() {
+      var _ref;
+      if ((_ref = this.$()) != null) {
+        _ref.unbind('scroll');
+      }
+      return this._super();
     }
   });
 
@@ -280,7 +280,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     columnWidth: 150,
     headerCellViewClass: 'Ember.Table.HeaderCell',
     tableCellViewClass: 'Ember.Table.TableCell',
-    getCellContent: Ember.required(Function)
+    getCellContent: Ember.required(Function),
+    setCellContent: Ember.K
   });
 
   Ember.Table.Row = Ember.Object.extend({
@@ -321,12 +322,12 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     footerHeight: 30,
     hasHeader: true,
     hasFooter: true,
+    tableRowClass: 'Ember.Table.Row',
     _tableScrollTop: 0,
     _tableScrollLeft: 0,
     _width: null,
     _height: null,
     _scrollbarSize: null,
-    tableRowClass: 'Ember.Table.Row',
     bodyContent: Ember.computed(function() {
       var tableRowClass;
       tableRowClass = this.get('tableRowClass');
@@ -493,14 +494,19 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     columnBinding: 'content',
     rowContentBinding: 'row.content',
     widthBinding: 'column.columnWidth',
-    cellContent: Ember.computed(function() {
+    cellContent: Ember.computed(function(key, value) {
       var column, row;
       row = this.get('rowContent');
       column = this.get('column');
       if (!(row && column)) {
         return;
       }
-      return column.getCellContent(row);
+      if (arguments.length === 1) {
+        value = column.getCellContent(row);
+      } else {
+        column.setCellContent(row, value);
+      }
+      return value;
     }).property('rowContent', 'column')
   });
 
@@ -576,7 +582,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     widthBinding: 'controller._tableContainerWidth'
   });
 
-  Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.ScrollHandlerMixin, {
+  Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.ScrollHandlerMixin, Ember.MouseWheelHandlerMixin, {
     templateName: 'body-container',
     classNames: ['table-container', 'body-container'],
     heightBinding: 'controller._bodyHeight',
@@ -588,8 +594,12 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     },
     onMouseWheel: function(event, delta, deltaX, deltaY) {
       var scrollLeft;
+      if (!(Math.abs(deltaX) > Math.abs(deltaY))) {
+        return;
+      }
       scrollLeft = this.$('.right-table-block').scrollLeft() + deltaX * 50;
-      return this.set('scrollLeft', scrollLeft);
+      this.set('scrollLeft', scrollLeft);
+      return event.preventDefault();
     }
   });
 
