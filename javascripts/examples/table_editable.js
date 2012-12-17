@@ -68,7 +68,7 @@
       var columnNames, columns, dateColumn, ratingColumn;
       columnNames = ['open', 'close'];
       dateColumn = Ember.Table.ColumnDefinition.create({
-        columnWidth: 150,
+        columnWidth: 100,
         headerCellName: 'Date',
         tableCellViewClass: 'App.TableEditableExample.DatePickerTableCell',
         getCellContent: function(row) {
@@ -90,7 +90,7 @@
         var name;
         name = key.charAt(0).toUpperCase() + key.slice(1);
         return Ember.Table.ColumnDefinition.create({
-          columnWidth: 150,
+          columnWidth: 100,
           headerCellName: name,
           tableCellViewClass: 'App.TableEditableExample.EditableTableCell',
           getCellContent: function(row) {

@@ -72,7 +72,7 @@
         }
       });
       open = Ember.Table.ColumnDefinition.create({
-        columnWidth: 75,
+        columnWidth: 100,
         headerCellName: 'Open',
         getCellContent: function(row) {
           return row['open'].toFixed(2);
@@ -85,21 +85,21 @@
         getCellContent: Ember.K
       });
       close = Ember.Table.ColumnDefinition.create({
-        columnWidth: 75,
+        columnWidth: 100,
         headerCellName: 'Close',
         getCellContent: function(row) {
           return row['close'].toFixed(2);
         }
       });
       low = Ember.Table.ColumnDefinition.create({
-        columnWidth: 75,
+        columnWidth: 100,
         headerCellName: 'Low',
         getCellContent: function(row) {
           return row['low'].toFixed(2);
         }
       });
       high = Ember.Table.ColumnDefinition.create({
-        columnWidth: 75,
+        columnWidth: 100,
         headerCellName: 'High',
         getCellContent: function(row) {
           return row['high'].toFixed(2);
