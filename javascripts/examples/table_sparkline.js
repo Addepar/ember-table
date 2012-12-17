@@ -56,12 +56,10 @@
 
   App.TableSparklineExample.TableController = Ember.Table.TableController.extend({
     hasHeader: true,
-    hasFooter: true,
+    hasFooter: false,
     numFixedColumns: 1,
     numRows: 1000,
     rowHeight: 30,
-    headerHeight: 40,
-    footerHeight: 0,
     columns: Ember.computed(function() {
       var close, high, low, name, open, spark;
       name = Ember.Table.ColumnDefinition.create({

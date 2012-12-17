@@ -37,12 +37,10 @@
 
   App.TableHorizonExample.TableController = Ember.Table.TableController.extend({
     hasHeader: true,
-    hasFooter: true,
+    hasFooter: false,
     numFixedColumns: 0,
     numRows: 1000,
     rowHeight: 35,
-    headerHeight: 40,
-    footerHeight: 0,
     columns: Ember.computed(function() {
       var horizon, name;
       name = Ember.Table.ColumnDefinition.create({

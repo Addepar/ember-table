@@ -28,12 +28,10 @@
 
   App.TableSimpleExample.TableController = Ember.Table.TableController.extend({
     hasHeader: true,
-    hasFooter: true,
+    hasFooter: false,
     numFixedColumns: 0,
     numRows: 1000000,
     rowHeight: 30,
-    headerHeight: 40,
-    footerHeight: 0,
     columns: Ember.computed(function() {
       var columnNames, columns, dateColumn, entryColumn;
       columnNames = ['open', 'high', 'low', 'close', 'volume'];

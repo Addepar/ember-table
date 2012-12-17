@@ -62,7 +62,7 @@
     hasHeader: true,
     hasFooter: false,
     numFixedColumns: 0,
-    numRows: 100000,
+    numRows: 1000,
     rowHeight: 30,
     columns: Ember.computed(function() {
       var columnNames, columns, dateColumn, ratingColumn;

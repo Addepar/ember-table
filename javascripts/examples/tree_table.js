@@ -73,7 +73,7 @@
       name = groupingFactors.getEach('display_name').join(' ▸ ');
       return Ember.Table.ColumnDefinition.create({
         headerCellName: name,
-        columnWidth: 200,
+        columnWidth: 400,
         isTreeColumn: true,
         headerCellViewClass: 'App.TreeTableExample.HeaderTreeCell',
         tableCellViewClass: 'App.TreeTableExample.TreeCell',

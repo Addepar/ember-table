@@ -24,7 +24,6 @@
     hasFooter: false,
     numRows: 1000,
     rowHeight: 30,
-    headerHeight: 50,
     columns: Ember.computed(function() {
       var colors, column1, columns;
       colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
