@@ -47,13 +47,13 @@ App.TableEditableExample.TableController = Ember.Table.TableController.extend
   hasHeader: yes
   hasFooter: no
   numFixedColumns: 0
-  numRows: 100000
+  numRows: 1000
   rowHeight: 30
 
   columns: Ember.computed ->
     columnNames = ['open', 'close']
     dateColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 150
+      columnWidth: 100
       headerCellName: 'Date'
       tableCellViewClass: 'App.TableEditableExample.DatePickerTableCell'
       getCellContent: (row) -> row['date'].toString('yyyy-MM-dd')
@@ -66,7 +66,7 @@ App.TableEditableExample.TableController = Ember.Table.TableController.extend
     columns= columnNames.map (key, index) ->
       name = key.charAt(0).toUpperCase() + key.slice(1)
       Ember.Table.ColumnDefinition.create
-        columnWidth: 150
+        columnWidth: 100
         headerCellName: name
         tableCellViewClass: 'App.TableEditableExample.EditableTableCell'
         getCellContent: (row) -> row[key].toFixed(2)

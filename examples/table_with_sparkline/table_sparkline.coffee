@@ -43,12 +43,11 @@ App.TableSparklineExample.SparkCellView = Ember.Table.TableCell.extend
 
 App.TableSparklineExample.TableController = Ember.Table.TableController.extend
   hasHeader:    yes
-  hasFooter:    yes
+  hasFooter:    no
   numFixedColumns: 1
   numRows:      1000
   rowHeight:    30
   headerHeight: 40
-  footerHeight: 0
 
   columns: Ember.computed ->
     name = Ember.Table.ColumnDefinition.create
@@ -56,7 +55,7 @@ App.TableSparklineExample.TableController = Ember.Table.TableController.extend
       headerCellName: 'Name'
       getCellContent: (row) -> 'Asset ' + row['name']
     open = Ember.Table.ColumnDefinition.create
-      columnWidth: 75
+      columnWidth: 100
       headerCellName: 'Open'
       getCellContent: (row) -> row['open'].toFixed(2)
     spark = Ember.Table.ColumnDefinition.create
@@ -65,15 +64,15 @@ App.TableSparklineExample.TableController = Ember.Table.TableController.extend
       tableCellViewClass: 'App.TableSparklineExample.SparkCellView'
       getCellContent: Ember.K
     close = Ember.Table.ColumnDefinition.create
-      columnWidth: 75
+      columnWidth: 100
       headerCellName: 'Close'
       getCellContent: (row) -> row['close'].toFixed(2)
     low = Ember.Table.ColumnDefinition.create
-      columnWidth: 75
+      columnWidth: 100
       headerCellName: 'Low'
       getCellContent: (row) -> row['low'].toFixed(2)
     high = Ember.Table.ColumnDefinition.create
-      columnWidth: 75
+      columnWidth: 100
       headerCellName: 'High'
       getCellContent: (row) -> row['high'].toFixed(2)
     [name, open, spark, close, low, high]

@@ -16,7 +16,7 @@ App.LazyDataSource = Ember.ArrayProxy.extend
 
 App.SimpleTableController = Ember.Table.TableController.extend
   hasHeader: yes
-  hasFooter: yes
+  hasFooter: no
   numFixedColumns: 1
   numRows: 100000
   rowHeight: 30

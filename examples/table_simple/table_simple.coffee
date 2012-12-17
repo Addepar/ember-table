@@ -19,12 +19,11 @@ App.TableSimpleExample.LazyDataSource = Ember.ArrayProxy.extend
 
 App.TableSimpleExample.TableController = Ember.Table.TableController.extend
   hasHeader: yes
-  hasFooter: yes
+  hasFooter: no
   numFixedColumns: 0
   numRows: 1000000
   rowHeight: 30
   headerHeight: 40
-  footerHeight: 0
 
   columns: Ember.computed ->
     columnNames = ['open', 'high', 'low', 'close', 'volume']
