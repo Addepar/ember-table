@@ -53,6 +53,36 @@
         width: 100%;
         height: 100%;
       }
+      .rating {
+        unicode-bidi: bidi-override;
+        direction: rtl;
+        font-size: 20px;
+        margin: auto;
+        width: 100px;
+      }
+      .rating span {
+        font-family: FontAwesome;
+        font-weight: normal;
+        font-style: normal;
+        display: inline-block;
+      }
+      .rating span:hover {
+        cursor: pointer;
+      }
+      .rating span.active:before,
+      .rating span.active ~ span:before {
+        content: "\f005";
+      }
+      .rating span:before,
+      .rating:hover span.active:before,
+      .rating:hover span.active ~ span:before {
+        content: "\f006";
+        padding-right: 5px;
+      }
+      .rating span:hover:before,
+      .rating span:hover ~ span:before {
+        content: "\f005" !important;
+      }
     </style>
   </head>
   <body>
@@ -200,10 +230,14 @@
   {{#if view.isEditing}}
     {{view view.innerTextField}}
   {{else}}
-    <div {{action editLabel}}>
-      {{view.cellContent}}
-    </div>
+    <span class='content'>{{view.cellContent}}</span>
   {{/if}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="rating-table-cell">
+  <div class="rating">
+    <span/><span/><span/><span/><span/>
+  </div>
 </script>
 
 <script type="text/x-handlebars" data-template-name="table-tree-cell">
@@ -234,6 +268,7 @@
 <script src="javascripts/lib/handlebars-1.0.0.beta.6.js"></script>
 <script src="javascripts/lib/ember.js"></script>
 <script src="javascripts/lib/d3.v2.js"></script>
+<script src="javascripts/lib/date.js"></script>
 <script src="javascripts/lib/horizon.js"></script>
 <script src="javascripts/ember-table.js"></script>
 <script src="javascripts/data.js"></script>
