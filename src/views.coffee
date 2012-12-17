@@ -42,12 +42,20 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
 
 Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
-  classNames:     ['table-row']
+  classNames:     'table-row'
+  classNameBindings: 'row.active:active'
   styleBindings:  ['width', 'height']
   rowBinding:     'content'
   columnsBinding: 'parentView.columns'
   widthBinding:   'controller._rowWidth'
   heightBinding:  'controller.rowHeight'
+  mouseEnter: (event) ->
+    @set 'row.active', yes
+  mouseLeave: (event) ->
+    @set 'row.active', no
+  teardownContent: ->
+    return unless @get 'row'
+    @set 'row.active', no
 
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'table-cell'

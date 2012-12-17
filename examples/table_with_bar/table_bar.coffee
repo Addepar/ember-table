@@ -1,6 +1,6 @@
-window.App = Ember.Application.create()
+App.TableBarExample = Ember.Namespace.create()
 
-App.BarCell = Ember.Table.TableCell.extend
+App.TableBarExample.BarCell = Ember.Table.TableCell.extend
   templateName:     'bar-cell'
   classNameBindings:['column.color']
   barWidth: Ember.computed ->
@@ -13,7 +13,7 @@ App.BarCell = Ember.Table.TableCell.extend
     "width: #{@get('barWidth')}%;"
   .property 'barWidth'
 
-App.SimpleTableController = Ember.Table.TableController.extend
+App.TableBarExample.TableController = Ember.Table.TableController.extend
   hasHeader:    yes
   hasFooter:    no
   numRows:      1000
@@ -30,7 +30,7 @@ App.SimpleTableController = Ember.Table.TableController.extend
       Ember.Table.ColumnDefinition.create
         color: colors[index]
         headerCellName: 'Bar'
-        tableCellViewClass: 'App.BarCell'
+        tableCellViewClass: 'App.TableBarExample.BarCell'
         getCellContent: (row) -> row["value#{number}"]
     columns.unshift(column1)
     columns
@@ -45,19 +45,3 @@ App.SimpleTableController = Ember.Table.TableController.extend
       value4: Math.random() * 80 + 10
       value5: Math.random() * 80 + 10
   .property 'numRows'
-
-App.ApplicationView = Ember.View.extend
-  classNames: 'ember-app'
-  templateName: 'application'
-
-App.ApplicationController = Ember.Controller.extend
-  tableController: Ember.computed ->
-    App.SimpleTableController.create()
-  .property()
-
-App.Router = Ember.Router.extend
-  root: Ember.Route.extend
-    index: Ember.Route.extend
-      route: '/'
-
-App.initialize()

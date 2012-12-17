@@ -1,12 +1,12 @@
+window.App = Ember.Application.create()
+
 App.ApplicationView = Ember.View.extend
   classNames: 'ember-app'
   templateName: 'application'
 
 App.ApplicationController = Ember.Controller.extend
   tableController: Ember.computed ->
-    controller = App.TreeTableExample.TreeTableController.create()
-    controller.set 'data', window.sampledata
-    controller
+    Ember.get('App.TableSparklineExample.TableController').create()
   .property()
 
 App.Router = Ember.Router.extend

@@ -6,9 +6,7 @@ App.ApplicationView = Ember.View.extend
 
 App.ApplicationController = Ember.Controller.extend
   tableController: Ember.computed ->
-    controller = Ember.get('App.TreeTableExample.TableController').create()
-    controller.set 'data', window.treedata
-    controller
+    Ember.get('App.TableBarExample.TableController').create()
   .property()
 
 App.Router = Ember.Router.extend

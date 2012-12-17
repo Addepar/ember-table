@@ -18,9 +18,28 @@
   <body>
 
     <script type="text/x-handlebars" data-template-name="application">
-      <div class='presentation-container'>
+      <div class="presentation-container">
         {{view Ember.Table.TablesContainer controllerBinding="tableController"}}
       </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="table-tree-cell">
+      <span {{bindAttr class="view.row.isLeaf::toggle
+        view.row.isCollapsed:expand:collapse"}}
+        {{action toggleCollapse}}>
+        <i class="toggle-icon icon-chevron-down"></i>
+      </span>
+      {{view.cellContent}}
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="table-header-tree-cell">
+      <span {{bindAttr class=":toggle controller.isCollapsed:expand:collapse"}}
+          {{action toggleTableCollapse target="controller"}}>
+        <i class="icon-chevron-down icon-white"></i>
+      </span>
+      <span class='column-title' {{action sortByColumn target="controller"}}>
+        {{view.content.headerCellName}}
+      </span>
     </script>
 
     <script src="../../lib/jquery-1.8.0.min.js"></script>
@@ -30,8 +49,9 @@
     <script src="../../lib/underscore.js"></script>
     <script src="../../lib/handlebars-1.0.0.beta.6.js"></script>
     <script src="../../lib/ember.js"></script>
-    <script src="../../lib/minispade.js"></script>
     <script src="../../ember-table.js"></script>
+    <script src="data.js"></script>
     <script src="app.js"></script>
+    <script src="tree_table.js"></script>
   </body>
 </html>

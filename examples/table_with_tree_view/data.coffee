@@ -1,4 +1,4 @@
-window.sampledata = {
+window.treedata = {
   "root": {
     "group_value": "Total",
     "level": 0,

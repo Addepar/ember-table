@@ -8,8 +8,6 @@ Number.prototype.toPercent = ->
   return '-' if isNaN(@) or not isFinite(@)
   Math.abs(this * 100).toFixed(2) + "%"
 
-window.App = Ember.Application.create()
-
 App.TreeTableExample = Ember.Namespace.create()
 
 App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
@@ -27,8 +25,7 @@ App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
 App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
   templateName: 'table-header-tree-cell'
 
-App.TreeTableExample.TreeTableController =
-Ember.Table.TableController.extend
+App.TreeTableExample.TableController = Ember.Table.TableController.extend
   # overridding default properties
   numFixedColumns: 1
   isCollapsed: no
