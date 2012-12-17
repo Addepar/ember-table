@@ -1,31 +1,11 @@
 # Ember Table by Addepar
 
-![Ember Table Image](https://github.com/downloads/ppong/ember-table/table.png)
 Table built with [Ember.js](http://emberjs.com/) that renders rows lazily.
 
 ## Demo
-
-View Demos here:
-
-Simple
-Frozen Header
-Frozen Column
-Frozen Footer
-Frozen Header, Column & Footer combined
+http://addepar.github.com/ember-table/
 
 ## Features
-
-The table supports over 1 million rows. This is because lazy rendering and lazy loading.
-Supports custom header, body and footer cell class.
-Supports frozen header and footer panels
-Supports frozen column on the left
-Collapsable rows
-Sort rows
-Selection or rows
-Rearrange columns
-Resizable columns
-Resize frozen column
-Table automatically resizes to the container it sits in
 
 ## Getting Started
 
@@ -41,21 +21,19 @@ Table automatically resizes to the container it sits in
 ### Compiling
     $ grunt w
 
-
 ### Viewing Examples
 From the root directory: `$ python -m SimpleHTTPServer`.
-Hit up : `http://localhost:8000/examples/table/`
+Hit up : `http://localhost:8000/examples`
 
-### Limitations
-The table was originally designed and optimized for the use case of having a header, footer and frozen columm.
-
-### TODO
-Editable cells
-Remove the concept of table left and table right into viewport and sub-table concept.
-Remove the dependency on css line-height and row height between CSS and JS.
-
-### BUGS
-Selection over 100'000 rows causes issues.
+## TODO
+Bug fixes - we are aware that there are bugs. Please help us out by filing github issues!
+Better documentations
+Unit tests
+Row/sell single, multi selection
+Navigating with keyboard
+Better column drag and drop
+Support colspan and rowspan
+Further performance improvements
 
 ### Copyright and License
 Copyright © 2012 Addepar, Inc. All Rights Reserved
