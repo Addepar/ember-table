@@ -26,14 +26,14 @@ From the root directory: `$ python -m SimpleHTTPServer`.
 Hit up : `http://localhost:8000/examples`
 
 ## TODO
-Bug fixes - we are aware that there are bugs. Please help us out by filing github issues!
-Better documentations
-Unit tests
-Row/sell single, multi selection
-Navigating with keyboard
-Better column drag and drop
-Support colspan and rowspan
-Further performance improvements
+* Bug fixes - we are aware that there are bugs. Please help us out by filing github issues!
+* Better documentations
+* Unit tests
+* Row/sell single, multi selection
+* Navigating with keyboard
+* Better column drag and drop
+* Support colspan and rowspan
+* Further performance improvements
 
 ### Copyright and License
 Copyright © 2012 Addepar, Inc. All Rights Reserved
