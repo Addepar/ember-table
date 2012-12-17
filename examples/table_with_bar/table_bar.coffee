@@ -18,7 +18,6 @@ App.TableBarExample.TableController = Ember.Table.TableController.extend
   hasFooter:    no
   numRows:      1000
   rowHeight:    30
-  headerHeight: 50
 
   columns: Ember.computed ->
     colors  = ['blue', 'teal', 'green', 'yellow', 'orange']

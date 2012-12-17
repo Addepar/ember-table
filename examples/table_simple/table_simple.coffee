@@ -23,7 +23,6 @@ App.TableSimpleExample.TableController = Ember.Table.TableController.extend
   numFixedColumns: 0
   numRows: 1000000
   rowHeight: 30
-  headerHeight: 40
 
   columns: Ember.computed ->
     columnNames = ['open', 'high', 'low', 'close', 'volume']

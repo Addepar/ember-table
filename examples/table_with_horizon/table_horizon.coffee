@@ -34,7 +34,6 @@ App.TableHorizonExample.TableController = Ember.Table.TableController.extend
   numFixedColumns: 0
   numRows:      1000
   rowHeight:    35
-  headerHeight: 40
 
   columns: Ember.computed ->
     name = Ember.Table.ColumnDefinition.create

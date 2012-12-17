@@ -47,7 +47,6 @@ App.TableSparklineExample.TableController = Ember.Table.TableController.extend
   numFixedColumns: 1
   numRows:      1000
   rowHeight:    30
-  headerHeight: 40
 
   columns: Ember.computed ->
     name = Ember.Table.ColumnDefinition.create
