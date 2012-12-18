@@ -20,7 +20,6 @@
 
     <style>
       .example-container {
-        width: 500px;
         height: 500px;
       }
       .bar-cell {
@@ -97,18 +96,19 @@
 
 <script type="text/x-handlebars" data-template-name="header">
   <header>
-    <h1>Ember Table</h1>
-    <p>by Addepar</p>
-    <p class="view"><a href="https://github.com/addepar/ember-table">
-    View the Project on GitHub <small>addepar/ember-table</small></a></p>
-    <ul>
+
+    <h1 style="margin-bottom:0;">Ember Table <iframe src="http://ghbtns.com/github-btn.html?user=Addepar&repo=ember-table&type=watch&count=true"
+  allowtransparency="true" frameborder="0" scrolling="0" width="110" height="20"></iframe></h1>
+    <p>by <a href="//addepar.com">Addepar</a></p>
+    <p>A fast, lazy rendered, easily extensible table built with <a href='//emberjs.com/'>Ember.js</a>.</p>
+
+    <ul class="gh-buttons">
       <li><a href="https://github.com/addepar/ember-table/zipball/master">
         Download <strong>ZIP File</strong></a></li>
-      <li><a href="https://github.com/addepar/ember-table/tarball/master">
-        Download <strong>TAR Ball</strong></a></li>
       <li><a href="https://github.com/addepar/ember-table">
         View On <strong>GitHub</strong></a></li>
     </ul>
+
   </header>
 </script>
 
@@ -117,7 +117,7 @@
     <p>This project is maintained by
       <a href="https://github.com/addepar">Addepar</a>
     </p>
-    <p><small>Hosted on GitHub Pages &mdash; Theme by
+    <p><small>Theme inspired by
       <a href="https://github.com/orderedlist">orderedlist</a></small>
     </p>
   </footer>
@@ -125,62 +125,30 @@
 
 <script type="text/x-handlebars" data-template-name="section">
 <section>
-  <h3 style="margin-top: 0">Ember Table (Coming soon...)</h3>
-  <p>A table built with <a href='http://emberjs.com/'>Ember.js</a>
-  that renders rows lazily. The original idea for lazy rendering
-  was inspired by <a href="https://github.com/ebryn">ebryn</a>.
-  We want to keep the ember-table.js code to the bare minimum and
-  give users as much control as possible. The examples below
-  demonstrate how you can extend and customize the table. For details
-  on the individual examples, refer to the examples directory in github.
-  </p>
-  <h3>Features</h3>
-  <ul>
-    <li>Table supports over one million rows due to lazy rendering</li>
-    <li>Supports custom javascript header, body and footer class</li>
-    <li>Supports frozen header and footer panels</li>
-    <li>Supports frozen column on the left</li>
-    <li>Collapsable rows</li>
-    <li>Sortable rows</li>
-    <li>Row selection</li>
-    <li>Rearrangeable columns</li>
-    <li>Resizable columns</li>
-  </ul>
 
-  <h3>Future Work</h3>
-  <ul>
-    <li>Bug fixes - we are aware that there are bugs. Please help us out
-    by filing github issues!</li>
-    <li>Better documentations</li>
-    <li>Unit tests</li>
-    <li>Row/sell single, multi selection</li>
-    <li>Navigating with keyboard</li>
-    <li>Better column drag and drop</li>
-    <li>Support colspan and rowspan</li>
-    <li>Further performance improvements</li>
-  </ul>
-
-  <h3>Examples</h3>
-
-  <h4>Simple Table With Many Rows</h4>
+  <h4 style="margin-top:0;">Table With 1 Million Rows</h4>
+  <p>Lazy rendering means huge tables stay incredibly fast.</p>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
       controllerBinding="tableSimpleExampleController"}}
   </div>
 
   <h4>Tree Table</h4>
+  <p>Sort, freeze, resize, and rearrange columns. Collapse and select rows.
+   Freeze headers and footers.</p>
   <div class="example-container tree-table">
     {{view Ember.Table.TablesContainer
       controllerBinding="treeTableExampleController"}}
   </div>
 
-  <h4>Editable Table</h4>
+  <h4>Editable Table Cells</h4>
+  <p>It is easy to add custom content to cells</p>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
       controllerBinding="tableEditableExampleController"}}
   </div>
 
-  <h4>Table with Bars</h4>
+  <h4>Table with Bar Charts</h4>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
       controllerBinding="tableBarExampleController"}}
@@ -206,18 +174,42 @@
     $ python -m SimpleHTTPServer
   </code></pre>
 
-  <h3>Authors &amp; Contributors</h3>
-  <p><a href="https://github.com/ldevalliere">ldevalliere</a>,
-     <a href="https://github.com/ppong">ppong</a>,
-     <a href="https://github.com/sherb">sherb</a></p>
+  <h3>Future Work</h3>
+  <ul>
+    <li>Bug fixes - we are aware that there are bugs. Please help us out
+    by filing github issues!</li>
+    <li>Better documentations</li>
+    <li>Unit tests</li>
+    <li>Row/sell single, multi selection</li>
+    <li>Navigating with keyboard</li>
+    <li>Better column drag and drop</li>
+    <li>Support colspan and rowspan</li>
+    <li>Further performance improvements</li>
   </ul>
 
-  <h4>With lots of help from the Ember.js team</h4>
-  <p>
-     <a href="https://github.com/ebryn">ebryn</a>,
-     <a href="https://github.com/tomdale">tomdale</a>,
-     <a href="https://github.com/wycats">wycats</a>
-  </p>
+  <div class="contributors">
+    <h3>Authors &amp; Contributors</h3>
+    <p><a href="https://github.com/ldevalliere">ldevalliere</a>,
+       <a href="https://github.com/ppong">ppong</a>,
+       <a href="https://github.com/sherb">sherb</a></p>
+    </ul>
+
+    <h6>With lots of help from the Ember.js team</h6>
+    <p>
+       <a href="https://github.com/ebryn">ebryn</a>,
+       <a href="https://github.com/tomdale">tomdale</a>,
+       <a href="https://github.com/wycats">wycats</a>
+    </p>
+
+    <p>The original idea for lazy rendering was inspired by <a href="https://github.com/ebryn">ebryn</a>.</p>
+
+    <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>
+
+    <p>The examples below demonstrate how you can extend and customize the table.
+    For details on the individual examples, refer to the
+    <a href="//github.com/Addepar/ember-table/tree/master/examples">examples</a> directory on github.
+    </p>
+  </div>
 
 </section>
 </script>
