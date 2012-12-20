@@ -5,8 +5,6 @@ Table built with [Ember.js](http://emberjs.com/) that renders rows lazily.
 ## Demo
 http://addepar.github.com/ember-table/
 
-## Features
-
 ## Getting Started
 
 ### Take ember-table.js and modify it according to your liking with CSS.
@@ -20,6 +18,15 @@ http://addepar.github.com/ember-table/
 
 ### Compiling
     $ grunt w
+
+### Dependencies
+    ember.js
+    handlebars.js
+    jquery
+    jquery-ui
+    jquery.mousewheel.js
+    underscore.js
+    group-helper
 
 ### Viewing Examples
 From the root directory: `$ python -m SimpleHTTPServer`.
