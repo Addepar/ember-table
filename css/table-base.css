@@ -46,6 +46,10 @@
   position: absolute;
   border-bottom: 1px solid #E1E1E1;
 }
+.tables-container .table-container .table-fixed-wrapper .table-block .table-row > div,
+.tables-container .table-container .table-scrollable-wrapper .table-block .table-row > div {
+  height: 100%;
+}
 .tables-container .table-container .table-fixed-wrapper .table-block .table-row .table-cell,
 .tables-container .table-container .table-scrollable-wrapper .table-block .table-row .table-cell {
   float: left;
@@ -54,6 +58,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  height: 100%;
 }
 .tables-container .table-container .table-fixed-wrapper .table-block .table-row .table-cell span,
 .tables-container .table-container .table-scrollable-wrapper .table-block .table-row .table-cell span {
