@@ -1,7 +1,7 @@
 .presentation-container{
   width: 800px;
   height: 600px;
-  margin: 100px auto;
+  margin: 50px auto;
 }
 
 .tables-container{
@@ -18,13 +18,6 @@
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
-    /*
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -o-user-select: none;
-    user-select: none;
-    */
   }
   a{
     color: #333;
@@ -49,9 +42,6 @@
           // Height and Width defined dynamically through JS
           position: absolute;
           border-bottom: 1px solid #E1E1E1;
-          > div {
-            height: 100%;
-          }
           .table-cell{
             float: left;
             // Important to define font size
@@ -101,12 +91,12 @@
       overflow: hidden;
     }
     .table-scrollable-wrapper{
-      // dynamic js for width, height, do we need it though?
+      // Height and Width defined dynamically through JS
       display: block;
     }
   }
   .scroll-container{
-    // dynamic js for top, left, width, height
+      // Top, left, height and width defined dynamically through JS
     position: absolute;
     overflow-x: auto;
     overflow-y: hidden;
@@ -190,4 +180,11 @@
   margin-top: -3px;
   padding-left: 0;
   vertical-align: text-top;
+}
+.footer-container{
+  .table-cell{
+    .toggle{
+      padding: 0 3px 0 5px !important;
+    }
+  }
 }
