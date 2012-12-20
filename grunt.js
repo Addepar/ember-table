@@ -2,6 +2,7 @@ var DIST_FILE     = 'ember-table.js';
 var DIST_FILE_MIN = 'ember-table.min.js';
 var BUILD_TASKS   = 'coffee handlebars concat';
 var JS_FILES      = [
+  'build/utils/scrollbar_width_helper.js',
   'build/utils/resize_handler.js',
   'build/utils/style_bindings.js',
   'build/utils/lazy_container_view.js',
