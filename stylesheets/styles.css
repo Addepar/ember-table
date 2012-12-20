@@ -2,7 +2,7 @@
 
 body {
   padding:50px;
-  font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font:14px/1.5 "Helvetica Neue", Helvetica, Arial, sans-serif;
   color:#777;
   font-weight:300;
 }
@@ -94,11 +94,26 @@ th {
 img {
   max-width:100%;
 }
-
+header{
+  display: table;
+  width: 100%;
+}
 header div {
   float: left;
 }
-
+header::after {
+  clear: both;
+}
+header h1{
+  margin-bottom: 5px;
+}
+header .elevated{
+  font-size: 20px;
+}
+header .download{
+  margin-top: 36px;
+  float: right;
+}
 header .gh-buttons {
   list-style:none;
   height:40px;
@@ -160,10 +175,12 @@ header .gh-buttons a strong {
 section {
   border:1px solid #e5e5e5;
   border-width:1px 0;
-  padding:20px 0;
-  margin:0 0 20px;
+  padding: 40px 0;
+  margin: 20px 0 0 0;
 }
-
+.contributors{
+  width: 600px;
+}
 small {
   font-size:11px;
 }
