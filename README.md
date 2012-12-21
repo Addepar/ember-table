@@ -25,8 +25,6 @@ Hit up : `http://localhost:8000/examples`
 
 ## Dependencies
 * ember.js
-* handlebars.js
-* jquery
 * jquery-ui
 * jquery.mousewheel.js
 * underscore.js
