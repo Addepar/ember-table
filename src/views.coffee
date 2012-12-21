@@ -1,8 +1,6 @@
 Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
   templateName: 'tables-container'
   classNames:   'tables-container'
-  classNameBindings: 'isLion:lion'
-  isLion: no
   didInsertElement: ->
     @_super()
     @elementSizeDidChange()
@@ -11,7 +9,6 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
     scrollBarWidth = $.getScrollbarWidth()
     isLion = navigator?.appVersion['10_7'] isnt -1 and scrollBarWidth is 0
     scrollBarWidth = 8 if isLion
-    @set 'isLion', isLion
     @set 'controller._scrollbarSize', scrollBarWidth
   onResize: ->
     @elementSizeDidChange()
