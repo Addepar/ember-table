@@ -121,19 +121,19 @@
 <script type="text/x-handlebars" data-template-name="section">
 <section>
 
-  <h4 style="margin-top:0;">Table With 1 Million Rows</h4>
-  <p>Lazy rendering means huge tables stay incredibly fast.</p>
-  <div class="example-container">
-    {{view Ember.Table.TablesContainer
-      controllerBinding="tableSimpleExampleController"}}
-  </div>
-
   <h4>Tree Table</h4>
   <p>Sort, freeze, resize, and rearrange columns. Collapse and select rows.
    Freeze headers and footers.</p>
   <div class="example-container tree-table">
     {{view Ember.Table.TablesContainer
       controllerBinding="treeTableExampleController"}}
+  </div>
+
+  <h4 style="margin-top:0;">Table With 1 Million Rows</h4>
+  <p>Lazy rendering means huge tables stay incredibly fast.</p>
+  <div class="example-container">
+    {{view Ember.Table.TablesContainer
+      controllerBinding="tableSimpleExampleController"}}
   </div>
 
   <h4>Editable Table Cells</h4>
