@@ -98,20 +98,22 @@ Ember.Table.TableController = Ember.Controller.extend
 
   sortByColumn: Ember.K
 
+  # actual width of the fixed columns (frozen columns)
   _fixedColumnsWidth: Ember.computed ->
     @_getTotalWidth @get('fixedColumns')
   .property 'fixedColumns.@each.columnWidth'
 
+  # actual width of the table columns (non-frozen columns)
   _tableColumnsWidth: Ember.computed ->
     @_getTotalWidth @get('tableColumns')
   .property 'tableColumns.@each.columnWidth'
 
   _rowWidth: Ember.computed ->
     columnsWidth = @get '_tableColumnsWidth'
-    tableContainerWidth = @get('_tableContainerWidth')
-    return tableContainerWidth if columnsWidth < tableContainerWidth
+    nonFixedTableWidth = @get('_tableContainerWidth') - @get('_fixedColumnsWidth')
+    return nonFixedTableWidth if columnsWidth < nonFixedTableWidth
     columnsWidth
-  .property '_tableColumnsWidth', '_tableContainerWidth'
+  .property '_fixedColumnsWidth', '_tableColumnsWidth', '_tableContainerWidth'
 
   _bodyHeight: Ember.computed ->
     bodyHeight    = @get '_height'
