@@ -81,7 +81,7 @@ Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
     else
       column.setCellContent row, value
     value
-  .property 'rowContent.isLoading', 'column'
+  .property 'rowContent.isLoaded', 'column'
 
 ################################################################################
 

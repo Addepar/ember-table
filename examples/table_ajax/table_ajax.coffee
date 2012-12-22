@@ -10,7 +10,7 @@ App.TableAjaxExample.LazyDataSource = Ember.ArrayProxy.extend
     row.set 'createdAt',  event.created_at
     row.set 'login',      event.actor.login
     row.set 'avatar',     event.actor.avatar_url
-    row.set 'isLoading',  no
+    row.set 'isLoaded',   yes
 
   requestGithubEvent: (page) ->
     content = @get 'content'
@@ -22,7 +22,7 @@ App.TableAjaxExample.LazyDataSource = Ember.ArrayProxy.extend
         row = content[start + index]
         @createGithubEvent row, event
     [start...end].forEach (index) ->
-      content[index] = Ember.Object.create eventId: index, isLoading: yes
+      content[index] = Ember.Object.create eventId: index, isLoaded: no
 
   objectAt: (index) ->
     content = @get 'content'
