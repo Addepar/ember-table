@@ -636,7 +636,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     }
   });
 
-  Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend({
+  Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, {
     templateName: 'header-container',
     classNames: ['table-container', 'fixed-table-container', 'header-container'],
     heightBinding: 'controller.headerHeight',
