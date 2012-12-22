@@ -414,14 +414,14 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       return this._getTotalWidth(this.get('tableColumns'));
     }).property('tableColumns.@each.columnWidth'),
     _rowWidth: Ember.computed(function() {
-      var columnsWidth, tableContainerWidth;
+      var columnsWidth, nonFixedTableWidth;
       columnsWidth = this.get('_tableColumnsWidth');
-      tableContainerWidth = this.get('_tableContainerWidth');
-      if (columnsWidth < tableContainerWidth) {
-        return tableContainerWidth;
+      nonFixedTableWidth = this.get('_tableContainerWidth') - this.get('_fixedColumnsWidth');
+      if (columnsWidth < nonFixedTableWidth) {
+        return nonFixedTableWidth;
       }
       return columnsWidth;
-    }).property('_tableColumnsWidth', '_tableContainerWidth'),
+    }).property('_fixedColumnsWidth', '_tableColumnsWidth', '_tableContainerWidth'),
     _bodyHeight: Ember.computed(function() {
       var bodyHeight, footerHeight, headerHeight, scrollbarSize;
       bodyHeight = this.get('_height');
@@ -568,7 +568,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
         column.setCellContent(row, value);
       }
       return value;
-    }).property('rowContent.isLoading', 'column')
+    }).property('rowContent.isLoaded', 'column')
   });
 
   Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend({
