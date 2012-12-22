@@ -120,8 +120,7 @@
 
 <script type="text/x-handlebars" data-template-name="section">
 <section>
-
-  <h4>Tree Table</h4>
+  <h4 style="margin-top:0;">Tree Table</h4>
   <p>Sort, freeze, resize, and rearrange columns. Collapse and select rows.
    Freeze headers and footers.</p>
   <div class="example-container tree-table">
@@ -129,7 +128,7 @@
       controllerBinding="treeTableExampleController"}}
   </div>
 
-  <h4 style="margin-top:0;">Table With 1 Million Rows</h4>
+  <h4>Table With 1 Million Rows</h4>
   <p>Lazy rendering means huge tables stay incredibly fast.</p>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
@@ -150,6 +149,10 @@
   </div>
 
   <h4>Table with D3 Sparkline</h4>
+  <p>Inspired by
+    <a href="http://www.edwardtufte.com/bboard/q-and-a-fetch-msg?msg_id=0001OR">
+    example</a> from Edward Tufte&#39;s book Beautiful Evidence.
+  </p>
   <div class="example-container">
     {{view Ember.Table.TablesContainer
       controllerBinding="tableSparklineExampleController"}}
@@ -184,7 +187,7 @@
     by filing github issues!</li>
     <li>Better documentations</li>
     <li>Unit tests</li>
-    <li>Row/sell single, multi selection</li>
+    <li>Row/cell single, multi selection</li>
     <li>Navigating with keyboard</li>
     <li>Better column drag and drop</li>
     <li>Support colspan and rowspan</li>
