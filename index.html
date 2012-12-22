@@ -82,6 +82,9 @@
       .rating span:hover ~ span:before {
         content: "\f005" !important;
       }
+      .img-table-cell img {
+        margin: 2px 20px 2px 20px;
+      }
     </style>
   </head>
   <body>
@@ -164,6 +167,13 @@
       controllerBinding="tableHorizonExampleController"}}
   </div>
 
+  <h4>Table with Ajax</h4>
+  <p>Loading Github events using Ajax!</p>
+  <div class="example-container">
+    {{view Ember.Table.TablesContainer
+      controllerBinding="tableAjaxExampleController"}}
+  </div>
+
   <h3>Getting Started</h3>
   <p>Compile with <a href="http://gruntjs.com/">grunt</a>:</p>
   <pre><code>
@@ -213,6 +223,10 @@
   </div>
 
 </section>
+</script>
+
+<script type="text/x-handlebars" data-template-name="img-table-cell">
+  <img width="30" {{bindAttr src="view.cellContent"}}></img>
 </script>
 
 <script type="text/x-handlebars" data-template-name="bar-cell">
@@ -273,6 +287,7 @@
 <script src="javascripts/examples/table_simple.js"></script>
 <script src="javascripts/examples/table_sparkline.js"></script>
 <script src="javascripts/examples/tree_table.js"></script>
+<script src="javascripts/examples/table_ajax.js"></script>
 
 </body>
 </html>

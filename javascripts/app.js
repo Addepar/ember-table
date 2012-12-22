@@ -13,6 +13,9 @@
   });
 
   App.ApplicationController = Ember.Controller.extend({
+    tableAjaxExampleController: Ember.computed(function() {
+      return Ember.get('App.TableAjaxExample.TableController').create();
+    }).property(),
     tableBarExampleController: Ember.computed(function() {
       return Ember.get('App.TableBarExample.TableController').create();
     }).property(),
