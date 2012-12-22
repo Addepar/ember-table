@@ -568,7 +568,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
         column.setCellContent(row, value);
       }
       return value;
-    }).property('rowContent.isLoading', 'column')
+    }).property('rowContent.isLoaded', 'column')
   });
 
   Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend({
