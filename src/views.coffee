@@ -148,12 +148,18 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 
 ################################################################################
 
-Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
+Ember.Table.HeaderTableContainer =
+Ember.Table.TableContainer.extend
   templateName:   'header-container'
   classNames:     ['table-container', 'fixed-table-container',
                    'header-container']
   heightBinding:  'controller.headerHeight'
   widthBinding:   'controller._tableContainerWidth'
+  scrollLeftBinding:'controller._tableScrollLeft'
+  onMouseWheel: (event, delta, deltaX, deltaY) ->
+    scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
+    @set 'scrollLeft', scrollLeft
+    event.preventDefault()
 
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.ScrollHandlerMixin,
