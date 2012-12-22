@@ -305,7 +305,7 @@
 }).call(this);
 ;Ember.TEMPLATES["tables-container"]=Ember.Handlebars.compile("\n  {{#if controller.hasHeader}}\n    {{view Ember.Table.HeaderTableContainer}}\n  {{/if}}\n  {{view Ember.Table.BodyTableContainer}}\n  {{#if controller.hasFooter}}\n    {{view Ember.Table.FooterTableContainer}}\n  {{/if}}\n  {{view Ember.Table.ScrollContainer}}");
 Ember.TEMPLATES["scroll-container"]=Ember.Handlebars.compile("\n  {{view Ember.Table.ScrollPanel}}");
-Ember.TEMPLATES["header-container"]=Ember.Handlebars.compile("\n  <div class='table-fixed-wrapper'>\n    {{view Ember.Table.HeaderBlock\n      columnsBinding=\"controller.fixedColumns\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      heightBinding=\"controller.headerHeight\"\n    }}\n    {{view Ember.Table.HeaderBlock\n      columnsBinding=\"controller.tableColumns\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      heightBinding=\"controller.headerHeight\"\n    }}\n  </div>");
+Ember.TEMPLATES["header-container"]=Ember.Handlebars.compile("\n  <div class='table-fixed-wrapper'>\n    {{view Ember.Table.HeaderBlock\n      columnsBinding=\"controller.fixedColumns\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      heightBinding=\"controller.headerHeight\"\n    }}\n    {{view Ember.Table.HeaderBlock classNames=\"right-table-block\"\n      columnsBinding=\"controller.tableColumns\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      heightBinding=\"controller.headerHeight\"\n    }}\n  </div>");
 Ember.TEMPLATES["body-container"]=Ember.Handlebars.compile("\n  <div class='table-scrollable-wrapper'>\n    {{view Ember.Table.LazyTableBlock\n      contentBinding=\"controller.bodyContent\"\n      columnsBinding=\"controller.fixedColumns\"\n      scrollTopBinding=\"controller._tableScrollTop\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      viewportHeightBinding=\"controller._bodyHeight\"\n    }}\n    {{view Ember.Table.LazyTableBlock classNames=\"right-table-block\"\n      contentBinding=\"controller.bodyContent\"\n      columnsBinding=\"controller.tableColumns\"\n      scrollTopBinding=\"controller._tableScrollTop\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      viewportHeightBinding=\"controller._bodyHeight\"\n    }}\n  </div>");
 Ember.TEMPLATES["footer-container"]=Ember.Handlebars.compile("\n  <div class='table-fixed-wrapper'>\n    {{view Ember.Table.TableBlock\n      contentBinding=\"controller.footerContent\"\n      columnsBinding=\"controller.fixedColumns\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      heightBinding=\"controller.footerHeight\"\n    }}\n    {{view Ember.Table.TableBlock classNames=\"right-table-block\"\n      contentBinding=\"controller.footerContent\"\n      columnsBinding=\"controller.tableColumns\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      heightBinding=\"controller.footerHeight\"\n    }}\n  </div>");
 Ember.TEMPLATES["table-row"]=Ember.Handlebars.compile("\n  {{#group}}\n    {{view Ember.MultiItemViewCollectionView\n      rowBinding=\"view.row\"\n      contentBinding=\"view.columns\"\n      itemViewClassField=\"tableCellViewClass\"\n      widthBinding=\"controller._tableColumnsWidth\"\n    }}\n  {{/group}}");
@@ -640,7 +640,14 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     templateName: 'header-container',
     classNames: ['table-container', 'fixed-table-container', 'header-container'],
     heightBinding: 'controller.headerHeight',
-    widthBinding: 'controller._tableContainerWidth'
+    widthBinding: 'controller._tableContainerWidth',
+    scrollLeftBinding: 'controller._tableScrollLeft',
+    onMouseWheel: function(event, delta, deltaX, deltaY) {
+      var scrollLeft;
+      scrollLeft = this.$('.right-table-block').scrollLeft() + deltaX * 50;
+      this.set('scrollLeft', scrollLeft);
+      return event.preventDefault();
+    }
   });
 
   Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.ScrollHandlerMixin, Ember.MouseWheelHandlerMixin, {
