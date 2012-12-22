@@ -45,7 +45,7 @@ App.TableSparklineExample.TableController = Ember.Table.TableController.extend
   hasHeader:    yes
   hasFooter:    no
   numFixedColumns: 1
-  numRows:      1000
+  numRows:      100
   rowHeight:    30
 
   columns: Ember.computed ->

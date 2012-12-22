@@ -26,7 +26,7 @@ Ember.StyleBindingsMixin = Ember.Mixin.create
       styleTokens = styles.map (style) =>
         @createStyleString style, lookup[style]
       styleString = styleTokens.join('')
-      return styleString unless Ember.empty(styleString)
+      return styleString unless styleString.length is 0
     # add dependents to computed property
     styleComputed.property.apply(styleComputed, properties)
     # define style computed properties

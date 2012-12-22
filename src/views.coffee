@@ -81,7 +81,7 @@ Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
     else
       column.setCellContent row, value
     value
-  .property 'rowContent', 'column'
+  .property 'rowContent.isLoading', 'column'
 
 ################################################################################
 
@@ -162,8 +162,8 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
     event.preventDefault()
 
 Ember.Table.BodyTableContainer =
-Ember.Table.TableContainer.extend Ember.ScrollHandlerMixin,
-Ember.MouseWheelHandlerMixin,
+Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
+Ember.ScrollHandlerMixin,
   templateName:   'body-container'
   classNames:     ['table-container', 'body-container']
   heightBinding:  'controller._bodyHeight'
@@ -172,6 +172,7 @@ Ember.MouseWheelHandlerMixin,
   scrollLeftBinding:'controller._tableScrollLeft'
   onScroll: (event) ->
     @set 'scrollTop', event.target.scrollTop
+    event.preventDefault()
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     return unless Math.abs(deltaX) > Math.abs(deltaY)
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
@@ -204,6 +205,7 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   scrollLeftBinding:'controller._tableScrollLeft'
   onScroll: (event) ->
     @set 'scrollLeft', event.target.scrollLeft
+    event.preventDefault()
   onScrollLeftDidChange: Ember.observer ->
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'

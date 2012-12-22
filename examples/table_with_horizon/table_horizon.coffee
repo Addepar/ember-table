@@ -32,7 +32,7 @@ App.TableHorizonExample.TableController = Ember.Table.TableController.extend
   hasHeader:    yes
   hasFooter:    no
   numFixedColumns: 0
-  numRows:      1000
+  numRows:      100
   rowHeight:    35
 
   columns: Ember.computed ->
@@ -41,7 +41,7 @@ App.TableHorizonExample.TableController = Ember.Table.TableController.extend
       headerCellName: 'Name'
       getCellContent: (row) -> 'Horizon ' + row['name']
     horizon = Ember.Table.ColumnDefinition.create
-      columnWidth: 400
+      columnWidth: 600
       headerCellName: 'Horizon'
       tableCellViewClass: 'App.TableHorizonExample.HorizonTableCellView'
       getCellContent: Ember.K

@@ -29,6 +29,7 @@ App.SimpleTableController = Ember.Table.TableController.extend
     @get('columnNames').map (key, index) ->
       Ember.Table.ColumnDefinition.create
         index: index
+        columnWidth: 100
         headerCellName: key
         getCellContent: (row) -> row[key]
   .property()

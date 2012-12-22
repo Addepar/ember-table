@@ -16,7 +16,7 @@ App.TableBarExample.BarCell = Ember.Table.TableCell.extend
 App.TableBarExample.TableController = Ember.Table.TableController.extend
   hasHeader:    yes
   hasFooter:    no
-  numRows:      1000
+  numRows:      100
   rowHeight:    30
 
   columns: Ember.computed ->

@@ -122,7 +122,7 @@
           return _this.createStyleString(style, lookup[style]);
         });
         styleString = styleTokens.join('');
-        if (!Ember.empty(styleString)) {
+        if (styleString.length !== 0) {
           return styleString;
         }
       });
@@ -568,7 +568,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
         column.setCellContent(row, value);
       }
       return value;
-    }).property('rowContent', 'column')
+    }).property('rowContent.isLoading', 'column')
   });
 
   Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend({
@@ -650,7 +650,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     }
   });
 
-  Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.ScrollHandlerMixin, Ember.MouseWheelHandlerMixin, {
+  Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.ScrollHandlerMixin, {
     templateName: 'body-container',
     classNames: ['table-container', 'body-container'],
     heightBinding: 'controller._bodyHeight',
@@ -658,7 +658,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     scrollTopBinding: 'controller._tableScrollTop',
     scrollLeftBinding: 'controller._tableScrollLeft',
     onScroll: function(event) {
-      return this.set('scrollTop', event.target.scrollTop);
+      this.set('scrollTop', event.target.scrollTop);
+      return event.preventDefault();
     },
     onMouseWheel: function(event, delta, deltaX, deltaY) {
       var scrollLeft;
@@ -696,7 +697,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     scrollTopBinding: 'controller._tableScrollTop',
     scrollLeftBinding: 'controller._tableScrollLeft',
     onScroll: function(event) {
-      return this.set('scrollLeft', event.target.scrollLeft);
+      this.set('scrollLeft', event.target.scrollLeft);
+      return event.preventDefault();
     },
     onScrollLeftDidChange: Ember.observer(function() {
       return this.$().scrollLeft(this.get('scrollLeft'));
