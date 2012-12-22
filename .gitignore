@@ -3,4 +3,3 @@
 node_modules
 build
 examples/*/*.js
-ember-table.js
