@@ -172,12 +172,18 @@ Ember.MouseWheelHandlerMixin,
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
-Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend
+Ember.Table.FooterTableContainer =
+Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   templateName:   'footer-container'
   classNames:     ['table-container', 'fixed-table-container',
                   'footer-container']
   heightBinding:  'controller.footerHeight'
   widthBinding:   'controller._tableContainerWidth'
+  scrollLeftBinding:'controller._tableScrollLeft'
+  onMouseWheel: (event, delta, deltaX, deltaY) ->
+    scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
+    @set 'scrollLeft', scrollLeft
+    event.preventDefault()
 
 Ember.Table.ScrollContainer =
 Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
