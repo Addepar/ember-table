@@ -149,7 +149,7 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 ################################################################################
 
 Ember.Table.HeaderTableContainer =
-Ember.Table.TableContainer.extend
+Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   templateName:   'header-container'
   classNames:     ['table-container', 'fixed-table-container',
                    'header-container']
