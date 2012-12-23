@@ -14,7 +14,7 @@
       row.set('createdAt', event.created_at);
       row.set('login', event.actor.login);
       row.set('avatar', event.actor.avatar_url);
-      return row.set('isLoading', false);
+      return row.set('isLoaded', true);
     },
     requestGithubEvent: function(page) {
       var content, end, start, url, _i, _results,
@@ -37,7 +37,7 @@
       }).apply(this).forEach(function(index) {
         return content[index] = Ember.Object.create({
           eventId: index,
-          isLoading: true
+          isLoaded: false
         });
       });
     },
