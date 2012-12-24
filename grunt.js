@@ -9,7 +9,7 @@ var JS_FILES      = [
   'build/utils/utils.js',
   'build/templates/table_templates.js',
   'build/controllers.js',
-  'build/key_event_mixin.js',
+  'build/row_selection_mixin.js',
   'build/views.js',
 ];
 
