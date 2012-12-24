@@ -1,11 +1,94 @@
 Ember.Table.RowSelectionMixin = Ember.Mixin.create
 
+  # we need to set tabindex so that div responds to key events
+  attributeBindings: 'tabindex'
+  tabindex: -1
+
+  contentBinding:   Ember.Binding.oneWay 'controller.bodyContent'
+  rowHeightBinding: Ember.Binding.oneWay 'controller.rowHeight'
+  selection: null
+
   KEY_EVENTS:
     37: 'leftArrowPressed'
     38: 'upArrowPressed'
     39: 'rightArrowPressed'
     40: 'downArrowPressed'
 
+  # TODO(Peter): refactor this
+  numRowsInViewport: Ember.computed ->
+    Math.floor @get('height') / @get('rowHeight')
+  .property 'height', 'rowHeight'
+
+  # TODO(Peter): refactor this
+  startIndex: Ember.computed ->
+    numContent  = @get 'content.length'
+    numViews    = @get 'numRowsInViewport'
+    rowHeight   = @get 'rowHeight'
+    scrollTop   = @get 'scrollTop'
+    index = Math.floor(scrollTop / rowHeight)
+    # we need to adjust start index so that end index doesn't exceed content
+    if index + numViews >= numContent
+      index = numContent - numViews
+    if index < 0 then 0 else index
+  .property 'content.length', 'numRowsInViewport', 'rowHeight', 'scrollTop'
+
+  mouseDown: (event) ->
+    @setSelection @getRowForEvent(event)
+
+  keyDown: (event) ->
+    map   = @get 'KEY_EVENTS'
+    method = map[event.keyCode]
+    @get(method)?.apply(this, arguments) if method
+
+  upArrowPressed: (event) ->
+    event.preventDefault()
+    @setSelection @getPrevRow(@get('selection'))
+
+  downArrowPressed: (event) ->
+    event.preventDefault()
+    @setSelection @getNextRow(@get('selection'))
+
+  getNextRow: (row) ->
+    content = @get 'content'
+    clen    = @get 'content.length'
+    index = content.indexOf row
+    if index + 1 < clen then content.objectAt(index + 1) else row
+
+  getPrevRow: (row) ->
+    content = @get 'content'
+    index = content.indexOf row
+    if index > 0 then content.objectAt(index - 1) else row
+
+  getRowForEvent: (event) ->
+    $rowView = $(event.target).parents('.table-row')
+    view     = Ember.View.views[$rowView.attr('id')]
+    view.get 'row' if view
+
+  setSelection: (row) ->
+    selection = @get 'selection'
+    selection.set 'selected', no if selection
+    row.set 'selected', yes
+    @set 'selection', row
+    @ensureVisible row
+
+  ensureVisible: (row) ->
+    startIndex = @get 'startIndex'
+    numRows    = @get 'numRowsInViewport'
+    endIndex   = startIndex + numRows
+    index = @get('content').indexOf row
+    if index < startIndex
+      @scrollToRowIndex index
+    else if index >= endIndex
+      @scrollToRowIndex(index - numRows + 1)
+
+  scrollToRowIndex: (index) ->
+    rowHeight = @get 'rowHeight'
+    scrollTop = index * rowHeight
+    @$().scrollTop scrollTop
+    @set 'scrollTop', scrollTop
+
+###
+Ember.Table.RowSelectionMixin = Ember.Mixin.create
   # selection has to be a set
   selection:  Ember.computed ->
     selection = Ember.A()
@@ -19,15 +102,6 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     indices   = _.map selection, (item) -> content.indexOf item
     [_.min(indices), _.max(indices)]
   .property 'content', 'selection.@each'
-
-  didInsertElement: ->
-    @_super()
-    @$().attr('tabindex', -1)
-
-  keyDown: (event) ->
-    map   = @get 'KEY_EVENTS'
-    method = map[event.keyCode]
-    @get(method)?.apply(this, arguments) if method
 
   mouseDown: (event) ->
     if event.ctrlKey or event.metaKey
@@ -104,11 +178,11 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
 
   arrayWillChange: (array, idx, removedCnt, addedCnt) ->
     removedObjects = array.slice(idx, idx + removedCnt)
-    removedObjects.forEach (row) -> row.set 'isSelected', no
+    removedObjects.forEach (row) -> row.set 'selected', no
 
   arrayDidChange: (array, idx, removedCnt, addedCnt) ->
     addedObjects = array.slice(idx, idx + addedCnt)
-    addedObjects.forEach (row) ->   row.set 'isSelected', yes
+    addedObjects.forEach (row) ->   row.set 'selected', yes
 
   getRowForEvent: (event) ->
     $rowView = $(event.target).parents('.table-row')
@@ -129,3 +203,4 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     newSelection = content.slice(startIndex, endIndex)
     selection.clear()
     selection.pushObjects newSelection
+###

@@ -48,7 +48,7 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
 Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
   classNames:     'table-row'
-  classNameBindings: 'row.active:active'
+  classNameBindings: ['row.active:active', 'row.selected:selected']
   styleBindings:  ['width', 'height']
   rowBinding:     'content'
   columnsBinding: 'parentView.columns'
@@ -163,7 +163,7 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
-Ember.ScrollHandlerMixin,
+Ember.ScrollHandlerMixin, Ember.Table.RowSelectionMixin,
   templateName:   'body-container'
   classNames:     ['table-container', 'body-container']
   heightBinding:  'controller._bodyHeight'

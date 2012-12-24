@@ -22,6 +22,16 @@
   a{
     color: #333;
   }
+  .body-container {
+    outline: 0;
+    .table-row {
+      &.selected {
+        background-color: #227ECB;
+        color: #FFF;
+        cursor: pointer;
+      }
+    }
+  }
   .table-container{
     // Height and Width defined dynamically through JS
     overflow-x: hidden;
