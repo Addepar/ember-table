@@ -68,14 +68,12 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="table-row">
-  {{#group}}
-    {{view Ember.MultiItemViewCollectionView
-      rowBinding="view.row"
-      contentBinding="view.columns"
-      itemViewClassField="tableCellViewClass"
-      widthBinding="controller._tableColumnsWidth"
-    }}
-  {{/group}}
+  {{view Ember.MultiItemViewCollectionView
+    rowBinding="view.row"
+    contentBinding="view.columns"
+    itemViewClassField="tableCellViewClass"
+    widthBinding="controller._tableColumnsWidth"
+  }}
 </script>
 
 <script type="text/x-handlebars" data-template-name="table-cell">
