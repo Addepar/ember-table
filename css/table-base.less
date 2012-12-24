@@ -22,22 +22,13 @@
   a{
     color: #333;
   }
-  .body-container {
-    outline: 0;
-    .table-row {
-      &.selected {
-        background-color: #227ECB;
-        color: #FFF;
-        cursor: pointer;
-      }
-    }
-  }
   .table-container{
     // Height and Width defined dynamically through JS
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
     background-color: #FFF;
+    outline: 0;
     z-index: 3;
     .table-fixed-wrapper, .table-scrollable-wrapper{
       overflow: visible;
@@ -52,8 +43,18 @@
           // Height and Width defined dynamically through JS
           position: absolute;
           border-bottom: 1px solid #E1E1E1;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          -o-user-select: none;
+          user-select: none;
           > div {
             height: 100%;
+          }
+          &.selected {
+            background-color: #227ECB !important;
+            color: #FFF;
+            cursor: pointer;
           }
           .table-cell{
             float: left;
@@ -94,10 +95,15 @@
         position: relative;
         .table-row {
           position: absolute;
+          background-color: #FFF;
         }
       }
+    }
+    .table-fixed-wrapper, .table-scrollable-wrapper{
       .right-table-block{
-        background-color: #FFF;
+        .table-cell:last-child{
+          border-right: none;
+        }
       }
     }
     .table-fixed-wrapper{
