@@ -3,9 +3,6 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
   # we need to set tabindex so that div responds to key events
   attributeBindings: 'tabindex'
   tabindex: -1
-
-  contentBinding:   Ember.Binding.oneWay 'controller.bodyContent'
-  rowHeightBinding: Ember.Binding.oneWay 'controller.rowHeight'
   selection: null
 
   KEY_EVENTS:
@@ -14,26 +11,10 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     39: 'rightArrowPressed'
     40: 'downArrowPressed'
 
-  # TODO(Peter): refactor this
-  numRowsInViewport: Ember.computed ->
-    Math.floor @get('height') / @get('rowHeight')
-  .property 'height', 'rowHeight'
-
-  # TODO(Peter): refactor this
-  startIndex: Ember.computed ->
-    numContent  = @get 'content.length'
-    numViews    = @get 'numRowsInViewport'
-    rowHeight   = @get 'rowHeight'
-    scrollTop   = @get 'scrollTop'
-    index = Math.floor(scrollTop / rowHeight)
-    # we need to adjust start index so that end index doesn't exceed content
-    if index + numViews >= numContent
-      index = numContent - numViews
-    if index < 0 then 0 else index
-  .property 'content.length', 'numRowsInViewport', 'rowHeight', 'scrollTop'
-
   mouseDown: (event) ->
-    @setSelection @getRowForEvent(event)
+    row   = @getRowForEvent event
+    index = @getRowIndexFast row
+    @setSelectionIndex index
 
   keyDown: (event) ->
     map   = @get 'KEY_EVENTS'
@@ -42,40 +23,51 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
 
   upArrowPressed: (event) ->
     event.preventDefault()
-    @setSelection @getPrevRow(@get('selection'))
+    index = @getPrevRowIndex @get('selection')
+    @setSelectionIndex index
 
   downArrowPressed: (event) ->
     event.preventDefault()
-    @setSelection @getNextRow(@get('selection'))
+    index = @getNextRowIndex @get('selection')
+    @setSelectionIndex index
 
-  getNextRow: (row) ->
+  getNextRowIndex: (row) ->
     content = @get 'content'
     clen    = @get 'content.length'
-    index = content.indexOf row
-    if index + 1 < clen then content.objectAt(index + 1) else row
+    index = @getRowIndexFast row
+    if index + 1 < clen then index + 1 else index
 
-  getPrevRow: (row) ->
-    content = @get 'content'
-    index = content.indexOf row
-    if index > 0 then content.objectAt(index - 1) else row
+  getPrevRowIndex: (row) ->
+    index = @getRowIndexFast row
+    if index > 0 then index - 1 else index
 
   getRowForEvent: (event) ->
     $rowView = $(event.target).parents('.table-row')
     view     = Ember.View.views[$rowView.attr('id')]
     view.get 'row' if view
 
-  setSelection: (row) ->
+  # this is necessary, because if we do content.indexOf row, this will
+  # implicitly causes us to evaluate the entire array proxy
+  getRowIndexFast: (row) ->
+    startIndex = @get 'startIndex'
+    numRows    = @get('numItemsShowing') + 1
+    sublist    = @get('content').slice(startIndex, startIndex + numRows)
+    index      = sublist.indexOf row
+    if index < 0 then index else index + startIndex
+
+  setSelectionIndex: (index) ->
+    return unless index >= 0
     selection = @get 'selection'
     selection.set 'selected', no if selection
+    row = @get('content').objectAt index
     row.set 'selected', yes
     @set 'selection', row
-    @ensureVisible row
+    @ensureVisible index
 
-  ensureVisible: (row) ->
+  ensureVisible: (index) ->
     startIndex = @get 'startIndex'
-    numRows    = @get 'numRowsInViewport'
+    numRows    = @get 'numItemsShowing'
     endIndex   = startIndex + numRows
-    index = @get('content').indexOf row
     if index < startIndex
       @scrollToRowIndex index
     else if index >= endIndex
@@ -88,7 +80,7 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     @set 'scrollTop', scrollTop
 
 ###
-Ember.Table.RowSelectionMixin = Ember.Mixin.create
+Ember.Table.RowMultiSelectionMixin = Ember.Mixin.create
   # selection has to be a set
   selection:  Ember.computed ->
     selection = Ember.A()

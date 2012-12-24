@@ -1,18 +1,26 @@
 # TODO(Peter): Deprecating this. We are moving to Ebryn's ListView in the near
 # future
 Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
-  classNames: 'lazy-list-container'
-  styleBindings: ['height']
-
-  content:    null
-  itemViewClass: null
-  viewportHeight:     null
-  rowHeight:  null
-  scrollTop:  null
+  classNames:     'lazy-list-container'
+  styleBindings:  ['height']
+  content:        null
+  itemViewClass:  null
+  rowHeight:      null
+  scrollTop:      null
+  startIndex:     null
 
   init: ->
     @_super()
     @onNumItemsInViewportDidChange()
+
+  height: Ember.computed ->
+    @get('content.length') * @get('rowHeight')
+  .property 'content.length', 'rowHeight'
+
+  # TODO(Peter): refactor this. shouldn't hardcode to depend on parent
+  numItemsInViewport: Ember.computed ->
+    @get('parentView.numItemsShowing') + 1
+  .property 'parentView.numItemsShowing'
 
   onNumItemsInViewportDidChange: Ember.observer ->
     # We are getting the class from a string e.g. "Ember.Table.Row"
@@ -28,29 +36,10 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
       childViews.removeObjects viewsToRemove
     # if oldNumViews < newNumViews we need to add more views
     else if numViewsToInsert > 0
-      viewsToAdd = [0...numViewsToInsert].map -> itemViewClass.create()
+      viewsToAdd = [0...numViewsToInsert].map ->
+        itemViewClass.create()
       childViews.pushObjects viewsToAdd
   , 'numItemsInViewport', 'itemViewClass'
-
-  numItemsInViewport: Ember.computed ->
-    Math.ceil(@get('viewportHeight') / @get('rowHeight')) + 1
-  .property 'viewportHeight', 'rowHeight'
-
-  height: Ember.computed ->
-    @get('content.length') * @get('rowHeight')
-  .property 'content.length', 'rowHeight'
-
-  startIndex: Ember.computed ->
-    numContent  = @get 'content.length'
-    numViews    = @get 'childViews.length'
-    rowHeight   = @get 'rowHeight'
-    scrollTop   = @get 'scrollTop'
-    index = Math.floor(scrollTop / rowHeight)
-    # we need to adjust start index so that end index doesn't exceed content
-    if index + numViews >= numContent
-      index = numContent - numViews
-    if index < 0 then 0 else index
-  .property 'content.length', 'childViews.length', 'rowHeight', 'scrollTop'
 
   # TODO(Peter): Consider making this a computed... binding logic will go
   # into the LazyItemMixin
@@ -74,7 +63,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     [numShownViews...numChildViews].forEach (i) =>
       childView = views.objectAt(i)
       childView.set 'content', null
-  , 'childViews', 'content', 'startIndex'
+  , 'numItemsInViewport', 'content', 'startIndex'
 
 # TODO(Peter): Deprecating this. We are moving to Ebryn's ListViewItem in
 # the near future

@@ -144,13 +144,19 @@
     styleBindings: ['height'],
     content: null,
     itemViewClass: null,
-    viewportHeight: null,
     rowHeight: null,
     scrollTop: null,
+    startIndex: null,
     init: function() {
       this._super();
       return this.onNumItemsInViewportDidChange();
     },
+    height: Ember.computed(function() {
+      return this.get('content.length') * this.get('rowHeight');
+    }).property('content.length', 'rowHeight'),
+    numItemsInViewport: Ember.computed(function() {
+      return this.get('parentView.numItemsShowing') + 1;
+    }).property('parentView.numItemsShowing'),
     onNumItemsInViewportDidChange: Ember.observer(function() {
       var childViews, itemViewClass, newNumViews, numViewsToInsert, oldNumViews, viewsToAdd, viewsToRemove, _i, _results;
       itemViewClass = Ember.get(this.get('itemViewClass'));
@@ -175,28 +181,6 @@
         return childViews.pushObjects(viewsToAdd);
       }
     }, 'numItemsInViewport', 'itemViewClass'),
-    numItemsInViewport: Ember.computed(function() {
-      return Math.ceil(this.get('viewportHeight') / this.get('rowHeight')) + 1;
-    }).property('viewportHeight', 'rowHeight'),
-    height: Ember.computed(function() {
-      return this.get('content.length') * this.get('rowHeight');
-    }).property('content.length', 'rowHeight'),
-    startIndex: Ember.computed(function() {
-      var index, numContent, numViews, rowHeight, scrollTop;
-      numContent = this.get('content.length');
-      numViews = this.get('childViews.length');
-      rowHeight = this.get('rowHeight');
-      scrollTop = this.get('scrollTop');
-      index = Math.floor(scrollTop / rowHeight);
-      if (index + numViews >= numContent) {
-        index = numContent - numViews;
-      }
-      if (index < 0) {
-        return 0;
-      } else {
-        return index;
-      }
-    }).property('content.length', 'childViews.length', 'rowHeight', 'scrollTop'),
     viewportDidChange: Ember.observer(function() {
       var content, numChildViews, numShownViews, startIndex, views, _i, _j, _results, _results1,
         _this = this;
@@ -230,7 +214,7 @@
         childView = views.objectAt(i);
         return childView.set('content', null);
       });
-    }, 'childViews', 'content', 'startIndex')
+    }, 'numItemsInViewport', 'content', 'startIndex')
   });
 
   Ember.LazyItemView = Ember.View.extend(Ember.StyleBindingsMixin, {
@@ -306,7 +290,7 @@
 ;Ember.TEMPLATES["tables-container"]=Ember.Handlebars.compile("\n  {{#if controller.hasHeader}}\n    {{view Ember.Table.HeaderTableContainer}}\n  {{/if}}\n  {{view Ember.Table.BodyTableContainer}}\n  {{#if controller.hasFooter}}\n    {{view Ember.Table.FooterTableContainer}}\n  {{/if}}\n  {{view Ember.Table.ScrollContainer}}");
 Ember.TEMPLATES["scroll-container"]=Ember.Handlebars.compile("\n  {{view Ember.Table.ScrollPanel}}");
 Ember.TEMPLATES["header-container"]=Ember.Handlebars.compile("\n  <div class='table-fixed-wrapper'>\n    {{view Ember.Table.HeaderBlock\n      columnsBinding=\"controller.fixedColumns\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      heightBinding=\"controller.headerHeight\"\n    }}\n    {{view Ember.Table.HeaderBlock classNames=\"right-table-block\"\n      columnsBinding=\"controller.tableColumns\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      heightBinding=\"controller.headerHeight\"\n    }}\n  </div>");
-Ember.TEMPLATES["body-container"]=Ember.Handlebars.compile("\n  <div class='table-scrollable-wrapper'>\n    {{view Ember.Table.LazyTableBlock\n      contentBinding=\"controller.bodyContent\"\n      columnsBinding=\"controller.fixedColumns\"\n      scrollTopBinding=\"controller._tableScrollTop\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      viewportHeightBinding=\"controller._bodyHeight\"\n    }}\n    {{view Ember.Table.LazyTableBlock classNames=\"right-table-block\"\n      contentBinding=\"controller.bodyContent\"\n      columnsBinding=\"controller.tableColumns\"\n      scrollTopBinding=\"controller._tableScrollTop\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      viewportHeightBinding=\"controller._bodyHeight\"\n    }}\n  </div>");
+Ember.TEMPLATES["body-container"]=Ember.Handlebars.compile("\n  <div class='table-scrollable-wrapper'>\n    {{view Ember.Table.LazyTableBlock\n      contentBinding=\"controller.bodyContent\"\n      columnsBinding=\"controller.fixedColumns\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      scrollTopBinding=\"view.scrollTop\"\n      startIndexBinding=\"view.startIndex\"\n    }}\n    {{view Ember.Table.LazyTableBlock classNames=\"right-table-block\"\n      contentBinding=\"controller.bodyContent\"\n      columnsBinding=\"controller.tableColumns\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      scrollTopBinding=\"view.scrollTop\"\n      startIndexBinding=\"view.startIndex\"\n    }}\n  </div>");
 Ember.TEMPLATES["footer-container"]=Ember.Handlebars.compile("\n  <div class='table-fixed-wrapper'>\n    {{view Ember.Table.TableBlock\n      contentBinding=\"controller.footerContent\"\n      columnsBinding=\"controller.fixedColumns\"\n      widthBinding=\"controller._fixedBlockWidth\"\n      heightBinding=\"controller.footerHeight\"\n    }}\n    {{view Ember.Table.TableBlock classNames=\"right-table-block\"\n      contentBinding=\"controller.footerContent\"\n      columnsBinding=\"controller.tableColumns\"\n      scrollLeftBinding=\"controller._tableScrollLeft\"\n      widthBinding=\"controller._tableBlockWidth\"\n      heightBinding=\"controller.footerHeight\"\n    }}\n  </div>");
 Ember.TEMPLATES["table-row"]=Ember.Handlebars.compile("\n  {{#group}}\n    {{view Ember.MultiItemViewCollectionView\n      rowBinding=\"view.row\"\n      contentBinding=\"view.columns\"\n      itemViewClassField=\"tableCellViewClass\"\n      widthBinding=\"controller._tableColumnsWidth\"\n    }}\n  {{/group}}");
 Ember.TEMPLATES["table-cell"]=Ember.Handlebars.compile("\n  <span class='content'>{{view.cellContent}}</span>");
@@ -473,8 +457,6 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
   Ember.Table.RowSelectionMixin = Ember.Mixin.create({
     attributeBindings: 'tabindex',
     tabindex: -1,
-    contentBinding: Ember.Binding.oneWay('controller.bodyContent'),
-    rowHeightBinding: Ember.Binding.oneWay('controller.rowHeight'),
     selection: null,
     KEY_EVENTS: {
       37: 'leftArrowPressed',
@@ -482,27 +464,11 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       39: 'rightArrowPressed',
       40: 'downArrowPressed'
     },
-    numRowsInViewport: Ember.computed(function() {
-      return Math.floor(this.get('height') / this.get('rowHeight'));
-    }).property('height', 'rowHeight'),
-    startIndex: Ember.computed(function() {
-      var index, numContent, numViews, rowHeight, scrollTop;
-      numContent = this.get('content.length');
-      numViews = this.get('numRowsInViewport');
-      rowHeight = this.get('rowHeight');
-      scrollTop = this.get('scrollTop');
-      index = Math.floor(scrollTop / rowHeight);
-      if (index + numViews >= numContent) {
-        index = numContent - numViews;
-      }
-      if (index < 0) {
-        return 0;
-      } else {
-        return index;
-      }
-    }).property('content.length', 'numRowsInViewport', 'rowHeight', 'scrollTop'),
     mouseDown: function(event) {
-      return this.setSelection(this.getRowForEvent(event));
+      var index, row;
+      row = this.getRowForEvent(event);
+      index = this.getRowIndexFast(row);
+      return this.setSelectionIndex(index);
     },
     keyDown: function(event) {
       var map, method, _ref;
@@ -513,32 +479,35 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       }
     },
     upArrowPressed: function(event) {
+      var index;
       event.preventDefault();
-      return this.setSelection(this.getPrevRow(this.get('selection')));
+      index = this.getPrevRowIndex(this.get('selection'));
+      return this.setSelectionIndex(index);
     },
     downArrowPressed: function(event) {
+      var index;
       event.preventDefault();
-      return this.setSelection(this.getNextRow(this.get('selection')));
+      index = this.getNextRowIndex(this.get('selection'));
+      return this.setSelectionIndex(index);
     },
-    getNextRow: function(row) {
+    getNextRowIndex: function(row) {
       var clen, content, index;
       content = this.get('content');
       clen = this.get('content.length');
-      index = content.indexOf(row);
+      index = this.getRowIndexFast(row);
       if (index + 1 < clen) {
-        return content.objectAt(index + 1);
+        return index + 1;
       } else {
-        return row;
+        return index;
       }
     },
-    getPrevRow: function(row) {
-      var content, index;
-      content = this.get('content');
-      index = content.indexOf(row);
+    getPrevRowIndex: function(row) {
+      var index;
+      index = this.getRowIndexFast(row);
       if (index > 0) {
-        return content.objectAt(index - 1);
+        return index - 1;
       } else {
-        return row;
+        return index;
       }
     },
     getRowForEvent: function(event) {
@@ -549,22 +518,37 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
         return view.get('row');
       }
     },
-    setSelection: function(row) {
-      var selection;
+    getRowIndexFast: function(row) {
+      var index, numRows, startIndex, sublist;
+      startIndex = this.get('startIndex');
+      numRows = this.get('numItemsShowing') + 1;
+      sublist = this.get('content').slice(startIndex, startIndex + numRows);
+      index = sublist.indexOf(row);
+      if (index < 0) {
+        return index;
+      } else {
+        return index + startIndex;
+      }
+    },
+    setSelectionIndex: function(index) {
+      var row, selection;
+      if (!(index >= 0)) {
+        return;
+      }
       selection = this.get('selection');
       if (selection) {
         selection.set('selected', false);
       }
+      row = this.get('content').objectAt(index);
       row.set('selected', true);
       this.set('selection', row);
-      return this.ensureVisible(row);
+      return this.ensureVisible(index);
     },
-    ensureVisible: function(row) {
-      var endIndex, index, numRows, startIndex;
+    ensureVisible: function(index) {
+      var endIndex, numRows, startIndex;
       startIndex = this.get('startIndex');
-      numRows = this.get('numRowsInViewport');
+      numRows = this.get('numItemsShowing');
       endIndex = startIndex + numRows;
-      index = this.get('content').indexOf(row);
       if (index < startIndex) {
         return this.scrollToRowIndex(index);
       } else if (index >= endIndex) {
@@ -575,12 +559,13 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       var rowHeight, scrollTop;
       rowHeight = this.get('rowHeight');
       scrollTop = index * rowHeight;
-      return this.$().scrollTop(scrollTop);
+      this.$().scrollTop(scrollTop);
+      return this.set('scrollTop', scrollTop);
     }
   });
 
   /*
-  Ember.Table.RowSelectionMixin = Ember.Mixin.create
+  Ember.Table.RowMultiSelectionMixin = Ember.Mixin.create
     # selection has to be a set
     selection:  Ember.computed ->
       selection = Ember.A()
@@ -885,10 +870,31 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
   Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.ScrollHandlerMixin, Ember.Table.RowSelectionMixin, {
     templateName: 'body-container',
     classNames: ['table-container', 'body-container'],
+    contentBinding: Ember.Binding.oneWay('controller.bodyContent'),
+    rowHeightBinding: Ember.Binding.oneWay('controller.rowHeight'),
     heightBinding: 'controller._bodyHeight',
     widthBinding: 'controller._width',
     scrollTopBinding: 'controller._tableScrollTop',
     scrollLeftBinding: 'controller._tableScrollLeft',
+    numItemsShowing: Ember.computed(function() {
+      return Math.floor(this.get('height') / this.get('rowHeight'));
+    }).property('height', 'rowHeight'),
+    startIndex: Ember.computed(function() {
+      var index, numContent, numViews, rowHeight, scrollTop;
+      numContent = this.get('content.length');
+      numViews = this.get('numItemsShowing');
+      rowHeight = this.get('rowHeight');
+      scrollTop = this.get('scrollTop');
+      index = Math.floor(scrollTop / rowHeight);
+      if (index + numViews >= numContent) {
+        index = numContent - numViews;
+      }
+      if (index < 0) {
+        return 0;
+      } else {
+        return index;
+      }
+    }).property('content.length', 'numItemsShowing', 'rowHeight', 'scrollTop'),
     onScroll: function(event) {
       this.set('scrollTop', event.target.scrollTop);
       return event.preventDefault();

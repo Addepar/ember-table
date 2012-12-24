@@ -166,10 +166,29 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin, Ember.Table.RowSelectionMixin,
   templateName:   'body-container'
   classNames:     ['table-container', 'body-container']
+  contentBinding:   Ember.Binding.oneWay 'controller.bodyContent'
+  rowHeightBinding: Ember.Binding.oneWay 'controller.rowHeight'
   heightBinding:  'controller._bodyHeight'
   widthBinding:   'controller._width'
   scrollTopBinding:'controller._tableScrollTop'
   scrollLeftBinding:'controller._tableScrollLeft'
+
+  numItemsShowing: Ember.computed ->
+    Math.floor @get('height') / @get('rowHeight')
+  .property 'height', 'rowHeight'
+
+  startIndex: Ember.computed ->
+    numContent  = @get 'content.length'
+    numViews    = @get 'numItemsShowing'
+    rowHeight   = @get 'rowHeight'
+    scrollTop   = @get 'scrollTop'
+    index = Math.floor(scrollTop / rowHeight)
+    # adjust start index so that end index doesn't exceed content length
+    if index + numViews >= numContent
+      index = numContent - numViews
+    if index < 0 then 0 else index
+  .property 'content.length', 'numItemsShowing', 'rowHeight', 'scrollTop'
+
   onScroll: (event) ->
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
