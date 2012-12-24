@@ -349,11 +349,6 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     hasHeader: true,
     hasFooter: true,
     tableRowClass: 'Ember.Table.Row',
-    _tableScrollTop: 0,
-    _tableScrollLeft: 0,
-    _width: null,
-    _height: null,
-    _scrollbarSize: null,
     bodyContent: Ember.computed(function() {
       var tableRowClass;
       tableRowClass = this.get('tableRowClass');
@@ -391,6 +386,11 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       return columns.slice(numFixedColumns, columns.get('length'));
     }).property('columns', 'numFixedColumns'),
     sortByColumn: Ember.K,
+    _tableScrollTop: 0,
+    _tableScrollLeft: 0,
+    _width: null,
+    _height: null,
+    _scrollbarSize: null,
     _fixedColumnsWidth: Ember.computed(function() {
       return this._getTotalWidth(this.get('fixedColumns'));
     }).property('fixedColumns.@each.columnWidth'),
@@ -441,10 +441,12 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       return containerHeight = this.get('_height') - this.get('headerHeight');
     }).property('_height', 'headerHeight'),
     _getTotalWidth: function(columns) {
+      var widths;
       if (!columns) {
         return 0;
       }
-      return _.reduce(columns.getEach('columnWidth'), (function(total, w) {
+      widths = columns.getEach('columnWidth') || [];
+      return widths.reduce((function(total, w) {
         return total + w;
       }), 0);
     }

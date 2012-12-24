@@ -59,14 +59,6 @@ Ember.Table.TableController = Ember.Controller.extend
 
   tableRowClass: 'Ember.Table.Row'
 
-  # NEW TABLE
-  _tableScrollTop:  0
-  _tableScrollLeft: 0
-
-  _width: null
-  _height: null
-  _scrollbarSize: null
-
   # Array of Ember.Table.Row
   bodyContent: Ember.computed ->
     tableRowClass = @get 'tableRowClass'
@@ -97,6 +89,14 @@ Ember.Table.TableController = Ember.Controller.extend
   .property 'columns', 'numFixedColumns'
 
   sortByColumn: Ember.K
+
+  # private variables
+  _tableScrollTop:  0
+  _tableScrollLeft: 0
+
+  _width: null
+  _height: null
+  _scrollbarSize: null
 
   # actual width of the fixed columns (frozen columns)
   _fixedColumnsWidth: Ember.computed ->
@@ -153,5 +153,5 @@ Ember.Table.TableController = Ember.Controller.extend
 
   _getTotalWidth: (columns) ->
     return 0 unless columns
-    _.reduce columns.getEach('columnWidth'), ((total, w) -> total + w), 0
-
+    widths = columns.getEach('columnWidth') or []
+    widths.reduce ((total, w) -> total + w), 0
