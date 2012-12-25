@@ -20,36 +20,8 @@
 
   App.TreeTableExample = Ember.Namespace.create();
 
-  App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend({
-    templateName: 'table-tree-cell',
-    styleBindings: ['indentation:padding-left'],
-    indentation: Ember.computed(function() {
-      var indentation;
-      indentation = this.get('row.indentation');
-      if (indentation) {
-        return indentation - 15;
-      } else {
-        return 0;
-      }
-    }).property('row.indentation'),
-    toggleCollapse: function(event) {
-      return this.get('row').toggleProperty('isCollapsed');
-    }
-  });
-
-  App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend({
-    templateName: 'table-header-tree-cell'
-  });
-
-  App.TreeTableExample.TableController = Ember.Table.TableController.extend({
-    numFixedColumns: 1,
-    isCollapsed: false,
+  App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create({
     data: null,
-    rowHeight: 30,
-    hasHeader: true,
-    hasFooter: true,
-    sortAscending: false,
-    sortColumn: null,
     bodyContent: Ember.computed(function() {
       var rows;
       rows = this.get('rows');
@@ -67,21 +39,6 @@
       }
       return rows.slice(0, 1);
     }).property('rows'),
-    groupingColumn: Ember.computed(function() {
-      var groupingFactors, name;
-      groupingFactors = this.get('data.grouping_factors');
-      name = groupingFactors.getEach('display_name').join(' ▸ ');
-      return Ember.Table.ColumnDefinition.create({
-        headerCellName: name,
-        columnWidth: 400,
-        isTreeColumn: true,
-        headerCellViewClass: 'App.TreeTableExample.HeaderTreeCell',
-        tableCellViewClass: 'App.TreeTableExample.TreeCell',
-        getCellContent: function(row) {
-          return row.group_value;
-        }
-      });
-    }).property('data.grouping_factors.@each'),
     columns: Ember.computed(function() {
       var columns, data, names;
       data = this.get('data');
@@ -109,6 +66,21 @@
       columns.unshiftObject(this.get('groupingColumn'));
       return columns;
     }).property('data.valueFactors.@each', 'groupingColumn'),
+    groupingColumn: Ember.computed(function() {
+      var groupingFactors, name;
+      groupingFactors = this.get('data.grouping_factors');
+      name = groupingFactors.getEach('display_name').join(' ▸ ');
+      return Ember.Table.ColumnDefinition.create({
+        headerCellName: name,
+        columnWidth: 400,
+        isTreeColumn: true,
+        headerCellViewClass: 'App.TreeTableExample.HeaderTreeCell',
+        tableCellViewClass: 'App.TreeTableExample.TreeCell',
+        getCellContent: function(row) {
+          return row.group_value;
+        }
+      });
+    }).property('data.grouping_factors.@each'),
     root: Ember.computed(function() {
       var data;
       data = this.get('data');
@@ -162,25 +134,6 @@
         return _this.flattenTree(node, child, rows);
       });
       return rows;
-    },
-    toggleTableCollapse: function(event) {
-      var children, isCollapsed;
-      this.toggleProperty('isCollapsed');
-      isCollapsed = this.get('isCollapsed');
-      children = this.get('root.children');
-      if (!(children && children.get('length') > 0)) {
-        return;
-      }
-      return children.forEach(function(child) {
-        return child.recursiveCollapse(isCollapsed);
-      });
-    },
-    sortByColumn: function(event) {
-      var column;
-      column = event.view.get('column');
-      column.toggleProperty('sortAscending');
-      this.set('sortColumn', column);
-      return this.set('sortAscending', column.get('sortAscending'));
     }
   });
 
@@ -215,6 +168,77 @@
         return child.recursiveCollapse(isCollapsed);
       });
     }
+  });
+
+  App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend({
+    templateName: 'table-tree-cell',
+    styleBindings: ['indentation:padding-left'],
+    indentation: Ember.computed(function() {
+      var indentation;
+      indentation = this.get('row.indentation');
+      if (indentation) {
+        return indentation - 15;
+      } else {
+        return 0;
+      }
+    }).property('row.indentation'),
+    toggleCollapse: function(event) {
+      return this.get('row').toggleProperty('isCollapsed');
+    }
+  });
+
+  App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend({
+    templateName: 'table-header-tree-cell'
+  });
+
+  App.TreeTableExample.TablesContainer = Ember.Table.TablesContainer.extend(Ember.Table.RowMultiSelectionMixin, {
+    leftArrowPressed: function(event) {
+      var sel;
+      sel = this.get('selection');
+      return sel.forEach(function(row) {
+        return row.set('isCollapsed', true);
+      });
+    },
+    rightArrowPressed: function(event) {
+      var sel;
+      sel = this.get('selection');
+      return sel.forEach(function(row) {
+        return row.set('isCollapsed', false);
+      });
+    }
+  });
+
+  App.TreeTableExample.TableController = Ember.Table.TableController.extend(App.TreeTableExample.TreeDataAdapter, {
+    numFixedColumns: 1,
+    isCollapsed: false,
+    rowHeight: 30,
+    hasHeader: true,
+    hasFooter: true,
+    sortAscending: false,
+    sortColumn: null,
+    selection: null,
+    toggleTableCollapse: function(event) {
+      var children, isCollapsed;
+      this.toggleProperty('isCollapsed');
+      isCollapsed = this.get('isCollapsed');
+      children = this.get('root.children');
+      if (!(children && children.get('length') > 0)) {
+        return;
+      }
+      return children.forEach(function(child) {
+        return child.recursiveCollapse(isCollapsed);
+      });
+    },
+    sortByColumn: function(event) {
+      var column;
+      column = event.view.get('column');
+      column.toggleProperty('sortAscending');
+      this.set('sortColumn', column);
+      return this.set('sortAscending', column.get('sortAscending'));
+    },
+    onSelectionsDidChange: Ember.observer(function() {
+      return console.log('selectionsDidChange');
+    }, 'selection.@each')
   });
 
 }).call(this);

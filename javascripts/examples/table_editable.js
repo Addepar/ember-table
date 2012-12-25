@@ -58,12 +58,15 @@
     }, 'cellContent')
   });
 
+  App.TableEditableExample.TablesContainer = Ember.Table.TablesContainer.extend(Ember.Table.RowSelectionMixin);
+
   App.TableEditableExample.TableController = Ember.Table.TableController.extend({
     hasHeader: true,
     hasFooter: false,
     numFixedColumns: 0,
     numRows: 100,
     rowHeight: 30,
+    selection: null,
     columns: Ember.computed(function() {
       var columnNames, columns, dateColumn, ratingColumn;
       columnNames = ['open', 'close'];
