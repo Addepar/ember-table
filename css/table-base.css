@@ -7,6 +7,7 @@
   height: 100%;
   width: 100%;
   position: relative;
+  outline: 0;
   z-index: 0;
   font-size: 0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -26,7 +27,6 @@
   overflow-y: auto;
   position: relative;
   background-color: #FFF;
-  outline: 0;
   z-index: 3;
 }
 .tables-container .table-container .table-fixed-wrapper,
