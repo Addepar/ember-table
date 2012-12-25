@@ -30,7 +30,7 @@
     hasHeader: true,
     hasFooter: false,
     numFixedColumns: 0,
-    numRows: 1000000,
+    numRows: 500000,
     rowHeight: 30,
     columns: Ember.computed(function() {
       var columnNames, columns, dateColumn, entryColumn;
