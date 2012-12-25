@@ -151,6 +151,22 @@ Ember.Table.TableController = Ember.Controller.extend
     containerHeight = @get('_height') - @get('headerHeight')
   .property('_height', 'headerHeight')
 
+  _numItemsShowing: Ember.computed ->
+    Math.floor @get('_bodyHeight') / @get('rowHeight')
+  .property '_bodyHeight', 'rowHeight'
+
+  _startIndex: Ember.computed ->
+    numContent  = @get 'bodyContent.length'
+    numViews    = @get '_numItemsShowing'
+    rowHeight   = @get 'rowHeight'
+    scrollTop   = @get '_tableScrollTop'
+    index = Math.floor(scrollTop / rowHeight)
+    # adjust start index so that end index doesn't exceed content length
+    if index + numViews >= numContent
+      index = numContent - numViews
+    if index < 0 then 0 else index
+  .property 'bodyContent.length', '_numItemsShowing', 'rowHeight', '_tableScrollTop'
+
   _getTotalWidth: (columns) ->
     return 0 unless columns
     widths = columns.getEach('columnWidth') or []

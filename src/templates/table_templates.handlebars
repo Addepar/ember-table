@@ -35,16 +35,18 @@
       contentBinding="controller.bodyContent"
       columnsBinding="controller.fixedColumns"
       widthBinding="controller._fixedBlockWidth"
-      scrollTopBinding="view.scrollTop"
-      startIndexBinding="view.startIndex"
+      numItemsShowingBinding="controller._numItemsShowing"
+      scrollTopBinding="controller._scrollTop"
+      startIndexBinding="controller._startIndex"
     }}
     {{view Ember.Table.LazyTableBlock classNames="right-table-block"
       contentBinding="controller.bodyContent"
       columnsBinding="controller.tableColumns"
       scrollLeftBinding="controller._tableScrollLeft"
       widthBinding="controller._tableBlockWidth"
-      scrollTopBinding="view.scrollTop"
-      startIndexBinding="view.startIndex"
+      numItemsShowingBinding="controller._numItemsShowing"
+      scrollTopBinding="controller._scrollTop"
+      startIndexBinding="controller._startIndex"
     }}
   </div>
 </script>

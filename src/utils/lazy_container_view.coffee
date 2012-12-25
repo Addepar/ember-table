@@ -1,5 +1,3 @@
-# TODO(Peter): Deprecating this. We are moving to Ebryn's ListView in the near
-# future
 Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
   classNames:     'lazy-list-container'
   styleBindings:  ['height']
@@ -11,21 +9,20 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
 
   init: ->
     @_super()
-    @onNumItemsInViewportDidChange()
+    @onNumChildViewsDidChange()
 
   height: Ember.computed ->
     @get('content.length') * @get('rowHeight')
   .property 'content.length', 'rowHeight'
 
-  # TODO(Peter): refactor this. shouldn't hardcode to depend on parent
-  numItemsInViewport: Ember.computed ->
-    @get('parentView.numItemsShowing') + 1
-  .property 'parentView.numItemsShowing'
+  numChildViews: Ember.computed ->
+    @get('numItemsShowing') + 1
+  .property 'numItemsShowing'
 
-  onNumItemsInViewportDidChange: Ember.observer ->
+  onNumChildViewsDidChange: Ember.observer ->
     # We are getting the class from a string e.g. "Ember.Table.Row"
     itemViewClass = Ember.get @get('itemViewClass')
-    newNumViews = @get('numItemsInViewport')
+    newNumViews = @get 'numChildViews'
     return unless itemViewClass and newNumViews
     childViews = @get 'childViews'
     oldNumViews = @get('childViews.length')
@@ -39,7 +36,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
       viewsToAdd = [0...numViewsToInsert].map ->
         itemViewClass.create()
       childViews.pushObjects viewsToAdd
-  , 'numItemsInViewport', 'itemViewClass'
+  , 'numChildViews', 'itemViewClass'
 
   # TODO(Peter): Consider making this a computed... binding logic will go
   # into the LazyItemMixin
@@ -47,8 +44,8 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     content   = @get 'content'
     views     = @get 'childViews'
     startIndex = @get 'startIndex'
-    numShownViews  = Math.min @get('childViews.length'), @get('content.length')
-    numChildViews = @get 'childViews.length'
+    numChildViews = @get 'numChildViews'
+    numShownViews  = Math.min numChildViews, @get('content.length')
     [0...numShownViews].forEach (i) =>
       itemIndex = startIndex + i
       childView = views.objectAt(itemIndex % numShownViews)
@@ -63,10 +60,8 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     [numShownViews...numChildViews].forEach (i) =>
       childView = views.objectAt(i)
       childView.set 'content', null
-  , 'numItemsInViewport', 'content', 'startIndex'
+  , 'content', 'numChildViews', 'startIndex'
 
-# TODO(Peter): Deprecating this. We are moving to Ebryn's ListViewItem in
-# the near future
 Ember.LazyItemView = Ember.View.extend Ember.StyleBindingsMixin,
   itemIndex: null
   prepareContent: Ember.K

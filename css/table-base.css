@@ -26,6 +26,7 @@
   overflow-y: auto;
   position: relative;
   background-color: #FFF;
+  outline: 0;
   z-index: 3;
 }
 .tables-container .table-container .table-fixed-wrapper,
@@ -45,10 +46,21 @@
 .tables-container .table-container .table-scrollable-wrapper .table-block .table-row {
   position: absolute;
   border-bottom: 1px solid #E1E1E1;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -o-user-select: none;
+  user-select: none;
 }
 .tables-container .table-container .table-fixed-wrapper .table-block .table-row > div,
 .tables-container .table-container .table-scrollable-wrapper .table-block .table-row > div {
   height: 100%;
+}
+.tables-container .table-container .table-fixed-wrapper .table-block .table-row.selected,
+.tables-container .table-container .table-scrollable-wrapper .table-block .table-row.selected {
+  background-color: #227ECB !important;
+  color: #FFF;
+  cursor: pointer;
 }
 .tables-container .table-container .table-fixed-wrapper .table-block .table-row .table-cell,
 .tables-container .table-container .table-scrollable-wrapper .table-block .table-row .table-cell {
@@ -96,10 +108,11 @@
 .tables-container .table-container .table-fixed-wrapper .lazy-list-container .table-row,
 .tables-container .table-container .table-scrollable-wrapper .lazy-list-container .table-row {
   position: absolute;
-}
-.tables-container .table-container .table-fixed-wrapper .right-table-block,
-.tables-container .table-container .table-scrollable-wrapper .right-table-block {
   background-color: #FFF;
+}
+.tables-container .table-container .table-fixed-wrapper .right-table-block .table-cell:last-child,
+.tables-container .table-container .table-scrollable-wrapper .right-table-block .table-cell:last-child {
+  border-right: none;
 }
 .tables-container .table-container .table-fixed-wrapper {
   overflow: hidden;

@@ -7,7 +7,6 @@ module.exports = function(grunt){
 
   function handleResult(from, dest, err, stdout, code, done) {
     if(err){
-      grunt.helper('growl', 'COFFEE COMPILING GOT ERROR', stdout);
       log.writeln(from + ': failed to compile to ' + dest + '.');
       log.writeln(stdout);
       done(false);
