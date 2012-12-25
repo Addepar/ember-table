@@ -46,9 +46,9 @@
   Ember.ResizeHandler = Ember.Mixin.create({
     resizeEndDelay: 200,
     resizing: false,
-    onResizeStart: Ember.required(Function),
-    onResizeEnd: Ember.required(Function),
-    onResize: Ember.required(Function),
+    onResizeStart: Ember.K,
+    onResizeEnd: Ember.K,
+    onResize: Ember.K,
     debounceResizeEnd: Ember.computed(function() {
       var _this = this;
       return _.debounce(function(event) {
@@ -481,6 +481,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     rowHeightBinding: Ember.Binding.oneWay('controller.rowHeight'),
     numItemsShowingBinding: Ember.Binding.oneWay('controller._numItemsShowing'),
     startIndexBinding: Ember.Binding.oneWay('controller._startIndex'),
+    scrollTopBinding: 'controller._tableScrollTop',
     selectionBinding: 'selections.lastObject',
     tabindex: -1,
     KEY_EVENTS: {
@@ -618,7 +619,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       var rowHeight, scrollTop;
       rowHeight = this.get('rowHeight');
       scrollTop = index * rowHeight;
-      this.$().scrollTop(scrollTop);
+      this.$('.body-container').scrollTop(scrollTop);
       return this.set('scrollTop', scrollTop);
     }
   });

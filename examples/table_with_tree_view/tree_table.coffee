@@ -10,33 +10,13 @@ Number.prototype.toPercent = ->
 
 App.TreeTableExample = Ember.Namespace.create()
 
-App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
-  templateName: 'table-tree-cell'
-  styleBindings: ['indentation:padding-left']
+################################################################################
+# Data transformation
+################################################################################
 
-  indentation: Ember.computed ->
-    indentation = @get 'row.indentation'
-    if indentation then indentation - 15 else 0
-  .property 'row.indentation'
-
-  toggleCollapse: (event) ->
-    @get('row').toggleProperty 'isCollapsed'
-
-App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
-  templateName: 'table-header-tree-cell'
-
-App.TreeTableExample.TableController = Ember.Table.TableController.extend
-  # overridding default properties
-  numFixedColumns: 1
-  isCollapsed: no
+# Convert tree data into columns, bodyContent and footerContent for the table
+App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
   data: null
-  rowHeight: 30
-  hasHeader: yes
-  hasFooter: yes
-
-  # custom properties
-  sortAscending: no
-  sortColumn: null
 
   bodyContent: Ember.computed ->
     rows = @get('rows')
@@ -51,18 +31,6 @@ App.TreeTableExample.TableController = Ember.Table.TableController.extend
     rows.slice(0, 1)
   .property 'rows'
 
-  groupingColumn: Ember.computed ->
-    groupingFactors = @get 'data.grouping_factors'
-    name = groupingFactors.getEach('display_name').join ' ▸ '
-    Ember.Table.ColumnDefinition.create
-      headerCellName: name
-      columnWidth: 400
-      isTreeColumn: yes
-      headerCellViewClass:  'App.TreeTableExample.HeaderTreeCell'
-      tableCellViewClass:   'App.TreeTableExample.TreeCell'
-      getCellContent: (row) -> row.group_value
-  .property 'data.grouping_factors.@each'
-
   columns: Ember.computed ->
     data = @get 'data'
     return unless data
@@ -76,10 +44,21 @@ App.TreeTableExample.TableController = Ember.Table.TableController.extend
           return object.value.toCurrency() if object.type is 'money'
           return object.value.toPercent()  if object.type is 'percent'
           "-"
-
     columns.unshiftObject @get('groupingColumn')
     columns
   .property 'data.valueFactors.@each', 'groupingColumn'
+
+  groupingColumn: Ember.computed ->
+    groupingFactors = @get 'data.grouping_factors'
+    name = groupingFactors.getEach('display_name').join ' ▸ '
+    Ember.Table.ColumnDefinition.create
+      headerCellName: name
+      columnWidth: 400
+      isTreeColumn: yes
+      headerCellViewClass:  'App.TreeTableExample.HeaderTreeCell'
+      tableCellViewClass:   'App.TreeTableExample.TreeCell'
+      getCellContent: (row) -> row.group_value
+  .property 'data.grouping_factors.@each'
 
   root: Ember.computed ->
     data = @get 'data'
@@ -117,19 +96,6 @@ App.TreeTableExample.TableController = Ember.Table.TableController.extend
       @flattenTree node, child, rows
     rows
 
-  toggleTableCollapse: (event) ->
-    @toggleProperty 'isCollapsed'
-    isCollapsed = @get 'isCollapsed'
-    children = @get('root.children')
-    return unless children and children.get('length') > 0
-    children.forEach (child) -> child.recursiveCollapse isCollapsed
-
-  sortByColumn: (event) ->
-    column = event.view.get('column')
-    column.toggleProperty 'sortAscending'
-    @set 'sortColumn', column
-    @set 'sortAscending', column.get('sortAscending')
-
 App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
   children: null
   parent:   null
@@ -157,3 +123,56 @@ App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
     @set 'isCollapsed', isCollapsed
     @get('children').forEach (child) ->
       child.recursiveCollapse isCollapsed
+
+################################################################################
+# Views
+################################################################################
+App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
+  templateName: 'table-tree-cell'
+  styleBindings: ['indentation:padding-left']
+
+  indentation: Ember.computed ->
+    indentation = @get 'row.indentation'
+    if indentation then indentation - 15 else 0
+  .property 'row.indentation'
+
+  toggleCollapse: (event) ->
+    @get('row').toggleProperty 'isCollapsed'
+
+App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
+  templateName: 'table-header-tree-cell'
+
+App.TreeTableExample.TablesContainer = Ember.Table.TablesContainer.extend
+  selectionsBinding: 'controller.selections'
+  init: ->
+    @_super()
+    Ember.Table.RowMultiSelectionMixin.apply this
+
+################################################################################
+# Controller
+################################################################################
+App.TreeTableExample.TableController =
+Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
+  # overridding default properties
+  numFixedColumns: 1
+  isCollapsed: no
+  rowHeight: 30
+  hasHeader: yes
+  hasFooter: yes
+
+  # custom properties
+  sortAscending: no
+  sortColumn: null
+
+  toggleTableCollapse: (event) ->
+    @toggleProperty 'isCollapsed'
+    isCollapsed = @get 'isCollapsed'
+    children = @get('root.children')
+    return unless children and children.get('length') > 0
+    children.forEach (child) -> child.recursiveCollapse isCollapsed
+
+  sortByColumn: (event) ->
+    column = event.view.get('column')
+    column.toggleProperty 'sortAscending'
+    @set 'sortColumn', column
+    @set 'sortAscending', column.get('sortAscending')

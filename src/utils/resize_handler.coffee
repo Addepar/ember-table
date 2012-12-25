@@ -7,11 +7,11 @@ Ember.ResizeHandler = Ember.Mixin.create
 
   # This hook allows you to do any preparation to the view prior to any DOM
   # resize
-  onResizeStart:  Ember.required(Function)
+  onResizeStart:  Ember.K
   # This hook allows you to clean up any sizing preparation
-  onResizeEnd:    Ember.required(Function)
+  onResizeEnd:    Ember.K
   # This hook allows you to listen to the window resizing
-  onResize:       Ember.required(Function)
+  onResize:       Ember.K
 
   # A debounced function to trigger the resizeEnd event. This is necessary
   # because we only want to fire resizeEnd if we have not received recent
