@@ -55,12 +55,14 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   widthBinding:   'controller._rowWidth'
   heightBinding:  'controller.rowHeight'
   mouseEnter: (event) ->
-    @set 'row.active', yes
+    row = @get 'row'
+    row.set 'active', yes if row
   mouseLeave: (event) ->
-    @set 'row.active', no
+    row = @get 'row'
+    row.set 'active', no if row
   teardownContent: ->
-    return unless @get 'row'
-    @set 'row.active', no
+    row = @get 'row'
+    row.set 'active', no if row
 
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'table-cell'

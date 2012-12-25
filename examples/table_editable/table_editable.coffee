@@ -43,6 +43,9 @@ App.TableEditableExample.RatingTableCell = Ember.Table.TableCell.extend
     @applyRating @get('cellContent')
   , 'cellContent'
 
+App.TableEditableExample.TablesContainer =
+Ember.Table.TablesContainer.extend Ember.Table.RowSelectionMixin
+
 App.TableEditableExample.TableController = Ember.Table.TableController.extend
   hasHeader: yes
   hasFooter: no

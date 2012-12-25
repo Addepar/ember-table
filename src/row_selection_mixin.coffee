@@ -1,3 +1,5 @@
+indexesOf = Ember.EnumerableUtils.indexesOf
+# TODO(Peter): use selection index
 Ember.Table.RowSelectionMixin = Ember.Mixin.create
   # we need to set tabindex so that div responds to key events
   attributeBindings: 'tabindex'
@@ -14,31 +16,40 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     39: 'rightArrowPressed'
     40: 'downArrowPressed'
 
-  selections:  Ember.computed ->
+  selection: Ember.computed (key, value) ->
+    content   = @get('content') or []
+    selection = @get 'selectionIndices'
+    value     = value or []
+    if arguments.length is 1 # getter
+      value = selection.map (index) -> content.objectAt(index)
+    else # setter
+      indices = indexesOf content, value
+      selection.addObjects indices
+    value
+  .property 'selectionIndices.[]'
+
+  selectionIndices:  Ember.computed ->
     set = new Ember.Set()
     set.addEnumerableObserver this
     set
   .property()
 
-  selection: Ember.computed ->
-    @get 'selections.firstObject'
-  .property 'selections.firstObject'
-
   enumerableDidChange: Ember.K
   enumerableWillChange: (set, removing, adding) ->
     # we are clearing the set
+    content = @get 'content'
     if 'number' is typeof removing
-      (set.forEach (row) -> row.set 'selected', no)
+      set.forEach (index) -> content.objectAt(index).set 'selected', no
     else if removing
-      removing.forEach (row) -> row.set 'selected', no
+      removing.forEach (index) -> content.objectAt(index).set 'selected', no
     if adding and 'number' isnt typeof adding
-      adding.forEach (row) -> row.set 'selected', yes
+      adding.forEach (index) -> content.objectAt(index).set 'selected', yes
 
   mouseDown: (event) ->
-    row   = @getRowForEvent event
-    sel   = @get 'selections'
-    return sel.clear() if sel.contains(row) and sel.length is 1
-    @setSelectionIndex @getRowIndexFast(row)
+    index = @getIndexForEvent event
+    sel   = @get 'selectionIndices'
+    return sel.clear() if sel.contains(index) and sel.length is 1
+    @setSelectionIndex index
 
   keyDown: (event) ->
     map   = @get 'KEY_EVENTS'
@@ -47,22 +58,19 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
 
   upArrowPressed: (event) ->
     event.preventDefault()
-    index = @getPrevRowIndex @get('selection')
+    sel = @get 'selectionIndices.lastObject'
+    index = if event.ctrlKey or event.metaKey then 0 else sel - 1
     @setSelectionIndex index
 
   downArrowPressed: (event) ->
     event.preventDefault()
-    index = @getNextRowIndex @get('selection')
+    sel   = @get 'selectionIndices.lastObject'
+    clen  = @get 'content.length'
+    index = if event.ctrlKey or event.metaKey then clen - 1 else sel + 1
     @setSelectionIndex index
 
-  getNextRowIndex: (row) ->
-    clen    = @get 'content.length'
-    index = @getRowIndexFast row
-    if index + 1 < clen then index + 1 else index
-
-  getPrevRowIndex: (row) ->
-    index = @getRowIndexFast row
-    if index > 0 then index - 1 else index
+  getIndexForEvent: (event) ->
+    @getRowIndexFast @getRowForEvent(event)
 
   getRowForEvent: (event) ->
     $rowView = $(event.target).parents('.table-row')
@@ -79,17 +87,20 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     if index < 0 then index else index + startIndex
 
   setSelectionIndex: (index) ->
-    return unless index >= 0
-    sel = @get 'selections'
-    @get('selections').clear()
+    return unless @ensureIndex index
+    sel = @get 'selectionIndices'
+    @get('selectionIndices').clear()
     @toggleSelectionIndex index
 
   toggleSelectionIndex: (index) ->
-    return unless index >= 0
-    row = @get('content').objectAt index
-    sel = @get 'selections'
-    if sel.contains row then sel.remove row else sel.add row
+    return unless @ensureIndex index
+    sel = @get 'selectionIndices'
+    if sel.contains index then sel.remove index else sel.add index
     @ensureVisible index
+
+  ensureIndex: (index) ->
+    clen = @get 'content.length'
+    index >= 0 and index < clen
 
   ensureVisible: (index) ->
     startIndex = @get 'startIndex'
@@ -119,20 +130,17 @@ Ember.Mixin.create Ember.Table.RowSelectionMixin,
     if adding and 'number' isnt typeof adding
       @expandSelectionRange adding
 
-  expandSelectionRange: (rows) ->
+  expandSelectionRange: (indices) ->
     range = @get 'selectionRange'
-    [min, max] = @_getIndicesRange rows
+    [min, max] = [_.min(indices), _.max(indices)]
     range = min: min, max: max if not range
     range = min: Math.min(range.min, min), max: Math.max(range.max, max)
     @set 'selectionRange', range
 
-  reduceSelectionRange: (rows) ->
-    range = @get 'selectionRange'
-    [min, max] = @_getIndicesRange rows
-    range = min: min, max: max if not range
-    # TODO: This could be really slow if selections is huge
-    if min is range.min or max is range.max
-      range = @_getIndicesRange @get('selections')
+  reduceSelectionRange: (indices) ->
+    indices = @get('selectionIndices')
+    [min, max] = [_.min(indices), _.max(indices)]
+    range = min: min, max: max
     @set 'selectionRange', range
 
   mouseDown: (event) ->
@@ -141,40 +149,34 @@ Ember.Mixin.create Ember.Table.RowSelectionMixin,
     if event.ctrlKey or event.metaKey
       @toggleSelectionIndex index
     else if event.shiftKey
-      @extendSelection index
+      range = @get 'selectionRange'
+      @setSelectionRange range.min, index, index if range
     else
       @_super event
 
   upArrowPressed: (event) ->
-    if event.ctrlKey or event.metaKey
-      @setSelectionIndex 0
-    else if event.shiftKey
+    event.preventDefault()
+    if event.shiftKey
       range = @get 'selectionRange'
-      @extendSelection range.min - 1 if range
+      index = range.min - 1
+      @setSelectionRange index, range.max, index if range
     else
       @_super event
 
   downArrowPressed: (event) ->
-    if event.ctrlKey or event.metaKey
-      @setSelectionIndex @get('content.length') - 1
-    else if event.shiftKey
+    event.preventDefault()
+    if event.shiftKey
       range = @get 'selectionRange'
-      @extendSelection range.max + 1 if range
+      index = range.max + 1
+      @setSelectionRange range.min, index, index if range
     else
       @_super event
 
-  extendSelection: (index) ->
-    range   = @get 'selectionRange'
-    content = @get 'content'
-    clen    = @get 'content.length'
-    return unless range or index < 0 or index >= clen
-    start = Math.min range.min, index
-    end   = Math.max range.max, index
-    sel   = @get 'selections'
-    sel.addObjects content.slice(start, end + 1)
-    @ensureVisible index
-
-  _getIndicesRange: (rows) ->
-    content = @get 'content'
-    indices = rows.map (item) -> content.indexOf item
-    [_.min(indices), _.max(indices)]
+  setSelectionRange: (start, end, visibleIndex) ->
+    return unless  @ensureIndex(start) and @ensureIndex(end)
+    beg = if start < end then start else end
+    end = if start < end then end else start
+    sel   = @get 'selectionIndices'
+    sel.clear()
+    sel.addObjects [beg..end]
+    @ensureVisible visibleIndex

@@ -143,7 +143,14 @@ App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
   templateName: 'table-header-tree-cell'
 
 App.TreeTableExample.TablesContainer =
-Ember.Table.TablesContainer.extend Ember.Table.RowMultiSelectionMixin
+Ember.Table.TablesContainer.extend Ember.Table.RowMultiSelectionMixin,
+  leftArrowPressed: (event) ->
+    sel = @get 'selection'
+    sel.forEach (row) -> row.set 'isCollapsed', yes
+
+  rightArrowPressed: (event) ->
+    sel = @get 'selection'
+    sel.forEach (row) -> row.set 'isCollapsed', no
 
 ################################################################################
 # Controller
@@ -174,8 +181,6 @@ Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
     @set 'sortColumn', column
     @set 'sortAscending', column.get('sortAscending')
 
-  ###
   onSelectionsDidChange: Ember.observer ->
     console.log 'selectionsDidChange'
-  , 'selections.@each'
-  ###
+  , 'selection.@each'
