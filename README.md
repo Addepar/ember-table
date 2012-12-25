@@ -9,14 +9,9 @@ http://addepar.github.com/ember-table/
 
 ### Take ember-table.js and modify it according to your liking with CSS.
 
-### Compliling with grunt
+### Installing and Compiling
     $ npm install -g grunt
-    $ grunt
-
-### Installing
     $ npm install
-
-### Compiling
     $ grunt w
 
 ### Viewing Examples
@@ -28,14 +23,12 @@ Hit up : `http://localhost:8000/examples`
 * jquery-ui
 * jquery.mousewheel.js
 * underscore.js
-* group-helper
 
 ## TODO
-* Bug fixes—we are aware that there are bugs. Please help us out by filing github issues!
+* Bug fixes—we are aware that there are bugs. Please help us out by filing github issues or submitting pull requests!
 * Better documentation
 * Unit tests
-* Row/cell single and multi selection
-* Keyboard navigation
+* Cell single and multi selection
 * Better column drag and drop
 * Support for colspan and rowspan
 * Further performance improvements
