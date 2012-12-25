@@ -142,11 +142,8 @@ App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
 App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
   templateName: 'table-header-tree-cell'
 
-App.TreeTableExample.TablesContainer = Ember.Table.TablesContainer.extend
-  selectionsBinding: 'controller.selections'
-  init: ->
-    @_super()
-    Ember.Table.RowMultiSelectionMixin.apply this
+App.TreeTableExample.TablesContainer =
+Ember.Table.TablesContainer.extend Ember.Table.RowMultiSelectionMixin
 
 ################################################################################
 # Controller
@@ -176,3 +173,9 @@ Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
     column.toggleProperty 'sortAscending'
     @set 'sortColumn', column
     @set 'sortAscending', column.get('sortAscending')
+
+  ###
+  onSelectionsDidChange: Ember.observer ->
+    console.log 'selectionsDidChange'
+  , 'selections.@each'
+  ###

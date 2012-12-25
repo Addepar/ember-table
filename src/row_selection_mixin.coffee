@@ -6,8 +6,6 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
   numItemsShowingBinding: Ember.Binding.oneWay 'controller._numItemsShowing'
   startIndexBinding:      Ember.Binding.oneWay 'controller._startIndex'
   scrollTopBinding:       'controller._tableScrollTop'
-  # TODO(Peter): file github issue on emberjs. There is a bug with firstObject
-  selectionBinding: 'selections.lastObject'
   tabindex: -1
 
   KEY_EVENTS:
@@ -21,6 +19,10 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     set.addEnumerableObserver this
     set
   .property()
+
+  selection: Ember.computed ->
+    @get 'selections.firstObject'
+  .property 'selections.firstObject'
 
   enumerableDidChange: Ember.K
   enumerableWillChange: (set, removing, adding) ->
@@ -101,8 +103,6 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
   scrollToRowIndex: (index) ->
     rowHeight = @get 'rowHeight'
     scrollTop = index * rowHeight
-    # TODO(Peter): This is hacky... fix it
-    @$('.body-container').scrollTop scrollTop
     @set 'scrollTop', scrollTop
 
 # Using MultiSelection for large data set might be slow for certain cases.
@@ -172,6 +172,7 @@ Ember.Mixin.create Ember.Table.RowSelectionMixin,
     end   = Math.max range.max, index
     sel   = @get 'selections'
     sel.addObjects content.slice(start, end + 1)
+    @ensureVisible index
 
   _getIndicesRange: (rows) ->
     content = @get 'content'

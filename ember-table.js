@@ -482,7 +482,6 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     numItemsShowingBinding: Ember.Binding.oneWay('controller._numItemsShowing'),
     startIndexBinding: Ember.Binding.oneWay('controller._startIndex'),
     scrollTopBinding: 'controller._tableScrollTop',
-    selectionBinding: 'selections.lastObject',
     tabindex: -1,
     KEY_EVENTS: {
       37: 'leftArrowPressed',
@@ -496,6 +495,9 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       set.addEnumerableObserver(this);
       return set;
     }).property(),
+    selection: Ember.computed(function() {
+      return this.get('selections.firstObject');
+    }).property('selections.firstObject'),
     enumerableDidChange: Ember.K,
     enumerableWillChange: function(set, removing, adding) {
       if ('number' === typeof removing) {
@@ -619,7 +621,6 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       var rowHeight, scrollTop;
       rowHeight = this.get('rowHeight');
       scrollTop = index * rowHeight;
-      this.$('.body-container').scrollTop(scrollTop);
       return this.set('scrollTop', scrollTop);
     }
   });
@@ -716,7 +717,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       start = Math.min(range.min, index);
       end = Math.max(range.max, index);
       sel = this.get('selections');
-      return sel.addObjects(content.slice(start, end + 1));
+      sel.addObjects(content.slice(start, end + 1));
+      return this.ensureVisible(index);
     },
     _getIndicesRange: function(rows) {
       var content, indices;
@@ -919,6 +921,9 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     widthBinding: 'controller._width',
     scrollTopBinding: 'controller._tableScrollTop',
     scrollLeftBinding: 'controller._tableScrollLeft',
+    onScrollTopDidChange: Ember.observer(function() {
+      return this.$().scrollTop(this.get('scrollTop'));
+    }, 'scrollTop'),
     onScroll: function(event) {
       this.set('scrollTop', event.target.scrollTop);
       return event.preventDefault();

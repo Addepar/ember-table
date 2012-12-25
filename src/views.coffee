@@ -170,6 +170,9 @@ Ember.ScrollHandlerMixin,
   widthBinding:   'controller._width'
   scrollTopBinding:'controller._tableScrollTop'
   scrollLeftBinding:'controller._tableScrollLeft'
+  onScrollTopDidChange: Ember.observer ->
+    @$().scrollTop @get('scrollTop')
+  , 'scrollTop'
   onScroll: (event) ->
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
