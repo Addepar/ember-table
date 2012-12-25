@@ -52,6 +52,7 @@ App.TableEditableExample.TableController = Ember.Table.TableController.extend
   numFixedColumns: 0
   numRows: 100
   rowHeight: 30
+  selection: null
 
   columns: Ember.computed ->
     columnNames = ['open', 'close']

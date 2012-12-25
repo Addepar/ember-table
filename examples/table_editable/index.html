@@ -72,7 +72,9 @@
     <script type="text/x-handlebars" data-template-name="application">
       <div class='presentation-container'>
         {{view App.TableEditableExample.TablesContainer
-          controllerBinding="tableController"}}
+          controllerBinding="tableController"
+          selectionBinding="tableController.selection"
+        }}
       </div>
     </script>
 
