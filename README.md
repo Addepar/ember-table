@@ -9,7 +9,7 @@ http://addepar.github.com/ember-table/
 
 ### Take ember-table.js and modify it according to your liking with CSS.
 
-### Installing and Compiling
+### Compile with grunt
     $ npm install -g grunt
     $ npm install
     $ grunt w
