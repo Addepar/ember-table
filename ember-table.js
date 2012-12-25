@@ -155,7 +155,7 @@
       return this.get('content.length') * this.get('rowHeight');
     }).property('content.length', 'rowHeight'),
     numChildViews: Ember.computed(function() {
-      return this.get('numItemsShowing') + 1;
+      return this.get('numItemsShowing') + 2;
     }).property('numItemsShowing'),
     onNumChildViewsDidChange: Ember.observer(function() {
       var childViews, itemViewClass, newNumViews, numViewsToInsert, oldNumViews, viewsToAdd, viewsToRemove, _i, _results;
