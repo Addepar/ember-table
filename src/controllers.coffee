@@ -79,14 +79,14 @@ Ember.Table.TableController = Ember.Controller.extend
     return Ember.A() unless columns
     numFixedColumns = @get('numFixedColumns') or 0
     columns.slice(0, numFixedColumns)
-  .property 'columns', 'numFixedColumns'
+  .property 'columns.@each', 'numFixedColumns'
 
   tableColumns: Ember.computed ->
     columns         = @get 'columns'
     return Ember.A() unless columns
     numFixedColumns = @get('numFixedColumns') or 0
     columns.slice(numFixedColumns, columns.get('length'))
-  .property 'columns', 'numFixedColumns'
+  .property 'columns.@each', 'numFixedColumns'
 
   sortByColumn: Ember.K
 

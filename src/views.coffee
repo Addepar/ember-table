@@ -23,8 +23,8 @@ Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
 # This should be a mixin
 Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
   classNames:     ['table-block']
-  itemViewClass:  'Ember.Table.TableRow'
   styleBindings:  ['width', 'height']
+  itemViewClass:  'Ember.Table.TableRow'
   columns: null
   content: null
   scrollLeft: null
@@ -34,8 +34,8 @@ Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
 
 Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
   classNames:       ['table-block']
-  itemViewClass:    'Ember.Table.TableRow'
   rowHeightBinding: 'controller.rowHeight'
+  itemViewClass:    'Ember.Table.TableRow'
   styleBindings:    ['width']
   columns:    null
   content:    null
