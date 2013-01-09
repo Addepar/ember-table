@@ -375,7 +375,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       }
       numFixedColumns = this.get('numFixedColumns') || 0;
       return columns.slice(0, numFixedColumns);
-    }).property('columns', 'numFixedColumns'),
+    }).property('columns.@each', 'numFixedColumns'),
     tableColumns: Ember.computed(function() {
       var columns, numFixedColumns;
       columns = this.get('columns');
@@ -384,7 +384,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       }
       numFixedColumns = this.get('numFixedColumns') || 0;
       return columns.slice(numFixedColumns, columns.get('length'));
-    }).property('columns', 'numFixedColumns'),
+    }).property('columns.@each', 'numFixedColumns'),
     sortByColumn: Ember.K,
     _tableScrollTop: 0,
     _tableScrollLeft: 0,
@@ -764,8 +764,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
 
   Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.StyleBindingsMixin, {
     classNames: ['table-block'],
-    itemViewClass: 'Ember.Table.TableRow',
     styleBindings: ['width', 'height'],
+    itemViewClass: 'Ember.Table.TableRow',
     columns: null,
     content: null,
     scrollLeft: null,
@@ -776,8 +776,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
 
   Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend({
     classNames: ['table-block'],
-    itemViewClass: 'Ember.Table.TableRow',
     rowHeightBinding: 'controller.rowHeight',
+    itemViewClass: 'Ember.Table.TableRow',
     styleBindings: ['width'],
     columns: null,
     content: null,
