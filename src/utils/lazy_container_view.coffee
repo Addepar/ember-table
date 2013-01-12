@@ -41,26 +41,26 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
   # TODO(Peter): Consider making this a computed... binding logic will go
   # into the LazyItemMixin
   viewportDidChange: Ember.observer ->
-    content   = @get 'content'
-    views     = @get 'childViews'
+    content   = @get('content') or []
+    views     = @get('childViews') or []
     startIndex = @get 'startIndex'
-    numChildViews = @get 'numChildViews'
-    numShownViews  = Math.min numChildViews, @get('content.length')
-    [0...numShownViews].forEach (i) =>
+    numShownViews  = Math.min views.get('length'), content.get('length')
+    views.forEach (childView, i) ->
+      # for all views that we are not using... just remove content
+      # this makes them invisble
+      if i >= numShownViews
+        childView = views.objectAt(i)
+        childView.set 'content', null
+        return
       itemIndex = startIndex + i
       childView = views.objectAt(itemIndex % numShownViews)
-      item = @get('content').objectAt(itemIndex)
+      item = content.objectAt(itemIndex)
       if item isnt childView.get('content')
         childView.teardownContent()
         childView.set 'itemIndex', itemIndex
         childView.set 'content', item
         childView.prepareContent()
-    # for all views that we are not using... just remove content
-    # this makes them invisble
-    [numShownViews...numChildViews].forEach (i) =>
-      childView = views.objectAt(i)
-      childView.set 'content', null
-  , 'content', 'numChildViews', 'startIndex'
+  , 'content', 'childViews.length', 'startIndex'
 
 Ember.LazyItemView = Ember.View.extend Ember.StyleBindingsMixin,
   itemIndex: null

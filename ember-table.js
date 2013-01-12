@@ -182,22 +182,21 @@
       }
     }, 'numChildViews', 'itemViewClass'),
     viewportDidChange: Ember.observer(function() {
-      var content, numChildViews, numShownViews, startIndex, views, _i, _j, _results, _results1,
-        _this = this;
-      content = this.get('content');
-      views = this.get('childViews');
+      var content, numShownViews, startIndex, views;
+      content = this.get('content') || [];
+      views = this.get('childViews') || [];
       startIndex = this.get('startIndex');
-      numChildViews = this.get('numChildViews');
-      numShownViews = Math.min(numChildViews, this.get('content.length'));
-      (function() {
-        _results = [];
-        for (var _i = 0; 0 <= numShownViews ? _i < numShownViews : _i > numShownViews; 0 <= numShownViews ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this).forEach(function(i) {
-        var childView, item, itemIndex;
+      numShownViews = Math.min(views.get('length'), content.get('length'));
+      return views.forEach(function(childView, i) {
+        var item, itemIndex;
+        if (i >= numShownViews) {
+          childView = views.objectAt(i);
+          childView.set('content', null);
+          return;
+        }
         itemIndex = startIndex + i;
         childView = views.objectAt(itemIndex % numShownViews);
-        item = _this.get('content').objectAt(itemIndex);
+        item = content.objectAt(itemIndex);
         if (item !== childView.get('content')) {
           childView.teardownContent();
           childView.set('itemIndex', itemIndex);
@@ -205,16 +204,7 @@
           return childView.prepareContent();
         }
       });
-      return (function() {
-        _results1 = [];
-        for (var _j = numShownViews; numShownViews <= numChildViews ? _j < numChildViews : _j > numChildViews; numShownViews <= numChildViews ? _j++ : _j--){ _results1.push(_j); }
-        return _results1;
-      }).apply(this).forEach(function(i) {
-        var childView;
-        childView = views.objectAt(i);
-        return childView.set('content', null);
-      });
-    }, 'content', 'numChildViews', 'startIndex')
+    }, 'content', 'childViews.length', 'startIndex')
   });
 
   Ember.LazyItemView = Ember.View.extend(Ember.StyleBindingsMixin, {
