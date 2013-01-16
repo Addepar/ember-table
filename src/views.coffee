@@ -110,7 +110,7 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
     placeholder: 'ui-state-highlight'
     scroll: true
     tolerance: 'pointer'
-    update: _.bind(@onColumnSort, this)
+    update: jQuery.proxy(@onColumnSort, this)
   .property()
 
   didInsertElement: ->
@@ -139,7 +139,7 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
     minHeight: 40
     minWidth: 100
     maxWidth: 500
-    resize: _.bind(@onColumnResize, this)
+    resize: jQuery.proxy(@onColumnResize, this)
   .property()
 
   didInsertElement: ->

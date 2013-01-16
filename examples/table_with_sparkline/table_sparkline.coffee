@@ -26,8 +26,8 @@ App.TableSparklineExample.SparkCellView = Ember.Table.TableCell.extend
     h     = @get 'height'
     w     = @get 'width'
     p     = 2
-    min   = _.min data
-    max   = _.max data
+    min   = Math.min.apply(null, data)
+    max   = Math.max.apply(null, data)
     len   = data.length
     fill  = d3.scale.category10()
     xscale= d3.scale.linear().domain([0, len]).range([p, w - p])
@@ -84,6 +84,6 @@ App.TableSparklineExample.TableController = Ember.Table.TableController.extend
       timeseries: data
       open:  data[0]
       close: data[99]
-      low:   _.min(data)
-      high:  _.max(data)
+      low:   Math.min.apply(null, data)
+      high:  Math.max.apply(null, data)
    .property 'numRows'
