@@ -65,10 +65,9 @@
         if (typeof this.onResizeStart === "function") {
           this.onResizeStart(event);
         }
-      } else {
-        if (typeof this.onResize === "function") {
-          this.onResize(event);
-        }
+      }
+      if (typeof this.onResize === "function") {
+        this.onResize(event);
       }
       return this.get('debounceResizeEnd')(event);
     },
