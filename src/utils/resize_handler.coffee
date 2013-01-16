@@ -34,8 +34,7 @@ Ember.ResizeHandler = Ember.Mixin.create
     if not @get 'resizing'
       @set 'resizing', yes
       @onResizeStart?(event)
-    else
-      @onResize?(event)
+    @onResize?(event)
     @get('debounceResizeEnd')(event)
 
   didInsertElement: ->
