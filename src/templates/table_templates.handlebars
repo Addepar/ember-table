@@ -15,7 +15,7 @@
 
 <script type="text/x-handlebars" data-template-name="header-container">
   <div class='table-fixed-wrapper'>
-    {{view Ember.Table.HeaderBlock
+    {{view Ember.Table.HeaderBlock classNames="left-table-block"
       columnsBinding="controller.fixedColumns"
       widthBinding="controller._fixedBlockWidth"
       heightBinding="controller.headerHeight"
@@ -31,7 +31,7 @@
 
 <script type="text/x-handlebars" data-template-name="body-container">
   <div class='table-scrollable-wrapper'>
-    {{view Ember.Table.LazyTableBlock
+    {{view Ember.Table.LazyTableBlock classNames="left-table-block"
       contentBinding="controller.bodyContent"
       columnsBinding="controller.fixedColumns"
       widthBinding="controller._fixedBlockWidth"
@@ -53,7 +53,7 @@
 
 <script type="text/x-handlebars" data-template-name="footer-container">
   <div class='table-fixed-wrapper'>
-    {{view Ember.Table.TableBlock
+    {{view Ember.Table.TableBlock classNames="left-table-block"
       contentBinding="controller.footerContent"
       columnsBinding="controller.fixedColumns"
       widthBinding="controller._fixedBlockWidth"
