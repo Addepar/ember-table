@@ -83,16 +83,17 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
 
   createTree: (parent, node) ->
     row = App.TreeTableExample.TreeTableRow.create content: node
-    children = _.map node.children, (child) =>
+    children = (node.children || []).map (child) =>
       @createTree row, child
-    children.sort _.bind(@orderBy, this)
+    children.sort jQuery.proxy(@orderBy, this)
     row.set 'parent', parent
     row.set 'children', children
     row
 
   flattenTree: (parent, node, rows) ->
     rows.pushObject node
-    _.each node.children, (child) =>
+
+    (node.children || []).forEach (child) =>
       @flattenTree node, child, rows
     rows
 

@@ -18,8 +18,8 @@ Ember.StyleBindingsMixin = Ember.Mixin.create
     styleBindings.forEach (binding) ->
       [property, style] = binding.split(':')
       lookup[(style or property)] = property
-    styles     = _.keys lookup
-    properties = _.values lookup
+    styles     = Ember.keys(lookup)
+    properties = styles.map (style) -> lookup[style]
 
     # create computed property
     styleComputed = Ember.computed =>

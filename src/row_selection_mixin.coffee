@@ -132,14 +132,14 @@ Ember.Mixin.create Ember.Table.RowSelectionMixin,
 
   expandSelectionRange: (indices) ->
     range = @get 'selectionRange'
-    [min, max] = [_.min(indices), _.max(indices)]
+    [min, max] = [Math.min.apply(null, indices), Math.max.apply(null, indices)]
     range = min: min, max: max if not range
     range = min: Math.min(range.min, min), max: Math.max(range.max, max)
     @set 'selectionRange', range
 
   reduceSelectionRange: (indices) ->
     indices = @get('selectionIndices')
-    [min, max] = [_.min(indices), _.max(indices)]
+    [min, max] = [Math.min.apply(null, indices), Math.max.apply(null, indices)]
     range = min: min, max: max
     @set 'selectionRange', range
 
