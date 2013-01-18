@@ -46,10 +46,3 @@ App.ApplicationController = Ember.Controller.extend
   tableController : Ember.computed ->
     App.SimpleTableController.create()
   .property()
-
-App.Router = Ember.Router.extend
-  root: Ember.Route.extend
-    index: Ember.Route.extend
-      route: '/'
-
-App.initialize()

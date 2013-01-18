@@ -10,10 +10,3 @@ App.ApplicationController = Ember.Controller.extend
   tableController : Ember.computed ->
     Ember.get('App.TableEditableExample.TableController').create()
   .property()
-
-App.Router = Ember.Router.extend
-  root: Ember.Route.extend
-    index: Ember.Route.extend
-      route: '/'
-
-App.initialize()

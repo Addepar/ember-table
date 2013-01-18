@@ -61,6 +61,7 @@ App.TableEditableExample.TableController = Ember.Table.TableController.extend
       headerCellName: 'Date'
       tableCellViewClass: 'App.TableEditableExample.DatePickerTableCell'
       getCellContent: (row) -> row['date'].toString('yyyy-MM-dd')
+      setCellContent: (row, value) -> row['date'] = value
     ratingColumn = Ember.Table.ColumnDefinition.create
       columnWidth: 150
       headerCellName: 'Analyst Rating'
@@ -74,6 +75,7 @@ App.TableEditableExample.TableController = Ember.Table.TableController.extend
         headerCellName: name
         tableCellViewClass: 'App.TableEditableExample.EditableTableCell'
         getCellContent: (row) -> row[key].toFixed(2)
+        setCellContent: (row, value) -> row[key] = +value
     columns.unshift(ratingColumn)
     columns.unshift(dateColumn)
     columns
