@@ -18,12 +18,13 @@ App.TreeTableExample = Ember.Namespace.create()
 App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
   data: null
 
+  # OPTIMIZATION HACK
   bodyContent: Ember.computed ->
     rows = @get('rows')
     return Ember.A() unless rows
     rows = rows.slice(1, rows.get('length'))
     rows.filterProperty('isShowing')
-  .property 'rows.@each.isCollapsed'
+  .property 'rows'
 
   footerContent: Ember.computed ->
     rows = @get('rows')
@@ -96,9 +97,6 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
     (node.children || []).forEach (child) =>
       @flattenTree node, child, rows
     rows
-
-  toggleCollapse: (row) ->
-    row.toggleProperty 'isCollapsed'
 
 App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
   children: null
@@ -176,6 +174,11 @@ Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
     children = @get('root.children')
     return unless children and children.get('length') > 0
     children.forEach (child) -> child.recursiveCollapse isCollapsed
+    @notifyPropertyChange 'rows'
+
+  toggleCollapse: (row) ->
+    row.toggleProperty 'isCollapsed'
+    Ember.run.next this, -> @notifyPropertyChange 'rows'
 
   sortByColumn: (event) ->
     column = event.view.get('column')

@@ -32,8 +32,6 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
     return row if row
     tableRowClass = @get 'tableRowClass'
     item  = @get('content').objectAt(idx)
-    if not item
-      debugger
     row   = tableRowClass.create content: item
     @get('rowContent')[idx] = row
     row
