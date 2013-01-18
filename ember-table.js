@@ -325,7 +325,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     setCellContent: Ember.K
   });
 
-  Ember.Table.Row = Ember.ObjectController.extend({
+  Ember.Table.Row = Ember.Object.extend({
     content: null,
     isHovering: false,
     isSelected: false,

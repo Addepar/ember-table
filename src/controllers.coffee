@@ -16,7 +16,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
 ################################################################################
 # Table Row
 ################################################################################
-Ember.Table.Row = Ember.ObjectController.extend
+Ember.Table.Row = Ember.Object.extend
   content:  null
   isHovering: no
   isSelected: no
