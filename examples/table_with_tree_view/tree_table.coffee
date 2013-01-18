@@ -96,6 +96,9 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
       @flattenTree node, child, rows
     rows
 
+  toggleCollapse: (row) ->
+    row.toggleProperty 'isCollapsed'
+
 App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
   children: null
   parent:   null
@@ -135,9 +138,6 @@ App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
     indentation = @get 'row.indentation'
     if indentation then indentation - 15 else 0
   .property 'row.indentation'
-
-  toggleCollapse: (event) ->
-    @get('row').toggleProperty 'isCollapsed'
 
 App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
   templateName: 'table-header-tree-cell'

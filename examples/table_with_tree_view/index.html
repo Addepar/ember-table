@@ -30,7 +30,7 @@
     <script type="text/x-handlebars" data-template-name="table-tree-cell">
       <span {{bindAttr class="view.row.isLeaf::toggle
         view.row.isCollapsed:expand:collapse"}}
-        {{action toggleCollapse}}>
+        {{action toggleCollapse view.row}}>
         <i class="toggle-icon icon-chevron-down"></i>
       </span>
       {{view.cellContent}}
