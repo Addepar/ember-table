@@ -16,7 +16,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
   .property 'content.length', 'rowHeight'
 
   numChildViews: Ember.computed ->
-    @get('numItemsShowing') + 1
+    @get('numItemsShowing') + 2
   .property 'numItemsShowing'
 
   onNumChildViewsDidChange: Ember.observer ->
@@ -43,8 +43,14 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
   viewportDidChange: Ember.observer ->
     content   = @get('content') or []
     views     = @get('childViews') or []
+    clength   = content.get('length')
+    numShownViews  = Math.min views.get('length'), clength
     startIndex = @get 'startIndex'
-    numShownViews  = Math.min views.get('length'), content.get('length')
+    # this is a necessary check otherwise we are trying to access an object
+    # that doesn't exists
+    if startIndex + numShownViews >= clength
+      startIndex = clength - numShownViews
+    if startIndex < 0 then 0 else startIndex
     views.forEach (childView, i) ->
       # for all views that we are not using... just remove content
       # this makes them invisble

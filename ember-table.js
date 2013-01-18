@@ -180,7 +180,7 @@
       return this.get('content.length') * this.get('rowHeight');
     }).property('content.length', 'rowHeight'),
     numChildViews: Ember.computed(function() {
-      return this.get('numItemsShowing') + 1;
+      return this.get('numItemsShowing') + 2;
     }).property('numItemsShowing'),
     onNumChildViewsDidChange: Ember.observer(function() {
       var childViews, itemViewClass, newNumViews, numViewsToInsert, oldNumViews, viewsToAdd, viewsToRemove, _i, _results;
@@ -207,11 +207,22 @@
       }
     }, 'numChildViews', 'itemViewClass'),
     viewportDidChange: Ember.observer(function() {
-      var content, numShownViews, startIndex, views;
+      var clength, content, numShownViews, startIndex, views;
       content = this.get('content') || [];
       views = this.get('childViews') || [];
+      clength = content.get('length');
+      numShownViews = Math.min(views.get('length'), clength);
       startIndex = this.get('startIndex');
-      numShownViews = Math.min(views.get('length'), content.get('length'));
+      if (startIndex + numShownViews >= clength) {
+        startIndex = clength - numShownViews;
+      }
+      if (startIndex < 0) {
+        0;
+
+      } else {
+        startIndex;
+
+      }
       return views.forEach(function(childView, i) {
         var item, itemIndex;
         if (i >= numShownViews) {
