@@ -17,7 +17,7 @@ Ember.ResizeHandler = Ember.Mixin.create
   # because we only want to fire resizeEnd if we have not received recent
   # resize event
   debounceResizeEnd: Ember.computed ->
-    _.debounce (event) =>
+    debounce (event) =>
       @set 'resizing', no
       @onResizeEnd?(event)
     , @get('resizeEndDelay')
@@ -25,7 +25,7 @@ Ember.ResizeHandler = Ember.Mixin.create
 
   # A resize handler that binds handleWindowResize to this view
   resizeHandler: Ember.computed ->
-    _.bind @handleWindowResize, @
+    jQuery.proxy(@handleWindowResize, @)
   .property()
 
   # Browser only allows us to listen to windows resize. This function let us
@@ -44,3 +44,20 @@ Ember.ResizeHandler = Ember.Mixin.create
   willDestroy: ->
     $(window).unbind 'resize', @get("resizeHandler")
     @_super()
+
+# Copied from underscore.js
+debounce = (func, wait, immediate) ->
+  timeout = result = null
+  return ->
+    context = this
+    args = arguments
+    later = ->
+      timeout = null
+      if !immediate
+        result = func.apply(context, args)
+    callNow = immediate && !timeout
+    clearTimeout(timeout)
+    timeout = setTimeout(later, wait)
+    if callNow
+      result = func.apply(context, args)
+    return result
