@@ -16,7 +16,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
 ################################################################################
 # Table Row
 ################################################################################
-Ember.Table.Row = Ember.Object.extend
+Ember.Table.Row = Ember.ObjectController.extend
   content:  null
   isHovering: no
   isSelected: no
@@ -25,16 +25,15 @@ Ember.Table.Row = Ember.Object.extend
 Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null
   content: null
-
-  rowContent: Ember.computed ->
-    Ember.A()
-  .property()
+  rowContent: Ember.computed( -> []).property()
 
   objectAt: (idx) ->
     row = @get('rowContent')[idx]
     return row if row
     tableRowClass = @get 'tableRowClass'
     item  = @get('content').objectAt(idx)
+    if not item
+      debugger
     row   = tableRowClass.create content: item
     @get('rowContent')[idx] = row
     row
