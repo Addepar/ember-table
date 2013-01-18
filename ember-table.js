@@ -181,7 +181,7 @@
       return this.get('content.length') * this.get('rowHeight');
     }).property('content.length', 'rowHeight'),
     numChildViews: Ember.computed(function() {
-      return this.get('numItemsShowing') + 2;
+      return this.get('numItemsShowing') + 1;
     }).property('numItemsShowing'),
     onNumChildViewsDidChange: Ember.observer(function() {
       var childViews, itemViewClass, newNumViews, numViewsToInsert, oldNumViews, viewsToAdd, viewsToRemove, _i, _results;
@@ -336,7 +336,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     setCellContent: Ember.K
   });
 
-  Ember.Table.Row = Ember.Object.extend({
+  Ember.Table.Row = Ember.ObjectController.extend({
     content: null,
     isHovering: false,
     isSelected: false,
@@ -347,7 +347,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     tableRowClass: null,
     content: null,
     rowContent: Ember.computed(function() {
-      return Ember.A();
+      return [];
     }).property(),
     objectAt: function(idx) {
       var item, row, tableRowClass;
@@ -357,6 +357,9 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       }
       tableRowClass = this.get('tableRowClass');
       item = this.get('content').objectAt(idx);
+      if (!item) {
+        debugger;
+      }
       row = tableRowClass.create({
         content: item
       });
