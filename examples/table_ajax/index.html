@@ -26,7 +26,11 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="img-table-cell">
-      <img width="30" {{bindAttr src="view.cellContent"}}></img>
+      {{#if view.rowContent.isLoaded}}
+        <img width="30" {{bindAttr src="view.cellContent"}}></img>
+      {{else}}
+        <img src="../../img/loading.gif" style="padding: 8px;"></img>
+      {{/if}}
     </script>
 
     <script src="../../lib/jquery-1.8.0.min.js"></script>
