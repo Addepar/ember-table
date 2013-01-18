@@ -36,10 +36,3 @@ App.ApplicationController = Ember.Controller.extend
     controller.set 'data', window.treedata
     controller
   .property()
-
-App.Router = Ember.Router.extend
-  root: Ember.Route.extend
-    index: Ember.Route.extend
-      route: '/'
-
-App.initialize()

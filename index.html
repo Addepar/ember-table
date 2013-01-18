@@ -221,7 +221,11 @@
 </script>
 
 <script type="text/x-handlebars" data-template-name="img-table-cell">
-  <img width="30" {{bindAttr src="view.cellContent"}}></img>
+  {{#if view.rowContent.isLoaded}}
+    <img width="30" {{bindAttr src="view.cellContent"}}></img>
+  {{else}}
+    <img src="img/loading.gif" style="padding: 8px;"></img>
+  {{/if}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="bar-cell">
@@ -238,7 +242,7 @@
 
 <script type="text/x-handlebars" data-template-name="rating-table-cell">
   <div class="rating">
-    <span/><span/><span/><span/><span/>
+    <span></span><span></span><span></span><span></span><span></span>
   </div>
 </script>
 

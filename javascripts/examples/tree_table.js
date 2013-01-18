@@ -119,10 +119,10 @@
       row = App.TreeTableExample.TreeTableRow.create({
         content: node
       });
-      children = _.map(node.children, function(child) {
+      children = (node.children || []).map(function(child) {
         return _this.createTree(row, child);
       });
-      children.sort(_.bind(this.orderBy, this));
+      children.sort(jQuery.proxy(this.orderBy, this));
       row.set('parent', parent);
       row.set('children', children);
       return row;
@@ -130,10 +130,13 @@
     flattenTree: function(parent, node, rows) {
       var _this = this;
       rows.pushObject(node);
-      _.each(node.children, function(child) {
+      (node.children || []).forEach(function(child) {
         return _this.flattenTree(node, child, rows);
       });
       return rows;
+    },
+    toggleCollapse: function(row) {
+      return row.toggleProperty('isCollapsed');
     }
   });
 
@@ -181,10 +184,7 @@
       } else {
         return 0;
       }
-    }).property('row.indentation'),
-    toggleCollapse: function(event) {
-      return this.get('row').toggleProperty('isCollapsed');
-    }
+    }).property('row.indentation')
   });
 
   App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend({

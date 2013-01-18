@@ -76,6 +76,9 @@
         tableCellViewClass: 'App.TableEditableExample.DatePickerTableCell',
         getCellContent: function(row) {
           return row['date'].toString('yyyy-MM-dd');
+        },
+        setCellContent: function(row, value) {
+          return row['date'] = value;
         }
       });
       ratingColumn = Ember.Table.ColumnDefinition.create({
@@ -98,6 +101,9 @@
           tableCellViewClass: 'App.TableEditableExample.EditableTableCell',
           getCellContent: function(row) {
             return row[key].toFixed(2);
+          },
+          setCellContent: function(row, value) {
+            return row[key] = +value;
           }
         });
       });
