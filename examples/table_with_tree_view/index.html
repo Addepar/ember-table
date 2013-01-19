@@ -41,8 +41,8 @@
           {{action toggleTableCollapse target="controller"}}>
         <i class="icon-chevron-down icon-white"></i>
       </span>
-      <span class='column-title' {{action sortByColumn target="controller"}}>
-        {{view.content.headerCellName}}
+      <span class='column-title' {{action sortByColumn view.column}}>
+        {{view.column.headerCellName}}
       </span>
     </script>
 

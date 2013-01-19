@@ -180,8 +180,7 @@ Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
     row.toggleProperty 'isCollapsed'
     Ember.run.next this, -> @notifyPropertyChange 'rows'
 
-  sortByColumn: (event) ->
-    column = event.view.get('column')
+  sortByColumn: (column) ->
     column.toggleProperty 'sortAscending'
     @set 'sortColumn', column
     @set 'sortAscending', column.get('sortAscending')
