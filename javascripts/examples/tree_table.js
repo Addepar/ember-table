@@ -30,7 +30,7 @@
       }
       rows = rows.slice(1, rows.get('length'));
       return rows.filterProperty('isShowing');
-    }).property('rows.@each.isCollapsed'),
+    }).property('rows'),
     footerContent: Ember.computed(function() {
       var rows;
       rows = this.get('rows');
@@ -134,9 +134,6 @@
         return _this.flattenTree(node, child, rows);
       });
       return rows;
-    },
-    toggleCollapse: function(row) {
-      return row.toggleProperty('isCollapsed');
     }
   });
 
@@ -225,13 +222,18 @@
       if (!(children && children.get('length') > 0)) {
         return;
       }
-      return children.forEach(function(child) {
+      children.forEach(function(child) {
         return child.recursiveCollapse(isCollapsed);
       });
+      return this.notifyPropertyChange('rows');
     },
-    sortByColumn: function(event) {
-      var column;
-      column = event.view.get('column');
+    toggleCollapse: function(row) {
+      row.toggleProperty('isCollapsed');
+      return Ember.run.next(this, function() {
+        return this.notifyPropertyChange('rows');
+      });
+    },
+    sortByColumn: function(column) {
       column.toggleProperty('sortAscending');
       this.set('sortColumn', column);
       return this.set('sortAscending', column.get('sortAscending'));

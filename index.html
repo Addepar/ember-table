@@ -249,19 +249,19 @@
 <script type="text/x-handlebars" data-template-name="table-tree-cell">
   <span {{bindAttr class="view.row.isLeaf::toggle
     view.row.isCollapsed:expand:collapse"}}
-    {{action toggleCollapse}}>
+    {{action toggleCollapse view.row}}>
     <i class="toggle-icon icon-chevron-down"></i>
   </span>
-  <span class='content'>{{view.cellContent}}</span>
+  {{view.cellContent}}
 </script>
 
 <script type="text/x-handlebars" data-template-name="table-header-tree-cell">
-  <a {{bindAttr class=":toggle controller.isCollapsed:expand:collapse"}}
+  <span {{bindAttr class=":toggle controller.isCollapsed:expand:collapse"}}
       {{action toggleTableCollapse target="controller"}}>
-    <i class="toggle-icon icon-chevron-down"></i>
-  </a>
-  <span class='column-title' {{action sortByColumn target="controller"}}>
-    {{view.content.headerCellName}}
+    <i class="icon-chevron-down icon-white"></i>
+  </span>
+  <span class='column-title' {{action sortByColumn view.column}}>
+    {{view.column.headerCellName}}
   </span>
 </script>
 
