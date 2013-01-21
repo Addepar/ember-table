@@ -977,9 +977,21 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
   Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, {
     templateName: 'footer-container',
     classNames: ['table-container', 'fixed-table-container', 'footer-container'],
+    styleBindings: ['top'],
     heightBinding: 'controller.footerHeight',
     widthBinding: 'controller._tableContainerWidth',
     scrollLeftBinding: 'controller._tableScrollLeft',
+    top: Ember.computed(function() {
+      var bodyHeight, contentHeight, headerHeight;
+      headerHeight = this.get('controller.headerHeight');
+      contentHeight = this.get('controller._tableContentHeight') + headerHeight;
+      bodyHeight = this.get('controller._bodyHeight') + headerHeight;
+      if (contentHeight < bodyHeight) {
+        return contentHeight;
+      } else {
+        return bodyHeight;
+      }
+    }).property('controller._bodyHeight', 'controller.headerHeight', 'controller._tableContentHeight'),
     onMouseWheel: function(event, delta, deltaX, deltaY) {
       var scrollLeft;
       scrollLeft = this.$('.right-table-block').scrollLeft() + deltaX * 50;

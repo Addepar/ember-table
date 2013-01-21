@@ -189,9 +189,17 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   templateName:   'footer-container'
   classNames:     ['table-container', 'fixed-table-container',
                   'footer-container']
+  styleBindings:  ['top']
   heightBinding:  'controller.footerHeight'
   widthBinding:   'controller._tableContainerWidth'
   scrollLeftBinding:'controller._tableScrollLeft'
+  top: Ember.computed ->
+    headerHeight  = @get 'controller.headerHeight'
+    contentHeight = @get('controller._tableContentHeight') + headerHeight
+    bodyHeight    = @get('controller._bodyHeight') + headerHeight
+    if contentHeight < bodyHeight then contentHeight else bodyHeight
+  .property('controller._bodyHeight', 'controller.headerHeight'
+            'controller._tableContentHeight')
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
