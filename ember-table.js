@@ -240,7 +240,7 @@
           return childView.prepareContent();
         }
       });
-    }, 'content', 'childViews.length', 'startIndex')
+    }, 'content.length', 'childViews.length', 'startIndex')
   });
 
   Ember.LazyItemView = Ember.View.extend(Ember.StyleBindingsMixin, {
