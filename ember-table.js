@@ -240,7 +240,7 @@
         childView = views.objectAt(i);
         return childView.set('content', null);
       });
-    }, 'content', 'numChildViews', 'startIndex')
+    }, 'content.length', 'numChildViews', 'startIndex')
   });
 
   Ember.LazyItemView = Ember.View.extend(Ember.StyleBindingsMixin, {

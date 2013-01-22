@@ -60,7 +60,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     [numShownViews...numChildViews].forEach (i) =>
       childView = views.objectAt(i)
       childView.set 'content', null
-  , 'content', 'numChildViews', 'startIndex'
+  , 'content.length', 'numChildViews', 'startIndex'
 
 Ember.LazyItemView = Ember.View.extend Ember.StyleBindingsMixin,
   itemIndex: null
