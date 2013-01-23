@@ -38,6 +38,8 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
   enumerableWillChange: (set, removing, adding) ->
     # we are clearing the set
     content = @get 'content'
+    return unless content
+
     if 'number' is typeof removing
       set.forEach (index) -> content.objectAt(index).set 'selected', no
     else if removing
