@@ -543,6 +543,9 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     enumerableWillChange: function(set, removing, adding) {
       var content;
       content = this.get('content');
+      if (!content) {
+        return;
+      }
       if ('number' === typeof removing) {
         set.forEach(function(index) {
           return content.objectAt(index).set('selected', false);
