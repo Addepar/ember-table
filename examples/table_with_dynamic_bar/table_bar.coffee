@@ -63,11 +63,11 @@ App.TableBarExample.TableController = Ember.Table.TableController.extend
   init: ->
     setInterval =>
       @get('content').forEach (item) ->
-        item.set 'value1', item.get('value1') + (Math.random() * 10 - 5)
-        item.set 'value2', item.get('value2') + (Math.random() * 10 - 5)
-        item.set 'value3', item.get('value3') + (Math.random() * 10 - 5)
-        item.set 'value4', item.get('value4') + (Math.random() * 10 - 5)
-        item.set 'value5', item.get('value5') + (Math.random() * 10 - 5)
+        item.set 'value1', Math.abs(item.get('value1') + (Math.random() * 10 - 5))
+        item.set 'value2', Math.abs(item.get('value2') + (Math.random() * 10 - 5))
+        item.set 'value3', Math.abs(item.get('value3') + (Math.random() * 10 - 5))
+        item.set 'value4', Math.abs(item.get('value4') + (Math.random() * 10 - 5))
+        item.set 'value5', Math.abs(item.get('value5') + (Math.random() * 10 - 5))
     , 1500
 
   content: Ember.computed ->
