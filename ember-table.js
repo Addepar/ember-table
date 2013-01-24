@@ -519,16 +519,16 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       40: 'downArrowPressed'
     },
     selection: Ember.computed(function(key, value) {
-      var content, indices, selection;
-      content = this.get('content') || [];
+      var indices, rows, selection;
+      rows = this.get('content') || [];
       selection = this.get('selectionIndices');
       value = value || [];
       if (arguments.length === 1) {
         value = selection.map(function(index) {
-          return content.objectAt(index);
+          return rows.objectAt(index).get('content');
         });
       } else {
-        indices = indexesOf(content, value);
+        indices = indexesOf(rows.mapProperty('content'), value);
         selection.addObjects(indices);
       }
       return value;
