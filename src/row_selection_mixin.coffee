@@ -16,6 +16,20 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     39: 'rightArrowPressed'
     40: 'downArrowPressed'
 
+  _calculateSelectionIndices: (value) ->
+    rows = @get('content')
+    return unless rows
+
+    content = rows.mapProperty('content')
+    selection = @get 'selectionIndices'
+
+    indices = indexesOf content, value
+    selection.clear().addObjects indices
+
+  contentDidChange: Ember.observer ->
+    @_calculateSelectionIndices(@get('selection'))
+  , 'content.@each.content'
+
   selection: Ember.computed (key, value) ->
     rows      = @get('content') or []
     selection = @get 'selectionIndices'
@@ -24,8 +38,7 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
       value = selection.map (index) ->
         rows.objectAt(index).get('content')
     else # setter
-      indices = indexesOf rows.mapProperty('content'), value
-      selection.addObjects indices
+      @_calculateSelectionIndices(value)
     value
   .property 'selectionIndices.[]'
 
