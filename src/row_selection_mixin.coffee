@@ -17,14 +17,14 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     40: 'downArrowPressed'
 
   _calculateSelectionIndices: (value) ->
-    rows = @get('content')
-    return unless rows
-
-    content = rows.mapProperty('content')
     selection = @get 'selectionIndices'
+    selection.clear()
 
-    indices = indexesOf content, value
-    selection.clear().addObjects indices
+    rows = @get('content')
+    if rows
+      content = rows.mapProperty('content')
+      indices = indexesOf content, value
+      selection.addObjects indices
 
   contentDidChange: Ember.observer ->
     @_calculateSelectionIndices(@get('selection'))

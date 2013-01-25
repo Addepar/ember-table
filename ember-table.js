@@ -520,14 +520,14 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     },
     _calculateSelectionIndices: function(value) {
       var content, indices, rows, selection;
-      rows = this.get('content');
-      if (!rows) {
-        return;
-      }
-      content = rows.mapProperty('content');
       selection = this.get('selectionIndices');
-      indices = indexesOf(content, value);
-      return selection.clear().addObjects(indices);
+      selection.clear();
+      rows = this.get('content');
+      if (rows) {
+        content = rows.mapProperty('content');
+        indices = indexesOf(content, value);
+        return selection.addObjects(indices);
+      }
     },
     contentDidChange: Ember.observer(function() {
       return this._calculateSelectionIndices(this.get('selection'));
