@@ -21,6 +21,7 @@ Ember.Table.Row = Ember.ObjectController.extend
   isHovering: no
   isSelected: no
   isShowing:  yes
+  isActive:   no
 
 Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null

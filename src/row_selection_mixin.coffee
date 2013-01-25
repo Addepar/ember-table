@@ -16,15 +16,29 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     39: 'rightArrowPressed'
     40: 'downArrowPressed'
 
+  _calculateSelectionIndices: (value) ->
+    selection = @get 'selectionIndices'
+    selection.clear()
+
+    rows = @get('content')
+    if rows
+      content = rows.mapProperty('content')
+      indices = indexesOf content, value
+      selection.addObjects indices
+
+  contentDidChange: Ember.observer ->
+    @_calculateSelectionIndices(@get('selection'))
+  , 'content.@each.content'
+
   selection: Ember.computed (key, value) ->
-    content   = @get('content') or []
+    rows      = @get('content') or []
     selection = @get 'selectionIndices'
     value     = value or []
     if arguments.length is 1 # getter
-      value = selection.map (index) -> content.objectAt(index)
+      value = selection.map (index) ->
+        rows.objectAt(index).get('content')
     else # setter
-      indices = indexesOf content, value
-      selection.addObjects indices
+      @_calculateSelectionIndices(value)
     value
   .property 'selectionIndices.[]'
 
@@ -41,11 +55,20 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     return unless content
 
     if 'number' is typeof removing
-      set.forEach (index) -> content.objectAt(index).set 'selected', no
+      set.forEach (index) ->
+        row = content.objectAt(index)
+        if row
+          row.set 'isSelected', no
     else if removing
-      removing.forEach (index) -> content.objectAt(index).set 'selected', no
+      removing.forEach (index) ->
+        row = content.objectAt(index)
+        if row
+          row.set 'isSelected', no
     if adding and 'number' isnt typeof adding
-      adding.forEach (index) -> content.objectAt(index).set 'selected', yes
+      adding.forEach (index) ->
+        row = content.objectAt(index)
+        if row
+          row.set 'isSelected', yes
 
   mouseDown: (event) ->
     index = @getIndexForEvent event

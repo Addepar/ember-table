@@ -340,7 +340,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     content: null,
     isHovering: false,
     isSelected: false,
-    isShowing: true
+    isShowing: true,
+    isActive: false
   });
 
   Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend({
@@ -518,18 +519,31 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       39: 'rightArrowPressed',
       40: 'downArrowPressed'
     },
+    _calculateSelectionIndices: function(value) {
+      var content, indices, rows, selection;
+      selection = this.get('selectionIndices');
+      selection.clear();
+      rows = this.get('content');
+      if (rows) {
+        content = rows.mapProperty('content');
+        indices = indexesOf(content, value);
+        return selection.addObjects(indices);
+      }
+    },
+    contentDidChange: Ember.observer(function() {
+      return this._calculateSelectionIndices(this.get('selection'));
+    }, 'content.@each.content'),
     selection: Ember.computed(function(key, value) {
-      var content, indices, selection;
-      content = this.get('content') || [];
+      var rows, selection;
+      rows = this.get('content') || [];
       selection = this.get('selectionIndices');
       value = value || [];
       if (arguments.length === 1) {
         value = selection.map(function(index) {
-          return content.objectAt(index);
+          return rows.objectAt(index).get('content');
         });
       } else {
-        indices = indexesOf(content, value);
-        selection.addObjects(indices);
+        this._calculateSelectionIndices(value);
       }
       return value;
     }).property('selectionIndices.[]'),
@@ -548,16 +562,28 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       }
       if ('number' === typeof removing) {
         set.forEach(function(index) {
-          return content.objectAt(index).set('selected', false);
+          var row;
+          row = content.objectAt(index);
+          if (row) {
+            return row.set('isSelected', false);
+          }
         });
       } else if (removing) {
         removing.forEach(function(index) {
-          return content.objectAt(index).set('selected', false);
+          var row;
+          row = content.objectAt(index);
+          if (row) {
+            return row.set('isSelected', false);
+          }
         });
       }
       if (adding && 'number' !== typeof adding) {
         return adding.forEach(function(index) {
-          return content.objectAt(index).set('selected', true);
+          var row;
+          row = content.objectAt(index);
+          if (row) {
+            return row.set('isSelected', true);
+          }
         });
       }
     },
@@ -820,7 +846,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
   Ember.Table.TableRow = Ember.LazyItemView.extend({
     templateName: 'table-row',
     classNames: 'table-row',
-    classNameBindings: ['row.active:active', 'row.selected:selected'],
+    classNameBindings: ['row.isActive:active', 'row.isSelected:selected'],
     styleBindings: ['width', 'height'],
     rowBinding: 'content',
     columnsBinding: 'parentView.columns',
@@ -830,21 +856,21 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       var row;
       row = this.get('row');
       if (row) {
-        return row.set('active', true);
+        return row.set('isActive', true);
       }
     },
     mouseLeave: function(event) {
       var row;
       row = this.get('row');
       if (row) {
-        return row.set('active', false);
+        return row.set('isActive', false);
       }
     },
     teardownContent: function() {
       var row;
       row = this.get('row');
       if (row) {
-        return row.set('active', false);
+        return row.set('isActive', false);
       }
     }
   });
