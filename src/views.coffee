@@ -48,7 +48,7 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
 Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
   classNames:     'table-row'
-  classNameBindings: ['row.active:active', 'row.selected:selected']
+  classNameBindings: ['row.isActive:active', 'row.isSelected:selected']
   styleBindings:  ['width', 'height']
   rowBinding:     'content'
   columnsBinding: 'parentView.columns'
@@ -56,13 +56,13 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   heightBinding:  'controller.rowHeight'
   mouseEnter: (event) ->
     row = @get 'row'
-    row.set 'active', yes if row
+    row.set 'isActive', yes if row
   mouseLeave: (event) ->
     row = @get 'row'
-    row.set 'active', no if row
+    row.set 'isActive', no if row
   teardownContent: ->
     row = @get 'row'
-    row.set 'active', no if row
+    row.set 'isActive', no if row
 
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'table-cell'

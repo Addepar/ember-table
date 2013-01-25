@@ -55,11 +55,20 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     return unless content
 
     if 'number' is typeof removing
-      set.forEach (index) -> content.objectAt(index).set 'selected', no
+      set.forEach (index) ->
+        row = content.objectAt(index)
+        if row
+          row.set 'isSelected', no
     else if removing
-      removing.forEach (index) -> content.objectAt(index).set 'selected', no
+      removing.forEach (index) ->
+        row = content.objectAt(index)
+        if row
+          row.set 'isSelected', no
     if adding and 'number' isnt typeof adding
-      adding.forEach (index) -> content.objectAt(index).set 'selected', yes
+      adding.forEach (index) ->
+        row = content.objectAt(index)
+        if row
+          row.set 'isSelected', yes
 
   mouseDown: (event) ->
     index = @getIndexForEvent event
