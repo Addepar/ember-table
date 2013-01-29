@@ -46,23 +46,24 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
   , 'scrollLeft'
 
 Ember.Table.TableRow = Ember.LazyItemView.extend
-  templateName:   'table-row'
-  classNames:     'table-row'
-  classNameBindings: ['row.active:active', 'row.selected:selected']
-  styleBindings:  ['width', 'height']
-  rowBinding:     'content'
-  columnsBinding: 'parentView.columns'
-  widthBinding:   'controller._rowWidth'
-  heightBinding:  'controller.rowHeight'
+  templateName:        'table-row'
+  classNames:          'table-row'
+  classNameBindings:   ['row.active:active', 'row.selected:selected']
+  styleBindings:       ['width', 'height']
+  rowBinding:          'content'
+  columnsBinding:      'parentView.columns'
+  widthBinding:        'controller._rowWidth'
+  heightBinding:       'controller.rowHeight'
+  handleActiveBinding: 'controller.handleActive'
   mouseEnter: (event) ->
     row = @get 'row'
-    row.set 'active', yes if row
+    row.set 'active', yes if row and @get 'handleActive'
   mouseLeave: (event) ->
     row = @get 'row'
-    row.set 'active', no if row
+    row.set 'active', no if row and @get 'handleActive'
   teardownContent: ->
     row = @get 'row'
-    row.set 'active', no if row
+    row.set 'active', no if row and @get 'handleActive'
 
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'table-cell'
