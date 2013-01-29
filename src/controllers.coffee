@@ -18,9 +18,11 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
 ################################################################################
 Ember.Table.Row = Ember.ObjectController.extend
   content:  null
+  parent: null,
   isHovering: no
   isSelected: no
   isShowing:  yes
+  handleActiveBinding: 'parent.handleActive'
 
 Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null
@@ -53,6 +55,7 @@ Ember.Table.TableController = Ember.Controller.extend
   footerHeight: 30
   hasHeader: yes
   hasFooter: yes
+  handleActive: yes
 
   tableRowClass: 'Ember.Table.Row'
 
@@ -64,6 +67,7 @@ Ember.Table.TableController = Ember.Controller.extend
     Ember.Table.RowArrayProxy.create
       tableRowClass: tableRowClass
       content: @get('content')
+      parent: @
   .property 'content', 'tableRowClass'
 
   # Array of Ember.Table.Row
