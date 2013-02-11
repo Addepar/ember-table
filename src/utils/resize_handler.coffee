@@ -18,6 +18,7 @@ Ember.ResizeHandler = Ember.Mixin.create
   # resize event
   debounceResizeEnd: Ember.computed ->
     _.debounce (event) =>
+      return if @isDestroyed
       @set 'resizing', no
       @onResizeEnd?(event)
     , @get('resizeEndDelay')
