@@ -53,6 +53,9 @@
     debounceResizeEnd: Ember.computed(function() {
       var _this = this;
       return debounce(function(event) {
+        if (_this.isDestroyed) {
+          return;
+        }
         _this.set('resizing', false);
         return typeof _this.onResizeEnd === "function" ? _this.onResizeEnd(event) : void 0;
       }, this.get('resizeEndDelay'));
