@@ -186,18 +186,17 @@
       return this.get('numItemsShowing') + 2;
     }).property('numItemsShowing'),
     onNumChildViewsDidChange: Ember.observer(function() {
-      var childViews, itemViewClass, newNumViews, numViewsToInsert, oldNumViews, viewsToAdd, viewsToRemove, _i, _results;
+      var itemViewClass, newNumViews, numViewsToInsert, oldNumViews, viewsToAdd, viewsToRemove, _i, _results;
       itemViewClass = Ember.get(this.get('itemViewClass'));
       newNumViews = this.get('numChildViews');
       if (!(itemViewClass && newNumViews)) {
         return;
       }
-      childViews = this.get('childViews');
-      oldNumViews = this.get('childViews.length');
+      oldNumViews = this.get('length');
       numViewsToInsert = newNumViews - oldNumViews;
       if (numViewsToInsert < 0) {
-        viewsToRemove = childViews.slice(newNumViews, oldNumViews);
-        return childViews.removeObjects(viewsToRemove);
+        viewsToRemove = this.slice(newNumViews, oldNumViews);
+        return this.removeObjects(viewsToRemove);
       } else if (numViewsToInsert > 0) {
         viewsToAdd = (function() {
           _results = [];
@@ -206,15 +205,14 @@
         }).apply(this).map(function() {
           return itemViewClass.create();
         });
-        return childViews.pushObjects(viewsToAdd);
+        return this.pushObjects(viewsToAdd);
       }
     }, 'numChildViews', 'itemViewClass'),
     viewportDidChange: Ember.observer(function() {
-      var clength, content, numShownViews, startIndex, views;
+      var clength, content, numShownViews, startIndex;
       content = this.get('content') || [];
-      views = this.get('childViews') || [];
       clength = content.get('length');
-      numShownViews = Math.min(views.get('length'), clength);
+      numShownViews = Math.min(this.get('length'), clength);
       startIndex = this.get('startIndex');
       if (startIndex + numShownViews >= clength) {
         startIndex = clength - numShownViews;
@@ -226,15 +224,15 @@
         startIndex;
 
       }
-      return views.forEach(function(childView, i) {
+      return this.forEach(function(childView, i) {
         var item, itemIndex;
         if (i >= numShownViews) {
-          childView = views.objectAt(i);
+          childView = this.objectAt(i);
           childView.set('content', null);
           return;
         }
         itemIndex = startIndex + i;
-        childView = views.objectAt(itemIndex % numShownViews);
+        childView = this.objectAt(itemIndex % numShownViews);
         item = content.objectAt(itemIndex);
         if (item !== childView.get('content')) {
           childView.teardownContent();
@@ -242,8 +240,8 @@
           childView.set('content', item);
           return childView.prepareContent();
         }
-      });
-    }, 'content.length', 'childViews.length', 'startIndex')
+      }, this);
+    }, 'content.length', 'length', 'startIndex')
   });
 
   Ember.LazyItemView = Ember.View.extend(Ember.StyleBindingsMixin, {
