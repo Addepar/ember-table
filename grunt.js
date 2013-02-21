@@ -1,5 +1,5 @@
-var DIST_FILE     = 'ember-table.js';
-var DIST_FILE_MIN = 'ember-table.min.js';
+var DIST_FILE     = 'dist/ember-table.js';
+var DIST_FILE_MIN = 'dist/ember-table.min.js';
 var BUILD_TASKS   = 'coffee handlebars concat min';
 var JS_FILES      = [
   'build/utils/scrollbar_width_helper.js',
