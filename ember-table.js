@@ -802,7 +802,8 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       if (isLion) {
         scrollBarWidth = 8;
       }
-      return this.set('controller._scrollbarSize', scrollBarWidth);
+      this.set('controller._scrollbarSize', scrollBarWidth);
+      return this.set('controller._tableScrollTop', 0);
     },
     onResize: function() {
       return this.elementSizeDidChange();
