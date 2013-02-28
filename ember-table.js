@@ -995,6 +995,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     },
     onMouseWheel: function(event, delta, deltaX, deltaY) {
       var scrollLeft;
+      event.stopPropagation();
       if (!(Math.abs(deltaX) > Math.abs(deltaY))) {
         return;
       }
