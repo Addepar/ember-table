@@ -179,6 +179,7 @@ Ember.ScrollHandlerMixin,
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
   onMouseWheel: (event, delta, deltaX, deltaY) ->
+    event.stopPropagation()
     return unless Math.abs(deltaX) > Math.abs(deltaY)
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
