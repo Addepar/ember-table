@@ -10,6 +10,7 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
     isLion = navigator?.appVersion['10_7'] isnt -1 and scrollBarWidth is 0
     scrollBarWidth = 8 if isLion
     @set 'controller._scrollbarSize', scrollBarWidth
+    @set 'controller._tableScrollTop', 0
   onResize: ->
     @elementSizeDidChange()
   elementSizeDidChange: ->
