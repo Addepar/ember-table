@@ -39,6 +39,7 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
         rows.objectAt(index).get('content')
     else # setter
       @_calculateSelectionIndices(value)
+      @ensureVisible(@get('selectionIndices.0'))
     value
   .property 'selectionIndices.[]'
 
