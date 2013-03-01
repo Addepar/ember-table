@@ -545,6 +545,7 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
         });
       } else {
         this._calculateSelectionIndices(value);
+        this.ensureVisible(this.get('selectionIndices.0'));
       }
       return value;
     }).property('selectionIndices.[]'),
