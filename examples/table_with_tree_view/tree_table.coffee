@@ -36,8 +36,8 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
     data = @get 'data'
     return unless data
     names = @get('data.value_factors').getEach('display_name')
-    columns = names.map (name, index) ->
-      Ember.Table.ColumnDefinition.create
+    columns = names.map (name, index) =>
+      @createColumn
         index: index
         headerCellName: name
         getCellContent: (row) ->
@@ -52,7 +52,7 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
   groupingColumn: Ember.computed ->
     groupingFactors = @get 'data.grouping_factors'
     name = groupingFactors.getEach('display_name').join ' ▸ '
-    Ember.Table.ColumnDefinition.create
+    @createColumn
       headerCellName: name
       columnWidth: 400
       isTreeColumn: yes

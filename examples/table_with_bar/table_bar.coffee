@@ -21,12 +21,12 @@ App.TableBarExample.TableController = Ember.Table.TableController.extend
 
   columns: Ember.computed ->
     colors  = ['blue', 'teal', 'green', 'yellow', 'orange']
-    column1 = Ember.Table.ColumnDefinition.create
+    column1 = @createColumn
       columnWidth:    50
       headerCellName: 'Name'
       getCellContent: (row) -> row['key']
-    columns = [1..5].map (number, index) ->
-      Ember.Table.ColumnDefinition.create
+    columns = [1..5].map (number, index) =>
+      @createColumn
         color: colors[index]
         headerCellName: 'Bar'
         tableCellViewClass: 'App.TableBarExample.BarCell'

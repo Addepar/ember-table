@@ -86,6 +86,10 @@ Ember.Table.TableController = Ember.Controller.extend
     columns.slice(numFixedColumns, columns.get('length'))
   .property 'columns.@each', 'numFixedColumns'
 
+  createColumn: (options) ->
+    Ember.Table.ColumnDefinition.create(options)
+      .set 'controller', @
+
   sortByColumn: Ember.K
 
   # private variables
