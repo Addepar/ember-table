@@ -1,0 +1,19 @@
+<div class='table-scrollable-wrapper'>
+  {{view Ember.Table.LazyTableBlock classNames="left-table-block"
+    contentBinding="controller.bodyContent"
+    columnsBinding="controller.fixedColumns"
+    widthBinding="controller._fixedBlockWidth"
+    numItemsShowingBinding="controller._numItemsShowing"
+    scrollTopBinding="controller._scrollTop"
+    startIndexBinding="controller._startIndex"
+  }}
+  {{view Ember.Table.LazyTableBlock classNames="right-table-block"
+    contentBinding="controller.bodyContent"
+    columnsBinding="controller.tableColumns"
+    scrollLeftBinding="controller._tableScrollLeft"
+    widthBinding="controller._tableBlockWidth"
+    numItemsShowingBinding="controller._numItemsShowing"
+    scrollTopBinding="controller._scrollTop"
+    startIndexBinding="controller._startIndex"
+  }}
+</div>

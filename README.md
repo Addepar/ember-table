@@ -9,10 +9,10 @@ http://addepar.github.com/ember-table/
 
 ### Take ember-table.js and modify it according to your liking with CSS.
 
-### Compile with grunt
-    $ npm install -g grunt
-    $ npm install
-    $ grunt w
+### Compile with grunt (see http://gruntjs.com/getting-started)
+  $ npm install -g grunt-cli
+  $ npm install
+  $ grunt
 
 ### Viewing Examples
 From the root directory: `$ python -m SimpleHTTPServer`.
@@ -30,9 +30,9 @@ Hit up : `http://localhost:8000/examples`
 * Cell single and multi selection
 * Better column drag and drop
 * Support for colspan and rowspan
-* Further performance improvements
+* Switch to ember/list-view for lazy rendering
 
 ### Copyright and License
-Copyright © 2012 Addepar, Inc. All Rights Reserved
+Copyright © 2013 Addepar, Inc. All Rights Reserved
 
 Licensed under the BSD License (the "License"); you may not use this work except in compliance with the License. You may obtain a copy of the License in the LICENSE file.
