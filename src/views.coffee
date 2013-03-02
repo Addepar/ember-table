@@ -51,10 +51,10 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   classNames:     'table-row'
   classNameBindings: ['row.isActive:active', 'row.isSelected:selected']
   styleBindings:  ['width', 'height']
-  rowBinding:     'content'
-  columnsBinding: 'parentView.columns'
-  widthBinding:   'controller._rowWidth'
-  heightBinding:  'controller.rowHeight'
+  row:      Ember.computed.alias 'content'
+  columns:  Ember.computed.alias 'parentView.columns'
+  width:    Ember.computed.alias 'controller._rowWidth'
+  height:   Ember.computed.alias 'controller.rowHeight'
   mouseEnter: (event) ->
     row = @get 'row'
     row.set 'isActive', yes if row
@@ -66,14 +66,14 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
     row.set 'isActive', no if row
 
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
-  templateName:   'table-cell'
+  defaultTemplate: Ember.Handlebars.compile(
+    "<span class='content'>{{view.cellContent}}</span>")
   classNames:     ['table-cell']
   styleBindings:  ['width']
-
-  rowBinding:       'parentView.row'
-  columnBinding:    'content'
-  rowContentBinding:'row.content'
-  widthBinding:     'column.columnWidth'
+  row:        Ember.computed.alias 'parentView.row'
+  column:     Ember.computed.alias 'content'
+  rowContent: Ember.computed.alias 'row.content'
+  width:      Ember.computed.alias 'column.columnWidth'
 
   cellContent: Ember.computed (key, value) ->
     row     = @get 'rowContent'
@@ -99,8 +99,8 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'header-row'
   classNames:     ['table-row', 'header-row']
   styleBindings:  ['height']
-  columnsBinding: 'content'
-  heightBinding:  'controller.headerHeight'
+  columns: Ember.computed.alias 'content'
+  height:  Ember.computed.alias 'controller.headerHeight'
 
   # options for jQuery UI sortable
   sortableOption: Ember.computed ->
@@ -130,9 +130,9 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'header-cell'
   classNames:     ['table-cell', 'header-cell']
   styleBindings:  ['width', 'height']
-  columnBinding:  'content'
-  widthBinding:   'column.columnWidth'
-  heightBinding:  'controller.headerHeight'
+  column:         Ember.computed.alias 'content'
+  width:          Ember.computed.alias 'column.columnWidth'
+  height:         Ember.computed.alias 'controller.headerHeight'
 
   # jQuery UI resizable option
   resizableOption: Ember.computed ->
@@ -156,9 +156,9 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   templateName:   'header-container'
   classNames:     ['table-container', 'fixed-table-container',
                    'header-container']
-  heightBinding:  'controller.headerHeight'
-  widthBinding:   'controller._tableContainerWidth'
-  scrollLeftBinding:'controller._tableScrollLeft'
+  height:         Ember.computed.alias 'controller.headerHeight'
+  width:          Ember.computed.alias 'controller._tableContainerWidth'
+  scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
@@ -169,10 +169,10 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin,
   templateName:   'body-container'
   classNames:     ['table-container', 'body-container']
-  heightBinding:  'controller._bodyHeight'
-  widthBinding:   'controller._width'
-  scrollTopBinding:'controller._tableScrollTop'
-  scrollLeftBinding:'controller._tableScrollLeft'
+  height:         Ember.computed.alias 'controller._bodyHeight'
+  width:          Ember.computed.alias 'controller._width'
+  scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
+  scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
   onScrollTopDidChange: Ember.observer ->
     @$().scrollTop @get('scrollTop')
   , 'scrollTop'
@@ -191,9 +191,9 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   classNames:     ['table-container', 'fixed-table-container',
                   'footer-container']
   styleBindings:  ['top']
-  heightBinding:  'controller.footerHeight'
-  widthBinding:   'controller._tableContainerWidth'
-  scrollLeftBinding:'controller._tableScrollLeft'
+  height:         Ember.computed.alias 'controller.footerHeight'
+  width:          Ember.computed.alias 'controller._tableContainerWidth'
+  scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
   top: Ember.computed ->
     headerHeight  = @get 'controller.headerHeight'
     contentHeight = @get('controller._tableContentHeight') + headerHeight
@@ -208,15 +208,15 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 
 Ember.Table.ScrollContainer =
 Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
-  templateName:     'scroll-container'
-  classNames:       ['scroll-container']
-  styleBindings:    ['top', 'left', 'width', 'height']
-  widthBinding:     'controller._scrollContainerWidth'
-  heightBinding:    'controller._scrollContainerHeight'
-  topBinding:       'controller.headerHeight'
-  leftBinding:      'controller._fixedColumnsWidth'
-  scrollTopBinding: 'controller._tableScrollTop'
-  scrollLeftBinding:'controller._tableScrollLeft'
+  template: Ember.Handlebars.compile("{{view Ember.Table.ScrollPanel}}")
+  classNames:     'scroll-container'
+  styleBindings:  ['top', 'left', 'width', 'height']
+  width:          Ember.computed.alias 'controller._scrollContainerWidth'
+  height:         Ember.computed.alias 'controller._scrollContainerHeight'
+  top:            Ember.computed.alias 'controller.headerHeight'
+  left:           Ember.computed.alias 'controller._fixedColumnsWidth'
+  scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
+  scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
   onScroll: (event) ->
     @set 'scrollLeft', event.target.scrollLeft
     event.preventDefault()
@@ -227,5 +227,5 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
 Ember.Table.ScrollPanel = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['scroll-panel']
   styleBindings:  ['width', 'height']
-  widthBinding:   'controller._tableColumnsWidth'
-  heightBinding:  'controller._tableContentHeight'
+  width:   Ember.computed.alias 'controller._tableColumnsWidth'
+  height:  Ember.computed.alias 'controller._tableContentHeight'

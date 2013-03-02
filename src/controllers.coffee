@@ -12,8 +12,8 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   # This gives a formatted value e.g. $20,000,000
   getCellContent: (row) ->
     path = @get 'contentPath'
-    Ember.assert "You must either provide a contentPath or override getCellContent in your column definition",
-      path?
+    Ember.assert "You must either provide a contentPath or override " +
+      "getCellContent in your column definition", path?
     Ember.get row, path
 
   setCellContent: Ember.K

@@ -3,11 +3,11 @@ indexesOf = Ember.EnumerableUtils.indexesOf
 Ember.Table.RowSelectionMixin = Ember.Mixin.create
   # we need to set tabindex so that div responds to key events
   attributeBindings: 'tabindex'
-  contentBinding:         Ember.Binding.oneWay 'controller.bodyContent'
-  rowHeightBinding:       Ember.Binding.oneWay 'controller.rowHeight'
-  numItemsShowingBinding: Ember.Binding.oneWay 'controller._numItemsShowing'
-  startIndexBinding:      Ember.Binding.oneWay 'controller._startIndex'
-  scrollTopBinding:       'controller._tableScrollTop'
+  content:         Ember.computed.alias 'controller.bodyContent'
+  rowHeight:       Ember.computed.alias 'controller.rowHeight'
+  numItemsShowing: Ember.computed.alias 'controller._numItemsShowing'
+  startIndex:      Ember.computed.alias 'controller._startIndex'
+  scrollTop:       Ember.computed.alias 'controller._tableScrollTop'
   tabindex: -1
 
   KEY_EVENTS:
