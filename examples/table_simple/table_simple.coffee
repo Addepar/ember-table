@@ -29,7 +29,7 @@ App.TableSimpleExample.TableController = Ember.Table.TableController.extend
     entryColumn = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Entry'
-      getCellContent: (row) -> row['index'];
+      contentPath: 'index'
     dateColumn = Ember.Table.ColumnDefinition.create
       columnWidth: 150
       headerCellName: 'Date'

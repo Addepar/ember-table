@@ -30,7 +30,7 @@ App.SimpleTableController = Ember.Table.TableController.extend
       Ember.Table.ColumnDefinition.create
         index: index
         headerCellName: key
-        getCellContent: (row) -> row[key]
+        contentPath: key
   .property()
 
   content: Ember.computed ->

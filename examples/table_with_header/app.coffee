@@ -31,7 +31,7 @@ App.SimpleTableController = Ember.Table.TableController.extend
         index: index
         columnWidth: 100
         headerCellName: key
-        getCellContent: (row) -> row[key]
+        contentPath: key
   .property()
 
   content: Ember.computed ->

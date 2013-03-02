@@ -333,7 +333,12 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
     columnWidth: 150,
     headerCellViewClass: 'Ember.Table.HeaderCell',
     tableCellViewClass: 'Ember.Table.TableCell',
-    getCellContent: Ember.required(Function),
+    getCellContent: function(row) {
+      var path;
+      path = this.get('contentPath');
+      Ember.assert("You must either provide a contentPath or override getCellContent in your column definition", path != null);
+      return Ember.get(row, path);
+    },
     setCellContent: Ember.K
   });
 

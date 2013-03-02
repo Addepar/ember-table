@@ -46,13 +46,13 @@ Ember.Table.TableController.extend
       columnWidth: 80
       headerCellName: 'avatar'
       tableCellViewClass:  'App.TableAjaxExample.ImageTableCell'
-      getCellContent: (row) -> row['avatar']
+      contentPath: 'avatar'
     columnNames = ['login', 'type', 'createdAt']
     columns = columnNames.map (key, index) ->
       Ember.Table.ColumnDefinition.create
         columnWidth: 150
         headerCellName: key.w()
-        getCellContent: (row) -> row[key]
+        contentPath: key
     columns.unshift avatar
     columns
   .property()
