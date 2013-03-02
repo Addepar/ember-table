@@ -10,7 +10,12 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   headerCellViewClass:  'Ember.Table.HeaderCell'
   tableCellViewClass:   'Ember.Table.TableCell'
   # This gives a formatted value e.g. $20,000,000
-  getCellContent: Ember.required(Function)
+  getCellContent: (row) ->
+    path = @get 'contentPath'
+    Ember.assert "You must either provide a contentPath or override getCellContent in your column definition",
+      path?
+    Ember.get row, path
+
   setCellContent: Ember.K
 
 ################################################################################
