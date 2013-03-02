@@ -66,7 +66,7 @@ App.TableEditableExample.TableController = Ember.Table.TableController.extend
       columnWidth: 150
       headerCellName: 'Analyst Rating'
       tableCellViewClass: 'App.TableEditableExample.RatingTableCell'
-      getCellContent: (row) -> row['rating']
+      contentPath: 'rating'
       setCellContent: (row, value) -> row['rating'] = value
     columns= columnNames.map (key, index) ->
       name = key.charAt(0).toUpperCase() + key.slice(1)

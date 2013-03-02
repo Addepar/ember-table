@@ -48,14 +48,14 @@ App.TableBarExample.TableController = Ember.Table.TableController.extend
     column1 = Ember.Table.ColumnDefinition.create
       columnWidth:    50
       headerCellName: 'Name'
-      getCellContent: (row) -> row.get('key')
+      contentPath: 'key'
     columns = [1..5].map (number, index) ->
       Ember.Table.ColumnDefinition.create
         color: colors[index]
         headerCellName: 'Bar'
         tableCellViewClass: 'App.TableBarExample.BarCell'
         contentProperty: "value#{number}"
-        getCellContent: (row) -> row.get("value#{number}")
+        contentPath: "value#{number}"
     columns.unshift(column1)
     columns
   .property()
