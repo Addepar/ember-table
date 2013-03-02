@@ -413,6 +413,9 @@ Ember.TEMPLATES["header-cell"]=Ember.Handlebars.compile("\n  <span {{action sort
       numFixedColumns = this.get('numFixedColumns') || 0;
       return columns.slice(numFixedColumns, columns.get('length'));
     }).property('columns.@each', 'numFixedColumns'),
+    createColumn: function(options) {
+      return Ember.Table.ColumnDefinition.create(options).set('controller', this);
+    },
     sortByColumn: Ember.K,
     _tableScrollTop: 0,
     _tableScrollLeft: 0,

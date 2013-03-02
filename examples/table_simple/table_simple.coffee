@@ -26,17 +26,17 @@ App.TableSimpleExample.TableController = Ember.Table.TableController.extend
 
   columns: Ember.computed ->
     columnNames = ['open', 'high', 'low', 'close', 'volume']
-    entryColumn = Ember.Table.ColumnDefinition.create
+    entryColumn = @createColumn
       columnWidth: 100
       headerCellName: 'Entry'
       getCellContent: (row) -> row['index'];
-    dateColumn = Ember.Table.ColumnDefinition.create
+    dateColumn = @createColumn
       columnWidth: 150
       headerCellName: 'Date'
       getCellContent: (row) -> row['date'].toDateString();
-    columns= columnNames.map (key, index) ->
+    columns= columnNames.map (key, index) =>
       name = key.charAt(0).toUpperCase() + key.slice(1)
-      Ember.Table.ColumnDefinition.create
+      @createColumn
         columnWidth: 100
         headerCellName: name
         getCellContent: (row) -> row[key].toFixed(2)

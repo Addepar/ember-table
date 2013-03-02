@@ -49,28 +49,28 @@ App.TableSparklineExample.TableController = Ember.Table.TableController.extend
   rowHeight:    30
 
   columns: Ember.computed ->
-    name = Ember.Table.ColumnDefinition.create
+    name = @createColumn
       columnWidth: 100
       headerCellName: 'Name'
       getCellContent: (row) -> 'Asset ' + row['name']
-    open = Ember.Table.ColumnDefinition.create
+    open = @createColumn
       columnWidth: 100
       headerCellName: 'Open'
       getCellContent: (row) -> row['open'].toFixed(2)
-    spark = Ember.Table.ColumnDefinition.create
+    spark = @createColumn
       columnWidth: 200
       headerCellName: 'Sparkline'
       tableCellViewClass: 'App.TableSparklineExample.SparkCellView'
       getCellContent: Ember.K
-    close = Ember.Table.ColumnDefinition.create
+    close = @createColumn
       columnWidth: 100
       headerCellName: 'Close'
       getCellContent: (row) -> row['close'].toFixed(2)
-    low = Ember.Table.ColumnDefinition.create
+    low = @createColumn
       columnWidth: 100
       headerCellName: 'Low'
       getCellContent: (row) -> row['low'].toFixed(2)
-    high = Ember.Table.ColumnDefinition.create
+    high = @createColumn
       columnWidth: 100
       headerCellName: 'High'
       getCellContent: (row) -> row['high'].toFixed(2)

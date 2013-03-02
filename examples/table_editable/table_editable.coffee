@@ -56,21 +56,21 @@ App.TableEditableExample.TableController = Ember.Table.TableController.extend
 
   columns: Ember.computed ->
     columnNames = ['open', 'close']
-    dateColumn = Ember.Table.ColumnDefinition.create
+    dateColumn = @createColumn
       columnWidth: 100
       headerCellName: 'Date'
       tableCellViewClass: 'App.TableEditableExample.DatePickerTableCell'
       getCellContent: (row) -> row['date'].toString('yyyy-MM-dd')
       setCellContent: (row, value) -> row['date'] = value
-    ratingColumn = Ember.Table.ColumnDefinition.create
+    ratingColumn = @createColumn
       columnWidth: 150
       headerCellName: 'Analyst Rating'
       tableCellViewClass: 'App.TableEditableExample.RatingTableCell'
       getCellContent: (row) -> row['rating']
       setCellContent: (row, value) -> row['rating'] = value
-    columns= columnNames.map (key, index) ->
+    columns= columnNames.map (key, index) =>
       name = key.charAt(0).toUpperCase() + key.slice(1)
-      Ember.Table.ColumnDefinition.create
+      @createColumn
         columnWidth: 100
         headerCellName: name
         tableCellViewClass: 'App.TableEditableExample.EditableTableCell'

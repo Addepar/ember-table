@@ -42,14 +42,14 @@ Ember.Table.TableController.extend
   rowHeight: 35
 
   columns: Ember.computed ->
-    avatar = Ember.Table.ColumnDefinition.create
+    avatar = @createColumn
       columnWidth: 80
       headerCellName: 'avatar'
       tableCellViewClass:  'App.TableAjaxExample.ImageTableCell'
       getCellContent: (row) -> row['avatar']
     columnNames = ['login', 'type', 'createdAt']
-    columns = columnNames.map (key, index) ->
-      Ember.Table.ColumnDefinition.create
+    columns = columnNames.map (key, index) =>
+      @createColumn
         columnWidth: 150
         headerCellName: key.w()
         getCellContent: (row) -> row[key]
