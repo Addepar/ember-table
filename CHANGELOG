@@ -1,5 +1,6 @@
 * ember-table 0.0.2 (March 3, 2013)*
 * Ember 1.0.0-rc.1 compatible
+* jQuery 1.9.1 compatible
 * many bugfixes
 * possible breaking changes
 
