@@ -25,7 +25,7 @@ Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
 Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
   classNames:     ['table-block']
   styleBindings:  ['width', 'height']
-  itemViewClass:  'Ember.Table.TableRow'
+  itemViewClass:  Ember.computed.alias 'controller.tableRowViewClass'
   columns: null
   content: null
   scrollLeft: null
@@ -35,9 +35,9 @@ Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
 
 Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
   classNames:       ['table-block']
-  rowHeightBinding: 'controller.rowHeight'
-  itemViewClass:    'Ember.Table.TableRow'
   styleBindings:    ['width']
+  itemViewClass:    Ember.computed.alias 'controller.tableRowViewClass'
+  rowHeight:        Ember.computed.alias 'controller.rowHeight'
   columns:    null
   content:    null
   scrollLeft: null

@@ -21,7 +21,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
 ################################################################################
 # Table Row
 ################################################################################
-Ember.Table.Row = Ember.ObjectController.extend
+Ember.Table.Row = Ember.ObjectProxy.extend
   content:  null
   isHovering: no
   isSelected: no
@@ -32,7 +32,6 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null
   content: null
   rowContent: Ember.computed( -> []).property()
-
   objectAt: (idx) ->
     row = @get('rowContent')[idx]
     return row if row
@@ -59,18 +58,15 @@ Ember.Table.TableController = Ember.Controller.extend
   footerHeight: 30
   hasHeader: yes
   hasFooter: yes
-
-  tableRowClass: 'Ember.Table.Row'
+  # specify the view class to use for rendering the table rows
+  tableRowViewClass: 'Ember.Table.TableRow'
 
   # Array of Ember.Table.Row
   bodyContent: Ember.computed ->
-    tableRowClass = @get 'tableRowClass'
-    if typeof tableRowClass is 'string'
-      tableRowClass = Ember.get Ember.lookup, tableRowClass
     Ember.Table.RowArrayProxy.create
-      tableRowClass: tableRowClass
+      tableRowClass: Ember.Table.Row
       content: @get('content')
-  .property 'content', 'tableRowClass'
+  .property 'content'
 
   # Array of Ember.Table.Row
   footerContent: Ember.computed (key, value) ->
