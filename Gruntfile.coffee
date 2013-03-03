@@ -150,6 +150,6 @@ module.exports = (grunt) ->
   grunt.registerTask "build_srcs", [ "coffee:srcs", "neuter" ]
   grunt.registerTask "build_examples", [ "coffee:examples" ]
   if env is "dev"
-    grunt.registerTask "default", [ "ember_templates", "less", "build_srcs", "build_examples", "watch" ]
+    grunt.registerTask "default", [ "ember_templates", "less", "build_srcs", "build_examples", "uglify", "watch" ]
   else
     grunt.registerTask "default", [ "ember_templates", "less", "build_srcs", "uglify" ]

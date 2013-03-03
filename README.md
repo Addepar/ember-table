@@ -10,9 +10,9 @@ http://addepar.github.com/ember-table/
 ### Take ember-table.js and modify it according to your liking with CSS.
 
 ### Compile with grunt (see http://gruntjs.com/getting-started)
-  $ npm install -g grunt-cli
-  $ npm install
-  $ grunt
+$ npm install -g grunt-cli
+$ npm install
+$ grunt
 
 ### Viewing Examples
 From the root directory: `$ python -m SimpleHTTPServer`.
