@@ -1,7 +1,7 @@
 App.TableHorizonExample = Ember.Namespace.create()
 
 App.TableHorizonExample.HorizonTableCellView = Ember.Table.TableCell.extend
-  templateName: null
+  template: Ember.Handlebars.compile("")
   heightBinding: 'controller.rowHeight'
   horizonContent: Ember.computed ->
     normal = d3.random.normal(1.5, 3)
