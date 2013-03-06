@@ -98,9 +98,10 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
 Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'header-row'
   classNames:     ['table-row', 'header-row']
-  styleBindings:  ['height']
+  styleBindings:  ['height', 'width']
   columns: Ember.computed.alias 'content'
   height:  Ember.computed.alias 'controller.headerHeight'
+  width:   Ember.computed.alias 'controller._tableColumnsWidth'
 
   # options for jQuery UI sortable
   sortableOption: Ember.computed ->
@@ -138,16 +139,21 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   resizableOption: Ember.computed ->
     handles: 'e'
     minHeight: 40
-    minWidth: 100
-    maxWidth: 500
+    minWidth: @get("column.minWidth") || 100
+    maxWidth: @get("column.maxWidth") || 500
     resize: jQuery.proxy(@onColumnResize, this)
+    stop: jQuery.proxy(@onColumnResize, this)
   .property()
 
   didInsertElement: ->
-    @$().resizable(@get('resizableOption'))
+    fluid = @get("controller.fluidTable")
+    if !fluid || (fluid and @get("column._nextColumn"))
+      @$().resizable(@get('resizableOption'))
+      @_resizableWidget = @$().resizable('widget')
 
   onColumnResize: (event, ui) ->
-    @set 'width', ui.size.width
+    max = @get("column").resize(ui.size.width)
+    @$().resizable("option", "maxWidth", max) if max
 
 ################################################################################
 
