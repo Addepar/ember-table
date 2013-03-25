@@ -58,7 +58,7 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
       isTreeColumn: yes
       headerCellViewClass:  'App.TreeTableExample.HeaderTreeCell'
       tableCellViewClass:   'App.TreeTableExample.TreeCell'
-      getCellContent: (row) -> row.group_value
+      contentPath: 'group_value'
   .property 'data.grouping_factors.@each'
 
   root: Ember.computed ->

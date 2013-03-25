@@ -1,0 +1,13 @@
+<div class='table-fixed-wrapper'>
+  {{view Ember.Table.HeaderBlock classNames="left-table-block"
+    columnsBinding="controller.fixedColumns"
+    widthBinding="controller._fixedBlockWidth"
+    heightBinding="controller.headerHeight"
+  }}
+  {{view Ember.Table.HeaderBlock classNames="right-table-block"
+    columnsBinding="controller.tableColumns"
+    scrollLeftBinding="controller._tableScrollLeft"
+    widthBinding="controller._tableBlockWidth"
+    heightBinding="controller.headerHeight"
+  }}
+</div>

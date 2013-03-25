@@ -6,7 +6,7 @@ randomWalk = (numSteps) ->
     lastValue = lastValue + d3.random.normal()()
 
 App.TableSparklineExample.SparkCellView = Ember.Table.TableCell.extend
-  templateName: null
+  template: Ember.Handlebars.compile("")
   heightBinding: 'controller.rowHeight'
 
   sparkContent: Ember.computed ->

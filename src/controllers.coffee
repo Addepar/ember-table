@@ -5,18 +5,66 @@ Ember.Table = Ember.Namespace.create()
 ################################################################################
 Ember.Table.ColumnDefinition = Ember.Object.extend
   headerCellName:       null
+
+  resize: (pxWidth, tableWidth)->
+    newMaxWidth = null
+    tableWidth = tableWidth || @get("controller._tableContainerWidth")
+
+    unless @get("controller.fluidTable")
+      @set("columnWidth", pxWidth) if pxWidth
+      return null
+    return unless tableWidth
+
+    percent = (val)->
+      if "string" is typeof val
+        +(val.replace("%", ""))
+      else
+        val * 100 / tableWidth
+
+    # either from a tabel resize or a column resize
+    oldWidth = percent(@get("columnWidth"))
+    newWidth = if 'number' is typeof pxWidth then percent(pxWidth) else oldWidth
+
+    # calculate the pixel change for
+    nextCol = @get("_nextColumn")
+    if nextCol
+      # calculate new and old percent width
+      diff = oldWidth - newWidth + percent(nextCol.get("columnWidth"))
+      nextCol.set "columnWidth", diff/100*tableWidth
+      newMaxWidth = (newWidth + diff)/100*tableWidth - 100
+
+    @set "columnWidth", newWidth/100*tableWidth
+    @notifyPropertyChange("columnWidth")
+
+    newMaxWidth
+
+  _convertColumnToWidth: Ember.beforeObserver ->
+    return unless @get("controller.fluidTable")
+    tableWidth = @get( "controller._tableContainerWidth" )
+    @set("columnWidth", @get("columnWidth")/tableWidth*100 + "%") if tableWidth
+  , "controller._tableContainerWidth"
+
+  _resizeToTable: Ember.observer ->
+    @resize()
+  , "controller._tableContainerWidth"
+
   # TODO: Default column width should be shared with LESS file
-  columnWidth:          150
+  columnWidth: 150
   headerCellViewClass:  'Ember.Table.HeaderCell'
   tableCellViewClass:   'Ember.Table.TableCell'
   # This gives a formatted value e.g. $20,000,000
-  getCellContent: Ember.required(Function)
+  getCellContent: (row) ->
+    path = @get 'contentPath'
+    Ember.assert "You must either provide a contentPath or override " +
+      "getCellContent in your column definition", path?
+    Ember.get row, path
+
   setCellContent: Ember.K
 
 ################################################################################
 # Table Row
 ################################################################################
-Ember.Table.Row = Ember.ObjectController.extend
+Ember.Table.Row = Ember.ObjectProxy.extend
   content:  null
   isHovering: no
   isSelected: no
@@ -27,7 +75,6 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null
   content: null
   rowContent: Ember.computed( -> []).property()
-
   objectAt: (idx) ->
     row = @get('rowContent')[idx]
     return row if row
@@ -54,18 +101,18 @@ Ember.Table.TableController = Ember.Controller.extend
   footerHeight: 30
   hasHeader: yes
   hasFooter: yes
+  # specify the view class to use for rendering the table rows
+  tableRowViewClass: 'Ember.Table.TableRow'
 
-  tableRowClass: 'Ember.Table.Row'
+  # Set to yes to use % as column widths
+  fluidTable: no
 
   # Array of Ember.Table.Row
   bodyContent: Ember.computed ->
-    tableRowClass = @get 'tableRowClass'
-    if typeof tableRowClass is 'string'
-      tableRowClass = Ember.get Ember.lookup, tableRowClass
     Ember.Table.RowArrayProxy.create
-      tableRowClass: tableRowClass
+      tableRowClass: Ember.Table.Row
       content: @get('content')
-  .property 'content', 'tableRowClass'
+  .property 'content'
 
   # Array of Ember.Table.Row
   footerContent: Ember.computed (key, value) ->
@@ -83,8 +130,18 @@ Ember.Table.TableController = Ember.Controller.extend
     columns         = @get 'columns'
     return Ember.A() unless columns
     numFixedColumns = @get('numFixedColumns') or 0
-    columns.slice(numFixedColumns, columns.get('length'))
+    columns = columns.slice(numFixedColumns, columns.get('length'))
+    @prepareTableColumns(columns)
+    columns
   .property 'columns.@each', 'numFixedColumns'
+
+  prepareTableColumns: Ember.observer (tableColumns)->
+    # Some maintenance on the columns for percent resizing
+    columns = if Ember.isArray(tableColumns) then tableColumns else @get("tableColumns")
+    for col, i in columns
+      col.set("_nextColumn", columns.objectAt(i + 1))
+      col.set("controller", this)
+  , "tableColumns.@each", "tableColumns"
 
   sortByColumn: Ember.K
 
@@ -103,8 +160,9 @@ Ember.Table.TableController = Ember.Controller.extend
 
   # actual width of the table columns (non-frozen columns)
   _tableColumnsWidth: Ember.computed ->
+    return "100%" if @get "fluidTable"
     @_getTotalWidth @get('tableColumns')
-  .property 'tableColumns.@each.columnWidth'
+  .property 'tableColumns.@each.columnWidth', "fluidTable"
 
   _rowWidth: Ember.computed ->
     columnsWidth = @get '_tableColumnsWidth'

@@ -1,6 +1,6 @@
-App.TableSimpleExample = Ember.Namespace.create()
+App.TableFluidExample = Ember.Namespace.create()
 
-App.TableSimpleExample.LazyDataSource = Ember.ArrayProxy.extend
+App.TableFluidExample.LazyDataSource = Ember.ArrayProxy.extend
   objectAt: (idx) ->
     row  = @get('content')[idx]
     return row if row
@@ -17,27 +17,28 @@ App.TableSimpleExample.LazyDataSource = Ember.ArrayProxy.extend
     @get('content')[idx] = row
     row
 
-App.TableSimpleExample.TableController = Ember.Table.TableController.extend
+App.TableFluidExample.TableController = Ember.Table.TableController.extend
   hasHeader: yes
   hasFooter: no
   numFixedColumns: 0
   numRows: 500000
   rowHeight: 30
+  fluidTable: yes  
 
   columns: Ember.computed ->
     columnNames = ['open', 'high', 'low', 'close', 'volume']
     entryColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 100
+      columnWidth: "10%"
       headerCellName: 'Entry'
-      contentPath: 'index'
+      getCellContent: (row) -> row['index'];
     dateColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 150
+      columnWidth: "30%"
       headerCellName: 'Date'
       getCellContent: (row) -> row['date'].toDateString();
     columns= columnNames.map (key, index) ->
       name = key.charAt(0).toUpperCase() + key.slice(1)
       Ember.Table.ColumnDefinition.create
-        columnWidth: 100
+        columnWidth: "12%"
         headerCellName: name
         getCellContent: (row) -> row[key].toFixed(2)
     columns.unshift(dateColumn)
@@ -46,6 +47,6 @@ App.TableSimpleExample.TableController = Ember.Table.TableController.extend
   .property()
 
   content: Ember.computed ->
-    App.TableSimpleExample.LazyDataSource.create
+    App.TableFluidExample.LazyDataSource.create
       content: new Array(@get('numRows'))
   .property 'numRows'
