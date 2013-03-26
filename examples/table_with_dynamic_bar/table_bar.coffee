@@ -1,26 +1,6 @@
 App.TableBarExample = Ember.Namespace.create()
 
-Ember.Table.DynamicTableCell = Ember.Table.TableCell.extend
-  contentPropertyWillChange: (->
-    contentProperty = @get 'column.contentProperty'
-    if contentProperty
-      @removeObserver("rowContent.#{contentProperty}", this, this.contentDidChange)
-  ).observesBefore 'column.contentProperty'
-
-  contentPropertyDidChange: (->
-    contentProperty = this.get 'column.contentProperty'
-    if contentProperty
-      @addObserver("rowContent.#{contentProperty}", this, this.contentDidChange)
-  ).observesBefore 'column.contentProperty'
-
-  contentDidChange: ->
-    @notifyPropertyChange 'cellContent'
-
-  init: ->
-    @_super.apply(this, arguments)
-    @contentPropertyDidChange()
-
-App.TableBarExample.BarCell = Ember.Table.DynamicTableCell.extend
+App.TableBarExample.BarCell = Ember.Table.TableCell.extend
   templateName:     'bar-cell'
   classNameBindings:['column.color']
   barWidth: Ember.computed ->
@@ -54,7 +34,6 @@ App.TableBarExample.TableController = Ember.Table.TableController.extend
         color: colors[index]
         headerCellName: 'Bar'
         tableCellViewClass: 'App.TableBarExample.BarCell'
-        contentProperty: "value#{number}"
         contentPath: "value#{number}"
     columns.unshift(column1)
     columns

@@ -1,5 +1,5 @@
 indexesOf = Ember.EnumerableUtils.indexesOf
-# TODO(Peter): use selection index
+# TODO(Peter): This entire thing needs to be refactored...
 Ember.Table.RowSelectionMixin = Ember.Mixin.create
   # we need to set tabindex so that div responds to key events
   attributeBindings: 'tabindex'
@@ -24,6 +24,7 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
     if rows
       content = rows.mapProperty('content')
       indices = indexesOf content, value
+      indices = indices.filter((idx) -> idx > 0)
       selection.addObjects indices
 
   contentDidChange: Ember.observer ->
