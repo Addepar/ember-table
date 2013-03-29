@@ -191,8 +191,31 @@
     line-height: @table-row-height - 1;
   }
   .content {
-    padding: 0 25px;
+    padding: 0 5px;
   }
+}
+
+// Row selectors
+.table-header-tree-cell,
+.table-tree-cell {
+  .content {
+    padding-left: 25px;
+  }
+}
+.header-cell .toggle {
+  margin-top: 20px;
+  }
+.top-span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid @table-row-border-color;
+  margin: 0;
+  z-index: 10000;
+  padding: 0;
 }
 .body-container .table-cell{
   white-space: nowrap;
@@ -302,6 +325,7 @@
 }
 
 /* Toggle Cell */
+
 .toggle-span {
   background-color: #f4f4f4;
   position: absolute;
@@ -312,10 +336,7 @@
   height: 100%;
   margin: 0;
   border-bottom: 1px solid @table-row-border-color;
-}
-
-.table-toggle-cell{
-  background-color: #f4f4f4;
+  border-right: 1px solid @table-row-border-color;
 }
 .toggle-icon  {
   display: none;
@@ -368,11 +389,6 @@
     visibility: visible;
   }
 }
-
-.table-toggle-cell{
-  border-bottom: 1px solid @table-row-border-color;
-}
-
 // TODO: PETER HACK
 .header-row::-webkit-scrollbar {
   width: 0;

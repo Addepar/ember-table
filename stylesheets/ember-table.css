@@ -97,7 +97,26 @@
   line-height: 29px;
 }
 .table-cell .content {
-  padding: 0 25px;
+  padding: 0 5px;
+}
+.table-header-tree-cell .content,
+.table-tree-cell .content {
+  padding-left: 25px;
+}
+.header-cell .toggle {
+  margin-top: 20px;
+}
+.top-span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 20px;
+  background-color: #f4f4f4;
+  border-bottom: 1px solid #dddddd;
+  margin: 0;
+  z-index: 10000;
+  padding: 0;
 }
 .body-container .table-cell {
   white-space: nowrap;
@@ -210,9 +229,7 @@
   height: 100%;
   margin: 0;
   border-bottom: 1px solid #dddddd;
-}
-.table-toggle-cell {
-  background-color: #f4f4f4;
+  border-right: 1px solid #dddddd;
 }
 .toggle-icon {
   display: none;
@@ -265,9 +282,6 @@
 }
 .column-sortable-indicator.active {
   visibility: visible;
-}
-.table-toggle-cell {
-  border-bottom: 1px solid #dddddd;
 }
 .header-row::-webkit-scrollbar {
   width: 0;

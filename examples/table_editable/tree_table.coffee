@@ -130,12 +130,9 @@ App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
 ################################################################################
 # Views
 ################################################################################
-App.TreeTableExample.ToggleCell = Ember.Table.TableCell.extend
-  templateName: 'table-toggle-cell'
-  classNames: 'table-toggle-cell'
-
 App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
   templateName: 'table-tree-cell'
+  classNames:   'table-tree-cell'
   styleBindings: ['indentation:padding-left']
 
   indentation: Ember.computed ->
@@ -145,6 +142,7 @@ App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
 
 App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
   templateName: 'table-header-tree-cell'
+  classNames:   'table-header-tree-cell'
 
 ################################################################################
 # Controller
