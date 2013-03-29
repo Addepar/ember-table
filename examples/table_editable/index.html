@@ -49,22 +49,8 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="table-header-tree-cell">
-      {{! <span class="table-column-header">
+      <span class="table-column-header">
         <i class="icon-caret-down table-dropdown-toggle"></i>
-        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-
-        </ul>
-      </span> }}
-
-      <span class="dropdown open">
-        <a class="dropdown-toggle" id="drop4" role="button" data-toggle="dropdown" href="#">Dropdown <b class="caret"></b></a>
-        <ul id="menu1" class="dropdown-menu" role="menu" aria-labelledby="drop4">
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Action</a></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Another action</a></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Something else here</a></li>
-          <li role="presentation" class="divider"></li>
-          <li role="presentation"><a role="menuitem" tabindex="-1" href="#">Separated link</a></li>
-        </ul>
       </span>
 
       <span {{bindAttr class=":toggle-span view.row.isLeaf::toggle

@@ -57,6 +57,7 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
       columnWidth: 400
       isTreeColumn: yes
       isSortable: no
+      textAlign: 'text-align-left'
       headerCellViewClass:  'App.TreeTableExample.HeaderTreeCell'
       tableCellViewClass:   'App.TreeTableExample.TreeCell'
       contentPath: 'group_value'
