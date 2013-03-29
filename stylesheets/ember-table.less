@@ -147,11 +147,9 @@
     background-color: @table-footer-bg;
   }
 }
-// Hack to add scrollbar
-// .header-container .right-table-block{
-//   overflow-x: scroll;
-
-// }
+.header-container .right-table-block{
+   overflow-x: scroll;
+}
 
 
 /* Table Rows */
@@ -273,8 +271,6 @@
   }
 }
 .header-container .right-table-block .table-row{
-  width: 100%;
-  overflow-x: auto;
   .ui-sortable{
     // Dynamically set the width
     overflow: hidden;
@@ -410,6 +406,7 @@
   }
 }
 // TODO: PETER HACK
-.header-row::-webkit-scrollbar {
+.header-block::-webkit-scrollbar {
   width: 0;
+  height: 0;
 }

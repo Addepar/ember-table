@@ -116,11 +116,13 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
 
 # We hacked this. There is an inconsistency at the level in which we are
 # handling scroll event...
-Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
+Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'header-row'
   classNames:     ['table-row', 'header-row']
-  columns: Ember.computed.alias 'content'
+  styleBindings:  'width'
+  columns:        Ember.computed.alias 'content'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+  width:          Ember.computed.alias 'controller._tableColumnsWidth'
 
   # options for jQuery UI sortable
   sortableOption: Ember.computed ->
@@ -139,17 +141,9 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
     sort:   jQuery.proxy(@onColumnSortChange, this)
   .property()
 
-  onScrollLeftDidChange: Ember.observer ->
-    @$().scrollLeft @get('scrollLeft')
-  , 'scrollLeft'
-
   didInsertElement: ->
     @_super()
     @$('> div').sortable(@get('sortableOption'))
-
-  onScroll: (event) ->
-    @set 'scrollLeft', event.target.scrollLeft
-    event.preventDefault()
 
   onColumnSortStop: (event, ui) ->
     @set 'controller._isShowingSortableIndicator', no

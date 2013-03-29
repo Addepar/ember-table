@@ -60,6 +60,9 @@
 .fixed-table-container.footer-container {
   background-color: #ffffff;
 }
+.header-container .right-table-block {
+  overflow-x: scroll;
+}
 /* Table Rows */
 .table-row {
   position: absolute;
@@ -174,10 +177,6 @@
 }
 .header-container .ui-sortable-helper .ui-resizable-handle {
   background-color: #EAEAEA;
-}
-.header-container .right-table-block .table-row {
-  width: 100%;
-  overflow-x: auto;
 }
 .header-container .right-table-block .table-row .ui-sortable {
   overflow: hidden;
@@ -302,6 +301,7 @@
 .column-sortable-indicator.active {
   visibility: visible;
 }
-.header-row::-webkit-scrollbar {
+.header-block::-webkit-scrollbar {
   width: 0;
+  height: 0;
 }
