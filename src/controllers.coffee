@@ -21,6 +21,8 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   isResizable:  yes
   # wether the column is sortable
   isSortable:  yes
+  # text align left | center | right
+  textAlign: 'left'
 
   # The view class we want to use for the header
   headerCellViewClass:  'Ember.Table.HeaderCell'
