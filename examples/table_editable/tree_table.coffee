@@ -46,18 +46,8 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
           return object.value.toPercent()  if object.type is 'percent'
           "-"
     columns.unshiftObject @get('groupingColumn')
-    columns.unshiftObject @get('toggleColumn')
     columns
   .property 'data.valueFactors.@each', 'groupingColumn'
-
-  toggleColumn: Ember.computed ->
-    Ember.Table.ColumnDefinition.create
-      headerCellName: ""
-      columnWidth: 20
-      isSortable: no
-      headerCellViewClass:  'App.TreeTableExample.ToggleCell'
-      tableCellViewClass:   'App.TreeTableExample.ToggleCell'
-  .property()
 
   groupingColumn: Ember.computed ->
     groupingFactors = @get 'data.grouping_factors'
@@ -162,12 +152,13 @@ App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
 App.TreeTableExample.TableController =
 Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
   # overridding default properties
-  numFixedColumns: 2
+  numFixedColumns: 1
   isCollapsed: no
   isHeaderHeightResizable: yes
   rowHeight: 30
   hasHeader: yes
   hasFooter: yes
+  headerHeight: 70
 
   # custom properties
   sortAscending: no

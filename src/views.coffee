@@ -127,12 +127,13 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
     axis: 'x'
     containment: 'parent'
     cursor: 'pointer'
+    cursorAt: { left: 20, top: 20 }
     helper: 'clone'
     items: ".header-cell.sortable"
-    opacity: 0.8
+    opacity: 0.9
     placeholder: 'ui-state-highlight'
     scroll: true
-    tolerance: 'pointer'
+    tolerance: 'intersect'
     update: jQuery.proxy(@onColumnSortDone,   this)
     stop:   jQuery.proxy(@onColumnSortStop,   this)
     sort:   jQuery.proxy(@onColumnSortChange, this)
@@ -202,10 +203,8 @@ Ember.View.extend Ember.StyleBindingsMixin,
   classNames: 'column-sortable-indicator'
   classNameBindings: 'controller._isShowingSortableIndicator:active'
   styleBindings: ['left', 'height']
-  left: Ember.computed.alias 'controller._sortableIndicatorLeft'
-  height: Ember.computed ->
-    @get('controller._height') - @get('controller.footerHeight')
-  .property 'controller._height', 'controller.footerHeight'
+  left:   Ember.computed.alias 'controller._sortableIndicatorLeft'
+  height: Ember.computed.alias 'controller._height'
 
 Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
   templateName:   'header-container'

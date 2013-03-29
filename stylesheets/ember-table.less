@@ -191,7 +191,7 @@
     line-height: @table-row-height - 1;
   }
   .content {
-    padding: 0 5px;
+    padding: 0 25px;
   }
 }
 .body-container .table-cell{
@@ -302,6 +302,17 @@
 }
 
 /* Toggle Cell */
+.toggle-span {
+  background-color: #f4f4f4;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 100%;
+  margin: 0;
+  border-bottom: 1px solid @table-row-border-color;
+}
 
 .table-toggle-cell{
   background-color: #f4f4f4;
@@ -360,4 +371,9 @@
 
 .table-toggle-cell{
   border-bottom: 1px solid @table-row-border-color;
+}
+
+// TODO: PETER HACK
+.header-row::-webkit-scrollbar {
+  width: 0;
 }

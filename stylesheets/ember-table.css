@@ -97,7 +97,7 @@
   line-height: 29px;
 }
 .table-cell .content {
-  padding: 0 5px;
+  padding: 0 25px;
 }
 .body-container .table-cell {
   white-space: nowrap;
@@ -200,6 +200,17 @@
   padding-left: 3px;
 }
 /* Toggle Cell */
+.toggle-span {
+  background-color: #f4f4f4;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 100%;
+  margin: 0;
+  border-bottom: 1px solid #dddddd;
+}
 .table-toggle-cell {
   background-color: #f4f4f4;
 }
@@ -257,4 +268,7 @@
 }
 .table-toggle-cell {
   border-bottom: 1px solid #dddddd;
+}
+.header-row::-webkit-scrollbar {
+  width: 0;
 }
