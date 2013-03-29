@@ -60,17 +60,20 @@
 .fixed-table-container.footer-container {
   background-color: #ffffff;
 }
+.header-row::-webkit-scrollbar {
+  width: 0;
+}
 /* Table Rows */
 .table-row {
   position: absolute;
+}
+.table-row > div {
+  height: 100%;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
-}
-.table-row > div {
-  height: 100%;
 }
 .table-row.selected {
   background-color: #227ecb !important;
@@ -175,6 +178,15 @@
 .header-container .ui-sortable-helper .ui-resizable-handle {
   background-color: #EAEAEA;
 }
+.header-cell {
+  display: block !important;
+}
+.header-cell .toggle {
+  margin-top: 20px;
+}
+.header-cell .toggle i {
+  display: none;
+}
 .header-container .right-table-block .table-row {
   width: 100%;
   overflow-x: auto;
@@ -185,9 +197,6 @@
 .table-header-tree-cell .content,
 .table-tree-cell .content {
   padding-left: 25px;
-}
-.header-cell .toggle {
-  margin-top: 20px;
 }
 .table-column-header {
   position: absolute;
@@ -223,16 +232,11 @@
   border-top: 1px solid #dddddd;
   overflow: hidden;
 }
-/* Tree Table */
-.header-cell {
-  display: block !important;
+.footer-container .table-cell .toggle {
+  padding: 0 3px 0 5px !important;
 }
-.header-cell .toggle {
-  margin-top: 3px;
-  padding-left: 5px;
-}
-.header-cell .toggle i {
-  padding-left: 3px;
+.footer-container .table-cell .toggle .toggle-icon:before {
+  content: none !important;
 }
 /* Toggle Cell */
 .toggle-span {
@@ -276,16 +280,9 @@
   -o-transform: rotate(-90deg);
   transform: rotate(-90deg);
   padding-left: 0;
-  vertical-align: text-top;
   opacity: 1;
   padding-left: 4px;
   padding-top: 3px;
-}
-.footer-container .table-cell .toggle {
-  padding: 0 3px 0 5px !important;
-}
-.footer-container .table-cell .toggle .toggle-icon:before {
-  content: none !important;
 }
 /* Column Indicator */
 .column-sortable-indicator {
@@ -301,7 +298,4 @@
 }
 .column-sortable-indicator.active {
   visibility: visible;
-}
-.header-row::-webkit-scrollbar {
-  width: 0;
 }

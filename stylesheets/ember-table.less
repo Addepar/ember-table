@@ -147,21 +147,19 @@
     background-color: @table-footer-bg;
   }
 }
-// Hack to add scrollbar
-// .header-container .right-table-block{
-//   overflow-x: scroll;
-
-// }
-
+// Important
+.header-row::-webkit-scrollbar {
+  width: 0;
+}
 
 /* Table Rows */
 
 .table-row {
   // Height and Width defined dynamically through JS
   position: absolute;
-  .user-select(none);
   > div {
     height: 100%;
+    .user-select(none);
   }
   &.selected {
     background-color: @table-row-selected-color !important;
@@ -195,17 +193,16 @@
     padding: 0 5px;
   }
 }
-.body-container .table-cell{
+.body-container .table-cell {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   height: 100%;
 }
-.table-fixed-wrapper, .table-scrollable-wrapper {
-  .right-table-block {
-    .table-cell:last-child{
-      border-right: none;
-    }
+.table-fixed-wrapper,
+.table-scrollable-wrapper {
+  .right-table-block .table-cell:last-child {
+    border-right: none;
   }
 }
 
@@ -272,7 +269,16 @@
     }
   }
 }
-.header-container .right-table-block .table-row{
+.header-cell {
+  display: block !important;
+  .toggle {
+    margin-top: 20px;
+    i {
+      display: none;
+    }
+  }
+}
+.header-container .right-table-block .table-row {
   width: 100%;
   overflow-x: auto;
   .ui-sortable{
@@ -285,9 +291,6 @@
   .content {
     padding-left: 25px;
   }
-}
-.header-cell .toggle {
-  margin-top: 20px;
 }
 .table-column-header {
   position: absolute;
@@ -327,20 +330,16 @@
   border-top: 1px solid @table-footer-border-top;
   overflow: hidden;
 }
-
-/* Tree Table */
-
-.header-cell {
-  display: block !important;
-  .toggle {
-    margin-top: 3px;
-    padding-left: 5px;
-    i {
-      padding-left: 3px;
+.footer-container {
+  .table-cell {
+    .toggle {
+      padding: 0 3px 0 5px !important;
+      .toggle-icon:before {
+        content: none !important;
+      }
     }
   }
 }
-
 /* Toggle Cell */
 
 .toggle-span {
@@ -358,7 +357,6 @@
 .toggle-icon  {
   display: none;
   margin: 0;
-  // .transition(0.18s all linear);
 }
 .toggle .toggle-icon  {
   display: inline-block;
@@ -371,31 +369,20 @@
     opacity: 0.5;
   }
 }
-.expand{
+.expand {
   background-color: darken(@table-column-header-bg, 10%);
   .toggle-icon {
     .transform(rotate(-90deg));
     padding-left: 0;
-    vertical-align: text-top;
     opacity: 1;
     padding-left: 4px;
     padding-top: 3px;
   }
 }
-.footer-container {
-  .table-cell{
-    .toggle{
-      padding: 0 3px 0 5px !important;
-      .toggle-icon:before {
-        content: none !important;
-      }
-    }
-  }
-}
 
 /* Column Indicator */
 
-.column-sortable-indicator{
+.column-sortable-indicator {
   position: absolute;
   top: 0;
   left: -2px;
@@ -405,11 +392,7 @@
   width: 3px;
   z-index: 1000;
   visibility: hidden;
-  &.active{
+  &.active {
     visibility: visible;
   }
-}
-// TODO: PETER HACK
-.header-row::-webkit-scrollbar {
-  width: 0;
 }
