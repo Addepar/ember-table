@@ -80,7 +80,7 @@
 @table-footer-border-top:     #DDD;
 @table-header-hover-bg:       #595959;
 @table-header-ghost-bg:       #656565;
-
+@table-column-header-bg:      #f4f4f4;
 /* Table - Scrollbar */
 
 @scrollbarWidth:         8px;
@@ -195,47 +195,6 @@
     padding: 0 5px;
   }
 }
-
-// Row selectors
-.table-header-tree-cell,
-.table-tree-cell {
-  .content {
-    padding-left: 25px;
-  }
-}
-.header-cell .toggle {
-  margin-top: 20px;
-  }
-.table-column-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: @table-column-header-height;
-  line-height: @table-column-header-height;
-  background-color: #f4f4f4;
-  border-bottom: 1px solid @table-row-border-color;
-  margin: 0;
-  z-index: 1000;
-  padding: 0;
-  .table-dropdown-toggle {
-    visibility: hidden;
-  }
-  &:hover {
-    .table-dropdown-toggle {
-      visibility: visible;
-    }
-  }
-}
-.table-dropdown-toggle {
-  height: @table-column-header-height - 1;
-  float: right;
-  margin: 0;
-  text-align: center;
-  padding: 3px 2px 0 2px;
-  background-color: #cecece;
-  color: #777;
-}
 .body-container .table-cell{
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -321,6 +280,45 @@
     overflow: hidden;
   }
 }
+.table-header-tree-cell,
+.table-tree-cell {
+  .content {
+    padding-left: 25px;
+  }
+}
+.header-cell .toggle {
+  margin-top: 20px;
+}
+.table-column-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: @table-column-header-height;
+  line-height: @table-column-header-height;
+  background-color: @table-column-header-bg;
+  border-bottom: 1px solid @table-row-border-color;
+  margin: 0;
+  z-index: 1000;
+  padding: 0;
+  .table-dropdown-toggle {
+    visibility: hidden;
+  }
+  &:hover {
+    .table-dropdown-toggle {
+      visibility: visible;
+    }
+  }
+}
+.table-dropdown-toggle {
+  height: @table-column-header-height - 1;
+  float: right;
+  margin: 0;
+  text-align: center;
+  padding: 3px 2px 0 2px;
+  background-color: darken(@table-column-header-bg, 10%);
+  color: darken(@table-column-header-bg, 50%);
+}
 
 /* Footer */
 
@@ -346,7 +344,7 @@
 /* Toggle Cell */
 
 .toggle-span {
-  background-color: #f4f4f4;
+  background-color: @table-column-header-bg;
   position: absolute;
   top: 0;
   left: 0;
