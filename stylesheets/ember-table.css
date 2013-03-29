@@ -266,6 +266,9 @@
 .toggle .toggle-icon:hover {
   opacity: 0.5;
 }
+.expand {
+  background-color: #dbdbdb;
+}
 .expand .toggle-icon {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);

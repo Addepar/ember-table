@@ -371,13 +371,16 @@
     opacity: 0.5;
   }
 }
-.expand .toggle-icon {
-  .transform(rotate(-90deg));
-  padding-left: 0;
-  vertical-align: text-top;
-  opacity: 1;
-  padding-left: 4px;
-  padding-top: 3px;
+.expand{
+  background-color: darken(@table-column-header-bg, 10%);
+  .toggle-icon {
+    .transform(rotate(-90deg));
+    padding-left: 0;
+    vertical-align: text-top;
+    opacity: 1;
+    padding-left: 4px;
+    padding-top: 3px;
+  }
 }
 .footer-container {
   .table-cell{
