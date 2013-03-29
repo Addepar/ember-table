@@ -68,8 +68,9 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   defaultTemplate: Ember.Handlebars.compile(
     "<span class='content'>{{view.cellContent}}</span>")
-  classNames:     ['table-cell']
-  styleBindings:  ['width']
+  classNames:         'table-cell'
+  classNameBindings:  'column.textAlign'
+  styleBindings:      'width'
   row:        Ember.computed.alias 'parentView.row'
   column:     Ember.computed.alias 'content'
   rowContent: Ember.computed.alias 'row.content'
@@ -168,10 +169,10 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
     @set 'controller._isShowingSortableIndicator', no
 
 Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
-  templateName:   'header-cell'
-  classNames:     ['table-cell', 'header-cell']
-  classNameBindings: 'column.isSortable:sortable'
-  styleBindings:  ['width', 'height']
+  templateName:       'header-cell'
+  classNames:         ['table-cell', 'header-cell']
+  classNameBindings:  ['column.isSortable:sortable', 'column.textAlign']
+  styleBindings:      ['width', 'height']
   column:         Ember.computed.alias 'content'
   width:          Ember.computed.alias 'column.columnWidth'
   height:         Ember.computed.alias 'controller.headerHeight'
@@ -254,7 +255,7 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   templateName:   'footer-container'
   classNames:     ['table-container', 'fixed-table-container',
                   'footer-container']
-  styleBindings:  ['top']
+  styleBindings:  'top'
   height:         Ember.computed.alias 'controller.footerHeight'
   width:          Ember.computed.alias 'controller._tableContainerWidth'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
