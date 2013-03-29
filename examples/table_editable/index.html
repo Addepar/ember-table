@@ -29,7 +29,9 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="header-cell">
-      <span class="top-span"></span>
+      <span class="table-column-header">
+        <i class="icon-caret-down table-dropdown-toggle"></i>
+      </span>
       <span class="content" {{action sortByColumn view.content}}>
         {{view.content.headerCellName}}
       </span>
@@ -47,7 +49,9 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="table-header-tree-cell">
-      <span class="top-span"></span>
+      <span class="table-column-header">
+        <i class="icon-caret-down table-dropdown-toggle"></i>
+      </span>
       <span {{bindAttr class=":toggle-span view.row.isLeaf::toggle
           view.row.isCollapsed:expand:collapse"}}
           {{action toggleCollapse view.row}}>
