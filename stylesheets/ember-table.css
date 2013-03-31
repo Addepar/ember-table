@@ -220,7 +220,7 @@
   background-color: #f4f4f4;
   border-bottom: 1px solid #dddddd;
   margin: 0;
-  z-index: 1000;
+  z-index: 80;
   padding: 0;
 }
 .table-column-header .table-dropdown-toggle {
