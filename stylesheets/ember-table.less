@@ -251,15 +251,15 @@
   }
   .ui-resizable-handle {
       position: absolute;
-      right: 0;
-      background-color: @table-header-bg;
+      right: -1px;
+      background: transparent;
       .transition(background-color 0.1s ease-in);
     &.ui-resizable-e {
       top: 0;
       height: 100%;
-      width: 5px;
+      width: 3px;
       &:hover{
-        background-color: darken(@table-header-bg, 10%);
+        background: transparent;
         cursor: col-resize;
       }
     }
