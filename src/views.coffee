@@ -49,7 +49,8 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
 Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
   classNames:     'table-row'
-  classNameBindings: ['row.isActive:active', 'row.isSelected:selected']
+  classNameBindings: ['row.isActive:active', 'row.isSelected:selected',
+                      'row.rowStyle']
   styleBindings:  ['width', 'height']
   row:      Ember.computed.alias 'content'
   columns:  Ember.computed.alias 'parentView.columns'
