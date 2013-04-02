@@ -226,6 +226,15 @@
 .table-column-header .table-dropdown-toggle {
   visibility: hidden;
 }
+.table-column-header .table-dropdown-toggle:hover {
+  cursor: pointer;
+}
+.table-column-header:hover {
+  cursor: hand;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
 .table-column-header:hover .table-dropdown-toggle {
   visibility: visible;
 }

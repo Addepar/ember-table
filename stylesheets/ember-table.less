@@ -322,8 +322,15 @@
   padding: 0;
   .table-dropdown-toggle {
     visibility: hidden;
+    &:hover{
+      cursor: pointer;
+    }
   }
   &:hover {
+    cursor: hand;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
     .table-dropdown-toggle {
       visibility: visible;
     }
