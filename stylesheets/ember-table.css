@@ -320,3 +320,10 @@
 .column-sortable-indicator.active {
   visibility: visible;
 }
+/* Add Column Button */
+.add-column-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 10px;
+}
