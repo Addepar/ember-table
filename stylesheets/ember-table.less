@@ -425,20 +425,22 @@
 /* Add Column Button */
 .add-column-button {
   position: absolute;
-  top:    0;
+  top:    20px;
   right:  0;
   width:  16px;
   // Need height binding
   background-color: @table-column-header-bg;
   border-left: 1px solid darken(@table-column-header-bg, 10%);
-  height: 70px;
+  border-bottom: 1px solid @table-row-border-color;
+  height: 50px;
   z-index: 10;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: bold;
   color: darken(@table-column-header-bg, 40%);
   text-align: center;
-  line-height: 70px;
+  line-height: 50px;
   &:hover{
     text-decoration: none;
+    cursor: pointer;
   }
 }

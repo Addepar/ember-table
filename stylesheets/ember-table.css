@@ -323,19 +323,21 @@
 /* Add Column Button */
 .add-column-button {
   position: absolute;
-  top: 0;
+  top: 20px;
   right: 0;
   width: 16px;
   background-color: #f4f4f4;
   border-left: 1px solid #dbdbdb;
-  height: 70px;
+  border-bottom: 1px solid #dddddd;
+  height: 50px;
   z-index: 10;
-  font-size: 21px;
+  font-size: 18px;
   font-weight: bold;
   color: #8e8e8e;
   text-align: center;
-  line-height: 70px;
+  line-height: 50px;
 }
 .add-column-button:hover {
   text-decoration: none;
+  cursor: pointer;
 }
