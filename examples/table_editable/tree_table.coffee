@@ -178,11 +178,6 @@ App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
         return 5 if level is maxLevels
         return Math.min(level, 4)
 
-  recursiveCollapse: (isCollapsed) ->
-    @set 'isCollapsed', isCollapsed
-    @get('children').forEach (child) ->
-      child.recursiveCollapse isCollapsed
-
 ################################################################################
 # Views
 ################################################################################
