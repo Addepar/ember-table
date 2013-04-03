@@ -327,14 +327,16 @@
     }
   }
   &:hover {
-    cursor: hand;
-    cursor: grab;
-    cursor: -moz-grab;
-    cursor: -webkit-grab;
     .table-dropdown-toggle {
       visibility: visible;
     }
   }
+}
+.sortable .table-column-header:hover{
+  cursor: hand;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
 }
 .table-dropdown-toggle {
   height: @table-column-header-height - 1;
@@ -425,5 +427,18 @@
   position: absolute;
   top:    0;
   right:  0;
-  width:  10px;
+  width:  16px;
+  // Need height binding
+  background-color: @table-column-header-bg;
+  border-left: 1px solid darken(@table-column-header-bg, 10%);
+  height: 70px;
+  z-index: 10;
+  font-size: 21px;
+  font-weight: bold;
+  color: darken(@table-column-header-bg, 40%);
+  text-align: center;
+  line-height: 70px;
+  &:hover{
+    text-decoration: none;
+  }
 }

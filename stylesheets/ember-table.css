@@ -229,14 +229,14 @@
 .table-column-header .table-dropdown-toggle:hover {
   cursor: pointer;
 }
-.table-column-header:hover {
+.table-column-header:hover .table-dropdown-toggle {
+  visibility: visible;
+}
+.sortable .table-column-header:hover {
   cursor: hand;
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
-}
-.table-column-header:hover .table-dropdown-toggle {
-  visibility: visible;
 }
 .table-dropdown-toggle {
   height: 19px;
@@ -325,5 +325,17 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 10px;
+  width: 16px;
+  background-color: #f4f4f4;
+  border-left: 1px solid #dbdbdb;
+  height: 70px;
+  z-index: 10;
+  font-size: 21px;
+  font-weight: bold;
+  color: #8e8e8e;
+  text-align: center;
+  line-height: 70px;
+}
+.add-column-button:hover {
+  text-decoration: none;
 }
