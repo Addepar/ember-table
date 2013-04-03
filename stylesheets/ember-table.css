@@ -247,6 +247,17 @@
   background-color: #dbdbdb;
   color: #757575;
 }
+.move-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  z-index: 90;
+  background-color: #f4f4f4;
+  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
+}
 /* Footer */
 .footer-container {
   position: absolute;
@@ -323,21 +334,29 @@
 /* Add Column Button */
 .add-column-button {
   position: absolute;
-  top: 20px;
+  top: 0px;
   right: 0;
   width: 16px;
   background-color: #f4f4f4;
   border-left: 1px solid #dbdbdb;
   border-bottom: 1px solid #dddddd;
-  height: 50px;
+  height: 70px;
   z-index: 10;
   font-size: 18px;
   font-weight: bold;
   color: #8e8e8e;
   text-align: center;
-  line-height: 50px;
 }
-.add-column-button:hover {
+.add-column-button a {
+  position: absolute;
+  top: 19px;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  line-height: 50px;
+  border-top: 1px solid #dddddd;
+  color: #8e8e8e;
+}
+.add-column-button a:hover {
   text-decoration: none;
-  cursor: pointer;
 }
