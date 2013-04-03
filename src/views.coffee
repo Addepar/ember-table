@@ -7,8 +7,8 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
     # TODO(Peter): This is a hack to detect if user is using lion and scroll
     # bars are set to show when scrolling
     scrollBarWidth = $.getScrollbarWidth()
-    isLion = navigator?.appVersion['10_7'] isnt -1 and scrollBarWidth is 0
-    scrollBarWidth = 8 if isLion
+    #isLion = navigator?.appVersion['10_7'] isnt -1 and scrollBarWidth is 0
+    #scrollBarWidth = 8 if isLion
     @set 'controller._scrollbarSize', scrollBarWidth
     @set 'controller._tableScrollTop', 0
   onResize: ->
