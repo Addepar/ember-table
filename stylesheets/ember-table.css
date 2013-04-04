@@ -363,16 +363,22 @@
   font-size: 18px;
   font-weight: bold;
   color: #8e8e8e;
-  text-align: center;
+  display: table;
+}
+.add-column-button .border-top {
+  border-bottom: 1px solid #dddddd;
+  height: 20px;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 .add-column-button a {
-  position: absolute;
-  top: 19px;
-  left: 0;
+  padding-top: 20px;
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
   width: 100%;
-  height: 50px;
-  line-height: 50px;
-  border-top: 1px solid #dddddd;
   color: #8e8e8e;
 }
 .add-column-button a:hover {
