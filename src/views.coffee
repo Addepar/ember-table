@@ -198,7 +198,8 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 
 Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
   tagName: 'span'
-  template: Ember.Handlebars.compile('<a href="#">+</a>')
+  template: Ember.Handlebars.compile(
+    '<span class="border-top"></span><a href="#">+</a>')
   styleBindings: ['height']
   classNames: 'add-column-button'
   height:     Ember.computed.alias 'controller.headerHeight'
