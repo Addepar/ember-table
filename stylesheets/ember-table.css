@@ -258,6 +258,24 @@
   border-right: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
 }
+.bucket-editor {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  color: #8e8e8e;
+  display: block;
+}
+.bucket-editor:hover {
+  cursor: pointer;
+}
+.bucket-editor i {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  margin-top: -8px;
+}
 /* Footer */
 .footer-container {
   position: absolute;
@@ -359,4 +377,28 @@
 }
 .add-column-button a:hover {
   text-decoration: none;
+}
+/* Levels */
+.table-row.row-style-1 {
+  background-color: #ebebeb;
+  font-weight: 600;
+}
+.table-row.row-style-2 {
+  background-color: #f5f5f5;
+  font-weight: 500;
+}
+.table-row.row-style-3 {
+  background-color: #fff;
+  font-weight: 500;
+}
+.table-row.row-style-4 {
+  background-color: #fff;
+  font-weight: 400;
+}
+.table-row.row-style-5 {
+  background-color: #fff;
+  font-weight: 100;
+}
+.table-row.row-style-6 {
+  background-color: #fff;
 }
