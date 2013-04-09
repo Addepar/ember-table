@@ -210,7 +210,7 @@
 .table-tree-cell .content {
   padding-left: 25px;
 }
-.table-column-header {
+.table-header-cell-control-group {
   position: absolute;
   top: 0;
   left: 0;
@@ -223,16 +223,16 @@
   z-index: 80;
   padding: 0;
 }
-.table-column-header .table-dropdown-toggle {
+.table-header-cell-control-group .table-dropdown-toggle {
   visibility: hidden;
 }
-.table-column-header .table-dropdown-toggle:hover {
+.table-header-cell-control-group .table-dropdown-toggle:hover {
   cursor: pointer;
 }
-.table-column-header:hover .table-dropdown-toggle {
+.table-header-cell-control-group:hover .table-dropdown-toggle {
   visibility: visible;
 }
-.sortable .table-column-header:hover {
+.sortable .table-header-cell-control-group:hover {
   cursor: hand;
   cursor: grab;
   cursor: -moz-grab;

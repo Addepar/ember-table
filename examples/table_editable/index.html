@@ -29,7 +29,7 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="header-cell">
-      <span class="table-column-header">
+      <span class="table-header-cell-control-group">
         <i class="icon-caret-down table-dropdown-toggle"></i>
       </span>
       <span class="content" {{action sortByColumn view.content}}>
@@ -50,7 +50,7 @@
 
     <script type="text/x-handlebars" data-template-name="table-header-tree-cell">
       <span class="move-placeholder"></span>
-      <span class="table-column-header">
+      <span class="table-header-cell-control-group">
         <i class="icon-caret-down table-dropdown-toggle"></i>
       </span>
       <span {{bindAttr class=":toggle-span view.row.isLeaf::toggle
