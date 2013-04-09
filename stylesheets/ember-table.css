@@ -266,6 +266,8 @@
   width: 20px;
   color: #8e8e8e;
   display: block;
+  background-color: #F4F4F4;
+  border-right: 1px solid #DDD;
 }
 .bucket-editor:hover {
   cursor: pointer;
