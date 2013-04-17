@@ -237,16 +237,27 @@ Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin,
-  templateName:   'body-container'
-  classNames:     ['table-container', 'body-container']
-  height:         Ember.computed.alias 'controller._bodyHeight'
-  width:          Ember.computed.alias 'controller._width'
-  scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
-  scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+  templateName:           'body-container'
+  classNames:             ['table-container', 'body-container']
+  height:                 Ember.computed.alias 'controller._bodyHeight'
+  width:                  Ember.computed.alias 'controller._width'
+  scrollTop:              Ember.computed.alias 'controller._tableScrollTop'
+  scrollLeft:             Ember.computed.alias 'controller._tableScrollLeft'
+  firefoxScrollDistance:  52
+
   onScrollTopDidChange: Ember.observer ->
     @$().scrollTop @get('scrollTop')
   , 'scrollTop'
   onScroll: (event) ->
+    if $.browser.mozilla
+      if parseInt($.browser.version) >= 13
+        oldPosition = @get('scrollTop')
+        newPosition = event.target.scrollTop
+        if newPosition > oldPosition
+          event.target.scrollTop += @get('firefoxScrollDistance')
+        else if newPosition < oldPosition
+          event.target.scrollTop -= @get('firefoxScrollDistance')
+
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
   onMouseWheel: (event, delta, deltaX, deltaY) ->
