@@ -41,6 +41,7 @@
   -o-transform:       @string;
   transform:          @string;
 }
+@page-bg: #F7F7F7;
 
 // Ember Table
 // -----------------------------------------------------------------------------
@@ -70,17 +71,17 @@
 /* Table - BG and Border Colors */
 
 @table-header-border-bottom:            #ddd;
-@table-header-bg:                       transparent;
-@table-body-bg:                         transparent;
+@table-header-bg:                       @page-bg;
+@table-body-bg:                         @page-bg;
 @table-body-border-color:               transparent;
 @table-row-selected-color:              #227ECB;
 @table-row-border-color:                #ddd;
 @table-col-border-color:                #ddd;
-@table-footer-bg:                       transparent;
+@table-footer-bg:                       @page-bg;
 @table-footer-border-top:               #ddd;
 @table-header-hover-bg:                 transparent;
 @table-header-ghost-bg:                 transparent;
-@table-header-cell-control-group-bg:    transparent;
+@table-header-cell-control-group-bg:    @page-bg;
 @table-header-cell-control-group-color: #f4f4f4;
 
 // @table-header-border-bottom:          #DDD;
@@ -113,7 +114,8 @@
   position: relative;
   outline: 0;
   z-index: 0;
-  // Important because of the 4px margins due to inline-block
+  // Important: We use display:inline-block and they are not flush
+  // and have 4px margins without using font-size:0
   font-size: 0;
   background-color: @table-body-bg;
   border: 1px solid @table-body-border-color;
@@ -163,7 +165,7 @@
     background-color: @table-footer-bg;
   }
 }
-// Important
+// Important: Hides the horizontal scroll bar in the header
 .header-row::-webkit-scrollbar {
   width: 0;
 }
@@ -175,7 +177,6 @@
   position: absolute;
   > div {
     height: 100%;
-    .user-select(none);
   }
   &.selected {
     background-color: @table-row-selected-color !important;
@@ -195,7 +196,8 @@
 
 .table-cell {
   float: left;
-  // Important to define font size
+  // Important: We defined font-size: 0 in .tables-container due to the use of
+  // display-inline: block. Font-size: 13px is used for the cell content
   font-size: 13px;
   border-right: 1px solid @table-col-border-color;
   height: 100%;
@@ -207,6 +209,10 @@
   .content {
     padding: 0 5px;
   }
+}
+// PA Table
+.right-table-block .table-cell {
+  border-right: none;
 }
 .body-container .table-cell {
   white-space: nowrap;
@@ -227,31 +233,8 @@
   text-align: center;
 }
 
-/* Header */
+/* Header Container */
 
-.header-cell {
-  padding: 0px;
-  position: relative;
-  .content {
-    padding: 5px;
-    line-height: 1.4;
-    position: absolute;
-    bottom: 2px;
-  }
-  .toggle {
-    padding: 0 0 0 5px;
-  }
-}
-.header-cell.text-align-left {
-  .content {
-    left: 0;
-  }
-}
-.header-cell.text-align-right {
-  .content {
-    right: 0;
-  }
-}
 .header-container {
   border-bottom: 1px solid @table-header-border-bottom;
   overflow: hidden;
@@ -300,21 +283,43 @@
     }
   }
 }
-.header-cell {
-  display: block !important;
-  .toggle {
-    margin-top: 20px;
-    i {
-      display: none;
-    }
-  }
-}
 .header-container .right-table-block .table-row {
   width: 100%;
   overflow-x: auto;
   .ui-sortable {
     // Dynamically set the width
     overflow: hidden;
+  }
+}
+
+/* Header Cells */
+
+.header-cell {
+  padding: 0;
+  position: relative;
+  display: block !important;
+  .content {
+    padding: 5px;
+    line-height: 1.4;
+    position: absolute;
+    bottom: 2px;
+  }
+  .toggle {
+    padding: 0 0 0 5px;
+    margin-top: 20px;
+    i {
+      display: none;
+    }
+  }
+}
+.header-cell.text-align-left {
+  .content {
+    left: 0;
+  }
+}
+.header-cell.text-align-right {
+  .content {
+    right: 0;
   }
 }
 .table-header-tree-cell,
@@ -331,14 +336,12 @@
   width: 100%;
   height: @table-header-cell-control-group-height;
   line-height: @table-header-cell-control-group-height;
-  background-color: @table-header-cell-control-group-bg;
-  border-bottom: 1px solid @table-row-border-color;
   margin: 0;
   z-index: 80;
   padding: 0;
 
   // Animation
-  transition-property: background-color, top;
+  transition-property: background-color;
   transition-duration: 0.3s;
   transition-timing-fuction: ease-in-out;
   .table-dropdown-toggle {
@@ -347,21 +350,15 @@
       cursor: pointer;
     }
   }
-  &:hover {
-    .table-dropdown-toggle {
-      visibility: visible;
-    }
-  }
-}
-.header-cell:hover {
-  .table-header-cell-control-group {
-    top: -5px;
-    background-color: #e9e9e9;
-    border-top: 1px solid @table-row-border-color;
-  }
 }
 .table-header-cell-control-group-filler {
   z-index: -1;
+}
+.header-cell:hover .table-header-cell-control-group {
+  background-color: #e9e9e9;
+  .table-dropdown-toggle {
+      visibility: visible;
+    }
 }
 .sortable .table-header-cell-control-group:hover{
   cursor: hand;
@@ -369,6 +366,11 @@
   cursor: -moz-grab;
   cursor: -webkit-grab;
 }
+
+// TODO(Louis): Need to add this during the drag
+// > http://jqueryui.com/draggable/#cursor-style
+// cursor: -webkit-grabbing; cursor: -moz-grabbing;
+
 .table-dropdown-toggle {
   height: @table-header-cell-control-group-height - 1;
   float: right;
@@ -387,7 +389,6 @@
   z-index: 90;
   background-color: @table-header-cell-control-group-bg;
   border-right: 1px solid @table-row-border-color;
-  border-bottom: 1px solid @table-row-border-color;
 }
 .bucket-editor {
   position: absolute;
@@ -397,8 +398,8 @@
   width: 20px;
   color: darken(@table-header-cell-control-group-color, 40%);
   display: block;
-  background-color: #F4F4F4;
-  border-right: 1px solid #DDD;
+  background-color: @table-header-cell-control-group-bg;
+  border-right: 1px solid @table-row-border-color;
   &:hover{
     cursor: pointer;
   }
@@ -409,6 +410,7 @@
     margin-top: -8px;
   }
 }
+
 /* Footer */
 
 .footer-container {
@@ -438,7 +440,6 @@
   width: 20px;
   height: 100%;
   margin: 0;
-  // border-bottom: 1px solid @table-row-border-color;
   border-right: 1px solid @table-row-border-color;
 }
 .toggle-icon {
@@ -500,7 +501,6 @@
   color: darken(@table-header-cell-control-group-color, 40%);
   display: table;
   .border-top{
-    border-bottom: 1px solid @table-row-border-color;
     height: 20px;
     width: 100%;
     position: absolute;
@@ -527,42 +527,24 @@
   .transition(0.1s background-color linear);
   &.row-style-1 {
     border-bottom: 1px dotted @table-row-border-color;
-    // border-bottom: 1px solid darken(@table-row-border-color, 10%);
-    // border-top: solid 1px #777;
-    // background-color: lighten(black, 97%);
-    // background-color: #fff;
+    background-color: lighten(black, 93%);
     font-weight: bold;
   }
   &.row-style-2 {
     border-bottom: 1px dotted @table-row-border-color;
-    // border-top: solid 1px #a8a8a8;
-    // background-color: lighten(black, 99%);
-    // background-color: #fff;
-    // font-weight: 500;
+    background-color: lighten(black, 95%);
   }
   &.row-style-3 {
     border-bottom: 1px dotted @table-row-border-color;
-    // border-top: solid 1px #b4b4b4;
-    // background-color: #fff;
-    // font-weight: 500;
   }
   &.row-style-4 {
     border-bottom: 1px dotted @table-row-border-color;
-    // border-top: solid 1px #c4c4c4;
-    // background-color: #fff;
-    // font-weight: 400;
   }
   &.row-style-5 {
     border-bottom: 1px dotted @table-row-border-color;
-    // border-top: solid 1px #dfdfdf;
-    // background-color: #fff;
-    // font-weight: 100;
   }
   &.row-style-6 {
     border-bottom: 1px dotted @table-row-border-color;
-    // background-color: #fff;
-    // border-top: solid 1px #777;
-    // border-bottom: solid 1px #777;
   }
   &.last-row {
     border-bottom: none !important;
