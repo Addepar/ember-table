@@ -140,6 +140,14 @@ Ember.Table.TableController = Ember.Controller.extend
   _height: null
   _scrollbarSize: null
 
+  # tables-container height adjusts to the content height
+  _tablesContainerHeight: Ember.computed ->
+    height = @get('_height')
+    tablesContainerContentHeight = @get('_tableContentHeight') + @get('headerHeight') + @get('footerHeight')
+    return tablesContainerContentHeight if tablesContainerContentHeight < height
+    height
+  .property('_height', '_tableContentHeight', 'headerHeight', 'footerHeight')
+
   # actual width of the fixed columns (frozen columns)
   _fixedColumnsWidth: Ember.computed ->
     @_getTotalWidth @get('fixedColumns')
@@ -207,7 +215,8 @@ Ember.Table.TableController = Ember.Controller.extend
     if index + numViews >= numContent
       index = numContent - numViews
     if index < 0 then 0 else index
-  .property 'bodyContent.length', '_numItemsShowing', 'rowHeight', '_tableScrollTop'
+  .property('bodyContent.length', '_numItemsShowing', 'rowHeight',
+            '_tableScrollTop')
 
   _getTotalWidth: (columns) ->
     return 0 unless columns

@@ -1,6 +1,9 @@
-Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
-  templateName: 'tables-container'
-  classNames:   'tables-container'
+Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.ResizeHandler,
+  templateName:   'tables-container'
+  classNames:     'tables-container'
+  styleBindings:  ['height']
+  height:         Ember.computed.alias 'controller._tablesContainerHeight'
+
   didInsertElement: ->
     @_super()
     @elementSizeDidChange()

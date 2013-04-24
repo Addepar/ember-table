@@ -210,7 +210,8 @@
 .table-tree-cell .content {
   padding-left: 25px;
 }
-.table-column-header {
+.table-header-cell-control-group,
+.table-header-cell-control-group-filler {
   position: absolute;
   top: 0;
   left: 0;
@@ -223,16 +224,22 @@
   z-index: 80;
   padding: 0;
 }
-.table-column-header .table-dropdown-toggle {
+.table-header-cell-control-group .table-dropdown-toggle,
+.table-header-cell-control-group-filler .table-dropdown-toggle {
   visibility: hidden;
 }
-.table-column-header .table-dropdown-toggle:hover {
+.table-header-cell-control-group .table-dropdown-toggle:hover,
+.table-header-cell-control-group-filler .table-dropdown-toggle:hover {
   cursor: pointer;
 }
-.table-column-header:hover .table-dropdown-toggle {
+.table-header-cell-control-group:hover .table-dropdown-toggle,
+.table-header-cell-control-group-filler:hover .table-dropdown-toggle {
   visibility: visible;
 }
-.sortable .table-column-header:hover {
+.table-header-cell-control-group-filler {
+  z-index: -1;
+}
+.sortable .table-header-cell-control-group:hover {
   cursor: hand;
   cursor: grab;
   cursor: -moz-grab;
@@ -266,6 +273,8 @@
   width: 20px;
   color: #8e8e8e;
   display: block;
+  background-color: #F4F4F4;
+  border-right: 1px solid #DDD;
 }
 .bucket-editor:hover {
   cursor: pointer;
@@ -386,11 +395,11 @@
 }
 /* Levels */
 .table-row.row-style-1 {
-  background-color: #ebebeb;
+  background-color: #f7f7f7;
   font-weight: 600;
 }
 .table-row.row-style-2 {
-  background-color: #f5f5f5;
+  background-color: #fcfcfc;
   font-weight: 500;
 }
 .table-row.row-style-3 {

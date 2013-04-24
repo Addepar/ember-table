@@ -50,15 +50,15 @@
 
 /* Table - Sizes */
 
-@table-left-default-column-width:       500px;
-@table-right-column-max:                3000px;
-@table-right-default-column-width:      150px;
-@table-right-default-viewport-width:    500px;
-@table-body-default-height:             400px;
+@table-left-default-column-width:         500px;
+@table-right-column-max:                  3000px;
+@table-right-default-column-width:        150px;
+@table-right-default-viewport-width:      500px;
+@table-body-default-height:               400px;
 // Note: This should be equal to the rowHeight in the tableController
-@table-row-height:                      30px;
-@table-header-height:                   50px;
-@table-column-header-height:            20px;
+@table-row-height:                        30px;
+@table-header-height:                     50px;
+@table-header-cell-control-group-height:  20px;
 
 /* Table - Font Colors */
 
@@ -69,18 +69,18 @@
 
 /* Table - BG and Border Colors */
 
-@table-header-border-bottom:  #DDD;
-@table-header-bg:             #fff;
-@table-body-bg:               #fcfcfc;
-@table-body-border-color:     #ddd;
-@table-row-selected-color:    #227ECB;
-@table-row-border-color:      #ddd;
-@table-col-border-color:      #ddd;
-@table-footer-bg:             #fff;
-@table-footer-border-top:     #DDD;
-@table-header-hover-bg:       #595959;
-@table-header-ghost-bg:       #656565;
-@table-column-header-bg:      #f4f4f4;
+@table-header-border-bottom:          #DDD;
+@table-header-bg:                     #fff;
+@table-body-bg:                       #fcfcfc;
+@table-body-border-color:             #ddd;
+@table-row-selected-color:            #227ECB;
+@table-row-border-color:              #ddd;
+@table-col-border-color:              #ddd;
+@table-footer-bg:                     #fff;
+@table-footer-border-top:             #DDD;
+@table-header-hover-bg:               #595959;
+@table-header-ghost-bg:               #656565;
+@table-header-cell-control-group-bg:  #f4f4f4;
 /* Table - Scrollbar */
 
 @scrollbarWidth:         8px;
@@ -308,14 +308,15 @@
     padding-left: 25px;
   }
 }
-.table-column-header {
+.table-header-cell-control-group,
+.table-header-cell-control-group-filler {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
-  height: @table-column-header-height;
-  line-height: @table-column-header-height;
-  background-color: @table-column-header-bg;
+  height: @table-header-cell-control-group-height;
+  line-height: @table-header-cell-control-group-height;
+  background-color: @table-header-cell-control-group-bg;
   border-bottom: 1px solid @table-row-border-color;
   margin: 0;
   z-index: 80;
@@ -332,20 +333,23 @@
     }
   }
 }
-.sortable .table-column-header:hover{
+.table-header-cell-control-group-filler {
+  z-index: -1;
+}
+.sortable .table-header-cell-control-group:hover{
   cursor: hand;
   cursor: grab;
   cursor: -moz-grab;
   cursor: -webkit-grab;
 }
 .table-dropdown-toggle {
-  height: @table-column-header-height - 1;
+  height: @table-header-cell-control-group-height - 1;
   float: right;
   margin: 0;
   text-align: center;
   padding: 3px 2px 0 2px;
-  background-color: darken(@table-column-header-bg, 10%);
-  color: darken(@table-column-header-bg, 50%);
+  background-color: darken(@table-header-cell-control-group-bg, 10%);
+  color: darken(@table-header-cell-control-group-bg, 50%);
 }
 .move-placeholder {
   position: absolute;
@@ -354,7 +358,7 @@
   height: 20px;
   width: 20px;
   z-index: 90;
-  background-color: @table-column-header-bg;
+  background-color: @table-header-cell-control-group-bg;
   border-right: 1px solid @table-row-border-color;
   border-bottom: 1px solid @table-row-border-color;
 }
@@ -364,8 +368,10 @@
   left: 0;
   bottom: 0;
   width: 20px;
-  color: darken(@table-column-header-bg, 40%);
+  color: darken(@table-header-cell-control-group-bg, 40%);
   display: block;
+  background-color: #F4F4F4;
+  border-right: 1px solid #DDD;
   &:hover{
     cursor: pointer;
   }
@@ -397,7 +403,7 @@
 /* Toggle Cell */
 
 .toggle-span {
-  background-color: @table-column-header-bg;
+  background-color: @table-header-cell-control-group-bg;
   position: absolute;
   top: 0;
   left: 0;
@@ -424,7 +430,7 @@
   }
 }
 .toggle.expand {
-  background-color: darken(@table-column-header-bg, 10%);
+  background-color: darken(@table-header-cell-control-group-bg, 10%);
   .toggle-icon {
     .transform(rotate(-90deg));
     padding-left: 0;
@@ -458,14 +464,14 @@
   right:  0;
   width:  16px;
   // Need height binding
-  background-color: @table-column-header-bg;
-  border-left: 1px solid darken(@table-column-header-bg, 10%);
+  background-color: @table-header-cell-control-group-bg;
+  border-left: 1px solid darken(@table-header-cell-control-group-bg, 10%);
   border-bottom: 1px solid @table-row-border-color;
   height: 70px;
   z-index: 10;
   font-size: 18px;
   font-weight: bold;
-  color: darken(@table-column-header-bg, 40%);
+  color: darken(@table-header-cell-control-group-bg, 40%);
   display: table;
   .border-top{
     border-bottom: 1px solid @table-row-border-color;
@@ -481,7 +487,7 @@
     vertical-align: middle;
     text-align: center;
     width: 100%;
-    color: darken(@table-column-header-bg, 40%);
+    color: darken(@table-header-cell-control-group-bg, 40%);
     &:hover{
       text-decoration: none;
     }
@@ -493,12 +499,12 @@
 .table-row {
   &.row-style-1 {
     // border-top: solid 1px #777;
-    background-color: lighten(black, 92%);
+    background-color: lighten(black, 97%);
     font-weight: 600;
   }
   &.row-style-2 {
     // border-top: solid 1px #a8a8a8;
-    background-color: lighten(black, 96%);
+    background-color: lighten(black, 99%);
     font-weight: 500;
   }
   &.row-style-3 {
