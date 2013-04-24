@@ -49,12 +49,15 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
   classNames:     'table-row'
   classNameBindings: ['row.isActive:active', 'row.isSelected:selected',
-                      'row.rowStyle']
+                      'row.rowStyle', 'isLastRow:last-row']
   styleBindings:  ['width', 'height']
   row:      Ember.computed.alias 'content'
   columns:  Ember.computed.alias 'parentView.columns'
   width:    Ember.computed.alias 'controller._rowWidth'
   height:   Ember.computed.alias 'controller.rowHeight'
+  isLastRow: Ember.computed ->
+    @get('row') is @get('controller.bodyContent.lastObject')
+  .property 'controller.bodyContent.lastObject', 'row'
   mouseEnter: (event) ->
     row = @get 'row'
     row.set 'isActive', yes if row

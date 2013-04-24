@@ -92,7 +92,6 @@
   float: left;
   font-size: 13px;
   border-right: 1px solid #dddddd;
-  border-bottom: 1px dashed #dddddd;
   height: 100%;
 }
 .table-cell span {
@@ -367,7 +366,6 @@
   background-color: #f4f4f4;
   border-left: 1px solid #dbdbdb;
   border-bottom: 1px solid #dddddd;
-  height: 70px;
   z-index: 10;
   font-size: 18px;
   font-weight: bold;
@@ -395,25 +393,34 @@
 }
 /* Levels */
 .table-row.row-style-1 {
+  border-bottom: 1px dashed #dddddd;
   background-color: #f7f7f7;
   font-weight: 600;
 }
 .table-row.row-style-2 {
+  border-bottom: 1px dashed #dddddd;
   background-color: #fcfcfc;
   font-weight: 500;
 }
 .table-row.row-style-3 {
+  border-bottom: 1px dashed #dddddd;
   background-color: #fff;
   font-weight: 500;
 }
 .table-row.row-style-4 {
+  border-bottom: 1px dashed #dddddd;
   background-color: #fff;
   font-weight: 400;
 }
 .table-row.row-style-5 {
+  border-bottom: 1px dashed #dddddd;
   background-color: #fff;
   font-weight: 100;
 }
 .table-row.row-style-6 {
+  border-bottom: 1px dashed #dddddd;
   background-color: #fff;
+}
+.table-row.last-row {
+  border-bottom: none !important;
 }

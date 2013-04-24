@@ -57,7 +57,7 @@
 @table-body-default-height:               400px;
 // Note: This should be equal to the rowHeight in the tableController
 @table-row-height:                        30px;
-@table-header-height:                     50px;
+@table-header-height:                     70px;
 @table-header-cell-control-group-height:  20px;
 
 /* Table - Font Colors */
@@ -182,7 +182,6 @@
   // Important to define font size
   font-size: 13px;
   border-right: 1px solid @table-col-border-color;
-  border-bottom: 1px dashed @table-row-border-color;
   height: 100%;
   span {
     padding: 0;
@@ -467,7 +466,6 @@
   background-color: @table-header-cell-control-group-bg;
   border-left: 1px solid darken(@table-header-cell-control-group-bg, 10%);
   border-bottom: 1px solid @table-row-border-color;
-  height: 70px;
   z-index: 10;
   font-size: 18px;
   font-weight: bold;
@@ -498,33 +496,42 @@
 
 .table-row {
   &.row-style-1 {
+    border-bottom: 1px dashed @table-row-border-color;
     // border-top: solid 1px #777;
     background-color: lighten(black, 97%);
     font-weight: 600;
   }
   &.row-style-2 {
+    border-bottom: 1px dashed @table-row-border-color;
     // border-top: solid 1px #a8a8a8;
     background-color: lighten(black, 99%);
     font-weight: 500;
   }
   &.row-style-3 {
+    border-bottom: 1px dashed @table-row-border-color;
     // border-top: solid 1px #b4b4b4;
     background-color: #fff;
     font-weight: 500;
   }
   &.row-style-4 {
+    border-bottom: 1px dashed @table-row-border-color;
     // border-top: solid 1px #c4c4c4;
     background-color: #fff;
     font-weight: 400;
   }
   &.row-style-5 {
+    border-bottom: 1px dashed @table-row-border-color;
     // border-top: solid 1px #dfdfdf;
     background-color: #fff;
     font-weight: 100;
   }
   &.row-style-6 {
+    border-bottom: 1px dashed @table-row-border-color;
     background-color: #fff;
     // border-top: solid 1px #777;
     // border-bottom: solid 1px #777;
+  }
+  &.last-row {
+    border-bottom: none !important;
   }
 }
