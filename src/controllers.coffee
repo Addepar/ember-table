@@ -145,10 +145,7 @@ Ember.Table.TableController = Ember.Controller.extend
     height = @get('_height')
     containerHeight = @get('_tableContentHeight') +
       @get('headerHeight') + @get('footerHeight')
-    console.log "height: " + height
-    console.log "containerHeight " + containerHeight
-    return
-    # if containerHeight < height then containerHeight else height
+    if containerHeight < height then containerHeight else height
   .property('_height', '_tableContentHeight', 'headerHeight', 'footerHeight')
 
   # actual width of the fixed columns (frozen columns)

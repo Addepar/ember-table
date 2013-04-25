@@ -34,9 +34,11 @@
       <span class="table-header-cell-control-group">
         <i class="icon-caret-down table-dropdown-toggle"></i>
       </span>
-      <span class="content" {{action sortByColumn view.content}}>
-        {{view.content.headerCellName}}
-      </span>
+      <div class="content-container" {{action sortByColumn view.content}}>
+        <span class="content">
+          {{view.content.headerCellName}}
+        </span>
+      </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="table-tree-cell">
@@ -60,9 +62,11 @@
           {{action toggleCollapse view.row}}>
         <i class="icon-caret-down toggle-icon"></i>
       </span>
-      <span class='content' {{action sortByColumn view.column}}>
-        {{view.column.headerCellName}}
-      </span>
+      <div class="content-container" {{action sortByColumn view.column}}>
+        <span class='content'>
+          {{view.column.headerCellName}}
+        </span>
+      </div>
       <span class="bucket-editor">
         <i class="icon-th-list bucket-editor-icon'"></i>
       </span>

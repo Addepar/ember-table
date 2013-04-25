@@ -209,8 +209,8 @@ Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
   styleBindings: ['height']
   classNames: 'add-column-button'
   height: Ember.computed ->
-    # Add one pixel because of box-sizing
-    @get('controller.headerHeight') + 1
+    # 20 is the table-header-cell-control-group height, 2 is for the two borders
+    @get('controller.headerHeight') - 18
   .property 'controller.headerHeight'
 Ember.Table.ColumnSortableIndicator =
 Ember.View.extend Ember.StyleBindingsMixin,

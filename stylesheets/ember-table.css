@@ -122,7 +122,6 @@
 }
 /* Header Container */
 .header-container {
-  border-top: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
   overflow: hidden;
 }
@@ -186,8 +185,17 @@
   padding: 0;
   position: relative;
   display: block !important;
+  border-right: none;
 }
-.header-cell .content {
+.header-cell .content-container {
+  position: absolute;
+  top: 20px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-right: 1px solid #DDD;
+}
+.header-cell .content-container .content {
   padding: 5px;
   line-height: 1.4;
   position: absolute;
@@ -206,9 +214,11 @@
 .header-cell.text-align-right .content {
   right: 0;
 }
-.table-header-tree-cell .content,
 .table-tree-cell .content {
   padding-left: 25px;
+}
+.table-header-tree-cell .content-container {
+  left: 20px;
 }
 .table-header-cell-control-group,
 .table-header-cell-control-group-filler {
@@ -218,10 +228,15 @@
   width: 100%;
   height: 20px;
   line-height: 20px;
+  border-bottom: 1px solid #ddd;
+  border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  background-color: #f7f7f7;
   margin: 0;
   z-index: 80;
   padding: 0;
-  transition-property: background-color;
+  transition-property: background-color, border-top, border-right, border-left;
   transition-duration: 0.3s;
   transition-timing-fuction: ease-in-out;
 }
@@ -238,6 +253,9 @@
 }
 .header-cell:hover .table-header-cell-control-group {
   background-color: #e9e9e9;
+  border-top: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
 }
 .header-cell:hover .table-header-cell-control-group .table-dropdown-toggle {
   visibility: visible;
@@ -265,7 +283,7 @@
   width: 20px;
   z-index: 90;
   background-color: #f7f7f7;
-  border-right: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
 }
 .bucket-editor {
   position: absolute;
@@ -359,12 +377,10 @@
 /* Add Column Button */
 .add-column-button {
   position: absolute;
-  top: 0;
+  top: 19px;
   right: 0;
-  width: 15px;
+  width: 14px;
   background-color: #f7f7f7;
-  border-top: 1px solid #dddddd;
-  border-left: 1px solid #dbdbdb;
   border-bottom: 1px solid #dddddd;
   z-index: 10;
   font-size: 18px;
@@ -373,19 +389,20 @@
   display: table;
 }
 .add-column-button .border-top {
-  height: 20px;
+  height: 0;
   width: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  border-bottom: 1px solid #dddddd;
 }
 .add-column-button a {
-  padding-top: 20px;
   display: table-cell;
   vertical-align: middle;
   text-align: center;
   width: 100%;
   color: #8e8e8e;
+  border-left: 1px solid #dbdbdb;
 }
 .add-column-button a:hover {
   text-decoration: none;
