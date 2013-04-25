@@ -193,7 +193,6 @@
   bottom: 0;
   left: 0;
   right: 0;
-  border-right: 1px solid #DDD;
 }
 .header-cell .content-container .content {
   padding: 5px;
@@ -219,6 +218,7 @@
 }
 .table-header-tree-cell .content-container {
   left: 20px;
+  border-right: 1px solid #dddddd;
 }
 .table-header-cell-control-group,
 .table-header-cell-control-group-filler {
@@ -228,7 +228,7 @@
   width: 100%;
   height: 20px;
   line-height: 20px;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #dddddd;
   border-top: 1px solid transparent;
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
@@ -236,9 +236,6 @@
   margin: 0;
   z-index: 80;
   padding: 0;
-  transition-property: background-color, border-top, border-right, border-left;
-  transition-duration: 0.3s;
-  transition-timing-fuction: ease-in-out;
 }
 .table-header-cell-control-group .table-dropdown-toggle,
 .table-header-cell-control-group-filler .table-dropdown-toggle {
@@ -253,9 +250,9 @@
 }
 .header-cell:hover .table-header-cell-control-group {
   background-color: #e9e9e9;
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border-top: 1px solid #dddddd;
+  border-left: 1px solid #dddddd;
+  border-right: 1px solid #dddddd;
 }
 .header-cell:hover .table-header-cell-control-group .table-dropdown-toggle {
   visibility: visible;
@@ -309,6 +306,7 @@
 .footer-container {
   position: absolute;
   border-top: 1px solid #dddddd;
+  border-bottom: 1px solid #dddddd;
   overflow: hidden;
 }
 .footer-container .table-cell .toggle {
@@ -339,11 +337,6 @@
   width: 14px;
   padding-left: 6px;
   opacity: 0.3;
-  -webkit-transition: 0.1s all linear;
-  -moz-transition: 0.1s all linear;
-  -ms-transition: 0.1s all linear;
-  -o-transition: 0.1s all linear;
-  transition: 0.1s all linear;
 }
 .toggle .toggle-icon:hover {
   opacity: 0.5;
@@ -410,11 +403,6 @@
 /* Levels */
 .table-row {
   background-color: transparent;
-  -webkit-transition: 0.1s background-color linear;
-  -moz-transition: 0.1s background-color linear;
-  -ms-transition: 0.1s background-color linear;
-  -o-transition: 0.1s background-color linear;
-  transition: 0.1s background-color linear;
 }
 .table-row.row-style-1 {
   border-bottom: 1px dotted #dddddd;

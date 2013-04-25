@@ -305,7 +305,6 @@
     bottom: 0;
     left: 0;
     right: 0;
-    border-right: 1px solid #DDD;
     .content {
       padding: 5px;
       line-height: 1.4;
@@ -339,6 +338,7 @@
 .table-header-tree-cell {
   .content-container {
     left: 20px;
+    border-right: 1px solid @table-header-border-bottom;
   }
 }
 .table-header-cell-control-group,
@@ -349,7 +349,7 @@
   width: 100%;
   height: @table-header-cell-control-group-height;
   line-height: @table-header-cell-control-group-height;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid @table-header-border-bottom;
   border-top: 1px solid transparent;
   border-left: 1px solid transparent;
   border-right: 1px solid transparent;
@@ -359,9 +359,9 @@
   padding: 0;
 
   // Animation
-  transition-property: background-color, border-top, border-right, border-left;
-  transition-duration: 0.3s;
-  transition-timing-fuction: ease-in-out;
+  // transition-property: background-color, border-top, border-right, border-left;
+  // transition-duration: 0.3s;
+  // transition-timing-fuction: ease-in-out;
   .table-dropdown-toggle {
     visibility: hidden;
     &:hover{
@@ -374,9 +374,9 @@
 }
 .header-cell:hover .table-header-cell-control-group {
   background-color: #e9e9e9;
-  border-top: 1px solid #ddd;
-  border-left: 1px solid #ddd;
-  border-right: 1px solid #ddd;
+  border-top: 1px solid @table-header-border-bottom;
+  border-left: 1px solid @table-header-border-bottom;
+  border-right: 1px solid @table-header-border-bottom;
   .table-dropdown-toggle {
       visibility: visible;
     }
@@ -437,16 +437,13 @@
 .footer-container {
   position: absolute;
   border-top: 1px solid @table-footer-border-top;
+  border-bottom: 1px solid @table-footer-border-top;
   overflow: hidden;
 }
-.footer-container {
-  .table-cell {
-    .toggle {
-      padding: 0 3px 0 5px !important;
-      .toggle-icon:before {
-        content: none !important;
-      }
-    }
+.footer-container .table-cell .toggle {
+  padding: 0 3px 0 5px !important;
+  .toggle-icon:before {
+    content: none !important;
   }
 }
 
@@ -473,7 +470,7 @@
   width: 14px;
   padding-left: 6px;
   opacity: 0.3;
-  .transition(0.1s all linear);
+  // .transition(0.1s all linear);
   &:hover{
     opacity: 0.5;
   }
@@ -549,7 +546,7 @@
 
 .table-row {
   background-color: transparent;
-  .transition(0.1s background-color linear);
+  // .transition(0.1s background-color linear);
   &.row-style-1 {
     border-bottom: 1px dotted @table-row-border-color;
     background-color: lighten(black, 93%);

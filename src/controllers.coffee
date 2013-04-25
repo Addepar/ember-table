@@ -94,6 +94,7 @@ Ember.Table.TableController = Ember.Controller.extend
 
   prepareTableColumns: Ember.K
   sortByColumn: Ember.K
+  addColumn: Ember.K
 
   onColumnSort: (column, newIndex) ->
     columns  = @get 'tableColumns'
