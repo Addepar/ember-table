@@ -15,7 +15,6 @@
   z-index: 0;
   font-size: 0;
   background-color: #f7f7f7;
-  border: 1px solid transparent;
   overflow: hidden;
 }
 .tables-container * {
