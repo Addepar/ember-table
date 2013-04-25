@@ -13,8 +13,8 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.
   onResize: ->
     @elementSizeDidChange()
   elementSizeDidChange: ->
-    @set 'controller._width', @$().width()
-    @set 'controller._height', @$().height()
+    @set 'controller._width', @$().outerWidth()
+    @set 'controller._height', @$().outerHeight()
 
 Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['table-container']
