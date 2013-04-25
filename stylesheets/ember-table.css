@@ -400,23 +400,28 @@
 .table-row.row-style-1 {
   border-bottom: 1px dotted #dddddd;
   background-color: #ededed;
-  font-weight: bold;
+  font-family: 'Univers Next W23 Bold';
 }
 .table-row.row-style-2 {
   border-bottom: 1px dotted #dddddd;
   background-color: #f2f2f2;
+  font-family: 'Univers Next W23';
 }
 .table-row.row-style-3 {
   border-bottom: 1px dotted #dddddd;
+  font-family: 'Univers Next W23 Light';
 }
 .table-row.row-style-4 {
   border-bottom: 1px dotted #dddddd;
+  font-family: 'Univers Next W23 Light';
 }
 .table-row.row-style-5 {
   border-bottom: 1px dotted #dddddd;
+  font-family: 'Univers Next W23 Light';
 }
 .table-row.row-style-6 {
   border-bottom: 1px dotted #dddddd;
+  font-family: 'Univers Next W23 Light';
 }
 .table-row.last-row {
   border-bottom: none !important;
