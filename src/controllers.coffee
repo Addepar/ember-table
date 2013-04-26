@@ -195,6 +195,7 @@ Ember.Table.TableController = Ember.Controller.extend
   .property '_width', '_scrollbarSize'
 
   _scrollContainerWidth: Ember.computed ->
+    console.log "Scrollbar size: " + @get('_scrollbarSize')
     @get('_width') - @get('_fixedColumnsWidth') - @get('_scrollbarSize')
   .property '_width', '_fixedColumnsWidth', '_scrollbarSize'
 
