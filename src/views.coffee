@@ -11,10 +11,10 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.
     @set 'controller._scrollbarSize', scrollBarWidth
     @set 'controller._tableScrollTop', 0
   onResize: ->
-    @elementSizeDidChange() if event.srcElement is window
+    @elementSizeDidChange()
   elementSizeDidChange: ->
-    @set 'controller._width', @$().outerWidth()
-    @set 'controller._height', @$().outerHeight()
+    @set 'controller._width', @$().parent().outerWidth()
+    @set 'controller._height', @$().parent().outerHeight()
 
 Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['table-container']

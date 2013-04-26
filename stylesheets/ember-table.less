@@ -248,16 +248,16 @@
     height: 100%;
   }
   .ui-resizable-handle {
-      position: absolute;
-      right: -3px;
-      background: transparent;
-      .transition(background-color 0.1s ease-in);
+    position: absolute;
+    right: -3px;
+    background-color: transparent;
+    .transition(background-color 0.1s ease-in);
     &.ui-resizable-e {
       top: 0;
       height: 100%;
       width: 5px;
       &:hover{
-        background: transparent;
+        background-color: @table-header-border-bottom;
         cursor: col-resize;
       }
     }
@@ -297,8 +297,8 @@
 .header-cell {
   padding: 0;
   position: relative;
-  display: block !important;
   border-right: none;
+  display: block !important;
   .content-container {
     position: absolute;
     top: 20px;
@@ -357,11 +357,6 @@
   margin: 0;
   z-index: 80;
   padding: 0;
-
-  // Animation
-  // transition-property: background-color, border-top, border-right, border-left;
-  // transition-duration: 0.3s;
-  // transition-timing-fuction: ease-in-out;
   .table-dropdown-toggle {
     visibility: hidden;
     &:hover{
@@ -470,7 +465,6 @@
   width: 14px;
   padding-left: 6px;
   opacity: 0.3;
-  // .transition(0.1s all linear);
   &:hover{
     opacity: 0.5;
   }

@@ -136,7 +136,7 @@
 .header-container .ui-resizable-handle {
   position: absolute;
   right: -3px;
-  background: transparent;
+  background-color: transparent;
   -webkit-transition: background-color 0.1s ease-in;
   -moz-transition: background-color 0.1s ease-in;
   -ms-transition: background-color 0.1s ease-in;
@@ -149,7 +149,7 @@
   width: 5px;
 }
 .header-container .ui-resizable-handle.ui-resizable-e:hover {
-  background: transparent;
+  background-color: #dddddd;
   cursor: col-resize;
 }
 .header-container .ui-resizable-handle.ui-resizable-s {
@@ -183,8 +183,8 @@
 .header-cell {
   padding: 0;
   position: relative;
-  display: block !important;
   border-right: none;
+  display: block !important;
 }
 .header-cell .content-container {
   position: absolute;
