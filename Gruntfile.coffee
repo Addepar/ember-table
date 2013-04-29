@@ -26,7 +26,7 @@ module.exports = (grunt) ->
     ###
     neuter:
       options:
-        includeSourceURL: env is "dev"
+        includeSourceURL: no
       "lib/ember-table.js": "build/src/main.js"
 
     # Compile coffee before neuter
