@@ -1,21 +1,20 @@
-Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
-  templateName: 'tables-container'
-  classNames:   'tables-container'
+Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.ResizeHandler,
+  templateName:   'tables-container'
+  classNames:     'tables-container'
+  styleBindings:  ['height']
+  height:         Ember.computed.alias 'controller._tablesContainerHeight'
+
   didInsertElement: ->
     @_super()
     @elementSizeDidChange()
-    # TODO(Peter): This is a hack to detect if user is using lion and scroll
-    # bars are set to show when scrolling
     scrollBarWidth = $.getScrollbarWidth()
-    isLion = navigator?.appVersion['10_7'] isnt -1 and scrollBarWidth is 0
-    scrollBarWidth = 8 if isLion
     @set 'controller._scrollbarSize', scrollBarWidth
     @set 'controller._tableScrollTop', 0
   onResize: ->
-    @elementSizeDidChange()
+    @elementSizeDidChange() if event.srcElement is window
   elementSizeDidChange: ->
-    @set 'controller._width', @$().width()
-    @set 'controller._height', @$().height()
+    @set 'controller._width', @$().outerWidth()
+    @set 'controller._height', @$().outerHeight()
 
 Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['table-container']
@@ -49,12 +48,16 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
 Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
   classNames:     'table-row'
-  classNameBindings: ['row.isActive:active', 'row.isSelected:selected']
+  classNameBindings: ['row.isActive:active', 'row.isSelected:selected',
+                      'row.rowStyle', 'isLastRow:last-row']
   styleBindings:  ['width', 'height']
   row:      Ember.computed.alias 'content'
   columns:  Ember.computed.alias 'parentView.columns'
   width:    Ember.computed.alias 'controller._rowWidth'
   height:   Ember.computed.alias 'controller.rowHeight'
+  isLastRow: Ember.computed ->
+    @get('row') is @get('controller.bodyContent.lastObject')
+  .property 'controller.bodyContent.lastObject', 'row'
   mouseEnter: (event) ->
     row = @get 'row'
     row.set 'isActive', yes if row
@@ -68,12 +71,32 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   defaultTemplate: Ember.Handlebars.compile(
     "<span class='content'>{{view.cellContent}}</span>")
-  classNames:     ['table-cell']
-  styleBindings:  ['width']
+  classNames:         'table-cell'
+  classNameBindings:  'column.textAlign'
+  styleBindings:      'width'
   row:        Ember.computed.alias 'parentView.row'
   column:     Ember.computed.alias 'content'
   rowContent: Ember.computed.alias 'row.content'
   width:      Ember.computed.alias 'column.columnWidth'
+
+  init: ->
+    @_super.apply(this, arguments)
+    @contentPathDidChange()
+
+  contentDidChange: ->
+    @notifyPropertyChange 'cellContent'
+
+  contentPathWillChange: (->
+    contentPath = @get 'column.contentPath'
+    if contentPath
+      @removeObserver("rowContent.#{contentPath}", this, this.contentDidChange)
+  ).observesBefore 'column.contentPath'
+
+  contentPathDidChange: (->
+    contentPath = this.get 'column.contentPath'
+    if contentPath
+      @addObserver("rowContent.#{contentPath}", this, this.contentDidChange)
+  ).observesBefore 'column.contentPath'
 
   cellContent: Ember.computed (key, value) ->
     row     = @get 'rowContent'
@@ -95,42 +118,64 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
     [@get('columns')]
   .property 'columns'
 
-Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
+# We hacked this. There is an inconsistency at the level in which we are
+# handling scroll event...
+Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
   templateName:   'header-row'
   classNames:     ['table-row', 'header-row']
-  styleBindings:  ['height', 'width']
   columns: Ember.computed.alias 'content'
-  height:  Ember.computed.alias 'controller.headerHeight'
-  width:   Ember.computed.alias 'controller._tableColumnsWidth'
+  scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
 
   # options for jQuery UI sortable
   sortableOption: Ember.computed ->
     axis: 'x'
-    cursor: 'pointer'
-    helper: 'clone'
     containment: 'parent'
+    cursor: 'pointer'
+    cursorAt: { left: 20, top: 20 }
+    helper: 'clone'
+    items: ".header-cell.sortable"
+    opacity: 0.9
     placeholder: 'ui-state-highlight'
     scroll: true
-    tolerance: 'pointer'
-    update: jQuery.proxy(@onColumnSort, this)
+    tolerance: 'intersect'
+    update: jQuery.proxy(@onColumnSortDone,   this)
+    stop:   jQuery.proxy(@onColumnSortStop,   this)
+    sort:   jQuery.proxy(@onColumnSortChange, this)
   .property()
+
+  onScrollLeftDidChange: Ember.observer ->
+    @$().scrollLeft @get('scrollLeft')
+  , 'scrollLeft'
 
   didInsertElement: ->
     @_super()
     @$('> div').sortable(@get('sortableOption'))
 
-  onColumnSort: (event, ui) ->
+  onScroll: (event) ->
+    @set 'scrollLeft', event.target.scrollLeft
+    event.preventDefault()
+
+  onColumnSortStop: (event, ui) ->
+    @set 'controller._isShowingSortableIndicator', no
+
+  onColumnSortChange: (event, ui) ->
+    left = @$('.ui-state-highlight').offset().left -
+           @$().closest('.tables-container').offset().left
+    @set 'controller._isShowingSortableIndicator', yes
+    @set 'controller._sortableIndicatorLeft', left
+
+  onColumnSortDone: (event, ui) ->
     newIndex = ui.item.index()
     view     = Ember.View.views[ui.item.attr('id')]
-    columns  = @get 'columns'
     column   = view.get 'column'
-    columns.removeObject column
-    columns.insertAt newIndex, column
+    @get('controller').send 'onColumnSort', column, newIndex
+    @set 'controller._isShowingSortableIndicator', no
 
 Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
-  templateName:   'header-cell'
-  classNames:     ['table-cell', 'header-cell']
-  styleBindings:  ['width', 'height']
+  templateName:       'header-cell'
+  classNames:         ['table-cell', 'header-cell']
+  classNameBindings:  ['column.isSortable:sortable', 'column.textAlign']
+  styleBindings:      ['width', 'height']
   column:         Ember.computed.alias 'content'
   width:          Ember.computed.alias 'column.columnWidth'
   height:         Ember.computed.alias 'controller.headerHeight'
@@ -139,15 +184,15 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   resizableOption: Ember.computed ->
     handles: 'e'
     minHeight: 40
-    minWidth: @get("column.minWidth") || 100
-    maxWidth: @get("column.maxWidth") || 500
+    minWidth: @get('column.minWidth') || 100
+    maxWidth: @get('column.maxWidth') || 500
+    grid:     @get('column.snapGrid')
     resize: jQuery.proxy(@onColumnResize, this)
     stop: jQuery.proxy(@onColumnResize, this)
   .property()
 
   didInsertElement: ->
-    fluid = @get("controller.fluidTable")
-    if !fluid || (fluid and @get("column._nextColumn"))
+    if @get('column.isResizable')
       @$().resizable(@get('resizableOption'))
       @_resizableWidget = @$().resizable('widget')
 
@@ -157,18 +202,48 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 
 ################################################################################
 
-Ember.Table.HeaderTableContainer =
-Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
+Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
+  tagName: 'span'
+  template: Ember.Handlebars.compile(
+    '<span class="border-top"></span><a href="#">+</a>')
+  styleBindings: ['height']
+  classNames: 'add-column-button'
+  height: Ember.computed ->
+    # 20 is the table-header-cell-control-group height, 2 is for the two borders
+    @get('controller.headerHeight') - 18
+  .property 'controller.headerHeight'
+  click: (event) ->
+    @get('controller').send 'addColumn'
+
+Ember.Table.ColumnSortableIndicator =
+Ember.View.extend Ember.StyleBindingsMixin,
+  classNames: 'column-sortable-indicator'
+  classNameBindings: 'controller._isShowingSortableIndicator:active'
+  styleBindings: ['left', 'height']
+  left:   Ember.computed.alias 'controller._sortableIndicatorLeft'
+  height: Ember.computed.alias 'controller._height'
+
+Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
   templateName:   'header-container'
   classNames:     ['table-container', 'fixed-table-container',
                    'header-container']
   height:         Ember.computed.alias 'controller.headerHeight'
   width:          Ember.computed.alias 'controller._tableContainerWidth'
-  scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
-  onMouseWheel: (event, delta, deltaX, deltaY) ->
-    scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
-    @set 'scrollLeft', scrollLeft
-    event.preventDefault()
+
+  # jQuery UI resizable option
+  resizableOption: Ember.computed ->
+    handles: 's'
+    minHeight: 20
+    resize: jQuery.proxy(@onColumnResize, this)
+    stop: jQuery.proxy(@onColumnResize, this)
+  .property()
+
+  didInsertElement: ->
+    if @get 'controller.isHeaderHeightResizable'
+      @$().resizable(@get('resizableOption'))
+
+  onColumnResize: (event, ui) ->
+    @set 'controller.headerHeight', ui.size.height
 
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
@@ -196,7 +271,7 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   templateName:   'footer-container'
   classNames:     ['table-container', 'fixed-table-container',
                   'footer-container']
-  styleBindings:  ['top']
+  styleBindings:  'top'
   height:         Ember.computed.alias 'controller.footerHeight'
   width:          Ember.computed.alias 'controller._tableContainerWidth'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'

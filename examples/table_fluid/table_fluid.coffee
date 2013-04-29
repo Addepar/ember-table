@@ -17,27 +17,31 @@ App.TableFluidExample.LazyDataSource = Ember.ArrayProxy.extend
     @get('content')[idx] = row
     row
 
-App.TableFluidExample.TableController = Ember.Table.TableController.extend
+App.FluidColumnDefinition =
+Ember.Table.ColumnDefinition.extend(Ember.Table.FluidColumnMixin)
+
+App.TableFluidExample.TableController =
+Ember.Table.TableController.extend Ember.Table.FluidTableControllerMixin,
   hasHeader: yes
   hasFooter: no
   numFixedColumns: 0
   numRows: 500000
   rowHeight: 30
-  fluidTable: yes  
+  fluidTable: yes
 
   columns: Ember.computed ->
     columnNames = ['open', 'high', 'low', 'close', 'volume']
-    entryColumn = Ember.Table.ColumnDefinition.create
+    entryColumn = App.FluidColumnDefinition.create
       columnWidth: "10%"
       headerCellName: 'Entry'
       getCellContent: (row) -> row['index'];
-    dateColumn = Ember.Table.ColumnDefinition.create
+    dateColumn = App.FluidColumnDefinition.create
       columnWidth: "30%"
       headerCellName: 'Date'
       getCellContent: (row) -> row['date'].toDateString();
     columns= columnNames.map (key, index) ->
       name = key.charAt(0).toUpperCase() + key.slice(1)
-      Ember.Table.ColumnDefinition.create
+      App.FluidColumnDefinition.create
         columnWidth: "12%"
         headerCellName: name
         getCellContent: (row) -> row[key].toFixed(2)
