@@ -1,214 +1,571 @@
-.presentation-container{
-  width: 800px;
-  height: 600px;
-  margin: 50px auto;
-}
 
-.tables-container{
+// Mixins
+// -----------------------------------------------------------------------------
+.transition (@transition) {
+  -webkit-transition: @transition;
+  -moz-transition:    @transition;
+  -ms-transition:     @transition;
+  -o-transition:      @transition;
+  transition:         @transition;
+}
+.user-select(@value: none){
+  -webkit-user-select: @value;
+  -moz-user-select: @value;
+  -ms-user-select: @value;
+  -o-user-select: @value;
+  user-select: @value;
+}
+.box-sizing (@type: border-box) {
+  -webkit-box-sizing: @type;
+  -moz-box-sizing:    @type;
+  box-sizing:         @type;
+}
+.border-radius (@radius: 5px) {
+  -webkit-border-radius: @radius;
+  -moz-border-radius:    @radius;
+  border-radius:         @radius;
+
+  -moz-background-clip:    padding;
+  -webkit-background-clip: padding-box;
+  background-clip:         padding-box;
+}
+.box-shadow (@string) {
+  -webkit-box-shadow: @string;
+  -moz-box-shadow:    @string;
+  box-shadow:         @string;
+}
+.transform(@string){
+  -webkit-transform:  @string;
+  -moz-transform:     @string;
+  -ms-transform:      @string;
+  -o-transform:       @string;
+  transform:          @string;
+}
+@page-bg: #F7F7F7;
+
+// Ember Table
+// -----------------------------------------------------------------------------
+
+/* Variables
+-------------------------------------------------- */
+
+/* Table - Sizes */
+
+@table-left-default-column-width:         500px;
+@table-right-column-max:                  3000px;
+@table-right-default-column-width:        150px;
+@table-right-default-viewport-width:      500px;
+@table-body-default-height:               400px;
+// Note: This should be equal to the rowHeight in the tableController
+@table-row-height:                        30px;
+@table-header-height:                     70px;
+@table-header-cell-control-group-height:  20px;
+
+/* Table - Font Colors */
+
+@table-header-color:      #ddd;
+@table-body-color:        #666;
+@table-footer-color:      #333;
+@table-header-icon-color: #fff;
+
+/* Table - BG and Border Colors */
+
+@table-header-border-bottom:            #ddd;
+@table-header-bg:                       @page-bg;
+@table-body-bg:                         @page-bg;
+@table-body-border-color:               transparent;
+@table-row-selected-color:              #227ECB;
+@table-row-border-color:                #ddd;
+@table-col-border-color:                #ddd;
+@table-footer-bg:                       @page-bg;
+@table-footer-border-top:               #ddd;
+@table-header-hover-bg:                 transparent;
+@table-header-ghost-bg:                 transparent;
+@table-header-cell-control-group-bg:    @page-bg;
+@table-header-cell-control-group-color: #f4f4f4;
+
+// @table-header-border-bottom:          #DDD;
+// @table-header-bg:                     #fff;
+// @table-body-bg:                       #fcfcfc;
+// @table-body-border-color:             #ddd;
+// @table-row-selected-color:            #227ECB;
+// @table-row-border-color:              #ddd;
+// @table-col-border-color:              #ddd;
+// @table-footer-bg:                     #fff;
+// @table-footer-border-top:             #DDD;
+// @table-header-hover-bg:               #595959;
+// @table-header-ghost-bg:               #656565;
+// @table-header-cell-control-group-bg:  #f4f4f4;
+
+/* Table - Scrollbar */
+
+@scrollbarWidth:         8px;
+@table-scrollbar-width:  8px;
+@table-scrollbar-height: 8px;
+
+/* Ember Table Structure
+-------------------------------------------------- */
+
+/* Table Structures */
+
+.tables-container {
   height: 100%;
   width: 100%;
   position: relative;
   outline: 0;
   z-index: 0;
-  // Important because of the 4px margins due to inline-block
+  // Important: We use display:inline-block and they are not flush
+  // and have 4px margins without using font-size:0
   font-size: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #E1E1E1;
-  border: 1px solid #E1E1E1;
+  background-color: @table-body-bg;
+  // border: 1px solid @table-body-border-color;
+  overflow: hidden;
   * {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+    .box-sizing();
+    .user-select(none)
   }
-  a{
-    color: #333;
+}
+.table-container {
+  // Height and Width defined dynamically through JS
+  overflow-x: hidden;
+  overflow-y: auto;
+  position: relative;
+  z-index: 3;
+}
+.table-fixed-wrapper, .table-scrollable-wrapper {
+  overflow: visible;
+}
+.table-block {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+}
+.table-fixed-wrapper {
+  // Height and Width defined dynamically through JS
+  overflow: hidden;
+}
+.table-scrollable-wrapper {
+  // Height and Width defined dynamically through JS
+  display: block;
+}
+.scroll-container {
+  // Top, left, height and width defined dynamically through JS
+  position: absolute;
+  overflow-x: auto;
+  overflow-y: hidden;
+  z-index: 1;
+}
+.fixed-table-container {
+  z-index: 4;
+  &.header-container {
+    background-color: @table-header-bg;
   }
-  .table-container{
-    // Height and Width defined dynamically through JS
-    overflow-x: hidden;
-    overflow-y: auto;
-    position: relative;
-    background-color: #FFF;
-    z-index: 3;
-    .table-fixed-wrapper, .table-scrollable-wrapper{
-      overflow: visible;
-      white-space: nowrap;
-      .table-block{
-        display: inline-block;
-        position: relative;
-        vertical-align: top;
-        overflow: hidden;
-        background-color: #F5F5F5;
-        .table-row{
-          // Height and Width defined dynamically through JS
-          position: absolute;
-          border-bottom: 1px solid #E1E1E1;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          -o-user-select: none;
-          user-select: none;
-          > div {
-            height: 100%;
-          }
-          &.selected {
-            background-color: #227ECB !important;
-            color: #FFF;
-            cursor: pointer;
-          }
-          .table-cell{
-            float: left;
-            // Important to define font size
-            font-size: 13px;
-            border-right: 1px solid #E1E1E1;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            height: 100%;
-            span{
-              vertical-align: middle;
-              padding: 0;
-              height: 100%;
-              line-height: 30px;
-            }
-            .content{
-              padding: 0 5px;
-            }
-          }
-          .header-cell{
-            padding: 0px;
-            position: relative;
-            span{
-              padding: 5px;
-              line-height: 50px;
-            }
-            .toggle{
-              padding: 0 0 0 5px;
-            }
-            .column-title{
-              padding: 0;
-            }
-          }
-        }
-      }
-      .lazy-list-container {
-        position: relative;
-        .table-row {
-          position: absolute;
-          background-color: #FFF;
-        }
-      }
-    }
-    .table-fixed-wrapper, .table-scrollable-wrapper{
-      .right-table-block{
-        .table-cell:last-child{
-          border-right: none;
-        }
-      }
-    }
-    .table-fixed-wrapper{
-      // Height and Width defined dynamically through JS
-      overflow: hidden;
-    }
-    .table-scrollable-wrapper{
-      // Height and Width defined dynamically through JS
-      display: block;
-    }
+  &.footer-container {
+    background-color: @table-footer-bg;
   }
-  .scroll-container{
-      // Top, left, height and width defined dynamically through JS
+}
+// Important: Hides the horizontal scroll bar in the header
+.header-row::-webkit-scrollbar {
+  width: 0;
+}
+
+/* Table Rows */
+
+.table-row {
+  // Height and Width defined dynamically through JS
+  position: absolute;
+  > div {
+    height: 100%;
+  }
+  &.selected {
+    background-color: @table-row-selected-color !important;
+    color: #FFF;
+    cursor: pointer;
+  }
+}
+.lazy-list-container {
+  position: relative;
+  .table-row {
     position: absolute;
-    overflow-x: auto;
-    overflow-y: hidden;
-    z-index: 1;
-  }
-  .fixed-table-container{
-    z-index: 4;
-    background-color: #E8E8E8;
-  }
-  .footer-container{
-    position: absolute;
-    border-top: 1px solid #E1E1E1;
-    overflow: hidden;
-  }
-  .header-container{
-    border-bottom: 1px solid #E1E1E1;
-    overflow: hidden;
-    .ui-resizable{
-      background-color: #F5F5F5;
-    }
-    .ui-state-highlight{
-      float: left;
-      height: 50px;
-      width: 150px;
-      background-color: #E1E1E1;
-    }
-    .ui-resizable-handle {
-      position: absolute;
-      right: 0;
-      top: 0;
-      background-color: #F5F5F5;
-      height: 100%;
-      width: 4px;
-      transition: background-color 0.1s ease-in;
-      -moz-transition: background-color 0.1s ease-in;
-      -webkit-transition: background-color 0.1s ease-in;
-      -o-transition: background-color 0.1s ease-in;
-    }
-    .ui-resizable-handle:hover{
-      background-color: #C1C1C1;
-      cursor: ew-resize;
-    }
-    .ui-sortable{
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-    .ui-sortable-helper{
-      background-color: #EAEAEA;
-      .ui-resizable-handle{
-        background-color: #EAEAEA;
-      }
-    }
+    background-color: @table-body-bg;
   }
 }
 
-// Tree Table
-.header-cell{
-  .toggle{
-    margin-top: 3px;
-    padding-left: 5px;
-    i{
-      padding-left: 3px;
+/* Table Cell */
+
+.table-cell {
+  float: left;
+  // Important: We defined font-size: 0 in .tables-container due to the use of
+  // display-inline: block. Font-size: 13px is used for the cell content
+  font-size: 13px;
+  border-right: 1px solid @table-col-border-color;
+  height: 100%;
+  span {
+    padding: 0;
+    // Note the -1 is because we use box sizing and the row has a bottom border
+    line-height: @table-row-height - 1;
+  }
+  .content {
+    padding: 0 5px;
+  }
+}
+// PA Table
+.right-table-block .table-cell {
+  border-right: none;
+}
+.body-container .table-cell {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 100%;
+}
+.table-fixed-wrapper,
+.table-scrollable-wrapper {
+  .right-table-block .table-cell:last-child {
+    border-right: none;
+  }
+}
+.text-align-right {
+  text-align: right;
+}
+.text-align-center {
+  text-align: center;
+}
+
+/* Header Container */
+
+.header-container {
+  border-bottom: 1px solid @table-header-border-bottom;
+  overflow: hidden;
+  .ui-state-highlight {
+    float: left;
+    background-color: #E1E1E1;
+    width: 3px;
+    margin-left: -3px;
+    z-index: 100;
+    position: relative;
+    height: 100%;
+  }
+  .ui-resizable-handle {
+    position: absolute;
+    right: -3px;
+    background-color: transparent;
+    .transition(background-color 0.1s ease-in);
+    &.ui-resizable-e {
+      top: 0;
+      height: 100%;
+      width: 5px;
+      &:hover{
+        background-color: @table-header-border-bottom;
+        cursor: col-resize;
+      }
+    }
+    &.ui-resizable-s {
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: transparent;
+      &:hover{
+        cursor: row-resize;
+      }
+    }
+  }
+  .ui-sortable {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .ui-sortable-helper {
+    background-color: #EAEAEA;
+    .ui-resizable-handle {
+      background-color: #EAEAEA;
     }
   }
 }
+.header-container .right-table-block .table-row {
+  width: 100%;
+  overflow-x: auto;
+  .ui-sortable {
+    // Dynamically set the width
+    overflow: hidden;
+  }
+}
+
+/* Header Cells */
+
+.header-cell {
+  padding: 0;
+  position: relative;
+  border-right: none;
+  display: block !important;
+  .content-container {
+    position: absolute;
+    top: 20px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .content {
+      padding: 5px;
+      line-height: 1.4;
+      position: absolute;
+      bottom: 2px;
+    }
+  }
+  .toggle {
+    padding: 0 0 0 5px;
+    margin-top: 20px;
+    i {
+      display: none;
+    }
+  }
+}
+.header-cell.text-align-left {
+  .content {
+    left: 0;
+  }
+}
+.header-cell.text-align-right {
+  .content {
+    right: 0;
+  }
+}
+.table-tree-cell {
+  .content {
+    padding-left: 25px;
+  }
+}
+.table-header-tree-cell {
+  .content-container {
+    left: 20px;
+    border-right: 1px solid @table-header-border-bottom;
+  }
+}
+.table-header-cell-control-group,
+.table-header-cell-control-group-filler {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: @table-header-cell-control-group-height;
+  line-height: @table-header-cell-control-group-height;
+  border-bottom: 1px solid @table-header-border-bottom;
+  border-top: 1px solid transparent;
+  border-left: 1px solid transparent;
+  border-right: 1px solid transparent;
+  background-color: @table-header-bg;
+  margin: 0;
+  z-index: 80;
+  padding: 0;
+  .table-dropdown-toggle {
+    visibility: hidden;
+    &:hover{
+      cursor: pointer;
+    }
+  }
+}
+.table-header-cell-control-group-filler {
+  z-index: -1;
+}
+.header-cell:hover .table-header-cell-control-group {
+  background-color: #e9e9e9;
+  border-top: 1px solid @table-header-border-bottom;
+  border-left: 1px solid @table-header-border-bottom;
+  border-right: 1px solid @table-header-border-bottom;
+  .table-dropdown-toggle {
+      visibility: visible;
+    }
+}
+.sortable .table-header-cell-control-group:hover{
+  cursor: hand;
+  cursor: grab;
+  cursor: -moz-grab;
+  cursor: -webkit-grab;
+}
+
+// TODO(Louis): Need to add this during the drag
+// > http://jqueryui.com/draggable/#cursor-style
+// cursor: -webkit-grabbing; cursor: -moz-grabbing;
+
+.table-dropdown-toggle {
+  height: @table-header-cell-control-group-height - 1;
+  float: right;
+  margin: 0;
+  text-align: center;
+  padding: 3px 2px 0 2px;
+  background-color: darken(@table-header-cell-control-group-color, 10%);
+  color: darken(@table-header-cell-control-group-color, 50%);
+}
+.move-placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  z-index: 90;
+  background-color: @table-header-cell-control-group-bg;
+  border-bottom: 1px solid @table-row-border-color;
+}
+.bucket-editor {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  bottom: 0;
+  width: 20px;
+  color: darken(@table-header-cell-control-group-color, 40%);
+  display: block;
+  background-color: @table-header-cell-control-group-bg;
+  border-right: 1px solid @table-row-border-color;
+  &:hover{
+    cursor: pointer;
+  }
+  i{
+    position: absolute;
+    top: 50%;
+    left: 3px;
+    margin-top: -8px;
+  }
+}
+
+/* Footer */
+
+.footer-container {
+  position: absolute;
+  border-top: 1px solid @table-footer-border-top;
+  border-bottom: 1px solid @table-footer-border-top;
+  overflow: hidden;
+}
+.footer-container .table-cell .toggle {
+  padding: 0 3px 0 5px !important;
+  .toggle-icon:before {
+    content: none !important;
+  }
+}
+
+/* Toggle Cell */
+
+.toggle-span {
+  background-color: @table-header-cell-control-group-bg;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  width: 20px;
+  height: 100%;
+  margin: 0;
+  border-right: 1px solid @table-row-border-color;
+}
 .toggle-icon {
-    display: none
+  display: none;
+  margin: 0;
 }
 .toggle .toggle-icon {
   display: inline-block;
   cursor: pointer;
   width: 14px;
-  padding-left: 3px;
+  padding-left: 6px;
+  opacity: 0.3;
+  &:hover{
+    opacity: 0.5;
+  }
 }
-.expand .toggle-icon{
-  transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  margin-top: -3px;
-  padding-left: 0;
-  vertical-align: text-top;
+.toggle.expand {
+  // background-color: darken(@table-header-cell-control-group-color, 10%);
+  .toggle-icon {
+    .transform(rotate(-90deg));
+    padding-left: 0;
+    opacity: 1;
+    padding-left: 4px;
+    padding-top: 3px;
+  }
 }
-.footer-container{
-  .table-cell{
-    .toggle{
-      padding: 0 3px 0 5px !important;
-      .toggle-icon:before {
-        content: none !important;
-      }
+
+/* Column Indicator */
+
+.column-sortable-indicator {
+  position: absolute;
+  top: 0;
+  left: -2px;
+  height: 100%;
+  background-color: #333;
+  opacity: 0.4;
+  width: 3px;
+  z-index: 1000;
+  visibility: hidden;
+  &.active {
+    visibility: visible;
+  }
+}
+
+/* Add Column Button */
+
+.add-column-button {
+  position: absolute;
+  top: 19px;
+  right: 0;
+  width: 14px;
+  background-color: @table-header-cell-control-group-bg;
+  border-bottom: 1px solid @table-row-border-color;
+  z-index: 10;
+  font-size: 18px;
+  font-weight: bold;
+  color: darken(@table-header-cell-control-group-color, 40%);
+  display: table;
+  .border-top{
+    // TODO(Louis): Need this when we want to create editable table
+    // height: 20px;
+    height: 0;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    border-bottom: 1px solid @table-row-border-color;
+  }
+  a{
+    // TODO(Louis): Need this when we want to create editable table
+    // padding-top: 20px;
+    display: table-cell;
+    vertical-align: middle;
+    text-align: center;
+    width: 100%;
+    color: darken(@table-header-cell-control-group-color, 40%);
+    border-left: 1px solid darken(@table-header-cell-control-group-color, 10%);
+    &:hover{
+      text-decoration: none;
     }
   }
+}
+
+/* Levels */
+
+.table-row {
+  background-color: transparent;
+  // .transition(0.1s background-color linear);
+  &.row-style-1 {
+    border-bottom: 1px dotted @table-row-border-color;
+    background-color: lighten(black, 93%);
+    font-weight: bold;
+  }
+  &.row-style-2 {
+    border-bottom: 1px dotted @table-row-border-color;
+    background-color: lighten(black, 95%);
+  }
+  &.row-style-3 {
+    border-bottom: 1px dotted @table-row-border-color;
+  }
+  &.row-style-4 {
+    border-bottom: 1px dotted @table-row-border-color;
+  }
+  &.row-style-5 {
+    border-bottom: 1px dotted @table-row-border-color;
+  }
+  &.row-style-6 {
+    border-bottom: 1px dotted @table-row-border-color;
+  }
+  &.last-row {
+    border-bottom: none !important;
+  }
+}
+.body-container .table-row.active {
+  background-color: rgba(0, 82, 196, 0.1);
 }
