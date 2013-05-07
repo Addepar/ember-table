@@ -64,7 +64,7 @@ module.exports = (grunt) ->
         files: [ "examples/**/*.coffee", "Gruntfile.coffee" ]
         tasks: [ "build_examples" ]
       less:
-        files: [ "stylesheets/**/*.less", "stylesheets/**/*.css" ]
+        files: [ "stylesheets/**/*.less" ]
         tasks: [ "less" ]
       handlebars_templates:
         files: [ "src/**/*.hbs" ]
