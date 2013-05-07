@@ -118,7 +118,7 @@
   // and have 4px margins without using font-size:0
   font-size: 0;
   background-color: @table-body-bg;
-  // border: 1px solid @table-body-border-color;
+  border: 1px solid @table-body-border-color;
   overflow: hidden;
   * {
     .box-sizing();
@@ -332,7 +332,7 @@
 }
 .table-tree-cell {
   .content {
-    padding-left: 25px;
+    // padding-left: 25px;
   }
 }
 .table-header-tree-cell {
@@ -415,15 +415,16 @@
   color: darken(@table-header-cell-control-group-color, 40%);
   display: block;
   background-color: @table-header-cell-control-group-bg;
-  border-right: 1px solid @table-row-border-color;
   &:hover{
     cursor: pointer;
   }
   i{
     position: absolute;
-    top: 50%;
     left: 3px;
-    margin-top: -8px;
+    bottom: 9px;
+    // To center
+    // top: 50%;
+    // margin-top: -8px;
   }
 }
 
@@ -446,7 +447,6 @@
 /* Toggle Cell */
 
 .toggle-span {
-  background-color: @table-header-cell-control-group-bg;
   position: absolute;
   top: 0;
   left: 0;
@@ -454,7 +454,6 @@
   width: 20px;
   height: 100%;
   margin: 0;
-  border-right: 1px solid @table-row-border-color;
 }
 .toggle-icon {
   display: none;
@@ -471,7 +470,6 @@
   }
 }
 .toggle.expand {
-  // background-color: darken(@table-header-cell-control-group-color, 10%);
   .toggle-icon {
     .transform(rotate(-90deg));
     padding-left: 0;

@@ -15,6 +15,7 @@
   z-index: 0;
   font-size: 0;
   background-color: #f7f7f7;
+  border: 1px solid transparent;
   overflow: hidden;
 }
 .tables-container * {
@@ -212,9 +213,6 @@
 .header-cell.text-align-right .content {
   right: 0;
 }
-.table-tree-cell .content {
-  padding-left: 25px;
-}
 .table-header-tree-cell .content-container {
   left: 20px;
   border-right: 1px solid #dddddd;
@@ -290,16 +288,14 @@
   color: #8e8e8e;
   display: block;
   background-color: #f7f7f7;
-  border-right: 1px solid #dddddd;
 }
 .bucket-editor:hover {
   cursor: pointer;
 }
 .bucket-editor i {
   position: absolute;
-  top: 50%;
   left: 3px;
-  margin-top: -8px;
+  bottom: 9px;
 }
 /* Footer */
 .footer-container {
@@ -317,7 +313,6 @@
 }
 /* Toggle Cell */
 .toggle-span {
-  background-color: #f7f7f7;
   position: absolute;
   top: 0;
   left: 0;
@@ -325,7 +320,6 @@
   width: 20px;
   height: 100%;
   margin: 0;
-  border-right: 1px solid #dddddd;
 }
 .toggle-icon {
   display: none;
