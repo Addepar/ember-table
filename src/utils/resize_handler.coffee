@@ -24,26 +24,18 @@ Ember.ResizeHandler = Ember.Mixin.create
     , @get('resizeEndDelay')
   .property('resizeEndDelay')
 
-  # A resize handler that binds handleWindowResize to this view
-  resizeHandler: Ember.computed ->
-    jQuery.proxy(@handleWindowResize, @)
-  .property()
-
-  # Browser only allows us to listen to windows resize. This function let us
-  # resizeStart and resizeEnd event
-  handleWindowResize: (event) ->
-    if not @get 'resizing'
-      @set 'resizing', yes
-      @onResizeStart?(event)
-    @onResize?(event)
-    @get('debounceResizeEnd')(event)
-
   didInsertElement: ->
     @_super()
-    $(window).bind 'resize', @get("resizeHandler")
+    @_resizeHandler = (event) =>
+      if not @get 'resizing'
+        @set 'resizing', yes
+        @onResizeStart?(event)
+      @onResize?(event)
+      @get('debounceResizeEnd')(event)
+    $(window).resize @_resizeHandler
 
   willDestroyElement: ->
-    $(window).unbind 'resize', @get("resizeHandler")
+    $(window).unbind 'resize', @_resizeHandler
     @_super()
 
 # Copied from underscore.js

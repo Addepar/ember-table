@@ -132,7 +132,8 @@ App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
   # imperatively we made the initial table load 10-100x faster (certain cases)
   computeStyles: (parent) ->
     groupingLevel = 0
-    indentation   = 0
+    # Hack(Louis): We need to look into this. It should be 0
+    indentation   = 20
     isShowing     = yes
     if parent
       isShowing = parent.get('isShowing') and not parent.get('isCollapsed')
