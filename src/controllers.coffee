@@ -156,7 +156,8 @@ Ember.Table.TableController = Ember.Controller.extend
 
   # actual width of the table columns (non-frozen columns)
   _tableColumnsWidth: Ember.computed ->
-    @_getTotalWidth @get('tableColumns')
+    # We add 60px padding to the right of the table content
+    (@_getTotalWidth @get('tableColumns')) + 60
   .property 'tableColumns.@each.columnWidth'
 
   _rowWidth: Ember.computed ->
