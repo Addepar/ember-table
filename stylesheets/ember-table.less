@@ -332,57 +332,11 @@
     right: 0;
   }
 }
-.table-tree-cell {
-  .content {
-    // padding-left: 25px;
-  }
-}
 .table-header-tree-cell {
   .content-container {
     left: 20px;
     border-right: 1px solid @table-header-border-bottom;
   }
-}
-.table-header-cell-control-group,
-.table-header-cell-control-group-filler {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: @table-header-cell-control-group-height;
-  line-height: @table-header-cell-control-group-height;
-  border-bottom: 1px solid @table-header-border-bottom;
-  border-top: 1px solid transparent;
-  border-left: 1px solid transparent;
-  border-right: 1px solid transparent;
-  background-color: @table-header-bg;
-  margin: 0;
-  z-index: 80;
-  padding: 0;
-  .table-dropdown-toggle {
-    visibility: hidden;
-    &:hover{
-      cursor: pointer;
-    }
-  }
-}
-.table-header-cell-control-group-filler {
-  z-index: -1;
-}
-.header-cell:hover .table-header-cell-control-group {
-  background-color: #e9e9e9;
-  border-top: 1px solid @table-header-border-bottom;
-  border-left: 1px solid @table-header-border-bottom;
-  border-right: 1px solid @table-header-border-bottom;
-  .table-dropdown-toggle {
-      visibility: visible;
-    }
-}
-.sortable .table-header-cell-control-group:hover{
-  cursor: hand;
-  cursor: grab;
-  cursor: -moz-grab;
-  cursor: -webkit-grab;
 }
 
 // TODO(Louis): Need to add this during the drag
@@ -476,7 +430,7 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 16px;
+  width: 15px;
   background-color: @table-header-cell-control-group-bg;
   border-left: 1px solid @table-row-border-color;
   border-bottom: 1px solid @table-row-border-color;
