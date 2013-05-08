@@ -73,7 +73,7 @@
 @table-header-border-bottom:            #ddd;
 @table-header-bg:                       @page-bg;
 @table-body-bg:                         @page-bg;
-@table-body-border-color:               transparent;
+@table-body-border-color:               #ddd;
 @table-row-selected-color:              #227ECB;
 @table-row-border-color:                #ddd;
 @table-col-border-color:                #ddd;
@@ -455,6 +455,9 @@
   width: 20px;
   height: 100%;
   margin: 0;
+  &:hover {
+    cursor: pointer;
+  }
 }
 .toggle-icon {
   display: none;
@@ -503,9 +506,10 @@
   position: absolute;
   top: 19px;
   right: 0;
-  width: 14px;
+  width: 16px;
   background-color: @table-header-cell-control-group-bg;
   border-bottom: 1px solid @table-row-border-color;
+  border-right: 1px solid @table-row-border-color;
   z-index: 10;
   font-size: 18px;
   font-weight: bold;
