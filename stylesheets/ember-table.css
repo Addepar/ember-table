@@ -189,7 +189,7 @@
 }
 .header-cell .content-container {
   position: absolute;
-  top: 20px;
+  top: 0;
   bottom: 0;
   left: 0;
   right: 0;
@@ -269,34 +269,6 @@
   background-color: #dbdbdb;
   color: #757575;
 }
-.move-placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 20px;
-  width: 20px;
-  z-index: 90;
-  background-color: #f7f7f7;
-  border-bottom: 1px solid #dddddd;
-}
-.bucket-editor {
-  position: absolute;
-  top: 20px;
-  left: 0;
-  bottom: 0;
-  width: 20px;
-  color: #8e8e8e;
-  display: block;
-  background-color: #f7f7f7;
-}
-.bucket-editor:hover {
-  cursor: pointer;
-}
-.bucket-editor i {
-  position: absolute;
-  left: 3px;
-  bottom: 9px;
-}
 /* Footer */
 .footer-container {
   position: absolute;
@@ -367,33 +339,23 @@
 /* Add Column Button */
 .add-column-button {
   position: absolute;
-  top: 19px;
+  top: 0;
   right: 0;
   width: 16px;
   background-color: #f7f7f7;
+  border-left: 1px solid #dddddd;
   border-bottom: 1px solid #dddddd;
-  border-right: 1px solid #dddddd;
   z-index: 10;
-  font-size: 18px;
-  font-weight: bold;
-  color: #8e8e8e;
   display: table;
-}
-.add-column-button .border-top {
-  height: 0;
-  width: 100%;
-  position: absolute;
-  top: 0;
-  left: 0;
-  border-bottom: 1px solid #dddddd;
 }
 .add-column-button a {
   display: table-cell;
   vertical-align: middle;
+  font-size: 18px;
+  font-weight: bold;
   text-align: center;
   width: 100%;
   color: #8e8e8e;
-  border-left: 1px solid #dbdbdb;
 }
 .add-column-button a:hover {
   text-decoration: none;

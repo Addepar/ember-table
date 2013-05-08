@@ -123,7 +123,7 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
 Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
   templateName:   'header-row'
   classNames:     ['table-row', 'header-row']
-  columns: Ember.computed.alias 'content'
+  columns:        Ember.computed.alias 'content'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
 
   # options for jQuery UI sortable
@@ -206,13 +206,20 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
   tagName: 'span'
   template: Ember.Handlebars.compile(
-    '<span class="border-top"></span><a href="#">+</a>')
-  styleBindings: ['height']
+    '<a href="#">+</a>')
+  styleBindings: ['height', 'width']
   classNames: 'add-column-button'
   height: Ember.computed ->
-    # 20 is the table-header-cell-control-group height, 2 is for the two borders
-    @get('controller.headerHeight') - 18
+    @get('controller.headerHeight') + 1
   .property 'controller.headerHeight'
+  width: Ember.computed ->
+    # Is null, ask Peter why?
+    # @get('controller._scrollbarSize')
+    scrollbarWidth = $.getScrollbarWidth()
+    if scrollbarWidth < 15
+      return 15
+    else
+      scrollbarWidth
   click: (event) ->
     @get('controller').send 'addColumn'
 

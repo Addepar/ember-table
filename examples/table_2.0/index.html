@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+
+    <script type="text/javascript" src="http://fast.fonts.com/jsapi/cc61a2f8-3c32-45ef-9be7-fc0cc1fab22b.js"></script>
+
+    <link rel="stylesheet" href="../../stylesheets/bootstrap.css">
+    <link rel="stylesheet" href="../../stylesheets/font-awesome.css">
+
+    <!-- Less CSS -->
+    <link rel="stylesheet/less" type="text/css" href="../../stylesheets/setup.less">
+    <link rel="stylesheet/less" type="text/css" href="../../stylesheets/ember-table.less">
+    <script src="../../lib/less-1.3.0.min.js" type="text/javascript"></script>
+
+    <script src="../../lib/modernizr-2.6.1.min.js"></script>
+  </head>
+  <body>
+
+    <script type="text/x-handlebars" data-template-name="application">
+      <div class="presentation-container">
+        {{view Ember.Table.TablesContainer
+          controllerBinding="tableController"
+          selectionBinding="tableController.selection"
+        }}
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="header-cell">
+      <div class="content-container" {{action sortByColumn view.content}}>
+        <span class="content">
+          {{view.content.headerCellName}}
+        </span>
+      </div>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="table-tree-cell">
+      <span {{bindAttr class=":toggle-span view.row.isLeaf::toggle
+          view.row.isCollapsed:expand:collapse"}}
+          {{action toggleCollapse view.row}}>
+        <i class="icon-caret-down toggle-icon"></i>
+      </span>
+      <span class="content">
+        {{view.cellContent}}
+      </span>
+    </script>
+
+    <script type="text/x-handlebars" data-template-name="table-header-tree-cell">
+      <span {{bindAttr class=":toggle-span view.row.isLeaf::toggle
+          view.row.isCollapsed:expand:collapse"}}
+          {{action toggleCollapse view.row}}>
+        <i class="icon-caret-down toggle-icon"></i>
+      </span>
+      <div class="content-container" {{action sortByColumn view.column}}>
+        <span class='content'>
+          {{view.column.headerCellName}}
+        </span>
+      </div>
+    </script>
+
+    <script src="../../lib/jquery-1.9.1.min.js"></script>
+    <script src="../../lib/jquery-ui-1.10.2.custom.js"></script>
+    <script src="../../lib/jquery.mousewheel.js"></script>
+    <script src="../../lib/bootstrap.js"></script>
+    <script src="../../lib/handlebars.js"></script>
+    <script src="../../lib/ember.js"></script>
+    <script src="../../lib/ember-table.js"></script>
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="tree_table.js"></script>
+  </body>
+</html>
