@@ -14,7 +14,8 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.
     @elementSizeDidChange()
   elementSizeDidChange: ->
     @set 'controller._width', @$().parent().outerWidth()
-    @set 'controller._height', @$().parent().outerHeight()
+    # -2 because we use outerHeight and don't want to include the borders
+    @set 'controller._height', @$().parent().outerHeight() - 2
 
 Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['table-container']

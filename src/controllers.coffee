@@ -144,6 +144,7 @@ Ember.Table.TableController = Ember.Controller.extend
   # tables-container height adjusts to the content height
   _tablesContainerHeight: Ember.computed ->
     height = @get('_height')
+    console.log(height + " is height")
     contentHeight = @get('_tableContentHeight') +
       @get('headerHeight') + @get('footerHeight')
     if contentHeight < height then contentHeight else height
