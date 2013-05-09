@@ -214,7 +214,7 @@
 }
 // PA Table
 .right-table-block .table-cell {
-  border-right: none;
+  // border-right: none;
 }
 .body-container .table-cell {
   white-space: nowrap;
@@ -280,6 +280,9 @@
   }
   .ui-sortable-helper {
     background-color: #EAEAEA;
+    .content-container {
+      display: none;
+    }
     .ui-resizable-handle {
       background-color: #EAEAEA;
     }
@@ -299,7 +302,7 @@
 .header-cell {
   padding: 0;
   position: relative;
-  border-right: none;
+  // Override the jQUery sortable
   display: block !important;
   .content-container {
     position: absolute;
@@ -307,6 +310,9 @@
     bottom: 0;
     left: 0;
     right: 0;
+    &:hover {
+      cursor: pointer;
+    }
     .content {
       padding: 5px;
       line-height: 1.4;
@@ -335,7 +341,7 @@
 .table-header-tree-cell {
   .content-container {
     left: 20px;
-    border-right: 1px solid @table-header-border-bottom;
+    // border-right: 1px solid @table-header-border-bottom;
   }
 }
 
@@ -358,7 +364,6 @@
 .footer-container {
   position: absolute;
   border-top: 1px solid @table-footer-border-top;
-  border-bottom: 1px solid @table-footer-border-top;
   overflow: hidden;
   z-index: 3;
 }

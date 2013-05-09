@@ -101,9 +101,6 @@
 .table-cell .content {
   padding: 0 5px;
 }
-.right-table-block .table-cell {
-  border-right: none;
-}
 .body-container .table-cell {
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -170,6 +167,9 @@
 .header-container .ui-sortable-helper {
   background-color: #EAEAEA;
 }
+.header-container .ui-sortable-helper .content-container {
+  display: none;
+}
 .header-container .ui-sortable-helper .ui-resizable-handle {
   background-color: #EAEAEA;
 }
@@ -184,7 +184,6 @@
 .header-cell {
   padding: 0;
   position: relative;
-  border-right: none;
   display: block !important;
 }
 .header-cell .content-container {
@@ -193,6 +192,9 @@
   bottom: 0;
   left: 0;
   right: 0;
+}
+.header-cell .content-container:hover {
+  cursor: pointer;
 }
 .header-cell .content-container .content {
   padding: 5px;
@@ -215,7 +217,6 @@
 }
 .table-header-tree-cell .content-container {
   left: 20px;
-  border-right: 1px solid #dddddd;
 }
 .table-dropdown-toggle {
   height: 19px;
@@ -230,7 +231,6 @@
 .footer-container {
   position: absolute;
   border-top: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
   overflow: hidden;
   z-index: 3;
 }
