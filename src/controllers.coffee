@@ -193,9 +193,8 @@ Ember.Table.TableController = Ember.Controller.extend
     bodyHeight -= @get('headerHeight') if @get('hasHeader')
     bodyHeight -= @get('footerHeight') if @get('hasFooter')
     bodyHeight
-  .property('_tablesContainerHeight', 'headerHeight', 'footerHeight',
-            'hasHeader', 'hasFooter', '_tableColumnsWidth',
-            '_hasHorizontalScrollbar', '_scrollbarSize')
+  .property('_tablesContainerHeight', '_hasHorizontalScrollbar', 'headerHeight',
+            'footerHeight', 'hasHeader', 'hasFooter', '_scrollbarSize')
 
   _tableBlockWidth: Ember.computed ->
     @get('_width') - @get('_fixedColumnsWidth') - @get('_scrollbarSize')
