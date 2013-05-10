@@ -24,8 +24,9 @@ Ember.ResizeHandler = Ember.Mixin.create
     , @get('resizeEndDelay')
   .property('resizeEndDelay')
 
-  init: ->
+  didInsertElement: ->
     @_super()
+    return if @_resizeHandler
     @_resizeHandler = (event) =>
       if not @get 'resizing'
         @set 'resizing', yes
