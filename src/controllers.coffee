@@ -160,11 +160,11 @@ Ember.Table.TableController = Ember.Controller.extend
     height = @get('_height')
     contentHeight = @get('_tableContentHeight') +
       @get('headerHeight') + @get('footerHeight')
-    if contentHeight < height
-      height = contentHeight
+    # Only subtract the scrollbarSize from the contentHeight, not the height,
+    # because height is the container height of the whole table
     if @get('_hasHorizontalScrollbar')
-      height += @get('_scrollbarSize')
-    height
+      contentHeight += @get('_scrollbarSize')
+    if contentHeight < height then contentHeight else height
   .property('_height', '_tableContentHeight', 'headerHeight', 'footerHeight',
             '_hasHorizontalScrollbar', '_scrollbarSize')
 
