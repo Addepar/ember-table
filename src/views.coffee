@@ -241,7 +241,7 @@ Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
   # jQuery UI resizable option
   resizableOption: Ember.computed ->
     handles: 's'
-    minHeight: 20
+    minHeight: 30
     resize: jQuery.proxy(@onColumnResize, this)
     stop: jQuery.proxy(@onColumnResize, this)
   .property()
