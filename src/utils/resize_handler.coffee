@@ -38,7 +38,7 @@ Ember.ResizeHandler = Ember.Mixin.create
     @onResize?(event)
     @get('debounceResizeEnd')(event)
 
-  didInsertElement: ->
+  init: ->
     @_super()
     $(window).bind 'resize', @get("resizeHandler")
 
