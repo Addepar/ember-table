@@ -31,6 +31,9 @@ Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
   onScrollLeftDidChange: Ember.observer ->
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'
+  height: Ember.computed ->
+    @get('controller._headerHeight')
+  .property('controller._headerHeight')
 
 Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
   classNames:       ['table-block']
@@ -149,13 +152,6 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
 
   didInsertElement: ->
     @_super()
-
-    maxHeight = 0
-    @$('.content').each ->
-      thisHeight = $(this).outerHeight()
-      if thisHeight > maxHeight then maxHeight = thisHeight
-    console.log maxHeight
-
     @$('> div').sortable(@get('sortableOption'))
 
   onScroll: (event) ->
@@ -186,10 +182,8 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   column:         Ember.computed.alias 'content'
   width:          Ember.computed.alias 'column.columnWidth'
   height: Ember.computed ->
-    console.log $('.header-cell .content').height()
-    return @get('controller.headerHeight')
-    30
-  .property('controller.headerHeight')
+    @get('controller._headerHeight')
+  .property('controller._headerHeight')
 
   # jQuery UI resizable option
   resizableOption: Ember.computed ->
@@ -203,14 +197,24 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   .property()
 
   didInsertElement: ->
+    @elementSizeDidChange()
     if @get('column.isResizable')
       @$().resizable(@get('resizableOption'))
       @_resizableWidget = @$().resizable('widget')
 
   onColumnResize: (event, ui) ->
+    @elementSizeDidChange()
     # TODO(Louis): Have Peter look at this.. this doesn't seem to work?
     max = @get("column").resize(ui.size.width)
     @$().resizable("option", "maxWidth", max) if max
+
+  elementSizeDidChange: ->
+    maxHeight = 0
+    # TODO(Louis): This seems bad...
+    $('.header-block .content').each ->
+      thisHeight = $(this).outerHeight()
+      if thisHeight > maxHeight then maxHeight = thisHeight
+    @set 'controller._contentHeaderHeight', maxHeight
 
 ################################################################################
 
@@ -221,16 +225,15 @@ Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
   styleBindings: ['height', 'width']
   classNames: 'add-column-button'
   height: Ember.computed ->
-    @get('controller.headerHeight') + 1
-  .property 'controller.headerHeight'
+    # Add 1 because of box-sizing and there's a border on the bottom of it
+    @get('controller._headerHeight') + 1
+  .property 'controller._headerHeight'
   width: Ember.computed ->
     # Is null, ask Peter why?
     # @get('controller._scrollbarSize')
     scrollbarWidth = $.getScrollbarWidth()
-    if scrollbarWidth < 15
-      return 15
-    else
-      scrollbarWidth
+    # Minimum 15px width of plus button
+    if scrollbarWidth < 15 then 15 else scrollbarWidth
   click: (event) ->
     @get('controller').send 'addColumn'
 
@@ -243,11 +246,10 @@ Ember.View.extend Ember.StyleBindingsMixin,
   height: Ember.computed.alias 'controller._height'
 
 Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
-  templateName:   'header-container'
-  classNames:     ['table-container', 'fixed-table-container',
-                   'header-container']
-  height:         Ember.computed.alias 'controller.headerHeight'
-  width:          Ember.computed.alias 'controller._tableContainerWidth'
+  templateName: 'header-container'
+  classNames:   ['table-container', 'fixed-table-container', 'header-container']
+  height:       Ember.computed.alias 'controller._headerHeight'
+  width:        Ember.computed.alias 'controller._tableContainerWidth'
 
   # jQuery UI resizable option
   resizableOption: Ember.computed ->
@@ -258,11 +260,11 @@ Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
   .property()
 
   didInsertElement: ->
-    if @get 'controller.isHeaderHeightResizable'
+    if @get 'controller.is_HeaderHeightResizable'
       @$().resizable(@get('resizableOption'))
 
   onColumnResize: (event, ui) ->
-    @set 'controller.headerHeight', ui.size.height
+    @set 'controller._headerHeight', ui.size.height
 
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
@@ -295,11 +297,11 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
   width:          Ember.computed.alias 'controller._tableContainerWidth'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
   top: Ember.computed ->
-    headerHeight  = @get 'controller.headerHeight'
+    headerHeight  = @get 'controller._headerHeight'
     contentHeight = @get('controller._tableContentHeight') + headerHeight
     bodyHeight    = @get('controller._bodyHeight') + headerHeight
     if contentHeight < bodyHeight then contentHeight else bodyHeight
-  .property('controller._bodyHeight', 'controller.headerHeight'
+  .property('controller._bodyHeight', 'controller._headerHeight'
             'controller._tableContentHeight')
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
@@ -313,7 +315,7 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   styleBindings:  ['top', 'left', 'width', 'height']
   width:          Ember.computed.alias 'controller._scrollContainerWidth'
   height:         Ember.computed.alias 'controller._scrollContainerHeight'
-  top:            Ember.computed.alias 'controller.headerHeight'
+  top:            Ember.computed.alias 'controller._headerHeight'
   left:           Ember.computed.alias 'controller._fixedColumnsWidth'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'

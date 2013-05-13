@@ -203,8 +203,8 @@ Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
   isHeaderHeightResizable: yes
   rowHeight: 30
   hasHeader: yes
+  minHeaderHeight: 30
   hasFooter: yes
-  headerHeight: 70
 
   # custom properties
   sortAscending: no

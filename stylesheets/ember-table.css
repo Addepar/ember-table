@@ -41,6 +41,10 @@
 .table-scrollable-wrapper {
   overflow: visible;
 }
+.table-fixed-wrapper,
+.header-block {
+  height: 100%;
+}
 .table-block {
   display: inline-block;
   position: relative;
