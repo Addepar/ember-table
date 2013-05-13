@@ -70,33 +70,19 @@
 
 /* Table - BG and Border Colors */
 
-@table-header-border-bottom:            #ddd;
+@table-header-border-bottom:            #dcdcdc;
 @table-header-bg:                       @page-bg;
 @table-body-bg:                         @page-bg;
-@table-body-border-color:               #ddd;
+@table-body-border-color:               #dcdcdc;
 @table-row-selected-color:              #227ECB;
-@table-row-border-color:                #ddd;
-@table-col-border-color:                #ddd;
+@table-row-border-color:                #dcdcdc;
+@table-col-border-color:                #dcdcdc;
 @table-footer-bg:                       @page-bg;
-@table-footer-border-top:               #ddd;
+@table-footer-border-top:               #dcdcdc;
 @table-header-hover-bg:                 transparent;
 @table-header-ghost-bg:                 transparent;
 @table-header-cell-control-group-bg:    @page-bg;
 @table-header-cell-control-group-color: #f4f4f4;
-
-// @table-header-border-bottom:              #DDD;
-// @table-header-bg:                         #fff;
-// @table-body-bg:                           #fcfcfc;
-// @table-body-border-color:                 #ddd;
-// @table-row-selected-color:                #227ECB;
-// @table-row-border-color:                  #ddd;
-// @table-col-border-color:                  #ddd;
-// @table-footer-bg:                         #fff;
-// @table-footer-border-top:                 #DDD;
-// @table-header-hover-bg:                   #595959;
-// @table-header-ghost-bg:                   #656565;
-// @table-header-cell-control-group-bg:      @page-bg;
-// @table-header-cell-control-group-color:   #f4f4f4;
 
 /* Table - Scrollbar */
 
@@ -448,26 +434,14 @@
   display: table;
   margin-top: -1px;
   margin-right: -1px;
-  .box-sizing();
-  background-clip: padding-box;
   background-color: #F3F3F3;
   background-image: linear-gradient(#F5F5F5, #F1F1F1);
   background-repeat: repeat-x;
-  border-bottom-color: #DCDCDC;
-  border-bottom-style: solid;
-  border-bottom-width: 1px;
-  border-left-color: #DCDCDC;
-  border-left-style: solid;
-  border-left-width: 1px;
-  border-right-color: #DCDCDC;
-  border-right-style: solid;
-  border-right-width: 1px;
-  border-top-color: #DCDCDC;
-  border-top-style: solid;
-  border-top-width: 1px;
+  border: 1px solid @table-row-border-color;
   box-shadow: none;
   vertical-align: middle;
   white-space: nowrap;
+  .box-sizing();
   a{
     display: table-cell;
     vertical-align: middle;
@@ -475,7 +449,6 @@
     font-weight: bold;
     text-align: center;
     width: 100%;
-    font-family: Univers-Next-W01-Medium;
     color: darken(@table-header-cell-control-group-color, 40%);
     text-shadow: #FFF 0px 1px 0px;
     &:hover{
