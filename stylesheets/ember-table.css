@@ -17,6 +17,12 @@
   background-color: #f7f7f7;
   border: 1px solid #dddddd;
   overflow: hidden;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -305,12 +311,32 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 15px;
-  background-color: #f7f7f7;
-  border-left: 1px solid #dddddd;
-  border-bottom: 1px solid #dddddd;
   z-index: 10;
   display: table;
+  margin-top: -1px;
+  margin-right: -1px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  background-clip: padding-box;
+  background-color: #F3F3F3;
+  background-image: linear-gradient(#f5f5f5, #f1f1f1);
+  background-repeat: repeat-x;
+  border-bottom-color: #DCDCDC;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-left-color: #DCDCDC;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-right-color: #DCDCDC;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-top-color: #DCDCDC;
+  border-top-style: solid;
+  border-top-width: 1px;
+  box-shadow: none;
+  vertical-align: middle;
+  white-space: nowrap;
 }
 .add-column-button a {
   display: table-cell;
@@ -319,7 +345,9 @@
   font-weight: bold;
   text-align: center;
   width: 100%;
+  font-family: Univers-Next-W01-Medium;
   color: #8e8e8e;
+  text-shadow: #FFF 0px 1px 0px;
 }
 .add-column-button a:hover {
   text-decoration: none;

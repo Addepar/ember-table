@@ -121,6 +121,7 @@
   background-color: @table-body-bg;
   border: 1px solid @table-body-border-color;
   overflow: hidden;
+  .border-radius(2px);
   .box-sizing();
   * {
     .box-sizing();
@@ -307,7 +308,7 @@
 .header-cell {
   padding: 0;
   position: relative;
-  // Override the jQUery sortable
+  // Override the jQuery sortable
   display: block !important;
   .content-container {
     position: absolute;
@@ -440,12 +441,33 @@
   position: absolute;
   top: 0;
   right: 0;
-  width: 15px;
-  background-color: @table-header-cell-control-group-bg;
-  border-left: 1px solid @table-row-border-color;
-  border-bottom: 1px solid @table-row-border-color;
+  // background-color: @table-header-cell-control-group-bg;
+  // border-left: 1px solid @table-row-border-color;
+  // border-bottom: 1px solid @table-row-border-color;
   z-index: 10;
   display: table;
+  margin-top: -1px;
+  margin-right: -1px;
+  .box-sizing();
+  background-clip: padding-box;
+  background-color: #F3F3F3;
+  background-image: linear-gradient(#F5F5F5, #F1F1F1);
+  background-repeat: repeat-x;
+  border-bottom-color: #DCDCDC;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  border-left-color: #DCDCDC;
+  border-left-style: solid;
+  border-left-width: 1px;
+  border-right-color: #DCDCDC;
+  border-right-style: solid;
+  border-right-width: 1px;
+  border-top-color: #DCDCDC;
+  border-top-style: solid;
+  border-top-width: 1px;
+  box-shadow: none;
+  vertical-align: middle;
+  white-space: nowrap;
   a{
     display: table-cell;
     vertical-align: middle;
@@ -453,7 +475,9 @@
     font-weight: bold;
     text-align: center;
     width: 100%;
+    font-family: Univers-Next-W01-Medium;
     color: darken(@table-header-cell-control-group-color, 40%);
+    text-shadow: #FFF 0px 1px 0px;
     &:hover{
       text-decoration: none;
     }

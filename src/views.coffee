@@ -225,15 +225,15 @@ Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
   styleBindings: ['height', 'width']
   classNames: 'add-column-button'
   height: Ember.computed ->
-    # Add 1 because of box-sizing and there's a border on the bottom of it
-    @get('controller._headerHeight') + 1
+    # Add 3px = 1px for a margin-top: -1px and then 2px for the borders
+    @get('controller._headerHeight') + 3
   .property 'controller._headerHeight'
   width: Ember.computed ->
     # Is null, ask Peter why?
     # @get('controller._scrollbarSize')
     scrollbarWidth = $.getScrollbarWidth()
-    # Minimum 15px width of plus button
-    if scrollbarWidth < 15 then 15 else scrollbarWidth
+    # Minimum 13px width of plus button
+    if scrollbarWidth < 26 then 26 else scrollbarWidth
   click: (event) ->
     @get('controller').send 'addColumn'
 
