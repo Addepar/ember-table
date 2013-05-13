@@ -225,8 +225,8 @@ Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
   styleBindings: ['height', 'width']
   classNames: 'add-column-button'
   height: Ember.computed ->
-    # Add 3px = 1px for a margin-top: -1px and then 2px for the borders
-    @get('controller._headerHeight') + 3
+    # Add
+    @get('controller._headerHeight') + 1
   .property 'controller._headerHeight'
   width: Ember.computed ->
     # Is null, ask Peter why?

@@ -432,13 +432,12 @@
   right: 0;
   z-index: 10;
   display: table;
-  margin-top: -1px;
-  margin-right: -1px;
   background-color: @table-header-cell-control-group-bg;
   background-image: linear-gradient(#F5F5F5, #F1F1F1);
   background-repeat: repeat-x;
-  border: 1px solid @table-row-border-color;
-  box-shadow: none;
+  border-left: 1px solid @table-row-border-color;
+  border-bottom: 1px solid @table-row-border-color;
+  box-shadow: 0;
   vertical-align: middle;
   white-space: nowrap;
   .box-sizing();
@@ -454,6 +453,15 @@
     &:hover{
       text-decoration: none;
     }
+  }
+  &:hover {
+    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px;
+    a {
+      color: darken(@table-header-cell-control-group-color, 50%);
+    }
+  }
+  &:active {
+    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 2px 0px inset;
   }
 }
 
