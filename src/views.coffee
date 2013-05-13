@@ -204,9 +204,9 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 
   onColumnResize: (event, ui) ->
     @elementSizeDidChange()
+    @get("column").resize(ui.size.width)
     # TODO(Louis): Have Peter look at this.. this doesn't seem to work?
-    max = @get("column").resize(ui.size.width)
-    @$().resizable("option", "maxWidth", max) if max
+    # @$().resizable("option", "maxWidth", max) if max
 
   elementSizeDidChange: ->
     maxHeight = 0
