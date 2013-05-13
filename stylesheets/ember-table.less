@@ -81,7 +81,7 @@
 @table-footer-border-top:               #dcdcdc;
 @table-header-hover-bg:                 transparent;
 @table-header-ghost-bg:                 transparent;
-@table-header-cell-control-group-bg:    @page-bg;
+@table-header-cell-control-group-bg:    #f3f3f3;
 @table-header-cell-control-group-color: #f4f4f4;
 
 /* Table - Scrollbar */
@@ -296,6 +296,9 @@
   position: relative;
   // Override the jQuery sortable
   display: block !important;
+  background-color: @table-header-cell-control-group-bg;
+  background-image: linear-gradient(#F5F5F5, #F1F1F1);
+  background-repeat: repeat-x;
   .content-container {
     position: absolute;
     top: 0;
@@ -427,14 +430,11 @@
   position: absolute;
   top: 0;
   right: 0;
-  // background-color: @table-header-cell-control-group-bg;
-  // border-left: 1px solid @table-row-border-color;
-  // border-bottom: 1px solid @table-row-border-color;
   z-index: 10;
   display: table;
   margin-top: -1px;
   margin-right: -1px;
-  background-color: #F3F3F3;
+  background-color: @table-header-cell-control-group-bg;
   background-image: linear-gradient(#F5F5F5, #F1F1F1);
   background-repeat: repeat-x;
   border: 1px solid @table-row-border-color;
