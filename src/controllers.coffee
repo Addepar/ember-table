@@ -85,9 +85,6 @@ Ember.Table.TableController = Ember.Controller.extend
   hasHeader: yes
   hasFooter: yes
 
-  # whether the header height is resizable
-  isHeaderHeightResizable: no
-
   # specify the view class to use for rendering the table rows
   # TODO(Peter): This probably should go in the view...
   tableRowViewClass: 'Ember.Table.TableRow'

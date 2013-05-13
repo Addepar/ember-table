@@ -251,21 +251,6 @@ Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
   height:       Ember.computed.alias 'controller._headerHeight'
   width:        Ember.computed.alias 'controller._tableContainerWidth'
 
-  # jQuery UI resizable option
-  resizableOption: Ember.computed ->
-    handles: 's'
-    minHeight: 30
-    resize: jQuery.proxy(@onColumnResize, this)
-    stop: jQuery.proxy(@onColumnResize, this)
-  .property()
-
-  didInsertElement: ->
-    if @get 'controller.is_HeaderHeightResizable'
-      @$().resizable(@get('resizableOption'))
-
-  onColumnResize: (event, ui) ->
-    @set 'controller._headerHeight', ui.size.height
-
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin,
