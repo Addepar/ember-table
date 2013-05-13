@@ -80,7 +80,7 @@ Ember.Table.TableController = Ember.Controller.extend
   # The height per row. We need to know this for the lazy rendering.
   # TODO: The following three variables should be shared with LESS file
   rowHeight: 30
-  minHeaderHeight: 30
+  minHeaderHeight: 60
   footerHeight: 30
   hasHeader: yes
   hasFooter: yes

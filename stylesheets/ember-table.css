@@ -198,9 +198,6 @@
   padding: 0;
   position: relative;
   display: block !important;
-  background-color: #f3f3f3;
-  background-image: linear-gradient(#f5f5f5, #f1f1f1);
-  background-repeat: repeat-x;
 }
 .header-cell .content-container {
   position: absolute;
