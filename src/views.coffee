@@ -149,6 +149,13 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
 
   didInsertElement: ->
     @_super()
+
+    maxHeight = 0
+    @$('.content').each ->
+      thisHeight = $(this).outerHeight()
+      if thisHeight > maxHeight then maxHeight = thisHeight
+    console.log maxHeight
+
     @$('> div').sortable(@get('sortableOption'))
 
   onScroll: (event) ->
@@ -178,7 +185,11 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   styleBindings:      ['width', 'height']
   column:         Ember.computed.alias 'content'
   width:          Ember.computed.alias 'column.columnWidth'
-  height:         Ember.computed.alias 'controller.headerHeight'
+  height: Ember.computed ->
+    console.log $('.header-cell .content').height()
+    return @get('controller.headerHeight')
+    30
+  .property('controller.headerHeight')
 
   # jQuery UI resizable option
   resizableOption: Ember.computed ->
