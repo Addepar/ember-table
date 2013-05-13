@@ -26,6 +26,7 @@ Ember.ResizeHandler = Ember.Mixin.create
 
   didInsertElement: ->
     @_super()
+    return if @_resizeHandler
     @_resizeHandler = (event) =>
       if not @get 'resizing'
         @set 'resizing', yes
