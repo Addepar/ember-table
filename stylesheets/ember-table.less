@@ -41,7 +41,6 @@
   -o-transform:       @string;
   transform:          @string;
 }
-@page-bg: #F7F7F7;
 
 // Ember Table
 // -----------------------------------------------------------------------------
@@ -71,13 +70,13 @@
 /* Table - BG and Border Colors */
 
 @table-header-border-bottom:            #dcdcdc;
-@table-header-bg:                       @page-bg;
-@table-body-bg:                         @page-bg;
+@table-header-bg:                       #fff;
+@table-body-bg:                         #fff;
 @table-body-border-color:               #dcdcdc;
 @table-row-selected-color:              #227ECB;
 @table-row-border-color:                #dcdcdc;
 @table-col-border-color:                #dcdcdc;
-@table-footer-bg:                       @page-bg;
+@table-footer-bg:                       #fff;
 @table-footer-border-top:               #dcdcdc;
 @table-header-hover-bg:                 transparent;
 @table-header-ghost-bg:                 transparent;
@@ -159,9 +158,17 @@
     background-color: @table-footer-bg;
   }
 }
+.left-table-block {
+  border-right: 1px solid @table-col-border-color;
+}
 // Important: Hides the horizontal scroll bar in the header
 .header-row::-webkit-scrollbar {
   width: 0;
+}
+.header-row {
+  background-color: @table-header-cell-control-group-bg;
+  background-image: linear-gradient(#F5F5F5, #F1F1F1);
+  background-repeat: repeat-x;
 }
 
 /* Table Rows */
@@ -204,27 +211,13 @@
     padding: 0 5px;
   }
 }
-// PA Table
-.right-table-block .table-cell {
-  // border-right: none;
-}
-.body-container .table-cell {
+.body-container .table-cell,
+.footer-container .table-cell {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   height: 100%;
-}
-.table-fixed-wrapper,
-.table-scrollable-wrapper {
-  .right-table-block .table-cell:last-child {
-    border-right: none;
-  }
-}
-.text-align-right {
-  text-align: right;
-}
-.text-align-center {
-  text-align: center;
+  border-right: 0;
 }
 
 /* Header Container */
@@ -296,6 +289,12 @@
   position: relative;
   // Override the jQuery sortable
   display: block !important;
+  background-color: @table-header-cell-control-group-bg;
+  background-image: linear-gradient(#F5F5F5, #F1F1F1);
+  background-repeat: repeat-x;
+  span {
+    line-height: 1;
+  }
   .content-container {
     position: absolute;
     top: 0;
@@ -310,6 +309,7 @@
       line-height: 1.4;
       position: absolute;
       bottom: 2px;
+      font-weight: bold;
     }
   }
   .toggle {
@@ -320,21 +320,14 @@
     }
   }
 }
-.header-cell.text-align-left {
-  .content {
-    left: 0;
-  }
+.header-cell.text-align-left .content {
+  left: 0;
 }
-.header-cell.text-align-right {
-  .content {
-    right: 0;
-  }
+.header-cell.text-align-right .content {
+  right: 0;
 }
-.table-header-tree-cell {
-  .content-container {
-    left: 20px;
-    // border-right: 1px solid @table-header-border-bottom;
-  }
+.table-header-tree-cell .content-container {
+  left: 20px;
 }
 
 // TODO(Louis): Need to add this during the drag
@@ -469,12 +462,12 @@
   // .transition(0.1s background-color linear);
   &.row-style-1 {
     border-bottom: 1px dotted @table-row-border-color;
-    background-color: lighten(black, 93%);
+    background-color: lighten(black, 95%);
     font-weight: bold;
   }
   &.row-style-2 {
     border-bottom: 1px dotted @table-row-border-color;
-    background-color: lighten(black, 95%);
+    background-color: lighten(black, 97%);
   }
   &.row-style-3 {
     border-bottom: 1px dotted @table-row-border-color;
@@ -494,4 +487,16 @@
 }
 .body-container .table-row.active {
   background-color: rgba(0, 82, 196, 0.1);
+}
+
+/* Util classes */
+
+.text-align-left {
+  text-align: left;
+}
+.text-align-right {
+  text-align: right;
+}
+.text-align-center {
+  text-align: center;
 }
