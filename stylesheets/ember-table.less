@@ -165,7 +165,8 @@
 .header-row::-webkit-scrollbar {
   width: 0;
 }
-.header-row {
+.header-row,
+.header-container .table-fixed-wrapper {
   background-color: @table-header-cell-control-group-bg;
   background-image: linear-gradient(#F5F5F5, #F1F1F1);
   background-repeat: repeat-x;
@@ -176,7 +177,6 @@
 .table-row {
   // Height and Width defined dynamically through JS
   position: absolute;
-  height: 100%;
   > div {
     height: 100%;
   }
@@ -350,9 +350,9 @@
   border-top: 1px solid @table-footer-border-top;
   overflow: hidden;
   z-index: 3;
-}
-.footer-container .table-cell .toggle {
-  display: none;
+  .table-cell .toggle {
+    display: none;
+  }
 }
 
 /* Toggle Cell */

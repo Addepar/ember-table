@@ -84,7 +84,8 @@
 .header-row::-webkit-scrollbar {
   width: 0;
 }
-.header-row {
+.header-row,
+.header-container .table-fixed-wrapper {
   background-color: #f3f3f3;
   background-image: linear-gradient(#f5f5f5, #f1f1f1);
   background-repeat: repeat-x;
@@ -92,7 +93,6 @@
 /* Table Rows */
 .table-row {
   position: absolute;
-  height: 100%;
 }
 .table-row > div {
   height: 100%;
