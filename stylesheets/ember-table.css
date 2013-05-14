@@ -326,7 +326,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.add-column-button a {
+.add-column-button span {
   display: table-cell;
   vertical-align: middle;
   font-size: 18px;
@@ -336,7 +336,7 @@
   color: #8e8e8e;
   text-shadow: #FFF 0px 1px 0px;
 }
-.add-column-button a:hover {
+.add-column-button span:hover {
   text-decoration: none;
 }
 .add-column-button:hover {
