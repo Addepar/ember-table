@@ -147,12 +147,6 @@
 .header-container .ui-resizable-handle {
   position: absolute;
   right: -3px;
-  background-color: transparent;
-  -webkit-transition: background-color 0.1s ease-in;
-  -moz-transition: background-color 0.1s ease-in;
-  -ms-transition: background-color 0.1s ease-in;
-  -o-transition: background-color 0.1s ease-in;
-  transition: background-color 0.1s ease-in;
 }
 .header-container .ui-resizable-handle.ui-resizable-e {
   top: 0;
@@ -160,7 +154,6 @@
   width: 5px;
 }
 .header-container .ui-resizable-handle.ui-resizable-e:hover {
-  background-color: #dcdcdc;
   cursor: col-resize;
 }
 .header-container .ui-resizable-handle.ui-resizable-s {
@@ -198,6 +191,7 @@
   padding: 0;
   position: relative;
   display: block !important;
+  font-size: 12px !important;
   background-color: #f3f3f3;
   background-image: linear-gradient(#f5f5f5, #f1f1f1);
   background-repeat: repeat-x;

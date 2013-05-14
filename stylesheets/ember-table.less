@@ -237,14 +237,11 @@
   .ui-resizable-handle {
     position: absolute;
     right: -3px;
-    background-color: transparent;
-    .transition(background-color 0.1s ease-in);
     &.ui-resizable-e {
       top: 0;
       height: 100%;
       width: 5px;
       &:hover{
-        background-color: @table-header-border-bottom;
         cursor: col-resize;
       }
     }
@@ -289,6 +286,7 @@
   position: relative;
   // Override the jQuery sortable
   display: block !important;
+  font-size: 12px !important;
   background-color: @table-header-cell-control-group-bg;
   background-image: linear-gradient(#F5F5F5, #F1F1F1);
   background-repeat: repeat-x;
