@@ -92,6 +92,7 @@
 /* Table Rows */
 .table-row {
   position: absolute;
+  height: 100%;
 }
 .table-row > div {
   height: 100%;
@@ -340,6 +341,7 @@
   text-decoration: none;
 }
 .add-column-button:hover {
+  cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px;
 }
 .add-column-button:hover a {

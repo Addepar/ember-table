@@ -176,6 +176,7 @@
 .table-row {
   // Height and Width defined dynamically through JS
   position: absolute;
+  height: 100%;
   > div {
     height: 100%;
   }
@@ -443,6 +444,7 @@
     }
   }
   &:hover {
+    cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px;
     a {
       color: darken(@table-header-cell-control-group-color, 50%);
