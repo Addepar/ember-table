@@ -250,10 +250,7 @@
   z-index: 3;
 }
 .footer-container .table-cell .toggle {
-  padding: 0 3px 0 5px !important;
-}
-.footer-container .table-cell .toggle .toggle-icon:before {
-  content: none !important;
+  display: none;
 }
 /* Toggle Cell */
 .toggle-span {
