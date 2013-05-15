@@ -158,9 +158,6 @@
     background-color: @table-footer-bg;
   }
 }
-.left-table-block {
-  border-right: 1px solid @table-col-border-color;
-}
 // Important: Hides the horizontal scroll bar in the header
 .header-row::-webkit-scrollbar {
   width: 0;
@@ -220,7 +217,9 @@
   height: 100%;
   border-right: 0;
 }
-
+.left-table-block .table-cell{
+  border-right: 1px solid @table-col-border-color !important;
+}
 /* Header Container */
 
 .header-container {

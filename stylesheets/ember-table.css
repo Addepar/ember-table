@@ -78,9 +78,6 @@
 .fixed-table-container.footer-container {
   background-color: #ffffff;
 }
-.left-table-block {
-  border-right: 1px solid #dcdcdc;
-}
 .header-row::-webkit-scrollbar {
   width: 0;
 }
@@ -130,6 +127,9 @@
   overflow: hidden;
   height: 100%;
   border-right: 0;
+}
+.left-table-block .table-cell {
+  border-right: 1px solid #dcdcdc !important;
 }
 /* Header Container */
 .header-container {
