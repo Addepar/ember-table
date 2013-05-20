@@ -199,7 +199,7 @@ App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
 App.TreeTableExample.TableController =
 Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
   # overridding default properties
-  numFixedColumns: 0
+  numFixedColumns: 1
   isCollapsed: no
   isHeaderHeightResizable: yes
   rowHeight: 30
