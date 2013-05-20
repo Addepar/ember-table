@@ -59,6 +59,7 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   content: null
   rowContent: Ember.computed( -> []).property()
   objectAt: (idx) ->
+    return unless 0 <= idx < @get('content.length')
     row = @get('rowContent')[idx]
     return row if row
     tableRowClass = @get 'tableRowClass'
