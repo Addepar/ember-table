@@ -82,6 +82,8 @@
 @table-header-ghost-bg:                 transparent;
 @table-header-cell-control-group-bg:    #f3f3f3;
 @table-header-cell-control-group-color: #f4f4f4;
+@table-header-cell-gradient:            linear-gradient(#F5F5F5, #F1F1F1);
+// @table-header-cell-gradient:         linear-gradient(#fcfeff, #ebecf0);
 
 /* Table - Scrollbar */
 
@@ -106,8 +108,10 @@
   background-color: @table-body-bg;
   border: 1px solid @table-body-border-color;
   overflow: hidden;
-  .border-radius(2px);
+  .border-radius(4px);
   .box-sizing();
+  border: 1px solid #cfd1d4;
+  .box-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   * {
     .box-sizing();
     .user-select(none)
@@ -127,6 +131,12 @@
 .table-fixed-wrapper,
 .header-block {
   height: 100%;
+}
+.header-container {
+  .box-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+}
+.footer-container {
+  .box-shadow(0 -1px 2px rgba(0, 0, 0, 0.1));
 }
 .table-block {
   display: inline-block;
@@ -165,7 +175,7 @@
 .header-row,
 .header-container .table-fixed-wrapper {
   background-color: @table-header-cell-control-group-bg;
-  background-image: linear-gradient(#F5F5F5, #F1F1F1);
+  background-image: @table-header-cell-gradient;
   background-repeat: repeat-x;
 }
 
@@ -220,6 +230,7 @@
 .left-table-block .table-cell{
   border-right: 1px solid @table-col-border-color !important;
 }
+
 /* Header Container */
 
 .header-container {
@@ -288,7 +299,7 @@
   display: block !important;
   font-size: 12px !important;
   background-color: @table-header-cell-control-group-bg;
-  background-image: linear-gradient(#F5F5F5, #F1F1F1);
+  background-image: @table-header-cell-gradient;
   background-repeat: repeat-x;
   span {
     line-height: 1;
@@ -418,7 +429,7 @@
   z-index: 10;
   display: table;
   background-color: @table-header-cell-control-group-bg;
-  background-image: linear-gradient(#F5F5F5, #F1F1F1);
+  background-image: @table-header-cell-gradient;
   background-repeat: repeat-x;
   border-left: 1px solid @table-row-border-color;
   border-bottom: 1px solid @table-row-border-color;
@@ -454,7 +465,7 @@
 /* Levels */
 
 .table-row {
-  background-color: transparent;
+  background-color: #ffffff;
   // .transition(0.1s background-color linear);
   &.row-style-1 {
     border-bottom: 1px dotted @table-row-border-color;
