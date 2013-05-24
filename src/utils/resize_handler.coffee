@@ -37,6 +37,7 @@ Ember.ResizeHandler = Ember.Mixin.create
 
   willDestroyElement: ->
     $(window).unbind 'resize', @_resizeHandler
+    delete @_resizeHandler
     @_super()
 
 # Copied from underscore.js
