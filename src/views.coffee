@@ -255,7 +255,7 @@ Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin,
   templateName:   'body-container'
-  classNames:     ['table-container', 'body-container']
+  classNames:     ['table-container', 'body-container', 'scrollable']
   height:         Ember.computed.alias 'controller._bodyHeight'
   width:          Ember.computed.alias 'controller._width'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
@@ -296,7 +296,7 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.Table.ScrollContainer =
 Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   template: Ember.Handlebars.compile("{{view Ember.Table.ScrollPanel}}")
-  classNames:     'scroll-container'
+  classNames:     ['scroll-container', 'scrollable']
   styleBindings:  ['top', 'left', 'width', 'height']
   width:          Ember.computed.alias 'controller._scrollContainerWidth'
   height:         Ember.computed.alias 'controller._scrollContainerHeight'
