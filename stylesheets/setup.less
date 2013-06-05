@@ -1,5 +1,52 @@
-// Setup
-@import 'mixins.less';
+
+// Ember Table
+// -----------------------------------------------------------------------------
+
+/* Variables
+-------------------------------------------------- */
+
+/* Table - Sizes */
+
+@table-left-default-column-width:         500px;
+@table-right-column-max:                  3000px;
+@table-right-default-column-width:        150px;
+@table-right-default-viewport-width:      500px;
+@table-body-default-height:               400px;
+// Note: This should be equal to the rowHeight in the tableController
+@table-row-height:                        30px;
+@table-header-height:                     50px;
+@table-header-cell-control-group-height:  20px;
+
+/* Table - Font Colors */
+
+@table-header-color:      #ddd;
+@table-body-color:        #666;
+@table-footer-color:      #333;
+@table-header-icon-color: #fff;
+
+/* Table - BG and Border Colors */
+
+@table-header-border-bottom:            #dcdcdc;
+@table-header-bg:                       #fff;
+@table-body-bg:                         #fff;
+@table-body-border-color:               #dcdcdc;
+@table-row-selected-color:              #227ECB;
+@table-row-border-color:                #dcdcdc;
+@table-col-border-color:                #dcdcdc;
+@table-footer-bg:                       #fff;
+@table-footer-border-top:               #dcdcdc;
+@table-header-hover-bg:                 transparent;
+@table-header-ghost-bg:                 transparent;
+@table-header-cell-control-group-bg:    #f3f3f3;
+@table-header-cell-control-group-color: #f4f4f4;
+@table-header-cell-gradient:            linear-gradient(#F5F5F5, #F1F1F1);
+// @table-header-cell-gradient:         linear-gradient(#fcfeff, #ebecf0);
+
+/* Table - Scrollbar */
+
+@scrollbarWidth:         8px;
+@table-scrollbar-width:  8px;
+@table-scrollbar-height: 8px;
 
 html, body{
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
