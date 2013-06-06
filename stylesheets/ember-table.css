@@ -172,7 +172,12 @@ body {
 .ember-table-header-row,
 .ember-table-header-container .ember-table-table-fixed-wrapper {
   background-color: #f3f3f3;
-  background-image: linear-gradient(#f5f5f5, #f1f1f1);
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#f1f1f1));
+  background: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -moz-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -ms-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -o-linear-gradient(top, #f5f5f5, #f1f1f1);
   background-repeat: repeat-x;
 }
 /* Table Rows */
@@ -282,7 +287,12 @@ body {
   display: block !important;
   font-size: 12px !important;
   background-color: #f3f3f3;
-  background-image: linear-gradient(#f5f5f5, #f1f1f1);
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#f1f1f1));
+  background: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -moz-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -ms-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -o-linear-gradient(top, #f5f5f5, #f1f1f1);
   background-repeat: repeat-x;
 }
 .ember-table-header-cell span {
@@ -398,9 +408,14 @@ body {
   top: 0;
   right: 0;
   z-index: 10;
-  display: table;
+  display: none;
   background-color: #f3f3f3;
-  background-image: linear-gradient(#f5f5f5, #f1f1f1);
+  background-color: #f5f5f5;
+  background: -webkit-gradient(linear, left top, left bottom, from(#f5f5f5), to(#f1f1f1));
+  background: -webkit-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -moz-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -ms-linear-gradient(top, #f5f5f5, #f1f1f1);
+  background: -o-linear-gradient(top, #f5f5f5, #f1f1f1);
   background-repeat: repeat-x;
   border-left: 1px solid #dcdcdc;
   border-bottom: 1px solid #dcdcdc;

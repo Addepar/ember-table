@@ -99,7 +99,7 @@
 .ember-table-header-row,
 .ember-table-header-container .ember-table-table-fixed-wrapper {
   background-color: @table-header-cell-control-group-bg;
-  background-image: @table-header-cell-gradient;
+  .gradient(@table-header-cell-gradient-start-color, @table-header-cell-gradient-end-color);
   background-repeat: repeat-x;
 }
 
@@ -240,7 +240,7 @@
   display: block !important;
   font-size: 12px !important;
   background-color: @table-header-cell-control-group-bg;
-  background-image: @table-header-cell-gradient;
+  .gradient(@table-header-cell-gradient-start-color, @table-header-cell-gradient-end-color);
   background-repeat: repeat-x;
 
   span {
@@ -382,9 +382,10 @@
   top: 0;
   right: 0;
   z-index: 10;
-  display: table;
+  // display: table;
+  display: none;
   background-color: @table-header-cell-control-group-bg;
-  background-image: @table-header-cell-gradient;
+  .gradient(@table-header-cell-gradient-start-color, @table-header-cell-gradient-end-color);
   background-repeat: repeat-x;
   border-left: 1px solid @table-row-border-color;
   border-bottom: 1px solid @table-row-border-color;
