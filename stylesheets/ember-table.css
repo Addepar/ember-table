@@ -189,7 +189,7 @@ body {
 }
 .ember-table-table-row.ember-table-selected {
   background-color: #227ecb !important;
-  color: #FFF;
+  color: #fff;
   cursor: pointer;
 }
 .ember-table-lazy-list-container {
@@ -231,7 +231,7 @@ body {
 }
 .ember-table-header-container .ui-state-highlight {
   float: left;
-  background-color: #E1E1E1;
+  background-color: #e1e1e1;
   width: 3px;
   margin-left: -3px;
   z-index: 100;
@@ -265,13 +265,13 @@ body {
   position: relative;
 }
 .ember-table-header-container .ui-sortable-helper {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 .ember-table-header-container .ui-sortable-helper .ember-table-content-container {
   display: none;
 }
 .ember-table-header-container .ui-sortable-helper .ui-resizable-handle {
-  background-color: #EAEAEA;
+  background-color: #eaeaea;
 }
 .ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
   width: 100%;
@@ -434,7 +434,7 @@ body {
   text-align: center;
   width: 100%;
   color: #8e8e8e;
-  text-shadow: #FFF 0px 1px 0px;
+  text-shadow: #fff 0px 1px 0px;
 }
 .ember-table-add-column-button span:hover {
   text-decoration: none;
@@ -451,7 +451,7 @@ body {
 }
 /* Levels */
 .ember-table-table-row {
-  background-color: #ffffff;
+  background-color: #fff;
 }
 .ember-table-table-row.ember-table-row-style-1 {
   border-bottom: 1px dotted #dcdcdc;
