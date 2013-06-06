@@ -27,32 +27,32 @@
     </script>
 
     <script type="text/x-handlebars" data-template-name="header-cell">
-      <div class="content-container" {{action sortByColumn view.content}}>
-        <span class="content">
+      <div class="ember-table-content-container" {{action sortByColumn view.content}}>
+        <span class="ember-table-content">
           {{view.content.headerCellName}}
         </span>
       </div>
     </script>
 
     <script type="text/x-handlebars" data-template-name="table-tree-cell">
-      <span {{bindAttr class=":toggle-span view.row.isLeaf::toggle
-          view.row.isCollapsed:expand:collapse"}}
+      <span {{bindAttr class=":ember-table-toggle-span view.row.isLeaf::ember-table-toggle
+          view.row.isCollapsed:ember-table-expand:ember-table-collapse"}}
           {{action toggleCollapse view.row}}>
-        <i class="icon-caret-down toggle-icon"></i>
+        <i class="icon-caret-down ember-table-toggle-icon"></i>
       </span>
-      <span class="content">
+      <span class="ember-table-content">
         {{view.cellContent}}
       </span>
     </script>
 
     <script type="text/x-handlebars" data-template-name="table-header-tree-cell">
-      <span {{bindAttr class=":toggle-span view.row.isLeaf::toggle
-          view.row.isCollapsed:expand:collapse"}}
+      <span {{bindAttr class=":ember-table-toggle-span view.row.isLeaf::ember-table-toggle
+          view.row.isCollapsed:ember-table-expand:ember-table-collapse"}}
           {{action toggleCollapse view.row}}>
-        <i class="icon-caret-down toggle-icon"></i>
+        <i class="icon-caret-down ember-table-toggle-icon"></i>
       </span>
-      <div class="content-container" {{action sortByColumn view.column}}>
-        <span class='content'>
+      <div class="ember-table-content-container" {{action sortByColumn view.column}}>
+        <span class="ember-table-content">
           {{view.column.headerCellName}}
         </span>
       </div>

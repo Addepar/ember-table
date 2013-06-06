@@ -83,7 +83,7 @@ body {
 /* Ember Table Structure
 -------------------------------------------------- */
 /* Table Structures */
-.tables-container {
+.ember-table-tables-container {
   height: 100%;
   width: 100%;
   position: relative;
@@ -107,7 +107,7 @@ body {
   -moz-box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
-.tables-container * {
+.ember-table-tables-container * {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -117,116 +117,116 @@ body {
   -o-user-select: none;
   user-select: none;
 }
-.table-container {
+.ember-table-table-container {
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
   z-index: 3;
 }
-.table-fixed-wrapper,
-.table-scrollable-wrapper {
+.ember-table-table-fixed-wrapper,
+.ember-table-table-scrollable-wrapper {
   overflow: visible;
 }
-.table-fixed-wrapper,
-.header-block {
+.ember-table-table-fixed-wrapper,
+.ember-table-header-block {
   height: 100%;
 }
-.header-container {
+.ember-table-header-container {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
-.footer-container {
+.ember-table-footer-container {
   -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
 }
-.table-block {
+.ember-table-table-block {
   display: inline-block;
   position: relative;
   vertical-align: top;
   overflow: hidden;
 }
-.table-fixed-wrapper {
+.ember-table-table-fixed-wrapper {
   overflow: hidden;
 }
-.table-scrollable-wrapper {
+.ember-table-table-scrollable-wrapper {
   display: block;
 }
-.scroll-container {
+.ember-table-scroll-container {
   position: absolute;
   overflow-x: auto;
   overflow-y: hidden;
   z-index: 1;
 }
-.fixed-table-container {
+.ember-table-fixed-table-container {
   z-index: 4;
 }
-.fixed-table-container.header-container {
+.ember-table-fixed-table-container.ember-table-header-container {
   background-color: #ffffff;
 }
-.fixed-table-container.footer-container {
+.ember-table-fixed-table-container.ember-table-footer-container {
   background-color: #ffffff;
 }
-.header-row::-webkit-scrollbar {
+.ember-table-header-row::-webkit-scrollbar {
   width: 0;
 }
-.header-row,
-.header-container .table-fixed-wrapper {
+.ember-table-header-row,
+.ember-table-header-container .ember-table-table-fixed-wrapper {
   background-color: #f3f3f3;
   background-image: linear-gradient(#f5f5f5, #f1f1f1);
   background-repeat: repeat-x;
 }
 /* Table Rows */
-.table-row {
+.ember-table-table-row {
   position: absolute;
 }
-.table-row > div {
+.ember-table-table-row > div {
   height: 100%;
 }
-.table-row.selected {
+.ember-table-table-row.ember-table-selected {
   background-color: #227ecb !important;
   color: #FFF;
   cursor: pointer;
 }
-.lazy-list-container {
+.ember-table-lazy-list-container {
   position: relative;
 }
-.lazy-list-container .table-row {
+.ember-table-lazy-list-container .ember-table-table-row {
   position: absolute;
   background-color: #ffffff;
 }
 /* Table Cell */
-.table-cell {
+.ember-table-table-cell {
   float: left;
   font-size: 13px;
   border-right: 1px solid #dcdcdc;
   height: 100%;
 }
-.table-cell span {
+.ember-table-table-cell span {
   padding: 0;
   line-height: 29px;
 }
-.table-cell .content {
+.ember-table-table-cell .ember-table-content {
   padding: 0 5px;
 }
-.body-container .table-cell,
-.footer-container .table-cell {
+.ember-table-body-container .ember-table-table-cell,
+.ember-table-footer-container .ember-table-table-cell {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   height: 100%;
   border-right: 0;
 }
-.left-table-block .table-cell {
+.ember-table-left-table-block .ember-table-table-cell {
   border-right: 1px solid #dcdcdc !important;
 }
 /* Header Container */
-.header-container {
+.ember-table-header-container {
   border-bottom: 1px solid #dcdcdc;
   overflow: hidden;
 }
-.header-container .ui-state-highlight {
+.ember-table-header-container .ui-state-highlight {
   float: left;
   background-color: #E1E1E1;
   width: 3px;
@@ -235,50 +235,50 @@ body {
   position: relative;
   height: 100%;
 }
-.header-container .ui-resizable-handle {
+.ember-table-header-container .ui-resizable-handle {
   position: absolute;
   right: -3px;
 }
-.header-container .ui-resizable-handle.ui-resizable-e {
+.ember-table-header-container .ui-resizable-handle.ui-resizable-e {
   top: 0;
   height: 100%;
   width: 5px;
 }
-.header-container .ui-resizable-handle.ui-resizable-e:hover {
+.ember-table-header-container .ui-resizable-handle.ui-resizable-e:hover {
   cursor: col-resize;
 }
-.header-container .ui-resizable-handle.ui-resizable-s {
+.ember-table-header-container .ui-resizable-handle.ui-resizable-s {
   bottom: 0;
   width: 100%;
   height: 2px;
   background: transparent;
 }
-.header-container .ui-resizable-handle.ui-resizable-s:hover {
+.ember-table-header-container .ui-resizable-handle.ui-resizable-s:hover {
   cursor: row-resize;
 }
-.header-container .ui-sortable {
+.ember-table-header-container .ui-sortable {
   width: 100%;
   height: 100%;
   position: relative;
 }
-.header-container .ui-sortable-helper {
+.ember-table-header-container .ui-sortable-helper {
   background-color: #EAEAEA;
 }
-.header-container .ui-sortable-helper .content-container {
+.ember-table-header-container .ui-sortable-helper .ember-table-content-container {
   display: none;
 }
-.header-container .ui-sortable-helper .ui-resizable-handle {
+.ember-table-header-container .ui-sortable-helper .ui-resizable-handle {
   background-color: #EAEAEA;
 }
-.header-container .right-table-block .table-row {
+.ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
   width: 100%;
   overflow-x: auto;
 }
-.header-container .right-table-block .table-row .ui-sortable {
+.ember-table-header-container .ember-table-right-table-block .ember-table-table-row .ui-sortable {
   overflow: hidden;
 }
 /* Header Cells */
-.header-cell {
+.ember-table-header-cell {
   padding: 0;
   position: relative;
   display: block !important;
@@ -287,43 +287,43 @@ body {
   background-image: linear-gradient(#f5f5f5, #f1f1f1);
   background-repeat: repeat-x;
 }
-.header-cell span {
+.ember-table-header-cell span {
   line-height: 1;
 }
-.header-cell .content-container {
+.ember-table-header-cell .ember-table-content-container {
   position: absolute;
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 }
-.header-cell .content-container:hover {
+.ember-table-header-cell .ember-table-content-container:hover {
   cursor: pointer;
 }
-.header-cell .content-container .content {
+.ember-table-header-cell .ember-table-content-container .ember-table-content {
   padding: 5px;
   line-height: 1.4;
   position: absolute;
   bottom: 2px;
   font-weight: bold;
 }
-.header-cell .toggle {
+.ember-table-header-cell .ember-table-toggle {
   padding: 0 0 0 5px;
   margin-top: 20px;
 }
-.header-cell .toggle i {
+.ember-table-header-cell .ember-table-toggle i {
   display: none;
 }
-.header-cell.text-align-left .content {
+.ember-table-header-cell.text-align-left .ember-table-content {
   left: 0;
 }
-.header-cell.text-align-right .content {
+.ember-table-header-cell.text-align-right .ember-table-content {
   right: 0;
 }
-.table-header-tree-cell .content-container {
+.ember-table-table-header-tree-cell .ember-table-content-container {
   left: 20px;
 }
-.table-dropdown-toggle {
+.ember-table-table-dropdown-toggle {
   height: 19px;
   float: right;
   margin: 0;
@@ -333,17 +333,17 @@ body {
   color: #757575;
 }
 /* Footer */
-.footer-container {
+.ember-table-footer-container {
   position: absolute;
   border-top: 1px solid #dcdcdc;
   overflow: hidden;
   z-index: 3;
 }
-.footer-container .table-cell .toggle {
+.ember-table-footer-container .ember-table-table-cell .ember-table-toggle {
   display: none;
 }
 /* Toggle Cell */
-.toggle-span {
+.ember-table-toggle-span {
   position: absolute;
   top: 0;
   left: 0;
@@ -352,24 +352,24 @@ body {
   height: 100%;
   margin: 0;
 }
-.toggle-span:hover {
+.ember-table-toggle-span:hover {
   cursor: pointer;
 }
-.toggle-icon {
+.ember-table-toggle-icon {
   display: none;
   margin: 0;
 }
-.toggle .toggle-icon {
+.ember-table-toggle .ember-table-toggle-icon {
   display: inline-block;
   cursor: pointer;
   width: 14px;
   padding-left: 6px;
   opacity: 0.3;
 }
-.toggle .toggle-icon:hover {
+.ember-table-toggle .ember-table-toggle-icon:hover {
   opacity: 0.5;
 }
-.toggle.expand .toggle-icon {
+.ember-table-toggle.ember-table-expand .ember-table-toggle-icon {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   -ms-transform: rotate(-90deg);
@@ -380,7 +380,7 @@ body {
   padding-top: 3px;
 }
 /* Column Indicator */
-.column-sortable-indicator {
+.ember-table-column-sortable-indicator {
   position: absolute;
   top: 0;
   left: -2px;
@@ -391,11 +391,11 @@ body {
   z-index: 1000;
   visibility: hidden;
 }
-.column-sortable-indicator.active {
+.ember-table-column-sortable-indicator.active {
   visibility: visible;
 }
 /* Add Column Button */
-.add-column-button {
+.ember-table-add-column-button {
   position: absolute;
   top: 0;
   right: 0;
@@ -413,7 +413,7 @@ body {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-.add-column-button span {
+.ember-table-add-column-button span {
   display: table-cell;
   vertical-align: middle;
   font-size: 18px;
@@ -423,47 +423,47 @@ body {
   color: #8e8e8e;
   text-shadow: #FFF 0px 1px 0px;
 }
-.add-column-button span:hover {
+.ember-table-add-column-button span:hover {
   text-decoration: none;
 }
-.add-column-button:hover {
+.ember-table-add-column-button:hover {
   cursor: pointer;
   box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px;
 }
-.add-column-button:hover a {
+.ember-table-add-column-button:hover a {
   color: #757575;
 }
-.add-column-button:active {
+.ember-table-add-column-button:active {
   box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 2px 0px inset;
 }
 /* Levels */
-.table-row {
+.ember-table-table-row {
   background-color: #ffffff;
 }
-.table-row.row-style-1 {
+.ember-table-table-row.ember-table-row-style-1 {
   border-bottom: 1px dotted #dcdcdc;
   background-color: #f2f2f2;
 }
-.table-row.row-style-2 {
+.ember-table-table-row.ember-table-row-style-2 {
   border-bottom: 1px dotted #dcdcdc;
   background-color: #f7f7f7;
 }
-.table-row.row-style-3 {
+.ember-table-table-row.ember-table-row-style-3 {
   border-bottom: 1px dotted #dcdcdc;
 }
-.table-row.row-style-4 {
+.ember-table-table-row.ember-table-row-style-4 {
   border-bottom: 1px dotted #dcdcdc;
 }
-.table-row.row-style-5 {
+.ember-table-table-row.ember-table-row-style-5 {
   border-bottom: 1px dotted #dcdcdc;
 }
-.table-row.row-style-6 {
+.ember-table-table-row.ember-table-row-style-6 {
   border-bottom: 1px dotted #dcdcdc;
 }
-.table-row.last-row {
+.ember-table-table-row.ember-table-last-row {
   border-bottom: none !important;
 }
-.body-container .table-row.active {
+.ember-table-body-container .ember-table-table-row.active {
   background-color: rgba(0, 82, 196, 0.1);
 }
 /* Util classes */

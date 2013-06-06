@@ -6,7 +6,7 @@
 
 /* Table Structures */
 
-.tables-container {
+.ember-table-tables-container {
   height: 100%;
   width: 100%;
   position: relative;
@@ -27,63 +27,63 @@
     .user-select(none)
   }
 }
-.table-container {
+.ember-table-table-container {
   // Height and Width defined dynamically through JS
   overflow-x: hidden;
   overflow-y: auto;
   position: relative;
   z-index: 3;
 }
-.table-fixed-wrapper,
-.table-scrollable-wrapper {
+.ember-table-table-fixed-wrapper,
+.ember-table-table-scrollable-wrapper {
   overflow: visible;
 }
-.table-fixed-wrapper,
-.header-block {
+.ember-table-table-fixed-wrapper,
+.ember-table-header-block {
   height: 100%;
 }
-.header-container {
+.ember-table-header-container {
   .box-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
-.footer-container {
+.ember-table-footer-container {
   .box-shadow(0 -1px 2px rgba(0, 0, 0, 0.1));
 }
-.table-block {
+.ember-table-table-block {
   display: inline-block;
   position: relative;
   vertical-align: top;
   overflow: hidden;
 }
-.table-fixed-wrapper {
+.ember-table-table-fixed-wrapper {
   // Height and Width defined dynamically through JS
   overflow: hidden;
 }
-.table-scrollable-wrapper {
+.ember-table-table-scrollable-wrapper {
   // Height and Width defined dynamically through JS
   display: block;
 }
-.scroll-container {
+.ember-table-scroll-container {
   // Top, left, height and width defined dynamically through JS
   position: absolute;
   overflow-x: auto;
   overflow-y: hidden;
   z-index: 1;
 }
-.fixed-table-container {
+.ember-table-fixed-table-container {
   z-index: 4;
-  &.header-container {
+  &.ember-table-header-container {
     background-color: @table-header-bg;
   }
-  &.footer-container {
+  &.ember-table-footer-container {
     background-color: @table-footer-bg;
   }
 }
 // Important: Hides the horizontal scroll bar in the header
-.header-row::-webkit-scrollbar {
+.ember-table-header-row::-webkit-scrollbar {
   width: 0;
 }
-.header-row,
-.header-container .table-fixed-wrapper {
+.ember-table-header-row,
+.ember-table-header-container .ember-table-table-fixed-wrapper {
   background-color: @table-header-cell-control-group-bg;
   background-image: @table-header-cell-gradient;
   background-repeat: repeat-x;
@@ -91,21 +91,21 @@
 
 /* Table Rows */
 
-.table-row {
+.ember-table-table-row {
   // Height and Width defined dynamically through JS
   position: absolute;
   > div {
     height: 100%;
   }
-  &.selected {
+  &.ember-table-selected {
     background-color: @table-row-selected-color !important;
     color: #FFF;
     cursor: pointer;
   }
 }
-.lazy-list-container {
+.ember-table-lazy-list-container {
   position: relative;
-  .table-row {
+  .ember-table-table-row {
     position: absolute;
     background-color: @table-body-bg;
   }
@@ -113,7 +113,7 @@
 
 /* Table Cell */
 
-.table-cell {
+.ember-table-table-cell {
   float: left;
   // Important: We defined font-size: 0 in .tables-container due to the use of
   // display-inline: block. Font-size: 13px is used for the cell content
@@ -125,25 +125,25 @@
     // Note the -1 is because we use box sizing and the row has a bottom border
     line-height: @table-row-height - 1;
   }
-  .content {
+  .ember-table-content {
     padding: 0 5px;
   }
 }
-.body-container .table-cell,
-.footer-container .table-cell {
+.ember-table-body-container .ember-table-table-cell,
+.ember-table-footer-container .ember-table-table-cell {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
   height: 100%;
   border-right: 0;
 }
-.left-table-block .table-cell{
+.ember-table-left-table-block .ember-table-table-cell{
   border-right: 1px solid @table-col-border-color !important;
 }
 
 /* Header Container */
 
-.header-container {
+.ember-table-header-container {
   border-bottom: 1px solid @table-header-border-bottom;
   overflow: hidden;
   .ui-state-highlight {
@@ -183,7 +183,7 @@
   }
   .ui-sortable-helper {
     background-color: #EAEAEA;
-    .content-container {
+    .ember-table-content-container {
       display: none;
     }
     .ui-resizable-handle {
@@ -191,7 +191,7 @@
     }
   }
 }
-.header-container .right-table-block .table-row {
+.ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
   width: 100%;
   overflow-x: auto;
   .ui-sortable {
@@ -202,7 +202,7 @@
 
 /* Header Cells */
 
-.header-cell {
+.ember-table-header-cell {
   padding: 0;
   position: relative;
   // Override the jQuery sortable
@@ -214,7 +214,7 @@
   span {
     line-height: 1;
   }
-  .content-container {
+  .ember-table-content-container {
     position: absolute;
     top: 0;
     bottom: 0;
@@ -223,7 +223,7 @@
     &:hover {
       cursor: pointer;
     }
-    .content {
+    .ember-table-content {
       padding: 5px;
       line-height: 1.4;
       position: absolute;
@@ -231,7 +231,7 @@
       font-weight: bold;
     }
   }
-  .toggle {
+  .ember-table-toggle {
     padding: 0 0 0 5px;
     margin-top: 20px;
     i {
@@ -239,13 +239,13 @@
     }
   }
 }
-.header-cell.text-align-left .content {
+.ember-table-header-cell.text-align-left .ember-table-content {
   left: 0;
 }
-.header-cell.text-align-right .content {
+.ember-table-header-cell.text-align-right .ember-table-content {
   right: 0;
 }
-.table-header-tree-cell .content-container {
+.ember-table-table-header-tree-cell .ember-table-content-container {
   left: 20px;
 }
 
@@ -253,7 +253,7 @@
 // > http://jqueryui.com/draggable/#cursor-style
 // cursor: -webkit-grabbing; cursor: -moz-grabbing;
 
-.table-dropdown-toggle {
+.ember-table-table-dropdown-toggle {
   height: @table-header-cell-control-group-height - 1;
   float: right;
   margin: 0;
@@ -265,19 +265,19 @@
 
 /* Footer */
 
-.footer-container {
+.ember-table-footer-container {
   position: absolute;
   border-top: 1px solid @table-footer-border-top;
   overflow: hidden;
   z-index: 3;
-  .table-cell .toggle {
+  .ember-table-table-cell .ember-table-toggle {
     display: none;
   }
 }
 
 /* Toggle Cell */
 
-.toggle-span {
+.ember-table-toggle-span {
   position: absolute;
   top: 0;
   left: 0;
@@ -289,11 +289,11 @@
     cursor: pointer;
   }
 }
-.toggle-icon {
+.ember-table-toggle-icon {
   display: none;
   margin: 0;
 }
-.toggle .toggle-icon {
+.ember-table-toggle .ember-table-toggle-icon {
   display: inline-block;
   cursor: pointer;
   width: 14px;
@@ -303,19 +303,17 @@
     opacity: 0.5;
   }
 }
-.toggle.expand {
-  .toggle-icon {
-    .transform(rotate(-90deg));
-    padding-left: 0;
-    opacity: 1;
-    padding-left: 4px;
-    padding-top: 3px;
-  }
+.ember-table-toggle.ember-table-expand .ember-table-toggle-icon {
+  .transform(rotate(-90deg));
+  padding-left: 0;
+  opacity: 1;
+  padding-left: 4px;
+  padding-top: 3px;
 }
 
 /* Column Indicator */
 
-.column-sortable-indicator {
+.ember-table-column-sortable-indicator {
   position: absolute;
   top: 0;
   left: -2px;
@@ -332,7 +330,7 @@
 
 /* Add Column Button */
 
-.add-column-button {
+.ember-table-add-column-button {
   position: absolute;
   top: 0;
   right: 0;
@@ -374,35 +372,35 @@
 
 /* Levels */
 
-.table-row {
+.ember-table-table-row {
   background-color: #ffffff;
   // .transition(0.1s background-color linear);
-  &.row-style-1 {
+  &.ember-table-row-style-1 {
     border-bottom: 1px dotted @table-row-border-color;
     background-color: lighten(black, 95%);
     // font-weight: bold;
   }
-  &.row-style-2 {
+  &.ember-table-row-style-2 {
     border-bottom: 1px dotted @table-row-border-color;
     background-color: lighten(black, 97%);
   }
-  &.row-style-3 {
+  &.ember-table-row-style-3 {
     border-bottom: 1px dotted @table-row-border-color;
   }
-  &.row-style-4 {
+  &.ember-table-row-style-4 {
     border-bottom: 1px dotted @table-row-border-color;
   }
-  &.row-style-5 {
+  &.ember-table-row-style-5 {
     border-bottom: 1px dotted @table-row-border-color;
   }
-  &.row-style-6 {
+  &.ember-table-row-style-6 {
     border-bottom: 1px dotted @table-row-border-color;
   }
-  &.last-row {
+  &.ember-table-last-row {
     border-bottom: none !important;
   }
 }
-.body-container .table-row.active {
+.ember-table-body-container .ember-table-table-row.active {
   background-color: rgba(0, 82, 196, 0.1);
 }
 
