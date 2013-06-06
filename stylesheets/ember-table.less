@@ -27,6 +27,7 @@
     .user-select(none)
   }
 }
+
 .ember-table-table-container {
   // Height and Width defined dynamically through JS
   overflow-x: hidden;
@@ -34,34 +35,42 @@
   position: relative;
   z-index: 3;
 }
+
 .ember-table-table-fixed-wrapper,
 .ember-table-table-scrollable-wrapper {
   overflow: visible;
 }
+
 .ember-table-table-fixed-wrapper,
 .ember-table-header-block {
   height: 100%;
 }
+
 .ember-table-header-container {
   .box-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
+
 .ember-table-footer-container {
   .box-shadow(0 -1px 2px rgba(0, 0, 0, 0.1));
 }
+
 .ember-table-table-block {
   display: inline-block;
   position: relative;
   vertical-align: top;
   overflow: hidden;
 }
+
 .ember-table-table-fixed-wrapper {
   // Height and Width defined dynamically through JS
   overflow: hidden;
 }
+
 .ember-table-table-scrollable-wrapper {
   // Height and Width defined dynamically through JS
   display: block;
 }
+
 .ember-table-scroll-container {
   // Top, left, height and width defined dynamically through JS
   position: absolute;
@@ -69,19 +78,24 @@
   overflow-y: hidden;
   z-index: 1;
 }
+
 .ember-table-fixed-table-container {
   z-index: 4;
+
   &.ember-table-header-container {
     background-color: @table-header-bg;
   }
+
   &.ember-table-footer-container {
     background-color: @table-footer-bg;
   }
 }
+
 // Important: Hides the horizontal scroll bar in the header
 .ember-table-header-row::-webkit-scrollbar {
   width: 0;
 }
+
 .ember-table-header-row,
 .ember-table-header-container .ember-table-table-fixed-wrapper {
   background-color: @table-header-cell-control-group-bg;
@@ -94,17 +108,21 @@
 .ember-table-table-row {
   // Height and Width defined dynamically through JS
   position: absolute;
+
   > div {
     height: 100%;
   }
+
   &.ember-table-selected {
     background-color: @table-row-selected-color !important;
     color: #FFF;
     cursor: pointer;
   }
 }
+
 .ember-table-lazy-list-container {
   position: relative;
+
   .ember-table-table-row {
     position: absolute;
     background-color: @table-body-bg;
@@ -120,15 +138,18 @@
   font-size: 13px;
   border-right: 1px solid @table-col-border-color;
   height: 100%;
+
   span {
     padding: 0;
     // Note the -1 is because we use box sizing and the row has a bottom border
     line-height: @table-row-height - 1;
   }
+
   .ember-table-content {
     padding: 0 5px;
   }
 }
+
 .ember-table-body-container .ember-table-table-cell,
 .ember-table-footer-container .ember-table-table-cell {
   white-space: nowrap;
@@ -137,6 +158,7 @@
   height: 100%;
   border-right: 0;
 }
+
 .ember-table-left-table-block .ember-table-table-cell{
   border-right: 1px solid @table-col-border-color !important;
 }
@@ -146,6 +168,7 @@
 .ember-table-header-container {
   border-bottom: 1px solid @table-header-border-bottom;
   overflow: hidden;
+
   .ui-state-highlight {
     float: left;
     background-color: #E1E1E1;
@@ -155,9 +178,11 @@
     position: relative;
     height: 100%;
   }
+
   .ui-resizable-handle {
     position: absolute;
     right: -3px;
+
     &.ui-resizable-e {
       top: 0;
       height: 100%;
@@ -166,6 +191,7 @@
         cursor: col-resize;
       }
     }
+
     &.ui-resizable-s {
       bottom: 0;
       width: 100%;
@@ -176,16 +202,20 @@
       }
     }
   }
+
   .ui-sortable {
     width: 100%;
     height: 100%;
     position: relative;
   }
+
   .ui-sortable-helper {
     background-color: #EAEAEA;
+
     .ember-table-content-container {
       display: none;
     }
+
     .ui-resizable-handle {
       background-color: #EAEAEA;
     }
@@ -194,6 +224,7 @@
 .ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
   width: 100%;
   overflow-x: auto;
+
   .ui-sortable {
     // Dynamically set the width
     overflow: hidden;
@@ -211,18 +242,22 @@
   background-color: @table-header-cell-control-group-bg;
   background-image: @table-header-cell-gradient;
   background-repeat: repeat-x;
+
   span {
     line-height: 1;
   }
+
   .ember-table-content-container {
     position: absolute;
     top: 0;
     bottom: 0;
     left: 0;
     right: 0;
+
     &:hover {
       cursor: pointer;
     }
+
     .ember-table-content {
       padding: 5px;
       line-height: 1.4;
@@ -231,20 +266,25 @@
       font-weight: bold;
     }
   }
+
   .ember-table-toggle {
     padding: 0 0 0 5px;
     margin-top: 20px;
+
     i {
       display: none;
     }
   }
 }
+
 .ember-table-header-cell.text-align-left .ember-table-content {
   left: 0;
 }
+
 .ember-table-header-cell.text-align-right .ember-table-content {
   right: 0;
 }
+
 .ember-table-table-header-tree-cell .ember-table-content-container {
   left: 20px;
 }
@@ -270,6 +310,7 @@
   border-top: 1px solid @table-footer-border-top;
   overflow: hidden;
   z-index: 3;
+
   .ember-table-table-cell .ember-table-toggle {
     display: none;
   }
@@ -285,24 +326,29 @@
   width: 20px;
   height: 100%;
   margin: 0;
+
   &:hover {
     cursor: pointer;
   }
 }
+
 .ember-table-toggle-icon {
   display: none;
   margin: 0;
 }
+
 .ember-table-toggle .ember-table-toggle-icon {
   display: inline-block;
   cursor: pointer;
   width: 14px;
   padding-left: 6px;
   opacity: 0.3;
+
   &:hover{
     opacity: 0.5;
   }
 }
+
 .ember-table-toggle.ember-table-expand .ember-table-toggle-icon {
   .transform(rotate(-90deg));
   padding-left: 0;
@@ -323,6 +369,7 @@
   width: 3px;
   z-index: 1000;
   visibility: hidden;
+
   &.active {
     visibility: visible;
   }
@@ -345,6 +392,7 @@
   vertical-align: middle;
   white-space: nowrap;
   .box-sizing();
+
   span {
     display: table-cell;
     vertical-align: middle;
@@ -354,17 +402,21 @@
     width: 100%;
     color: darken(@table-header-cell-control-group-color, 40%);
     text-shadow: #FFF 0px 1px 0px;
+
     &:hover{
       text-decoration: none;
     }
   }
+
   &:hover {
     cursor: pointer;
     box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px;
+
     a {
       color: darken(@table-header-cell-control-group-color, 50%);
     }
   }
+
   &:active {
     box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 2px 0px inset;
   }
@@ -375,31 +427,39 @@
 .ember-table-table-row {
   background-color: #ffffff;
   // .transition(0.1s background-color linear);
+
   &.ember-table-row-style-1 {
     border-bottom: 1px dotted @table-row-border-color;
     background-color: lighten(black, 95%);
     // font-weight: bold;
   }
+
   &.ember-table-row-style-2 {
     border-bottom: 1px dotted @table-row-border-color;
     background-color: lighten(black, 97%);
   }
+
   &.ember-table-row-style-3 {
     border-bottom: 1px dotted @table-row-border-color;
   }
+
   &.ember-table-row-style-4 {
     border-bottom: 1px dotted @table-row-border-color;
   }
+
   &.ember-table-row-style-5 {
     border-bottom: 1px dotted @table-row-border-color;
   }
+
   &.ember-table-row-style-6 {
     border-bottom: 1px dotted @table-row-border-color;
   }
+
   &.ember-table-last-row {
     border-bottom: none !important;
   }
 }
+
 .ember-table-body-container .ember-table-table-row.active {
   background-color: rgba(0, 82, 196, 0.1);
 }

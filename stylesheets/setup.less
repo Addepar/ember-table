@@ -1,9 +1,6 @@
 
-// Ember Table
+// Ember Table Default Variables
 // -----------------------------------------------------------------------------
-
-/* Variables
--------------------------------------------------- */
 
 /* Table - Sizes */
 
@@ -40,13 +37,15 @@
 @table-header-cell-control-group-bg:    #f3f3f3;
 @table-header-cell-control-group-color: #f4f4f4;
 @table-header-cell-gradient:            linear-gradient(#F5F5F5, #F1F1F1);
-// @table-header-cell-gradient:         linear-gradient(#fcfeff, #ebecf0);
 
 /* Table - Scrollbar */
 
 @scrollbarWidth:         8px;
 @table-scrollbar-width:  8px;
 @table-scrollbar-height: 8px;
+
+
+// General Setup
 
 html, body{
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -55,10 +54,12 @@ html, body{
   height: 100%;
   width: 100%;
 }
+
 .ember-application > .ember-app{
   height: 100%;
   width: 100%;
 }
+
 .presentation-container{
   padding-top: 50px;
   height: 800px;
@@ -71,31 +72,37 @@ html, body{
   height: 16px;
   width: 15px;
 }
+
 .scrollable::-webkit-scrollbar-button:start:decrement,
 .scrollable::-webkit-scrollbar-button:end:increment {
   background-color: transparent;
   display: block;
   height: 0;
 }
+
 .scrollable::-webkit-scrollbar-track {
   background-clip: padding-box;
   border: solid
   transparent;
   border-width: 0 0 0 4px;
 }
+
 .scrollable::-webkit-scrollbar-track-piece {
   background-color: transparent;
   .border-radius(0);
 }
+
 .scrollable::-webkit-scrollbar:hover {
   background-color: #f3f3f3;
   border: 1px solid #dbdbdb;
 }
+
 .scrollable::-webkit-scrollbar-thumb:vertical,
 .scrollable::-webkit-scrollbar-thumb:horizontal {
   background-color: #c6c6c6;
   .border-radius(0);
 }
+
 .scrollable::-webkit-scrollbar-thumb {
   background-color: rgba(0,0,0,0.2);
   border: solid transparent;
@@ -103,9 +110,11 @@ html, body{
   .box-shadow(~"inset 1px 1px 0 rgba(0,0,0,0.10),inset 0 -1px 0 rgba(0,0,0,0.07)");
   background-clip: padding-box;
 }
+
 .scrollable::-webkit-scrollbar-thumb:hover {
   background-color: #949494;
 }
+
 .scrollable::-webkit-scrollbar-thumb:active{
   background-color: rgba(0,0,0,0.5);
   .box-shadow(inset 1px 1px 3px rgba(0,0,0,0.35));
