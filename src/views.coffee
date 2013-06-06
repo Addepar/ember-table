@@ -136,7 +136,7 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.ScrollHandlerMixin,
     cursor: 'pointer'
     cursorAt: { left: 20, top: 20 }
     helper: 'clone'
-    items: ".header-cell.sortable"
+    items: ".ember-table-header-cell.sortable"
     opacity: 0.9
     placeholder: 'ui-state-highlight'
     scroll: true

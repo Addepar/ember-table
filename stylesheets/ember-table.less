@@ -13,14 +13,14 @@
   outline: 0;
   z-index: 0;
   // Important: We use display:inline-block and they are not flush
-  // and have 4px margins without using font-size:0
+  // and have 4px margins without using font-size: 0
   font-size: 0;
   background-color: @table-body-bg;
   border: 1px solid @table-body-border-color;
   overflow: hidden;
+  border: 1px solid #cfd1d4;
   .border-radius(2px);
   .box-sizing();
-  border: 1px solid #cfd1d4;
   .box-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   * {
     .box-sizing();
@@ -159,7 +159,7 @@
   border-right: 0;
 }
 
-.ember-table-left-table-block .ember-table-table-cell{
+.ember-table-left-table-block .ember-table-table-cell {
   border-right: 1px solid @table-col-border-color !important;
 }
 
