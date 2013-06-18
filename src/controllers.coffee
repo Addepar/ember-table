@@ -143,9 +143,9 @@ Ember.Table.TableController = Ember.Controller.extend
   _hasVerticalScrollbar: Ember.computed ->
     height = @get('_height')
     contentHeight = @get('_tableContentHeight') +
-      @get('_headerHeight') + @get('footerHeight')
+      @get('_headerHeight') + @get('_footerHeight')
     if height < contentHeight then yes else no
-  .property '_height', '_tableContentHeight', '_headerHeight', 'footerHeight'
+  .property '_height', '_tableContentHeight', '_headerHeight', '_footerHeight'
 
   _hasHorizontalScrollbar: Ember.computed ->
     contentWidth = @get('_tableColumnsWidth')
@@ -158,13 +158,13 @@ Ember.Table.TableController = Ember.Controller.extend
     scrollbarSize = @get '_scrollbarSize'
     height = @get('_height')
     contentHeight = @get('_tableContentHeight') +
-      @get('_headerHeight') + @get('footerHeight')
+      @get('_headerHeight') + @get('_footerHeight')
     # Only subtract the scrollbarSize from the contentHeight, not the height,
     # because height is the container height of the whole table
     if @get('_hasHorizontalScrollbar')
       contentHeight += @get('_scrollbarSize')
     if contentHeight < height then contentHeight else height
-  .property('_height', '_tableContentHeight', '_headerHeight', 'footerHeight',
+  .property('_height', '_tableContentHeight', '_headerHeight', '_footerHeight',
             '_hasHorizontalScrollbar', '_scrollbarSize')
 
   # actual width of the fixed columns (frozen columns)
@@ -192,6 +192,11 @@ Ember.Table.TableController = Ember.Controller.extend
     contentHeaderHeight = @get('_contentHeaderHeight')
     if contentHeaderHeight < minHeight then minHeight else contentHeaderHeight
   .property('_contentHeaderHeight', 'minHeaderHeight')
+
+  # Dynamic Header Height that adjusts according to the header content height
+  _footerHeight: Ember.computed ->
+    if @get('hasFooter') then @get('footerHeight') else 0
+  .property('footerHeight', 'hasFooter')
 
   _bodyHeight: Ember.computed ->
     bodyHeight = @get '_tablesContainerHeight'
