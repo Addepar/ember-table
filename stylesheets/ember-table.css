@@ -316,11 +316,12 @@ body {
   font-weight: bold;
 }
 .ember-table-header-cell .ember-table-toggle {
-  padding: 0 0 0 5px;
-  margin-top: 20px;
+  position: relative;
 }
 .ember-table-header-cell .ember-table-toggle i {
-  display: none;
+  position: absolute;
+  bottom: 8px;
+  font-size: 13px;
 }
 .ember-table-header-cell.text-align-left .ember-table-content {
   left: 0;
@@ -384,7 +385,7 @@ body {
   -o-transform: rotate(-90deg);
   padding-left: 0;
   opacity: 1;
-  padding-left: 4px;
+  padding-left: 3px;
   padding-top: 3px;
 }
 /* Column Indicator */
