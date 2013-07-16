@@ -21,10 +21,11 @@ Ember.MouseWheelHandlerMixin = Ember.Mixin.create
 
 Ember.ScrollHandlerMixin = Ember.Mixin.create
   onScroll: Ember.K
+  scrollElementSelector: ''
   didInsertElement: ->
     @_super()
-    @$().bind 'scroll', (event) =>
+    @$(@get('scrollElementSelector')).bind 'scroll', (event) =>
       Ember.run this, @onScroll, event
   willDestroyElement: ->
-    @$()?.unbind 'scroll'
+    @$(@get('scrollElementSelector'))?.unbind 'scroll'
     @_super()

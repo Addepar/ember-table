@@ -1,15 +1,17 @@
 Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.ResizeHandler,
   templateName:   'tables-container'
-  classNames:     'ember-table-tables-container'
+  classNames:     ['ember-table-tables-container']
   styleBindings:  ['height']
   height:         Ember.computed.alias 'controller._tablesContainerHeight'
 
   didInsertElement: ->
     @_super()
     @elementSizeDidChange()
-    scrollBarWidth = $.getScrollbarWidth()
-    @set 'controller._scrollbarSize', scrollBarWidth
     @set 'controller._tableScrollTop', 0
+    # we need to wait for the table to be fully rendered before antiscroll can
+    # be used
+    Ember.run.next this, ->
+      this.$('.antiscroll-wrap').antiscroll()
   onResize: ->
     @elementSizeDidChange()
   elementSizeDidChange: ->
@@ -229,11 +231,12 @@ Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
     @get('controller._headerHeight') + 1
   .property 'controller._headerHeight'
   width: Ember.computed ->
+    26
     # Is null, ask Peter why?
     # @get('controller._scrollbarSize')
-    scrollbarWidth = $.getScrollbarWidth()
+    # scrollbarWidth = $.getScrollbarWidth()
     # Minimum 13px width of plus button
-    if scrollbarWidth < 26 then 26 else scrollbarWidth
+    # if scrollbarWidth < 26 then 26 else scrollbarWidth
   click: (event) ->
     @get('controller').send 'addColumn'
 
@@ -257,7 +260,8 @@ Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin,
   templateName:   'body-container'
-  classNames:     ['ember-table-table-container', 'ember-table-body-container']
+  classNames:     ['ember-table-table-container', 'ember-table-body-container',
+      'antiscroll-inner']
   height:         Ember.computed.alias 'controller._bodyHeight'
   width:          Ember.computed.alias 'controller._width'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
@@ -298,9 +302,11 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 
 Ember.Table.ScrollContainer =
 Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
-  template: Ember.Handlebars.compile("{{view Ember.Table.ScrollPanel}}")
-  classNames:     ['ember-table-scroll-container']
+  template: Ember.Handlebars.compile(
+    '<div class="antiscroll-inner">{{view Ember.Table.ScrollPanel}}</div>')
+  classNames:     ['ember-table-scroll-container', 'antiscroll-wrap']
   styleBindings:  ['top', 'left', 'width', 'height']
+  scrollElementSelector: '.antiscroll-inner'
   width:          Ember.computed.alias 'controller._scrollContainerWidth'
   height:         Ember.computed.alias 'controller._scrollContainerHeight'
   top:            Ember.computed.alias 'controller._headerHeight'
