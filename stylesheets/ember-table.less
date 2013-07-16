@@ -5,7 +5,9 @@
 .antiscroll-scrollbar {
   z-index: 100000;
 }
-
+.ember-table-scroll-container .antiscroll-inner {
+  height: 100%;
+}
 /* Ember Table Structure
 -------------------------------------------------- */
 
@@ -79,8 +81,6 @@
 .ember-table-scroll-container {
   // Top, left, height and width defined dynamically through JS
   position: absolute;
-  overflow-x: auto;
-  overflow-y: hidden;
   z-index: 1;
 }
 

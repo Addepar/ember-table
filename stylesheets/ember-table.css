@@ -137,6 +137,9 @@ body {
 .antiscroll-scrollbar {
   z-index: 100000;
 }
+.ember-table-scroll-container .antiscroll-inner {
+  height: 100%;
+}
 /* Ember Table Structure
 -------------------------------------------------- */
 /* Table Structures */
@@ -212,8 +215,6 @@ body {
 }
 .ember-table-scroll-container {
   position: absolute;
-  overflow-x: auto;
-  overflow-y: hidden;
   z-index: 1;
 }
 .ember-table-fixed-table-container {

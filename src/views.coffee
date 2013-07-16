@@ -10,10 +10,11 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.
     @set 'controller._tableScrollTop', 0
     # we need to wait for the table to be fully rendered before antiscroll can
     # be used
-    Ember.run.next this, ->
-      this.$('.antiscroll-wrap').antiscroll()
+    Ember.run.next this, -> this.$('.antiscroll-wrap').antiscroll()
+
   onResize: ->
     @elementSizeDidChange()
+    this.$('.antiscroll-wrap').antiscroll()
   elementSizeDidChange: ->
     @set 'controller._width', @$().parent().outerWidth()
     @set 'controller._height', @$().parent().outerHeight()
@@ -261,7 +262,7 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin,
   templateName:   'body-container'
   classNames:     ['ember-table-table-container', 'ember-table-body-container',
-      'antiscroll-inner']
+                  'antiscroll-inner']
   height:         Ember.computed.alias 'controller._bodyHeight'
   width:          Ember.computed.alias 'controller._width'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
@@ -269,9 +270,21 @@ Ember.ScrollHandlerMixin,
   onScrollTopDidChange: Ember.observer ->
     @$().scrollTop @get('scrollTop')
   , 'scrollTop'
+
+  mouseEnter: (event) ->
+    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
+    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
+    $horizontalScroll.addClass('antiscroll-scrollbar-shown')
+
+  mouseLeave: (event) ->
+    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
+    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
+    $horizontalScroll.removeClass('antiscroll-scrollbar-shown')
+
   onScroll: (event) ->
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
+
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     return unless Math.abs(deltaX) > Math.abs(deltaY)
     scrollLeft = @$('.ember-table-right-table-block').scrollLeft() + deltaX * 50

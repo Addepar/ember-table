@@ -1,8 +1,6 @@
-require 'lib/scrollbar'
 require 'lib/antiscroll'
 require 'build/templates/templates'
 require 'build/src/utils/jquery_fix'
-require 'build/src/utils/scrollbar_width_helper'
 require 'build/src/utils/resize_handler'
 require 'build/src/utils/style_bindings'
 require 'build/src/utils/lazy_container_view'
