@@ -75,7 +75,7 @@
 .ember-table-scroll-container {
   // Top, left, height and width defined dynamically through JS
   // Override antiscroll-wrapper position relative
-  position: absolute !important;
+  position: absolute;
   z-index: 1;
 }
 
@@ -310,6 +310,9 @@
   position: absolute;
   border-top: 1px solid @table-footer-border-top;
   overflow: hidden;
+
+  // TODO(Louis): This is weird
+  // z-index: 3;
   z-index: 1;
 
   .ember-table-table-cell .ember-table-toggle {
@@ -431,7 +434,7 @@
 
 .ember-table-scroll-container {
   // override inline antiscroll height
-  .antiscroll-inner {
+  .antiscroll-wrap {
     height: 100% !important;
     width: 100% !important;
   }
@@ -439,6 +442,14 @@
   .antiscroll-scrollbar-vertical {
     display: none;
   }
+}
+
+// Vertical Scrollbar hacks
+.ember-table-tables-container > .antiscroll-wrap {
+  width: 100% !important;
+}
+.ember-table-tables-container > .antiscroll-wrap .antiscroll-scrollbar-horizontal {
+  display: none !important;
 }
 
 /* Levels */

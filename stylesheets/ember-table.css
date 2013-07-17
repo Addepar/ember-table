@@ -208,7 +208,7 @@ body {
   display: block;
 }
 .ember-table-scroll-container {
-  position: absolute !important;
+  position: absolute;
   z-index: 1;
 }
 .ember-table-fixed-table-container {
@@ -508,12 +508,18 @@ body {
 .antiscroll-scrollbar {
   z-index: 10;
 }
-.ember-table-scroll-container .antiscroll-inner {
+.ember-table-scroll-container .antiscroll-wrap {
   height: 100% !important;
   width: 100% !important;
 }
 .ember-table-scroll-container .antiscroll-scrollbar-vertical {
   display: none;
+}
+.ember-table-tables-container > .antiscroll-wrap {
+  width: 100% !important;
+}
+.ember-table-tables-container > .antiscroll-wrap .antiscroll-scrollbar-horizontal {
+  display: none !important;
 }
 /* Levels */
 .ember-table-table-row {

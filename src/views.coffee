@@ -273,6 +273,8 @@ Ember.ScrollHandlerMixin,
   width:          Ember.computed.alias 'controller._width'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+  firefoxScrollDistance:  52
+
   onScrollTopDidChange: Ember.observer ->
     @$().scrollTop @get('scrollTop')
   , 'scrollTop'
@@ -288,6 +290,15 @@ Ember.ScrollHandlerMixin,
     $horizontalScroll.removeClass('antiscroll-scrollbar-shown')
 
   onScroll: (event) ->
+    if $.browser.mozilla
+      if parseInt($.browser.version) >= 13
+        oldPosition = @get('scrollTop')
+        newPosition = event.target.scrollTop
+        if newPosition > oldPosition
+          event.target.scrollTop += @get('firefoxScrollDistance')
+        else if newPosition < oldPosition
+          event.target.scrollTop -= @get('firefoxScrollDistance')
+
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
 
@@ -322,8 +333,8 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.Table.ScrollContainer =
 Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   template: Ember.Handlebars.compile(
-    '<div class="antiscroll-inner">{{view Ember.Table.ScrollPanel}}</div>')
-  classNames:     ['ember-table-scroll-container', 'antiscroll-wrap']
+    '<div class="antiscroll-wrap"><div class="antiscroll-inner">{{view Ember.Table.ScrollPanel}}</div></div>')
+  classNames:     ['ember-table-scroll-container']
   styleBindings:  ['top', 'left', 'width', 'height']
   scrollElementSelector: '.antiscroll-inner'
   width:          Ember.computed.alias 'controller._scrollContainerWidth'
