@@ -1,4 +1,3 @@
-require 'lib/antiscroll'
 require 'build/templates/templates'
 require 'build/src/utils/jquery_fix'
 require 'build/src/utils/resize_handler'

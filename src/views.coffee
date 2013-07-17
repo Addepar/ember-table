@@ -12,9 +12,15 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.
     # be used
     Ember.run.next this, -> this.$('.antiscroll-wrap').antiscroll()
 
+  onBodyContentDidChange: Ember.observer ->
+    return unless @get('state') is 'inDOM'
+    Ember.run.next this, -> this.$('.antiscroll-wrap').antiscroll()
+  , 'controller.bodyContent'
+
   onResize: ->
     @elementSizeDidChange()
-    this.$('.antiscroll-wrap').antiscroll()
+    Ember.run.next this, -> this.$('.antiscroll-wrap').antiscroll()
+
   elementSizeDidChange: ->
     @set 'controller._width', @$().parent().outerWidth()
     @set 'controller._height', @$().parent().outerHeight()

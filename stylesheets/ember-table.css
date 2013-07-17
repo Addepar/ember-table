@@ -134,12 +134,6 @@ body {
   width: 0;
   height: 0;
 }
-.antiscroll-scrollbar {
-  z-index: 100000;
-}
-.ember-table-scroll-container .antiscroll-inner {
-  height: 100%;
-}
 /* Ember Table Structure
 -------------------------------------------------- */
 /* Table Structures */
@@ -214,7 +208,7 @@ body {
   display: block;
 }
 .ember-table-scroll-container {
-  position: absolute;
+  position: absolute !important;
   z-index: 1;
 }
 .ember-table-fixed-table-container {
@@ -509,6 +503,17 @@ body {
 }
 .ember-table-add-column-button:active {
   box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 2px 0px inset;
+}
+/* Antiscroll */
+.antiscroll-scrollbar {
+  z-index: 10;
+}
+.ember-table-scroll-container .antiscroll-inner {
+  height: 100% !important;
+  width: 100% !important;
+}
+.ember-table-scroll-container .antiscroll-scrollbar-vertical {
+  display: none;
 }
 /* Levels */
 .ember-table-table-row {
