@@ -433,6 +433,23 @@
   z-index: 10;
 }
 
+.ember-table-body-container .antiscroll-box {
+  position: absolute;
+  top:0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: visible;
+}
+
+// Make the antiscroll-box the size of the antiscroll-wrapper
+.ember-table-body-container .antiscroll-box .antiscroll-inner {
+  height: 100%;
+  width: 100%;
+  // Scrollbar appears on antiscroll-inner in IE9 + Firefox
+  overflow-x: hidden;
+}
+
 .ember-table-scroll-container {
   // override inline antiscroll height
   .antiscroll-wrap {
@@ -445,16 +462,7 @@
   }
 }
 
-.ember-table-body-container .antiscroll-box,
-.ember-table-body-container .antiscroll-box .antiscroll-inner {
-  height: 642px;
-  width: 1000px;
-}
-
 // Vertical Scrollbar hacks
-.ember-table-tables-container > .antiscroll-wrap {
-  width: 100% !important;
-}
 .ember-table-tables-container > .antiscroll-wrap .antiscroll-scrollbar-horizontal {
   display: none !important;
 }

@@ -21,63 +21,6 @@ body {
   width: 1000px;
   margin: auto;
 }
-.scrollable::-webkit-scrollbar {
-  height: 16px;
-  width: 15px;
-}
-.scrollable::-webkit-scrollbar-button:start:decrement,
-.scrollable::-webkit-scrollbar-button:end:increment {
-  background-color: transparent;
-  display: block;
-  height: 0;
-}
-.scrollable::-webkit-scrollbar-track {
-  background-clip: padding-box;
-  border: solid
-  transparent;
-  border-width: 0 0 0 4px;
-}
-.scrollable::-webkit-scrollbar-track-piece {
-  background-color: transparent;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-}
-.scrollable::-webkit-scrollbar:hover {
-  background-color: #f3f3f3;
-  border: 1px solid #dbdbdb;
-}
-.scrollable::-webkit-scrollbar-thumb:vertical,
-.scrollable::-webkit-scrollbar-thumb:horizontal {
-  background-color: #c6c6c6;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  border-radius: 0;
-  -moz-background-clip: padding;
-  -webkit-background-clip: padding-box;
-  background-clip: padding-box;
-}
-.scrollable::-webkit-scrollbar-thumb {
-  background-color: rgba(0, 0, 0, 0.2);
-  border: solid transparent;
-  border-width: 0;
-  -webkit-box-shadow: inset 1px 1px 0 rgba(0,0,0,0.10),inset 0 -1px 0 rgba(0,0,0,0.07);
-  -moz-box-shadow: inset 1px 1px 0 rgba(0,0,0,0.10),inset 0 -1px 0 rgba(0,0,0,0.07);
-  box-shadow: inset 1px 1px 0 rgba(0,0,0,0.10),inset 0 -1px 0 rgba(0,0,0,0.07);
-  background-clip: padding-box;
-}
-.scrollable::-webkit-scrollbar-thumb:hover {
-  background-color: #949494;
-}
-.scrollable::-webkit-scrollbar-thumb:active {
-  background-color: rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35);
-  -moz-box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35);
-  box-shadow: inset 1px 1px 3px rgba(0, 0, 0, 0.35);
-}
 .antiscroll-wrap {
   display: inline-block;
   position: relative;
@@ -507,20 +450,25 @@ body {
 .antiscroll-scrollbar {
   z-index: 10;
 }
+.ember-table-body-container .antiscroll-box {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  overflow: visible;
+}
+.ember-table-body-container .antiscroll-box .antiscroll-inner {
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
 .ember-table-scroll-container .antiscroll-wrap {
   height: 100% !important;
   width: 100% !important;
 }
 .ember-table-scroll-container .antiscroll-scrollbar-vertical {
   display: none;
-}
-.ember-table-body-container .antiscroll-box,
-.ember-table-body-container .antiscroll-box .antiscroll-inner {
-  height: 642px;
-  width: 1000px;
-}
-.ember-table-tables-container > .antiscroll-wrap {
-  width: 100% !important;
 }
 .ember-table-tables-container > .antiscroll-wrap .antiscroll-scrollbar-horizontal {
   display: none !important;
