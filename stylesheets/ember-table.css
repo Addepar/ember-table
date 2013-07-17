@@ -172,8 +172,7 @@ body {
   user-select: none;
 }
 .ember-table-table-container {
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   position: relative;
   z-index: 3;
 }
@@ -514,6 +513,11 @@ body {
 }
 .ember-table-scroll-container .antiscroll-scrollbar-vertical {
   display: none;
+}
+.ember-table-body-container .antiscroll-box,
+.ember-table-body-container .antiscroll-box .antiscroll-inner {
+  height: 642px;
+  width: 1000px;
 }
 .ember-table-tables-container > .antiscroll-wrap {
   width: 100% !important;

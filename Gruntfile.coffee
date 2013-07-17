@@ -52,7 +52,7 @@ module.exports = (grunt) ->
       Changes in dependencies/ember.js or src javascript
       will trigger the neuter task.
 
-      Changes to any templates will trigger the emberTemplates
+      Changes to any templates will trigger the ember_templates
       task (which writes a new compiled file into dependencies/)
       and then neuter all the files again.
     ###
@@ -68,7 +68,7 @@ module.exports = (grunt) ->
         tasks: [ "less" ]
       handlebars_templates:
         files: [ "src/**/*.hbs" ]
-        tasks: [ "emberTemplates", "neuter" ]
+        tasks: [ "ember_templates", "neuter" ]
 
     ###
       Compile LESS files
@@ -112,7 +112,7 @@ module.exports = (grunt) ->
       The compiled result will be stored in
       Ember.TEMPLATES keyed on their file path (with the 'src/templates' stripped)
     ###
-    emberTemplates:
+    ember_templates:
       options:
         templateName: (sourceFile) -> sourceFile.replace(/src\/templates\//, '')
       'build/templates/templates.js': ["src/templates/*.hbs"]
@@ -150,6 +150,6 @@ module.exports = (grunt) ->
   grunt.registerTask "build_srcs", [ "coffee:srcs", "neuter" ]
   grunt.registerTask "build_examples", [ "coffee:examples" ]
   if env is "dev"
-    grunt.registerTask "default", [ "emberTemplates", "less", "build_srcs", "build_examples", "uglify", "watch" ]
+    grunt.registerTask "default", [ "ember_templates", "less", "build_srcs", "build_examples", "uglify", "watch" ]
   else
-    grunt.registerTask "default", [ "emberTemplates", "less", "build_srcs", "uglify" ]
+    grunt.registerTask "default", [ "ember_templates", "less", "build_srcs", "uglify" ]

@@ -31,8 +31,9 @@
 
 .ember-table-table-container {
   // Height and Width defined dynamically through JS
-  overflow-x: hidden;
-  overflow-y: auto;
+  // overflow-x: hidden;
+  // overflow-y: auto;
+  overflow: hidden;
   position: relative;
   z-index: 3;
 }
@@ -442,6 +443,12 @@
   .antiscroll-scrollbar-vertical {
     display: none;
   }
+}
+
+.ember-table-body-container .antiscroll-box,
+.ember-table-body-container .antiscroll-box .antiscroll-inner {
+  height: 642px;
+  width: 1000px;
 }
 
 // Vertical Scrollbar hacks

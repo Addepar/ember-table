@@ -268,11 +268,12 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.ScrollHandlerMixin,
   templateName:   'body-container'
   classNames:     ['ember-table-table-container', 'ember-table-body-container',
-                  'antiscroll-inner']
+                   'antiscroll-wrap']
   height:         Ember.computed.alias 'controller._bodyHeight'
   width:          Ember.computed.alias 'controller._width'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+  scrollElementSelector: '.antiscroll-inner'
   firefoxScrollDistance:  52
 
   onScrollTopDidChange: Ember.observer ->

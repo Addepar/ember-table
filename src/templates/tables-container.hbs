@@ -1,9 +1,7 @@
 {{#if controller.hasHeader}}
   {{view Ember.Table.HeaderTableContainer}}
 {{/if}}
-<div class="antiscroll-wrap">
-  {{view Ember.Table.BodyTableContainer}}
-</div>
+{{view Ember.Table.BodyTableContainer}}
 {{#if controller.hasFooter}}
   {{view Ember.Table.FooterTableContainer}}
 {{/if}}
