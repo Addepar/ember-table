@@ -291,15 +291,6 @@ Ember.ScrollHandlerMixin,
     $horizontalScroll.removeClass('antiscroll-scrollbar-shown')
 
   onScroll: (event) ->
-    if $.browser.mozilla
-      if parseInt($.browser.version) >= 13
-        oldPosition = @get('scrollTop')
-        newPosition = event.target.scrollTop
-        if newPosition > oldPosition
-          event.target.scrollTop += @get('firefoxScrollDistance')
-        else if newPosition < oldPosition
-          event.target.scrollTop -= @get('firefoxScrollDistance')
-
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
 
@@ -348,8 +339,9 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
     @set 'scrollLeft', event.target.scrollLeft
     event.preventDefault()
   onScrollLeftDidChange: Ember.observer ->
-    @$().scrollLeft @get('scrollLeft')
-  , 'scrollLeft'
+    selector = @get('scrollElementSelector')
+    this.$(selector).scrollLeft @get('scrollLeft')
+  , 'scrollLeft', 'scrollElementSelector'
 
 Ember.Table.ScrollPanel = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['ember-table-scroll-panel']
