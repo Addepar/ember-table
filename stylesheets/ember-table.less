@@ -24,7 +24,6 @@
   .box-sizing();
   .box-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
   * {
-    .box-sizing();
     .user-select(none)
   }
 }
@@ -35,24 +34,29 @@
   overflow: hidden;
   position: relative;
   z-index: 3;
+  .box-sizing();
 }
 
 .ember-table-table-fixed-wrapper,
 .ember-table-table-scrollable-wrapper {
   overflow: visible;
+  .box-sizing();
 }
 
 .ember-table-table-fixed-wrapper,
 .ember-table-header-block {
   height: 100%;
+  .box-sizing();
 }
 
 .ember-table-header-container {
   .box-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  .box-sizing();
 }
 
 .ember-table-footer-container {
   .box-shadow(0 -1px 2px rgba(0, 0, 0, 0.1));
+  .box-sizing();
 }
 
 .ember-table-table-block {
@@ -60,6 +64,7 @@
   position: relative;
   vertical-align: top;
   overflow: hidden;
+  .box-sizing();
 }
 
 .ember-table-table-fixed-wrapper {
@@ -77,6 +82,7 @@
   // Override antiscroll-wrapper position relative
   position: absolute;
   z-index: 1;
+  .box-sizing();
 }
 
 .ember-table-fixed-table-container {
@@ -108,9 +114,11 @@
 .ember-table-table-row {
   // Height and Width defined dynamically through JS
   position: absolute;
+  .box-sizing();
 
   > div {
     height: 100%;
+    .box-sizing();
   }
 
   &.ember-table-selected {
@@ -122,6 +130,7 @@
 
 .ember-table-lazy-list-container {
   position: relative;
+  .box-sizing();
 
   .ember-table-table-row {
     position: absolute;
@@ -138,15 +147,18 @@
   font-size: 13px;
   border-right: 1px solid @table-col-border-color;
   height: 100%;
+  .box-sizing();
 
   span {
     padding: 0;
     // Note the -1 is because we use box sizing and the row has a bottom border
     line-height: @table-row-height - 1;
+    .box-sizing();
   }
 
   .ember-table-content {
     padding: 0 5px;
+    .box-sizing();
   }
 }
 
@@ -168,6 +180,7 @@
 .ember-table-header-container {
   border-bottom: 1px solid @table-header-border-bottom;
   overflow: hidden;
+  .box-sizing();
 
   .ui-state-highlight {
     float: left;
@@ -224,6 +237,7 @@
 .ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
   width: 100%;
   overflow-x: auto;
+  .box-sizing();
 
   .ui-sortable {
     // Dynamically set the width
@@ -327,6 +341,7 @@
   width: 20px;
   height: 100%;
   margin: 0;
+  .box-sizing();
 
   &:hover {
     cursor: pointer;
@@ -370,6 +385,7 @@
   width: 3px;
   z-index: 1000;
   visibility: hidden;
+  .box-sizing();
 
   &.active {
     visibility: visible;

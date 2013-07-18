@@ -105,9 +105,6 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 .ember-table-tables-container * {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
@@ -118,30 +115,48 @@ body {
   overflow: hidden;
   position: relative;
   z-index: 3;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-fixed-wrapper,
 .ember-table-table-scrollable-wrapper {
   overflow: visible;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-fixed-wrapper,
 .ember-table-header-block {
   height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-header-container {
   -webkit-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-footer-container {
   -webkit-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
   box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-block {
   display: inline-block;
   position: relative;
   vertical-align: top;
   overflow: hidden;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-fixed-wrapper {
   overflow: hidden;
@@ -152,6 +167,9 @@ body {
 .ember-table-scroll-container {
   position: absolute;
   z-index: 1;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-fixed-table-container {
   z-index: 4;
@@ -179,9 +197,15 @@ body {
 /* Table Rows */
 .ember-table-table-row {
   position: absolute;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-row > div {
   height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-row.ember-table-selected {
   background-color: #227ecb !important;
@@ -190,6 +214,9 @@ body {
 }
 .ember-table-lazy-list-container {
   position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-lazy-list-container .ember-table-table-row {
   position: absolute;
@@ -201,13 +228,22 @@ body {
   font-size: 13px;
   border-right: 1px solid #dcdcdc;
   height: 100%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-cell span {
   padding: 0;
   line-height: 29px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-table-cell .ember-table-content {
   padding: 0 5px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-body-container .ember-table-table-cell,
 .ember-table-footer-container .ember-table-table-cell {
@@ -224,6 +260,9 @@ body {
 .ember-table-header-container {
   border-bottom: 1px solid #dcdcdc;
   overflow: hidden;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-header-container .ui-state-highlight {
   float: left;
@@ -272,6 +311,9 @@ body {
 .ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
   width: 100%;
   overflow-x: auto;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-header-container .ember-table-right-table-block .ember-table-table-row .ui-sortable {
   overflow: hidden;
@@ -356,6 +398,9 @@ body {
   width: 20px;
   height: 100%;
   margin: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-toggle-span:hover {
   cursor: pointer;
@@ -395,6 +440,9 @@ body {
   width: 3px;
   z-index: 1000;
   visibility: hidden;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
 }
 .ember-table-column-sortable-indicator.active {
   visibility: visible;
