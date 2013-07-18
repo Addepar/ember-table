@@ -225,10 +225,6 @@ Ember.Table.TableController = Ember.Controller.extend
     @get('_width') - @get('_fixedColumnsWidth') - @get('_scrollbarSize')
   .property '_width', '_fixedColumnsWidth', '_scrollbarSize'
 
-  _scrollContainerHeight: Ember.computed ->
-    containerHeight = @get('_tablesContainerHeight') - @get('_headerHeight')
-  .property('_tablesContainerHeight', '_headerHeight')
-
   _numItemsShowing: Ember.computed ->
     Math.floor @get('_bodyHeight') / @get('rowHeight')
   .property '_bodyHeight', 'rowHeight'

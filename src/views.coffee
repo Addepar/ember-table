@@ -329,11 +329,11 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   template: Ember.Handlebars.compile(
     '<div class="antiscroll-wrap"><div class="antiscroll-inner">{{view Ember.Table.ScrollPanel}}</div></div>')
   classNames:     ['ember-table-scroll-container']
-  styleBindings:  ['top', 'left', 'width', 'height']
+  styleBindings:  ['left', 'width', 'height']
   scrollElementSelector: '.antiscroll-inner'
   width:          Ember.computed.alias 'controller._scrollContainerWidth'
-  height:         Ember.computed.alias 'controller._scrollContainerHeight'
-  top:            Ember.computed.alias 'controller._headerHeight'
+  # 10 is the height of the horizontal scrollbar
+  height:         10
   left:           Ember.computed.alias 'controller._fixedColumnsWidth'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
