@@ -10,17 +10,16 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.
     @elementSizeDidChange()
     # we need to wait for the table to be fully rendered before antiscroll can
     # be used
-    Ember.run.next this, ->
-      Ember.run.once this, @updateAntiscroll
+    Ember.run.next this, @updateAntiscroll
 
   onBodyContentDidChange: Ember.observer ->
     return unless @get('state') is 'inDOM'
-    Ember.run.once this, @updateAntiscroll
+    Ember.run.next this, @updateAntiscroll
   , 'controller.bodyContent'
 
   onResizeEnd: ->
     @elementSizeDidChange()
-    Ember.run.once this, @updateAntiscroll
+    Ember.run.next this, @updateAntiscroll
 
   updateAntiscroll: -> this.$('.antiscroll-wrap').antiscroll()
 
