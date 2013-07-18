@@ -509,7 +509,6 @@ body {
 .ember-table-body-container .antiscroll-box .antiscroll-inner {
   height: 100%;
   width: 100%;
-  overflow-x: hidden;
 }
 .ember-table-scroll-container .antiscroll-wrap {
   height: 100% !important;

@@ -17,7 +17,7 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.StyleBindingsMixin, Ember.
     Ember.run.next this, -> this.$('.antiscroll-wrap').antiscroll()
   , 'controller.bodyContent'
 
-  onResize: ->
+  onResizeEnd: ->
     @elementSizeDidChange()
     Ember.run.next this, -> this.$('.antiscroll-wrap').antiscroll()
 
