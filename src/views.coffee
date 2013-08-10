@@ -159,6 +159,7 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 
 Ember.Table.HeaderTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
+Ember.TouchMoveHandlerMixin,
   templateName:   'header-container'
   classNames:     ['table-container', 'fixed-table-container',
                    'header-container']
@@ -169,9 +170,14 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
+  onTouchMove: (event, deltaX, deltaY) ->
+    scrollLeft = @$('.right-table-block').scrollLeft() + deltaX
+    @set 'scrollLeft', scrollLeft
+    event.preventDefault()
 
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
+Ember.TouchMoveHandlerMixin,
 Ember.ScrollHandlerMixin,
   templateName:   'body-container'
   classNames:     ['table-container', 'body-container']
@@ -190,9 +196,15 @@ Ember.ScrollHandlerMixin,
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
+  onTouchMove: (event, deltaX, deltaY) ->
+    return unless Math.abs(deltaX) > Math.abs(deltaY)
+    scrollLeft = @$('.right-table-block').scrollLeft() + deltaX
+    @set 'scrollLeft', scrollLeft
+    event.preventDefault()
 
 Ember.Table.FooterTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
+Ember.TouchMoveHandlerMixin,
   templateName:   'footer-container'
   classNames:     ['table-container', 'fixed-table-container',
                   'footer-container']
@@ -209,6 +221,10 @@ Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
             'controller._tableContentHeight')
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
+    @set 'scrollLeft', scrollLeft
+    event.preventDefault()
+  onTouchMove: (event, deltaX, deltaY) ->
+    scrollLeft = @$('.right-table-block').scrollLeft() + deltaX
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
