@@ -8,14 +8,21 @@
   "repository": "",
   "license": "MIT",
   "devDependencies": {
-    "grunt": "0.4.0rc5",
+    "grunt": "~0.4.1",
     "grunt-neuter": "~0.4.0",
-    "grunt-contrib-uglify": "~0.1.1rc5",
-    "grunt-contrib-coffee": "~0.4.0",
-    "grunt-contrib-jshint": "~0.1.1rc5",
-    "grunt-contrib-qunit": "~0.1.1rc5",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-qunit": "*",
     "grunt-ember-templates": "~0.4.10",
-    "grunt-contrib-watch": "~0.2.0rc5",
-    "grunt-contrib-less": "~0.5.0"
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "grunt-contrib-uglify": "*",
+    "grunt-manifest": "*",
+    "grunt-shell": "*",
+    "lockdown": "*",
+    "grunt-contrib-less": "~0.6.1",
+    "grunt-jsdoc": "~0.4.0",
+    "grunt-browserify2": "~0.1.8"
   }
 }

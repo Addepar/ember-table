@@ -1,5 +1,8 @@
+.idea
 .DS_Store
 *.swp
 node_modules
-build
+build/
+lib/ember-table*.js
+doc/
 examples/*/*.js
