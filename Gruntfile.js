@@ -28,18 +28,7 @@ module.exports = function (grunt) {
             // Bundle containing all client scripts (WebApp, Ember.js)
             table: {
                 entry: [
-                    // Utils
-                    './build/src/utils/jquery_fix.js',
-                    './build/src/utils/scrollbar_width_helper.js',
-                    './build/src/utils/resize_handler.js',
-                    './build/src/utils/style_bindings.js',
-                    './build/src/utils/lazy_container_view.js',
-                    './build/src/utils/utils.js',
-
-                    // Sources
-                    './build/src/controllers.js',
-                    './build/src/row_selection_mixin.js',
-                    './build/src/views.js'
+                    './build/src/main.js'
                 ],
                 compile: './lib/ember-table-lib.js'
             }
@@ -47,7 +36,8 @@ module.exports = function (grunt) {
 
         neuter: {
             options:{
-                includeSourceURL: false
+                includeSourceURL: false,
+                separator: "\n"
             },
             "lib/ember-table.js": "build/src/main.js"
         },
