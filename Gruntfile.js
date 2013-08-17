@@ -74,8 +74,7 @@ module.exports = function (grunt) {
 
         clean: [
             "./lib/ember-table.js",
-            "./lib/ember-table-bundle.js",
-            "./lib/ember-table-bundle.min.js",
+            "./lib/ember-table.min.js",
             "./lib/ember-table-lib.js",
             "./lib/ember-table-templates.js"
         ],
@@ -144,7 +143,7 @@ module.exports = function (grunt) {
                 },
 
                 files: {
-                    './lib/ember-table-bundle.js': [
+                    './lib/ember-table.js': [
                         // Include lib in bundle
                         './lib/ember-table-lib.js'
                     ]
@@ -161,7 +160,7 @@ module.exports = function (grunt) {
                 },
 
                 files: {
-                    './lib/ember-table-bundle.min.js': [
+                    './lib/ember-table.min.js': [
                         // Include lib in bundle
                         './lib/ember-table-lib.js'
                     ]

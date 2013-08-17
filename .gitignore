@@ -2,6 +2,7 @@
 .DS_Store
 *.swp
 node_modules
-build/ember-table*.js
+build/
+lib/ember-table*.js
 doc/
 examples/*/*.js
