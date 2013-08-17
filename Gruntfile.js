@@ -73,7 +73,11 @@ module.exports = function (grunt) {
         },
 
         clean: [
-            "./lib/ember-table-lib.js"
+            "./lib/ember-table.js",
+            "./lib/ember-table-bundle.js",
+            "./lib/ember-table-bundle.min.js",
+            "./lib/ember-table-lib.js",
+            "./lib/ember-table-templates.js"
         ],
 
         emberTemplates: {
