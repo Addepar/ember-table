@@ -6,6 +6,13 @@
 Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
   templateName: 'tables-container'
   classNames:   'tables-container'
+
+  ###*
+  * Did insert element callback
+  * @memberof Ember.Table.TablesContainer
+  * @instance
+  * @todo Contains (Peter) hack to detect if user is using lion and scroll
+  ###
   didInsertElement: ->
     @_super()
     @elementSizeDidChange()
@@ -16,8 +23,20 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
     scrollBarWidth = 8 if isLion
     @set 'controller._scrollbarSize', scrollBarWidth
     @set 'controller._tableScrollTop', 0
+
+  ###*
+  * On resize callback
+  * @memberof Ember.Table.TablesContainer
+  * @instance
+  ###
   onResize: ->
     @elementSizeDidChange()
+
+  ###*
+  * Element size did change callback
+  * @memberof Ember.Table.TablesContainer
+  * @instance
+  ###
   elementSizeDidChange: ->
     @set 'controller._width', @$().width()
     @set 'controller._height', @$().height()
@@ -44,6 +63,12 @@ Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
   columns: null
   content: null
   scrollLeft: null
+
+  ###*
+  * On scroll left did change callback
+  * @memberof Ember.Table.TableBlock
+  * @instance
+  ###
   onScrollLeftDidChange: Ember.observer ->
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'
@@ -62,6 +87,12 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
   content:    null
   scrollLeft: null
   scrollTop:  null
+
+  ###*
+  * On scroll left did change callback
+  * @memberof Ember.Table.LazyTableBlock
+  * @instance
+  ###
   onScrollLeftDidChange: Ember.observer ->
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'
@@ -80,12 +111,32 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   columns:  Ember.computed.alias 'parentView.columns'
   width:    Ember.computed.alias 'controller._rowWidth'
   height:   Ember.computed.alias 'controller.rowHeight'
+
+  ###*
+  * Mouse enter callback
+  * @memberof Ember.Table.TableRow
+  * @instance
+  * @param event jQuery event
+  ###
   mouseEnter: (event) ->
     row = @get 'row'
     row.set 'isActive', yes if row
+
+  ###*
+  * Mouse leave callback
+  * @memberof Ember.Table.TableRow
+  * @instance
+  * @param event jQuery event
+  ###
   mouseLeave: (event) ->
     row = @get 'row'
     row.set 'isActive', no if row
+
+  ###*
+  * Teardown content
+  * @memberof Ember.Table.TableRow
+  * @instance
+  ###
   teardownContent: ->
     row = @get 'row'
     row.set 'isActive', no if row
@@ -105,6 +156,11 @@ Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   rowContent: Ember.computed.alias 'row.content'
   width:      Ember.computed.alias 'column.columnWidth'
 
+  ###*
+  * Computed Cell Content
+  * @memberof Ember.Table.TableCell
+  * @instance
+  ###
   cellContent: Ember.computed (key, value) ->
     row     = @get 'rowContent'
     column  = @get 'column'
@@ -127,6 +183,12 @@ Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
 Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
   classNames:    ['header-block']
   itemViewClass: 'Ember.Table.HeaderRow'
+
+  ###*
+  * Computed Content
+  * @memberof Ember.Table.HeaderBlock
+  * @instance
+  ###
   content: Ember.computed ->
     [@get('columns')]
   .property 'columns'
@@ -144,7 +206,11 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
   height:  Ember.computed.alias 'controller.headerHeight'
   width:   Ember.computed.alias 'controller._tableColumnsWidth'
 
-  # options for jQuery UI sortable
+  ###*
+  * Options for jQuery UI sortable
+  * @memberof Ember.Table.HeaderRow
+  * @instance
+  ###
   sortableOption: Ember.computed ->
     axis: 'x'
     cursor: 'pointer'
@@ -156,10 +222,22 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
     update: jQuery.proxy(@onColumnSort, this)
   .property()
 
+  ###*
+  * Did insert element callback
+  * @memberof Ember.Table.HeaderRow
+  * @instance
+  ###
   didInsertElement: ->
     @_super()
     @$('> div').sortable(@get('sortableOption'))
 
+  ###*
+  * On column sort callback
+  * @memberof Ember.Table.HeaderRow
+  * @instance
+  * @argument event jQuery event
+  * @argument ui
+  ###
   onColumnSort: (event, ui) ->
     newIndex = ui.item.index()
     view     = Ember.View.views[ui.item.attr('id')]
@@ -181,7 +259,11 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   width:          Ember.computed.alias 'column.columnWidth'
   height:         Ember.computed.alias 'controller.headerHeight'
 
-  # jQuery UI resizable option
+  ###*
+  * jQuery UI resizable option
+  * @memberof Ember.Table.HeaderCell
+  * @instance
+  ###
   resizableOption: Ember.computed ->
     handles: 'e'
     minHeight: 40
@@ -191,12 +273,23 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
     stop: jQuery.proxy(@onColumnResize, this)
   .property()
 
+  ###*
+  * Did insert element callback
+  * @memberof Ember.Table.HeaderCell
+  * @instance
+  ###
   didInsertElement: ->
     fluid = @get("controller.fluidTable")
     if !fluid || (fluid and @get("column._nextColumn"))
       @$().resizable(@get('resizableOption'))
       @_resizableWidget = @$().resizable('widget')
 
+  ###*
+  * On column resize callback
+  * @memberof Ember.Table.HeaderCell
+  * @instance
+  * @argument event jQuery event
+  ###
   onColumnResize: (event, ui) ->
     max = @get("column").resize(ui.size.width)
     @$().resizable("option", "maxWidth", max) if max
@@ -218,10 +311,29 @@ Ember.TouchMoveHandlerMixin,
   height:         Ember.computed.alias 'controller.headerHeight'
   width:          Ember.computed.alias 'controller._tableContainerWidth'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+
+  ###*
+  * On mouse wheel callback - handle and stop propagation
+  * @memberof Ember.Table.HeaderTableContainer
+  * @instance
+  * @argument event jQuery event
+  * @argument delta
+  * @argument deltaX {Integer}
+  * @argument deltaY {Integer}
+  ###
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
+
+  ###*
+  * On touch move callback - handle and stop propagation
+  * @memberof Ember.Table.HeaderTableContainer
+  * @instance
+  * @argument event jQuery event
+  * @argument deltaX
+  * @argument deltaY
+  ###
   onTouchMove: (event, deltaX, deltaY) ->
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX
     @set 'scrollLeft', scrollLeft
@@ -242,17 +354,49 @@ Ember.ScrollHandlerMixin,
   width:          Ember.computed.alias 'controller._width'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+
+  ###*
+  * On scroll top did change observer
+  * @memberof Ember.Table.BodyTableContainer
+  * @instance
+  ###
   onScrollTopDidChange: Ember.observer ->
     @$().scrollTop @get('scrollTop')
   , 'scrollTop'
+
+  ###*
+  * On scroll callback
+  * @memberof Ember.Table.BodyTableContainer
+  * @instance
+  * @argument event jQuery event
+  ###
   onScroll: (event) ->
     @set 'scrollTop', event.target.scrollTop
     event.preventDefault()
+
+  ###*
+  * On mouse wheel callback callback
+  * @memberof Ember.Table.BodyTableContainer
+  * @instance
+  * @argument event jQuery event
+  * @argument delta
+  * @argument deltaX {Integer}
+  * @argument deltaY {Integer}
+  ###
   onMouseWheel: (event, delta, deltaX, deltaY) ->
     return unless Math.abs(deltaX) > Math.abs(deltaY)
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
+
+  ###*
+  * On touch move callback
+  * @memberof Ember.Table.BodyTableContainer
+  * @instance
+  * @argument event jQuery event
+  * @argument deltaX {Integer}
+  * @argument deltaY {Integer}
+  ###
   onTouchMove: (event, deltaX, deltaY) ->
     return unless Math.abs(deltaX) > Math.abs(deltaY)
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX
@@ -306,9 +450,22 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   left:           Ember.computed.alias 'controller._fixedColumnsWidth'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+
+  ###*
+  * On scroll callback
+  * @memberof Ember.Table.ScrollContainer
+  * @instance
+  * @argument event jQuery event
+  ###
   onScroll: (event) ->
     @set 'scrollLeft', event.target.scrollLeft
     event.preventDefault()
+
+  ###*
+  * On scroll left did change observer
+  * @memberof Ember.Table.ScrollContainer
+  * @instance
+  ###
   onScrollLeftDidChange: Ember.observer ->
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'

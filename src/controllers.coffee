@@ -8,6 +8,13 @@ Ember.Table = Ember.Namespace.create()
 Ember.Table.ColumnDefinition = Ember.Object.extend
   headerCellName:       null
 
+  ###*
+  * Resize
+  * @memberof Ember.Table.ColumnDefinition
+  * @instance
+  * @argument {number} pxWidth Width
+  * @argument {number} tableWidth Table Width
+  ###
   resize: (pxWidth, tableWidth)->
     newMaxWidth = null
     tableWidth = tableWidth || @get("controller._tableContainerWidth")
@@ -40,27 +47,58 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
 
     newMaxWidth
 
+  ###*
+  * Convert Columns to Width
+  * @memberof Ember.Table.ColumnDefinition
+  * @method
+  * @instance
+  * @private
+  ###
   _convertColumnToWidth: Ember.beforeObserver ->
     return unless @get("controller.fluidTable")
     tableWidth = @get( "controller._tableContainerWidth" )
     @set("columnWidth", @get("columnWidth")/tableWidth*100 + "%") if tableWidth
   , "controller._tableContainerWidth"
 
+  ###*
+  * Resize to Table
+  * @memberof Ember.Table.ColumnDefinition
+  * @method
+  * @instance
+  * @private
+  ###
   _resizeToTable: Ember.observer ->
     @resize()
   , "controller._tableContainerWidth"
 
-  # TODO: Default column width should be shared with LESS file
+  ###*
+  * Column Width
+  * @memberof Ember.Table.ColumnDefinition
+  * @member
+  * @todo Default column width should be shared with LESS file
+  ###
   columnWidth: 150
   headerCellViewClass:  'Ember.Table.HeaderCell'
   tableCellViewClass:   'Ember.Table.TableCell'
-  # This gives a formatted value e.g. $20,000,000
+
+  ###*
+  * Get Cell Content - This gives a formatted value e.g. $20,000,000
+  * @memberof Ember.Table.ColumnDefinition
+  * @instance
+  * @argument row {Ember.Table.Row}
+  * @todo More detailed doc needed!
+  ###
   getCellContent: (row) ->
     path = @get 'contentPath'
     Ember.assert "You must either provide a contentPath or override " +
       "getCellContent in your column definition", path?
     Ember.get row, path
 
+  ###*
+  * Set Cell Content
+  * @memberof Ember.Table.ColumnDefinition
+  * @instance
+  ###
   setCellContent: Ember.K
 
 ###*
@@ -69,10 +107,44 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
  * @alias Ember.Table.Row
  ###
 Ember.Table.Row = Ember.ObjectProxy.extend
+  ###*
+  * Content of the row
+  * @memberof Ember.Table.Row
+  * @member
+  * @instance
+  ###
   content:  null
+
+  ###*
+  * Is Hovering?
+  * @memberof Ember.Table.Row
+  * @member {Boolean} isHovering
+  * @instance
+  ###
   isHovering: no
+
+  ###*
+  * Is Selected?
+  * @memberof Ember.Table.Row
+  * @member {Boolean} isSelected
+  * @instance
+  ###
   isSelected: no
+
+  ###*
+  * Is Showing?
+  * @memberof Ember.Table.Row
+  * @member {Boolean} isShowing
+  * @instance
+  ###
   isShowing:  yes
+
+  ###*
+  * Is Active?
+  * @memberof Ember.Table.Row
+  * @member {Boolean} isActive
+  * @instance
+  ###
   isActive:   no
 
 ###*
@@ -84,6 +156,13 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null
   content: null
   rowContent: Ember.computed(-> Ember.A()).property()
+
+  ###*
+  * Get Object At Index
+  * @memberof Ember.Table.RowArrayProxy
+  * @instance
+  * @argument idx {Integer} Index of the object
+  ###
   objectAt: (idx) ->
     row = @get('rowContent')[idx]
     return row if row
@@ -92,6 +171,15 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
     row   = tableRowClass.create content: item
     @get('rowContent')[idx] = row
     row
+
+  ###*
+  * Content changed callback
+  * @memberof Ember.Table.RowArrayProxy
+  * @instance
+  * @argument idx {Integer} Index of the object
+  * @argument removed {Integer} Number of rows removed
+  * @argument added {Integer} Number of rows added
+  ###
   arrayContentDidChange: (idx, removed, added) ->
     added = 0 if added < 0
     removed = 0 if removed < 0
@@ -124,18 +212,32 @@ Ember.Table.TableController = Ember.Controller.extend
   # Set to yes to use % as column widths
   fluidTable: no
 
-  # Array of Ember.Table.Row
+  ###*
+  * Table Body Content - Array of Ember.Table.Row
+  * @memberof Ember.Table.TableController
+  * @instance
+  ###
   bodyContent: Ember.computed ->
     Ember.Table.RowArrayProxy.create
       tableRowClass: Ember.Table.Row
       content: @get('content')
   .property 'content'
 
-  # Array of Ember.Table.Row
+  ###*
+  * Table Footer Content - Array of Ember.Table.Row
+  * @memberof Ember.Table.TableController
+  * @instance
+  ###
   footerContent: Ember.computed (key, value) ->
     if value then value else Ember.A()
   .property()
 
+  ###*
+  * Table Fixed Columns
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @todo Much more doc needed
+  ###
   fixedColumns: Ember.computed ->
     columns         = @get 'columns'
     return Ember.A() unless columns
@@ -143,6 +245,12 @@ Ember.Table.TableController = Ember.Controller.extend
     columns.slice(0, numFixedColumns)
   .property 'columns.@each', 'numFixedColumns'
 
+  ###*
+  * Table Columns
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @todo Much more doc needed
+  ###
   tableColumns: Ember.computed ->
     columns         = @get 'columns'
     return Ember.A() unless columns
@@ -152,6 +260,11 @@ Ember.Table.TableController = Ember.Controller.extend
     columns
   .property 'columns.@each', 'numFixedColumns'
 
+  ###*
+  * Prepare Table Columns
+  * @memberof Ember.Table.TableController
+  * @instance
+  ###
   prepareTableColumns: Ember.observer (tableColumns)->
     # Some maintenance on the columns for percent resizing
     columns = if Ember.isArray(tableColumns) then tableColumns else @get("tableColumns")
@@ -170,17 +283,33 @@ Ember.Table.TableController = Ember.Controller.extend
   _height: null
   _scrollbarSize: null
 
-  # actual width of the fixed columns (frozen columns)
+  ###*
+  * Actual width of the fixed columns (frozen columns)
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _fixedColumnsWidth: Ember.computed ->
     @_getTotalWidth @get('fixedColumns')
   .property 'fixedColumns.@each.columnWidth'
 
-  # actual width of the table columns (non-frozen columns)
+  ###*
+  * Actual width of the table columns (non-frozen columns)
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _tableColumnsWidth: Ember.computed ->
     return "100%" if @get "fluidTable"
     @_getTotalWidth @get('tableColumns')
   .property 'tableColumns.@each.columnWidth', "fluidTable"
 
+  ###*
+  * Computed Row Width
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _rowWidth: Ember.computed ->
     columnsWidth = @get '_tableColumnsWidth'
     nonFixedTableWidth = @get('_tableContainerWidth') - @get('_fixedColumnsWidth')
@@ -188,6 +317,12 @@ Ember.Table.TableController = Ember.Controller.extend
     columnsWidth
   .property '_fixedColumnsWidth', '_tableColumnsWidth', '_tableContainerWidth'
 
+  ###*
+  * Computed Body Height
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _bodyHeight: Ember.computed ->
     bodyHeight    = @get '_height'
     headerHeight  = @get 'headerHeight'
@@ -202,32 +337,74 @@ Ember.Table.TableController = Ember.Controller.extend
             '_scrollbarSize', 'hasHeader', 'hasFooter',
             '_tableColumnsWidth', '_width', '_fixedColumnsWidth')
 
+  ###*
+  * Computed Table Block Width
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _tableBlockWidth: Ember.computed ->
     @get('_width') - @get('_fixedColumnsWidth') - @get('_scrollbarSize')
   .property '_width', '_fixedColumnsWidth', '_scrollbarSize'
 
   _fixedBlockWidthBinding: '_fixedColumnsWidth'
 
+  ###*
+  * Computed Table Content Height
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _tableContentHeight: Ember.computed ->
     @get('rowHeight') * @get('bodyContent.length')
   .property 'rowHeight', 'bodyContent.length'
 
+  ###*
+  * Table Container Width
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _tableContainerWidth: Ember.computed ->
     @get('_width') - @get('_scrollbarSize')
   .property '_width', '_scrollbarSize'
 
+  ###*
+  * Computed Scroll Container Width
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _scrollContainerWidth: Ember.computed ->
     @get('_width') - @get('_fixedColumnsWidth') - @get('_scrollbarSize')
   .property '_width', '_fixedColumnsWidth', '_scrollbarSize'
 
+  ###*
+  * Computed Scroll Container Height
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _scrollContainerHeight: Ember.computed ->
     containerHeight = @get('_height') - @get('headerHeight')
   .property('_height', 'headerHeight')
 
+  ###*
+  * Computed number of items showing
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  ###
   _numItemsShowing: Ember.computed ->
     Math.floor @get('_bodyHeight') / @get('rowHeight')
   .property '_bodyHeight', 'rowHeight'
 
+  ###*
+  * Computed Start Index
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @raw
+  ###
   _startIndex: Ember.computed ->
     numContent  = @get 'bodyContent.length'
     numViews    = @get '_numItemsShowing'
@@ -240,6 +417,13 @@ Ember.Table.TableController = Ember.Controller.extend
     if index < 0 then 0 else index
   .property 'bodyContent.length', '_numItemsShowing', 'rowHeight', '_tableScrollTop'
 
+  ###*
+  * Get Total Width
+  * @memberof Ember.Table.TableController
+  * @instance
+  * @private
+  * @argument columns Columns to calculate width for
+  ###
   _getTotalWidth: (columns) ->
     return 0 unless columns
     widths = columns.getEach('columnWidth') or []

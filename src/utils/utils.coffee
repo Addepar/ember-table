@@ -1,3 +1,8 @@
+###*
+ * Multi Item View Collection View
+ * @class
+ * @alias Ember.Table.MultiItemViewCollectionView
+ ###
 Ember.MultiItemViewCollectionView = Ember.CollectionView.extend
   itemViewClassField: null
   createChildView: (view, attrs) ->
