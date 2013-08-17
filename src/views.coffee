@@ -1,3 +1,8 @@
+###*
+* Tables Container
+* @class
+* @alias Ember.Table.TablesContainer
+###
 Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
   templateName: 'tables-container'
   classNames:   'tables-container'
@@ -17,11 +22,21 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
     @set 'controller._width', @$().width()
     @set 'controller._height', @$().height()
 
+###*
+* Table Container
+* @class
+* @alias Ember.Table.TableContainer
+###
 Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['table-container']
   styleBindings:  ['height', 'width']
 
-# This should be a mixin
+###*
+* Table Block
+* @class
+* @alias Ember.Table.TableBlock
+* @todo This should be a mixin
+###
 Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
   classNames:     ['table-block']
   styleBindings:  ['width', 'height']
@@ -33,6 +48,11 @@ Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'
 
+###*
+* Lazy Table Block
+* @class
+* @alias Ember.Table.LazyTableBlock
+###
 Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
   classNames:       ['table-block']
   styleBindings:    ['width']
@@ -46,6 +66,11 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'
 
+###*
+* Table Row
+* @class
+* @alias Ember.Table.TableRow
+###
 Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
   classNames:     'table-row'
@@ -65,6 +90,11 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
     row = @get 'row'
     row.set 'isActive', no if row
 
+###*
+* Table Cell
+* @class
+* @alias Ember.Table.TableCell
+###
 Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   defaultTemplate: Ember.Handlebars.compile(
     "<span class='content'>{{view.cellContent}}</span>")
@@ -88,6 +118,12 @@ Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
 
 ################################################################################
 
+###*
+* HeaderBlock
+* @class
+* @alias Ember.Table.HeaderBlock
+* @augments Ember.Table.TableBlock
+###
 Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
   classNames:    ['header-block']
   itemViewClass: 'Ember.Table.HeaderRow'
@@ -95,6 +131,11 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
     [@get('columns')]
   .property 'columns'
 
+###*
+* Header Row
+* @class
+* @alias Ember.Table.HeaderRow
+###
 Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'header-row'
   classNames:     ['table-row', 'header-row']
@@ -127,6 +168,11 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
     columns.removeObject column
     columns.insertAt newIndex, column
 
+###*
+* Header Cell
+* @class
+* @alias Ember.Table.HeaderCell
+###
 Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   templateName:   'header-cell'
   classNames:     ['table-cell', 'header-cell']
@@ -157,6 +203,12 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 
 ################################################################################
 
+###*
+* Header Table Container
+* @class
+* @alias Ember.Table.HeaderTableContainer
+* @augments Ember.Table.TableContainer
+###
 Ember.Table.HeaderTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.TouchMoveHandlerMixin,
@@ -175,6 +227,11 @@ Ember.TouchMoveHandlerMixin,
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
+###*
+* Body Table Container
+* @class
+* @alias Ember.Table.BodyTableContainer
+###
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.TouchMoveHandlerMixin,
@@ -202,6 +259,11 @@ Ember.ScrollHandlerMixin,
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
+###*
+* Footer Table Container
+* @class
+* @alias Ember.Table.FooterTableContainer
+###
 Ember.Table.FooterTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.TouchMoveHandlerMixin,
@@ -228,6 +290,11 @@ Ember.TouchMoveHandlerMixin,
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
+###*
+* Scroll Container
+* @class
+* @alias Ember.Table.ScrollContainer
+###
 Ember.Table.ScrollContainer =
 Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   template: Ember.Handlebars.compile("{{view Ember.Table.ScrollPanel}}")
@@ -246,6 +313,11 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'
 
+###*
+* ScrollPanel
+* @class
+* @alias Ember.Table.ScrollPanel
+###
 Ember.Table.ScrollPanel = Ember.View.extend Ember.StyleBindingsMixin,
   classNames:     ['scroll-panel']
   styleBindings:  ['width', 'height']

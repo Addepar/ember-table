@@ -1,8 +1,10 @@
 Ember.Table = Ember.Namespace.create()
 
-################################################################################
-# Column Definition
-################################################################################
+###*
+ * Column Definition
+ * @class
+ * @alias Ember.Table.ColumnDefinition
+ ###
 Ember.Table.ColumnDefinition = Ember.Object.extend
   headerCellName:       null
 
@@ -61,9 +63,11 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
 
   setCellContent: Ember.K
 
-################################################################################
-# Table Row
-################################################################################
+###*
+ * Table Row
+ * @class
+ * @alias Ember.Table.Row
+ ###
 Ember.Table.Row = Ember.ObjectProxy.extend
   content:  null
   isHovering: no
@@ -71,6 +75,11 @@ Ember.Table.Row = Ember.ObjectProxy.extend
   isShowing:  yes
   isActive:   no
 
+###*
+* Table Row Array Proxy
+* @class
+* @alias Ember.Table.RowArrayProxy
+###
 Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null
   content: null
@@ -89,9 +98,12 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
     @get('rowContent').replace(idx, removed, new Array(added))
     @_super.apply(this, arguments)
 
-################################################################################
-# Frozen Table Controller
-################################################################################
+
+###*
+* Frozen Table Controller
+* @class
+* @alias Ember.Table.TableController
+###
 Ember.Table.TableController = Ember.Controller.extend
   # Array of Ember.Table.ColumnDefinition
   columns: null
