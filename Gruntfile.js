@@ -174,7 +174,7 @@ module.exports = function (grunt) {
         // 'jshint',
         'browserify2:table',
         'emberTemplates',
-        'uglify:all',
+        'uglify',
         'jsdoc'
     ]);
 };

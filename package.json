@@ -1,27 +1,28 @@
 {
-    "name": "ember-table",
-    "version": "0.0.1",
-    "main": "Gruntfile.js",
-    "scripts": {
-        "test": "grunt"
-    },
-    "repository": "",
-    "license": "MIT",
-    "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-neuter": "~0.4.0",
-        "grunt-contrib-coffee": "*",
-        "grunt-contrib-clean": "~0.4.1",
-        "grunt-contrib-jshint": "~0.6.3",
-        "grunt-contrib-qunit": "*",
-        "grunt-ember-templates": "~0.4.10",
-        "grunt-contrib-watch": "*",
-        "grunt-contrib-nodeunit": "~0.1.2",
-        "grunt-contrib-uglify": "*",
-        "grunt-manifest": "*",
-        "grunt-shell": "*",
-        "lockdown": "*",
-        "grunt-contrib-less": "~0.6.1",
-        "grunt-jsdoc": "~0.4.0"
-    }
+  "name": "ember-table",
+  "version": "0.0.1",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": "",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-neuter": "~0.4.0",
+    "grunt-contrib-coffee": "*",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-qunit": "*",
+    "grunt-ember-templates": "~0.4.10",
+    "grunt-contrib-watch": "*",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "grunt-contrib-uglify": "*",
+    "grunt-manifest": "*",
+    "grunt-shell": "*",
+    "lockdown": "*",
+    "grunt-contrib-less": "~0.6.1",
+    "grunt-jsdoc": "~0.4.0",
+    "grunt-browserify2": "~0.1.8"
+  }
 }
