@@ -74,7 +74,7 @@ Ember.Table.Row = Ember.ObjectProxy.extend
 Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
   tableRowClass: null
   content: null
-  rowContent: Ember.computed( -> []).property()
+  rowContent: Ember.computed(-> Ember.A()).property()
   objectAt: (idx) ->
     row = @get('rowContent')[idx]
     return row if row
@@ -83,6 +83,11 @@ Ember.Table.RowArrayProxy = Ember.ArrayProxy.extend
     row   = tableRowClass.create content: item
     @get('rowContent')[idx] = row
     row
+  arrayContentDidChange: (idx, removed, added) ->
+    added = 0 if added < 0
+    removed = 0 if removed < 0
+    @get('rowContent').replace(idx, removed, new Array(added))
+    @_super.apply(this, arguments)
 
 ################################################################################
 # Frozen Table Controller
