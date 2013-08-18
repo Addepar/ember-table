@@ -23,6 +23,7 @@
     "lockdown": "*",
     "grunt-contrib-less": "~0.6.1",
     "grunt-jsdoc": "~0.4.0",
-    "grunt-browserify2": "~0.1.8"
+    "grunt-browserify2": "~0.1.8",
+    "node-static": "~0.7.0"
   }
 }
