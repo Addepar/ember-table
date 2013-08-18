@@ -5,12 +5,15 @@ var static = require('node-static');
 //
 var file = new static.Server('./');
 
+var port = 8080;
+console.log("Server started, visit http://localhost:" + port + "/examples");
+
 require('http').createServer(function (request, response) {
     request.addListener('end', function () {
         //
         // Serve files!
         //
-        console.log(request);
+
         file.serve(request, response);
     }).resume();
-}).listen(8080);
+}).listen(port);
