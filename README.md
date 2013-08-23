@@ -17,7 +17,7 @@ $ grunt
 ```
 
 ### Viewing Examples
-From the root directory: `$ python -m SimpleHTTPServer`.
+From the root directory: `$ node examples.js`.
 Hit up : `http://localhost:8000/examples`
 
 ## Dependencies
