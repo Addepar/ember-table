@@ -165,8 +165,8 @@ module.exports = function (grunt) {
         'less',
         'coffee',
         // 'jshint',
-        'browserify2:table',
         'emberTemplates',
+        'browserify2:table',
         'uglify',
         'jsdoc'
     ]);
