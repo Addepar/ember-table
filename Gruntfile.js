@@ -5,15 +5,16 @@ module.exports = function (grunt) {
 
     var templatesDir = "./src/templates/";
 
-    grunt.loadNpmTasks('grunt-browserify2');
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-coffee');
+    grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-browserify2');
     grunt.loadNpmTasks('grunt-ember-templates');
     grunt.loadNpmTasks('grunt-jsdoc');
     grunt.loadNpmTasks('grunt-neuter');
-    grunt.loadNpmTasks('grunt-contrib-jshint');
 
     // Project configuration.
     grunt.initConfig({
@@ -157,6 +158,26 @@ module.exports = function (grunt) {
                     ]
                 }
             }
+        },
+
+        watch: {
+            scripts: {
+                files: ['src/**/*.coffee', 'src/**/*.hbs'],
+                tasks: [
+                    'clean',
+                    'less',
+                    'coffee',
+                    // 'jshint',
+                    'emberTemplates',
+                    'browserify2',
+                    'uglify',
+                    'jsdoc'
+                ],
+
+                options: {
+                    spawn: false
+                }
+            }
         }
     });
 
@@ -167,7 +188,7 @@ module.exports = function (grunt) {
         'coffee',
         // 'jshint',
         'emberTemplates',
-        'browserify2:table',
+        'browserify2',
         'uglify',
         'jsdoc'
     ]);
