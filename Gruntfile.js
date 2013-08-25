@@ -166,8 +166,8 @@ module.exports = function (grunt) {
                     'clean',
                     'less',
                     'coffee',
-                    // 'jshint',
                     'emberTemplates',
+                    'jshint',
                     'browserify2',
                     'uglify',
                     'jsdoc'
@@ -185,8 +185,8 @@ module.exports = function (grunt) {
         'clean',
         'less',
         'coffee',
-        // 'jshint',
         'emberTemplates',
+        'jshint',
         'browserify2',
         'uglify',
         'jsdoc'
