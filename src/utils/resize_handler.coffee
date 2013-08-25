@@ -41,6 +41,7 @@ Ember.ResizeHandler = Ember.Mixin.create
   didInsertElement: ->
     @_super()
     $(window).bind 'resize', @get("resizeHandler")
+    return
 
   willDestroyElement: ->
     $(window).unbind 'resize', @get("resizeHandler")
@@ -56,6 +57,7 @@ debounce = (func, wait, immediate) ->
       timeout = null
       if !immediate
         result = func.apply(context, args)
+      return result
     callNow = immediate && !timeout
     clearTimeout(timeout)
     timeout = setTimeout(later, wait)

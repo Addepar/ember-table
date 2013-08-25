@@ -49,7 +49,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     # that doesn't exists
     if startIndex + numShownViews >= clength
       startIndex = clength - numShownViews
-    if startIndex < 0 then 0 else startIndex
+    if startIndex < 0 then startIndex = 0
     this.forEach (childView, i) ->
       # for all views that we are not using... just remove content
       # this makes them invisble

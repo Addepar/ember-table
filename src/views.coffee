@@ -23,6 +23,7 @@ Ember.Table.TablesContainer = Ember.View.extend Ember.ResizeHandler,
     scrollBarWidth = 8 if isLion
     @set 'controller._scrollbarSize', scrollBarWidth
     @set 'controller._tableScrollTop', 0
+    return
 
   ###*
   * On resize callback
@@ -234,6 +235,7 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
   didInsertElement: ->
     @_super()
     @$('> div').sortable(@get('sortableOption'))
+    return
 
   ###*
   * On column sort callback
@@ -288,6 +290,7 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
     if !fluid || (fluid and @get("column._nextColumn"))
       @$().resizable(@get('resizableOption'))
       @_resizableWidget = @$().resizable('widget')
+      return
 
   ###*
   * On column resize callback
@@ -394,7 +397,7 @@ Ember.ScrollHandlerMixin,
   * @argument deltaY {Integer}
   ###
   onMouseWheel: (event, delta, deltaX, deltaY) ->
-    return unless Math.abs(deltaX) > Math.abs(deltaY)
+    return if (Math.abs(deltaX) > Math.abs(deltaY)) == false
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX * 50
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
@@ -408,7 +411,7 @@ Ember.ScrollHandlerMixin,
   * @argument deltaY {Integer}
   ###
   onTouchMove: (event, deltaX, deltaY) ->
-    return unless Math.abs(deltaX) > Math.abs(deltaY)
+    return if (Math.abs(deltaX) > Math.abs(deltaY)) == false
     scrollLeft = @$('.right-table-block').scrollLeft() + deltaX
     @set 'scrollLeft', scrollLeft
     event.preventDefault()

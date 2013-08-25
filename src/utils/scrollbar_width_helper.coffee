@@ -30,4 +30,5 @@
         scrollbarWidth = 100 - $div.width()
         $div.parent().remove()
     scrollbarWidth
+  return $.getScrollbarWidth
 ) jQuery

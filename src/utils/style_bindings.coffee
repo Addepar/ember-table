@@ -16,8 +16,12 @@ Ember.StyleBindingsMixin = Ember.Mixin.create
     # get properties from bindings e.g. ['width', 'top']
     lookup = {}
     styleBindings.forEach (binding) ->
-      [property, style] = binding.split(':')
+      tmp = binding.split(':')
+      property = tmp[0]
+      style = tmp[1]
       lookup[(style or property)] = property
+      return
+
     styles     = Ember.keys(lookup)
     properties = styles.map (style) -> lookup[style]
 

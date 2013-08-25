@@ -387,6 +387,7 @@ Ember.Table.TableController = Ember.Controller.extend
   ###
   _scrollContainerHeight: Ember.computed ->
     containerHeight = @get('_height') - @get('headerHeight')
+    return containerHeight
   .property('_height', 'headerHeight')
 
   ###*
@@ -396,7 +397,8 @@ Ember.Table.TableController = Ember.Controller.extend
   * @private
   ###
   _numItemsShowing: Ember.computed ->
-    Math.floor @get('_bodyHeight') / @get('rowHeight')
+    res = Math.floor @get('_bodyHeight') / @get('rowHeight')
+    return res
   .property '_bodyHeight', 'rowHeight'
 
   ###*
