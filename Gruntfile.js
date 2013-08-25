@@ -162,16 +162,37 @@ module.exports = function (grunt) {
 
         watch: {
             scripts: {
-                files: ['src/**/*.coffee', 'src/**/*.hbs'],
+                files: ['src/**/*.coffee'],
                 tasks: [
-                    'clean',
-                    'less',
                     'coffee',
-                    'emberTemplates',
                     'jshint',
                     'browserify2',
                     'uglify',
                     'jsdoc'
+                ],
+
+                options: {
+                    spawn: false
+                }
+            },
+
+            less: {
+                files: ['stylesheets/**/*.less'],
+                tasks: [
+                    'less'
+                ],
+
+                options: {
+                    spawn: false
+                }
+            },
+
+            templates: {
+                files: ['src/**/*.hbs'],
+                tasks: [
+                    'emberTemplates',
+                    'browserify2',
+                    'uglify'
                 ],
 
                 options: {
