@@ -173,6 +173,7 @@ module.exports = function (grunt) {
                     'jshint',
                     'browserify2',
                     'uglify',
+                    'qunit',
                     'jsdoc'
                 ],
 
@@ -197,7 +198,8 @@ module.exports = function (grunt) {
                 tasks: [
                     'emberTemplates',
                     'browserify2',
-                    'uglify'
+                    'uglify',
+                    'qunit'
                 ],
 
                 options: {
@@ -216,6 +218,7 @@ module.exports = function (grunt) {
         'jshint',
         'browserify2',
         'uglify',
+        'qunit',
         'jsdoc'
     ]);
 };
