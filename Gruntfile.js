@@ -67,7 +67,8 @@ module.exports = function (grunt) {
             "./lib/ember-table.js",
             "./lib/ember-table.min.js",
             "./lib/ember-table-lib.js",
-            "./build/src/ember-table-templates.js"
+            "./build/src/ember-table-templates.js",
+            "./stylesheets/ember-table.css"
         ],
 
         emberTemplates: {
