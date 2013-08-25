@@ -18,13 +18,13 @@
         "grunt-contrib-qunit": "*",
         "grunt-contrib-uglify": "*",
         "grunt-contrib-watch": "*",
-
         "grunt-browserify2": "~0.1.8",
         "grunt-ember-templates": "~0.4.10",
-    	"grunt-jsdoc": "*",
+
+        "grunt-jsdoc": "*",
         "grunt-neuter": "~0.4.0",
         "grunt-shell": "*",
 
-        "lockdown": "*"
+        "lockdown": "0.0.5"
     }
 }
