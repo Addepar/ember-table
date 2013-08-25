@@ -9,18 +9,16 @@
     "license": "MIT",
     "devDependencies": {
         "grunt": "~0.4.1",
-
         "grunt-contrib-clean": "~0.4.1",
         "grunt-contrib-coffee": "~0.4.0",
         "grunt-contrib-jshint": "~0.6.3",
         "grunt-contrib-less": "~0.6.1",
         "grunt-contrib-nodeunit": "~0.1.2",
-        "grunt-contrib-qunit": "*",
+        "grunt-contrib-qunit": "~0.2.2",
         "grunt-contrib-uglify": "*",
         "grunt-contrib-watch": "*",
         "grunt-browserify2": "~0.1.8",
         "grunt-ember-templates": "~0.4.10",
-
         "grunt-jsdoc": "*",
         "grunt-neuter": "~0.4.0",
         "grunt-shell": "*",
