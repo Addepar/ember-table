@@ -28,7 +28,8 @@ module.exports = function (grunt) {
             // Bundle containing all client scripts (WebApp, Ember.js)
             table: {
                 entry: [
-                    './build/src/main.js'
+                    './build/src/main.js',
+                    './build/src/ember-table-templates.js'
                 ],
                 compile: './lib/ember-table-lib.js'
             }
@@ -66,7 +67,7 @@ module.exports = function (grunt) {
             "./lib/ember-table.js",
             "./lib/ember-table.min.js",
             "./lib/ember-table-lib.js",
-            "./lib/ember-table-templates.js"
+            "./build/src/ember-table-templates.js"
         ],
 
         emberTemplates: {
@@ -77,7 +78,7 @@ module.exports = function (grunt) {
                     }
                 },
                 files: {
-                    "./lib/ember-table-templates.js": [
+                    "./build/src/ember-table-templates.js": [
                         templatesDir + "**/*.hbs"
                     ]
                 }
@@ -165,8 +166,8 @@ module.exports = function (grunt) {
         'less',
         'coffee',
         // 'jshint',
-        'browserify2:table',
         'emberTemplates',
+        'browserify2:table',
         'uglify',
         'jsdoc'
     ]);

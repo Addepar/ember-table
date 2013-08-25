@@ -68,6 +68,11 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     , this
   , 'content.length', 'length', 'startIndex'
 
+###*
+ * Lazy Item View
+ * @class
+ * @alias Ember.LazyItemView
+ ###
 Ember.LazyItemView = Ember.View.extend Ember.StyleBindingsMixin,
   itemIndex: null
   prepareContent: Ember.K
