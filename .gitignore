@@ -6,3 +6,5 @@ build/
 lib/ember-table*.js
 doc/
 examples/*/*.js
+stylesheets/ember-table.css
+
