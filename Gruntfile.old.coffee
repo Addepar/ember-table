@@ -46,6 +46,12 @@ module.exports = (grunt) ->
         dest: "examples/"
         ext: ".js"
 
+
+    # Browserify sources
+    browserify2:
+      lib:
+        entry:  'src/**/*.coffee'
+        compile: "lib/custom-build.js"
     ###
       Watch files for changes.
 
@@ -134,6 +140,7 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks "grunt-ember-templates"
   grunt.loadNpmTasks "grunt-contrib-coffee"
   grunt.loadNpmTasks "grunt-contrib-less"
+  grunt.loadNpmTasks "grunt-browserify2"
 
   ###
     A task to build the test runner html file that get place in

@@ -25,6 +25,7 @@ Ember.Table.RowSelectionMixin = Ember.Mixin.create
       content = rows.mapProperty('content')
       indices = indexesOf content, value
       selection.addObjects indices
+    return
 
   contentDidChange: Ember.observer ->
     @_calculateSelectionIndices(@get('selection'))
@@ -154,18 +155,21 @@ Ember.Mixin.create Ember.Table.RowSelectionMixin,
       @reduceSelectionRange removing
     if adding and 'number' isnt typeof adding
       @expandSelectionRange adding
+    return
 
   expandSelectionRange: (indices) ->
     range = @get 'selectionRange'
-    [min, max] = [Math.min.apply(null, indices), Math.max.apply(null, indices)]
+    min = Math.min.apply(null, indices)
+    max = Math.max.apply(null, indices)
     range = min: min, max: max if not range
     range = min: Math.min(range.min, min), max: Math.max(range.max, max)
     @set 'selectionRange', range
 
   reduceSelectionRange: (indices) ->
     indices = @get('selectionIndices')
-    [min, max] = [Math.min.apply(null, indices), Math.max.apply(null, indices)]
-    range = min: min, max: max
+    min = Math.min.apply(null, indices);
+    max = Math.max.apply(null, indices);
+    range = min: min, max: max;
     @set 'selectionRange', range
 
   mouseDown: (event) ->
