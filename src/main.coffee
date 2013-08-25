@@ -1,3 +1,5 @@
+## Used for bundling files together using neuter
+
 require './utils/jquery_fix'
 require './utils/scrollbar_width_helper'
 require './utils/resize_handler'
