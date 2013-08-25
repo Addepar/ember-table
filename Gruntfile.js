@@ -29,8 +29,7 @@ module.exports = function (grunt) {
             // Bundle containing all client scripts (WebApp, Ember.js)
             table: {
                 entry: [
-                    './build/src/main.js',
-                    './build/src/ember-table-templates.js'
+                    './build/src/main.js'
                 ],
                 compile: './lib/ember-table-lib.js'
             }
