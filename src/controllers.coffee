@@ -74,7 +74,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   ###*
   * Column Width
   * @memberof Ember.Table.ColumnDefinition
-  * @member
+  * @member {Integer} columnWidth
   * @todo Default column width should be shared with LESS file
   ###
   columnWidth: 150
@@ -110,10 +110,10 @@ Ember.Table.Row = Ember.ObjectProxy.extend
   ###*
   * Content of the row
   * @memberof Ember.Table.Row
-  * @member
+  * @member content
   * @instance
   ###
-  content:  null
+  content: null
 
   ###*
   * Is Hovering?
