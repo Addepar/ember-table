@@ -215,10 +215,10 @@ module.exports = function (grunt) {
         'less',
         'coffee',
         'emberTemplates',
-        'jshint',
+        // 'jshint',
         'browserify2',
         'uglify',
-        'qunit',
+        // 'qunit',
         'jsdoc'
     ]);
 };

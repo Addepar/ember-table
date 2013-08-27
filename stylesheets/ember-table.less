@@ -1,214 +1,564 @@
-.presentation-container{
-  width: 800px;
-  height: 600px;
-  margin: 50px auto;
+@import 'mixins';
+@import 'setup';
+@import 'antiscroll';
+
+/* Ember Table Structure
+-------------------------------------------------- */
+
+/* Util classes */
+
+.text-align-left {
+  text-align: left;
+}
+.text-align-right {
+  text-align: right;
+}
+.text-align-center {
+  text-align: center;
 }
 
-.tables-container{
+/* Table Structures */
+
+.ember-table-tables-container {
   height: 100%;
   width: 100%;
   position: relative;
   outline: 0;
   z-index: 0;
-  // Important because of the 4px margins due to inline-block
+  // Important: We use display:inline-block and they are not flush
+  // and have 4px margins without using font-size: 0
   font-size: 0;
-  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  background-color: #E1E1E1;
-  border: 1px solid #E1E1E1;
+  background-color: @table-body-bg;
+  border: 1px solid @table-body-border-color;
+  overflow: hidden;
+  border: 1px solid #cfd1d4;
+  .border-radius(2px);
+  .box-sizing();
+
   * {
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
+    .user-select(none)
   }
-  a{
-    color: #333;
+}
+
+.ember-table-table-container {
+  // Height and Width defined dynamically through JS
+  // Let Antiscroll handle the overflow
+  overflow: hidden;
+  position: relative;
+  z-index: 3;
+  .box-sizing();
+}
+
+.ember-table-table-fixed-wrapper,
+.ember-table-table-scrollable-wrapper {
+  overflow: visible;
+  .box-sizing();
+}
+
+.ember-table-table-fixed-wrapper,
+.ember-table-header-block {
+  height: 100%;
+  .box-sizing();
+}
+
+.ember-table-header-container {
+  .box-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
+  .box-sizing();
+}
+
+.ember-table-footer-container {
+  .box-shadow(0 -1px 2px rgba(0, 0, 0, 0.1));
+  .box-sizing();
+}
+
+.ember-table-table-block {
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  overflow: hidden;
+  .box-sizing();
+}
+
+.ember-table-table-fixed-wrapper {
+  // Height and Width defined dynamically through JS
+  overflow: hidden;
+}
+
+.ember-table-table-scrollable-wrapper {
+  // Height and Width defined dynamically through JS
+  display: block;
+}
+
+.ember-table-scroll-container {
+  // Top, left, height and width defined dynamically through JS
+  // Override antiscroll-wrapper position relative
+  position: absolute;
+  z-index: 5;
+  bottom: 0;
+  .box-sizing();
+}
+
+.ember-table-fixed-table-container {
+  z-index: 4;
+
+  &.ember-table-header-container {
+    background-color: @table-header-bg;
   }
-  .table-container{
-    // Height and Width defined dynamically through JS
-    overflow-x: hidden;
-    overflow-y: auto;
+
+  &.ember-table-footer-container {
+    background-color: @table-footer-bg;
+  }
+}
+
+// Important: Hides the horizontal scroll bar in the header
+.ember-table-header-row::-webkit-scrollbar {
+  width: 0;
+}
+
+.ember-table-header-row,
+.ember-table-header-container .ember-table-table-fixed-wrapper {
+  background-color: @table-header-cell-control-group-bg;
+  .gradient(@table-header-cell-gradient-start-color, @table-header-cell-gradient-end-color);
+  background-repeat: repeat-x;
+}
+
+/* Table Rows */
+
+.ember-table-table-row {
+  // Height and Width defined dynamically through JS
+  position: absolute;
+  .box-sizing();
+
+  > div {
+    height: 100%;
+    .box-sizing();
+  }
+
+  &.ember-table-selected {
+    background-color: @table-row-selected-color !important;
+    color: #fff;
+    cursor: pointer;
+  }
+}
+
+.ember-table-lazy-list-container {
+  position: relative;
+  .box-sizing();
+
+  .ember-table-table-row {
+    position: absolute;
+    background-color: @table-body-bg;
+  }
+}
+
+/* Table Cell */
+
+.ember-table-cell {
+  float: left;
+  // Important: We defined font-size: 0 in .tables-container due to the use of
+  // display-inline: block. Font-size: 13px is used for the cell content
+  font-size: 13px;
+  border-right: 1px solid @table-col-border-color;
+  height: 100%;
+  .box-sizing();
+
+  .ember-table-content,
+  .ember-table-toggle-span {
+    padding: 0;
+    // Note the -1 is because we use box sizing and the row has a bottom border
+    line-height: @table-row-height - 1;
+    .box-sizing();
+
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  .ember-table-content {
+    display: block;
+    padding: 0 5px;
+    .box-sizing();
+  }
+}
+
+.ember-table-cell-container {
+  float: left;
+  height: 100%;
+  width: 100%;
+  .box-sizing();
+}
+
+.ember-table-body-container .ember-table-content,
+.ember-table-footer-container .ember-table-content {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  height: 100%;
+  border-right: 0;
+}
+
+.ember-table-left-table-block .ember-table-cell {
+  // This is not scalable for multiple frozen columns
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.ember-table-left-table-block .ember-table-cell {
+  border-right: 1px solid @table-col-border-color !important;
+}
+
+/* Header Container */
+
+.ember-table-header-container {
+  border-bottom: 1px solid @table-header-border-bottom;
+  overflow: hidden;
+  .box-sizing();
+
+  .ui-state-highlight {
+    float: left;
+    background-color: #e1e1e1;
+    width: 3px;
+    // margin-left: -3px;
+    left: -3px;
+    z-index: 100;
     position: relative;
-    background-color: #FFF;
-    z-index: 3;
-    .table-fixed-wrapper, .table-scrollable-wrapper{
-      overflow: visible;
-      white-space: nowrap;
-      .table-block{
-        display: inline-block;
-        position: relative;
-        vertical-align: top;
-        overflow: hidden;
-        background-color: #F5F5F5;
-        .table-row{
-          // Height and Width defined dynamically through JS
-          position: absolute;
-          border-bottom: 1px solid #E1E1E1;
-          -webkit-user-select: none;
-          -moz-user-select: none;
-          -ms-user-select: none;
-          -o-user-select: none;
-          user-select: none;
-          > div {
-            height: 100%;
-          }
-          &.selected {
-            background-color: #227ECB !important;
-            color: #FFF;
-            cursor: pointer;
-          }
-          .table-cell{
-            float: left;
-            // Important to define font size
-            font-size: 13px;
-            border-right: 1px solid #E1E1E1;
-            white-space: nowrap;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            height: 100%;
-            span{
-              vertical-align: middle;
-              padding: 0;
-              height: 100%;
-              line-height: 30px;
-            }
-            .content{
-              padding: 0 5px;
-            }
-          }
-          .header-cell{
-            padding: 0px;
-            position: relative;
-            span{
-              padding: 5px;
-              line-height: 50px;
-            }
-            .toggle{
-              padding: 0 0 0 5px;
-            }
-            .column-title{
-              padding: 0;
-            }
-          }
-        }
-      }
-      .lazy-list-container {
-        position: relative;
-        .table-row {
-          position: absolute;
-          background-color: #FFF;
-        }
-      }
-    }
-    .table-fixed-wrapper, .table-scrollable-wrapper{
-      .right-table-block{
-        .table-cell:last-child{
-          border-right: none;
-        }
-      }
-    }
-    .table-fixed-wrapper{
-      // Height and Width defined dynamically through JS
-      overflow: hidden;
-    }
-    .table-scrollable-wrapper{
-      // Height and Width defined dynamically through JS
-      display: block;
-    }
+    height: 100%;
   }
-  .scroll-container{
-      // Top, left, height and width defined dynamically through JS
+
+  .ui-resizable-handle {
     position: absolute;
-    overflow-x: auto;
-    overflow-y: hidden;
-    z-index: 1;
-  }
-  .fixed-table-container{
-    z-index: 4;
-    background-color: #E8E8E8;
-  }
-  .footer-container{
-    position: absolute;
-    border-top: 1px solid #E1E1E1;
-    overflow: hidden;
-  }
-  .header-container{
-    border-bottom: 1px solid #E1E1E1;
-    overflow: hidden;
-    .ui-resizable{
-      background-color: #F5F5F5;
-    }
-    .ui-state-highlight{
-      float: left;
-      height: 50px;
-      width: 150px;
-      background-color: #E1E1E1;
-    }
-    .ui-resizable-handle {
-      position: absolute;
-      right: 0;
+    right: -3px;
+
+    &.ui-resizable-e {
       top: 0;
-      background-color: #F5F5F5;
       height: 100%;
-      width: 4px;
-      transition: background-color 0.1s ease-in;
-      -moz-transition: background-color 0.1s ease-in;
-      -webkit-transition: background-color 0.1s ease-in;
-      -o-transition: background-color 0.1s ease-in;
-    }
-    .ui-resizable-handle:hover{
-      background-color: #C1C1C1;
-      cursor: ew-resize;
-    }
-    .ui-sortable{
-      width: 100%;
-      height: 100%;
-      position: relative;
-    }
-    .ui-sortable-helper{
-      background-color: #EAEAEA;
-      .ui-resizable-handle{
-        background-color: #EAEAEA;
+      width: 15px;
+      &:hover{
+        cursor: col-resize;
       }
+    }
+
+    &.ui-resizable-s {
+      bottom: 0;
+      width: 100%;
+      height: 2px;
+      background: transparent;
+      &:hover{
+        cursor: row-resize;
+      }
+    }
+  }
+
+  .ui-sortable {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+
+  .ui-sortable-helper {
+    background-color: #eaeaea;
+
+    .ember-table-content-container {
+      display: none;
+    }
+
+    .ui-resizable-handle {
+      background-color: #eaeaea;
     }
   }
 }
 
-// Tree Table
-.header-cell{
-  .toggle{
-    margin-top: 3px;
-    padding-left: 5px;
+.ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
+  width: 100%;
+  overflow-x: auto;
+  .box-sizing();
+
+  .ui-sortable {
+    // Dynamically set the width
+    overflow: hidden;
+  }
+}
+
+/* Header Cells */
+
+.ember-table-header-cell {
+  padding: 0;
+  position: relative;
+  // Override the jQuery sortable
+  display: block !important;
+  font-size: 12px !important;
+  background-color: @table-header-cell-control-group-bg;
+  .gradient(@table-header-cell-gradient-start-color, @table-header-cell-gradient-end-color);
+  background-repeat: repeat-x;
+
+  span {
+    line-height: 1;
+  }
+
+  .ember-table-content-container {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    &.ember-table-table-header-tree-cell {
+      left: 20px;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .ember-table-content {
+      padding: 5px;
+      line-height: 1.4;
+      position: absolute;
+      bottom: 2px;
+      font-weight: bold;
+      width: 100%;
+    }
+  }
+
+  .ember-table-toggle {
+    position: relative;
+
     i{
-      padding-left: 3px;
+      position: absolute;
+      bottom: 8px;
+      font-size: 13px;
     }
   }
 }
-.toggle-icon {
-    display: none
+
+.ember-table-header-cell.text-align-left .ember-table-content {
+  left: 0;
 }
-.toggle .toggle-icon {
+
+.ember-table-header-cell.text-align-right .ember-table-content {
+  right: 0;
+}
+
+.ember-table-table-header-tree-cell .ember-table-header-content-container {
+  left: 20px;
+}
+
+// TODO(Louis): Need to add this during the drag
+// > http://jqueryui.com/draggable/#cursor-style
+// cursor: -webkit-grabbing; cursor: -moz-grabbing;
+
+.ember-table-table-dropdown-toggle {
+  height: @table-header-cell-control-group-height - 1;
+  float: right;
+  margin: 0;
+  text-align: center;
+  padding: 3px 2px 0 2px;
+  background-color: darken(@table-header-cell-control-group-color, 10%);
+  color: darken(@table-header-cell-control-group-color, 50%);
+}
+
+/* Footer */
+
+.ember-table-footer-container {
+  position: absolute;
+  border-top: 1px solid @table-footer-border-top;
+  overflow: hidden;
+  z-index: 1;
+
+  .ember-table-cell .ember-table-toggle {
+    display: none;
+  }
+}
+
+/* Toggle Cell */
+
+.ember-table-toggle-span {
+  display: block;
+  width: 20px;
+  height: 100%;
+  margin: 0;
+  .box-sizing();
+
+  &:hover {
+      cursor: pointer !important;
+  }
+}
+
+.ember-table-toggle-icon {
+  display: none;
+  margin: 0;
+}
+
+.ember-table-toggle .ember-table-toggle-icon {
   display: inline-block;
   cursor: pointer;
   width: 14px;
-  padding-left: 3px;
+  padding-left: 6px;
+  opacity: 0.3;
+
+  &:hover{
+    opacity: 0.5;
+  }
 }
-.expand .toggle-icon{
-  transform: rotate(-90deg);
-  -webkit-transform: rotate(-90deg);
-  -moz-transform: rotate(-90deg);
-  -ms-transform: rotate(-90deg);
-  -o-transform: rotate(-90deg);
-  margin-top: -3px;
-  padding-left: 0;
-  vertical-align: text-top;
+
+.ember-table-toggle.ember-table-expand{
+  margin-top: -2px;
+
+  .ember-table-toggle-icon {
+   .transform(rotate(-90deg));
+    padding-left: 0;
+    opacity: 1;
+    padding-left: 3px;
+  }
 }
-.footer-container{
-  .table-cell{
-    .toggle{
-      padding: 0 3px 0 5px !important;
-      .toggle-icon:before {
-        content: none !important;
-      }
+
+/* Column Indicator */
+
+.ember-table-column-sortable-indicator {
+  position: absolute;
+  top: 0;
+  left: -2px;
+  height: 100%;
+  background-color: #333;
+  opacity: 0.4;
+  width: 3px;
+  z-index: 1000;
+  visibility: hidden;
+  .box-sizing();
+
+  &.active {
+    visibility: visible;
+  }
+}
+
+/* Add Column Button */
+
+.ember-table-add-column-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  display: table;
+  background-color: @table-header-cell-control-group-bg;
+  .gradient(@table-header-cell-gradient-start-color, @table-header-cell-gradient-end-color);
+  background-repeat: repeat-x;
+  border-left: 1px solid @table-row-border-color;
+  border-bottom: 1px solid @table-row-border-color;
+  box-shadow: 0;
+  vertical-align: middle;
+  white-space: nowrap;
+  .box-sizing();
+
+  span {
+    display: table-cell;
+    vertical-align: middle;
+    font-size: 18px;
+    font-weight: bold;
+    text-align: center;
+    width: 100%;
+    color: darken(@table-header-cell-control-group-color, 40%);
+    text-shadow: #fff 0px 1px 0px;
+
+    &:hover{
+      text-decoration: none;
     }
   }
+
+  &:hover {
+    cursor: pointer;
+    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 1px 0px;
+
+    a {
+      color: darken(@table-header-cell-control-group-color, 50%);
+    }
+  }
+
+  &:active {
+    box-shadow: rgba(0, 0, 0, 0.0980392) 0px 1px 2px 0px inset;
+  }
+}
+
+/* Antiscroll */
+
+.antiscroll-scrollbar {
+  z-index: 10;
+}
+
+.ember-table-body-container .antiscroll-box {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+// Make the antiscroll-box the size of the antiscroll-wrapper
+.ember-table-body-container .antiscroll-box .antiscroll-inner {
+  height: 100%;
+  width: 100%;
+  // Scrollbar appears on antiscroll-inner in IE9 + Firefox
+  // overflow-x: hidden;
+}
+
+.ember-table-scroll-container {
+  // The default line-height of 29px kills the scrollbar
+  line-height: 20px;
+
+  // override inline antiscroll height
+  .antiscroll-wrap {
+    height: 100% !important;
+    width: 100% !important;
+  }
+
+  .antiscroll-scrollbar-vertical {
+    display: none;
+  }
+
+  // Flush the horizontal scrollbar to the bottom
+  .antiscroll-scrollbar-horizontal {
+    bottom: 0;
+  }
+}
+
+// Vertical Scrollbar hacks
+.ember-table-tables-container > .antiscroll-wrap .antiscroll-scrollbar-horizontal {
+  display: none !important;
+}
+
+/* Levels */
+
+.ember-table-table-row {
+  background-color: #fff;
+  min-width: 100%;
+  border-bottom: 1px dotted @table-row-border-color;
+
+  &.ember-table-row-style-1 {
+    background-color: lighten(black, 95%);
+  }
+
+  &.ember-table-row-style-2 {
+    background-color: lighten(black, 97%);
+  }
+
+  &.ember-table-row-style-3 {
+
+  }
+
+  &.ember-table-row-style-4 {
+
+  }
+
+  &.ember-table-row-style-5 {
+
+  }
+
+  &.ember-table-row-style-6 {
+
+  }
+
+  &.ember-table-last-row {
+    border-bottom: none !important;
+  }
+}
+
+.ember-table-body-container .ember-table-table-row.active {
+  background-color: rgba(0, 82, 196, 0.1);
 }

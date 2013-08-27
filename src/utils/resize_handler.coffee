@@ -13,54 +13,45 @@ Ember.ResizeHandler = Ember.Mixin.create
   # This hook allows you to listen to the window resizing
   onResize:       Ember.K
 
-  # A debounced function to trigger the resizeEnd event. This is necessary
-  # because we only want to fire resizeEnd if we have not received recent
-  # resize event
-  debounceResizeEnd: Ember.computed ->
-    debounce (event) =>
+  endResize: Ember.computed ->
+    (event) ->
       return if @isDestroyed
       @set 'resizing', no
       @onResizeEnd?(event)
-    , @get('resizeEndDelay')
-  .property('resizeEndDelay')
-
-  # A resize handler that binds handleWindowResize to this view
-  resizeHandler: Ember.computed ->
-    jQuery.proxy(@handleWindowResize, @)
-  .property()
 
   # Browser only allows us to listen to windows resize. This function let us
   # resizeStart and resizeEnd event
   handleWindowResize: (event) ->
+    # This is important, because we want to ignoring bubbling resize events
+    return unless event.target is window
     if not @get 'resizing'
       @set 'resizing', yes
       @onResizeStart?(event)
     @onResize?(event)
-    @get('debounceResizeEnd')(event)
+    Ember.run.debounce this, @get('endResize'), event, @get('resizeEndDelay')
+
+  # =====
+  # Setup/teardown event handlers
+  # =====
 
   didInsertElement: ->
     @_super()
-    $(window).bind 'resize', @get("resizeHandler")
-    return
+    @_setupDocumentHandlers()
 
   willDestroyElement: ->
-    $(window).unbind 'resize', @get("resizeHandler")
+    @_removeDocumentHandlers()
     @_super()
 
-# Copied from underscore.js
-debounce = (func, wait, immediate) ->
-  timeout = result = null
-  return ->
-    context = this
-    args = arguments
-    later = ->
-      timeout = null
-      if !immediate
-        result = func.apply(context, args)
-      return result
-    callNow = immediate && !timeout
-    clearTimeout(timeout)
-    timeout = setTimeout(later, wait)
-    if callNow
-      result = func.apply(context, args)
-    return result
+  # Because jQuery.off will unbind all event handlers using a function that
+  # is proxied using jQuery.proxy(), resize events are namespaced with the
+  # id of the Ember view. See http://api.jquery.com/off/
+
+  _setupDocumentHandlers: ->
+    return if @_resizeHandler
+    @_resizeHandler = jQuery.proxy(@get('handleWindowResize'), @)
+    jQuery(window).on "resize.#{this.elementId}", @_resizeHandler
+
+  _removeDocumentHandlers: ->
+    jQuery(window).off "resize.#{this.elementId}", @_resizeHandler
+    @_resizeHandler = null
+    return
