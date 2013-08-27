@@ -27,5 +27,6 @@ unless jQuery.browser
     if browser.chrome
       browser.webkit = true
     else browser.safari = true  if browser.webkit
-    jQuery.browser = browser
+    res = jQuery.browser = browser
+    return res
   )()

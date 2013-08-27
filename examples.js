@@ -5,7 +5,7 @@ var static = require('node-static');
 //
 var file = new static.Server('./');
 
-var port = 8080;
+var port = 8000;
 console.log("Server started, visit http://localhost:" + port + "/examples");
 
 require('http').createServer(function (request, response) {
