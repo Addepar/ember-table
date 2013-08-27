@@ -20,6 +20,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
   .property 'numItemsShowing'
 
   onNumChildViewsDidChange: Ember.observer ->
+    view = this
     # We are getting the class from a string e.g. "Ember.Table.Row"
     itemViewClass = Ember.get @get('itemViewClass')
     newNumViews = @get 'numChildViews'
@@ -33,7 +34,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
     # if oldNumViews < newNumViews we need to add more views
     else if numViewsToInsert > 0
       viewsToAdd = [0...numViewsToInsert].map ->
-        itemViewClass.create()
+        view.createChildView(itemViewClass)
       this.pushObjects viewsToAdd
   , 'numChildViews', 'itemViewClass'
 

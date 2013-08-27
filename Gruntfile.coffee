@@ -26,7 +26,7 @@ module.exports = (grunt) ->
     ###
     neuter:
       options:
-        includeSourceURL: env is "dev"
+        includeSourceURL: no
       "lib/ember-table.js": "build/src/main.js"
 
     # Compile coffee before neuter
@@ -52,7 +52,7 @@ module.exports = (grunt) ->
       Changes in dependencies/ember.js or src javascript
       will trigger the neuter task.
 
-      Changes to any templates will trigger the ember_templates
+      Changes to any templates will trigger the emberTemplates
       task (which writes a new compiled file into dependencies/)
       and then neuter all the files again.
     ###
@@ -64,11 +64,11 @@ module.exports = (grunt) ->
         files: [ "examples/**/*.coffee", "Gruntfile.coffee" ]
         tasks: [ "build_examples" ]
       less:
-        files: [ "stylesheets/**/*.less", "stylesheets/**/*.css" ]
+        files: [ "stylesheets/**/*.less" ]
         tasks: [ "less" ]
       handlebars_templates:
         files: [ "src/**/*.hbs" ]
-        tasks: [ "ember_templates", "neuter" ]
+        tasks: [ "emberTemplates", "neuter" ]
 
     ###
       Compile LESS files
@@ -112,10 +112,10 @@ module.exports = (grunt) ->
       The compiled result will be stored in
       Ember.TEMPLATES keyed on their file path (with the 'src/templates' stripped)
     ###
-    ember_templates:
+    emberTemplates:
       options:
         templateName: (sourceFile) -> sourceFile.replace(/src\/templates\//, '')
-      'build/templates/templates.js': ["src/templates/*.hbs"]
+      'build/templates/templates.js': ["src/templates/**/*.hbs"]
 
     ###
       Find all the <whatever>_test.js files in the test folder.
@@ -150,6 +150,6 @@ module.exports = (grunt) ->
   grunt.registerTask "build_srcs", [ "coffee:srcs", "neuter" ]
   grunt.registerTask "build_examples", [ "coffee:examples" ]
   if env is "dev"
-    grunt.registerTask "default", [ "ember_templates", "less", "build_srcs", "build_examples", "uglify", "watch" ]
+    grunt.registerTask "default", [ "emberTemplates", "less", "build_srcs", "build_examples", "uglify", "watch" ]
   else
-    grunt.registerTask "default", [ "ember_templates", "less", "build_srcs", "uglify" ]
+    grunt.registerTask "default", [ "emberTemplates", "less", "build_srcs", "uglify" ]

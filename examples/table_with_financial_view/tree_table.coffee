@@ -1,12 +1,12 @@
 Number.prototype.toCurrency = ->
   return '-' if isNaN(@) or not isFinite(@)
   value = Math.abs(@).toFixed(2)
-  value = value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,')
-  (if this < 0 then '-$' else '$') + value
+  value = value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '1,')
+  (if this < 0 then '-' else '') + value
 
 Number.prototype.toPercent = ->
   return '-' if isNaN(@) or not isFinite(@)
-  Math.abs(this * 100).toFixed(2) + "%"
+  Math.abs(this * 100).toFixed(2) + ""
 
 App.TreeTableExample = Ember.Namespace.create()
 
@@ -182,14 +182,18 @@ App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend
 ################################################################################
 # Views
 ################################################################################
-App.TreeTableExample.HeaderCell = Ember.Table.HeaderCell.extend
+Ember.Table.TableCell = Ember.Table.TableCell.extend
+  templateName: 'table-cell-container'
+
+Ember.Table.HeaderCell = Ember.Table.HeaderCell.extend
   templateName: 'table-tree-header-cell'
 
 App.TreeTableExample.TreeCell = Ember.Table.TableCell.extend
   templateName: 'table-tree-cell'
   classNames:   'ember-table-table-tree-cell'
-  styleBindings: ['indentation:padding-left']
-  indentation:  Ember.computed.alias 'row.indentation'
+  paddingStyle: Ember.computed ->
+    "padding-left:#{@get('row.indentation')}px;"
+  .property 'row.indentation'
 
 App.TreeTableExample.HeaderTreeCell = Ember.Table.HeaderCell.extend
   templateName: 'table-header-tree-cell'

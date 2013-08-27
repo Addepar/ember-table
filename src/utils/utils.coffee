@@ -1,4 +1,6 @@
-Ember.MultiItemViewCollectionView = Ember.CollectionView.extend
+Ember.MultiItemViewCollectionView =
+Ember.CollectionView.extend Ember.StyleBindingsMixin,
+  styleBindings:  'width'
   itemViewClassField: null
   createChildView: (view, attrs) ->
     itemViewClassField = @get 'itemViewClassField'
@@ -13,16 +15,20 @@ Ember.MouseWheelHandlerMixin = Ember.Mixin.create
     @_super()
     @$().bind 'mousewheel', (event, delta, deltaX, deltaY) =>
       Ember.run this, @onMouseWheel, event, delta, deltaX, deltaY
-  willDestroy: ->
+  willDestroyElement: ->
     @$()?.unbind 'mousewheel'
     @_super()
 
 Ember.ScrollHandlerMixin = Ember.Mixin.create
   onScroll: Ember.K
+  scrollElementSelector: ''
   didInsertElement: ->
     @_super()
-    @$().bind 'scroll', (event) =>
+    @$(@get('scrollElementSelector')).bind 'scroll', (event) =>
       Ember.run this, @onScroll, event
-  willDestroy: ->
-    @$()?.unbind 'scroll'
+  willDestroyElement: ->
+    @$(@get('scrollElementSelector'))?.unbind 'scroll'
     @_super()
+
+Ember.TouchHandlerMixin = Ember.Mixin.create
+

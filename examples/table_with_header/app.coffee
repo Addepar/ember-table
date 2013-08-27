@@ -14,12 +14,12 @@ App.LazyDataSource = Ember.ArrayProxy.extend
     @get('content')[idx] = row
     row
 
-App.SimpleTableController = Ember.Table.TableController.extend
-  hasHeader: yes
-  hasFooter: no
-  numFixedColumns: 0
+App.ApplicationView = Ember.View.extend
+  classNames: 'ember-app'
+  templateName: 'application'
+
+App.ApplicationController = Ember.Controller.extend
   numRows: 100000
-  rowHeight: 30
 
   columnNames: Ember.computed ->
     ['num', 'start', 'finish', 'title', 'duration', 'effortDriven']
@@ -38,12 +38,3 @@ App.SimpleTableController = Ember.Table.TableController.extend
     App.LazyDataSource.create
       content: new Array(@get('numRows'))
   .property 'numRows'
-
-App.ApplicationView = Ember.View.extend
-  classNames: 'ember-app'
-  templateName: 'application'
-
-App.ApplicationController = Ember.Controller.extend
-  tableController : Ember.computed ->
-    App.SimpleTableController.create()
-  .property()
