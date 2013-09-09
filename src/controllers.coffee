@@ -271,7 +271,8 @@ Ember.Table.TableController = Ember.Controller.extend
       col.set("controller", this)
   , "tableColumns.@each", "tableColumns"
 
-  sortByColumn: Ember.K
+  actions:
+    sortByColumn: Ember.K
 
   # private variables
   _tableScrollTop:  0
