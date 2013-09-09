@@ -168,23 +168,24 @@ Ember.Table.TableController.extend App.TreeTableExample.TreeDataAdapter,
   sortColumn: null
   selection: null
 
-  toggleTableCollapse: (event) ->
-    @toggleProperty 'isCollapsed'
-    isCollapsed = @get 'isCollapsed'
-    children = @get('root.children')
-    return unless children and children.get('length') > 0
-    children.forEach (child) -> child.recursiveCollapse isCollapsed
-    @notifyPropertyChange 'rows'
+  actions:
+    toggleTableCollapse: (event) ->
+      @toggleProperty 'isCollapsed'
+      isCollapsed = @get 'isCollapsed'
+      children = @get('root.children')
+      return unless children and children.get('length') > 0
+      children.forEach (child) -> child.recursiveCollapse isCollapsed
+      @notifyPropertyChange 'rows'
 
-  toggleCollapse: (row) ->
-    row.toggleProperty 'isCollapsed'
-    Ember.run.next this, -> @notifyPropertyChange 'rows'
+    toggleCollapse: (row) ->
+      row.toggleProperty 'isCollapsed'
+      Ember.run.next this, -> @notifyPropertyChange 'rows'
 
-  sortByColumn: (column) ->
-    column.toggleProperty 'sortAscending'
-    @set 'sortColumn', column
-    @set 'sortAscending', column.get('sortAscending')
+    sortByColumn: (column) ->
+      column.toggleProperty 'sortAscending'
+      @set 'sortColumn', column
+      @set 'sortAscending', column.get('sortAscending')
 
-  onSelectionsDidChange: Ember.observer ->
-    console.log 'selectionsDidChange'
-  , 'selection.@each'
+    onSelectionsDidChange: Ember.observer ->
+      console.log 'selectionsDidChange'
+    , 'selection.@each'

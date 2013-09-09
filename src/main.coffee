@@ -1,5 +1,11 @@
 ## Used for bundling files together using neuter
 
+Ember.Table = Ember.Namespace.create()
+Ember.Table.VERSION = '0.0.2'
+
+Ember.libraries?.register 'Ember Table', Ember.Table.VERSION
+
+
 require './utils/jquery_fix'
 require './utils/scrollbar_width_helper'
 require './utils/resize_handler'
