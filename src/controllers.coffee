@@ -1,5 +1,3 @@
-Ember.Table = Ember.Namespace.create()
-
 ###*
  * Column Definition
  * @class
