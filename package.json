@@ -22,6 +22,9 @@
         "grunt-jsdoc": "*",
         "grunt-neuter": "~0.4.0",
         "grunt-shell": "*",
+        "grunt-jsdoc": "*",
+
+        "node-static": "*",
 
         "lockdown": "0.0.5"
     }
