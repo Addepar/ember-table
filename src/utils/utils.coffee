@@ -3,7 +3,9 @@
  * @class
  * @alias Ember.Table.MultiItemViewCollectionView
  ###
-Ember.MultiItemViewCollectionView = Ember.CollectionView.extend
+Ember.MultiItemViewCollectionView =
+Ember.CollectionView.extend Ember.AddeparMixins.StyleBindingsMixin,
+  styleBindings:  'width'
   itemViewClassField: null
   createChildView: (view, attrs) ->
     itemViewClassField = @get 'itemViewClassField'
@@ -18,18 +20,19 @@ Ember.MouseWheelHandlerMixin = Ember.Mixin.create
     @_super()
     @$().bind 'mousewheel', (event, delta, deltaX, deltaY) =>
       Ember.run this, @onMouseWheel, event, delta, deltaX, deltaY
-  willDestroy: ->
+  willDestroyElement: ->
     @$()?.unbind 'mousewheel'
     @_super()
 
 Ember.ScrollHandlerMixin = Ember.Mixin.create
   onScroll: Ember.K
+  scrollElementSelector: ''
   didInsertElement: ->
     @_super()
-    @$().bind 'scroll', (event) =>
+    @$(@get('scrollElementSelector')).bind 'scroll', (event) =>
       Ember.run this, @onScroll, event
-  willDestroy: ->
-    @$()?.unbind 'scroll'
+  willDestroyElement: ->
+    @$(@get('scrollElementSelector'))?.unbind 'scroll'
     @_super()
 
 Ember.TouchMoveHandlerMixin = Ember.Mixin.create
@@ -56,3 +59,38 @@ Ember.TouchMoveHandlerMixin = Ember.Mixin.create
   willDestroy: ->
     @$()?.unbind 'touchmove'
     @_super()
+
+###*
+* Table Row Array Proxy
+* @class
+* @alias Ember.Table.RowArrayProxy
+###
+Ember.Table.RowArrayController = Ember.ArrayController.extend
+  itemController: null
+  content: null
+  rowContent: Ember.computed( -> []).property()
+
+  controllerAt: (idx, object, controllerClass) ->
+    container = @get 'container'
+    subControllers = @get '_subControllers'
+    subController = subControllers[idx]
+
+    return subController if subController
+    subController = @get('itemController').create
+      target: this
+      parentController: @get('parentController') or this
+      content: object
+    subControllers[idx] = subController;
+    return subController;
+
+# HACK: We want the horizontal scroll to show on mouse enter and leave.
+Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create
+  mouseEnter: (event) ->
+    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
+    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
+    $horizontalScroll.addClass('antiscroll-scrollbar-shown')
+
+  mouseLeave: (event) ->
+    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
+    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
+    $horizontalScroll.removeClass('antiscroll-scrollbar-shown')

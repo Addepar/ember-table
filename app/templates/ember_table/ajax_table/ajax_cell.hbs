@@ -1,0 +1,5 @@
+{{#if view.rowContent.isLoaded}}
+  <img width="30" {{bindAttr src="view.cellContent"}}></img>
+{{else}}
+  <img src="img/loading.gif" style="padding: 8px;"></img>
+{{/if}}

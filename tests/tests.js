@@ -1,11 +1,10 @@
 module("Basic Tests");
 
-test("Controllers", function() {
-    notEqual(null, Ember.Table.TableController, "Ember.Table.TableController exists");
+test("Component", function() {
+    notEqual(null, Ember.Table.EmberTableComponent, "Ember.Table.EmberTableComponent exists");
 });
 
 test("Views", function() {
-    notEqual(null, Ember.Table.TablesContainer, "Ember.Table.TablesContainer exists");
     notEqual(null, Ember.Table.TableContainer, "Ember.Table.TableContainer exists");
     notEqual(null, Ember.Table.TableCell, "Ember.Table.TableCell exists");
     notEqual(null, Ember.Table.HeaderRow, "Ember.Table.HeaderRow exists");
@@ -21,5 +20,5 @@ test("Templates", function() {
     notEqual(null, Ember.TEMPLATES['header-container'], "Ember.TEMPLATES['header-container'] exists");
     notEqual(null, Ember.TEMPLATES['header-row'], "Ember.TEMPLATES['header-row'] exists");
     notEqual(null, Ember.TEMPLATES['table-row'], " Ember.TEMPLATES['table-row'] exists");
-    notEqual(null, Ember.TEMPLATES['tables-container'], "Ember.TEMPLATES['tables-container'] exists");
+    notEqual(null, Ember.TEMPLATES['components/ember-table'], "Ember.TEMPLATES['components/ember-table'] exists");
 });

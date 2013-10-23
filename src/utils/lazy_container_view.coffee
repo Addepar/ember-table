@@ -1,4 +1,5 @@
-Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
+Ember.LazyContainerView =
+Ember.ContainerView.extend Ember.AddeparMixins.StyleBindingsMixin,
   classNames:     'lazy-list-container'
   styleBindings:  ['height']
   content:        null
@@ -73,7 +74,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend Ember.StyleBindingsMixin,
  * @class
  * @alias Ember.LazyItemView
  ###
-Ember.LazyItemView = Ember.View.extend Ember.StyleBindingsMixin,
+Ember.LazyItemView = Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   itemIndex: null
   prepareContent: Ember.K
   teardownContent: Ember.K
