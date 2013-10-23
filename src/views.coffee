@@ -2,9 +2,10 @@
 * Table Container
 * @class
 * @alias Ember.Table.TableContainer
-* @mixes Ember.StyleBindingsMixin
+* @mixes Ember.AddeparMixins.StyleBindingsMixin
 ###
-Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
+Ember.Table.TableContainer =
+Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   classNames:     ['ember-table-table-container']
   styleBindings:  ['height', 'width']
 
@@ -12,10 +13,11 @@ Ember.Table.TableContainer = Ember.View.extend Ember.StyleBindingsMixin,
 * Table Block
 * @class
 * @alias Ember.Table.TableBlock
-* @mixes Ember.StyleBindingsMixin
+* @mixes Ember.AddeparMixins.StyleBindingsMixin
 * @todo This should be a mixin
 ###
-Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
+Ember.Table.TableBlock =
+Ember.CollectionView.extend Ember.AddeparMixins.StyleBindingsMixin,
   classNames:     ['ember-table-table-block']
   styleBindings:  ['width', 'height']
   itemViewClass:  Ember.computed.alias 'controller.tableRowViewClass'
@@ -31,6 +33,7 @@ Ember.Table.TableBlock = Ember.CollectionView.extend Ember.StyleBindingsMixin,
   onScrollLeftDidChange: Ember.observer ->
     @$().scrollLeft @get('scrollLeft')
   , 'scrollLeft'
+
   height: Ember.computed ->
     @get('controller._headerHeight')
   .property('controller._headerHeight')
@@ -112,10 +115,11 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
 * Table Cell
 * @class
 * @alias Ember.Table.TableCell
-* @mixes Ember.StyleBindingsMixin
+* @mixes Ember.AddeparMixins.StyleBindingsMixin
 ###
-Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
-  templateName:       'table-cell'
+Ember.Table.TableCell =
+Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
+  templateName: 'table-cell'
   classNames:         ['ember-table-cell']
   classNameBindings:  'column.textAlign'
   styleBindings:      'width'
@@ -125,8 +129,9 @@ Ember.Table.TableCell = Ember.View.extend Ember.StyleBindingsMixin,
   width:      Ember.computed.alias 'column.columnWidth'
 
   init: ->
-    @_super.apply(this, arguments)
+    @_super()
     @contentPathDidChange()
+    @contentDidChange()
 
   contentDidChange: ->
     @notifyPropertyChange 'cellContent'
@@ -187,12 +192,15 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
 * Header Row
 * @class
 * @alias Ember.Table.HeaderRow
-* @mixes Ember.StyleBindingsMixin
+* @mixes Ember.AddeparMixins.StyleBindingsMixin
 ###
-Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
+Ember.Table.HeaderRow =
+Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   templateName:   'header-row'
   classNames:     ['ember-table-table-row', 'ember-table-header-row']
+  styleBindings: ['width']
   columns:        Ember.computed.alias 'content'
+  width:          Ember.computed.alias 'controller._rowWidth'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
 
   ###*
@@ -213,7 +221,6 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
     update: jQuery.proxy(@onColumnSortDone,   this)
     stop:   jQuery.proxy(@onColumnSortStop,   this)
     sort:   jQuery.proxy(@onColumnSortChange, this)
-  .property()
 
   onScrollLeftDidChange: Ember.observer ->
     @$().scrollLeft @get('scrollLeft')
@@ -248,9 +255,10 @@ Ember.Table.HeaderRow = Ember.View.extend Ember.StyleBindingsMixin,
 * Header Cell
 * @class
 * @alias Ember.Table.HeaderCell
-* @mixes Ember.StyleBindingsMixin
+* @mixes Ember.AddeparMixins.StyleBindingsMixin
 ###
-Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
+Ember.Table.HeaderCell =
+Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   templateName:       'header-cell'
   classNames:         ['ember-table-cell', 'ember-table-header-cell']
   classNameBindings:  ['column.isSortable:sortable', 'column.textAlign']
@@ -274,7 +282,6 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
     grid:     @get('column.snapGrid')
     resize: jQuery.proxy(@onColumnResize, this)
     stop: jQuery.proxy(@onColumnResize, this)
-  .property()
 
   ###*
   * Did insert element callback
@@ -297,8 +304,6 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
   onColumnResize: (event, ui) ->
     @elementSizeDidChange()
     @get("column").resize(ui.size.width)
-    # TODO(Louis): Have Peter look at this.. this doesn't seem to work?
-    # @$().resizable("option", "maxWidth", max) if max
 
   elementSizeDidChange: ->
     maxHeight = 0
@@ -311,21 +316,8 @@ Ember.Table.HeaderCell = Ember.View.extend Ember.StyleBindingsMixin,
 
 ################################################################################
 
-Ember.Table.AddColumnButton = Ember.View.extend Ember.StyleBindingsMixin,
-  tagName: 'span'
-  template: Ember.Handlebars.compile(
-    '<span>+</span>')
-  styleBindings: ['height', 'width']
-  classNames: 'ember-table-add-column-button'
-  height: Ember.computed ->
-    # TODO(Louis): Why 1?
-    @get('controller._headerHeight') + 1
-  .property 'controller._headerHeight'
-  width: 26
-  click: -> @get('controller').addColumn()
-
 Ember.Table.ColumnSortableIndicator =
-Ember.View.extend Ember.StyleBindingsMixin,
+Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   classNames: 'ember-table-column-sortable-indicator'
   classNameBindings: 'controller._isShowingSortableIndicator:active'
   styleBindings: ['left', 'height']
@@ -340,7 +332,8 @@ Ember.View.extend Ember.StyleBindingsMixin,
 * @mixes Ember.MouseWheelHandlerMixin
 * @mixes Ember.TouchMoveHandlerMixin
 ###
-Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
+Ember.Table.HeaderTableContainer =
+Ember.Table.TableContainer.extend Ember.Table.ShowHorizontalScrollMixin,
   templateName: 'header-container'
   classNames:   ['ember-table-table-container',
                  'ember-table-fixed-table-container',
@@ -358,8 +351,8 @@ Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend
 ###
 Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
-Ember.TouchMoveHandlerMixin,
-Ember.ScrollHandlerMixin,
+Ember.TouchMoveHandlerMixin, Ember.ScrollHandlerMixin,
+Ember.Table.ShowHorizontalScrollMixin,
   templateName:   'body-container'
   classNames:     ['ember-table-table-container', 'ember-table-body-container',
                    'antiscroll-wrap']
@@ -367,28 +360,7 @@ Ember.ScrollHandlerMixin,
   width:          Ember.computed.alias 'controller._width'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
-
   scrollElementSelector: '.antiscroll-inner'
-  firefoxScrollDistance:  52
-
-  ###*
-  * On scroll top did change observer
-  * @memberof Ember.Table.BodyTableContainer
-  * @instance
-  ###
-  onScrollTopDidChange: Ember.observer ->
-    @$().scrollTop @get('scrollTop')
-  , 'scrollTop'
-
-  mouseEnter: (event) ->
-    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
-    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
-    $horizontalScroll.addClass('antiscroll-scrollbar-shown')
-
-  mouseLeave: (event) ->
-    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
-    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
-    $horizontalScroll.removeClass('antiscroll-scrollbar-shown')
 
   ###*
   * On scroll callback
@@ -410,8 +382,8 @@ Ember.ScrollHandlerMixin,
   * @argument deltaY {Integer}
   ###
   onMouseWheel: (event, delta, deltaX, deltaY) ->
-    return if Math.abs(deltaX) > Math.abs(deltaY) is false
-    scrollLeft = @$('.ember-table-right-table-block').scrollLeft() + deltaX * 50
+    return unless Math.abs(deltaX) > Math.abs(deltaY)
+    scrollLeft = @$('.ember-table-right-table-block').scrollLeft() + deltaX
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
@@ -424,7 +396,7 @@ Ember.ScrollHandlerMixin,
   * @argument deltaY {Integer}
   ###
   onTouchMove: (event, deltaX, deltaY) ->
-    return if (Math.abs(deltaX) > Math.abs(deltaY)) is false
+    return unless (Math.abs(deltaX) > Math.abs(deltaY))
     scrollLeft = @$('.ember-table-right-table-block').scrollLeft() + deltaX
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
@@ -438,7 +410,7 @@ Ember.ScrollHandlerMixin,
 ###
 Ember.Table.FooterTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
-Ember.TouchMoveHandlerMixin,
+Ember.TouchMoveHandlerMixin, Ember.Table.ShowHorizontalScrollMixin,
   templateName:   'footer-container'
   classNames:     ['ember-table-table-container',
                    'ember-table-fixed-table-container',
@@ -456,7 +428,7 @@ Ember.TouchMoveHandlerMixin,
             'controller._tableContentHeight')
 
   onMouseWheel: (event, delta, deltaX, deltaY) ->
-    scrollLeft = @$('.ember-table-right-table-block').scrollLeft() + deltaX * 50
+    scrollLeft = @$('.ember-table-right-table-block').scrollLeft() + deltaX
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
@@ -465,29 +437,17 @@ Ember.TouchMoveHandlerMixin,
     @set 'scrollLeft', scrollLeft
     event.preventDefault()
 
-  # TODO(Peter/Louis): This should be a mixin - duplicated
-  # inside Ember.Table.BodyTableContainer
-  mouseEnter: (event) ->
-    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
-    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
-    $horizontalScroll.addClass('antiscroll-scrollbar-shown')
-
-  mouseLeave: (event) ->
-    $tablesContainer = $(event.target).parents('.ember-table-tables-container')
-    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
-    $horizontalScroll.removeClass('antiscroll-scrollbar-shown')
-
 ###*
 * Scroll Container
 * @class
 * @alias Ember.Table.ScrollContainer
-* @mixes Ember.StyleBindingsMixin
+* @mixes Ember.AddeparMixins.StyleBindingsMixin
 * @mixes Ember.ScrollHandlerMixin
 ###
 Ember.Table.ScrollContainer =
-Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
-  template: Ember.Handlebars.compile(
-    '<div class="antiscroll-wrap"><div class="antiscroll-inner">{{view Ember.Table.ScrollPanel}}</div></div>')
+Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
+Ember.ScrollHandlerMixin,
+  templateName: 'scroll-container'
   classNames:     ['ember-table-scroll-container']
   styleBindings:  ['left', 'width', 'height']
   scrollElementSelector: '.antiscroll-inner'
@@ -497,6 +457,13 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   left:           Ember.computed.alias 'controller._fixedColumnsWidth'
   scrollTop:      Ember.computed.alias 'controller._tableScrollTop'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+
+  # HACK: onScrollLeftDidChange will not fire unless scrollLeft has been get
+  # at least once. Therefore, we want to call onScrollLeftDidChange in
+  # didInsertElement
+  didInsertElement: ->
+    @_super()
+    @onScrollLeftDidChange()
 
   ###*
   * On scroll callback
@@ -515,16 +482,16 @@ Ember.View.extend Ember.StyleBindingsMixin, Ember.ScrollHandlerMixin,
   ###
   onScrollLeftDidChange: Ember.observer ->
     selector = @get('scrollElementSelector')
-    this.$(selector).scrollLeft @get('scrollLeft')
+    @$(selector).scrollLeft @get('scrollLeft')
   , 'scrollLeft', 'scrollElementSelector'
 
 ###*
 * ScrollPanel
 * @class
 * @alias Ember.Table.ScrollPanel
-* @mixes Ember.StyleBindingsMixin
+* @mixes Ember.AddeparMixins.StyleBindingsMixin
 ###
-Ember.Table.ScrollPanel = Ember.View.extend Ember.StyleBindingsMixin,
+Ember.Table.ScrollPanel = Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   classNames:     ['ember-table-scroll-panel']
   styleBindings:  ['width', 'height']
   width:   Ember.computed.alias 'controller._tableColumnsWidth'

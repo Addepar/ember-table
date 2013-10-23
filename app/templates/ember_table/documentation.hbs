@@ -1,0 +1,257 @@
+    {{!-- To add shadow main-content-container-shadow --}}
+    <div class="col-md-10 col-md-offset-2 left-border main-content-container">
+      <h1>Migration Guide</h1>
+      <div class="row">
+        <div class="col-md-7">
+          <h2>Guide</h2>
+          <p>Version 0.1 of Ember Table is a bit of a restructure - we’re hoping that the new organization will make it simpler and easier to set up, but for existing users, you’ll have to make a few changes to upgrade to the new Ember Table. This guide is intended to walk you through that process.</p>
+
+          <ol class="styled styled-spacious">
+            <li>Upgrade ember-table.js and ember-table.css. If you’re not on the latest version of <a target="_BLANK" href="http://emberjs.com/">Ember.js</a>, now might be a good time to upgrade that as well. This guide was written using Ember 1.0.0 and Ember Table 0.1. You can grab Ember 1.0.0 <a target="_BLANK" href="https://github.com/emberjs/starter-kit/archive/v1.0.0.zip">here</a>.</li>
+            <li>The major change is moving from separate table Views and Controllers to a unified table Component. You can read up on Ember Components <a target="_BLANK" href="http://emberjs.com/guides/components/">here</a>. So instead of having lines like this:<br/><br/>
+            <div class="highlight">
+<pre class="prettyprint lang-coffee">App.MyTableController = Ember.Table.TableController.extend (...)
+App.MyTableView = EmberTable.TableContainerView.extend (...)</pre>
+            </div>
+
+            You’ll have everything in one place:
+            <div class="highlight">
+<pre class="prettyprint lang-coffee">App.MyTableController = Ember.Controller.extend (...)</pre>
+            </div>
+
+            For starters, just change the type of your MyTableController from the old version to the new.
+            </li>
+            <li>Update your handlebars file. Before, it might have looked like:<br/>
+              <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;view Ember.Table.TablesContainer …&#125;&#125;</pre>
+              </div>
+              After the restructure, it should look like this:<br/>
+              <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component …&#125;&#125;</pre>
+              </div>
+            </li>
+            <li>While you’re modifying that handlebars file, you may want to make sure it looks like the structure of the new Ember Table examples. You can see one {{#linkTo 'emberTable.simple'}}here{{/linkTo}}. In particular, you might get errors if you don’t properly bind your columns and content of the table, using “columnsBinding=” and “contentBinding=”.<br/><br/>
+            Both of these settings refer to variables in the corresponding controller (which here should be MyTableController), such that if you set “columnsBinding=exampleVariable”, then the columns will be bound to “exampleVariable” in the controller. This gives you control over the look and content of the table.<br/><br/>
+            Before, you may have had “controllerBinding=” here. You don’t need this any more: the controller being used with this template will be used for the table too, by default.</li>
+            <li>Move any properties you had defined in your TableContainerView (if you had one) into the controller. See the examples for more information on how table properties should be set now.</li>
+          </ol>
+        </div>
+        <div class="col-md-5">
+          <h2>Troubleshooting</h2>
+          <ul class="styled styled-spacious">
+            <li>If you were using old Ember Table objects like the RowArrayProxy, take another look and consider whether you really need it. During my migration I was able to remove it by changing the “contentBinding=” in my handlebars file to a more appropriate variable for content.</li>
+            <li>If you are having errors with template names not being found, it may be due to a change with inferring names. For me, my old template names used hyphens, and changing them to underscores automatically connected them to the rest of my application.</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr>
+      <h1>API</h1>
+      <h2>Ember.Table.TableComponent Options</h2>
+
+      <table class="table ember-table-options">
+        <tr>
+          <th style="width: 200px;">Option</th>
+          <th style="width: 150px;">Default</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>content <b>(required)</b></td>
+          <td>null</td>
+          <td>
+            <p>
+              An array which returns row objects. Each column definition
+              must define a function which takes a row object and
+              returns the value for that cell. E.g. the row object might
+              be a hash, in which case the column definition's function
+              might simply get the value corresponding to its key. The
+              row object might be a function, in which case the column
+              definition's function might evaluate the function at a
+              given value. Etc.
+            </p>
+          </td>
+        <tr>
+          <td>columns <b>(required)</b></td>
+          <td>null</td>
+          <td>
+            <p>
+              An array of column definitions. Allows you to specify
+              column configuration - e.g. whether the column is resizable,
+              its css class, etc. (see column definition API for more
+              details)
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>numFixedColumns</td>
+          <td>0</td>
+          <td><p>The number of frozen column on the left table.</p></td>
+        </tr>
+        <tr>
+          <td>numFooterRow</td>
+          <td>0</td>
+          <td><p>The number of footer rows in the table.</p></td>
+        </tr>
+        <tr>
+          <td>rowHeight</td>
+          <td>30</td>
+          <td><p>The row height, which is necessary to calculate the height for the lazy rendering.</p></td>
+        </tr>
+        <tr>
+          <td>minHeaderHeight</td>
+          <td>30</td>
+          <td><p>The minimum header height in pixels.</p></td>
+        </tr>
+        <tr>
+          <td>footerHeight</td>
+          <td>30</td>
+          <td><p>The minimum footer height in pixels.</p></td>
+        </tr>
+        <tr>
+          <td>hasHeader</td>
+          <td>true</td>
+          <td><p>Shows the header block.</p></td>
+        </tr>
+        <tr>
+          <td>hasFooter</td>
+          <td>true</td>
+          <td><p>Shows a the footer block.</p></td>
+        </tr>
+        <tr>
+          <td>forceFillColumns</td>
+          <td>false</td>
+          <td><p>Expands the columns to fill the given width.</p></td>
+        </tr>
+        <tr>
+          <td>enableColumnReorder</td>
+          <td>true</td>
+          <td><p>Allows the user the reorder the columns to their liking.</p></td>
+        </tr>
+      </table>
+
+      <h2>Ember.Table.ColumnDefinition Options</h2>
+      <table class="table ember-table-options">
+        <tr>
+          <th style="width: 200px;">Option</th>
+          <th style="width: 150px;">Default</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>headerCellName</td>
+          <td>undefined</td>
+          <td><p>Text that appears in the column header.</p></td>
+        </tr>
+        <tr>
+          <td>contentPath</td>
+          <td>undefined</td>
+          <td><p>Path of the content for a cell. Given a row, this is the
+            path of the value that is extracted from that row.</p></td>
+        </tr>
+        <tr>
+          <td>minWidth</td>
+          <td>undefined</td>
+          <td><p>Minimum width of the column.</p></td>
+        </tr>
+        <tr>
+          <td>maxWidth</td>
+          <td>undefined</td>
+          <td><p>Maximum width of the column.</p></td>
+        </tr>
+        <tr>
+          <td>defaultColumnWidth</td>
+          <td>150</td>
+          <td><p>The width of the column, by default (in pixels).</p></td>
+        </tr>
+        <tr>
+          <td>isResizable</td>
+          <td>yes</td>
+          <td><p>If yes then the column can be resized, otherwise it
+            cannot.</p></td>
+        </tr>
+        <tr>
+          <td>isSortable</td>
+          <td>yes</td>
+          <td><p>If yes then the column can be sorted.</p></td>
+        </tr>
+        <tr>
+          <td>textAlign</td>
+          <td>'text-align-right'</td>
+          <td><p>Aligns text left/center/right in the column.</p></td>
+        </tr>
+        <tr>
+          <td>canAutoResize</td>
+          <td>yes</td>
+          <td><p>If yes then column will automatically resized to be
+            larger when there is additional space for the table.</p></td>
+        </tr>
+      </table>
+
+      <h2>Ember.Table.TableCell Options</h2>
+      <table class="table ember-table-options">
+        <tr>
+          <th style="width: 200px;">Option</th>
+          <th style="width: 150px;">Default</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>templateName</td>
+          <td>'table-cell'</td>
+          <td><p>The name of the template to be rendered into the cell.
+            Used for rendering custom templates<p></td>
+        </tr>
+        <tr>
+          <td>classNames</td>
+          <td>['ember-table-cell']</td>
+          <td><p>The class names applied to the cell. Override to give
+            the cell custom styling (border, background color, etc.)<p></td>
+        </tr>
+        <tr>
+          <td>classNameBindings</td>
+          <td>'column.textAlign'</td>
+          <td><p>A binding used to dynamically associate class names
+            with this table cell. E.g. you can bind to a column property
+            to have cell colors or styles vary across columns.<p></td>
+        </tr>
+        <tr>
+          <td>styleBindings</td>
+          <td>'width'</td>
+          <td><p>Values which are bound to the cell's style attr. See
+            Ember.STyleBindingsMixin documentation for more details.<p></td>
+        </tr>
+      </table>
+
+      <h2>Ember.Table.HeaderCell Options</h2>
+      <table class="table ember-table-options">
+        <tr>
+          <th style="width: 200px;">Option</th>
+          <th style="width: 150px;">Default</th>
+          <th>Description</th>
+        </tr>
+        <tr>
+          <td>templateName</td>
+          <td>'table-cell'</td>
+          <td><p>The name of the template to be rendered into the cell.
+            Used for rendering custom templates<p></td>
+        </tr>
+        <tr>
+          <td>classNames</td>
+          <td>['ember-table-cell']</td>
+          <td><p>The class names applied to the cell. Override to give
+            the cell custom styling (border, background color, etc.)<p></td>
+        </tr>
+        <tr>
+          <td>classNameBindings</td>
+          <td>'column.textAlign'</td>
+          <td><p>A binding used to dynamically associate class names
+            with this table cell. E.g. you can bind to a column property
+            to have cell colors or styles vary across columns.<p></td>
+        </tr>
+        <tr>
+          <td>styleBindings</td>
+          <td>'width'</td>
+          <td><p>Values which are bound to the cell's style attr. See
+            Ember.STyleBindingsMixin documentation for more details.<p></td>
+      </table>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,95 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Horizon</small></h1>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="example-container">
+        <div class="ember-table-example-container">
+          {{table-component
+            hasHeader=true
+            hasFooter=false
+            numFixedColumns=0
+            rowHeight=30
+            columnsBinding="columns"
+            contentBinding="content"
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>application.hbs</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component
+  hasFooter=false
+  columnsBinding="columns"
+  contentBinding="content"
+&#125;&#125;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>spark_line_table_cell_view.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.HorizonTableCellView = Ember.Table.TableCell.extend
+  template: Ember.Handlebars.compile("")
+  heightBinding: 'controller.rowHeight'
+  horizonContent: Ember.computed ->
+    normal = d3.random.normal(1.5, 3)
+    [0...100].map (i) -> [i, normal()]
+  .property()
+  onWidthDidChange: Ember.observer ->
+    @$('svg').remove()
+    @renderD3View()
+  , 'width'
+  didInsertElement: ->
+    @onWidthDidChange()
+  renderD3View: ->
+    width  = @get 'width'
+    height = @get('height')
+    data   = @get('horizonContent')
+    chart = d3.horizon()
+      .width(width)
+      .height(height)
+      .bands(2)
+      .mode("mirror")
+      .interpolate("basis");
+    svg = d3.select('#' + @get('elementId')).append("svg")
+      .attr("width", width)
+      .attr("height", height)
+    svg.data([data]).call(chart)</pre>
+      </div>
+    </div>
+
+
+    <div class="col-md-12 bumper-30">
+      <h3>application_controller.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+  numRows: 100
+
+  columns: Ember.computed ->
+    name = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Name'
+      getCellContent: (row) -> 'Horizon ' + row['name']
+    horizon = Ember.Table.ColumnDefinition.create
+      columnWidth: 600
+      headerCellName: 'Horizon'
+      tableCellViewClass: 'App.HorizonTableCellView'
+      getCellContent: Ember.K
+    [name, horizon]
+
+  content: Ember.computed ->
+    normal = d3.random.normal(1.5, 3)
+    [0...@get('numRows')].map (num, index) ->
+      data = [0...100].map (i) -> [i, normal()]
+      name: index
+      data: data
+   .property 'numRows'</pre>
+      </div>
+    </div>
+
+  </div>
+</div>

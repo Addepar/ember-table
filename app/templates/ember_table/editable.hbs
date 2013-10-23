@@ -1,0 +1,146 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Editable</small></h1>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="example-container">
+        <div class="ember-table-example-container">
+          {{table-component
+            hasHeader=true
+            hasFooter=false
+            numFixedColumns=0
+            rowHeight=30
+            columnsBinding="columns"
+            contentBinding="content"
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>application.hbs</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component
+  hasHeader=true
+  hasFooter=false
+  numFixedColumns=0
+  rowHeight=35
+  columnsBinding="columns"
+  contentBinding="content"
+&#125;&#125;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>editable_table_cell.hbs</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&lt;span class=&quot;ember-table-content&quot;&gt;<br/>  &#123;&#123;#if view.isEditing&#125;&#125;<br/>    &#123;&#123;view view.innerTextField&#125;&#125;<br/>  &#123;&#123;else&#125;&#125;<br/>    &lt;span class='content'&gt;&#123;&#123;view.cellContent&#125;&#125;&lt;/span&gt;<br/>  &#123;&#123;/if&#125;&#125;<br/>&lt;/span&gt;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>rating_table_cell.hbs</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&lt;div class=&quot;rating&quot;&gt;<br/>  &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;<br/>&lt;/div&gt;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>editable_table_cell_views.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.EditableTableCell = Ember.Table.TableCell.extend
+  className: 'editable-table-cell'
+  templateName: 'ember_table/editable_table/editable_table_cell'
+  isEditing:  no
+  type:       'text'
+
+  innerTextField: Ember.TextField.extend
+    typeBinding:  'parentView.type'
+    valueBinding: 'parentView.cellContent'
+    didInsertElement: -> @$().focus()
+    focusOut: (event) -> @set 'parentView.isEditing', no
+
+  onRowContentDidChange: Ember.observer ->
+    @set 'isEditing', no
+  , 'rowContent'
+
+  click: (event) ->
+    @set 'isEditing', yes
+    event.stopPropagation()
+
+App.DatePickerTableCell = App.EditableTableCell.extend
+  type: 'date'
+
+App.RatingTableCell = Ember.Table.TableCell.extend
+  classNames: 'rating-table-cell'
+  templateName: 'ember_table/editable_table/rating_table_cell'
+
+  onRowContentDidChange: Ember.observer ->
+    @applyRating @get('cellContent')
+  , 'cellContent'
+
+  didInsertElement: ->
+    @_super()
+    @onRowContentDidChange()
+
+  applyRating: (rating) ->
+    @$('.rating span').removeClass('active')
+    span   = @$('.rating span').get(rating)
+    $(span).addClass('active')
+
+  click: (event) ->
+    rating = @$('.rating span').index(event.target)
+    return if rating is -1
+    @get('column').setCellContent(@get('rowContent'), rating)
+    @applyRating(rating)
+</pre>
+      </div>
+    </div>
+
+
+    <div class="col-md-12 bumper-30">
+      <h3>application_controller.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.EmberTableEditableController = Ember.Controller.extend
+  numRows: 100
+  columns: Ember.computed ->
+    columnNames = ['open', 'close']
+    dateColumn = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Date'
+      tableCellViewClass: 'App.DatePickerTableCell'
+      getCellContent: (row) -> row['date'].toString('yyyy-MM-dd')
+      setCellContent: (row, value) -> row['date'] = value
+    ratingColumn = Ember.Table.ColumnDefinition.create
+      columnWidth: 150
+      headerCellName: 'Analyst Rating'
+      tableCellViewClass: 'App.RatingTableCell'
+      contentPath: 'rating'
+      setCellContent: (row, value) -> row['rating'] = value
+    columns= columnNames.map (key, index) ->
+      name = key.charAt(0).toUpperCase() + key.slice(1)
+      Ember.Table.ColumnDefinition.create
+        columnWidth: 100
+        headerCellName: name
+        tableCellViewClass: 'App.EditableTableCell'
+        getCellContent: (row) -> row[key].toFixed(2)
+        setCellContent: (row, value) -> row[key] = +value
+    columns.unshift(ratingColumn)
+    columns.unshift(dateColumn)
+    columns
+  .property()
+
+  content: Ember.computed ->
+    [0...@get('numRows')].map (num, idx) ->
+      index: idx
+      date:  Date.now().add(days: idx)
+      open:  Math.random() * 100 - 50
+      close: Math.random() * 100 - 50
+      rating:Math.round(Math.random() * 4)
+  .property 'numRows'</pre>
+      </div>
+    </div>
+
+  </div>
+</div>

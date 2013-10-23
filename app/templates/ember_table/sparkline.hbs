@@ -1,0 +1,123 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Sparkline</small></h1>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="example-container">
+        <div class="ember-table-example-container">
+          {{table-component
+            hasHeader=true
+            hasFooter=false
+            numFixedColumns=1
+            rowHeight=30
+            columnsBinding="columns"
+            contentBinding="content"
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>application.hbs</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component
+  hasFooter=false
+  columnsBinding="columns"
+  contentBinding="content"
+&#125;&#125;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>spark_line_table_cell_view.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.SparkLineTableCellView = Ember.Table.TableCell.extend
+  template: Ember.Handlebars.compile("")
+  heightBinding: 'controller.rowHeight'
+
+  onContentOrSizeDidChange: Ember.observer ->
+    @$('svg').remove()
+    @renderD3View()
+  , 'row', 'width'
+
+  didInsertElement: -> @renderD3View()
+
+  renderD3View: ->
+    data  = @get 'row.timeseries'
+    return unless data
+    h     = @get 'height'
+    w     = @get 'width'
+    p     = 2
+    min   = Math.min.apply(null, data)
+    max   = Math.max.apply(null, data)
+    len   = data.length
+    fill  = d3.scale.category10()
+    xscale= d3.scale.linear().domain([0, len]).range([p, w - p])
+    yscale= d3.scale.linear().domain([min, max]).range([h - p, p])
+    line  = d3.svg.line().x((d, i) -> xscale(i)).y((d) -> yscale(d))
+    svg   = d3.select("##{@get('elementId')}")
+              .append('svg:svg').attr('height', h).attr('width', w);
+    g = svg.append('svg:g')
+    g.append('svg:path')
+     .attr('d', line(data))
+     .attr('stroke', (d) -> fill(Math.round(Math.random()) * 10))
+     .attr('fill', 'none')</pre>
+      </div>
+    </div>
+
+
+    <div class="col-md-12 bumper-30">
+      <h3>application_controller.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+  numRows: 100
+  columns: Ember.computed ->
+    name = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Name'
+      getCellContent: (row) -> 'Asset ' + row['name']
+    open = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Open'
+      getCellContent: (row) -> row['open'].toFixed(2)
+    spark = Ember.Table.ColumnDefinition.create
+      columnWidth: 200
+      headerCellName: 'Sparkline'
+      tableCellViewClass: 'App.SparklineTableExample.SparkCellView'
+      getCellContent: Ember.K
+    close = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Close'
+      getCellContent: (row) -> row['close'].toFixed(2)
+    low = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Low'
+      getCellContent: (row) -> row['low'].toFixed(2)
+    high = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'High'
+      getCellContent: (row) -> row['high'].toFixed(2)
+    [name, open, spark, close, low, high]
+
+  content: Ember.computed ->
+    randomWalk = (numSteps) ->
+      lastValue = 0
+      [0...numSteps].map ->
+        lastValue = lastValue + d3.random.normal()()
+
+    [0...@get('numRows')].map (num, index) ->
+      data = randomWalk(100)
+      name: index
+      timeseries: data
+      open:  data[0]
+      close: data[99]
+      low:   Math.min.apply(null, data)
+      high:  Math.max.apply(null, data)
+   .property 'numRows'
+</pre>
+      </div>
+    </div>
+
+  </div>
+</div>
