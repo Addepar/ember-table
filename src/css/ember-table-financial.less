@@ -202,12 +202,14 @@
     &.ember-table-last-row .ember-table-cell-container {
       border-bottom: none !important;
     }
+
+    &.ember-table-selected .ember-table-cell {
+      // Note: must be the same as above
+      border-right: 16px solid transparent;
+    }
   }
 
-  .ember-table-body-container .ember-table-table-row.active {
-    // background-color: rgba(0, 82, 196, 0.1);
-    color: #111;
-
+  .ember-table-body-container .ember-table-table-row.ember-table-hover {
     .ember-table-toggle.ember-table-collapse .ember-table-toggle-icon {
       opacity: 0.3;
     }

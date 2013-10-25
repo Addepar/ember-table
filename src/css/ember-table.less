@@ -34,7 +34,8 @@
 @table-header-bg:                         #fff;
 @table-body-bg:                           #fff;
 @table-body-border-color:                 #dcdcdc;
-@table-row-selected-color:                #227ECB;
+@table-row-selected-color:                #227ecb;
+@table-row-hover-color:                   #e5edf8;
 @table-row-border-color:                  #dcdcdc;
 @table-col-border-color:                  #dcdcdc;
 @table-footer-bg:                         #fff;
@@ -598,21 +599,23 @@
   }
 
   &.ember-table-last-row {
-    border-bottom: none !important;
+    border-bottom: none;
+  }
+}
+
+.ember-table-body-container .ember-table-table-row {
+  &.ember-table-hover {
+    background-color: @table-row-hover-color;
   }
 
   &.ember-table-selected {
-    background-color: @table-row-selected-color;
     color: #eee;
+    background-color: @table-row-selected-color;
 
     .ember-table-cell {
       border-right: 1px solid darken(@table-row-selected-color, 7%);
     }
   }
-}
-
-.ember-table-body-container .ember-table-table-row.active {
-  background-color: rgba(0, 82, 196, 0.1);
 }
 
 //

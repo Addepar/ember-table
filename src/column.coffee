@@ -86,8 +86,8 @@ Ember.Table.Row = Ember.ObjectProxy.extend
   ###*
   * Is Active?
   * @memberof Ember.Table.Row
-  * @member {Boolean} isActive
+  * @member {Boolean} isHovered
   * @instance
   ###
-  isActive:   no
+  isHovered:   no
 

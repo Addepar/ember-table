@@ -70,7 +70,7 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
 Ember.Table.TableRow = Ember.LazyItemView.extend
   templateName:   'table-row'
   classNames:     'ember-table-table-row'
-  classNameBindings: ['row.isActive:active', 'row.isSelected:ember-table-selected',
+  classNameBindings: ['row.isHovered:ember-table-hover', 'row.isSelected:ember-table-selected',
                       'row.rowStyle', 'isLastRow:ember-table-last-row']
   styleBindings:  ['width', 'height']
   row:      Ember.computed.alias 'content'
@@ -90,7 +90,7 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   ###
   mouseEnter: (event) ->
     row = @get 'row'
-    row.set 'isActive', yes if row
+    row.set 'isHovered', yes if row
 
   ###*
   * Mouse leave callback
@@ -100,7 +100,7 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   ###
   mouseLeave: (event) ->
     row = @get 'row'
-    row.set 'isActive', no if row
+    row.set 'isHovered', no if row
 
   ###*
   * Teardown content
@@ -109,7 +109,7 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
   ###
   teardownContent: ->
     row = @get 'row'
-    row.set 'isActive', no if row
+    row.set 'isHovered', no if row
 
 ###*
 * Table Cell
