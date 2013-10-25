@@ -346,7 +346,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   ##############################################################################
   # selection
   ##############################################################################
-  mouseDown: (event) ->
+  click: (event) ->
     row = @getRowForEvent event
     return unless row
     @set 'selection', row.get('content')
