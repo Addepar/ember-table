@@ -350,10 +350,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     row = @getRowForEvent event
     return unless row
     content = @get('bodyContent') or []
-    oldSelection = @get 'selection'
-    if oldSelection
-      oldRow = content.findProperty('content', oldSelection)
-      oldRow.set 'isSelected', no
+    oldRow = content.findProperty('content', @get('selection'))
+    oldRow.set('isSelected', no) if oldRow
     row.set 'isSelected', yes
     @set 'selection', row.get('content')
 
