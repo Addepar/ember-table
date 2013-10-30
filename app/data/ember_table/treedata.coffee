@@ -3312,8 +3312,7 @@ App.data.treedata = {
       "template_id": "personal_value_factor"
     },
     {
-      "display_name": "Sector",
-      # "display_name": "Adjusted Value 11/1/2011 (USD)",
+      "display_name": "Adjusted Value 11/1/2012 (USD)",
       "is_time_series": false,
       "template_id": "personal_value_factor"
     },
