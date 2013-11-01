@@ -24,6 +24,7 @@ Hit up : `http://localhost:8000/examples`
 * ember.js
 * jquery-ui
 * jquery.mousewheel.js
+* antiscroll.js
 
 ## TODO
 * Bug fixes—we are aware that there are bugs. Please help us out by filing github issues or submitting pull requests!
