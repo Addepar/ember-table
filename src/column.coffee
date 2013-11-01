@@ -73,7 +73,9 @@ Ember.Table.Row = Ember.ObjectProxy.extend
   * @member {Boolean} isSelected
   * @instance
   ###
-  isSelected: no
+  isSelected: Ember.computed ->
+    @get('parentController.selection') is @get('content')
+  .property 'parentController.selection', 'content'
 
   ###*
   * Is Showing?

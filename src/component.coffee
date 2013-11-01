@@ -349,10 +349,6 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   mouseDown: (event) ->
     row = @getRowForEvent event
     return unless row
-    content = @get('bodyContent') or []
-    oldRow = content.findProperty('content', @get('selection'))
-    oldRow.set('isSelected', no) if oldRow
-    row.set 'isSelected', yes
     @set 'selection', row.get('content')
 
   getRowForEvent: (event) ->

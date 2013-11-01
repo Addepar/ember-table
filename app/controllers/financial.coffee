@@ -178,7 +178,8 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend
     if sortAscending then result else -result
 
   createTree: (parent, node) ->
-    row = App.FinancialTableTreeTableRow.create()
+    row = App.FinancialTableTreeTableRow.create
+      parentController: this
     children = (node.children || []).map (child) =>
       @createTree row, child
     # TODO(Peter): Hack... only collapse table if it should collapseByDefault
