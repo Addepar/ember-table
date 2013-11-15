@@ -1,7 +1,6 @@
 node_modules/
 gh_pages/
 build/
-dist/
 tests/lib
 tests/css
 .DS_Store
