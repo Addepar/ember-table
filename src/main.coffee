@@ -9,6 +9,7 @@ Ember.libraries?.register 'Ember Table', Ember.Table.VERSION
 # Dependencies
 require 'dependencies/ember-addepar-mixins/resize_handler'
 require 'dependencies/ember-addepar-mixins/style_bindings'
+require 'dependencies/ember-addepar-mixins/selection'
 
 # Utils
 require 'build/src/utils/jquery_fix'

@@ -371,6 +371,82 @@ Ember.AddeparMixins.StyleBindingsMixin = Ember.Mixin.create({
 })();
 (function() {
 
+Ember.AddeparMixins = Ember.AddeparMixins || Ember.Namespace.create();
+
+Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
+  selection: [],
+  addSelected: function (row) {
+    if (!this.get('selection').contains(row)) {
+      this.get('selection').pushObject(row);
+    }
+  },
+  selectAll: function () {
+    this.get('selection').clear();
+    this.get('selection').pushObjects(this.get('content.content'));
+  },
+  clearSelection: function () {
+    this.get('selection').clear();
+  },
+  selectWithArrow: function (ev, direction) {
+    if (this.get('selection.length') !== 1) { return; }
+    var selectedIndex = this.get('content.arrangedContent').indexOf(this.get('selection.firstObject'));
+    if (direction === 'up') {
+      this.clearSelection();
+      this.addSelected(this.get('content').objectAt(selectedIndex - 1));
+    }
+    if (direction === 'down') {
+      this.clearSelection();
+      this.addSelected(this.get('content').objectAt(selectedIndex + 1));
+    }
+  },
+  handleSelection: function (ev, row) {
+    if (row === void 0) { return; }
+    // if none of the ctrl, meta, and shift keys
+    // are pressed, clear the selection
+    if (!ev.ctrlKey && !ev.metaKey && !ev.shiftKey) {
+      this.clearSelection();
+    }
+
+    // if selection is performed with shift key
+    // the selected items should be between the last
+    // and currently clicked items
+    if (ev.shiftKey) {
+      var lastSelectedIndex = this.get('content').indexOf(this.get('selection.lastObject')),
+        rowIndex = this.get('content').indexOf(row),
+        minIndex = Math.min(lastSelectedIndex, rowIndex),
+        maxIndex = Math.max(lastSelectedIndex, rowIndex);
+      this.clearSelection();
+      for (var i = minIndex; i <= maxIndex; i += 1) {
+        this.addSelected(this.get('content').objectAt(i));
+      }
+    }
+    this.addSelected(row);
+  },
+  click: function (ev) {
+    var row = this.getRowForEvent(ev);
+    return this.handleSelection(ev, row.get('content'));
+  },
+  keyDown: function (ev) {
+    // disable default scrolling strategy of the browser
+    ev.preventDefault();
+    switch (ev.keyCode) {
+      // arrow up
+      case 38:
+        return this.selectWithArrow(ev, 'up');
+      // arrow down
+      case 40:
+        return this.selectWithArrow(ev, 'down');
+      // a
+      case 65:
+        if (ev.shiftKey) { return this.selectAll(); }
+    }
+  }
+});
+
+
+})();
+(function() {
+
 /*
 jQuery.browser shim that makes HT working with jQuery 1.8+
 */
@@ -720,8 +796,8 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
   */
 
   isSelected: Ember.computed(function() {
-    return this.get('parentController.selection') === this.get('content');
-  }).property('parentController.selection', 'content'),
+    return this.get('parentController.selection').contains(this.get('content'));
+  }).property('parentController.selection.@each.length', 'content'),
   /**
   * Is Showing?
   * @memberof Ember.Table.Row
@@ -795,9 +871,11 @@ Ember.Table.TableBlock = Ember.CollectionView.extend(Ember.AddeparMixins.StyleBi
 
 Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend({
   classNames: ['ember-table-table-block'],
+  attributeBindings: ['tabIndex'],
   styleBindings: ['width'],
   itemViewClass: Ember.computed.alias('controller.tableRowViewClass'),
   rowHeight: Ember.computed.alias('controller.rowHeight'),
+  tabIndex: -1,
   columns: null,
   content: null,
   scrollLeft: null,
@@ -1306,7 +1384,7 @@ Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMix
 * @alias Ember.Table.EmberTableComponent
 */
 
-Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, {
+Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, Ember.AddeparMixins.SelectionMixin, {
   templateName: 'components/ember-table',
   classNames: ['ember-table-tables-container'],
   styleBindings: ['height'],
@@ -1321,7 +1399,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   hasFooter: true,
   forceFillColumns: false,
   enableColumnReorder: true,
-  selection: null,
+  selection: [],
   tableRowViewClass: 'Ember.Table.TableRow',
   actions: {
     addColumn: Ember.K,
@@ -1669,14 +1747,6 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     return widths.reduce((function(total, w) {
       return total + w;
     }), 0);
-  },
-  click: function(event) {
-    var row;
-    row = this.getRowForEvent(event);
-    if (!row) {
-      return;
-    }
-    return this.set('selection', row.get('content'));
   },
   getRowForEvent: function(event) {
     var $rowView, view;

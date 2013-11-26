@@ -5,7 +5,7 @@
 ###
 Ember.Table.EmberTableComponent =
 Ember.Component.extend Ember.AddeparMixins.StyleBindingsMixin,
-Ember.AddeparMixins.ResizeHandlerMixin,
+Ember.AddeparMixins.ResizeHandlerMixin, Ember.AddeparMixins.SelectionMixin,
   templateName:   'components/ember-table'
   classNames:     ['ember-table-tables-container']
   styleBindings:  ['height']
@@ -36,7 +36,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   enableColumnReorder: yes
 
-  selection: null
+  selection: []
 
   # specify the view class to use for rendering the table rows
   tableRowViewClass: 'Ember.Table.TableRow'
@@ -346,10 +346,6 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   ##############################################################################
   # selection
   ##############################################################################
-  click: (event) ->
-    row = @getRowForEvent event
-    return unless row
-    @set 'selection', row.get('content')
 
   getRowForEvent: (event) ->
     $rowView = $(event.target).parents('.ember-table-table-row')
