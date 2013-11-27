@@ -69,5 +69,19 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
       case 65:
         if (ev.shiftKey) { return this.selectAll(); }
     }
+  },
+  /**
+   * Content menu event (mouse right click) behavior:
+   * 1. If click is on the row that is not selected, the clicked row becomes the selection
+   * 2. If click is on the row that currently is in the list of selection, selection does not change
+   * @param ev
+   */
+  contextMenu: function (ev) {
+    var clickedRow = this.getRowForEvent(ev);
+    if (!this.get('selection').contains(clickedRow.get('content'))) {
+      this.clearSelection();
+      this.addSelected(clickedRow.get('content'));
+    }
+    this.sendAction('contextMenuHandler', this.get('selection'));
   }
 });
