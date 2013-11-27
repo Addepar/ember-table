@@ -799,7 +799,7 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
 
   isSelected: Ember.computed(function() {
     return this.get('parentController.selection').contains(this.get('content'));
-  }).property('parentController.selection.@each.length', 'content'),
+  }).property('parentController.selection.length', 'content'),
   /**
   * Is Showing?
   * @memberof Ember.Table.Row
