@@ -51,7 +51,9 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   },
   click: function (ev) {
     var row = this.getRowForEvent(ev);
-    return this.handleSelection(ev, row.get('content'));
+    if (row !== void 0) {
+      return this.handleSelection(ev, row.get('content'));
+    }
   },
   keyDown: function (ev) {
     // disable default scrolling strategy of the browser
