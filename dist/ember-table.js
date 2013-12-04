@@ -430,13 +430,15 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   },
   keyDown: function (ev) {
     // disable default scrolling strategy of the browser
-    ev.preventDefault();
+
     switch (ev.keyCode) {
       // arrow up
       case 38:
+        ev.preventDefault();
         return this.selectWithArrow(ev, 'up');
       // arrow down
       case 40:
+        ev.preventDefault();
         return this.selectWithArrow(ev, 'down');
       // a
       case 65:
@@ -1403,7 +1405,6 @@ Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMix
 Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, Ember.AddeparMixins.SelectionMixin, {
   templateName: 'components/ember-table',
   classNames: ['ember-table-tables-container'],
-  styleBindings: ['height'],
   height: Ember.computed.alias('_tablesContainerHeight'),
   columns: null,
   numFixedColumns: 0,

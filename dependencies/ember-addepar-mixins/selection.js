@@ -57,13 +57,15 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   },
   keyDown: function (ev) {
     // disable default scrolling strategy of the browser
-    ev.preventDefault();
+
     switch (ev.keyCode) {
       // arrow up
       case 38:
+        ev.preventDefault();
         return this.selectWithArrow(ev, 'up');
       // arrow down
       case 40:
+        ev.preventDefault();
         return this.selectWithArrow(ev, 'down');
       // a
       case 65:
