@@ -9,14 +9,16 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   },
   selectAll: function () {
     this.get('selection').clear();
-    this.get('selection').pushObjects(this.get('content.content'));
+    // needs to be checked because content might be either regular array or array proxy
+    var content = (Array.isArray(this.get('content'))) ? this.get('content') : this.get('content.content');
+    this.get('selection').pushObjects(content);
   },
   clearSelection: function () {
     this.get('selection').clear();
   },
   selectWithArrow: function (ev, direction) {
     if (this.get('selection.length') !== 1) { return; }
-    var selectedIndex = this.get('content.arrangedContent').indexOf(this.get('selection.firstObject'));
+    var selectedIndex = this.get('content').indexOf(this.get('selection.firstObject'));
     if (direction === 'up') {
       this.clearSelection();
       this.addSelected(this.get('content').objectAt(selectedIndex - 1));

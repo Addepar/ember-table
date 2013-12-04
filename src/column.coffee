@@ -74,6 +74,7 @@ Ember.Table.Row = Ember.ObjectProxy.extend
   * @instance
   ###
   isSelected: Ember.computed ->
+    return unless @get 'parentController.selection'
     return @get('parentController.selection').contains @get('content')
   .property 'parentController.selection.length', 'content'
 
