@@ -816,9 +816,6 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
   */
 
   isSelected: Ember.computed(function() {
-    if (!this.get('parentController.selection')) {
-      return;
-    }
     return this.get('parentController.selection').contains(this.get('content'));
   }).property('parentController.selection.length', 'content'),
   /**
@@ -1410,6 +1407,7 @@ Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMix
 Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, Ember.AddeparMixins.SelectionMixin, {
   templateName: 'components/ember-table',
   classNames: ['ember-table-tables-container'],
+  styleBindings: ['height'],
   height: Ember.computed.alias('_tablesContainerHeight'),
   columns: null,
   numFixedColumns: 0,
