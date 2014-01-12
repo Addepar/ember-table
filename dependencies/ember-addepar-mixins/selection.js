@@ -7,6 +7,11 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
       this.get('selection').pushObject(row);
     }
   },
+  removeSelected: function (row) {
+    if (this.get('selection').contains(row)) {
+      this.get('selection').removeObject(row);
+    }
+  },
   selectAll: function () {
     this.get('selection').clear();
     // needs to be checked because content might be either regular array or array proxy
@@ -34,6 +39,12 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
     // are pressed, clear the selection
     if (!ev.ctrlKey && !ev.metaKey && !ev.shiftKey) {
       this.clearSelection();
+    }
+
+    // deselect the row if ctrl button is pressed
+    // and the item is selected
+    if ((ev.ctrlKey || ev.metaKey) && this.get('selection').contains(row)) {
+      return this.removeSelected(row);
     }
 
     // if selection is performed with shift key
