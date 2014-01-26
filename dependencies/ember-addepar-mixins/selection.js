@@ -1,7 +1,10 @@
 Ember.AddeparMixins = Ember.AddeparMixins || Ember.Namespace.create();
 
 Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
-  selection: [],
+  init: function () {
+    this._super.apply(this, arguments);
+    this.set('selection', []);
+  },
   addSelected: function (row) {
     if (!this.get('selection').contains(row)) {
       this.get('selection').pushObject(row);
