@@ -4,11 +4,11 @@ App.EmberTableSparklineController = Ember.Controller.extend
     name = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Name'
-      getCellContent: (row) -> 'Asset ' + row['name']
+      getCellContent: (row) -> 'Asset ' + row.get('name')
     open = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Open'
-      getCellContent: (row) -> row['open'].toFixed(2)
+      getCellContent: (row) -> row.get('open').toFixed(2)
     spark = Ember.Table.ColumnDefinition.create
       columnWidth: 200
       headerCellName: 'Sparkline'
@@ -17,15 +17,15 @@ App.EmberTableSparklineController = Ember.Controller.extend
     close = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Close'
-      getCellContent: (row) -> row['close'].toFixed(2)
+      getCellContent: (row) -> row.get('close').toFixed(2)
     low = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Low'
-      getCellContent: (row) -> row['low'].toFixed(2)
+      getCellContent: (row) -> row.get('low').toFixed(2)
     high = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'High'
-      getCellContent: (row) -> row['high'].toFixed(2)
+      getCellContent: (row) -> row.get('high').toFixed(2)
     [name, open, spark, close, low, high]
 
   content: Ember.computed ->

@@ -125,7 +125,6 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   styleBindings:      'width'
   row:        Ember.computed.alias 'parentView.row'
   column:     Ember.computed.alias 'content'
-  rowContent: Ember.computed.alias 'row.content'
   width:      Ember.computed.alias 'column.columnWidth'
 
   init: ->
@@ -139,13 +138,13 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   contentPathWillChange: (->
     contentPath = @get 'column.contentPath'
     if contentPath
-      @removeObserver("rowContent.#{contentPath}", this, this.contentDidChange)
+      @removeObserver("row.#{contentPath}", this, this.contentDidChange)
   ).observesBefore 'column.contentPath'
 
   contentPathDidChange: (->
     contentPath = this.get 'column.contentPath'
     if contentPath
-      @addObserver("rowContent.#{contentPath}", this, this.contentDidChange)
+      @addObserver("row.#{contentPath}", this, this.contentDidChange)
   ).observesBefore 'column.contentPath'
 
   ###*
@@ -154,7 +153,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   * @instance
   ###
   cellContent: Ember.computed (key, value) ->
-    row     = @get 'rowContent'
+    row     = @get 'row'
     column  = @get 'column'
     return unless row and column
     if arguments.length is 1
@@ -162,7 +161,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
     else
       column.setCellContent row, value
     value
-  .property 'rowContent.isLoaded', 'column'
+  .property 'row.isLoaded', 'column'
 
 ################################################################################
 

@@ -29,7 +29,7 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
         index: index
         headerCellName: name
         getCellContent: (row) ->
-          object = row.values[@get('index')]
+          object = row.get('values')[@get('index')]
           return object.value.toCurrency() if object.type is 'money'
           return object.value.toPercent()  if object.type is 'percent'
           "-"
@@ -85,8 +85,8 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
     sortColumn = @get 'sortColumn'
     sortAscending = @get 'sortAscending'
     return 1 unless sortColumn
-    value1 = sortColumn.getCellContent item1.get('content')
-    value2 = sortColumn.getCellContent item2.get('content')
+    value1 = sortColumn.getCellContent item1
+    value2 = sortColumn.getCellContent item2
     result = Ember.compare value1, value2
     if sortAscending then result else -result
 

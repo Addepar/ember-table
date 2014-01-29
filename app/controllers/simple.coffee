@@ -6,23 +6,23 @@ App.EmberTableSimpleController = Ember.Controller.extend
       columnWidth: 150
       textAlign: 'text-align-left'
       headerCellName: 'Date'
-      getCellContent: (row) -> row['date'].toDateString();
+      getCellContent: (row) -> row.get('date').toDateString();
     openColumn = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Open'
-      getCellContent: (row) -> row['open'].toFixed(2)
+      getCellContent: (row) -> row.get('open').toFixed(2)
     highColumn = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'High'
-      getCellContent: (row) -> row['high'].toFixed(2)
+      getCellContent: (row) -> row.get('high').toFixed(2)
     lowColumn = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Low'
-      getCellContent: (row) -> row['low'].toFixed(2)
+      getCellContent: (row) -> row.get('low').toFixed(2)
     closeColumn = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Close'
-      getCellContent: (row) -> row['close'].toFixed(2)
+      getCellContent: (row) -> row.get('close').toFixed(2)
     [dateColumn, openColumn, highColumn, lowColumn, closeColumn]
 
   content: Ember.computed ->

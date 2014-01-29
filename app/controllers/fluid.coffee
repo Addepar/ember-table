@@ -56,23 +56,23 @@ App.EmberTableFluidController = Ember.Controller.extend
     dateColumn = App.FluidColumnDefinition.create
       columnWidth: "40"
       headerCellName: 'Date'
-      getCellContent: (row) -> row['date'].toDateString();
+      getCellContent: (row) -> row.get('date').toDateString();
     openColumn = App.FluidColumnDefinition.create
       columnWidth: "15"
       headerCellName: 'Open'
-      getCellContent: (row) -> row['open'].toFixed(2)
+      getCellContent: (row) -> row.get('open').toFixed(2)
     highColumn = App.FluidColumnDefinition.create
       columnWidth: "15"
       headerCellName: 'High'
-      getCellContent: (row) -> row['high'].toFixed(2)
+      getCellContent: (row) -> row.get('high').toFixed(2)
     lowColumn = App.FluidColumnDefinition.create
       columnWidth: "15"
       headerCellName: 'Low'
-      getCellContent: (row) -> row['low'].toFixed(2)
+      getCellContent: (row) -> row.get('low').toFixed(2)
     closeColumn = App.FluidColumnDefinition.create
       columnWidth: "15"
       headerCellName: 'Close'
-      getCellContent: (row) -> row['close'].toFixed(2)
+      getCellContent: (row) -> row.get('close').toFixed(2)
     [dateColumn, openColumn, highColumn, lowColumn, closeColumn]
 
   content: Ember.computed ->

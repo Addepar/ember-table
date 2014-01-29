@@ -5,7 +5,7 @@ App.EmberTableHorizonController = Ember.Controller.extend
     name = Ember.Table.ColumnDefinition.create
       columnWidth: 100
       headerCellName: 'Name'
-      getCellContent: (row) -> 'Horizon ' + row['name']
+      getCellContent: (row) -> 'Horizon ' + row.get('name')
     horizon = Ember.Table.ColumnDefinition.create
       columnWidth: 600
       headerCellName: 'Horizon'
