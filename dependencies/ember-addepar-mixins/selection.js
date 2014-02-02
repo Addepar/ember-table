@@ -85,7 +85,7 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
         return this.selectWithArrow(ev, 'down');
       // a
       case 65:
-        if (ev.shiftKey) { return this.selectAll(); }
+        if (ev.ctrlKey || ev.metaKey) { return this.selectAll(); }
     }
   },
   /**

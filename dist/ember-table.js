@@ -374,10 +374,18 @@ Ember.AddeparMixins.StyleBindingsMixin = Ember.Mixin.create({
 Ember.AddeparMixins = Ember.AddeparMixins || Ember.Namespace.create();
 
 Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
-  selection: [],
+  init: function () {
+    this._super.apply(this, arguments);
+    this.set('selection', []);
+  },
   addSelected: function (row) {
     if (!this.get('selection').contains(row)) {
       this.get('selection').pushObject(row);
+    }
+  },
+  removeSelected: function (row) {
+    if (this.get('selection').contains(row)) {
+      this.get('selection').removeObject(row);
     }
   },
   selectAll: function () {
@@ -407,6 +415,12 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
     // are pressed, clear the selection
     if (!ev.ctrlKey && !ev.metaKey && !ev.shiftKey) {
       this.clearSelection();
+    }
+
+    // deselect the row if ctrl button is pressed
+    // and the item is selected
+    if ((ev.ctrlKey || ev.metaKey) && this.get('selection').contains(row)) {
+      return this.removeSelected(row);
     }
 
     // if selection is performed with shift key
@@ -444,7 +458,7 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
         return this.selectWithArrow(ev, 'down');
       // a
       case 65:
-        if (ev.shiftKey) { return this.selectAll(); }
+        if (ev.ctrlKey || ev.metaKey) { return this.selectAll(); }
     }
   },
   /**
@@ -1216,7 +1230,7 @@ Ember.Table.ColumnSortableIndicator = Ember.View.extend(Ember.AddeparMixins.Styl
 */
 
 
-Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend(Ember.Table.ShowHorizontalScrollMixin, {
+Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend({
   templateName: 'header-container',
   classNames: ['ember-table-table-container', 'ember-table-fixed-table-container', 'ember-table-header-container'],
   height: Ember.computed.alias('controller._headerHeight'),
@@ -1233,7 +1247,7 @@ Ember.Table.HeaderTableContainer = Ember.Table.TableContainer.extend(Ember.Table
 */
 
 
-Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.ScrollHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, {
+Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.ScrollHandlerMixin, {
   templateName: 'body-container',
   classNames: ['ember-table-table-container', 'ember-table-body-container', 'antiscroll-wrap'],
   height: Ember.computed.alias('controller._bodyHeight'),
@@ -1300,7 +1314,7 @@ Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWh
 */
 
 
-Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, Ember.Table.ShowHorizontalScrollMixin, {
+Ember.Table.FooterTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWheelHandlerMixin, Ember.TouchMoveHandlerMixin, {
   templateName: 'footer-container',
   classNames: ['ember-table-table-container', 'ember-table-fixed-table-container', 'ember-table-footer-container'],
   styleBindings: 'top',
@@ -1407,7 +1421,6 @@ Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMix
 Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, Ember.AddeparMixins.SelectionMixin, {
   templateName: 'components/ember-table',
   classNames: ['ember-table-tables-container'],
-  styleBindings: ['height'],
   height: Ember.computed.alias('_tablesContainerHeight'),
   columns: null,
   numFixedColumns: 0,
@@ -1613,7 +1626,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
 
   _tableColumnsWidth: Ember.computed(function() {
     var availableWidth, contentWidth;
-    contentWidth = (this._getTotalWidth(this.get('tableColumns'))) + 3;
+    contentWidth = this._getTotalWidth(this.get('tableColumns'));
     availableWidth = this.get('_width') - this.get('_fixedColumnsWidth');
     if (contentWidth > availableWidth) {
       return contentWidth;
