@@ -5,6 +5,8 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
     this._super.apply(this, arguments);
     this.set('selection', []);
   },
+  attributeBindings: ['tabIndex'],
+  tabIndex: -1,
   addSelected: function (row) {
     if (!this.get('selection').contains(row)) {
       this.get('selection').pushObject(row);
