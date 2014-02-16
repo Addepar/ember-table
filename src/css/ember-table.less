@@ -87,9 +87,13 @@
   overflow: hidden;
   border: 1px solid #ddd;
   .box-sizing();
+  .user-select(none);
+
+  &.ember-table-content-selectable {
+      .user-select(text);
+  }
 
   * {
-    .user-select(none);
     text-rendering: optimizeLegibility;
   }
 }
