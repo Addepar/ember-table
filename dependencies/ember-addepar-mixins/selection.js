@@ -26,15 +26,14 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   clearSelection: function () {
     this.get('selection').clear();
   },
-  selectWithArrow: function (ev, direction) {
-    if (this.get('selection.length') !== 1) { return; }
-    var selectedIndex = this.get('content').indexOf(this.get('selection.firstObject'));
+  selectWithArrow: function (ev, direction, aggregate) {
+    var selectedIndex = this.get('content').indexOf(this.get('selection.lastObject'));
     if (direction === 'up') {
-      this.clearSelection();
+      if (!aggregate) { this.clearSelection(); }
       this.addSelected(this.get('content').objectAt(selectedIndex - 1));
     }
     if (direction === 'down') {
-      this.clearSelection();
+      if (!aggregate) { this.clearSelection(); }
       this.addSelected(this.get('content').objectAt(selectedIndex + 1));
     }
   },
@@ -80,11 +79,11 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
       // arrow up
       case 38:
         ev.preventDefault();
-        return this.selectWithArrow(ev, 'up');
+        return this.selectWithArrow(ev, 'up', ev.shiftKey);
       // arrow down
       case 40:
         ev.preventDefault();
-        return this.selectWithArrow(ev, 'down');
+        return this.selectWithArrow(ev, 'down', ev.shiftKey);
       // a
       case 65:
         if (ev.ctrlKey || ev.metaKey) { return this.selectAll(); }
