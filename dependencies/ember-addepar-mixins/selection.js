@@ -3,6 +3,11 @@ Ember.AddeparMixins = Ember.AddeparMixins || Ember.Namespace.create();
 Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   init: function () {
     this._super.apply(this, arguments);
+    if (this.get('enableSelection')) {
+      this.on('click', this.clickHandler);
+      this.on('keyDown', this.keyDownHandler);
+      this.on('contextMenu', this.contextMenuHandler);
+    }
     this.set('selection', []);
   },
   attributeBindings: ['tabIndex'],
@@ -66,13 +71,13 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
     }
     this.addSelected(row);
   },
-  click: function (ev) {
+  clickHandler: function (ev) {
     var row = this.getRowForEvent(ev);
     if (row !== void 0) {
       return this.handleSelection(ev, row.get('content'));
     }
   },
-  keyDown: function (ev) {
+  keyDownHandler: function (ev) {
     // disable default scrolling strategy of the browser
 
     switch (ev.keyCode) {
@@ -95,7 +100,7 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
    * 2. If click is on the row that currently is in the list of selection, selection does not change
    * @param ev
    */
-  contextMenu: function (ev) {
+  contextMenuHandler: function (ev) {
     var clickedRow = this.getRowForEvent(ev);
     if (!this.get('selection').contains(clickedRow.get('content'))) {
       this.clearSelection();
