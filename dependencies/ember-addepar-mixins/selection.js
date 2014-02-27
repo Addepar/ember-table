@@ -4,11 +4,14 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   init: function () {
     this._super.apply(this, arguments);
     if (this.get('enableSelection')) {
-      this.on('click', this.clickHandler);
+      this.on('mouseDown', this.clickHandler);
       this.on('keyDown', this.keyDownHandler);
       this.on('contextMenu', this.contextMenuHandler);
     }
     this.set('selection', []);
+    // pivot is used to determine the index
+    // used in shift selection
+    this.set('pivot', null);
   },
   attributeBindings: ['tabIndex'],
   tabIndex: -1,
@@ -34,11 +37,17 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   selectWithArrow: function (ev, direction, aggregate) {
     var selectedIndex = this.get('content').indexOf(this.get('selection.lastObject'));
     if (direction === 'up') {
-      if (!aggregate) { this.clearSelection(); }
+      if (!aggregate) {
+        this.clearSelection();
+        this.set('pivot', selectedIndex);
+      }
       this.addSelected(this.get('content').objectAt(selectedIndex - 1));
     }
     if (direction === 'down') {
-      if (!aggregate) { this.clearSelection(); }
+      if (!aggregate) {
+        this.clearSelection();
+        this.set('pivot', selectedIndex);
+      }
       this.addSelected(this.get('content').objectAt(selectedIndex + 1));
     }
   },
@@ -60,14 +69,17 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
     // the selected items should be between the last
     // and currently clicked items
     if (ev.shiftKey) {
-      var lastSelectedIndex = this.get('content').indexOf(this.get('selection.lastObject')),
-        rowIndex = this.get('content').indexOf(row),
-        minIndex = Math.min(lastSelectedIndex, rowIndex),
-        maxIndex = Math.max(lastSelectedIndex, rowIndex);
+      var rowIndex = this.get('content').indexOf(row),
+        minIndex = Math.min(this.get('pivot'), rowIndex),
+        maxIndex = Math.max(this.get('pivot'), rowIndex);
       this.clearSelection();
       for (var i = minIndex; i <= maxIndex; i += 1) {
         this.addSelected(this.get('content').objectAt(i));
       }
+    }
+    else {
+      // set pivot
+      this.set('pivot', this.get('content').indexOf(row));
     }
     this.addSelected(row);
   },
