@@ -382,24 +382,28 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
       this.on('contextMenu', this.contextMenuHandler);
     }
     this.set('selection', []);
-    // pivot is used to determine the index
-    // used in shift selection
-    this.set('pivot', null);
+    this.set('baseSelectedIndex', null);
+    this.set('lastSelectedIndex', null);
   },
   attributeBindings: ['tabIndex'],
   tabIndex: -1,
+  isSelected: function (row) {
+    return this.get('selection').contains(row);
+  },
   addSelected: function (row) {
-    if (!this.get('selection').contains(row)) {
+    if (!this.isSelected(row)) {
       this.get('selection').pushObject(row);
     }
   },
   removeSelected: function (row) {
-    if (this.get('selection').contains(row)) {
+    if (this.isSelected(row)) {
       this.get('selection').removeObject(row);
     }
   },
   selectAll: function () {
-    this.get('selection').clear();
+    this.clearSelection();
+    this.set('baseSelectedIndex', null);
+    this.set('lastSelectedIndex', this.get('content.length'));
     // needs to be checked because content might be either regular array or array proxy
     var content = (Array.isArray(this.get('content'))) ? this.get('content') : this.get('content.content');
     this.get('selection').pushObjects(content);
@@ -407,25 +411,39 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
   clearSelection: function () {
     this.get('selection').clear();
   },
-  selectWithArrow: function (ev, direction, aggregate) {
-    var selectedIndex = this.get('content').indexOf(this.get('selection.lastObject'));
+  selectWithArrow: function (direction, aggregate) {
+    var rowIndex, futureRowIndex, row;
+    if (this.get('lastSelectedIndex') !== this.get('baseSelectedIndex')) {
+      rowIndex = this.get('lastSelectedIndex');
+    }
+    else {
+      rowIndex = this.get('baseSelectedIndex');
+    }
+
     if (direction === 'up') {
-      if (!aggregate) {
-        this.clearSelection();
-        this.set('pivot', selectedIndex);
-      }
-      this.addSelected(this.get('content').objectAt(selectedIndex - 1));
+      futureRowIndex = rowIndex - 1;
     }
     if (direction === 'down') {
-      if (!aggregate) {
-        this.clearSelection();
-        this.set('pivot', selectedIndex);
-      }
-      this.addSelected(this.get('content').objectAt(selectedIndex + 1));
+      futureRowIndex = rowIndex + 1;
+    }
+
+    if (!aggregate) {
+      this.clearSelection();
+      this.set('baseSelectedIndex', futureRowIndex);
+    }
+
+    this.set('lastSelectedIndex', futureRowIndex);
+    row = this.get('content').objectAt(futureRowIndex);
+    if (this.isSelected(row)) {
+      this.removeSelected(this.get('content').objectAt(rowIndex));
+    }
+    else {
+      this.addSelected(row);
     }
   },
   handleSelection: function (ev, row) {
     if (row === void 0) { return; }
+    var rowIndex = this.get('content').indexOf(row);
     // if none of the ctrl, meta, and shift keys
     // are pressed, clear the selection
     if (!ev.ctrlKey && !ev.metaKey && !ev.shiftKey) {
@@ -442,17 +460,18 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
     // the selected items should be between the last
     // and currently clicked items
     if (ev.shiftKey) {
-      var rowIndex = this.get('content').indexOf(row),
-        minIndex = Math.min(this.get('pivot'), rowIndex),
-        maxIndex = Math.max(this.get('pivot'), rowIndex);
+      var minIndex = Math.min(this.get('baseSelectedIndex'), rowIndex),
+          maxIndex = Math.max(this.get('baseSelectedIndex'), rowIndex);
       this.clearSelection();
       for (var i = minIndex; i <= maxIndex; i += 1) {
         this.addSelected(this.get('content').objectAt(i));
       }
+      this.set('lastSelectedIndex', rowIndex);
     }
     else {
       // set pivot
-      this.set('pivot', this.get('content').indexOf(row));
+      this.set('baseSelectedIndex', rowIndex);
+      this.set('lastSelectedIndex', rowIndex);
     }
     this.addSelected(row);
   },
@@ -469,11 +488,11 @@ Ember.AddeparMixins.SelectionMixin = Ember.Mixin.create({
       // arrow up
       case 38:
         ev.preventDefault();
-        return this.selectWithArrow(ev, 'up', ev.shiftKey);
+        return this.selectWithArrow('up', ev.shiftKey);
       // arrow down
       case 40:
         ev.preventDefault();
-        return this.selectWithArrow(ev, 'down', ev.shiftKey);
+        return this.selectWithArrow('down', ev.shiftKey);
       // a
       case 65:
         if (ev.ctrlKey || ev.metaKey) { return this.selectAll(); }
