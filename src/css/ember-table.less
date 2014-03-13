@@ -352,13 +352,6 @@
 
     &.ember-table-table-header-tree-cell {
       left: 20px;
-
-      // Absolute position the toggle on top of the cell
-      .ember-table-toggle-span {
-        position: absolute;
-        top: 0;
-        left: 0;
-      }
     }
 
     &:hover {
@@ -396,6 +389,12 @@
 
 .ember-table-table-header-tree-cell .ember-table-header-content-container {
   left: 20px;
+}
+
+.ember-table-table-header-tree-cell .ember-table-toggle-span {
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
 // TODO(Louis): Need to add this during the drag
