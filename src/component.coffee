@@ -154,16 +154,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     totalWidth = @get '_width'
     fixedColumnsWidth = @get '_fixedColumnsWidth'
     tableColumns = @get 'tableColumns'
-    defaultContentWidth = @_getTotalWidth tableColumns, 'defaultColumnWidth'
+    contentWidth = @_getTotalWidth tableColumns
     availableContentWidth = totalWidth - fixedColumnsWidth
-    if defaultContentWidth < availableContentWidth
-      remainingWidth = availableContentWidth - defaultContentWidth
-      numColumnToDistributeWidth = tableColumns.filterProperty('canAutoResize').length
-      additionWidthPerColumn = Math.floor(remainingWidth / numColumnToDistributeWidth)
-      tableColumns.forEach (column) ->
-        if column.get('canAutoResize')
-          columnWidth = column.get('defaultColumnWidth') + additionWidthPerColumn
-          column.set 'columnWidth', columnWidth
+    remainingWidth = availableContentWidth - contentWidth
+    columnsToResize = tableColumns.filterProperty('canAutoResize')
+    additionWidthPerColumn = Math.floor(remainingWidth / columnsToResize.length)
+    columnsToResize.forEach (column) ->
+      columnWidth = column.get('columnWidth') + additionWidthPerColumn
+      column.set 'columnWidth', columnWidth
 
   onBodyContentLengthDidChange: Ember.observer ->
     Ember.run.next this, -> Ember.run.once this, @updateLayout
