@@ -303,6 +303,12 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   ###
   onColumnResize: (event, ui) ->
     @elementSizeDidChange()
+    # Special case for force-filled columns: if this is the last column you
+    # resize (or the only column), then it will be reset to before the resize
+    # to preserve the table's force-fill property.
+    if @get('controller.forceFillColumns') and
+        @get('controller.columns').filterProperty('canAutoResize').length > 1
+      @set('column.canAutoResize', false)
     @get("column").resize(ui.size.width)
 
   elementSizeDidChange: ->
