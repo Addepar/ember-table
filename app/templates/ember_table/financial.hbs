@@ -39,7 +39,7 @@
     <div class="col-md-12 bumper-30">
       <h3>financial_table_tree_cell.hbs</h3>
       <div class="highlight">
-<pre class="prettyprint lang-html">&lt;div class=&quot;ember-table-cell-container&quot; &#123;&#123;bindAttr style=&quot;view.paddingStyle&quot;&#125;&#125;&gt;<br/>  &lt;span &#123;&#123;bindAttr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle<br/>    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>    &#123;&#123;action toggleCollapse view.row&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;span class=&quot;ember-table-content&quot;&gt;<br/>    &#123;&#123;view.cellContent&#125;&#125;<br/>  &lt;/span&gt;<br/>&lt;/div&gt;</pre>
+<pre class="prettyprint lang-html">&lt;div class=&quot;ember-table-cell-container&quot; &#123;&#123;bind-attr style=&quot;view.paddingStyle&quot;&#125;&#125;&gt;<br/>  &lt;span &#123;&#123;bind-attr class=&quot;:ember-table-toggle-span view.row.isLeaf::ember-table-toggle<br/>    view.row.isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>    &#123;&#123;action toggleCollapse view.row&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;span class=&quot;ember-table-content&quot;&gt;<br/>    &#123;&#123;view.cellContent&#125;&#125;<br/>  &lt;/span&gt;<br/>&lt;/div&gt;</pre>
       </div>
     </div>
 
@@ -53,7 +53,7 @@
     <div class="col-md-12 bumper-30">
       <h3>financial_table_header_tree_cell.hbs</h3>
       <div class="highlight">
-<pre class="prettyprint lang-html">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;span &#123;&#123;bindAttr class=&quot;:ember-table-toggle-span :ember-table-toggle<br/>      isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>      &#123;&#123;action toggleTableCollapse&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;<br/>    &lt;span class=&quot;ember-table-content&quot;&gt;<br/>      &#123;&#123;view.column.headerCellName&#125;&#125;<br/>    &lt;/span&gt;<br/>  &lt;/div&gt;<br/>&lt;/div&gt;</pre>
+<pre class="prettyprint lang-html">&lt;div class=&quot;ember-table-cell-container&quot;&gt;<br/>  &lt;span &#123;&#123;bind-attr class=&quot;:ember-table-toggle-span :ember-table-toggle<br/>      isCollapsed:ember-table-expand:ember-table-collapse&quot;&#125;&#125;<br/>      &#123;&#123;action toggleTableCollapse&#125;&#125;&gt;<br/>    &lt;i class=&quot;icon-caret-down ember-table-toggle-icon&quot;&gt;&lt;/i&gt;<br/>  &lt;/span&gt;<br/>  &lt;div class=&quot;ember-table-header-content-container&quot;&gt;<br/>    &lt;span class=&quot;ember-table-content&quot;&gt;<br/>      &#123;&#123;view.column.headerCellName&#125;&#125;<br/>    &lt;/span&gt;<br/>  &lt;/div&gt;<br/>&lt;/div&gt;</pre>
       </div>
     </div>
 

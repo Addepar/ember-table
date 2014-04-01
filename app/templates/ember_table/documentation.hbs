@@ -30,7 +30,7 @@ App.MyTableView = EmberTable.TableContainerView.extend (...)</pre>
 <pre class="prettyprint lang-html">&#123;&#123;table-component …&#125;&#125;</pre>
               </div>
             </li>
-            <li>While you’re modifying that handlebars file, you may want to make sure it looks like the structure of the new Ember Table examples. You can see one {{#linkTo 'emberTable.simple'}}here{{/linkTo}}. In particular, you might get errors if you don’t properly bind your columns and content of the table, using “columnsBinding=” and “contentBinding=”.<br/><br/>
+            <li>While you’re modifying that handlebars file, you may want to make sure it looks like the structure of the new Ember Table examples. You can see one {{#link-to 'emberTable.simple'}}here{{/link-to}}. In particular, you might get errors if you don’t properly bind your columns and content of the table, using “columnsBinding=” and “contentBinding=”.<br/><br/>
             Both of these settings refer to variables in the corresponding controller (which here should be MyTableController), such that if you set “columnsBinding=exampleVariable”, then the columns will be bound to “exampleVariable” in the controller. This gives you control over the look and content of the table.<br/><br/>
             Before, you may have had “controllerBinding=” here. You don’t need this any more: the controller being used with this template will be used for the table too, by default.</li>
             <li>Move any properties you had defined in your TableContainerView (if you had one) into the controller. See the examples for more information on how table properties should be set now.</li>
