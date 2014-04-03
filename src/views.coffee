@@ -68,7 +68,7 @@ Ember.Table.LazyTableBlock = Ember.LazyContainerView.extend
 * @alias Ember.Table.TableRow
 ###
 Ember.Table.TableRow = Ember.LazyItemView.extend
-  templateName:   'table-row'
+  layoutName:   'table-row'
   classNames:     'ember-table-table-row'
   classNameBindings: ['row.isHovered:ember-table-hover', 'row.isSelected:ember-table-selected',
                       'row.rowStyle', 'isLastRow:ember-table-last-row']
@@ -119,7 +119,7 @@ Ember.Table.TableRow = Ember.LazyItemView.extend
 ###
 Ember.Table.TableCell =
 Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
-  templateName: 'table-cell'
+  layoutName: 'table-cell'
   classNames:         ['ember-table-cell']
   classNameBindings:  'column.textAlign'
   styleBindings:      'width'
@@ -196,7 +196,7 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
 ###
 Ember.Table.HeaderRow =
 Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
-  templateName:   'header-row'
+  layoutName:   'header-row'
   classNames:     ['ember-table-table-row', 'ember-table-header-row']
   styleBindings: ['width']
   columns:        Ember.computed.alias 'content'
@@ -259,7 +259,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
 ###
 Ember.Table.HeaderCell =
 Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
-  templateName:       'header-cell'
+  layoutName:       'header-cell'
   classNames:         ['ember-table-cell', 'ember-table-header-cell']
   classNameBindings:  ['column.isSortable:sortable', 'column.textAlign']
   styleBindings:      ['width', 'height']
@@ -334,7 +334,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
 ###
 Ember.Table.HeaderTableContainer =
 Ember.Table.TableContainer.extend Ember.Table.ShowHorizontalScrollMixin,
-  templateName: 'header-container'
+  layoutName: 'header-container'
   classNames:   ['ember-table-table-container',
                  'ember-table-fixed-table-container',
                  'ember-table-header-container']
@@ -353,7 +353,7 @@ Ember.Table.BodyTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.TouchMoveHandlerMixin, Ember.ScrollHandlerMixin,
 Ember.Table.ShowHorizontalScrollMixin,
-  templateName:   'body-container'
+  layoutName:   'body-container'
   classNames:     ['ember-table-table-container', 'ember-table-body-container',
                    'antiscroll-wrap']
   height:         Ember.computed.alias 'controller._bodyHeight'
@@ -411,7 +411,7 @@ Ember.Table.ShowHorizontalScrollMixin,
 Ember.Table.FooterTableContainer =
 Ember.Table.TableContainer.extend Ember.MouseWheelHandlerMixin,
 Ember.TouchMoveHandlerMixin, Ember.Table.ShowHorizontalScrollMixin,
-  templateName:   'footer-container'
+  layoutName:   'footer-container'
   classNames:     ['ember-table-table-container',
                    'ember-table-fixed-table-container',
                    'ember-table-footer-container']
@@ -447,7 +447,7 @@ Ember.TouchMoveHandlerMixin, Ember.Table.ShowHorizontalScrollMixin,
 Ember.Table.ScrollContainer =
 Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
 Ember.ScrollHandlerMixin,
-  templateName: 'scroll-container'
+  layoutName: 'scroll-container'
   classNames:     ['ember-table-scroll-container']
   styleBindings:  ['left', 'width', 'height']
   scrollElementSelector: '.antiscroll-inner'
