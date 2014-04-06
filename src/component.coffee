@@ -137,8 +137,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   ###
   elementSizeDidChange: ->
     return unless @get('state') is 'inDOM'
-    @set '_width', @$().parent().outerWidth()
-    @set '_height', @$().parent().outerHeight()
+    @set '_width', @$().innerWidth()
+    @set '_height', @$().innerHeight()
     # we need to wait for the table to be fully rendered before antiscroll can
     # be used
     Ember.run.next this, @updateLayout
@@ -217,9 +217,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   * @private
   ###
   _tableColumnsWidth: Ember.computed ->
-    # Hack: We add 3px padding to the right of the table content so that we can
-    # reorder into the last column.
-    contentWidth = (@_getTotalWidth @get('tableColumns')) + 3
+    contentWidth = (@_getTotalWidth @get('tableColumns'))
     availableWidth = @get('_width') - @get('_fixedColumnsWidth')
     if contentWidth > availableWidth then contentWidth else availableWidth
   .property 'tableColumns.@each.columnWidth', '_width', '_fixedColumnsWidth'
