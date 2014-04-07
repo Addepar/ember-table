@@ -15,6 +15,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ember-templates');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-neuter');
+  grunt.loadNpmTasks('grunt-text-replace');
 
   // Project configuration.
   grunt.initConfig({
@@ -202,11 +203,11 @@ module.exports = function (grunt) {
       },
       code: {
         files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js"],
-        tasks: ["coffee", "neuter"]
+        tasks: ["build_app"]
       },
       handlebars: {
         files: ["src/**/*.hbs", "app/**/*.hbs"],
-        tasks: ["emberTemplates", "neuter"]
+        tasks: ["build_app"]
       },
       less: {
         files: ["app/assets/**/*.less", "app/assets/**/*.css", "src/**/*.less"],
@@ -216,14 +217,44 @@ module.exports = function (grunt) {
         files: ["app/index.html"],
         tasks: ["copy"]
       }
+    },
+    
+    replace: {
+      examples: {
+        src: 'app/templates/ember_table/examples/*.hbs',
+        dest: 'app/templates/ember_table/',
+        replacements:[{
+          from: /@@(@?)(.*?)@?@@/g,
+          to: function(matchedWord, index, fullText, regexMatches){
+            var escaped = true;
+            if (regexMatches[0] === '@') escaped = false;
+            var filepath = regexMatches[1];
+            var text = grunt.file.read(filepath);
+            if (escaped){
+              text = escapeEmber(text)
+            }
+            return text;
+          }
+        }]
+      }
     }
+    
   });
 
   // Default tasks.
   grunt.registerTask("build_srcs", ["coffee:srcs", "emberTemplates", "neuter"]);
 
-  grunt.registerTask("build_app", ["coffee:app", "emberTemplates", "neuter"]);
+  grunt.registerTask("build_app", ["replace:examples", "coffee:app", "emberTemplates", "neuter"]);
 
   grunt.registerTask("default", ["build_srcs", "build_app", "less", "copy", "uglify", "watch"]);
 
+  function escapeEmber(str){
+    var result;
+    result = grunt.util._.escape(str);
+    result = result.replace(/{/g, '&#123;');
+    result = result.replace(/}/g, '&#125;');
+    return result;
+  }
+
 };
+
