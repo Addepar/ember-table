@@ -5,6 +5,9 @@ Table built using [Ember.js](http://emberjs.com/) that lazily renders rows.
 ## Demo
 http://addepar.github.com/ember-table/
 
+## JS Bin Starter Kit
+http://emberjs.jsbin.com/tesiw/1/
+
 ## Getting Started
 
 ### Take ember-table.js and modify it according to your liking with CSS.
