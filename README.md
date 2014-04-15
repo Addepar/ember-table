@@ -6,7 +6,7 @@ Table built using [Ember.js](http://emberjs.com/) that lazily renders rows.
 http://addepar.github.com/ember-table/
 
 ## JS Bin Starter Kit
-http://emberjs.jsbin.com/tesiw/1/
+http://emberjs.jsbin.com/zozonuxu/1/edit
 
 ## Getting Started
 
