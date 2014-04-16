@@ -15,6 +15,8 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-ember-templates');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-neuter');
+  grunt.loadNpmTasks('grunt-banner');
+  grunt.loadNpmTasks('grunt-text-replace');
 
   // Project configuration.
   grunt.initConfig({
@@ -66,7 +68,7 @@ module.exports = function (grunt) {
     },
 
     neuter: {
-      options:{
+      options: {
         includeSourceURL: false,
         separator: "\n"
       },
@@ -137,7 +139,7 @@ module.exports = function (grunt) {
             dest: 'gh_pages/css'
           }, {
             expand: true,
-            cwd: 'dependencies/font-awesome/font/',
+            cwd: 'bower_components/font-awesome/font/',
             src: ['**'],
             dest: 'gh_pages/font'
           }, {
@@ -179,7 +181,6 @@ module.exports = function (grunt) {
     uglify: {
       file: {
         options: {
-          banner: '/*! <%= pkg.name %> <%= grunt.template.today("yyyy-mm-dd") %> */\n',
           preserveComments: false,
           beautify: false,
           mangle: true,
@@ -195,13 +196,46 @@ module.exports = function (grunt) {
       }
     },
 
+    // Add a banner to dist files which includes version & year of release
+    usebanner: {
+      dist: {
+        options: {
+          banner: '/*!\n* <%=pkg.name %> v<%=pkg.version%>\n' +
+            '* Copyright <%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
+            '* See LICENSE.\n*/',
+        },
+        files: {
+          src: ['dist/*']
+        }
+      }
+    },
+
+    replace: {
+      global_version: {
+        src: ['VERSION'],
+        overwrite: true,
+        replacements: [{
+          from: /.*\..*\..*/,
+          to: '<%=pkg.version%>'
+        }]
+      },
+      main_coffee_version: {
+        src: ['src/main.coffee'],
+        overwrite: true,
+        replacements: [{
+          from: /Ember.Table.VERSION = '.*\..*\..*'/,
+          to: "Ember.Table.VERSION = '<%=pkg.version%>'"
+        }]
+      }
+    },
+
     watch: {
       grunt: {
         files: ["Gruntfile.coffee"],
         tasks: ["default"]
       },
       code: {
-        files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js"],
+        files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js", "bower_components/**/*.js"],
         tasks: ["coffee", "neuter"]
       },
       handlebars: {
@@ -224,6 +258,8 @@ module.exports = function (grunt) {
 
   grunt.registerTask("build_app", ["coffee:app", "emberTemplates", "neuter"]);
 
-  grunt.registerTask("default", ["build_srcs", "build_app", "less", "copy", "uglify", "watch"]);
+  grunt.registerTask("dist", ["replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner"]);
 
+  grunt.registerTask("default", ["replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner", "watch"]);
 };
+
