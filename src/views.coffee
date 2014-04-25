@@ -125,7 +125,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   styleBindings:      'width'
   row:        Ember.computed.alias 'parentView.row'
   column:     Ember.computed.alias 'content'
-  width:      Ember.computed.alias 'column.columnWidth'
+  width:      Ember.computed.alias 'column.width'
 
   init: ->
     @_super()
@@ -263,7 +263,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   classNameBindings:  ['column.isSortable:sortable', 'column.textAlign']
   styleBindings:      ['width', 'height']
   column:         Ember.computed.alias 'content'
-  width:          Ember.computed.alias 'column.columnWidth'
+  width:          Ember.computed.alias 'column.width'
   height: Ember.computed ->
     @get('controller._headerHeight')
   .property('controller._headerHeight')
@@ -276,8 +276,8 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   resizableOption: Ember.computed ->
     handles: 'e'
     minHeight: 40
-    minWidth: @get('column.minWidth') || 100
-    maxWidth: @get('column.maxWidth') || 500
+    minWidth: @get('column.minWidth') || 10
+    maxWidth: @get('column.maxWidth') || undefined
     grid:     @get('column.snapGrid')
     resize: jQuery.proxy(@onColumnResize, this)
     stop: jQuery.proxy(@onColumnResize, this)
@@ -301,14 +301,14 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   * @argument event jQuery event
   ###
   onColumnResize: (event, ui) ->
+    @get('column').resize(ui.size.width)
+    @set 'controller.columnsFillTable', no
     @elementSizeDidChange()
-    # Special case for force-filled columns: if this is the last column you
-    # resize (or the only column), then it will be reset to before the resize
-    # to preserve the table's force-fill property.
-    if @get('controller.forceFillColumns') and
-        @get('controller.columns').filterProperty('canAutoResize').length > 1
-      @set('column.canAutoResize', false)
-    @get("column").resize(ui.size.width)
+
+    # Trigger the table resize (and redraw of layout) when resizing is done
+    if event.type is 'resizestop'
+      this.get('controller').elementSizeDidChange()
+    return
 
   elementSizeDidChange: ->
     maxHeight = 0
@@ -317,7 +317,6 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
       thisHeight = $(this).outerHeight()
       if thisHeight > maxHeight then maxHeight = thisHeight
     @set 'controller._contentHeaderHeight', maxHeight
-    return
 
 ################################################################################
 
