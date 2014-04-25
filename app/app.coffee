@@ -30,6 +30,7 @@ require 'build/app/controllers/overview'
 require 'build/app/controllers/simple'
 require 'build/app/controllers/sparkline'
 require 'build/app/controllers/treetable'
+require 'build/app/controllers/resizable'
 
 # Views
 require 'build/app/views/mixins'

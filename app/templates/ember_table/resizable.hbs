@@ -1,0 +1,73 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>New Resizable Demo</small></h1>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="example-container">
+        <div class="ember-table-example-container">
+          {{table-component
+            hasFooter=false
+            columnsBinding="columns"
+            contentBinding="content"
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>application.hbs</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component
+  hasFooter=false
+  columnsBinding="columns"
+  contentBinding="content"
+&#125;&#125;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>application_controller.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+  numRows: 100
+
+  columns: Ember.computed ->
+    dateColumn = Ember.Table.ColumnDefinition.create
+      columnWidth: 150
+      textAlign: 'text-align-left'
+      headerCellName: 'Date'
+      getCellContent: (row) -> row['date'].toDateString();
+    openColumn = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Open'
+      getCellContent: (row) -> row['open'].toFixed(2)
+    highColumn = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'High'
+      getCellContent: (row) -> row['high'].toFixed(2)
+    lowColumn = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Low'
+      getCellContent: (row) -> row['low'].toFixed(2)
+    closeColumn = Ember.Table.ColumnDefinition.create
+      columnWidth: 100
+      headerCellName: 'Close'
+      getCellContent: (row) -> row['close'].toFixed(2)
+    [dateColumn, openColumn, highColumn, lowColumn, closeColumn]
+
+  content: Ember.computed ->
+    [0...@get('numRows')].map (index) ->
+      date = new Date()
+      date.setDate(date.getDate() + index)
+      date:  date
+      open:  Math.random() * 100 - 50
+      high:  Math.random() * 100 - 50
+      low:   Math.random() * 100 - 50
+      close: Math.random() * 100 - 50
+      volume: Math.random() * 1000000
+  .property 'numRows'</pre>
+      </div>
+    </div>
+  </div>
+</div>
