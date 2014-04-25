@@ -583,7 +583,6 @@ pre {
 .example-container {
   position: relative;
   padding: 45px 15px 15px;
-  // background-color: #f8f8f8;
   border: 1px solid #eee;
 }
 
@@ -602,6 +601,81 @@ pre {
 
 .example-description {
   margin: 10px 0;
+}
+
+/* Configuration Container
+-------------------------------------------------- */
+.configuration-container {
+  position: relative;
+  margin-bottom: 20px;
+  padding: 15px;
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+
+  .title-text {
+    top: 15px;
+    left: 15px;
+    font-size: 12px;
+    font-weight: normal;
+    font-family: 'Univers Next W01 Medium';
+    letter-spacing: 1px;
+    color: #555;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .text-input {
+    width: 50px;
+    border: none;
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .at-limit {
+    background-color: #f5e0e0;
+  }
+
+  .checkbox-column {
+    width: 100px;
+  }
+
+  .width-column {
+    width: 115px;
+  }
+
+  .checkbox-cell {
+    padding: 0;
+  }
+
+  .checkbox-input {
+    height: 100%;
+    width: 100%;
+    margin: 0 0 0 6px;
+    position: relative;   // Needed for z-index
+    z-index: 2;           // Show up on top of .fluid-mode-text
+  }
+
+  .table-options-footer {
+    position: relative;
+    height: 30px;
+  }
+
+  .refresh-btn {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 6px 10px;
+    margin-top: 15px;
+    z-index: 3;
+  }
+
+  .fluid-mode-text {
+    position: absolute;
+    line-height: 30px;
+    left: 32px;
+    top: 1px;
+    z-index: 1;
+  }
 }
 
 /* Index Page

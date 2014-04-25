@@ -22,3 +22,20 @@ App.SmallHeroAffixMixin = Ember.Mixin.create
     # in case affix is already initialized and won't let us update options
     # we don't care, and just set it anyways
     $('.sub-navigation-sidebar').data('bs.affix').options.offset.top = 150
+
+App.ResizableDemoMixin = Ember.Mixin.create
+  didInsertElement: ->
+    @_super()
+    @$('.js-resizable-container').resizable
+      handles: 'e'
+      minWidth: 100
+      alsoResize: 'ember-table-fixed-wrapper'
+      resize: jQuery.proxy(@onTableContainerResize, this)
+      stop:   jQuery.proxy(@onTableContainerResize, this)
+
+  willDestroyElement: ->
+    @_super()
+    @$('.js-resizable-container').resizable('destroy')
+
+  onTableContainerResize: (event, ui) ->
+    @get('controller').updateDemoTableWidth(ui.size.width)

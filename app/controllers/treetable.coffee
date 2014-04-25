@@ -42,7 +42,7 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
     name = groupingFactors.getEach('display_name').join ' ▸ '
     Ember.Table.ColumnDefinition.create
       headerCellName: name
-      columnWidth: 400
+      savedWidth: 400
       isTreeColumn: yes
       isSortable: no
       textAlign: 'text-align-left'
@@ -153,7 +153,3 @@ Ember.Table.EmberTableComponent.extend App.TreeTableExample.TreeDataAdapter,
     column.toggleProperty 'sortAscending'
     @set 'sortColumn', column
     @set 'sortAscending', column.get('sortAscending')
-
-  onSelectionsDidChange: Ember.observer ->
-    console.log 'selectionsDidChange'
-  , 'selection.@each'

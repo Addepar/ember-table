@@ -13,17 +13,15 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   # the key.
   contentPath: undefined
 
-  # Minimum column width. Affects both manual resizing and automatic resizing
-  # (in `forceFillColumns` mode).
-  minWidth: undefined
+  # Minimum column width. Affects both manual resizing and automatic resizing.
+  minWidth: 25
 
-  # Maximum column width. Affects both manual resizing and automatic resizing
-  # (in `forceFillColumns` mode).
+  # Maximum column width. Affects both manual resizing and automatic resizing.
   maxWidth: undefined
 
-  # Default column width. Specifies the initial width of the column; if the
-  # column is later resized automatically, it will be proportional to this.
-  defaultColumnWidth: 150
+  # The initial column width in pixels. Updated whenever the column (not
+  # window) is resized. Can be persisted.
+  savedWidth: 150
 
   # Whether the column can be manually resized.
   isResizable:  yes
@@ -38,7 +36,6 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   textAlign: 'text-align-right'
 
   # Whether the column can automatically resize to fill space in the table.
-  # Only matters if the table is in `forceFillColumns` mode.
   canAutoResize: yes
 
   # TODO(new-api): Remove `headerCellViewClass`
@@ -68,8 +65,26 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   # Internal properties
   # ---------------------------------------------------------------------------
 
-  # Internal: width of the column.
-  # TODO: Rename to `width`
-  columnWidth:  Ember.computed.oneWay 'defaultColumnWidth'
+  # In most cases, should be set by the table and not overridden externally.
+  # Instead, use savedWidth and minWidth/maxWidth along with resize behavior.
+  width:  Ember.computed.oneWay 'savedWidth'
 
-  resize: (width) -> @set 'columnWidth', width
+  # Not part of the official API, but can be overridden if you need custom
+  # behavior (e.g. persistence) when the column is resized, and `savedWidth`
+  # doesn't solve your problem.
+  resize: (width) ->
+    @set 'savedWidth', width
+    @set 'width', width
+
+  # Set when the table is initialized. Used to resize columns by stealing
+  # width from the next column to the right.
+  nextColumn: null
+  prevColumn: null
+
+  isAtMinWidth: Ember.computed ->
+    @get('width') is @get('minWidth')
+  .property 'width', 'minWidth'
+
+  isAtMaxWidth: Ember.computed ->
+    @get('width') is @get('maxWidth')
+  .property 'width', 'maxWidth'

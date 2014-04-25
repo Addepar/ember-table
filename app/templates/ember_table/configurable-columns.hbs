@@ -1,0 +1,115 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Configurable Column Demo</small></h1>
+
+  <p>Ember Table's column settings give you a lot of fine-grained control over
+  reordering and resizing behavior. Use this demo to play with the options and
+  find what works for your use!</p>
+
+  <p>You can drag the right border of the table container to see how the table
+  should respond to width changes. The refresh button is useful to see how the
+  table would be initialized given the settings you've selected.</p>
+
+  <p>When you're done configuring, check out the code below - it's updated live
+  with the settings you selected.</p>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="configuration-container">
+        <div class="title-text">Configure Demo</div>
+        <table class="table table-bordered table-condensed">
+          <tbody>
+            <tr>
+              <th>Column</th>
+              <th class="checkbox-column">Reorder</th>
+              <th class="checkbox-column">Resize</th>
+              <th class="checkbox-column">Auto-Resize</th>
+              <th class="width-column">Min Width</th>
+              <th class="width-column">Max Width</th>
+              <th class="width-column">Actual Width</th>
+            </tr>
+            {{#each columns}}
+              <tr>
+                <td>{{headerCellName}}</td>
+                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=isSortable}}</td>
+                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=isResizable}}</td>
+                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=canAutoResize}}</td>
+                <td {{bind-attr class="atMinWidth:at-limit"}}>{{input value=minWidthValue class="text-input" type="number" min="1"}}</td>
+                <td {{bind-attr class="atMaxWidth:at-limit"}}>{{input value=maxWidthValue class="text-input" type="number" min="1"}}</td>
+                <td>{{width}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <div class="table-options-footer">
+          <div class="fluid-mode-text">Fluid Mode</div>
+          {{input class="checkbox-input" type="checkbox" checked=isFluid}}
+          <button class="addepar-btn-primary refresh-btn" {{action 'refreshTable'}}>Refresh Table</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="example-container js-resizable-container">
+        {{#if showTable}}
+          <div class="ember-table-example-container-small">
+            {{configurable-table
+              hasFooter=false
+              columnMode=columnMode
+              columns=columns
+              content=content
+              parentWidth=demoTableWidth
+            }}
+          </div>
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>application.hbs</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component
+  hasFooter=false
+  columns=columns
+  content=content{{#if isFluid}}
+  columnMode='fluid'{{/if}}
+&#125;&#125;</pre>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>application_controller.coffee</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+  numRows: 100
+
+  columns: Ember.computed -> {{#each columns}}
+    {{headerCellNameLowerCase}}Column = Ember.Table.ColumnDefinition.create{{#unless textAlignIsDefault}}
+      textAlign: '{{textAlign}}'{{/unless}}
+      headerCellName: '{{headerCellName}}'{{#unless minWidthIsDefault}}
+      minWidth: {{minWidth}}{{/unless}}{{#if maxWidth}}
+      maxWidth: {{maxWidth}}{{/if}}{{#unless isSortable}}
+      isSortable: no{{/unless}}{{#unless isResizable}}
+      isResizable: no{{/unless}}{{#unless canAutoResize}}
+      canAutoResize: no{{/unless}}{{#if isDateCell}}
+      getCellContent: (row) -> row.get('date').toDateString(){{else}}
+      getCellContent: (row) -> row.get('{{headerCellNameLowerCase}}').toFixed(2){{/if}}{{/each}}
+    [dateColumn, openColumn, highColumn, lowColumn, closeColumn]
+
+  content: Ember.computed ->
+    [0...@get('numRows')].map (index) ->
+      date = new Date()
+      date.setDate(date.getDate() + index)
+      date:  date
+      open:  Math.random() * 100 - 50
+      high:  Math.random() * 100 - 50
+      low:   Math.random() * 100 - 50
+      close: Math.random() * 100 - 50
+      volume: Math.random() * 1000000
+  .property 'numRows'</pre>
+      </div>
+    </div>
+  </div>
+</div>

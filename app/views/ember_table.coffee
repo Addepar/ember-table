@@ -18,8 +18,9 @@ Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin)
 App.EmberTableFinancialView =
 Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin)
 
-App.EmberTableFluidView =
-Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin)
+App.EmberTableConfigurableColumnsView =
+Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin,
+  App.ResizableDemoMixin)
 
 App.EmberTableHorizonView =
 Ember.View.extend(App.CodePrettyPrintMixin, App.SmallHeroAffixMixin)

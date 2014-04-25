@@ -90,20 +90,6 @@
       <td><p>Enables or disables the footer block.</p></td>
     </tr>
     <tr>
-      <td>forceFillColumns</td>
-      <td>false</td>
-      <td>
-        <p>
-          If true, columns with <code>canAutoResize=true</code> (the default
-          setting) will attempt to fill the width of the table when possible.
-          After a column is manually resized, any other columns with
-          <code>canAutoResize=true</code> will distribute the change in width
-          between them. Once manually resized, a column will no longer
-          automatically resize.
-        </p>
-      </td>
-    </tr>
-    <tr>
       <td>enableColumnReorder</td>
       <td>true</td>
       <td>
@@ -118,6 +104,30 @@
       <td>enableContentSelection</td>
       <td>false</td>
       <td><p>Allow users to select the content of table cells.</p></td>
+    </tr>
+    <tr>
+      <td>styleBindings</td>
+      <td>'height'</td>
+      <td>
+        <p>
+          Values which are bound to the table's style attr. See
+          <code>Ember.StyleBindingsMixin</code> documentation for more details.
+        <p>
+      </td>
+    </tr>
+    <tr>
+      <td>columnMode</td>
+      <td>'standard'</td>
+      <td>
+        <p>
+          Sets which column resizing behavior to use. Possible values are
+          <code>'standard'</code> (resizing a column pushes or pulls all other
+          columns) and <code>'fluid'</code> (resizing a column steals width
+          from neighboring columns). You can experiment with this behavior in
+          the {{#link-to 'emberTable.configurable-columns'}}configurable column
+          demo.{{/link-to}}
+        <p>
+      </td>
     </tr>
     <tr>
       <td>selectionMode</td>
@@ -141,16 +151,6 @@
           <code>selectionMode</code> is set to <code>'single'</code>, the array
           will contain either one or zero elements.
         </p>
-      </td>
-    </tr>
-    <tr>
-      <td>styleBindings</td>
-      <td>'height'</td>
-      <td>
-        <p>
-          Values which are bound to the table's style attr. See
-          <code>Ember.StyleBindingsMixin</code> documentation for more details.
-        <p>
       </td>
     </tr>
   </table>
@@ -181,11 +181,11 @@
     </tr>
     <tr>
       <td>minWidth</td>
-      <td>undefined</td>
+      <td>25</td>
       <td>
         <p>
-          Minimum column width. Affects both manual resizing and automatic
-          resizing (in <code>forceFillColumns</code> mode).
+          Minimum column width in pixels. Affects both manual resizing and
+          automatic resizing.
         </p>
       </td>
     </tr>
@@ -194,8 +194,8 @@
       <td>undefined</td>
       <td>
         <p>
-          Maximum column width. Affects both manual resizing and automatic
-          resizing (in <code>forceFillColumns</code> mode).
+          Maximum column width in pixels. Affects both manual resizing and
+          automatic resizing.
         </p>
       </td>
     </tr>
@@ -242,8 +242,7 @@
       <td>
         <p>
           Whether the column can automatically resize to fill space in the
-          table.  Only matters if the table is in <code>forceFillColumns</code>
-          mode.
+          table.
         </p>
       </td>
     </tr>

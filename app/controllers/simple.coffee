@@ -3,24 +3,24 @@ App.EmberTableSimpleController = Ember.Controller.extend
 
   columns: Ember.computed ->
     dateColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 150
+      savedWidth: 150
       textAlign: 'text-align-left'
       headerCellName: 'Date'
       getCellContent: (row) -> row.get('date').toDateString();
     openColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 100
+      savedWidth: 100
       headerCellName: 'Open'
       getCellContent: (row) -> row.get('open').toFixed(2)
     highColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 100
+      savedWidth: 100
       headerCellName: 'High'
       getCellContent: (row) -> row.get('high').toFixed(2)
     lowColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 100
+      savedWidth: 100
       headerCellName: 'Low'
       getCellContent: (row) -> row.get('low').toFixed(2)
     closeColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 100
+      savedWidth: 100
       headerCellName: 'Close'
       getCellContent: (row) -> row.get('close').toFixed(2)
     [dateColumn, openColumn, highColumn, lowColumn, closeColumn]

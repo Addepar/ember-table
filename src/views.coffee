@@ -90,7 +90,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
 
   row:        Ember.computed.alias 'parentView.row'
   column:     Ember.computed.alias 'content'
-  width:      Ember.computed.alias 'column.columnWidth'
+  width:      Ember.computed.alias 'column.width'
 
   contentDidChange: ->
     @notifyPropertyChange 'cellContent'
@@ -201,39 +201,86 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   # Internal properties
   # ---------------------------------------------------------------------------
 
-  column:         Ember.computed.alias 'content'
-  width:          Ember.computed.alias 'column.columnWidth'
-  height: Ember.computed ->
-    @get('controller._headerHeight')
-  .property('controller._headerHeight')
+  column: Ember.computed.alias 'content'
+  width: Ember.computed.alias 'column.width'
+  minWidth: Ember.computed.alias 'column.minWidth'
+  maxWidth: Ember.computed.alias 'column.maxWidth'
+  nextResizableColumn: Ember.computed.alias 'column.nextResizableColumn'
+  height: Ember.computed.alias 'controller._headerHeight'
+
+  effectiveMinWidth: Ember.computed ->
+    return @get('minWidth') if @get('controller.columnMode') is 'standard'
+    nextColumnMaxDiff = @get('nextResizableColumn.maxWidth') -
+      @get('nextResizableColumn.width')
+    if @get('minWidth') and nextColumnMaxDiff
+      return Math.min(@get('minWidth'),
+        @get('width') - nextColumnMaxDiff)
+    else if @get('minWidth')
+      return @get('minWidth')
+    else
+      return @get('width') - nextColumnMaxDiff
+  .property('width', 'minWidth', 'controller.columnMode',
+    'nextResizableColumn.{width,maxWidth}')
+
+  effectiveMaxWidth: Ember.computed ->
+    return @get('maxWidth') if @get('controller.columnMode') is 'standard'
+    nextColumnMaxDiff = @get('nextResizableColumn.width') -
+      @get('nextResizableColumn.minWidth')
+    if @get('maxWidth') and not Ember.isNone(nextColumnMaxDiff)
+      return Math.min(@get('maxWidth'), @get('width') +
+        nextColumnMaxDiff)
+    else if @get('maxWidth')
+      return @get('maxWidth')
+    else
+      return @get('width') + nextColumnMaxDiff
+  .property('width', 'minWidth', 'controller.columnMode',
+    'nextResizableColumn.{width,minWidth}')
 
   # jQuery UI resizable option
   resizableOption: Ember.computed ->
     handles: 'e'
-    minHeight: 40
-    minWidth: @get('column.minWidth') || 100
-    maxWidth: @get('column.maxWidth') || 500
+    # We need about 10px as absolute minimums for the columns
+    minWidth: Math.max(@get('effectiveMinWidth') or 0, 10)
+    maxWidth: @get('effectiveMaxWidth')
+    # TODO(azirbel): This is unexpected and needs documentation or removal
     grid:     @get('column.snapGrid')
     resize: jQuery.proxy(@onColumnResize, this)
-    stop: jQuery.proxy(@onColumnResize, this)
+    stop:   jQuery.proxy(@onColumnResize, this)
+  .property 'effectiveMinWidth', 'effectiveMaxWidth'
 
   didInsertElement: ->
     @elementSizeDidChange()
-    if @get('column.isResizable')
-      @$().resizable(@get('resizableOption'))
-      @_resizableWidget = @$().resizable('widget')
-      return
+    @recomputeResizableHandle()
+
+  _isResizable: Ember.computed ->
+    if @get('controller.columnMode') is 'standard'
+      @get('column.isResizable')
+    else
+      @get('column.isResizable') and @get('nextResizableColumn')
+  .property('column.isResizable', 'controller.columnMode',
+    'nextResizableColumn')
+
+  resizableObserver: Ember.observer ->
+    @recomputeResizableHandle()
+  , '_isResizable', 'resizableOption'
 
   # `event` here is a jQuery event
   onColumnResize: (event, ui) ->
+    if @get('controller.columnMode') is 'standard'
+      @get('column').resize(ui.size.width)
+      @set 'controller.columnsFillTable', no
+    else
+      diff = @get('width') - ui.size.width
+      @get('column').resize(ui.size.width)
+      @get('nextResizableColumn').resize(
+        @get('nextResizableColumn.width') + diff)
+
     @elementSizeDidChange()
-    # Special case for force-filled columns: if this is the last column you
-    # resize (or the only column), then it will be reset to before the resize
-    # to preserve the table's force-fill property.
-    if @get('controller.forceFillColumns') and
-        @get('controller.columns').filterProperty('canAutoResize').length > 1
-      @set('column.canAutoResize', false)
-    @get("column").resize(ui.size.width)
+
+    # Trigger the table resize (and redraw of layout) when resizing is done
+    if event.type is 'resizestop'
+      this.get('controller').elementSizeDidChange()
+    return
 
   elementSizeDidChange: ->
     maxHeight = 0
@@ -242,7 +289,12 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
       thisHeight = $(this).outerHeight()
       if thisHeight > maxHeight then maxHeight = thisHeight
     @set 'controller._contentHeaderHeight', maxHeight
-    return
+
+  recomputeResizableHandle: ->
+    if @get('_isResizable')
+      @$().resizable(@get('resizableOption'))
+    else
+      @$().resizable('destroy') if @$().is('.ui-resizable')
 
 
 Ember.Table.ColumnSortableIndicator =

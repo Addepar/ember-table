@@ -3,11 +3,11 @@ App.EmberTableHorizonController = Ember.Controller.extend
 
   columns: Ember.computed ->
     name = Ember.Table.ColumnDefinition.create
-      columnWidth: 100
+      savedWidth: 100
       headerCellName: 'Name'
       getCellContent: (row) -> 'Horizon ' + row.get('name')
     horizon = Ember.Table.ColumnDefinition.create
-      columnWidth: 600
+      savedWidth: 600
       headerCellName: 'Horizon'
       tableCellViewClass: 'App.HorizonTableCellView'
       getCellContent: Ember.K

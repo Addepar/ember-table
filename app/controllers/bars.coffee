@@ -4,7 +4,7 @@ App.EmberTableBarsController = Ember.Controller.extend
   columns: Ember.computed ->
     colors  = ['blue', 'teal', 'green', 'yellow', 'orange']
     column1 = Ember.Table.ColumnDefinition.create
-      columnWidth:    50
+      savedWidth: 50
       headerCellName: 'Name'
       contentPath: 'key'
     columns = colors.map (color, index) ->
