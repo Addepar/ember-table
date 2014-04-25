@@ -3,13 +3,13 @@ App.EmberTableEditableController = Ember.Controller.extend
   columns: Ember.computed ->
     columnNames = ['open', 'close']
     dateColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 100
+      savedWidth: 100
       headerCellName: 'Date'
       tableCellViewClass: 'App.DatePickerTableCell'
       getCellContent: (row) -> row.get('date').toString('yyyy-MM-dd')
       setCellContent: (row, value) -> row.set('date', value)
     ratingColumn = Ember.Table.ColumnDefinition.create
-      columnWidth: 150
+      savedWidth: 150
       headerCellName: 'Analyst Rating'
       tableCellViewClass: 'App.RatingTableCell'
       contentPath: 'rating'
@@ -17,7 +17,7 @@ App.EmberTableEditableController = Ember.Controller.extend
     columns= columnNames.map (key, index) ->
       name = key.charAt(0).toUpperCase() + key.slice(1)
       Ember.Table.ColumnDefinition.create
-        columnWidth: 100
+        savedWidth: 100
         headerCellName: name
         tableCellViewClass: 'App.EditableTableCell'
         getCellContent: (row) -> row.get(key).toFixed(2)
