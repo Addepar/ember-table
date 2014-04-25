@@ -1407,18 +1407,21 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
   },
   doForceFillColumns: function() {
-    var additionWidthPerColumn, availableContentWidth, columnsToResize, contentWidth, fixedColumnsWidth, remainingWidth, tableColumns, totalWidth;
+    var availableWidth, columnsToResize, fixedColumnsWidth, tableColumns, totalDefaultWidth, totalWidth, unresizableColumns, unresizableWidth;
     totalWidth = this.get('_width');
     fixedColumnsWidth = this.get('_fixedColumnsWidth');
     tableColumns = this.get('tableColumns');
-    contentWidth = this._getTotalWidth(tableColumns);
-    availableContentWidth = totalWidth - fixedColumnsWidth;
-    remainingWidth = availableContentWidth - contentWidth;
+    unresizableColumns = tableColumns.filterProperty('canAutoResize', false);
+    unresizableWidth = this._getTotalWidth(unresizableColumns);
+    availableWidth = totalWidth - fixedColumnsWidth - unresizableWidth;
+    if (availableWidth < 0) {
+      return;
+    }
     columnsToResize = tableColumns.filterProperty('canAutoResize');
-    additionWidthPerColumn = Math.floor(remainingWidth / columnsToResize.length);
+    totalDefaultWidth = this._getTotalWidth(columnsToResize, 'defaultColumnWidth');
     return columnsToResize.forEach(function(column) {
       var columnWidth;
-      columnWidth = column.get('columnWidth') + additionWidthPerColumn;
+      columnWidth = Math.floor((column.get('defaultColumnWidth') / totalDefaultWidth) * availableWidth);
       return column.set('columnWidth', columnWidth);
     });
   },
