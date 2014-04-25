@@ -6,32 +6,36 @@
 Ember.Table.ColumnDefinition = Ember.Object.extend
   # Name of the column
   # TODO(Peter): change it to columnName
-  headerCellName:undefined
+  headerCellName: undefined
   # Path of the content for this cell. Given a row object, the content path
   # communicate what needs to be extracted from the row
-  contentPath:   undefined
+  contentPath: undefined
   # Min column width
-  minWidth: undefined
+  minWidth: 50
   # Max column width
   maxWidth: undefined
-  # column width
-  defaultColumnWidth: 150
-  # TODO(Peter): Rename it to width
-  columnWidth:  Ember.computed.oneWay 'defaultColumnWidth'
+  # Updated whenever the column (not window) is resized. Can be persisted.
+  savedWidth: 150
   # wether the colum is resizable
-  isResizable:  yes
+  isResizable: yes
   # wether the column is sortable
-  isSortable:  yes
+  isSortable: yes
   # text align left | center | right
   textAlign: 'text-align-right'
-  canAutoResize: yes
+  canAutoResize: no
 
   # The view class we want to use for the header
   headerCellViewClass:  'Ember.Table.HeaderCell'
   # The view class we want to use for the table cells
   tableCellViewClass:   'Ember.Table.TableCell'
 
-  resize: (width) -> @set 'columnWidth', width
+  # In most cases, should be set by the table and not overridden externally.
+  # Instead, use savedWidth and minWidth/maxWidth along with resize behavior.
+  width:  Ember.computed.oneWay 'savedWidth'
+
+  resize: (width) ->
+    @set 'savedWidth', width
+    @set 'width', width
 
   ###*
   * Get Cell Content - This gives a formatted value e.g. $20,000,000

@@ -1,15 +1,17 @@
-App.EmberTableSimpleController = Ember.Controller.extend
+App.EmberTableResizableController = Ember.Controller.extend
   numRows: 100
 
   columns: Ember.computed ->
     dateColumn = Ember.Table.ColumnDefinition.create
-      savedWidth: 150
+      minWidth: 100
+      maxWidth: 200
       textAlign: 'text-align-left'
       headerCellName: 'Date'
+      canAutoResize: yes
       getCellContent: (row) -> row.get('date').toDateString();
     openColumn = Ember.Table.ColumnDefinition.create
-      savedWidth: 100
       headerCellName: 'Open'
+      canAutoResize: yes
       getCellContent: (row) -> row.get('open').toFixed(2)
     highColumn = Ember.Table.ColumnDefinition.create
       savedWidth: 100

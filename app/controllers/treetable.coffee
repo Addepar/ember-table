@@ -42,7 +42,7 @@ App.TreeTableExample.TreeDataAdapter = Ember.Mixin.create
     name = groupingFactors.getEach('display_name').join ' ▸ '
     Ember.Table.ColumnDefinition.create
       headerCellName: name
-      columnWidth: 400
+      savedWidth: 400
       isTreeColumn: yes
       isSortable: no
       textAlign: 'text-align-left'
