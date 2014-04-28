@@ -1292,6 +1292,18 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   enableContentSelection: false,
   selection: null,
   tableRowViewClass: 'Ember.Table.TableRow',
+  init: function() {
+    this._super();
+    if (!$.ui) {
+      throw 'Missing dependency: jquery-ui';
+    }
+    if (!$().mousewheel) {
+      throw 'Missing dependency: jquery-mousewheel';
+    }
+    if (!$().antiscroll) {
+      throw 'Missing dependency: antiscroll.js';
+    }
+  },
   actions: {
     addColumn: Ember.K,
     sortByColumn: Ember.K
