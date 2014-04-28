@@ -41,5 +41,5 @@ App.RatingTableCell = Ember.Table.TableCell.extend
   click: (event) ->
     rating = @$('.rating span').index(event.target)
     return if rating is -1
-    @get('column').setCellContent(@get('rowContent'), rating)
+    @get('column').setCellContent(@get('row'), rating)
     @applyRating(rating)
