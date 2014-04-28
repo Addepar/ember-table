@@ -44,6 +44,12 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # specify the view class to use for rendering the table rows
   tableRowViewClass: 'Ember.Table.TableRow'
 
+  init: ->
+    this._super()
+    if !$.ui then throw 'Missing dependency: jquery-ui'
+    if !$().mousewheel then throw 'Missing dependency: jquery-mousewheel'
+    if !$().antiscroll then throw 'Missing dependency: antiscroll.js'
+
   actions:
     addColumn: Ember.K
     sortByColumn: Ember.K
