@@ -184,6 +184,10 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend
   content: Ember.computed ->
     [@get('columns')]
   .property 'columns'
+  
+  init: ->
+    @styleBindings = ["width"]
+    @_super()
 
 # We hacked this. There is an inconsistency at the level in which we are
 # handling scroll event...
