@@ -11,7 +11,6 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-qunit');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-browserify2');
   grunt.loadNpmTasks('grunt-ember-templates');
   grunt.loadNpmTasks('grunt-jsdoc');
   grunt.loadNpmTasks('grunt-neuter');
@@ -26,16 +25,6 @@ module.exports = function (grunt) {
       banner: '/*! <%=pkg.name%> - v<%=pkg.version%> (build <%=pkg.build%>) - ' +
         '<%=grunt.template.today("dddd, mmmm dS, yyyy, h:MM:ss TT")%> */'
     },
-
-    // browserify2: {
-    //   // Bundle containing all client scripts (WebApp, Ember.js)
-    //   table: {
-    //     entry: [
-    //       './build/src/main.js'
-    //     ],
-    //     compile: './lib/ember-table-lib.js'
-    //   }
-    // },
 
     coffee: {
       srcs: {
