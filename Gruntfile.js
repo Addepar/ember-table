@@ -16,6 +16,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-neuter');
   grunt.loadNpmTasks('grunt-banner');
   grunt.loadNpmTasks('grunt-text-replace');
+  grunt.loadNpmTasks('grunt-bower-task');
 
   // Project configuration.
   grunt.initConfig({
@@ -24,6 +25,15 @@ module.exports = function (grunt) {
     meta: {
       banner: '/*! <%=pkg.name%> - v<%=pkg.version%> (build <%=pkg.build%>) - ' +
         '<%=grunt.template.today("dddd, mmmm dS, yyyy, h:MM:ss TT")%> */'
+    },
+
+    bower: {
+      install: {
+        options: {
+          cleanup: true,
+          layout: 'byComponent'
+        }
+      }
     },
 
     coffee: {
@@ -128,7 +138,7 @@ module.exports = function (grunt) {
             dest: 'gh_pages/css'
           }, {
             expand: true,
-            cwd: 'bower_components/font-awesome/font/',
+            cwd: 'lib/font-awesome/font/',
             src: ['**'],
             dest: 'gh_pages/font'
           }, {
@@ -224,7 +234,7 @@ module.exports = function (grunt) {
         tasks: ["default"]
       },
       code: {
-        files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js", "bower_components/**/*.js"],
+        files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js", "lib/**/*.js"],
         tasks: ["coffee", "neuter"]
       },
       handlebars: {
@@ -249,6 +259,5 @@ module.exports = function (grunt) {
 
   grunt.registerTask("dist", ["replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner"]);
 
-  grunt.registerTask("default", ["replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner", "watch"]);
+  grunt.registerTask("default", ["bower", "replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner", "watch"]);
 };
-

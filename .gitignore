@@ -3,6 +3,7 @@ build/
 doc/
 dist/
 gh_pages/
+lib/
 node_modules/
 tests/lib
 tests/css

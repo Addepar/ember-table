@@ -40,5 +40,10 @@
     "font-awesome": "3.2.1",
     "modernizr": "2.6.1",
     "qunit": "1.12.0"
+  },
+  "exportsOverride": {
+    "jquery-ui": {
+      ".": ["ui/jquery-ui.custom.js", "themes/base/jquery-ui.css"]
+    }
   }
 }
