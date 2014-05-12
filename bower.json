@@ -23,7 +23,6 @@
     "LICENSE",
     "README.md",
     "examples.js",
-    "lockdown.json",
     "package.json"
   ],
   "dependencies": {
