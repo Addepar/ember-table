@@ -39,7 +39,7 @@ Hit up : `http://localhost:8000/examples`
 * Switch to ember/list-view for lazy rendering
 
 ### Maintainers
-Update version numbers and release (to this repository and the dist repository), using https://github.com/webpro/release-it. Install:
+Update version numbers and release using https://github.com/webpro/release-it. Install:
 ```
 $ npm install -g release-it
 $ alias release="release-it"
