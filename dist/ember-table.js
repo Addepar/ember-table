@@ -1,3 +1,8 @@
+/*!
+* ember-table v0.2.0
+* Copyright 2013-2014 Addepar Inc.
+* See LICENSE.
+*/
 (function() {
 
 var _ref;
@@ -212,7 +217,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 Ember.Table = Ember.Namespace.create();
 
-Ember.Table.VERSION = '0.0.2';
+Ember.Table.VERSION = '0.2.0';
 
 if ((_ref = Ember.libraries) != null) {
   _ref.register('Ember Table', Ember.Table.VERSION);
