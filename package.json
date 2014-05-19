@@ -1,30 +1,32 @@
 {
-    "name": "ember-table",
-    "version": "0.0.1",
-    "main": "Gruntfile.js",
-    "scripts": {
-        "test": "grunt"
-    },
-    "repository": "https://github.com/Addepar/ember-table.git",
-    "license": "MIT",
-    "devDependencies": {
-        "grunt": "~0.4.1",
-        "grunt-contrib-clean": "~0.4.1",
-        "grunt-contrib-coffee": "~0.4.0",
-        "grunt-contrib-jshint": "~0.6.3",
-        "grunt-contrib-less": "~0.7.0",
-        "grunt-contrib-copy": "~0.4.1",
-        "grunt-contrib-nodeunit": "~0.1.2",
-        "grunt-contrib-qunit": "~0.2.2",
-        "grunt-contrib-uglify": "*",
-        "grunt-contrib-watch": "*",
-        "grunt-browserify2": "~0.1.8",
-        "grunt-ember-templates": "~0.4.10",
-        "grunt-jsdoc": "*",
-        "grunt-neuter": "~0.4.0",
-        "grunt-shell": "*",
-        "grunt-jsdoc": "*",
-        "node-static": "*",
-        "lockdown": "0.0.5"
-    }
+  "name": "ember-table",
+  "version": "0.1.0",
+  "private": true,
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "grunt"
+  },
+  "repository": "https://github.com/Addepar/ember-table.git",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-contrib-clean": "~0.4.1",
+    "grunt-contrib-coffee": "~0.4.0",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-less": "~0.7.0",
+    "grunt-contrib-copy": "~0.4.1",
+    "grunt-contrib-nodeunit": "~0.1.2",
+    "grunt-contrib-qunit": "~0.2.2",
+    "grunt-contrib-uglify": "*",
+    "grunt-contrib-watch": "*",
+    "grunt-ember-templates": "~0.4.10",
+    "grunt-jsdoc": "*",
+    "grunt-neuter": "~0.4.0",
+    "grunt-shell": "*",
+    "node-static": "*",
+    "lockdown": "0.0.5",
+    "grunt-banner": "~0.2.2",
+    "grunt-text-replace": "~0.3.11",
+    "grunt-bower-task": "~0.3.4"
+  }
 }
