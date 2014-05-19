@@ -22,11 +22,6 @@ module.exports = function (grunt) {
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
-    meta: {
-      banner: '/*! <%=pkg.name%> - v<%=pkg.version%> (build <%=pkg.build%>) - ' +
-        '<%=grunt.template.today("dddd, mmmm dS, yyyy, h:MM:ss TT")%> */'
-    },
-
     bower: {
       install: {
         options: {
@@ -200,7 +195,7 @@ module.exports = function (grunt) {
       dist: {
         options: {
           banner: '/*!\n* <%=pkg.name %> v<%=pkg.version%>\n' +
-            '* Copyright <%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
+            '* Copyright 2013-<%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
             '* See LICENSE.\n*/',
         },
         files: {

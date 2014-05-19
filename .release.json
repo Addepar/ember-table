@@ -9,7 +9,7 @@
   "tagName": "v%s",
   "tagAnnotation": "Release %s",
   "buildCommand": "grunt dist",
-  "distRepo": "git://github.com/azirbel/ember-table-shim",
+  "distRepo": false,
   "distStageDir": ".stage",
   "distBase": "",
   "distFiles": ["dist/**/*"],
