@@ -1,10 +1,12 @@
-node_modules/
-gh_pages/
+bower_components/
 build/
+doc/
+gh_pages/
+lib/
+node_modules/
 tests/lib
 tests/css
 .DS_Store
+.stage
 *.swo
 *.swp
-.DS_Store
-doc/
