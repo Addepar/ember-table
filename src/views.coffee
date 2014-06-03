@@ -216,7 +216,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
     opacity: 0.9
     placeholder: 'ui-state-highlight'
     scroll: true
-    tolerance: 'pointer'
+    tolerance: 'intersect'
     update: jQuery.proxy(@onColumnSortDone,   this)
     stop:   jQuery.proxy(@onColumnSortStop,   this)
     sort:   jQuery.proxy(@onColumnSortChange, this)
