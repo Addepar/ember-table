@@ -957,7 +957,7 @@ Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
       opacity: 0.9,
       placeholder: 'ui-state-highlight',
       scroll: true,
-      tolerance: 'pointer',
+      tolerance: 'intersect',
       update: jQuery.proxy(this.onColumnSortDone, this),
       stop: jQuery.proxy(this.onColumnSortStop, this),
       sort: jQuery.proxy(this.onColumnSortChange, this)
