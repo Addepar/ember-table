@@ -1417,7 +1417,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     if (this.get('state') !== 'inDOM') {
       return;
     }
-    this.$('.antiscroll-wrap').antiscroll();
+    this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();
     if (this.get('forceFillColumns')) {
       return this.doForceFillColumns();
     }
