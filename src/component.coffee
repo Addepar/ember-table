@@ -152,7 +152,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   updateLayout: ->
     # updating antiscroll
     return unless @get('state') is 'inDOM'
-    this.$('.antiscroll-wrap').antiscroll()
+    this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();
     @doForceFillColumns() if @get('forceFillColumns')
 
   doForceFillColumns: ->
