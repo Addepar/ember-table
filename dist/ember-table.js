@@ -1409,8 +1409,8 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     if (this.get('state') !== 'inDOM') {
       return;
     }
-    this.set('_width', this.$().innerWidth());
-    this.set('_height', this.$().innerHeight());
+    this.set('_width', this.$().parent().outerWidth());
+    this.set('_height', this.$().parent().outerHeight());
     return Ember.run.next(this, this.updateLayout);
   },
   updateLayout: function() {
@@ -1497,7 +1497,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
 
   _tableColumnsWidth: Ember.computed(function() {
     var availableWidth, contentWidth;
-    contentWidth = this._getTotalWidth(this.get('tableColumns'));
+    contentWidth = (this._getTotalWidth(this.get('tableColumns'))) + 3;
     availableWidth = this.get('_width') - this.get('_fixedColumnsWidth');
     if (contentWidth > availableWidth) {
       return contentWidth;
