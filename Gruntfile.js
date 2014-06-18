@@ -4,7 +4,6 @@ module.exports = function (grunt) {
   var path = require('path');
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-coffee');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-less');
   grunt.loadNpmTasks('grunt-contrib-copy');
@@ -31,34 +30,14 @@ module.exports = function (grunt) {
       }
     },
 
-    coffee: {
-      srcs: {
-        options: {
-          bare: true
-        },
-        expand: true,
-        cwd: "src/",
-        src: [ "**/*.coffee" ],
-        dest: "build/src/",
-        ext: ".js"
-      },
-      app: {
-        expand: true,
-        cwd: "app/",
-        src: [ "**/*.coffee" ],
-        dest: "build/app/",
-        ext: ".js"
-      }
-    },
-
     emberTemplates: {
       options: {
         templateName: function(sourceFile) {
           return sourceFile.replace(/src\/templates\//, '').replace(/app\/templates\//, '');
         }
       },
-      'build/src/templates.js': ["src/templates/**/*.hbs"],
-      'build/app/templates.js': ["app/templates/**/*.hbs"]
+      'src/templates.js': ["src/templates/**/*.hbs"],
+      'app/templates.js': ["app/templates/**/*.hbs"]
     },
 
     neuter: {
@@ -66,21 +45,20 @@ module.exports = function (grunt) {
         includeSourceURL: false,
         separator: "\n"
       },
-      "dist/ember-table.js":  "build/src/main.js",
-      "gh_pages/app.js":      "build/app/app.js"
+      "dist/ember-table.js":  "src/main.js",
+      "gh_pages/app.js":      "app/app.js"
     },
 
     clean: [
       "./dist",
-      "./build",
       "./gh_pages"
     ],
 
     jsdoc: {
       all: {
         src: [
-          "./build/src/*.js",
-          "./build/src/**/*.js"
+          "./src/*.js",
+          "./src/**/*.js"
         ],
         dest: "doc/"
       }
@@ -98,7 +76,7 @@ module.exports = function (grunt) {
           require: true
         }
       },
-      all: ["Gruntfile.js", "build/src/**/*.js"]
+      all: ["Gruntfile.js", "src/**/*.js"]
     },
 
     less: {
@@ -213,24 +191,20 @@ module.exports = function (grunt) {
           to: '<%=pkg.version%>'
         }]
       },
-      main_coffee_version: {
-        src: ['src/main.coffee'],
+      main_js_version: {
+        src: ['src/main.js'],
         overwrite: true,
         replacements: [{
-          from: /Ember.Table.VERSION = '.*\..*\..*'/,
-          to: "Ember.Table.VERSION = '<%=pkg.version%>'"
+          from: /Ember.Table.VERSION = '.*\..*\..*';/,
+          to: "Ember.Table.VERSION = '<%=pkg.version%>';"
         }]
       }
     },
 
     watch: {
-      grunt: {
-        files: ["Gruntfile.coffee"],
-        tasks: ["default"]
-      },
       code: {
-        files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js", "lib/**/*.js"],
-        tasks: ["coffee", "neuter"]
+        files: ["src/**/*.js", "app/**/*.js", "dependencies/**/*.js", "lib/**/*.js"],
+        tasks: ["neuter"]
       },
       handlebars: {
         files: ["src/**/*.hbs", "app/**/*.hbs"],
@@ -248,9 +222,9 @@ module.exports = function (grunt) {
   });
 
   // Default tasks.
-  grunt.registerTask("build_srcs", ["coffee:srcs", "emberTemplates", "neuter"]);
+  grunt.registerTask("build_srcs", ["emberTemplates", "neuter"]);
 
-  grunt.registerTask("build_app", ["coffee:app", "emberTemplates", "neuter"]);
+  grunt.registerTask("build_app", ["emberTemplates", "neuter"]);
 
   grunt.registerTask("dist", ["replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner"]);
 
