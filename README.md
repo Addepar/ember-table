@@ -78,16 +78,26 @@ $ node examples.js              # run the demo app
 
 You can then view the examples at http://localhost:8000/gh_pages.
 
+## Using with other Ember versions
+
+Support for Ember 1.9, 1.10, and 1.11 (1.11.1 required) is available via
+branches of that name (e.g. `ember-1.9`)
+
 ## Dependencies
 * ember
 * jquery-ui
 * jquery.mousewheel
 * antiscroll
 
-## Using with other Ember versions
 
-Support for Ember 1.9, 1.10, and 1.11 (1.11.1 required) is available via
-branches of that name (e.g. `ember-1.9`)
+## Browser Support
+
+We aim to support the last two major versions of every common browser.
+
+If you need to support further browsers, we welcome pull requests with fixes.
+
+Touch support may work but has not been tested.
+
 
 ## Contributing
 
@@ -112,7 +122,7 @@ In a nutshell, this means:
 * Making backwards-compatible bug fixes increases the patch version
 
 
-### Maintainers
+## Maintainers
 Update version numbers and release using https://github.com/webpro/grunt-release-it:
 
 ```
