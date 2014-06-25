@@ -9,6 +9,9 @@ do
 
     echo "converting ${COFFEE} to ${JS}"
 
+    # Convert single line coffeescript comments to multiline comments so they are output
+    ruby scripts/coffee_comment_converter.rb "$COFFEE"
+
     # Bare: no top level module
     # No header: Don't include the converted by coffeescript header
     coffee --bare --no-header --compile "$COFFEE"
