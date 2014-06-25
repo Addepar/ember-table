@@ -5,8 +5,7 @@ App.FluidColumnDefinition = Ember.Table.ColumnDefinition.extend({
     } else {
       return false;
     }
-  })
-}.property('_nextColumn'), {
+  }).property('_nextColumn'),
   resize: function(pxWidth, tableWidth) {
     var diff, newMaxWidth, newWidth, nextCol, oldWidth, percent;
     newMaxWidth = null;
