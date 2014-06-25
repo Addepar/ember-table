@@ -36,8 +36,8 @@ module.exports = function (grunt) {
           return sourceFile.replace(/src\/templates\//, '').replace(/app\/templates\//, '');
         }
       },
-      'src/templates.js': ["src/templates/**/*.hbs"],
-      'app/templates.js': ["app/templates/**/*.hbs"]
+      'build/src/templates.js': ["src/templates/**/*.hbs"],
+      'build/app/templates.js': ["app/templates/**/*.hbs"]
     },
 
     neuter: {

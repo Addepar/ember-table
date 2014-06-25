@@ -108,7 +108,7 @@ require('app/main');
 Compiled Handlebars templates
  */
 
-require('app/templates');
+require('build/app/templates');
 
 
 /*

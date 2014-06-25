@@ -1,6 +1,6 @@
 var _ref;
 
-require('src/templates');
+require('build/src/templates');
 
 
 /*
