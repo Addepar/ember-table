@@ -65,18 +65,7 @@ module.exports = function (grunt) {
     },
 
     jshint: {
-      options: {
-        curly: true,
-        eqeqeq: true,
-        eqnull: true,
-        browser: true,
-        globals: {
-          jQuery: true,
-          next: true,
-          require: true
-        }
-      },
-      all: ["Gruntfile.js", "src/**/*.js"]
+      all: ["Gruntfile.js", "src/**/*.js", "app/**/*.js"]
     },
 
     less: {
