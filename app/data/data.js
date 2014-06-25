@@ -9,4 +9,4 @@ App.data.empty = [];
 Ember Table Data
  */
 
-require('build/app/data/ember_table/treedata');
+require('app/data/ember_table/treedata');

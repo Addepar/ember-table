@@ -1,6 +1,6 @@
 var _ref;
 
-require('build/src/templates');
+require('src/templates');
 
 
 /*
@@ -29,19 +29,19 @@ require('dependencies/ember-addepar-mixins/style_bindings');
 Utils
  */
 
-require('build/src/utils/jquery_fix');
+require('src/utils/jquery_fix');
 
-require('build/src/utils/lazy_container_view');
+require('src/utils/lazy_container_view');
 
-require('build/src/utils/utils');
+require('src/utils/utils');
 
 
 /*
 Ember-Table
  */
 
-require('build/src/column');
+require('src/column');
 
-require('build/src/views');
+require('src/views');
 
-require('build/src/component');
+require('src/component');
