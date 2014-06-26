@@ -19,7 +19,7 @@
   "latedef": "nofunc",
   "debug": false,
   "devel": false,
-  "eqeqeq": true,
+  "eqeqeq": false,
   "evil": true,
   "forin": false,
   "immed": false,
