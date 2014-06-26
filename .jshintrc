@@ -9,7 +9,7 @@
     "after": true
   },
   "proto": true,
-  "strict": true,
+  "strict": false,
   "indent": 2,
   "camelcase": true,
   "node" : true,
