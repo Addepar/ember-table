@@ -1,14 +1,16 @@
 <div class="antiscroll-box">
   <div class="antiscroll-inner">
     <div class="ember-table-table-scrollable-wrapper">
-      {{view Ember.Table.LazyTableBlock classNames="ember-table-left-table-block"
-        contentBinding="controller.bodyContent"
-        columnsBinding="controller.fixedColumns"
-        widthBinding="controller._fixedBlockWidth"
-        numItemsShowingBinding="controller._numItemsShowing"
-        scrollTopBinding="controller._scrollTop"
-        startIndexBinding="controller._startIndex"
-      }}
+      {{#if controller.numFixedColumns}}
+        {{view Ember.Table.LazyTableBlock classNames="ember-table-left-table-block"
+          contentBinding="controller.bodyContent"
+          columnsBinding="controller.fixedColumns"
+          widthBinding="controller._fixedBlockWidth"
+          numItemsShowingBinding="controller._numItemsShowing"
+          scrollTopBinding="controller._scrollTop"
+          startIndexBinding="controller._startIndex"
+        }}
+      {{/if}}
       {{view Ember.Table.LazyTableBlock classNames="ember-table-right-table-block"
         contentBinding="controller.bodyContent"
         columnsBinding="controller.tableColumns"

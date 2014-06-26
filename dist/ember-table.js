@@ -14,10 +14,12 @@ var _ref;
 Ember.TEMPLATES["body-container"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
 
-
-  data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n      ");
+function program1(depth0,data) {
+  
+  var buffer = '';
+  data.buffer.push("\n        ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {hash:{
     'classNames': ("ember-table-left-table-block"),
     'contentBinding': ("controller.bodyContent"),
@@ -27,6 +29,13 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'scrollTopBinding': ("controller._scrollTop"),
     'startIndexBinding': ("controller._startIndex")
   },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'numItemsShowingBinding': "STRING",'scrollTopBinding': "STRING",'startIndexBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'widthBinding': depth0,'numItemsShowingBinding': depth0,'scrollTopBinding': depth0,'startIndexBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+  data.buffer.push("\n      ");
+  return buffer;
+  }
+
+  data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n      ");
+  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n      ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {hash:{
     'classNames': ("ember-table-right-table-block"),
@@ -85,10 +94,12 @@ function program3(depth0,data) {
 Ember.TEMPLATES["footer-container"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
 
-
-  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
+function program1(depth0,data) {
+  
+  var buffer = '';
+  data.buffer.push("\n    ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {hash:{
     'classNames': ("ember-table-left-table-block"),
     'contentBinding': ("controller.footerContent"),
@@ -96,6 +107,13 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'widthBinding': ("controller._fixedBlockWidth"),
     'heightBinding': ("controller.footerHeight")
   },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+  data.buffer.push("\n  ");
+  return buffer;
+  }
+
+  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
+  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n  ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {hash:{
     'classNames': ("ember-table-right-table-block"),
@@ -129,16 +147,25 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 Ember.TEMPLATES["header-container"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
 this.compilerInfo = [4,'>= 1.0.0'];
 helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', escapeExpression=this.escapeExpression;
+  var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
 
-
-  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
+function program1(depth0,data) {
+  
+  var buffer = '';
+  data.buffer.push("\n    ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {hash:{
     'classNames': ("ember-table-left-table-block"),
     'columnsBinding': ("controller.fixedColumns"),
     'widthBinding': ("controller._fixedBlockWidth"),
     'heightBinding': ("controller.headerHeight")
   },hashTypes:{'classNames': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'columnsBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+  data.buffer.push("\n  ");
+  return buffer;
+  }
+
+  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
+  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
+  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
   data.buffer.push("\n  ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {hash:{
     'classNames': ("ember-table-right-table-block"),

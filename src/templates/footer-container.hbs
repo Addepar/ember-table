@@ -1,10 +1,12 @@
 <div class="ember-table-table-fixed-wrapper">
-  {{view Ember.Table.TableBlock classNames="ember-table-left-table-block"
-    contentBinding="controller.footerContent"
-    columnsBinding="controller.fixedColumns"
-    widthBinding="controller._fixedBlockWidth"
-    heightBinding="controller.footerHeight"
-  }}
+  {{#if controller.numFixedColumns}}
+    {{view Ember.Table.TableBlock classNames="ember-table-left-table-block"
+      contentBinding="controller.footerContent"
+      columnsBinding="controller.fixedColumns"
+      widthBinding="controller._fixedBlockWidth"
+      heightBinding="controller.footerHeight"
+    }}
+  {{/if}}
   {{view Ember.Table.TableBlock classNames="ember-table-right-table-block"
     contentBinding="controller.footerContent"
     columnsBinding="controller.tableColumns"
