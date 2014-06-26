@@ -363,7 +363,8 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
       var thisHeight;
       thisHeight = $(this).outerHeight();
       if (thisHeight > maxHeight) {
-        return maxHeight = thisHeight;
+        maxHeight = thisHeight;
+        return maxHeight;
       }
     });
     this.set('controller._contentHeaderHeight', maxHeight);
@@ -440,7 +441,7 @@ Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWh
    */
   onMouseWheel: function(event, delta, deltaX, deltaY) {
     var scrollLeft;
-    if (!(Math.abs(deltaX) > Math.abs(deltaY))) {
+    if (Math.abs(deltaX) <= Math.abs(deltaY)) {
       return;
     }
     scrollLeft = this.$('.ember-table-right-table-block').scrollLeft() + deltaX;
@@ -458,7 +459,7 @@ Ember.Table.BodyTableContainer = Ember.Table.TableContainer.extend(Ember.MouseWh
    */
   onTouchMove: function(event, deltaX, deltaY) {
     var scrollLeft;
-    if (!(Math.abs(deltaX) > Math.abs(deltaY))) {
+    if (Math.abs(deltaX) <= Math.abs(deltaY)) {
       return;
     }
     scrollLeft = this.$('.ember-table-right-table-block').scrollLeft() + deltaX;

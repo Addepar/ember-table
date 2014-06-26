@@ -26,10 +26,11 @@ App.EmberTableAjaxLazyDataSource = Ember.ArrayProxy.extend({
       for (var _i = start; start <= end ? _i < end : _i > end; start <= end ? _i++ : _i--){ _results.push(_i); }
       return _results;
     }).apply(this).forEach(function(index) {
-      return content[index] = Ember.Object.create({
+      content[index] = Ember.Object.create({
         eventId: index,
         isLoaded: false
       });
+      return content[index];
     });
   },
   objectAt: function(index) {

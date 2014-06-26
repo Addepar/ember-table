@@ -55,7 +55,8 @@ App.EmberTableSparklineController = Ember.Controller.extend({
         for (var _i = 0; 0 <= numSteps ? _i < numSteps : _i > numSteps; 0 <= numSteps ? _i++ : _i--){ _results.push(_i); }
         return _results;
       }).apply(this).map(function() {
-        return lastValue = lastValue + d3.random.normal()();
+        lastValue = lastValue + d3.random.normal()();
+        return lastValue;
       });
     };
     return (function() {

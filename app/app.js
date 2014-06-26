@@ -115,4 +115,4 @@ require('build/app/templates');
 set google code prettifier options
  */
 
-window['PR_SHOULD_USE_CONTINUATION'] = false;
+window.PR_SHOULD_USE_CONTINUATION = false;

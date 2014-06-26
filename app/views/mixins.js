@@ -15,7 +15,9 @@ App.LargeHeroAffixMixin = Ember.Mixin.create({
         top: 500
       }
     });
-    return $('.sub-navigation-sidebar').data('bs.affix').options.offset.top = 500;
+
+    var val = $('.sub-navigation-sidebar').data('bs.affix').options.offset.top = 500;
+    return val; // Potential unecessary return from coffee->js
   }
 });
 
@@ -27,6 +29,7 @@ App.SmallHeroAffixMixin = Ember.Mixin.create({
         top: 150
       }
     });
-    return $('.sub-navigation-sidebar').data('bs.affix').options.offset.top = 150;
+    var val = $('.sub-navigation-sidebar').data('bs.affix').options.offset.top = 150;
+    return val; // Potential unecessary return from coffee->js
   }
 });

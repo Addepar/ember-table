@@ -29,8 +29,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
   * @todo More detailed doc needed!
    */
   getCellContent: function(row) {
-    var path;
-    path = this.get('contentPath');
+    var path = this.get('contentPath');
     Ember.assert("You must either provide a contentPath or override " + "getCellContent in your column definition", path != null);
     return Ember.get(row, path);
   },
