@@ -1,14 +1,13 @@
 App.EmberTableBarsController = Ember.Controller.extend({
   numRows: 100,
-  columns: Ember.computed(function() {
-    var colors, column1, columns;
-    colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
-    column1 = Ember.Table.ColumnDefinition.create({
+  columns: function() {
+    var colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
+    var column1 = Ember.Table.ColumnDefinition.create({
       columnWidth: 50,
       headerCellName: 'Name',
       contentPath: 'key'
     });
-    columns = colors.map(function(color, index) {
+    var columns = colors.map(function(color, index) {
       return Ember.Table.ColumnDefinition.create({
         color: color,
         headerCellName: 'Bar',
@@ -18,14 +17,10 @@ App.EmberTableBarsController = Ember.Controller.extend({
     });
     columns.unshift(column1);
     return columns;
-  }),
+  }.property(),
   content: Ember.computed(function() {
-    var _i, _ref, _results;
-    return (function() {
-      _results = [];
-      for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-      return _results;
-    }).apply(this).map(function(num, index) {
+    var numRows = this.get('numRows');
+    return App.utils.range(0, numRows).map(function(num, index) {
       return {
         key: index,
         value1: Math.random() * 80 + 10,

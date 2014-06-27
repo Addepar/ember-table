@@ -6,28 +6,26 @@ App.EmberTableDynamicBarsController = Ember.Controller.extend({
     current = Math.max(0, current);
     return current;
   },
-  init: function() {
-    return setInterval((function(_this) {
-      return function() {
-        return _this.get('content').forEach(function(item) {
-          item.set('value1', _this.getNextValue(item.get('value1')));
-          item.set('value2', _this.getNextValue(item.get('value2')));
-          item.set('value3', _this.getNextValue(item.get('value3')));
-          item.set('value4', _this.getNextValue(item.get('value4')));
-          return item.set('value5', _this.getNextValue(item.get('value5')));
-        });
-      };
-    })(this), 1500);
+  scheduleUpdate: function() {
+   setInterval(Ember.run.bind(this, this.update), 1500);
+  }.on('init'),
+  update: function() {
+    this.get('content').forEach(function(item) {
+      item.set('value1', this.getNextValue(item.get('value1')));
+      item.set('value2', this.getNextValue(item.get('value2')));
+      item.set('value3', this.getNextValue(item.get('value3')));
+      item.set('value4', this.getNextValue(item.get('value4')));
+      item.set('value5', this.getNextValue(item.get('value5')));
+    }, this);
   },
   columns: Ember.computed(function() {
-    var colors, column1, columns;
-    colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
-    column1 = Ember.Table.ColumnDefinition.create({
+    var colors = ['blue', 'teal', 'green', 'yellow', 'orange'];
+    var column1 = Ember.Table.ColumnDefinition.create({
       columnWidth: 50,
       headerCellName: 'Name',
       contentPath: 'key'
     });
-    columns = colors.map(function(color, index) {
+    var columns = colors.map(function(color, index) {
       return Ember.Table.ColumnDefinition.create({
         color: color,
         headerCellName: 'Bar',
@@ -39,12 +37,8 @@ App.EmberTableDynamicBarsController = Ember.Controller.extend({
     return columns;
   }),
   content: Ember.computed(function() {
-    var _i, _ref, _results;
-    return (function() {
-      _results = [];
-      for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-      return _results;
-    }).apply(this).map(function(num, index) {
+    var numRows = this.get('numRows');
+    return App.utils.range(0, numRows).map(function(num, index) {
       return Ember.Object.create({
         key: index,
         value1: Math.random() * 80 + 10,

@@ -9,19 +9,18 @@ App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend({
   indentationSpacing: 20,
   groupName: null,
   computeStyles: function(parent) {
-    var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;
-    groupingLevel = 0;
-    indentation = 0;
-    isShowing = true;
+    var groupingLevel = 0;
+    var indentation = 0;
+    var isShowing = true;
     if (parent) {
       isShowing = parent.get('isShowing') && !parent.get('isCollapsed');
-      pGroupingLevel = parent.get('groupingLevel');
+      var pGroupingLevel = parent.get('groupingLevel');
       groupingLevel = pGroupingLevel;
       if (parent.get('groupName') !== this.get('groupName')) {
         groupingLevel += 1;
       }
-      indentType = groupingLevel === pGroupingLevel ? 'half' : 'full';
-      spacing = this.get('indentationSpacing');
+      var indentType = groupingLevel === pGroupingLevel ? 'half' : 'full';
+      var spacing = this.get('indentationSpacing');
       if (!parent.get('isRoot')) {
         indentation = parent.get('indentation');
         indentation += (indentType === 'half' ? spacing / 2 : spacing);
@@ -29,17 +28,16 @@ App.TreeTableExample.TreeTableRow = Ember.Table.Row.extend({
     }
     this.set('groupingLevel', groupingLevel);
     this.set('indentation', indentation);
-    return this.set('isShowing', isShowing);
+    this.set('isShowing', isShowing);
   },
   computeRowStyle: function(maxLevels) {
-    var level;
-    level = this.getFormattingLevel(this.get('groupingLevel'), maxLevels);
-    return this.set('rowStyle', "row-style-" + level);
+    var level = this.getFormattingLevel(this.get('groupingLevel'), maxLevels);
+    this.set('rowStyle', "row-style-" + level);
   },
   recursiveCollapse: function(isCollapsed) {
     this.set('isCollapsed', isCollapsed);
-    return this.get('children').forEach(function(child) {
-      return child.recursiveCollapse(isCollapsed);
+    this.get('children').forEach(function(child) {
+      child.recursiveCollapse(isCollapsed);
     });
   },
   getFormattingLevel: function(level, maxLevels) {

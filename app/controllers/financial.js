@@ -1,15 +1,14 @@
 App.EmberTableFinancialController = Ember.Controller.extend({
-  data: Ember.computed(function() {
+  data: function() {
     return App.data.treedata;
-  })
+  }.property()
 });
 
 Number.prototype.toCurrency = function() {
-  var value;
   if (isNaN(this) || !isFinite(this)) {
     return '-';
   }
-  value = Math.abs(this).toFixed(2);
+  var value = Math.abs(this).toFixed(2);
   value = value.replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1,');
   return (this < 0 ? '-$' : '$') + value;
 };
@@ -32,19 +31,18 @@ App.FinancialTableTreeTableRow = Ember.Table.Row.extend({
   indentationSpacing: 20,
   groupName: null,
   computeStyles: function(parent) {
-    var groupingLevel, indentType, indentation, isShowing, pGroupingLevel, spacing;
-    groupingLevel = 0;
-    indentation = 0;
-    isShowing = true;
+    var groupingLevel = 0;
+    var indentation = 0;
+    var isShowing = true;
     if (parent) {
       isShowing = parent.get('isShowing') && !parent.get('isCollapsed');
-      pGroupingLevel = parent.get('groupingLevel');
+      var pGroupingLevel = parent.get('groupingLevel');
       groupingLevel = pGroupingLevel;
       if (parent.get('groupName') !== this.get('groupName')) {
         groupingLevel += 1;
       }
-      indentType = groupingLevel === pGroupingLevel ? 'half' : 'full';
-      spacing = this.get('indentationSpacing');
+      var indentType = groupingLevel === pGroupingLevel ? 'half' : 'full';
+      var spacing = this.get('indentationSpacing');
       if (!parent.get('isRoot')) {
         indentation = parent.get('indentation');
         indentation += (indentType === 'half' ? spacing / 2 : spacing);
@@ -52,17 +50,16 @@ App.FinancialTableTreeTableRow = Ember.Table.Row.extend({
     }
     this.set('groupingLevel', groupingLevel);
     this.set('indentation', indentation);
-    return this.set('isShowing', isShowing);
+    this.set('isShowing', isShowing);
   },
   computeRowStyle: function(maxLevels) {
-    var level;
-    level = this.getFormattingLevel(this.get('groupingLevel'), maxLevels);
-    return this.set('rowStyle', "ember-table-row-style-" + level);
+    var level = this.getFormattingLevel(this.get('groupingLevel'), maxLevels);
+    this.set('rowStyle', "ember-table-row-style-" + level);
   },
   recursiveCollapse: function(isCollapsed) {
     this.set('isCollapsed', isCollapsed);
     return this.get('children').forEach(function(child) {
-      return child.recursiveCollapse(isCollapsed);
+      child.recursiveCollapse(isCollapsed);
     });
   },
   getFormattingLevel: function(level, maxLevels) {
@@ -117,42 +114,39 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend({
   selection: null,
   actions: {
     toggleTableCollapse: function(event) {
-      var children, isCollapsed;
       this.toggleProperty('isCollapsed');
-      isCollapsed = this.get('isCollapsed');
-      children = this.get('root.children');
+      var isCollapsed = this.get('isCollapsed');
+      var children = this.get('root.children');
       if (!(children && children.get('length') > 0)) {
         return;
       }
       children.forEach(function(child) {
-        return child.recursiveCollapse(isCollapsed);
+        child.recursiveCollapse(isCollapsed);
       });
-      return this.notifyPropertyChange('rows');
+      this.notifyPropertyChange('rows');
     },
     toggleCollapse: function(row) {
       row.toggleProperty('isCollapsed');
-      return Ember.run.next(this, function() {
-        return this.notifyPropertyChange('rows');
+      Ember.run.next(this, function() {
+        this.notifyPropertyChange('rows');
       });
     }
   },
   data: null,
-  columns: Ember.computed(function() {
-    var columns, data, names;
-    data = this.get('data');
+  columns: function() {
+    var data = this.get('data');
     if (!data) {
       return;
     }
-    names = this.get('data.value_factors').getEach('display_name');
-    columns = names.map(function(name, index) {
+    var names = this.get('data.value_factors').getEach('display_name');
+    var columns = names.map(function(name, index) {
       return Ember.Table.ColumnDefinition.create({
         index: index,
         headerCellName: name,
         headerCellViewClass: 'App.FinancialTableHeaderCell',
         tableCellViewClass: 'App.FinancialTableCell',
         getCellContent: function(row) {
-          var object;
-          object = row.get('values')[this.get('index')];
+          var object = row.get('values')[this.get('index')];
           if (object.type === 'money') {
             return object.value.toCurrency();
           }
@@ -165,11 +159,10 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend({
     });
     columns.unshiftObject(this.get('groupingColumn'));
     return columns;
-  }).property('data.valueFactors.@each', 'groupingColumn'),
-  groupingColumn: Ember.computed(function() {
-    var groupingFactors, name;
-    groupingFactors = this.get('data.grouping_factors');
-    name = groupingFactors.getEach('display_name').join(' ▸ ');
+  }.property('data.valueFactors.@each', 'groupingColumn'),
+  groupingColumn: function() {
+    var groupingFactors = this.get('data.grouping_factors');
+    var name = groupingFactors.getEach('display_name').join(' ▸ ');
     return Ember.Table.ColumnDefinition.create({
       headerCellName: name,
       columnWidth: 400,
@@ -180,56 +173,51 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend({
       tableCellViewClass: 'App.FinancialTableTreeCell',
       contentPath: 'group_value'
     });
-  }).property('data.grouping_factors.@each'),
-  root: Ember.computed(function() {
-    var data;
-    data = this.get('data');
+  }.property('data.grouping_factors.@each'),
+  root: function() {
+    var data = this.get('data');
     if (!data) {
       return;
     }
     return this.createTree(null, data.root);
-  }).property('data', 'sortAscending', 'sortColumn'),
-  rows: Ember.computed(function() {
-    var maxGroupingLevel, root, rows;
-    root = this.get('root');
+  }.property('data', 'sortAscending', 'sortColumn'),
+  rows: function() {
+    var root = this.get('root');
     if (!root) {
-      return Ember.A();
+      return [];
     }
-    rows = this.flattenTree(null, root, Ember.A());
+    var rows = this.flattenTree(null, root, []);
     this.computeStyles(null, root);
-    maxGroupingLevel = Math.max.apply(rows.getEach('groupingLevel'));
+    var maxGroupingLevel = Math.max.apply(rows.getEach('groupingLevel'));
     rows.forEach(function(row) {
-      return row.computeRowStyle(maxGroupingLevel);
+      row.computeRowStyle(maxGroupingLevel);
     });
     return rows;
-  }).property('root'),
-  bodyContent: Ember.computed(function() {
-    var rows;
-    rows = this.get('rows');
+  }.property('root'),
+  bodyContent: function() {
+    var rows = this.get('rows');
     if (!rows) {
-      return Ember.A();
+      return [];
     }
     rows = rows.slice(1, rows.get('length'));
     return rows.filterProperty('isShowing');
-  }).property('rows'),
-  footerContent: Ember.computed(function() {
-    var rows;
-    rows = this.get('rows');
+  }.property('rows'),
+  footerContent: function() {
+    var rows = this.get('rows');
     if (!rows) {
-      return Ember.A();
+      return [];
     }
     return rows.slice(0, 1);
-  }).property('rows'),
+  }.property('rows'),
   orderBy: function(item1, item2) {
-    var result, sortAscending, sortColumn, value1, value2;
-    sortColumn = this.get('sortColumn');
-    sortAscending = this.get('sortAscending');
+    var sortColumn = this.get('sortColumn');
+    var sortAscending = this.get('sortAscending');
     if (!sortColumn) {
       return 1;
     }
-    value1 = sortColumn.getCellContent(item1.get('content'));
-    value2 = sortColumn.getCellContent(item2.get('content'));
-    result = Ember.compare(value1, value2);
+    var value1 = sortColumn.getCellContent(item1.get('content'));
+    var value2 = sortColumn.getCellContent(item2.get('content'));
+    var result = Ember.compare(value1, value2);
     if (sortAscending) {
       return result;
     } else {
@@ -237,15 +225,12 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend({
     }
   },
   createTree: function(parent, node) {
-    var children, row;
-    row = App.FinancialTableTreeTableRow.create({
+    var row = App.FinancialTableTreeTableRow.create({
       parentController: this
     });
-    children = (node.children || []).map((function(_this) {
-      return function(child) {
-        return _this.createTree(row, child);
-      };
-    })(this));
+    var children = (node.children || []).map(function(child) {
+      return this.createTree(row, child);
+    }, this);
     row.setProperties({
       isRoot: !parent,
       isLeaf: Ember.isEmpty(children),
@@ -259,19 +244,15 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend({
   },
   flattenTree: function(parent, node, rows) {
     rows.pushObject(node);
-    (node.children || []).forEach((function(_this) {
-      return function(child) {
-        return _this.flattenTree(node, child, rows);
-      };
-    })(this));
+    (node.children || []).forEach(function(child) {
+      this.flattenTree(node, child, rows);
+    }, this);
     return rows;
   },
   computeStyles: function(parent, node) {
     node.computeStyles(parent);
-    return node.get('children').forEach((function(_this) {
-      return function(child) {
-        return _this.computeStyles(node, child);
-      };
-    })(this));
+    node.get('children').forEach(function(child) {
+      this.computeStyles(node, child);
+    }, this);
   }
 });

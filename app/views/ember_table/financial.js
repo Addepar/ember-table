@@ -9,9 +9,9 @@ App.FinancialTableHeaderCell = Ember.Table.HeaderCell.extend({
 App.FinancialTableTreeCell = Ember.Table.TableCell.extend({
   templateName: 'ember_table/financial_table/financial_table_tree_cell',
   classNames: 'ember-table-table-tree-cell',
-  paddingStyle: Ember.computed(function() {
+  paddingStyle: function() {
     return "padding-left:" + (this.get('row.indentation')) + "px;";
-  }).property('row.indentation')
+  }.property('row.indentation')
 });
 
 App.FinancialTableHeaderTreeCell = Ember.Table.HeaderCell.extend({

@@ -1,30 +1,29 @@
 App.FluidColumnDefinition = Ember.Table.ColumnDefinition.extend({
-  isResizable: Ember.computed(function() {
+  isResizable: function() {
     if (this.get('_nextColumn')) {
       return true;
     } else {
       return false;
     }
-  }).property('_nextColumn'),
+  }.property('_nextColumn'),
   resize: function(pxWidth, tableWidth) {
-    var diff, newMaxWidth, newWidth, nextCol, oldWidth, percent;
-    newMaxWidth = null;
     tableWidth = tableWidth || this.get("controller._tableContainerWidth");
     if (!tableWidth) {
       return;
     }
-    percent = function(val) {
+    var percent = function(val) {
       if ("string" === typeof val) {
         return +(val.replace("%", ""));
       } else {
         return val * 100 / tableWidth;
       }
     };
-    oldWidth = percent(this.get("columnWidth"));
-    newWidth = 'number' === typeof pxWidth ? percent(pxWidth) : oldWidth;
-    nextCol = this.get("_nextColumn");
+    var newMaxWidth;
+    var oldWidth = percent(this.get("columnWidth"));
+    var newWidth = 'number' === typeof pxWidth ? percent(pxWidth) : oldWidth;
+    var nextCol = this.get("_nextColumn");
     if (nextCol) {
-      diff = oldWidth - newWidth + percent(nextCol.get("columnWidth"));
+      var diff = oldWidth - newWidth + percent(nextCol.get("columnWidth"));
       nextCol.set("columnWidth", diff / 100 * tableWidth);
       newMaxWidth = (newWidth + diff) / 100 * tableWidth - 100;
     }
@@ -33,64 +32,58 @@ App.FluidColumnDefinition = Ember.Table.ColumnDefinition.extend({
     return newMaxWidth;
   },
   _convertColumnToWidth: Ember.beforeObserver(function() {
-    var tableWidth;
-    tableWidth = this.get("controller._tableContainerWidth");
+    var tableWidth = this.get("controller._tableContainerWidth");
     if (tableWidth) {
-      return this.set("columnWidth", this.get("columnWidth") / tableWidth * 100 + "%");
+      this.set("columnWidth", this.get("columnWidth") / tableWidth * 100 + "%");
     }
   }, "controller._tableContainerWidth"),
-  _resizeToTable: Ember.observer(function() {
-    return this.resize();
-  }, "controller._tableContainerWidth")
+  _resizeToTable: function() {
+    this.resize();
+  }.observes("controller._tableContainerWidth")
 });
 
 App.FluidTable = Ember.Table.EmberTableComponent.extend({
   _tableColumnsWidth: "100%",
   prepareTableColumns: function(columns) {
-    var col, i, _i, _len, _results;
     this._super(columns);
-    _results = [];
-    for (i = _i = 0, _len = columns.length; _i < _len; i = ++_i) {
-      col = columns[i];
-      _results.push(col.set("_nextColumn", columns.objectAt(i + 1)));
-    }
-    return _results;
+    columns.forEach(function(column, index) {
+      column.set('_nextColumn', columns.objectAt(index+1));
+    });
   }
 });
 
 App.EmberTableFluidController = Ember.Controller.extend({
   numRows: 100,
-  columns: Ember.computed(function() {
-    var closeColumn, dateColumn, highColumn, lowColumn, openColumn;
-    dateColumn = App.FluidColumnDefinition.create({
+  columns: function() {
+    var dateColumn = App.FluidColumnDefinition.create({
       columnWidth: "40",
       headerCellName: 'Date',
       getCellContent: function(row) {
         return row.get('date').toDateString();
       }
     });
-    openColumn = App.FluidColumnDefinition.create({
+    var openColumn = App.FluidColumnDefinition.create({
       columnWidth: "15",
       headerCellName: 'Open',
       getCellContent: function(row) {
         return row.get('open').toFixed(2);
       }
     });
-    highColumn = App.FluidColumnDefinition.create({
+    var highColumn = App.FluidColumnDefinition.create({
       columnWidth: "15",
       headerCellName: 'High',
       getCellContent: function(row) {
         return row.get('high').toFixed(2);
       }
     });
-    lowColumn = App.FluidColumnDefinition.create({
+    var lowColumn = App.FluidColumnDefinition.create({
       columnWidth: "15",
       headerCellName: 'Low',
       getCellContent: function(row) {
         return row.get('low').toFixed(2);
       }
     });
-    closeColumn = App.FluidColumnDefinition.create({
+    var closeColumn = App.FluidColumnDefinition.create({
       columnWidth: "15",
       headerCellName: 'Close',
       getCellContent: function(row) {
@@ -98,16 +91,11 @@ App.EmberTableFluidController = Ember.Controller.extend({
       }
     });
     return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
-  }),
-  content: Ember.computed(function() {
-    var _i, _ref, _results;
-    return (function() {
-      _results = [];
-      for (var _i = 0, _ref = this.get('numRows'); 0 <= _ref ? _i < _ref : _i > _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-      return _results;
-    }).apply(this).map(function(index) {
-      var date;
-      date = new Date();
+  }.property(),
+  content: function() {
+    var numRows = this.get('numRows');
+    return App.utils.range(0, numRows).map(function(index) {
+      var date = new Date();
       date.setDate(date.getDate() + index);
       return {
         date: date,
@@ -118,5 +106,5 @@ App.EmberTableFluidController = Ember.Controller.extend({
         volume: Math.random() * 1000000
       };
     });
-  }).property('numRows')
+  }.property('numRows')
 });
