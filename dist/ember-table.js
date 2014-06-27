@@ -1,8 +1,3 @@
-/*!
-* ember-table v0.2.0
-* Copyright 2012-2014 Addepar Inc.
-* See LICENSE.
-*/
 (function() {
 
 var _ref;
@@ -1524,7 +1519,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
 
   _tableColumnsWidth: Ember.computed(function() {
     var availableWidth, contentWidth;
-    contentWidth = (this._getTotalWidth(this.get('tableColumns'))) + 3;
+    contentWidth = this._getTotalWidth(this.get('tableColumns'));
     availableWidth = this.get('_width') - this.get('_fixedColumnsWidth');
     if (contentWidth > availableWidth) {
       return contentWidth;
