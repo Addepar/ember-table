@@ -1,4 +1,3 @@
-
 /*
 jQuery.browser shim that makes HT working with jQuery 1.8+
  */

@@ -1,4 +1,3 @@
-
 /**
  * Column Definition
  * @class
@@ -18,7 +17,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
   headerCellViewClass: 'Ember.Table.HeaderCell',
   tableCellViewClass: 'Ember.Table.TableCell',
   resize: function(width) {
-    return this.set('columnWidth', width);
+    this.set('columnWidth', width);
   },
 
   /**
@@ -65,9 +64,9 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
   * @member {Boolean} isSelected
   * @instance
    */
-  isSelected: Ember.computed(function() {
+  isSelected: function() {
     return this.get('parentController.selection') === this.get('content');
-  }).property('parentController.selection', 'content'),
+  }.property('parentController.selection', 'content'),
 
   /**
   * Is Showing?

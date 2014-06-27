@@ -1,3 +1,10 @@
+Ember.Table.utils = {};
+
+Ember.Table.utils.range = function(start, end) {
+  var _results = [];
+  for (var _i = start; start <= end ? _i < end : _i > end; start <= end ? _i++ : _i--){ _results.push(_i); }
+  return _results;
+};
 
 /**
  * Multi Item View Collection View
@@ -8,9 +15,8 @@ Ember.MultiItemViewCollectionView = Ember.CollectionView.extend(Ember.AddeparMix
   styleBindings: 'width',
   itemViewClassField: null,
   createChildView: function(view, attrs) {
-    var itemViewClass, itemViewClassField;
-    itemViewClassField = this.get('itemViewClassField');
-    itemViewClass = attrs.content.get(itemViewClassField);
+    var itemViewClassField = this.get('itemViewClassField');
+    var itemViewClass = attrs.content.get(itemViewClassField);
     if (typeof itemViewClass === 'string') {
       itemViewClass = Ember.get(Ember.lookup, itemViewClass);
     }
@@ -20,73 +26,56 @@ Ember.MultiItemViewCollectionView = Ember.CollectionView.extend(Ember.AddeparMix
 
 Ember.MouseWheelHandlerMixin = Ember.Mixin.create({
   onMouseWheel: Ember.K,
-  didInsertElement: function() {
-    this._super();
-    return this.$().bind('mousewheel', (function(_this) {
-      return function(event, delta, deltaX, deltaY) {
-        return Ember.run(_this, _this.onMouseWheel, event, delta, deltaX, deltaY);
-      };
-    })(this));
-  },
-  willDestroyElement: function() {
-    var _ref;
-    if ((_ref = this.$()) != null) {
-      _ref.unbind('mousewheel');
+  bindMousewheel: function() {
+    this.$().bind('mousewheel', Ember.run.bind(this, this.onMouseWheel));
+  }.on('didInsertElement'),
+  unbindMousewheel: function() {
+    if (this.$() != null) {
+      this.$().unbind('mousewheel');
     }
-    return this._super();
-  }
+  }.on('willDestroyElement')
 });
 
 Ember.ScrollHandlerMixin = Ember.Mixin.create({
   onScroll: Ember.K,
   scrollElementSelector: '',
-  didInsertElement: function() {
-    this._super();
-    return this.$(this.get('scrollElementSelector')).bind('scroll', (function(_this) {
-      return function(event) {
-        return Ember.run(_this, _this.onScroll, event);
-      };
-    })(this));
-  },
-  willDestroyElement: function() {
-    var _ref;
-    if ((_ref = this.$(this.get('scrollElementSelector'))) != null) {
-      _ref.unbind('scroll');
+  bindScroll: function() {
+    var $scroll = this.$(this.get('scrollElementSelector'));
+    $scroll.bind('scroll', Ember.run.bind(this, this.onScroll));
+  }.on('didInsertElement'),
+  unbindScroll: function() {
+    var $scroll = this.$(this.get('scrollElementSelector'));
+    if ($scroll != null) {
+      $scroll.unbind('scroll');
     }
-    return this._super();
-  }
+  }.on('willDestroyElement')
 });
 
 Ember.TouchMoveHandlerMixin = Ember.Mixin.create({
   onTouchMove: Ember.K,
-  didInsertElement: function() {
-    var startX, startY;
-    this._super();
-    startX = startY = 0;
+  bindTouchmove: function() {
+    var startX = 0;
+    var startY = 0;
     this.$().bind('touchstart', function(event) {
       startX = event.originalEvent.targetTouches[0].pageX;
       startY = event.originalEvent.targetTouches[0].pageY;
     });
-    return this.$().bind('touchmove', (function(_this) {
-      return function(event) {
-        var deltaX, deltaY, newX, newY;
-        newX = event.originalEvent.targetTouches[0].pageX;
-        newY = event.originalEvent.targetTouches[0].pageY;
-        deltaX = -(newX - startX);
-        deltaY = -(newY - startY);
-        Ember.run(_this, _this.onTouchMove, event, deltaX, deltaY);
-        startX = newX;
-        startY = newY;
-      };
-    })(this));
-  },
-  willDestroy: function() {
-    var _ref;
-    if ((_ref = this.$()) != null) {
-      _ref.unbind('touchmove');
+    this.$().bind('touchmove', function(event) {
+      var newX = event.originalEvent.targetTouches[0].pageX;
+      var newY = event.originalEvent.targetTouches[0].pageY;
+      var deltaX = -(newX - startX);
+      var deltaY = -(newY - startY);
+      Ember.run(_this, _this.onTouchMove, event, deltaX, deltaY);
+      startX = newX;
+      startY = newY;
+    });
+  }.on('didInsertElement'),
+  unbindTouchmove: function() {
+    if (this.$() != null) {
+      this.$().unbind('touchmove');
+      this.$().unbind('touchstart');
     }
-    return this._super();
-  }
+  }.on('willDestroyElement')
 });
 
 
@@ -99,14 +88,13 @@ Ember.TouchMoveHandlerMixin = Ember.Mixin.create({
 Ember.Table.RowArrayController = Ember.ArrayController.extend({
   itemController: null,
   content: null,
-  rowContent: Ember.computed(function() {
+  rowContent: function() {
     return [];
-  }).property(),
+  }.property(),
   controllerAt: function(idx, object, controllerClass) {
-    var container, subController, subControllers;
-    container = this.get('container');
-    subControllers = this.get('_subControllers');
-    subController = subControllers[idx];
+    var container = this.get('container');
+    var subControllers = this.get('_subControllers');
+    var subController = subControllers[idx];
     if (subController) {
       return subController;
     }
@@ -121,21 +109,17 @@ Ember.Table.RowArrayController = Ember.ArrayController.extend({
 });
 
 
-/*
-HACK: We want the horizontal scroll to show on mouse enter and leave.
- */
+// HACK: We want the horizontal scroll to show on mouse enter and leave.
 
 Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create({
   mouseEnter: function(event) {
-    var $horizontalScroll, $tablesContainer;
-    $tablesContainer = $(event.target).parents('.ember-table-tables-container');
-    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal');
-    return $horizontalScroll.addClass('antiscroll-scrollbar-shown');
+    var $tablesContainer = $(event.target).parents('.ember-table-tables-container');
+    var $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal');
+    $horizontalScroll.addClass('antiscroll-scrollbar-shown');
   },
   mouseLeave: function(event) {
-    var $horizontalScroll, $tablesContainer;
-    $tablesContainer = $(event.target).parents('.ember-table-tables-container');
-    $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal');
-    return $horizontalScroll.removeClass('antiscroll-scrollbar-shown');
+    var $tablesContainer = $(event.target).parents('.ember-table-tables-container');
+    var $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal');
+    $horizontalScroll.removeClass('antiscroll-scrollbar-shown');
   }
 });

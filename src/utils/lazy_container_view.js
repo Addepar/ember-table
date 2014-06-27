@@ -6,62 +6,51 @@ Ember.LazyContainerView = Ember.ContainerView.extend(Ember.AddeparMixins.StyleBi
   rowHeight: null,
   scrollTop: null,
   startIndex: null,
-  init: function() {
-    this._super();
-    return this.onNumChildViewsDidChange();
-  },
-  height: Ember.computed(function() {
+  height: function() {
     return this.get('content.length') * this.get('rowHeight');
-  }).property('content.length', 'rowHeight'),
-  numChildViews: Ember.computed(function() {
+  }.property('content.length', 'rowHeight'),
+  numChildViews: function() {
     return this.get('numItemsShowing') + 2;
-  }).property('numItemsShowing'),
-  onNumChildViewsDidChange: Ember.observer(function() {
-    var itemViewClass, newNumViews, numViewsToInsert, oldNumViews, view, viewsToAdd, viewsToRemove, _i, _results;
-    view = this;
-    itemViewClass = Ember.get(this.get('itemViewClass'));
-    newNumViews = this.get('numChildViews');
+  }.property('numItemsShowing'),
+  onNumChildViewsDidChange: function() {
+    var view = this;
+    var itemViewClass = Ember.get(this.get('itemViewClass'));
+    var newNumViews = this.get('numChildViews');
     if (!(itemViewClass && newNumViews)) {
       return;
     }
-    oldNumViews = this.get('length');
-    numViewsToInsert = newNumViews - oldNumViews;
+    var oldNumViews = this.get('length');
+    var numViewsToInsert = newNumViews - oldNumViews;
     if (numViewsToInsert < 0) {
-      viewsToRemove = this.slice(newNumViews, oldNumViews);
+      var viewsToRemove = this.slice(newNumViews, oldNumViews);
       return this.removeObjects(viewsToRemove);
     } else if (numViewsToInsert > 0) {
-      viewsToAdd = (function() {
-        _results = [];
-        for (var _i = 0; 0 <= numViewsToInsert ? _i < numViewsToInsert : _i > numViewsToInsert; 0 <= numViewsToInsert ? _i++ : _i--){ _results.push(_i); }
-        return _results;
-      }).apply(this).map(function() {
+      var viewsToAdd = Ember.Table.utils.range(0, numViewsToInsert).map(function() {
         return view.createChildView(itemViewClass);
       });
       return this.pushObjects(viewsToAdd);
     }
-  }, 'numChildViews', 'itemViewClass'),
-  viewportDidChange: Ember.observer(function() {
-    var clength, content, numShownViews, startIndex;
-    content = this.get('content') || [];
-    clength = content.get('length');
-    numShownViews = Math.min(this.get('length'), clength);
-    startIndex = this.get('startIndex');
+  }.observes('numChildViews', 'itemViewClass').on('init'),
+  viewportDidChange: function() {
+    var content = this.get('content') || [];
+    var clength = content.get('length');
+    var numShownViews = Math.min(this.get('length'), clength);
+    var startIndex = this.get('startIndex');
     if (startIndex + numShownViews >= clength) {
       startIndex = clength - numShownViews;
     }
     if (startIndex < 0) {
       startIndex = 0;
     }
-    return this.forEach(function(childView, i) {
-      var item, itemIndex;
+    this.forEach(function(childView, i) {
       if (i >= numShownViews) {
         childView = this.objectAt(i);
         childView.set('content', null);
         return;
       }
-      itemIndex = startIndex + i;
+      var itemIndex = startIndex + i;
       childView = this.objectAt(itemIndex % numShownViews);
-      item = content.objectAt(itemIndex);
+      var item = content.objectAt(itemIndex);
       if (item !== childView.get('content')) {
         childView.teardownContent();
         childView.set('itemIndex', itemIndex);
@@ -69,7 +58,7 @@ Ember.LazyContainerView = Ember.ContainerView.extend(Ember.AddeparMixins.StyleBi
         return childView.prepareContent();
       }
     }, this);
-  }, 'content.length', 'length', 'startIndex')
+  }.observes('content.length', 'length', 'startIndex')
 });
 
 
@@ -85,12 +74,12 @@ Ember.LazyItemView = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   teardownContent: Ember.K,
   rowHeightBinding: 'parentView.rowHeight',
   styleBindings: ['width', 'top', 'display'],
-  top: Ember.computed(function() {
+  top: function() {
     return this.get('itemIndex') * this.get('rowHeight');
-  }).property('itemIndex', 'rowHeight'),
-  display: Ember.computed(function() {
+  }.property('itemIndex', 'rowHeight'),
+  display: function() {
     if (!this.get('content')) {
       return 'none';
     }
-  }).property('content')
+  }.property('content')
 });
