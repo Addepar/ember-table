@@ -13,9 +13,6 @@
           {{view App.FinancialTableComponent dataBinding="data"}}
         </div>
       </div>
-      <div class="example-description">
-        <p class="reduced right-align">Ember-Table with financial theme. Table with half a million rows. <a href="#">Read more →</a></p>
-      </div>
     </div>
   </div>
 
@@ -25,20 +22,20 @@
       <ul class="styled">
         <li>Lazy rendering and support for millions of rows</li>
         <li>Support for column resizing and reordering</li>
-        <li>Fully configurable, customizable, and extendable</li>
+        <li>Configurable, customizable, and extendable</li>
       </ul>
     </div>
     <div class="col-md-6">
       <h3>Dependencies</h3>
       <ul class="styled">
-        <li><a target="_BLANK" href="http://emberjs.com/">Ember.js</a></li>
+        <li><a target="_BLANK" href="http://emberjs.com/">ember</a></li>
         <li><a target="_BLANK" href="http://jqueryui.com/download/#!components=1110001010000000000000000000000000">
-          jquery-ui
+          jquery-ui</a>
           <br>
-          <small>only core, widget, mouse, resizable, and sortable modules required</small>
-        </a></li>
-        <li><a target="_BLANK" href="https://github.com/brandonaaron/jquery-mousewheel">jquery.mousewheel.js</a></li>
-        <li><a target="_BLANK" href="https://github.com/LearnBoost/antiscroll">antiscroll.js</a></li>
+          <small>(only core, widget, mouse, resizable, and sortable modules required)</small>
+        </li>
+        <li><a target="_BLANK" href="https://github.com/brandonaaron/jquery-mousewheel">jquery.mousewheel</a></li>
+        <li><a target="_BLANK" href="https://github.com/LearnBoost/antiscroll">antiscroll</a></li>
       </ul>
     </div>
   </div>
@@ -104,6 +101,7 @@
           </div>
         {{/link-to}}
       </div>
+      <p>Looking for more ways to extend ember-table? Check out the {{#link-to 'emberTable.community-examples'}}Community Examples{{/link-to}}.</p>
     </div>
   </div>
 
@@ -112,26 +110,15 @@
       <hr>
       <h1>Getting Started</h1>
       <p>You will need <a target="_BLANK" href="http://nodejs.org/">node</a> installed as a development dependency.</p>
-      <p><a href="https://github.com/Addepar/ember-table/">Clone it from Github</a> or <a href="https://github.com/Addepar/ember-table/zipball/master">download the ZIP repo<a><p>
+      <p><a target="_BLANK" href="https://github.com/Addepar/ember-table/">Clone it from Github</a> or <a target="_BLANK" href="https://github.com/Addepar/ember-table/releases">download the ZIP repo</a></p>
       <div class="highlight">
 <pre><code>$ npm install -g grunt-cli
 $ npm install
 $ grunt
 $ node examples.js</code></pre>
-      <p>Go to your browser and navigate to localhost:8000/gh_pages</p>
+      <p>Go to your browser and navigate to <a target="_BLANK" href="http://localhost:8000/gh_pages">localhost:8000/gh_pages</a></p>
       </div>
     </div>
-    <div class="col-md-6">
-      <hr>
-      <h1>Changelog</h1>
-      <ul class="styled">
-        <li>v0.1 - October 21, 2013. Branch: <a target="_BLANK" href="https://github.com/Addepar/ember-table/tree/master">master →</a></li>
-        <li>v0.0.1 - December 20, 2012. Branch: <a target="_BLANK" href="https://github.com/Addepar/ember-table/tree/version-0.1">version-0.1 →</a></li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="row">
     <div class="col-md-6">
       <hr>
       <h1>Contributing</h1>
@@ -141,6 +128,15 @@ $ node examples.js</code></pre>
         <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>
       </ul>
       <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <hr>
+      <h1>Changelog</h1>
+      <p>The current version is 0.2.1.
+      <p>For the full list of changes, please see <a target="_BLANK" href="https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md">CHANGELOG.md</a>.</p>
     </div>
     <div class="col-md-6">
       <hr>

@@ -7,6 +7,7 @@ App.Router.map ->
   @resource 'emberTable', path: '/ember-table', ->
     @route 'overview'
     @route 'documentation'
+    @route 'migration-guides'
     @route 'ajax'
     @route 'bars'
     @route 'dynamic-bars'
@@ -16,6 +17,7 @@ App.Router.map ->
     @route 'horizon'
     @route 'simple'
     @route 'sparkline'
+    @route 'community-examples'
 
 App.IndexRoute = Ember.Route.extend
   redirect: ->
@@ -24,3 +26,12 @@ App.IndexRoute = Ember.Route.extend
 App.EmberTableIndexRoute = Ember.Route.extend
   redirect: ->
     @transitionTo 'emberTable.overview'
+
+App.EmberTableOverviewRoute = Ember.Route.extend
+  activate: ->
+    controller = @controllerFor('emberTable')
+    controller.set 'showLargeHero', yes
+
+  deactivate: ->
+    controller = @controllerFor('emberTable')
+    controller.set 'showLargeHero', no

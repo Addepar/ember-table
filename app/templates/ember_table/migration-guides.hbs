@@ -1,0 +1,47 @@
+{{!-- To add shadow main-content-container-shadow --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Migration Guides</h1>
+  <div class="row">
+    <div class="col-md-7">
+      <h2>Migrating from old versions to version 0.1.0</h2>
+      <p>Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping that the new organization will make it simpler and easier to set up, but for existing users, you’ll have to make a few changes to upgrade to the new Ember Table. This guide is intended to walk you through that process.</p>
+
+      <ol class="styled styled-spacious">
+        <li>Upgrade ember-table.js and ember-table.css. If you’re not on the latest version of <a target="_BLANK" href="http://emberjs.com/">Ember.js</a>, now might be a good time to upgrade that as well. This guide was written using Ember 1.0.0 and Ember Table 0.1.0. You can grab Ember 1.0.0 <a target="_BLANK" href="https://github.com/emberjs/starter-kit/archive/v1.0.0.zip">here</a>.</li>
+        <li>The major change is moving from separate table Views and Controllers to a unified table Component. You can read up on Ember Components <a target="_BLANK" href="http://emberjs.com/guides/components/">here</a>. So instead of having lines like this:<br/><br/>
+        <div class="highlight">
+<pre class="prettyprint lang-coffee">App.MyTableController = Ember.Table.TableController.extend (...)
+App.MyTableView = EmberTable.TableContainerView.extend (...)</pre>
+        </div>
+
+        You’ll have everything in one place:
+        <div class="highlight">
+<pre class="prettyprint lang-coffee">App.MyTableController = Ember.Controller.extend (...)</pre>
+        </div>
+
+        For starters, just change the type of your MyTableController from the old version to the new.
+        </li>
+        <li>Update your handlebars file. Before, it might have looked like:<br/>
+          <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;view Ember.Table.TablesContainer …&#125;&#125;</pre>
+          </div>
+          After the restructure, it should look like this:<br/>
+          <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component …&#125;&#125;</pre>
+          </div>
+        </li>
+        <li>While you’re modifying that handlebars file, you may want to make sure it looks like the structure of the new Ember Table examples. You can see one {{#link-to 'emberTable.simple'}}here{{/link-to}}. In particular, you might get errors if you don’t properly bind your columns and content of the table, using “columnsBinding=” and “contentBinding=”.<br/><br/>
+        Both of these settings refer to variables in the corresponding controller (which here should be MyTableController), such that if you set “columnsBinding=exampleVariable”, then the columns will be bound to “exampleVariable” in the controller. This gives you control over the look and content of the table.<br/><br/>
+        Before, you may have had “controllerBinding=” here. You don’t need this any more: the controller being used with this template will be used for the table too, by default.</li>
+        <li>Move any properties you had defined in your TableContainerView (if you had one) into the controller. See the examples for more information on how table properties should be set now.</li>
+      </ol>
+    </div>
+    <div class="col-md-5">
+      <h2>Troubleshooting</h2>
+      <ul class="styled styled-spacious">
+        <li>If you were using old Ember Table objects like the RowArrayProxy, take another look and consider whether you really need it. During my migration I was able to remove it by changing the “contentBinding=” in my handlebars file to a more appropriate variable for content.</li>
+        <li>If you are having errors with template names not being found, it may be due to a change with inferring names. For me, my old template names used hyphens, and changing them to underscores automatically connected them to the rest of my application.</li>
+      </ul>
+    </div>
+  </div>
+</div>

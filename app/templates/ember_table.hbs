@@ -1,9 +1,26 @@
-{{!-- Small Hero --}}
-<div class="hero-container small-hero-container">
-  <div class="hero table-hero">
-    <div class="hero-overlay"></div>
+{{#if showLargeHero}}
+  {{!-- Hero --}}
+  <div class="hero-container">
+    <div class="hero table-hero">
+      <div class="hero-overlay"></div>
+    </div>
+    <div class="container hero-content-container">
+      <div class="row">
+        <div class="span12 hero-tagline center-align hidden-tablet">
+          <h1 class="elevated">Ember Table</h1>
+          <p class="elevated">A fast, lazy rendered, easily extensible table built with Ember.js.<br><br><a target="_BLANK" href="https://github.com/Addepar/ember-table/releases" class="addepar-btn addepar-btn-large addepar-btn-outline addepar-btn-white">Download Ember-Table</a></p>
+        </div>
+      </div>
+    </div>
   </div>
-</div>
+{{else}}
+  {{!-- Small Hero --}}
+  <div class="hero-container small-hero-container">
+    <div class="hero table-hero">
+      <div class="hero-overlay"></div>
+    </div>
+  </div>
+{{/if}}
 
 {{!-- Main Container --}}
 <div class="container">

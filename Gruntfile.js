@@ -220,6 +220,14 @@ module.exports = function (grunt) {
           from: /Ember.Table.VERSION = '.*\..*\..*'/,
           to: "Ember.Table.VERSION = '<%=pkg.version%>'"
         }]
+      },
+      overview_page: {
+        src: ['app/templates/ember_table/overview.hbs'],
+        overwrite: true,
+        replacements: [{
+          from: /The current version is .*\..*\..*./,
+          to: "The current version is <%=pkg.version%>."
+        }]
       }
     },
 
