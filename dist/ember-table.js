@@ -1,8 +1,3 @@
-/*!
-* ember-table v0.2.1
-* Copyright 2012-2014 Addepar Inc.
-* See LICENSE.
-*/
 (function() {
 
 var _ref;
@@ -19,7 +14,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '';
-  data.buffer.push("\n        ");
+  data.buffer.push("\r\n        ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {hash:{
     'classNames': ("ember-table-left-table-block"),
     'contentBinding': ("controller.bodyContent"),
@@ -29,14 +24,14 @@ function program1(depth0,data) {
     'scrollTopBinding': ("controller._scrollTop"),
     'startIndexBinding': ("controller._startIndex")
   },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'numItemsShowingBinding': "STRING",'scrollTopBinding': "STRING",'startIndexBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'widthBinding': depth0,'numItemsShowingBinding': depth0,'scrollTopBinding': depth0,'startIndexBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n      ");
+  data.buffer.push("\r\n      ");
   return buffer;
   }
 
-  data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n      ");
+  data.buffer.push("<div class=\"antiscroll-box\">\r\n  <div class=\"antiscroll-inner\">\r\n    <div class=\"ember-table-table-scrollable-wrapper\">\r\n      ");
   stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n      ");
+  data.buffer.push("\r\n      ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {hash:{
     'classNames': ("ember-table-right-table-block"),
     'contentBinding': ("controller.bodyContent"),
@@ -47,7 +42,7 @@ function program1(depth0,data) {
     'scrollTopBinding': ("controller._scrollTop"),
     'startIndexBinding': ("controller._startIndex")
   },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'scrollLeftBinding': "STRING",'widthBinding': "STRING",'numItemsShowingBinding': "STRING",'scrollTopBinding': "STRING",'startIndexBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'scrollLeftBinding': depth0,'widthBinding': depth0,'numItemsShowingBinding': depth0,'scrollTopBinding': depth0,'startIndexBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n    </div>\n  </div>\n</div>");
+  data.buffer.push("\r\n    </div>\r\n  </div>\r\n</div>");
   return buffer;
   
 });
@@ -60,33 +55,33 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '';
-  data.buffer.push("\n  ");
+  data.buffer.push("\r\n  ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderTableContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   return buffer;
   }
 
 function program3(depth0,data) {
   
   var buffer = '';
-  data.buffer.push("\n  ");
+  data.buffer.push("\r\n  ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.FooterTableContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   return buffer;
   }
 
   stack1 = helpers['if'].call(depth0, "controller.hasHeader", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.BodyTableContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   stack1 = helpers['if'].call(depth0, "controller.hasFooter", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ScrollContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ColumnSortableIndicator", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   return buffer;
   
 });
@@ -99,7 +94,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '';
-  data.buffer.push("\n    ");
+  data.buffer.push("\r\n    ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {hash:{
     'classNames': ("ember-table-left-table-block"),
     'contentBinding': ("controller.footerContent"),
@@ -107,14 +102,14 @@ function program1(depth0,data) {
     'widthBinding': ("controller._fixedBlockWidth"),
     'heightBinding': ("controller.footerHeight")
   },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n  ");
+  data.buffer.push("\r\n  ");
   return buffer;
   }
 
-  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
+  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\r\n  ");
   stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n  ");
+  data.buffer.push("\r\n  ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {hash:{
     'classNames': ("ember-table-right-table-block"),
     'contentBinding': ("controller.footerContent"),
@@ -123,7 +118,7 @@ function program1(depth0,data) {
     'widthBinding': ("controller._tableBlockWidth"),
     'heightBinding': ("controller.footerHeight")
   },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'scrollLeftBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'scrollLeftBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n</div>\n");
+  data.buffer.push("\r\n</div>\r\n");
   return buffer;
   
 });
@@ -135,11 +130,11 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 
   data.buffer.push("<div class=\"ember-table-content-container\" ");
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["ID","ID"],data:data})));
-  data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+  data.buffer.push(">\r\n  <span class=\"ember-table-content\">\r\n    ");
   stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n  </span>\n</div>");
+  data.buffer.push("\r\n  </span>\r\n</div>\r\n");
   return buffer;
   
 });
@@ -152,21 +147,21 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 function program1(depth0,data) {
   
   var buffer = '';
-  data.buffer.push("\n    ");
+  data.buffer.push("\r\n    ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {hash:{
     'classNames': ("ember-table-left-table-block"),
     'columnsBinding': ("controller.fixedColumns"),
     'widthBinding': ("controller._fixedBlockWidth"),
     'heightBinding': ("controller.headerHeight")
   },hashTypes:{'classNames': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'columnsBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n  ");
+  data.buffer.push("\r\n  ");
   return buffer;
   }
 
-  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
+  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\r\n  ");
   stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n  ");
+  data.buffer.push("\r\n  ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {hash:{
     'classNames': ("ember-table-right-table-block"),
     'columnsBinding': ("controller.tableColumns"),
@@ -174,7 +169,7 @@ function program1(depth0,data) {
     'widthBinding': ("controller._tableBlockWidth"),
     'heightBinding': ("controller.headerHeight")
   },hashTypes:{'classNames': "STRING",'columnsBinding': "STRING",'scrollLeftBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'columnsBinding': depth0,'scrollLeftBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n</div>\n");
+  data.buffer.push("\r\n</div>\r\n");
   return buffer;
   
 });
@@ -190,7 +185,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'itemViewClassField': ("headerCellViewClass"),
     'widthBinding': ("controller._tableColumnsWidth")
   },hashTypes:{'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   return buffer;
   
 });
@@ -201,9 +196,9 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', escapeExpression=this.escapeExpression;
 
 
-  data.buffer.push("<div class=\"antiscroll-wrap\">\n  <div class=\"antiscroll-inner\">\n    ");
+  data.buffer.push("<div class=\"antiscroll-wrap\">\r\n  <div class=\"antiscroll-inner\">\r\n    ");
   data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ScrollPanel", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n  </div>\n</div>\n");
+  data.buffer.push("\r\n  </div>\r\n</div>\r\n");
   return buffer;
   
 });
@@ -214,10 +209,10 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
   var buffer = '', stack1;
 
 
-  data.buffer.push("<span class=\"ember-table-content\">\n  ");
+  data.buffer.push("<span class=\"ember-table-content\">\r\n  ");
   stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n</span>");
+  data.buffer.push("\r\n</span>");
   return buffer;
   
 });
@@ -234,7 +229,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
     'itemViewClassField': ("tableCellViewClass"),
     'widthBinding': ("controller._tableColumnsWidth")
   },hashTypes:{'rowBinding': "STRING",'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'rowBinding': depth0,'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
+  data.buffer.push("\r\n");
   return buffer;
   
 });
@@ -643,6 +638,41 @@ Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create({
   }
 });
 
+Ember.Table.SimpleSortMixin = Ember.Mixin.create({
+  sortColumn: null,
+  descending: false,
+  performSort: (function() {
+    var content, descending, newContent, sortColumn;
+    sortColumn = this.get('sortColumn');
+    if (sortColumn == null) {
+      return;
+    }
+    content = this.get('content');
+    descending = this.get('descending');
+    newContent = content.sort(function(a, b) {
+      if (descending) {
+        return sortColumn.compareCellValues(b, a);
+      } else {
+        return sortColumn.compareCellValues(a, b);
+      }
+    });
+    newContent = newContent.slice(0);
+    this.set('content', newContent);
+  }).observes('sortColumn', 'descending'),
+  actions: {
+    sortByColumn: function(column) {
+      if (column === this.get('sortColumn')) {
+        this.toggleProperty('descending');
+      } else if (column.get('isSortable')) {
+        this.setProperties({
+          'sortColumn': column,
+          'descending': false
+        });
+      }
+    }
+  }
+});
+
 
 })();
 (function() {
@@ -661,7 +691,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
   defaultColumnWidth: 150,
   columnWidth: Ember.computed.oneWay('defaultColumnWidth'),
   isResizable: true,
-  isSortable: true,
+  isSortable: false,
   textAlign: 'text-align-right',
   canAutoResize: true,
   headerCellViewClass: 'Ember.Table.HeaderCell',
@@ -682,6 +712,24 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
     path = this.get('contentPath');
     Ember.assert("You must either provide a contentPath or override " + "getCellContent in your column definition", path != null);
     return Ember.get(row, path);
+  },
+  /**
+  * Compare Cell Values - Compare the value of two cells, used for sorting
+  * @memberof Ember.Table.ColumnDefinition
+  * @instance
+  * @argument firstRow {Ember.Table.Row}
+  * @argument secondRow {Ember.Table.Row}
+  */
+
+  compareCellValues: function(firstRow, secondRow) {
+    var path;
+    path = this.get('contentPath');
+    Ember.assert("You must either provide a contentPath or override " + "compareCellValues in your column definition", path != null);
+    if (firstRow.get != null) {
+      return firstRow.get(path - secondRow.get(path));
+    } else {
+      return firstRow[path] - secondRow[path];
+    }
   },
   /**
   * Set Cell Content
@@ -1304,7 +1352,7 @@ Ember.Table.ScrollPanel = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMix
 * @alias Ember.Table.EmberTableComponent
 */
 
-Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, {
+Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.StyleBindingsMixin, Ember.AddeparMixins.ResizeHandlerMixin, Ember.Table.SimpleSortMixin, {
   layoutName: 'components/ember-table',
   classNames: ['ember-table-tables-container'],
   classNameBindings: ['enableContentSelection:ember-table-content-selectable'],
@@ -1336,8 +1384,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
   },
   actions: {
-    addColumn: Ember.K,
-    sortByColumn: Ember.K
+    addColumn: Ember.K
   },
   onColumnSort: function(column, newIndex) {
     var columns;

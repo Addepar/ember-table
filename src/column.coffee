@@ -21,7 +21,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   # wether the colum is resizable
   isResizable:  yes
   # wether the column is sortable
-  isSortable:  yes
+  isSortable:  no
   # text align left | center | right
   textAlign: 'text-align-right'
   canAutoResize: yes
@@ -45,6 +45,22 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
     Ember.assert "You must either provide a contentPath or override " +
       "getCellContent in your column definition", path?
     Ember.get row, path
+
+  ###*
+  * Compare Cell Values - Compare the value of two cells, used for sorting
+  * @memberof Ember.Table.ColumnDefinition
+  * @instance
+  * @argument firstRow {Ember.Table.Row}
+  * @argument secondRow {Ember.Table.Row}
+  ###
+  compareCellValues: (firstRow, secondRow) ->
+    path = @get 'contentPath'
+    Ember.assert "You must either provide a contentPath or override " +
+      "compareCellValues in your column definition", path?
+    if firstRow.get?  #Assuming both rows are either ember objects or both are not
+        return firstRow.get path - secondRow.get path
+    else
+        return firstRow[path] - secondRow[path]
 
   ###*
   * Set Cell Content
