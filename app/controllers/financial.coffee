@@ -85,7 +85,6 @@ App.FinancialTableComponent = Ember.Table.EmberTableComponent.extend
   # custom properties
   sortAscending: no
   sortColumn: null
-  selection: null
 
   actions:
     toggleTableCollapse: (event) ->

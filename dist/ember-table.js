@@ -715,9 +715,12 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
   * @instance
   */
 
-  isSelected: Ember.computed(function() {
-    return this.get('parentController.selection') === this.get('content');
-  }).property('parentController.selection', 'content'),
+  isSelected: Ember.computed(function(key, val) {
+    if (arguments.length > 1) {
+      this.get('parentController').setSelected(this, val);
+    }
+    return this.get('parentController').isSelected(this);
+  }).property('parentController._selection.[]'),
   /**
   * Is Showing?
   * @memberof Ember.Table.Row
@@ -1321,7 +1324,30 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   forceFillColumns: false,
   enableColumnReorder: true,
   enableContentSelection: false,
-  selection: null,
+  persistedSelection: new Ember.Set(),
+  rangeSelection: new Ember.Set(),
+  selectionMode: 'single',
+  _selection: Ember.computed(function() {
+    return this.get('persistedSelection').copy().addEach(this.get('rangeSelection'));
+  }).property('persistedSelection.[]', 'rangeSelection.[]'),
+  selection: Ember.computed(function(key, val) {
+    var _ref;
+    if (arguments.length > 1 && val === !void 0) {
+      if (this.get('selectionMode') === 'single') {
+        this.get('persistedSelection').clear();
+        this.get('persistedSelection').add(val);
+      } else {
+        this.get('persistedSelection').clear();
+        this.get('persistedSelection').addEach(val);
+      }
+      this.get('rangeSelection').clear();
+    }
+    if (this.get('selectionMode') === 'single') {
+      return (_ref = this.get('_selection')) != null ? _ref[0] : void 0;
+    } else {
+      return this.get('_selection').toArray();
+    }
+  }).property('_selection.[]', 'selectionMode'),
   tableRowViewClass: 'Ember.Table.TableRow',
   init: function() {
     this._super();
@@ -1678,13 +1704,60 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return total + w;
     }), 0);
   },
+  isSelected: function(row) {
+    return this.get('_selection').contains(row);
+  },
+  setSelected: function(row, val) {
+    this.persistSelection();
+    if (val) {
+      return this.get('persistedSelection').add(row);
+    } else {
+      return this.get('persistedSelection').remove(row);
+    }
+  },
   click: function(event) {
-    var row;
+    var curIndex, lastIndex, maxIndex, minIndex, row;
     row = this.getRowForEvent(event);
     if (!row) {
       return;
     }
-    return this.set('selection', row.get('content'));
+    if (this.get('selectionMode') === 'none') {
+      return;
+    }
+    if (this.get('selectionMode') === 'single') {
+      this.get('persistedSelection').clear();
+      return this.get('persistedSelection').add(row);
+    } else {
+      if (event.shiftKey) {
+        this.get('rangeSelection').clear();
+        lastIndex = this.rowIndex(this.get('lastSelected'));
+        curIndex = this.rowIndex(this.getRowForEvent(event));
+        minIndex = Math.min(lastIndex, curIndex);
+        maxIndex = Math.max(lastIndex, curIndex);
+        return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1));
+      } else {
+        if (!event.ctrlKey && !event.metaKey) {
+          this.get('persistedSelection').clear();
+          this.get('rangeSelection').clear();
+        } else {
+          this.persistSelection();
+        }
+        if (this.get('persistedSelection').contains(row)) {
+          this.get('persistedSelection').remove(row);
+        } else {
+          this.get('persistedSelection').add(row);
+        }
+        return this.set('lastSelected', row);
+      }
+    }
+  },
+  rowIndex: function(row) {
+    var _ref;
+    return (_ref = this.get('bodyContent')) != null ? _ref.indexOf(row) : void 0;
+  },
+  persistSelection: function() {
+    this.get('persistedSelection').addEach(this.get('rangeSelection'));
+    return this.get('rangeSelection').clear();
   },
   getRowForEvent: function(event) {
     var $rowView, view;

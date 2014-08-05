@@ -39,13 +39,39 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   enableContentSelection: no
 
-  selection: null
+  # rows that were selected directly or as part of a previous
+  # range selection (shift-click)
+  persistedSelection: new Ember.Set()
+
+  # rows that are part of the currently editable range selection
+  rangeSelection: new Ember.Set()
+
+  selectionMode: 'single'
+
+  _selection: Ember.computed ->
+    @get('persistedSelection').copy().addEach(@get('rangeSelection'))
+  .property 'persistedSelection.[]', 'rangeSelection.[]'
+
+  selection: Ember.computed (key, val) ->
+    if arguments.length > 1 and val is not undefined
+      if @get('selectionMode') is 'single'
+        @get('persistedSelection').clear()
+        @get('persistedSelection').add(val)
+      else
+        @get('persistedSelection').clear()
+        @get('persistedSelection').addEach(val)
+      @get('rangeSelection').clear()
+    if @get('selectionMode') is 'single'
+      return @get('_selection')?[0]
+    else
+      return @get('_selection').toArray()
+  .property '_selection.[]', 'selectionMode'
 
   # specify the view class to use for rendering the table rows
   tableRowViewClass: 'Ember.Table.TableRow'
 
   init: ->
-    this._super()
+    @_super()
     if !$.ui then throw 'Missing dependency: jquery-ui'
     if !$().mousewheel then throw 'Missing dependency: jquery-mousewheel'
     if !$().antiscroll then throw 'Missing dependency: antiscroll.js'
@@ -353,10 +379,54 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   ##############################################################################
   # selection
   ##############################################################################
+
+  isSelected: (row) ->
+    @get('_selection').contains row
+
+  setSelected: (row, val) ->
+    @persistSelection()
+    if val
+      @get('persistedSelection').add(row)
+    else
+      @get('persistedSelection').remove(row)
+
   click: (event) ->
     row = @getRowForEvent event
     return unless row
-    @set 'selection', row.get('content')
+    return if @get('selectionMode') is 'none'
+    if @get('selectionMode') is 'single'
+      @get('persistedSelection').clear()
+      @get('persistedSelection').add row
+    else
+      if event.shiftKey
+        @get('rangeSelection').clear()
+
+        lastIndex = @rowIndex(@get('lastSelected'))
+        curIndex  = @rowIndex(@getRowForEvent(event))
+
+        minIndex  = Math.min(lastIndex, curIndex)
+        maxIndex  = Math.max(lastIndex, curIndex)
+
+        @get('rangeSelection').addObjects \
+          @get('bodyContent').slice(minIndex, maxIndex + 1)
+      else
+        if !event.ctrlKey && !event.metaKey
+          @get('persistedSelection').clear()
+          @get('rangeSelection').clear()
+        else
+          @persistSelection()
+        if @get('persistedSelection').contains row
+          @get('persistedSelection').remove row
+        else
+          @get('persistedSelection').add row
+        @set('lastSelected', row)
+
+  rowIndex: (row) ->
+    @get('bodyContent')?.indexOf(row)
+
+  persistSelection: () ->
+    @get('persistedSelection').addEach(@get('rangeSelection'))
+    @get('rangeSelection').clear()
 
   getRowForEvent: (event) ->
     $rowView = $(event.target).parents('.ember-table-table-row')
