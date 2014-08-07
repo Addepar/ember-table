@@ -41,10 +41,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # rows that were selected directly or as part of a previous
   # range selection (shift-click)
-  persistedSelection: new Ember.Set()
+  persistedSelection: Ember.computed -> new Ember.Set()
 
   # rows that are part of the currently editable range selection
-  rangeSelection: new Ember.Set()
+  rangeSelection: Ember.computed -> new Ember.Set()
 
   selectionMode: 'single'
 
@@ -381,14 +381,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   ##############################################################################
 
   isSelected: (row) ->
-    @get('_selection').contains row
+    @get('_selection').contains row.get('content')
 
   setSelected: (row, val) ->
     @persistSelection()
     if val
-      @get('persistedSelection').add(row)
+      @get('persistedSelection').add row.get('content')
     else
-      @get('persistedSelection').remove(row)
+      @get('persistedSelection').remove row.get('content')
 
   click: (event) ->
     row = @getRowForEvent event
@@ -396,7 +396,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     return if @get('selectionMode') is 'none'
     if @get('selectionMode') is 'single'
       @get('persistedSelection').clear()
-      @get('persistedSelection').add row
+      @get('persistedSelection').add row.get('content')
     else
       if event.shiftKey
         @get('rangeSelection').clear()
@@ -407,18 +407,19 @@ Ember.AddeparMixins.ResizeHandlerMixin,
         minIndex  = Math.min(lastIndex, curIndex)
         maxIndex  = Math.max(lastIndex, curIndex)
 
-        @get('rangeSelection').addObjects \
-          @get('bodyContent').slice(minIndex, maxIndex + 1)
+        @get('rangeSelection').addObjects _.map \
+          @get('bodyContent').slice(minIndex, maxIndex + 1),
+          (row) -> row.get('content')
       else
         if !event.ctrlKey && !event.metaKey
           @get('persistedSelection').clear()
           @get('rangeSelection').clear()
         else
           @persistSelection()
-        if @get('persistedSelection').contains row
-          @get('persistedSelection').remove row
+        if @get('persistedSelection').contains row.get('content')
+          @get('persistedSelection').remove row.get('content')
         else
-          @get('persistedSelection').add row
+          @get('persistedSelection').add row.get('content')
         @set('lastSelected', row)
 
   rowIndex: (row) ->
