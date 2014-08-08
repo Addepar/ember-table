@@ -1329,8 +1329,12 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   hasFooter: true,
   enableColumnReorder: true,
   enableContentSelection: false,
-  persistedSelection: new Ember.Set(),
-  rangeSelection: new Ember.Set(),
+  persistedSelection: Ember.computed(function() {
+    return new Ember.Set();
+  }),
+  rangeSelection: Ember.computed(function() {
+    return new Ember.Set();
+  }),
   selectionMode: 'single',
   _selection: Ember.computed(function() {
     return this.get('persistedSelection').copy().addEach(this.get('rangeSelection'));
@@ -1748,14 +1752,14 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }), 0);
   },
   isSelected: function(row) {
-    return this.get('_selection').contains(row);
+    return this.get('_selection').contains(row.get('content'));
   },
   setSelected: function(row, val) {
     this.persistSelection();
     if (val) {
-      return this.get('persistedSelection').add(row);
+      return this.get('persistedSelection').add(row.get('content'));
     } else {
-      return this.get('persistedSelection').remove(row);
+      return this.get('persistedSelection').remove(row.get('content'));
     }
   },
   click: function(event) {
@@ -1769,7 +1773,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
     if (this.get('selectionMode') === 'single') {
       this.get('persistedSelection').clear();
-      return this.get('persistedSelection').add(row);
+      return this.get('persistedSelection').add(row.get('content'));
     } else {
       if (event.shiftKey) {
         this.get('rangeSelection').clear();
@@ -1777,7 +1781,9 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
         curIndex = this.rowIndex(this.getRowForEvent(event));
         minIndex = Math.min(lastIndex, curIndex);
         maxIndex = Math.max(lastIndex, curIndex);
-        return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1));
+        return this.get('rangeSelection').addObjects(_.map(this.get('bodyContent').slice(minIndex, maxIndex + 1), function(row) {
+          return row.get('content');
+        }));
       } else {
         if (!event.ctrlKey && !event.metaKey) {
           this.get('persistedSelection').clear();
@@ -1785,10 +1791,10 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
         } else {
           this.persistSelection();
         }
-        if (this.get('persistedSelection').contains(row)) {
-          this.get('persistedSelection').remove(row);
+        if (this.get('persistedSelection').contains(row.get('content'))) {
+          this.get('persistedSelection').remove(row.get('content'));
         } else {
-          this.get('persistedSelection').add(row);
+          this.get('persistedSelection').add(row.get('content'));
         }
         return this.set('lastSelected', row);
       }
