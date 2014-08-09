@@ -53,7 +53,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   .property 'persistedSelection.[]', 'rangeSelection.[]'
 
   selection: Ember.computed (key, val) ->
-    if arguments.length > 1 and val is not undefined
+    if arguments.length > 1 and val
       if @get('selectionMode') is 'single'
         @get('persistedSelection').clear()
         @get('persistedSelection').add(val)

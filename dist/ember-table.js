@@ -1336,7 +1336,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   }).property('persistedSelection.[]', 'rangeSelection.[]'),
   selection: Ember.computed(function(key, val) {
     var _ref;
-    if (arguments.length > 1 && val === !void 0) {
+    if (arguments.length > 1 && val) {
       if (this.get('selectionMode') === 'single') {
         this.get('persistedSelection').clear();
         this.get('persistedSelection').add(val);
