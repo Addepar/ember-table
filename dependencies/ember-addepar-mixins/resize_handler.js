@@ -16,6 +16,10 @@ Ember.AddeparMixins.ResizeHandlerMixin = Ember.Mixin.create({
     };
   }),
   handleWindowResize: function(event) {
+    if ((typeof event.target.id !== "undefined" && event.target.id !== null)
+        && (event.target.id !== this.elementId)) {
+      return;
+    }
     if (!this.get('resizing')) {
       this.set('resizing', true);
       if (typeof this.onResizeStart === "function") {

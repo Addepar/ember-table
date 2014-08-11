@@ -16,6 +16,7 @@ App.Router.map ->
     @route 'horizon'
     @route 'simple'
     @route 'sparkline'
+    @route 'resizable'
 
 App.IndexRoute = Ember.Route.extend
   redirect: ->

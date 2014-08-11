@@ -15,24 +15,24 @@ App.FluidColumnDefinition = Ember.Table.ColumnDefinition.extend
         val * 100 / tableWidth
 
     # either from a tabel resize or a column resize
-    oldWidth = percent(@get("columnWidth"))
+    oldWidth = percent(@get("width"))
     newWidth = if 'number' is typeof pxWidth then percent(pxWidth) else oldWidth
 
     # calculate the pixel change for
     nextCol = @get("_nextColumn")
     if nextCol
       # calculate new and old percent width
-      diff = oldWidth - newWidth + percent(nextCol.get("columnWidth"))
-      nextCol.set "columnWidth", diff/100*tableWidth
+      diff = oldWidth - newWidth + percent(nextCol.get("width"))
+      nextCol.set "width", diff/100*tableWidth
       newMaxWidth = (newWidth + diff)/100*tableWidth - 100
 
-    @set "columnWidth", newWidth/100*tableWidth
-    @notifyPropertyChange("columnWidth")
+    @set "width", newWidth/100*tableWidth
+    @notifyPropertyChange("width")
     newMaxWidth
 
   _convertColumnToWidth: Ember.beforeObserver ->
     tableWidth = @get( "controller._tableContainerWidth" )
-    @set("columnWidth", @get("columnWidth")/tableWidth*100 + "%") if tableWidth
+    @set("width", @get("width")/tableWidth*100 + "%") if tableWidth
   , "controller._tableContainerWidth"
 
   _resizeToTable: Ember.observer ->
@@ -54,23 +54,23 @@ App.EmberTableFluidController = Ember.Controller.extend
 
   columns: Ember.computed ->
     dateColumn = App.FluidColumnDefinition.create
-      columnWidth: "40"
+      savedWidth: "40"
       headerCellName: 'Date'
       getCellContent: (row) -> row.get('date').toDateString();
     openColumn = App.FluidColumnDefinition.create
-      columnWidth: "15"
+      savedWidth: "15"
       headerCellName: 'Open'
       getCellContent: (row) -> row.get('open').toFixed(2)
     highColumn = App.FluidColumnDefinition.create
-      columnWidth: "15"
+      savedWidth: "15"
       headerCellName: 'High'
       getCellContent: (row) -> row.get('high').toFixed(2)
     lowColumn = App.FluidColumnDefinition.create
-      columnWidth: "15"
+      savedWidth: "15"
       headerCellName: 'Low'
       getCellContent: (row) -> row.get('low').toFixed(2)
     closeColumn = App.FluidColumnDefinition.create
-      columnWidth: "15"
+      savedWidth: "15"
       headerCellName: 'Close'
       getCellContent: (row) -> row.get('close').toFixed(2)
     [dateColumn, openColumn, highColumn, lowColumn, closeColumn]
