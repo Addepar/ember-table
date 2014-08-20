@@ -27,6 +27,7 @@
     "lockdown": "0.0.5",
     "grunt-banner": "~0.2.2",
     "grunt-text-replace": "~0.3.11",
-    "grunt-bower-task": "~0.4.0"
+    "grunt-bower-task": "~0.4.0",
+    "grunt-release-it": "~0.2.0"
   }
 }

@@ -2,10 +2,10 @@ bower_components/
 build/
 doc/
 gh_pages/
-lib/
 node_modules/
 tests/lib
 tests/css
+vendor/
 .DS_Store
 .stage
 *.swo

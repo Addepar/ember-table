@@ -1,6 +1,6 @@
 # Ember-Table Dependencies
-require 'lib/bootstrap/bootstrap'
-require 'lib/antiscroll/antiscroll'
+require 'vendor/bootstrap/dist/js/bootstrap'
+require 'vendor/antiscroll/antiscroll'
 require 'dependencies/ember-addepar-mixins/resize_handler'
 require 'dependencies/ember-addepar-mixins/style_bindings'
 require 'dist/ember-table'
@@ -9,7 +9,7 @@ require 'dist/ember-table'
 require 'dependencies/date'
 
 # Editable Horizon and Sparkline dependency
-require 'lib/d3/d3'
+require 'vendor/d3/d3'
 require 'dependencies/horizon'
 
 window.App = Ember.Application.create

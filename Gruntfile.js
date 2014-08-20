@@ -17,6 +17,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-banner');
   grunt.loadNpmTasks('grunt-text-replace');
   grunt.loadNpmTasks('grunt-bower-task');
+  grunt.loadNpmTasks('grunt-release-it');
 
   // Project configuration.
   grunt.initConfig({
@@ -25,8 +26,10 @@ module.exports = function (grunt) {
     bower: {
       install: {
         options: {
-          cleanup: true,
-          layout: 'byComponent'
+          targetDir: 'vendor',
+          layout: 'byComponent',
+          verbose: true,
+          copy: false
         }
       }
     },
@@ -121,21 +124,29 @@ module.exports = function (grunt) {
             dest: 'gh_pages/index.html'
           }, {
             expand: true,
-            flatten: true,
             cwd: 'dependencies/',
             src: ['**/*.js'],
             dest: 'gh_pages/lib'
           }, {
             expand: true,
-            flatten: true,
-            cwd: 'dependencies/',
-            src: ['**/*.css'],
-            dest: 'gh_pages/css'
+            cwd: 'vendor/',
+            src: ['**/*.js'],
+            dest: 'gh_pages/lib'
           }, {
             expand: true,
-            cwd: 'lib/font-awesome/font/',
+            cwd: 'dependencies/',
+            src: ['**/*.css'],
+            dest: 'gh_pages/lib'
+          }, {
+            expand: true,
+            cwd: 'vendor/',
+            src: ['**/*.css'],
+            dest: 'gh_pages/lib'
+          }, {
+            expand: true,
+            cwd: 'vendor/font-awesome/font/',
             src: ['**'],
-            dest: 'gh_pages/font'
+            dest: 'gh_pages/lib/font-awesome/font'
           }, {
             expand: true,
             cwd: 'app/assets/font/',
@@ -237,7 +248,7 @@ module.exports = function (grunt) {
         tasks: ["default"]
       },
       code: {
-        files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js", "lib/**/*.js"],
+        files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js", "vendor/**/*.js"],
         tasks: ["coffee", "neuter"]
       },
       handlebars: {
@@ -252,15 +263,31 @@ module.exports = function (grunt) {
         files: ["app/index.html"],
         tasks: ["copy"]
       }
+    },
+
+    "release-it": {
+      options: {
+        "pkgFiles": ["package.json", "bower.json"],
+        "commitMessage": "Release %s",
+        "tagName": "v%s",
+        "tagAnnotation": "Release %s",
+        "increment": "patch",
+        "buildCommand": "grunt dist",
+        "distRepo": "-b gh-pages git@github.com:azirbel/ember-table",
+        "distStageDir": ".stage",
+        "distBase": "gh_pages",
+        "distFiles": ["**/*"],
+        "publish": false
+      }
     }
   });
 
-  // Default tasks.
+  // Build tasks
   grunt.registerTask("build_srcs", ["coffee:srcs", "emberTemplates", "neuter"]);
-
   grunt.registerTask("build_app", ["coffee:app", "emberTemplates", "neuter"]);
 
-  grunt.registerTask("dist", ["replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner"]);
+  grunt.registerTask("dist", ["bower", "replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner"]);
 
-  grunt.registerTask("default", ["bower", "replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner", "watch"]);
+  grunt.registerTask("default", ["dist", "watch"]);
 };
+
