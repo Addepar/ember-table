@@ -273,7 +273,7 @@ module.exports = function (grunt) {
         "tagAnnotation": "Release %s",
         "increment": "patch",
         "buildCommand": "grunt dist",
-        "distRepo": "-b gh-pages git@github.com:azirbel/ember-table",
+        "distRepo": "-b gh-pages git@github.com:addepar/ember-table",
         "distStageDir": ".stage",
         "distBase": "gh_pages",
         "distFiles": ["**/*"],
