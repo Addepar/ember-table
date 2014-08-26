@@ -23,7 +23,15 @@ Ember.ContainerView.extend Ember.AddeparMixins.StyleBindingsMixin,
   onNumChildViewsDidChange: Ember.observer ->
     view = this
     # We are getting the class from a string e.g. "Ember.Table.Row"
-    itemViewClass = Ember.get @get('itemViewClass')
+    itemViewClass = @get('itemViewClass')
+    if typeof itemViewClass is 'string'
+      if /[A-Z]+/.exec itemViewClass
+        # Global var lookup - 'App.MessagePreviewView'
+        itemViewClass = Ember.get Ember.lookup, itemViewClass
+      else
+        # Ember CLI Style lookup - 'message/preview'
+        itemViewClass = @container.lookupFactory "view:#{itemViewClass}"
+
     newNumViews = @get 'numChildViews'
     return unless itemViewClass and newNumViews
     oldNumViews = @get('length')

@@ -68,8 +68,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       return @get('_selection').toArray().map (row) -> row.get('content')
   .property '_selection.[]', 'selectionMode'
 
+  # TODO: eliminate view alias
   # specify the view class to use for rendering the table rows
-  tableRowViewClass: 'Ember.Table.TableRow'
+  tableRowView:      'Ember.Table.TableRow'
+  tableRowViewClass: Ember.computed.alias 'tableRowView'
 
   init: ->
     @_super()

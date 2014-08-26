@@ -26,10 +26,14 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   textAlign: 'text-align-right'
   canAutoResize: yes
 
+  # TODO: eliminate view aliases
   # The view class we want to use for the header
-  headerCellViewClass:  'Ember.Table.HeaderCell'
+  headerCellView:       'Ember.Table.HeaderCell'
+  headerCellViewClass:  Ember.computed.alias 'headerCellView'
+
   # The view class we want to use for the table cells
-  tableCellViewClass:   'Ember.Table.TableCell'
+  tableCellView:        'Ember.Table.TableCell'
+  tableCellViewClass:   Ember.computed.alias 'tableCellView'
 
   resize: (width) -> @set 'columnWidth', width
 

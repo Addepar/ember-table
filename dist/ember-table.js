@@ -429,7 +429,14 @@ Ember.LazyContainerView = Ember.ContainerView.extend(Ember.AddeparMixins.StyleBi
   onNumChildViewsDidChange: Ember.observer(function() {
     var itemViewClass, newNumViews, numViewsToInsert, oldNumViews, view, viewsToAdd, viewsToRemove, _i, _results;
     view = this;
-    itemViewClass = Ember.get(this.get('itemViewClass'));
+    itemViewClass = this.get('itemViewClass');
+    if (typeof itemViewClass === 'string') {
+      if (/[A-Z]+/.exec(itemViewClass)) {
+        itemViewClass = Ember.get(Ember.lookup, itemViewClass);
+      } else {
+        itemViewClass = this.container.lookupFactory("view:" + itemViewClass);
+      }
+    }
     newNumViews = this.get('numChildViews');
     if (!(itemViewClass && newNumViews)) {
       return;
@@ -523,7 +530,11 @@ Ember.MultiItemViewCollectionView = Ember.CollectionView.extend(Ember.AddeparMix
     itemViewClassField = this.get('itemViewClassField');
     itemViewClass = attrs.content.get(itemViewClassField);
     if (typeof itemViewClass === 'string') {
-      itemViewClass = Ember.get(Ember.lookup, itemViewClass);
+      if (/[A-Z]+/.exec(itemViewClass)) {
+        itemViewClass = Ember.get(Ember.lookup, itemViewClass);
+      } else {
+        itemViewClass = this.container.lookupFactory("view:" + itemViewClass);
+      }
     }
     return this._super(itemViewClass, attrs);
   }
@@ -664,8 +675,10 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
   isSortable: true,
   textAlign: 'text-align-right',
   canAutoResize: true,
-  headerCellViewClass: 'Ember.Table.HeaderCell',
-  tableCellViewClass: 'Ember.Table.TableCell',
+  headerCellView: 'Ember.Table.HeaderCell',
+  headerCellViewClass: Ember.computed.alias('headerCellView'),
+  tableCellView: 'Ember.Table.TableCell',
+  tableCellViewClass: Ember.computed.alias('tableCellView'),
   resize: function(width) {
     return this.set('columnWidth', width);
   },
@@ -1357,7 +1370,8 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       });
     }
   }).property('_selection.[]', 'selectionMode'),
-  tableRowViewClass: 'Ember.Table.TableRow',
+  tableRowView: 'Ember.Table.TableRow',
+  tableRowViewClass: Ember.computed.alias('tableRowView'),
   init: function() {
     this._super();
     if (!$.ui) {
