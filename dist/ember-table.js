@@ -1335,7 +1335,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     return this.get('persistedSelection').copy().addEach(this.get('rangeSelection'));
   }).property('persistedSelection.[]', 'rangeSelection.[]'),
   selection: Ember.computed(function(key, val) {
-    var content, _i, _len, _ref;
+    var content, _i, _len, _ref, _ref1;
     if (arguments.length > 1 && val) {
       if (this.get('selectionMode') === 'single') {
         this.get('persistedSelection').clear();
@@ -1350,7 +1350,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       this.get('rangeSelection').clear();
     }
     if (this.get('selectionMode') === 'single') {
-      return (_ref = this.get('_selection')) != null ? _ref[0].get('content') : void 0;
+      return (_ref = this.get('_selection')) != null ? (_ref1 = _ref[0]) != null ? _ref1.get('content') : void 0 : void 0;
     } else {
       return this.get('_selection').toArray().map(function(row) {
         return row.get('content');
