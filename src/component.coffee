@@ -56,15 +56,16 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     if arguments.length > 1 and val
       if @get('selectionMode') is 'single'
         @get('persistedSelection').clear()
-        @get('persistedSelection').add(val)
+        @get('persistedSelection').add(@findRow val)
       else
         @get('persistedSelection').clear()
-        @get('persistedSelection').addEach(val)
+        for content in val
+          @get('persistedSelection').add(@findRow content)
       @get('rangeSelection').clear()
     if @get('selectionMode') is 'single'
-      return @get('_selection')?[0]
+      return @get('_selection')?[0].get('content')
     else
-      return @get('_selection').toArray()
+      return @get('_selection').toArray().map (row) -> row.get('content')
   .property '_selection.[]', 'selectionMode'
 
   # specify the view class to use for rendering the table rows
@@ -381,14 +382,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   ##############################################################################
 
   isSelected: (row) ->
-    @get('_selection').contains row.get('content')
+    @get('_selection').contains row
 
   setSelected: (row, val) ->
     @persistSelection()
     if val
-      @get('persistedSelection').add row.get('content')
+      @get('persistedSelection').add row
     else
-      @get('persistedSelection').remove row.get('content')
+      @get('persistedSelection').remove row
 
   click: (event) ->
     row = @getRowForEvent event
@@ -396,7 +397,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     return if @get('selectionMode') is 'none'
     if @get('selectionMode') is 'single'
       @get('persistedSelection').clear()
-      @get('persistedSelection').add row.get('content')
+      @get('persistedSelection').add row
     else
       if event.shiftKey
         @get('rangeSelection').clear()
@@ -407,20 +408,23 @@ Ember.AddeparMixins.ResizeHandlerMixin,
         minIndex  = Math.min(lastIndex, curIndex)
         maxIndex  = Math.max(lastIndex, curIndex)
 
-        @get('rangeSelection').addObjects _.map \
-          @get('bodyContent').slice(minIndex, maxIndex + 1),
-          (row) -> row.get('content')
+        @get('rangeSelection').addObjects @get('bodyContent').slice(minIndex, maxIndex + 1)
       else
         if !event.ctrlKey && !event.metaKey
           @get('persistedSelection').clear()
           @get('rangeSelection').clear()
         else
           @persistSelection()
-        if @get('persistedSelection').contains row.get('content')
-          @get('persistedSelection').remove row.get('content')
+        if @get('persistedSelection').contains row
+          @get('persistedSelection').remove row
         else
-          @get('persistedSelection').add row.get('content')
+          @get('persistedSelection').add row
         @set('lastSelected', row)
+
+  findRow: (content) ->
+    for row in @get('bodyContent')
+      if row.get('content') is content
+        return row
 
   rowIndex: (row) ->
     @get('bodyContent')?.indexOf(row)

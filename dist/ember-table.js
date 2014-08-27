@@ -1335,21 +1335,26 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     return this.get('persistedSelection').copy().addEach(this.get('rangeSelection'));
   }).property('persistedSelection.[]', 'rangeSelection.[]'),
   selection: Ember.computed(function(key, val) {
-    var _ref;
+    var content, _i, _len, _ref;
     if (arguments.length > 1 && val) {
       if (this.get('selectionMode') === 'single') {
         this.get('persistedSelection').clear();
-        this.get('persistedSelection').add(val);
+        this.get('persistedSelection').add(this.findRow(val));
       } else {
         this.get('persistedSelection').clear();
-        this.get('persistedSelection').addEach(val);
+        for (_i = 0, _len = val.length; _i < _len; _i++) {
+          content = val[_i];
+          this.get('persistedSelection').add(this.findRow(content));
+        }
       }
       this.get('rangeSelection').clear();
     }
     if (this.get('selectionMode') === 'single') {
-      return (_ref = this.get('_selection')) != null ? _ref[0] : void 0;
+      return (_ref = this.get('_selection')) != null ? _ref[0].get('content') : void 0;
     } else {
-      return this.get('_selection').toArray();
+      return this.get('_selection').toArray().map(function(row) {
+        return row.get('content');
+      });
     }
   }).property('_selection.[]', 'selectionMode'),
   tableRowViewClass: 'Ember.Table.TableRow',
@@ -1709,14 +1714,14 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }), 0);
   },
   isSelected: function(row) {
-    return this.get('_selection').contains(row.get('content'));
+    return this.get('_selection').contains(row);
   },
   setSelected: function(row, val) {
     this.persistSelection();
     if (val) {
-      return this.get('persistedSelection').add(row.get('content'));
+      return this.get('persistedSelection').add(row);
     } else {
-      return this.get('persistedSelection').remove(row.get('content'));
+      return this.get('persistedSelection').remove(row);
     }
   },
   click: function(event) {
@@ -1730,7 +1735,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
     if (this.get('selectionMode') === 'single') {
       this.get('persistedSelection').clear();
-      return this.get('persistedSelection').add(row.get('content'));
+      return this.get('persistedSelection').add(row);
     } else {
       if (event.shiftKey) {
         this.get('rangeSelection').clear();
@@ -1738,9 +1743,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
         curIndex = this.rowIndex(this.getRowForEvent(event));
         minIndex = Math.min(lastIndex, curIndex);
         maxIndex = Math.max(lastIndex, curIndex);
-        return this.get('rangeSelection').addObjects(_.map(this.get('bodyContent').slice(minIndex, maxIndex + 1), function(row) {
-          return row.get('content');
-        }));
+        return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1));
       } else {
         if (!event.ctrlKey && !event.metaKey) {
           this.get('persistedSelection').clear();
@@ -1748,12 +1751,22 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
         } else {
           this.persistSelection();
         }
-        if (this.get('persistedSelection').contains(row.get('content'))) {
-          this.get('persistedSelection').remove(row.get('content'));
+        if (this.get('persistedSelection').contains(row)) {
+          this.get('persistedSelection').remove(row);
         } else {
-          this.get('persistedSelection').add(row.get('content'));
+          this.get('persistedSelection').add(row);
         }
         return this.set('lastSelected', row);
+      }
+    }
+  },
+  findRow: function(content) {
+    var row, _i, _len, _ref;
+    _ref = this.get('bodyContent');
+    for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+      row = _ref[_i];
+      if (row.get('content') === content) {
+        return row;
       }
     }
   },
