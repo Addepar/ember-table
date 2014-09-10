@@ -279,9 +279,11 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
     minWidth: @get('column.minWidth') || 100
     maxWidth: @get('column.maxWidth') || 500
     grid:     @get('column.snapGrid')
+    start: jQuery.proxy(@onColumnStartResize, this)
     resize: jQuery.proxy(@onColumnResize, this)
     stop: jQuery.proxy(@onColumnResize, this)
 
+  onColumnStartResize: Ember.K
   ###*
   * Did insert element callback
   * @memberof Ember.Table.HeaderCell

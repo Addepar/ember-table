@@ -1,8 +1,17 @@
+App.FluidTableHeaderTreeCell = Ember.Table.HeaderCell.extend
+  onColumnStartResize: ->
+    next = $(@$().next())
+    minWidth = @get('column.minWidth') or 20
+    maxWidth = @$().width() + next.width() - minWidth
+    @$().resizable( "option", "maxWidth", maxWidth )
+    return
+
 App.FluidColumnDefinition = Ember.Table.ColumnDefinition.extend
   isResizable: Ember.computed ->
     if @get('_nextColumn') then yes else no
   .property '_nextColumn'
 
+  headerCellView: 'App.FluidTableHeaderTreeCell'
   resize: (pxWidth, tableWidth)->
     newMaxWidth = null
     tableWidth = tableWidth || @get("controller._tableContainerWidth")
