@@ -1,3 +1,9 @@
+-/*!
+-* ember-table v0.2.1
+-* Copyright 2012-2014 Addepar Inc.
+-* See LICENSE.
+-*/
+
 (function() {
 
 var _ref;
