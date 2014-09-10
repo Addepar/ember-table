@@ -1,8 +1,3 @@
-/*!
-* ember-table v0.2.1
-* Copyright 2012-2014 Addepar Inc.
-* See LICENSE.
-*/
 (function() {
 
 var _ref;
@@ -1069,10 +1064,12 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
       minWidth: this.get('column.minWidth') || 100,
       maxWidth: this.get('column.maxWidth') || 500,
       grid: this.get('column.snapGrid'),
+      start: jQuery.proxy(this.onColumnStartResize, this),
       resize: jQuery.proxy(this.onColumnResize, this),
       stop: jQuery.proxy(this.onColumnResize, this)
     };
   }),
+  onColumnStartResize: Ember.K,
   /**
   * Did insert element callback
   * @memberof Ember.Table.HeaderCell
