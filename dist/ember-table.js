@@ -135,7 +135,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 
   data.buffer.push("<div class=\"ember-table-content-container\" ");
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["ID","ID"],data:data})));
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
   data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
   stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
   if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -1482,7 +1482,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   */
 
   elementSizeDidChange: function() {
-    if (this.get('state') !== 'inDOM') {
+    if ((this.get('_state') || this.get('state')) !== 'inDOM') {
       return;
     }
     this.set('_width', this.$().parent().outerWidth());
@@ -1490,7 +1490,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     return Ember.run.next(this, this.updateLayout);
   },
   updateLayout: function() {
-    if (this.get('state') !== 'inDOM') {
+    if ((this.get('_state') || this.get('state')) !== 'inDOM') {
       return;
     }
     this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();

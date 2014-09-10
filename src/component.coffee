@@ -171,7 +171,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   * @instance
   ###
   elementSizeDidChange: ->
-    return unless @get('state') is 'inDOM'
+    return unless (@get('_state') or @get('state')) is 'inDOM'
     @set '_width', @$().parent().outerWidth()
     @set '_height', @$().parent().outerHeight()
     # we need to wait for the table to be fully rendered before antiscroll can
@@ -180,7 +180,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   updateLayout: ->
     # updating antiscroll
-    return unless @get('state') is 'inDOM'
+    return unless (@get('_state') or @get('state')) is 'inDOM'
     this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();
     @doForceFillColumns() if @get('forceFillColumns')
 
