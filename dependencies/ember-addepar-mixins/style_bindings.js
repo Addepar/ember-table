@@ -7,7 +7,7 @@ Ember.AddeparMixins.StyleBindingsMixin = Ember.Mixin.create({
   createStyleString: function(styleName, property) {
     var value;
     value = this.get(property);
-    if (value === void 0) {
+    if (Ember.isNone(value)) {
       return;
     }
     if (Ember.typeOf(value) === 'number') {
