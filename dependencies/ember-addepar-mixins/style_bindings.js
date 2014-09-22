@@ -13,7 +13,7 @@ Ember.AddeparMixins.StyleBindingsMixin = Ember.Mixin.create({
     if (Ember.typeOf(value) === 'number') {
       value = value + this.get('unitType');
     }
-    return "" + styleName + ":" + value + ";";
+    return Ember.String.dasherize("" + styleName) + ":" + value + ";";
   },
   applyStyleBindings: function() {
     var lookup, properties, styleBindings, styleComputed, styles,
