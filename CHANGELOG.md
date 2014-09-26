@@ -1,5 +1,22 @@
 # Ember Table Changelog
 
+### Ember Table 0.2.2 _(September 25, 2014)_
+
+* Dasherize stylename for output
+  * `styleBindings` definitions are now auto-dasherized
+* Check against both undefined and null instead of just undefined
+* Fix state deprecation, add quotes to column header sort action name
+* Resolve Ember CLI style view references.
+  * Now, `tableCellView: 'message/preview'` is also valid
+* Check that selection is not null
+* Store row objects in _selection rather than their contents
+* Automatically publish updated docs with every release
+* Add community examples page, and other small docs improvements
+* Add multiselect functionality
+  * API: `selectionMode="{single|multiple|none}"`
+* Upgrade grunt-bower-task and use grunt-release-it
+* Use more standard ~ for handlebars version
+
 ### Ember Table 0.2.1 _(June 30, 2014)_
 
 * Hide fixedColumns table when numFixedColumns is 0

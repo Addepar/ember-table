@@ -1,5 +1,5 @@
 /*!
-* ember-table v0.2.1
+* ember-table v0.2.2
 * Copyright 2012-2014 Addepar Inc.
 * See LICENSE.
 */
@@ -244,7 +244,7 @@ helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
 
 Ember.Table = Ember.Namespace.create();
 
-Ember.Table.VERSION = '0.2.1';
+Ember.Table.VERSION = '0.2.2';
 
 if ((_ref = Ember.libraries) != null) {
   _ref.register('Ember Table', Ember.Table.VERSION);
@@ -317,13 +317,13 @@ Ember.AddeparMixins.StyleBindingsMixin = Ember.Mixin.create({
   createStyleString: function(styleName, property) {
     var value;
     value = this.get(property);
-    if (value === void 0) {
+    if (Ember.isNone(value)) {
       return;
     }
     if (Ember.typeOf(value) === 'number') {
       value = value + this.get('unitType');
     }
-    return "" + styleName + ":" + value + ";";
+    return Ember.String.dasherize("" + styleName) + ":" + value + ";";
   },
   applyStyleBindings: function() {
     var lookup, properties, styleBindings, styleComputed, styles,
