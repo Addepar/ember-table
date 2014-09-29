@@ -1,101 +1,74 @@
-###*
- * Column Definition
- * @class
- * @alias Ember.Table.ColumnDefinition
- ###
 Ember.Table.ColumnDefinition = Ember.Object.extend
-  # Name of the column
-  # TODO(Peter): change it to columnName
-  headerCellName:undefined
-  # Path of the content for this cell. Given a row object, the content path
-  # communicate what needs to be extracted from the row
-  contentPath:   undefined
-  # Min column width
+
+  # ---------------------------------------------------------------------------
+  # API - Inputs
+  # ---------------------------------------------------------------------------
+
+  # Name of the column, to be displayed in the header.
+  # TODO(new-api): Change to `columnName`
+  headerCellName: undefined
+
+  # Path of the content for this cell. If the row object is a hash of keys
+  # and values to specify data for each column, `contentPath` corresponds to
+  # the key.
+  contentPath: undefined
+
+  # Minimum column width. Affects both manual resizing and automatic resizing
+  # (in `forceFillColumns` mode).
   minWidth: undefined
-  # Max column width
+
+  # Maximum column width. Affects both manual resizing and automatic resizing
+  # (in `forceFillColumns` mode).
   maxWidth: undefined
-  # column width
+
+  # Default column width. Specifies the initial width of the column; if the
+  # column is later resized automatically, it will be proportional to this.
   defaultColumnWidth: 150
-  # TODO(Peter): Rename it to width
-  columnWidth:  Ember.computed.oneWay 'defaultColumnWidth'
-  # wether the colum is resizable
+
+  # Whether the column can be manually resized.
   isResizable:  yes
-  # wether the column is sortable
+
+  # Whether the column can be rearranged with other columns. Only matters if
+  # the table's `enableColumnReorder` property is set to true (the default).
   isSortable:  yes
-  # text align left | center | right
+
+  # Alignment of the text in the cell. Possible values are "left", "center",
+  # and "right".
   textAlign: 'text-align-right'
+
+  # Whether the column can automatically resize to fill space in the table.
+  # Only matters if the table is in `forceFillColumns` mode.
   canAutoResize: yes
 
-  # TODO: eliminate view aliases
-  # The view class we want to use for the header
+  # TODO(new-api): Remove `headerCellViewClass`
+  # Override to specify a custom view to use for the header cell.
   headerCellView:       'Ember.Table.HeaderCell'
   headerCellViewClass:  Ember.computed.alias 'headerCellView'
 
-  # The view class we want to use for the table cells
+  # TODO(new-api): Remove `tableCellViewClass`
+  # Override to specify a custom view to use for table cells.
   tableCellView:        'Ember.Table.TableCell'
   tableCellViewClass:   Ember.computed.alias 'tableCellView'
 
-  resize: (width) -> @set 'columnWidth', width
-
-  ###*
-  * Get Cell Content - This gives a formatted value e.g. $20,000,000
-  * @memberof Ember.Table.ColumnDefinition
-  * @instance
-  * @argument row {Ember.Table.Row}
-  * @todo More detailed doc needed!
-  ###
+  # Override to customize how the column gets data from each row object.
+  # Given a row, should return a formatted cell value, e.g. $20,000,000.
   getCellContent: (row) ->
     path = @get 'contentPath'
     Ember.assert "You must either provide a contentPath or override " +
       "getCellContent in your column definition", path?
     Ember.get row, path
 
-  ###*
-  * Set Cell Content
-  * @memberof Ember.Table.ColumnDefinition
-  * @instance
-  ###
+  # Override to maintain a consistent path to update cell values.
+  # Recommended to make this a function which takes (row, value) and updates
+  # the row value.
   setCellContent: Ember.K
 
-###*
- * Table Row
- * @class
- * @alias Ember.Table.Row
- ###
-Ember.Table.Row = Ember.ObjectProxy.extend
-  ###*
-  * Content of the row
-  * @memberof Ember.Table.Row
-  * @member content
-  * @instance
-  ###
-  content: null
+  # ---------------------------------------------------------------------------
+  # Internal properties
+  # ---------------------------------------------------------------------------
 
-  ###*
-  * Is Selected?
-  * @memberof Ember.Table.Row
-  * @member {Boolean} isSelected
-  * @instance
-  ###
-  isSelected: Ember.computed (key, val) ->
-    if arguments.length > 1
-      @get('parentController').setSelected this, val
-    @get('parentController').isSelected this
-  .property 'parentController._selection.[]'
+  # Internal: width of the column.
+  # TODO: Rename to `width`
+  columnWidth:  Ember.computed.oneWay 'defaultColumnWidth'
 
-  ###*
-  * Is Showing?
-  * @memberof Ember.Table.Row
-  * @member {Boolean} isShowing
-  * @instance
-  ###
-  isShowing:  yes
-
-  ###*
-  * Is Active?
-  * @memberof Ember.Table.Row
-  * @member {Boolean} isHovered
-  * @instance
-  ###
-  isHovered:   no
-
+  resize: (width) -> @set 'columnWidth', width

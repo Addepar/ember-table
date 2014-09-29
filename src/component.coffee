@@ -1,57 +1,82 @@
-###*
-* Table Component
-* @class
-* @alias Ember.Table.EmberTableComponent
-###
 Ember.Table.EmberTableComponent =
 Ember.Component.extend Ember.AddeparMixins.StyleBindingsMixin,
 Ember.AddeparMixins.ResizeHandlerMixin,
-  layoutName:   'components/ember-table'
-  classNames:     ['ember-table-tables-container']
-  classNameBindings: ['enableContentSelection:ember-table-content-selectable']
-  styleBindings:  ['height']
-  height:         Ember.computed.alias '_tablesContainerHeight'
+  layoutName: 'components/ember-table'
 
-  # Array of Ember.Table.ColumnDefinition
+  # ---------------------------------------------------------------------------
+  # API - Inputs
+  # ---------------------------------------------------------------------------
+
+  # TODO: Doc
+  classNames:        ['ember-table-tables-container']
+  classNameBindings: ['enableContentSelection:ember-table-content-selectable']
+  styleBindings:     ['height']
+  
+  # An array of row objects. Usually a hash where the keys are column names and
+  # the values are the rows's values. However, could be any object, since each
+  # column can define a function to return the column value given the row
+  # object. See `Ember.Table.ColumnDefinition.getCellContent`.
+  content: null
+
+  # An array of column definitions: see `Ember.Table.ColumnDefinition`. Allows
+  # each column to have its own configuration.
   columns: null
 
-  # The number of frozen column on the left table
+  # The number of fixed columns on the left side of the table. Fixed columns
+  # are always visible, even when the table is scrolled horizontally.
   numFixedColumns: 0
 
-  # The number of footer rows
+  # The number of footer rows in the table. Footer rows appear at the bottom of
+  # the table and are always visible.
+  # TODO(new-api): Rename to `numFooterRows`
   numFooterRow: 0
 
-  # The height per row. We need to know this for the lazy rendering.
-  # TODO: The following three variables should be shared with LESS file
+  # The row height in pixels. A consistent row height is necessary to calculate
+  # which rows are being shown, to enable lazy rendering.
+  # TODO: Currently must be kept in sync with the LESS file.
   rowHeight: 30
 
+  # The minimum header height in pixels. Headers will grow in height if given
+  # more content than they can display.
+  # TODO: Currently must be kept in sync with the LESS file.
   minHeaderHeight: 30
 
+  # The footer height in pixels.
+  # TODO: Currently must be kept in sync with the LESS file.
   footerHeight: 30
 
+  # Enables or disables the header block.
   hasHeader: yes
 
+  # Enables or disables the footer block.
   hasFooter: yes
 
+  # If true, columns with `canAutoResize=true` (the default setting) will
+  # attempt to fill the width of the table when possible. After a column is
+  # manually resized, any other columns with `canAutoResize=true` will
+  # distribute the change in width between them. Once manually resized, a
+  # column will no longer automatically resize.
   forceFillColumns: no
 
+  # Allow the columns to be rearranged by drag-and-drop. Only columns with
+  # `isSortable=true` (the default setting) will be affected.
   enableColumnReorder: yes
 
+  # Allow users to select the content of table cells.
   enableContentSelection: no
 
-  # rows that were selected directly or as part of a previous
-  # range selection (shift-click)
-  persistedSelection: Ember.computed -> new Ember.Set()
-
-  # rows that are part of the currently editable range selection
-  rangeSelection: Ember.computed -> new Ember.Set()
-
+  # Sets which row selection behavior to follow. Possible values are 'none'
+  # (clicking on a row does nothing), 'single' (clicking on a row selects it
+  # and deselects other rows), and 'multiple' (multiple rows can be selected
+  # through ctrl/cmd-click or shift-click).
   selectionMode: 'single'
 
-  _selection: Ember.computed ->
-    @get('persistedSelection').copy().addEach(@get('rangeSelection'))
-  .property 'persistedSelection.[]', 'rangeSelection.[]'
+  # ---------------------------------------------------------------------------
+  # API - Outputs
+  # ---------------------------------------------------------------------------
 
+  # An array of the rows currently selected. If `selectionMode` is set to
+  # 'single', the array will contain either one or zero elements.
   selection: Ember.computed (key, val) ->
     if arguments.length > 1 and val
       if @get('selectionMode') is 'single'
@@ -68,10 +93,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       return @get('_selection').toArray().map (row) -> row.get('content')
   .property '_selection.[]', 'selectionMode'
 
-  # TODO: eliminate view alias
-  # specify the view class to use for rendering the table rows
-  tableRowView:      'Ember.Table.TableRow'
-  tableRowViewClass: Ember.computed.alias 'tableRowView'
+  # ---------------------------------------------------------------------------
+  # Internal properties
+  # ---------------------------------------------------------------------------
 
   init: ->
     @_super()
@@ -79,20 +103,24 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     if !$().mousewheel then throw 'Missing dependency: jquery-mousewheel'
     if !$().antiscroll then throw 'Missing dependency: antiscroll.js'
 
+  # TODO: Document
   actions:
     addColumn: Ember.K
     sortByColumn: Ember.K
+
+  height: Ember.computed.alias '_tablesContainerHeight'
+
+  # TODO(new-api): eliminate view alias
+  # specify the view class to use for rendering the table rows
+  tableRowView:      'Ember.Table.TableRow'
+  tableRowViewClass: Ember.computed.alias 'tableRowView'
 
   onColumnSort: (column, newIndex) ->
     columns  = @get 'tableColumns'
     columns.removeObject column
     columns.insertAt newIndex, column
 
-  ###*
-  * Table Body Content - Array of Ember.Table.Row
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  ###
+  # An array of Ember.Table.Row computed based on `content`
   bodyContent: Ember.computed ->
     Ember.Table.RowArrayController.create
       target: this
@@ -102,21 +130,11 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       content: @get('content')
   .property 'content'
 
-  ###*
-  * Table Footer Content - Array of Ember.Table.Row
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  ###
+  # An array of Ember.Table.Row
   footerContent: Ember.computed (key, value) ->
     if value then value else Ember.A()
   .property()
 
-  ###*
-  * Table Fixed Columns
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @todo Much more doc needed
-  ###
   fixedColumns: Ember.computed ->
     columns         = @get 'columns'
     return Ember.A() unless columns
@@ -126,12 +144,6 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     columns
   .property 'columns.@each', 'numFixedColumns'
 
-  ###*
-  * Table Columns
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @todo Much more doc needed
-  ###
   tableColumns: Ember.computed ->
     columns         = @get 'columns'
     return Ember.A() unless columns
@@ -144,19 +156,15 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   prepareTableColumns: (columns) ->
     columns.setEach 'controller', this
 
-  ##############################################################################
+  # ---------------------------------------------------------------------------
   # View concerns
-  ##############################################################################
+  # ---------------------------------------------------------------------------
+
   didInsertElement: ->
     @_super()
     @set '_tableScrollTop', 0
     @elementSizeDidChange()
 
-  ###*
-  * On resize end callback
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  ###
   onResizeEnd: ->
     # we need to put this on the run loop, because resize event came from
     # window. Otherwise, we get this warning when used in tests. You have
@@ -165,11 +173,6 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     # Ember.run
     Ember.run this, @elementSizeDidChange
 
-  ###*
-  * Element size did change callback
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  ###
   elementSizeDidChange: ->
     return unless (@get('_state') or @get('state')) is 'inDOM'
     @set '_width', @$().parent().outerWidth()
@@ -202,9 +205,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     Ember.run.next this, -> Ember.run.once this, @updateLayout
   , 'bodyContent.length'
 
-  ##############################################################################
-  # private variables
-  ##############################################################################
+  # ---------------------------------------------------------------------------
+  # Private variables
+  # ---------------------------------------------------------------------------
+
   _tableScrollTop:  0
   _tableScrollLeft: 0
 
@@ -233,22 +237,12 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     if contentHeight < height then contentHeight else height
   .property('_height', '_tableContentHeight', '_headerHeight', '_footerHeight')
 
-  ###*
-  * Actual width of the fixed columns (frozen columns)
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
+  # Actual width of the fixed columns
   _fixedColumnsWidth: Ember.computed ->
     @_getTotalWidth @get('fixedColumns')
   .property 'fixedColumns.@each.columnWidth'
 
-  ###*
-  * Actual width of the table columns (non-frozen columns)
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
+  # Actual width of the (non-fixed) columns
   _tableColumnsWidth: Ember.computed ->
     # Hack: We add 3px padding to the right of the table content so that we can
     # reorder into the last column.
@@ -257,12 +251,6 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     if contentWidth > availableWidth then contentWidth else availableWidth
   .property 'tableColumns.@each.columnWidth', '_width', '_fixedColumnsWidth'
 
-  ###*
-  * Computed Row Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
   _rowWidth: Ember.computed ->
     columnsWidth = @get '_tableColumnsWidth'
     nonFixedTableWidth = @get('_tableContainerWidth') - @get('_fixedColumnsWidth')
@@ -270,24 +258,18 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     columnsWidth
   .property '_fixedColumnsWidth', '_tableColumnsWidth', '_tableContainerWidth'
 
-  # Dynamic Header Height that adjusts according to the header content height
+  # Dynamic header height that adjusts according to the header content height
   _headerHeight: Ember.computed ->
     minHeight = @get('minHeaderHeight')
     contentHeaderHeight = @get('_contentHeaderHeight')
     if contentHeaderHeight < minHeight then minHeight else contentHeaderHeight
   .property('_contentHeaderHeight', 'minHeaderHeight')
 
-  # Dynamic Header Height that adjusts according to the header content height
+  # Dynamic footer height that adjusts according to the footer content height
   _footerHeight: Ember.computed ->
     if @get('hasFooter') then @get('footerHeight') else 0
   .property('footerHeight', 'hasFooter')
 
-  ###*
-  * Computed Body Height
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
   _bodyHeight: Ember.computed ->
     bodyHeight = @get '_tablesContainerHeight'
     bodyHeight -= @get('_headerHeight') if @get('hasHeader')
@@ -296,64 +278,28 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   .property('_tablesContainerHeight', '_hasHorizontalScrollbar', '_headerHeight',
             'footerHeight', 'hasHeader', 'hasFooter')
 
-  ###*
-  * Computed Table Block Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
   _tableBlockWidth: Ember.computed ->
     @get('_width') - @get('_fixedColumnsWidth')
   .property '_width', '_fixedColumnsWidth'
 
   _fixedBlockWidthBinding: '_fixedColumnsWidth'
 
-  ###*
-  * Computed Table Content Height
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
   _tableContentHeight: Ember.computed ->
     @get('rowHeight') * @get('bodyContent.length')
   .property 'rowHeight', 'bodyContent.length'
 
-  ###*
-  * Table Container Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
   _tableContainerWidth: Ember.computed ->
     @get('_width')
   .property '_width'
 
-  ###*
-  * Computed Scroll Container Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
   _scrollContainerWidth: Ember.computed ->
     @get('_width') - @get('_fixedColumnsWidth')
   .property '_width', '_fixedColumnsWidth'
 
-  ###*
-  * Computed number of items showing
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  ###
   _numItemsShowing: Ember.computed ->
     Math.floor @get('_bodyHeight') / @get('rowHeight')
   .property '_bodyHeight', 'rowHeight'
 
-  ###*
-  * Computed Start Index
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @raw
-  ###
   _startIndex: Ember.computed ->
     numContent  = @get 'bodyContent.length'
     numViews    = @get '_numItemsShowing'
@@ -367,21 +313,15 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   .property('bodyContent.length', '_numItemsShowing', 'rowHeight',
             '_tableScrollTop')
 
-  ###*
-  * Get Total Width
-  * @memberof Ember.Table.EmberTableComponent
-  * @instance
-  * @private
-  * @argument columns Columns to calculate width for
-  ###
   _getTotalWidth: (columns, columnWidthPath = 'columnWidth') ->
     return 0 unless columns
     widths = columns.getEach(columnWidthPath) or []
     widths.reduce ((total, w) -> total + w), 0
 
-  ##############################################################################
-  # selection
-  ##############################################################################
+  # ---------------------------------------------------------------------------
+  # Selection
+  # TODO: Make private or reorganize into a new section
+  # ---------------------------------------------------------------------------
 
   isSelected: (row) ->
     @get('_selection').contains row
@@ -392,6 +332,17 @@ Ember.AddeparMixins.ResizeHandlerMixin,
       @get('persistedSelection').add row
     else
       @get('persistedSelection').remove row
+
+  # rows that were selected directly or as part of a previous
+  # range selection (shift-click)
+  persistedSelection: Ember.computed -> new Ember.Set()
+
+  # rows that are part of the currently editable range selection
+  rangeSelection: Ember.computed -> new Ember.Set()
+
+  _selection: Ember.computed ->
+    @get('persistedSelection').copy().addEach(@get('rangeSelection'))
+  .property 'persistedSelection.[]', 'rangeSelection.[]'
 
   click: (event) ->
     row = @getRowForEvent event

@@ -17,5 +17,6 @@ require 'build/src/utils/utils'
 
 # Ember-Table
 require 'build/src/column'
+require 'build/src/row'
 require 'build/src/views'
 require 'build/src/component'
