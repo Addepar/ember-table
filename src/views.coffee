@@ -134,10 +134,22 @@ Ember.Table.HeaderRow =
 Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   templateName:   'header-row'
   classNames:     ['ember-table-table-row', 'ember-table-header-row']
+  classNameBindings: ['isHovered:ember-table-header-hover']
   styleBindings: ['width']
   columns:        Ember.computed.alias 'content'
   width:          Ember.computed.alias 'controller._rowWidth'
   scrollLeft:     Ember.computed.alias 'controller._tableScrollLeft'
+
+  isHovered: no
+
+  mouseEnter: (event) ->
+    @set 'isHovered', yes
+
+  mouseLeave: (event) ->
+    @set 'isHovered', no
+
+  teardownContent: ->
+    @set 'isHovered', no
 
   # Options for jQuery UI sortable
   sortableOption: Ember.computed ->

@@ -834,10 +834,21 @@ Ember.Table.HeaderBlock = Ember.Table.TableBlock.extend({
 Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin, {
   templateName: 'header-row',
   classNames: ['ember-table-table-row', 'ember-table-header-row'],
+  classNameBindings: ['isHovered:ember-table-header-hover'],
   styleBindings: ['width'],
   columns: Ember.computed.alias('content'),
   width: Ember.computed.alias('controller._rowWidth'),
   scrollLeft: Ember.computed.alias('controller._tableScrollLeft'),
+  isHovered: false,
+  mouseEnter: function(event) {
+    return this.set('isHovered', true);
+  },
+  mouseLeave: function(event) {
+    return this.set('isHovered', false);
+  },
+  teardownContent: function() {
+    return this.set('isHovered', false);
+  },
   sortableOption: Ember.computed(function() {
     return {
       axis: 'x',
