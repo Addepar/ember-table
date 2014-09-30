@@ -2,14 +2,15 @@ Ember.Table.EmberTableComponent =
 Ember.Component.extend Ember.AddeparMixins.StyleBindingsMixin,
 Ember.AddeparMixins.ResizeHandlerMixin,
   layoutName: 'components/ember-table'
+  classNames:        ['ember-table-tables-container']
+  classNameBindings: ['enableContentSelection:ember-table-content-selectable']
 
   # ---------------------------------------------------------------------------
   # API - Inputs
   # ---------------------------------------------------------------------------
 
-  # TODO: Doc
-  classNames:        ['ember-table-tables-container']
-  classNameBindings: ['enableContentSelection:ember-table-content-selectable']
+  # Values which are bound to the table's style attr. See
+  # `Ember.StyleBindingsMixin` documentation for more details.
   styleBindings:     ['height']
   
   # An array of row objects. Usually a hash where the keys are column names and
@@ -49,6 +50,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   hasHeader: yes
 
   # Enables or disables the footer block.
+  # TODO(new-api): Default to no
   hasFooter: yes
 
   # If true, columns with `canAutoResize=true` (the default setting) will

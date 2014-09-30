@@ -30,6 +30,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
 
   # Whether the column can be rearranged with other columns. Only matters if
   # the table's `enableColumnReorder` property is set to true (the default).
+  # TODO(new-api): Rename to `isReorderable`
   isSortable:  yes
 
   # Alignment of the text in the cell. Possible values are "left", "center",
