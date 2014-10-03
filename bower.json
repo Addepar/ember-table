@@ -26,7 +26,7 @@
     "package.json"
   ],
   "dependencies": {
-    "antiscroll": "fa3f81d3c07b647a63036da1de859fcaf1355993",
+    "antiscroll": "daviesgeek/antiscroll#9b67eb3c01b530ab86484e6874e743518fa65579",
     "bootstrap": "3.0.0",
     "ember": "1.4.0",
     "handlebars": "~1.3.0",
