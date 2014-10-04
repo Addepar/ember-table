@@ -41,6 +41,8 @@ To view examples, start the node server. From the root directory:
 
 You can view the examples at http://localhost:8000/gh_pages.
 
+You can run the tests at http://localhost:8000/tests.
+
 ## Dependencies
 * ember
 * jquery-ui

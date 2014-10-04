@@ -163,17 +163,22 @@ module.exports = function (grunt) {
       tests: {
         files: [
           {
-            expand: true,
-            flatten: true,
-            cwd: 'dependencies/',
-            src: ['**/*.js'],
-            dest: 'tests/lib'
+            src: ['vendor/qunit/qunit/qunit.css'],
+            dest: 'tests/css/qunit.css'
           }, {
-            expand: true,
             flatten: true,
-            cwd: 'dependencies/',
-            src: ['**/*.css'],
-            dest: 'tests/css'
+            expand: true,
+            src: [
+              'vendor/qunit/qunit/qunit.js',
+              'vendor/ember/ember.js',
+              'vendor/handlebars/handlebars.js',
+              'vendor/modernizr/modernizr.js',
+              'vendor/d3/d3.js',
+              'vendor/jquery/jquery.js',
+              'vendor/jquery-ui/ui/jquery-ui.custom.js',
+              'vendor/jquery-mousewheel/jquery.mousewheel.js'
+            ],
+            dest: 'tests/lib/'
           }
         ]
       }
