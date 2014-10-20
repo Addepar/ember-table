@@ -22,6 +22,9 @@ module.exports = function (grunt) {
   // Project configuration.
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+    banner: '/*!\n* <%=pkg.name %> v<%=pkg.version%>\n' +
+            '* Copyright 2012-<%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
+            '* See LICENSE.\n*/',
 
     bower: {
       install: {
@@ -198,24 +201,27 @@ module.exports = function (grunt) {
         },
 
         files: {
-          './dist/ember-table.min.js': [
-            // Include dist in bundle
-            './dist/ember-table.js'
-          ]
+          './dist/ember-table.min.js': ['./dist/ember-table.js']
         }
       }
     },
 
     // Add a banner to dist files which includes version & year of release
     usebanner: {
-      dist: {
+      js: {
         options: {
-          banner: '/*!\n* <%=pkg.name %> v<%=pkg.version%>\n' +
-            '* Copyright 2012-<%=grunt.template.today("yyyy")%> Addepar Inc.\n' +
-            '* See LICENSE.\n*/',
+          banner: '<%=banner%>'
         },
         files: {
-          src: ['dist/*']
+          src: ['dist/*.js']
+        }
+      },
+      css: {
+        options: {
+          banner: '<%=banner%>'
+        },
+        files: {
+          src: ['dist/*.css']
         }
       }
     },
@@ -254,15 +260,15 @@ module.exports = function (grunt) {
       },
       code: {
         files: ["src/**/*.coffee", "app/**/*.coffee", "dependencies/**/*.js", "vendor/**/*.js"],
-        tasks: ["coffee", "neuter"]
+        tasks: ["coffee", "neuter", "uglify", "usebanner:js"]
       },
       handlebars: {
         files: ["src/**/*.hbs", "app/**/*.hbs"],
-        tasks: ["emberTemplates", "neuter"]
+        tasks: ["emberTemplates", "neuter", "uglify", "usebanner:js"]
       },
       less: {
         files: ["app/assets/**/*.less", "app/assets/**/*.css", "src/**/*.less"],
-        tasks: ["less", "copy"]
+        tasks: ["less", "copy", "usebanner:css"]
       },
       copy: {
         files: ["app/index.html"],
@@ -291,7 +297,7 @@ module.exports = function (grunt) {
   grunt.registerTask("build_srcs", ["coffee:srcs", "emberTemplates", "neuter"]);
   grunt.registerTask("build_app", ["coffee:app", "emberTemplates", "neuter"]);
 
-  grunt.registerTask("dist", ["bower", "replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner"]);
+  grunt.registerTask("dist", ["clean", "bower", "replace", "build_srcs", "build_app", "less", "copy", "uglify", "usebanner"]);
 
   grunt.registerTask("default", ["dist", "watch"]);
 };
