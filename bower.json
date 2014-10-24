@@ -14,11 +14,10 @@
   "ignore": [
     "app",
     "dependencies",
-    "src",
     "tests",
     ".gitignore",
-    "bower.json",
-    "CHANGELOG",
+    "CHANGELOG.md",
+    "CONTRIBUTING.md",
     "Gruntfile.js",
     "LICENSE",
     "README.md",
