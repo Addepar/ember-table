@@ -793,20 +793,20 @@ Ember.Table.TableCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   contentDidChange: function() {
     return this.notifyPropertyChange('cellContent');
   },
-  contentPathWillChange: (function() {
+  contentPathWillChange: Ember.beforeObserver('column.contentPath', function() {
     var contentPath;
     contentPath = this.get('column.contentPath');
     if (contentPath) {
       return this.removeObserver("row." + contentPath, this, this.contentDidChange);
     }
-  }).observesBefore('column.contentPath'),
-  contentPathDidChange: (function() {
+  }),
+  contentPathDidChange: Ember.beforeObserver('column.contentPath', function() {
     var contentPath;
     contentPath = this.get('column.contentPath');
     if (contentPath) {
       return this.addObserver("row." + contentPath, this, this.contentDidChange);
     }
-  }).observesBefore('column.contentPath'),
+  }),
   cellContent: Ember.computed(function(key, value) {
     var column, row;
     row = this.get('row');
