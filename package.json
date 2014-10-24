@@ -28,6 +28,7 @@
     "grunt-banner": "~0.2.2",
     "grunt-text-replace": "~0.3.11",
     "grunt-bower-task": "~0.4.0",
-    "grunt-release-it": "~0.2.0"
+    "grunt-release-it": "~0.2.0",
+    "ember-template-compiler": "~1.7.0"
   }
 }
