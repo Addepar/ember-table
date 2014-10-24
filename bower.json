@@ -14,7 +14,6 @@
   "ignore": [
     "app",
     "dependencies",
-    "src",
     "tests",
     ".gitignore",
     "bower.json",
