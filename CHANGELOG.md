@@ -2,14 +2,14 @@
 
 ### Ember Table 0.2.3 _(October 31, 2014)_
 
-Link to new version of charts/widgets docs
-Fix rendering issue in Linux Chrome v38
-Fix usebanner and default grunt build
-Fix jquery-mousewheel dependency
-Use the correct syntax to reference a github repository in bower.json
-Update copy:tests task to allow localhost:8000/tests to run
-Update docs pages
-Clean up comments, adding inputs/output docs
+* Link to new version of charts/widgets docs
+* Fix rendering issue in Linux Chrome v38
+* Fix usebanner and default grunt build
+* Fix jquery-mousewheel dependency
+* Use the correct syntax to reference a github repository in bower.json
+* Update copy:tests task to allow localhost:8000/tests to run
+* Update docs pages
+* Clean up comments, adding inputs/output docs
 
 ### Ember Table 0.2.2 _(September 25, 2014)_
 
