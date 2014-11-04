@@ -12,7 +12,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # Values which are bound to the table's style attr. See
   # `Ember.StyleBindingsMixin` documentation for more details.
   styleBindings:     ['height']
-  
+
   # An array of row objects. Usually a hash where the keys are column names and
   # the values are the rows's values. However, could be any object, since each
   # column can define a function to return the column value given the row
@@ -83,11 +83,11 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     if arguments.length > 1 and val
       if @get('selectionMode') is 'single'
         @get('persistedSelection').clear()
-        @get('persistedSelection').add(@findRow val)
+        @get('persistedSelection').addObject(@findRow val)
       else
         @get('persistedSelection').clear()
         for content in val
-          @get('persistedSelection').add(@findRow content)
+          @get('persistedSelection').addObject(@findRow content)
       @get('rangeSelection').clear()
     if @get('selectionMode') is 'single'
       return @get('_selection')?[0]?.get('content')
@@ -331,19 +331,21 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   setSelected: (row, val) ->
     @persistSelection()
     if val
-      @get('persistedSelection').add row
+      @get('persistedSelection').addObject row
     else
-      @get('persistedSelection').remove row
+      @get('persistedSelection').removeObject row
 
   # rows that were selected directly or as part of a previous
   # range selection (shift-click)
-  persistedSelection: Ember.computed -> new Ember.Set()
+  persistedSelection: Ember.computed ->
+    Ember.ArrayProxy.createWithMixins Ember.MutableArray, {content:[]}
 
   # rows that are part of the currently editable range selection
-  rangeSelection: Ember.computed -> new Ember.Set()
+  rangeSelection: Ember.computed ->
+    Ember.ArrayProxy.createWithMixins Ember.MutableArray, {content:[]}
 
   _selection: Ember.computed ->
-    @get('persistedSelection').copy().addEach(@get('rangeSelection'))
+    @get('persistedSelection').toArray().copy().addObjects(@get('rangeSelection'))
   .property 'persistedSelection.[]', 'rangeSelection.[]'
 
   click: (event) ->
@@ -352,7 +354,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     return if @get('selectionMode') is 'none'
     if @get('selectionMode') is 'single'
       @get('persistedSelection').clear()
-      @get('persistedSelection').add row
+      @get('persistedSelection').addObject row
     else
       if event.shiftKey
         @get('rangeSelection').clear()
@@ -371,9 +373,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
         else
           @persistSelection()
         if @get('persistedSelection').contains row
-          @get('persistedSelection').remove row
+          @get('persistedSelection').removeObject row
         else
-          @get('persistedSelection').add row
+          @get('persistedSelection').addObject row
         @set('lastSelected', row)
 
   findRow: (content) ->
@@ -385,7 +387,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     @get('bodyContent')?.indexOf(row)
 
   persistSelection: () ->
-    @get('persistedSelection').addEach(@get('rangeSelection'))
+    @get('persistedSelection').addObjects(@get('rangeSelection'))
     @get('rangeSelection').clear()
 
   getRowForEvent: (event) ->
