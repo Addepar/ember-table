@@ -201,6 +201,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     additionWidthPerColumn = Math.floor(remainingWidth / columnsToResize.length)
     columnsToResize.forEach (column) ->
       columnWidth = column.get('columnWidth') + additionWidthPerColumn
+      minWidth = column.get("minWidth")
+    if minWidth and minWidth > columnWidth
+      column.set "columnWidth", minWidth
+    else
       column.set 'columnWidth', columnWidth
 
   onBodyContentLengthDidChange: Ember.observer ->
