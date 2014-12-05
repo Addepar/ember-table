@@ -1,5 +1,12 @@
 # Ember Table Changelog
 
+### Ember Table 0.2.4 _(December 4, 2014)_
+
+* Fix Ember.Set deprecation warnings
+* Allow bower to pull in the src directory
+  * This makes it easier to import and override LESS properties
+* Fix ember-table with Ember.EXTEND_PROTOTYPES=false
+
 ### Ember Table 0.2.3 _(October 31, 2014)_
 
 * Link to new version of charts/widgets docs
