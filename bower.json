@@ -1,6 +1,6 @@
 {
   "name": "ember-table",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "Table built using ember.js that lazily renders rows.",
   "keywords": [
     "ember",

@@ -1,5 +1,15 @@
 # Ember Table Changelog
 
+### Ember Table 0.3.0 _(January 5, 2015)_
+
+* Add savedWidth column to configurable demo
+* Revert "Fix rendering issue in Linux Chrome v38"
+* New column resizing behavior and modes
+  * Remove `forceFillColumns` from API
+  * Add `columnMode: 'standard/fluid'` to API
+  * Enable "fluid" mode out of the box, remove old fluid example
+  * Add Configurable Column Demo to explain new resize behavior
+
 ### Ember Table 0.2.4 _(December 4, 2014)_
 
 * Fix Ember.Set deprecation warnings
