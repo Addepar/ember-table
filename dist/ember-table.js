@@ -1,6 +1,6 @@
 /*!
 * ember-table v0.2.4
-* Copyright 2012-2014 Addepar Inc.
+* Copyright 2012-2015 Addepar Inc.
 * See LICENSE.
 */
 (function() {
