@@ -27,6 +27,7 @@
               <th class="width-column">Min Width</th>
               <th class="width-column">Max Width</th>
               <th class="width-column">Actual Width</th>
+              <th class="width-column">Saved Width</th>
             </tr>
             {{#each columns}}
               <tr>
@@ -37,6 +38,7 @@
                 <td {{bind-attr class="atMinWidth:at-limit"}}>{{input value=minWidthValue class="text-input" type="number" min="1"}}</td>
                 <td {{bind-attr class="atMaxWidth:at-limit"}}>{{input value=maxWidthValue class="text-input" type="number" min="1"}}</td>
                 <td>{{width}}</td>
+                <td>{{savedWidth}}</td>
               </tr>
             {{/each}}
           </tbody>
