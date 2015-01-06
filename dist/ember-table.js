@@ -672,7 +672,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend({
   isResizable: true,
   isSortable: true,
   textAlign: 'text-align-right',
-  canAutoResize: true,
+  canAutoResize: false,
   headerCellView: 'Ember.Table.HeaderCell',
   headerCellViewClass: Ember.computed.alias('headerCellView'),
   tableCellView: 'Ember.Table.TableCell',

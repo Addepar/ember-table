@@ -36,7 +36,7 @@ Ember.Table.ColumnDefinition = Ember.Object.extend
   textAlign: 'text-align-right'
 
   # Whether the column can automatically resize to fill space in the table.
-  canAutoResize: yes
+  canAutoResize: no
 
   # TODO(new-api): Remove `headerCellViewClass`
   # Override to specify a custom view to use for the header cell.
