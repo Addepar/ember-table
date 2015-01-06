@@ -1,5 +1,12 @@
 # Ember Table Changelog
 
+### Ember Table 0.4.0 _(January 6, 2015)_
+
+* Change `canAutoResize` default to `false`
+  * This is more consistent with previous versions (0.2.x)
+  * We recommend skipping version 0.3.0 in favor of this version
+* Update contributing guidelines
+
 ### Ember Table 0.3.0 _(January 5, 2015)_
 
 * Add savedWidth column to configurable demo
