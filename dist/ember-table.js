@@ -1152,7 +1152,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     if (this.get('selectionMode') === 'single') {
       return (_ref = this.get('_selection')) != null ? (_ref1 = _ref[0]) != null ? _ref1.get('content') : void 0 : void 0;
     } else {
-      return this.get('_selection').toArray().map(function(row) {
+      return this.get('_selection').map(function(row) {
         return row.get('content');
       });
     }
@@ -1470,17 +1470,13 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
   },
   persistedSelection: Ember.computed(function() {
-    return Ember.ArrayProxy.createWithMixins(Ember.MutableArray, {
-      content: []
-    });
+    return Ember.A();
   }),
   rangeSelection: Ember.computed(function() {
-    return Ember.ArrayProxy.createWithMixins(Ember.MutableArray, {
-      content: []
-    });
+    return Ember.A();
   }),
   _selection: Ember.computed(function() {
-    return this.get('persistedSelection').toArray().copy().addObjects(this.get('rangeSelection'));
+    return this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
   }).property('persistedSelection.[]', 'rangeSelection.[]'),
   click: function(event) {
     var curIndex, lastIndex, maxIndex, minIndex, row;

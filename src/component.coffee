@@ -89,7 +89,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     if @get('selectionMode') is 'single'
       return @get('_selection')?[0]?.get('content')
     else
-      return @get('_selection').toArray().map (row) -> row.get('content')
+      return @get('_selection').map (row) -> row.get('content')
   .property '_selection.[]', 'selectionMode'
 
   # ---------------------------------------------------------------------------
@@ -390,15 +390,13 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # rows that were selected directly or as part of a previous
   # range selection (shift-click)
-  persistedSelection: Ember.computed ->
-    Ember.ArrayProxy.createWithMixins Ember.MutableArray, {content:[]}
+  persistedSelection: Ember.computed -> Ember.A()
 
   # rows that are part of the currently editable range selection
-  rangeSelection: Ember.computed ->
-    Ember.ArrayProxy.createWithMixins Ember.MutableArray, {content:[]}
+  rangeSelection: Ember.computed -> Ember.A()
 
   _selection: Ember.computed ->
-    @get('persistedSelection').toArray().copy().addObjects(@get('rangeSelection'))
+    @get('persistedSelection').copy().addObjects(@get('rangeSelection'))
   .property 'persistedSelection.[]', 'rangeSelection.[]'
 
   click: (event) ->
