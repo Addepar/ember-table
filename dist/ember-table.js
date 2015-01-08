@@ -1135,16 +1135,22 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   columnMode: 'standard',
   selectionMode: 'single',
   selection: Ember.computed(function(key, val) {
-    var content, _i, _len, _ref, _ref1;
+    var content, rowToAdd, _i, _len, _ref, _ref1;
     if (arguments.length > 1 && val) {
       if (this.get('selectionMode') === 'single') {
         this.get('persistedSelection').clear();
-        this.get('persistedSelection').addObject(this.findRow(val));
+        rowToAdd = this.findRow(val);
+        if (rowToAdd) {
+          this.get('persistedSelection').addObject(rowToAdd);
+        }
       } else {
         this.get('persistedSelection').clear();
         for (_i = 0, _len = val.length; _i < _len; _i++) {
           content = val[_i];
-          this.get('persistedSelection').addObject(this.findRow(content));
+          rowToAdd = this.findRow(content);
+          if (rowToAdd) {
+            this.get('persistedSelection').addObject(rowToAdd);
+          }
         }
       }
       this.get('rangeSelection').clear();
