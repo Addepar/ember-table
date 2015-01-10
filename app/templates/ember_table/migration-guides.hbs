@@ -3,14 +3,94 @@
   <h1>Migration Guides</h1>
   <div class="row">
     <div class="col-md-9">
+      <h2>Migrating to version 0.4.0</h2>
+      <p>
+        Version 0.4.0 contains major changes to column resizing.
+      </p>
+      <p>
+        In version 0.2, setting the table's <code>forceFillColumns</code>
+        property and configuring each column's <code>canAutoResize</code>
+        property let you configure the table to scale automatically when
+        rendered into containers of different sizes.
+      </p>
+      <p>
+        In version 0.4, the table-wide <code>forceFillColumns</code> setting
+        has been removed and each column defines its own resize behavior.  Use
+        <code>isResizable</code> to set whether the column can be resized at
+        all (manually or automatically), <code>canAutoResize</code> to set
+        whether the column will attempt to scale its width to different table
+        sizes, and <code>savedWidth</code> to set the column's initial width or
+        persist its width once resized.
+      </p>
+      <p>
+        It was previously possible to extend Ember Table so that it would
+        behave in a "fluid" way, meaning that resizing one column steals
+        width from its neighboring column. This is now supported in Ember Table
+        out of the box: just set <code>columnMode="fluid"</code>.
+      </p>
+      <p>
+        To get a sense for the new column resizing changes, check out the
+        {{#link-to 'emberTable.configurable-columns'}}configurable column demo.{{/link-to}}
+      </p>
+      <h3>API Changes</h3>
+      <ul class="styled">
+        <li>Removed: <code>EmberTableComponent.forceFillColumns</code></code></li>
+        <li>Removed: <code>ColumnDefinition.columnWidth</code></code></li>
+        <li>Removed: <code>ColumnDefinition.defaultColumnWidth</code></code></li>
+        <li>Added: <code>EmberTableComponent.columnMode</code></code></li>
+        <li>Added: <code>ColumnDefinition.savedWidth</code></code></li>
+      </ul>
+      <h3>Upgrade steps</h3>
+      <ol class="styled styled-spacious">
+        <li>
+          Replace <code>columnWidth</code> and
+          <code>defaultColumnWidth</code> with <code>savedWidth</code>. This
+          will set the column's initial width, and will change if the column is
+          manually resized. If you want to persist changes to column sizes,
+          simply bind to and persist <code>savedWidth</code>.
+        </li>
+        <li>
+          Do not use <code>forceFillColumns</code> as it no longer has any
+          effect. Columns will fill as before if their
+          <code>canAutoResize</code> property is <code>true</code>.
+        </li>
+        <li>
+          Make sure your columns have <code>canAutoResize</code> set correctly.
+          In version 0.2 this defaulted to <code>true</code>, but only made a
+          difference if <code>forceFillColumns</code> was enabled. Now it
+          defaults to <code>false</code>, but if a column sets it to
+          <code>true</code>, the force fill behavior is implicitly triggered.
+        </li>
+      </ol>
+
+      <h2>Migrating to version 0.3.0</h2>
+      <p>
+        Version 0.3.0 includes major column resizing changes, but with
+        <code>canAutoResize</code> defaulting to <code>true</code>.  We
+        recommend skipping this version and upgrading directly to 0.4.0; see
+        the 0.4.0 migration guide.
+      </p>
+
+      <h2>Migrating to version 0.2.0</h2>
+      <p>
+        A full migration step is not available for this version, but it
+        contains only minor API changes.
+      </p>
+      <p>
+        Version 0.2 uses row objects to wrap content in the table. Because of
+        this, change any accesses to row data (e.g. in
+        <code>getCellContent</code>) from <code>row['date']</code> to
+        <code>row.get('date')</code>.
+      </p>
+
       <h2>Migrating from old versions to version 0.1.0</h2>
       <p>
         Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping
         that the new organization will make it simpler and easier to set up,
         but for existing users, you’ll have to make a few changes to upgrade to
-        the new Ember Table. This guide is intended to walk you through that
-        process.
+        the new Ember Table.
       </p>
+      <h3>Upgrade steps</h3>
       <ol class="styled styled-spacious">
         <li>
           Upgrade <code>ember-table.js</code> and <code>ember-table.css</code>.
