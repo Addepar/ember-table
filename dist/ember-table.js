@@ -11,233 +11,175 @@ var _ref;
 })();
 (function() {
 
-Ember.TEMPLATES["body-container"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = '';
-  data.buffer.push("\n        ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {hash:{
-    'classNames': ("ember-table-left-table-block"),
-    'contentBinding': ("controller.bodyContent"),
-    'columnsBinding': ("controller.fixedColumns"),
+Ember.TEMPLATES["body-container"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("        ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {"name":"view","hash":{
+    'startIndexBinding': ("controller._startIndex"),
+    'scrollTopBinding': ("controller._scrollTop"),
+    'numItemsShowingBinding': ("controller._numItemsShowing"),
     'widthBinding': ("controller._fixedBlockWidth"),
-    'numItemsShowingBinding': ("controller._numItemsShowing"),
-    'scrollTopBinding': ("controller._scrollTop"),
-    'startIndexBinding': ("controller._startIndex")
-  },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'numItemsShowingBinding': "STRING",'scrollTopBinding': "STRING",'startIndexBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'widthBinding': depth0,'numItemsShowingBinding': depth0,'scrollTopBinding': depth0,'startIndexBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n      ");
-  return buffer;
-  }
-
-  data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n      ");
-  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n      ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {hash:{
-    'classNames': ("ember-table-right-table-block"),
+    'columnsBinding': ("controller.fixedColumns"),
     'contentBinding': ("controller.bodyContent"),
-    'columnsBinding': ("controller.tableColumns"),
-    'scrollLeftBinding': ("controller._tableScrollLeft"),
-    'widthBinding': ("controller._tableBlockWidth"),
-    'numItemsShowingBinding': ("controller._numItemsShowing"),
+    'classNames': ("ember-table-left-table-block")
+  },"hashTypes":{'startIndexBinding': "STRING",'scrollTopBinding': "STRING",'numItemsShowingBinding': "STRING",'widthBinding': "STRING",'columnsBinding': "STRING",'contentBinding': "STRING",'classNames': "STRING"},"hashContexts":{'startIndexBinding': depth0,'scrollTopBinding': depth0,'numItemsShowingBinding': depth0,'widthBinding': depth0,'columnsBinding': depth0,'contentBinding': depth0,'classNames': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
+  data.buffer.push("\n");
+  return buffer;
+},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n");
+  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+  if (stack1 != null) { data.buffer.push(stack1); }
+  data.buffer.push("      ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.LazyTableBlock", {"name":"view","hash":{
+    'startIndexBinding': ("controller._startIndex"),
     'scrollTopBinding': ("controller._scrollTop"),
-    'startIndexBinding': ("controller._startIndex")
-  },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'scrollLeftBinding': "STRING",'widthBinding': "STRING",'numItemsShowingBinding': "STRING",'scrollTopBinding': "STRING",'startIndexBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'scrollLeftBinding': depth0,'widthBinding': depth0,'numItemsShowingBinding': depth0,'scrollTopBinding': depth0,'startIndexBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+    'numItemsShowingBinding': ("controller._numItemsShowing"),
+    'widthBinding': ("controller._tableBlockWidth"),
+    'scrollLeftBinding': ("controller._tableScrollLeft"),
+    'columnsBinding': ("controller.tableColumns"),
+    'contentBinding': ("controller.bodyContent"),
+    'classNames': ("ember-table-right-table-block")
+  },"hashTypes":{'startIndexBinding': "STRING",'scrollTopBinding': "STRING",'numItemsShowingBinding': "STRING",'widthBinding': "STRING",'scrollLeftBinding': "STRING",'columnsBinding': "STRING",'contentBinding': "STRING",'classNames': "STRING"},"hashContexts":{'startIndexBinding': depth0,'scrollTopBinding': depth0,'numItemsShowingBinding': depth0,'widthBinding': depth0,'scrollLeftBinding': depth0,'columnsBinding': depth0,'contentBinding': depth0,'classNames': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n    </div>\n  </div>\n</div>");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["components/ember-table"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = '';
-  data.buffer.push("\n  ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderTableContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
+Ember.TEMPLATES["components/ember-table"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("  ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderTableContainer", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n");
   return buffer;
-  }
-
-function program3(depth0,data) {
-  
-  var buffer = '';
-  data.buffer.push("\n  ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.FooterTableContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
+},"3":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("  ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.FooterTableContainer", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n");
   return buffer;
-  }
-
-  stack1 = helpers['if'].call(depth0, "controller.hasHeader", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, escapeExpression=this.escapeExpression, buffer = '';
+  stack1 = helpers['if'].call(depth0, "controller.hasHeader", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+  if (stack1 != null) { data.buffer.push(stack1); }
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.BodyTableContainer", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.BodyTableContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
+  stack1 = helpers['if'].call(depth0, "controller.hasFooter", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+  if (stack1 != null) { data.buffer.push(stack1); }
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ScrollContainer", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n");
-  stack1 = helpers['if'].call(depth0, "controller.hasFooter", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ScrollContainer", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ColumnSortableIndicator", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ColumnSortableIndicator", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["footer-container"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = '';
-  data.buffer.push("\n    ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {hash:{
-    'classNames': ("ember-table-left-table-block"),
-    'contentBinding': ("controller.footerContent"),
-    'columnsBinding': ("controller.fixedColumns"),
+Ember.TEMPLATES["footer-container"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("    ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {"name":"view","hash":{
+    'heightBinding': ("controller.footerHeight"),
     'widthBinding': ("controller._fixedBlockWidth"),
-    'heightBinding': ("controller.footerHeight")
-  },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n  ");
-  return buffer;
-  }
-
-  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
-  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n  ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {hash:{
-    'classNames': ("ember-table-right-table-block"),
+    'columnsBinding': ("controller.fixedColumns"),
     'contentBinding': ("controller.footerContent"),
-    'columnsBinding': ("controller.tableColumns"),
-    'scrollLeftBinding': ("controller._tableScrollLeft"),
+    'classNames': ("ember-table-left-table-block")
+  },"hashTypes":{'heightBinding': "STRING",'widthBinding': "STRING",'columnsBinding': "STRING",'contentBinding': "STRING",'classNames': "STRING"},"hashContexts":{'heightBinding': depth0,'widthBinding': depth0,'columnsBinding': depth0,'contentBinding': depth0,'classNames': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
+  data.buffer.push("\n");
+  return buffer;
+},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
+  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+  if (stack1 != null) { data.buffer.push(stack1); }
+  data.buffer.push("  ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.TableBlock", {"name":"view","hash":{
+    'heightBinding': ("controller.footerHeight"),
     'widthBinding': ("controller._tableBlockWidth"),
-    'heightBinding': ("controller.footerHeight")
-  },hashTypes:{'classNames': "STRING",'contentBinding': "STRING",'columnsBinding': "STRING",'scrollLeftBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'contentBinding': depth0,'columnsBinding': depth0,'scrollLeftBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+    'scrollLeftBinding': ("controller._tableScrollLeft"),
+    'columnsBinding': ("controller.tableColumns"),
+    'contentBinding': ("controller.footerContent"),
+    'classNames': ("ember-table-right-table-block")
+  },"hashTypes":{'heightBinding': "STRING",'widthBinding': "STRING",'scrollLeftBinding': "STRING",'columnsBinding': "STRING",'contentBinding': "STRING",'classNames': "STRING"},"hashContexts":{'heightBinding': depth0,'widthBinding': depth0,'scrollLeftBinding': depth0,'columnsBinding': depth0,'contentBinding': depth0,'classNames': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n</div>\n");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["header-cell"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, escapeExpression=this.escapeExpression;
-
-
+Ember.TEMPLATES["header-cell"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, escapeExpression=this.escapeExpression, buffer = '';
   data.buffer.push("<div class=\"ember-table-content-container\" ");
-  data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
+  data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
   data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-  stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+  if (stack1 != null) { data.buffer.push(stack1); }
   data.buffer.push("\n  </span>\n</div>");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["header-container"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-function program1(depth0,data) {
-  
-  var buffer = '';
-  data.buffer.push("\n    ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {hash:{
-    'classNames': ("ember-table-left-table-block"),
-    'columnsBinding': ("controller.fixedColumns"),
+Ember.TEMPLATES["header-container"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("    ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {"name":"view","hash":{
+    'heightBinding': ("controller.headerHeight"),
     'widthBinding': ("controller._fixedBlockWidth"),
-    'heightBinding': ("controller.headerHeight")
-  },hashTypes:{'classNames': "STRING",'columnsBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'columnsBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
-  data.buffer.push("\n  ");
+    'columnsBinding': ("controller.fixedColumns"),
+    'classNames': ("ember-table-left-table-block")
+  },"hashTypes":{'heightBinding': "STRING",'widthBinding': "STRING",'columnsBinding': "STRING",'classNames': "STRING"},"hashContexts":{'heightBinding': depth0,'widthBinding': depth0,'columnsBinding': depth0,'classNames': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
+  data.buffer.push("\n");
   return buffer;
-  }
-
-  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
-  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-  data.buffer.push("\n  ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {hash:{
-    'classNames': ("ember-table-right-table-block"),
-    'columnsBinding': ("controller.tableColumns"),
-    'scrollLeftBinding': ("controller._tableScrollLeft"),
+},"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
+  stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
+  if (stack1 != null) { data.buffer.push(stack1); }
+  data.buffer.push("  ");
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.HeaderBlock", {"name":"view","hash":{
+    'heightBinding': ("controller.headerHeight"),
     'widthBinding': ("controller._tableBlockWidth"),
-    'heightBinding': ("controller.headerHeight")
-  },hashTypes:{'classNames': "STRING",'columnsBinding': "STRING",'scrollLeftBinding': "STRING",'widthBinding': "STRING",'heightBinding': "STRING"},hashContexts:{'classNames': depth0,'columnsBinding': depth0,'scrollLeftBinding': depth0,'widthBinding': depth0,'heightBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+    'scrollLeftBinding': ("controller._tableScrollLeft"),
+    'columnsBinding': ("controller.tableColumns"),
+    'classNames': ("ember-table-right-table-block")
+  },"hashTypes":{'heightBinding': "STRING",'widthBinding': "STRING",'scrollLeftBinding': "STRING",'columnsBinding': "STRING",'classNames': "STRING"},"hashContexts":{'heightBinding': depth0,'widthBinding': depth0,'scrollLeftBinding': depth0,'columnsBinding': depth0,'classNames': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n</div>\n");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["header-row"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', escapeExpression=this.escapeExpression;
-
-
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.MultiItemViewCollectionView", {hash:{
-    'contentBinding': ("view.content"),
+Ember.TEMPLATES["header-row"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.MultiItemViewCollectionView", {"name":"view","hash":{
+    'widthBinding': ("controller._tableColumnsWidth"),
     'itemViewClassField': ("headerCellViewClass"),
-    'widthBinding': ("controller._tableColumnsWidth")
-  },hashTypes:{'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+    'contentBinding': ("view.content")
+  },"hashTypes":{'widthBinding': "STRING",'itemViewClassField': "STRING",'contentBinding': "STRING"},"hashContexts":{'widthBinding': depth0,'itemViewClassField': depth0,'contentBinding': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["scroll-container"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', escapeExpression=this.escapeExpression;
-
-
+Ember.TEMPLATES["scroll-container"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
   data.buffer.push("<div class=\"antiscroll-wrap\">\n  <div class=\"antiscroll-inner\">\n    ");
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ScrollPanel", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.Table.ScrollPanel", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n  </div>\n</div>\n");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["table-cell"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', stack1;
-
-
+Ember.TEMPLATES["table-cell"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var stack1, buffer = '';
   data.buffer.push("<span class=\"ember-table-content\">\n  ");
-  stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-  if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
+  stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
+  if (stack1 != null) { data.buffer.push(stack1); }
   data.buffer.push("\n</span>");
   return buffer;
-  
-});
+},"useData":true});
 
-Ember.TEMPLATES["table-row"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-this.compilerInfo = [4,'>= 1.0.0'];
-helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-  var buffer = '', escapeExpression=this.escapeExpression;
-
-
-  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.MultiItemViewCollectionView", {hash:{
-    'rowBinding': ("view.row"),
-    'contentBinding': ("view.columns"),
+Ember.TEMPLATES["table-row"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
+  var escapeExpression=this.escapeExpression, buffer = '';
+  data.buffer.push(escapeExpression(helpers.view.call(depth0, "Ember.MultiItemViewCollectionView", {"name":"view","hash":{
+    'widthBinding': ("controller._tableColumnsWidth"),
     'itemViewClassField': ("tableCellViewClass"),
-    'widthBinding': ("controller._tableColumnsWidth")
-  },hashTypes:{'rowBinding': "STRING",'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'rowBinding': depth0,'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["ID"],data:data})));
+    'contentBinding': ("view.columns"),
+    'rowBinding': ("view.row")
+  },"hashTypes":{'widthBinding': "STRING",'itemViewClassField': "STRING",'contentBinding': "STRING",'rowBinding': "STRING"},"hashContexts":{'widthBinding': depth0,'itemViewClassField': depth0,'contentBinding': depth0,'rowBinding': depth0},"types":["ID"],"contexts":[depth0],"data":data})));
   data.buffer.push("\n");
   return buffer;
-  
-});
+},"useData":true});
 
 })();
 (function() {
