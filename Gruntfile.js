@@ -59,6 +59,10 @@ module.exports = function (grunt) {
 
     emberTemplates: {
       options: {
+        templateCompilerPath: 'vendor/ember/ember-template-compiler.js',
+        handlebarsPath: 'vendor/handlebars/handlebars.js',
+        templateNamespace: 'HTMLBars',
+
         templateName: function(sourceFile) {
           return sourceFile.replace(/src\/templates\//, '').replace(/app\/templates\//, '');
         }
@@ -247,7 +251,7 @@ module.exports = function (grunt) {
         src: ['app/templates/ember_table/overview.hbs'],
         overwrite: true,
         replacements: [{
-          from: /The current version is .*\..*\..*./,
+          from: /The current version is .*\..*\..*\./,
           to: "The current version is <%=pkg.version%>."
         }]
       }
