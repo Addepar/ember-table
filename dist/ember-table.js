@@ -603,11 +603,9 @@ Ember.TouchMoveHandlerMixin = Ember.Mixin.create({
       startY = newY;
     });
   },
-  willDestroy: function() {
-    var _ref;
-    if ((_ref = this.$()) != null) {
-      _ref.unbind('touchmove');
-    }
+  willDestroyElement: function() {
+    this.$().unbind('touchstart');
+    this.$().unbind('touchmove');
     return this._super();
   }
 });

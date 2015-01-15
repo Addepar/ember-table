@@ -62,8 +62,9 @@ Ember.TouchMoveHandlerMixin = Ember.Mixin.create
       startY = newY
       return
 
-  willDestroy: ->
-    @$()?.unbind 'touchmove'
+  willDestroyElement: ->
+    @$().unbind 'touchstart'
+    @$().unbind 'touchmove'
     @_super()
 
 ###*
