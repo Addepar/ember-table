@@ -163,6 +163,10 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
     if @get('controller.enableColumnReorder')
       @$('> div').sortable(@get('sortableOption'))
 
+  willDestroyElement: ->
+    @$('> div').sortable('destroy')
+    @_super()
+
   onScroll: (event) ->
     @set 'scrollLeft', event.target.scrollLeft
     event.preventDefault()
@@ -251,6 +255,10 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   didInsertElement: ->
     @elementSizeDidChange()
     @recomputeResizableHandle()
+
+  willDestroyElement: ->
+    @$().resizable('destroy')
+    @_super()
 
   _isResizable: Ember.computed ->
     if @get('controller.columnMode') is 'standard'

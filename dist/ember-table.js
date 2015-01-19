@@ -874,6 +874,10 @@ Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
       return this.$('> div').sortable(this.get('sortableOption'));
     }
   },
+  willDestroyElement: function() {
+    this.$('> div').sortable('destroy');
+    return this._super();
+  },
   onScroll: function(event) {
     this.set('scrollLeft', event.target.scrollLeft);
     return event.preventDefault();
@@ -949,6 +953,10 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
   didInsertElement: function() {
     this.elementSizeDidChange();
     return this.recomputeResizableHandle();
+  },
+  willDestroyElement: function() {
+    this.$().resizable('destroy');
+    return this._super();
   },
   _isResizable: Ember.computed(function() {
     if (this.get('controller.columnMode') === 'standard') {
