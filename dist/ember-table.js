@@ -875,7 +875,10 @@ Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
     }
   },
   willDestroyElement: function() {
-    this.$('> div').sortable('destroy');
+    var _ref;
+    if ((_ref = this.$('> div')) != null) {
+      _ref.sortable('destroy');
+    }
     return this._super();
   },
   onScroll: function(event) {

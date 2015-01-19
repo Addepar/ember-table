@@ -164,7 +164,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
       @$('> div').sortable(@get('sortableOption'))
 
   willDestroyElement: ->
-    @$('> div').sortable('destroy')
+    @$('> div')?.sortable('destroy')
     @_super()
 
   onScroll: (event) ->
