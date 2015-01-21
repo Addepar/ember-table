@@ -120,7 +120,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   onColumnSort: (column, newIndex) ->
     columns  = @get 'tableColumns'
-    columns.removeObject column
+
+    columns = $.grep columns, (n, i) ->
+      n isnt column
+
     columns.insertAt newIndex, column
     @prepareTableColumns()
 
