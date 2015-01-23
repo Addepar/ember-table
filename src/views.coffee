@@ -182,6 +182,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
 
   onColumnSortDone: (event, ui) ->
     newIndex = ui.item.index()
+    @$('> div').sortable('cancel') # Prevent jQuery UI from moving the DOM itself
     view     = Ember.View.views[ui.item.attr('id')]
     column   = view.get 'column'
     @get('controller').onColumnSort column, newIndex
