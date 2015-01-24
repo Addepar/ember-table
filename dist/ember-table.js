@@ -897,6 +897,7 @@ Ember.Table.HeaderRow = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixin
   onColumnSortDone: function(event, ui) {
     var column, newIndex, view;
     newIndex = ui.item.index();
+    this.$('> div').sortable('cancel');
     view = Ember.View.views[ui.item.attr('id')];
     column = view.get('column');
     this.get('controller').onColumnSort(column, newIndex);
