@@ -105,6 +105,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     if !$.ui then throw 'Missing dependency: jquery-ui'
     if !$().mousewheel then throw 'Missing dependency: jquery-mousewheel'
     if !$().antiscroll then throw 'Missing dependency: antiscroll.js'
+    @prepareTableColumns()
 
   # TODO: Document
   actions:
@@ -119,7 +120,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   tableRowViewClass: Ember.computed.alias 'tableRowView'
 
   onColumnSort: (column, newIndex) ->
-    columns  = @get 'tableColumns'
+    columns  = @get 'columns'
     columns.removeObject column
     columns.insertAt newIndex, column
     @prepareTableColumns()
@@ -143,21 +144,15 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     columns         = @get 'columns'
     return Ember.A() unless columns
     numFixedColumns = @get('numFixedColumns') or 0
-    columns = columns.slice(0, numFixedColumns) or []
-    @prepareTableColumns()
-    columns
+    columns.slice(0, numFixedColumns) or []
   .property 'columns.@each', 'numFixedColumns'
 
   tableColumns: Ember.computed ->
     columns         = @get 'columns'
     return Ember.A() unless columns
     numFixedColumns = @get('numFixedColumns') or 0
-    columns = columns.slice(numFixedColumns, columns.get('length')) or []
-    @prepareTableColumns()
-    columns
+    columns.slice(numFixedColumns, columns.get('length')) or []
   .property 'columns.@each', 'numFixedColumns'
-
-  allColumns: Ember.computed.union 'fixedColumns', 'tableColumns'
 
   prepareTableColumns: ->
     columns = @get('columns') or Ember.A()
@@ -203,12 +198,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   tableWidthNowTooSmall: ->
     oldTableWidth = @get '_width'
     newTableWidth = @$().parent().outerWidth()
+    # TODO(azirbel): This should be 'columns', I believe. Fix separately.
     totalColumnWidth = @_getTotalWidth @get('tableColumns')
     return (oldTableWidth > totalColumnWidth) and (newTableWidth < totalColumnWidth)
 
   expandResizeableColumnsToFillTable: ->
     totalWidth = @get '_width'
     fixedColumnsWidth = @get '_fixedColumnsWidth'
+    # TODO(azirbel): This should be 'columns', I believe. Fix separately.
     tableColumns = @get 'tableColumns'
     unresizableColumns = tableColumns.filterProperty('canAutoResize', no)
     unresizableWidth = @_getTotalWidth unresizableColumns
@@ -227,7 +224,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # they can be. Note that this may fail to arrive at the table width if the
   # resizable columns are all restricted by min/max widths.
   doForceFillColumns: ->
-    allColumns = @get('allColumns')
+    allColumns = @get('columns')
     columnsToResize = allColumns.filterProperty('canAutoResize')
     unresizableColumns = allColumns.filterProperty('canAutoResize', no)
     availableWidth = @get('_width') - @_getTotalWidth(unresizableColumns)

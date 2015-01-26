@@ -270,10 +270,6 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
   .property('column.isResizable', 'controller.columnMode',
     'nextResizableColumn')
 
-  resizableObserver: Ember.observer ->
-    @recomputeResizableHandle()
-  , '_isResizable', 'resizableOption'
-
   # `event` here is a jQuery event
   onColumnResize: (event, ui) ->
     if @get('controller.columnMode') is 'standard'
@@ -299,6 +295,11 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
       thisHeight = $(this).outerHeight()
       if thisHeight > maxHeight then maxHeight = thisHeight
     @set 'controller._contentHeaderHeight', maxHeight
+
+  resizableObserver: Ember.observer ->
+    @recomputeResizableHandle()
+  , 'resizableOption', 'column.isResizable', 'controller.columnMode', \
+    'nextResizableColumn'
 
   recomputeResizableHandle: ->
     if @get('_isResizable')

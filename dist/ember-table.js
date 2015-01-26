@@ -973,9 +973,6 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
       return this.get('column.isResizable') && this.get('nextResizableColumn');
     }
   }).property('column.isResizable', 'controller.columnMode', 'nextResizableColumn'),
-  resizableObserver: Ember.observer(function() {
-    return this.recomputeResizableHandle();
-  }, '_isResizable', 'resizableOption'),
   onColumnResize: function(event, ui) {
     var diff;
     if (this.get('controller.columnMode') === 'standard') {
@@ -1003,6 +1000,9 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
     });
     return this.set('controller._contentHeaderHeight', maxHeight);
   },
+  resizableObserver: Ember.observer(function() {
+    return this.recomputeResizableHandle();
+  }, 'resizableOption', 'column.isResizable', 'controller.columnMode', 'nextResizableColumn'),
   recomputeResizableHandle: function() {
     if (this.get('_isResizable')) {
       return this.$().resizable(this.get('resizableOption'));
@@ -1189,6 +1189,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     if (!$().antiscroll) {
       throw 'Missing dependency: antiscroll.js';
     }
+    return this.prepareTableColumns();
   },
   actions: {
     addColumn: Ember.K,
@@ -1199,7 +1200,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   tableRowViewClass: Ember.computed.alias('tableRowView'),
   onColumnSort: function(column, newIndex) {
     var columns;
-    columns = this.get('tableColumns');
+    columns = this.get('columns');
     columns.removeObject(column);
     columns.insertAt(newIndex, column);
     return this.prepareTableColumns();
@@ -1227,9 +1228,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return Ember.A();
     }
     numFixedColumns = this.get('numFixedColumns') || 0;
-    columns = columns.slice(0, numFixedColumns) || [];
-    this.prepareTableColumns();
-    return columns;
+    return columns.slice(0, numFixedColumns) || [];
   }).property('columns.@each', 'numFixedColumns'),
   tableColumns: Ember.computed(function() {
     var columns, numFixedColumns;
@@ -1238,11 +1237,8 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return Ember.A();
     }
     numFixedColumns = this.get('numFixedColumns') || 0;
-    columns = columns.slice(numFixedColumns, columns.get('length')) || [];
-    this.prepareTableColumns();
-    return columns;
+    return columns.slice(numFixedColumns, columns.get('length')) || [];
   }).property('columns.@each', 'numFixedColumns'),
-  allColumns: Ember.computed.union('fixedColumns', 'tableColumns'),
   prepareTableColumns: function() {
     var col, columns, i, _i, _len, _results;
     columns = this.get('columns') || Ember.A();
@@ -1313,7 +1309,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   doForceFillColumns: function() {
     var allColumns, availableWidth, columnsToResize, doNextLoop, nextColumnsToResize, totalResizableWidth, unresizableColumns, _results,
       _this = this;
-    allColumns = this.get('allColumns');
+    allColumns = this.get('columns');
     columnsToResize = allColumns.filterProperty('canAutoResize');
     unresizableColumns = allColumns.filterProperty('canAutoResize', false);
     availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns);
