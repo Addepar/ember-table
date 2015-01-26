@@ -164,7 +164,8 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
       @$('> div').sortable(@get('sortableOption'))
 
   willDestroyElement: ->
-    @$('> div')?.sortable('destroy')
+    if @get('controller.enableColumnReorder')
+      @$('> div')?.sortable('destroy')
     @_super()
 
   onScroll: (event) ->
@@ -258,7 +259,7 @@ Ember.View.extend Ember.AddeparMixins.StyleBindingsMixin,
     @recomputeResizableHandle()
 
   willDestroyElement: ->
-    @$().resizable('destroy')
+    @$().resizable('destroy') if @$().is('.ui-resizable')
     @_super()
 
   _isResizable: Ember.computed ->
