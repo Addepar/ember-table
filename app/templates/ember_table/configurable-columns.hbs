@@ -84,20 +84,12 @@
     <div class="col-md-12 bumper-30">
       <h3>application_controller.coffee</h3>
       <div class="highlight">
-<pre class="prettyprint lang-coffee">App.ApplicationController = Ember.Controller.extend
+<pre>App.ApplicationController = Ember.Controller.extend
   numRows: 100
 
   columns: Ember.computed -> {{#each columns}}
-    {{headerCellNameLowerCase}}Column = Ember.Table.ColumnDefinition.create{{#unless textAlignIsDefault}}
-      textAlign: '{{textAlign}}'{{/unless}}
-      headerCellName: '{{headerCellName}}'{{#unless minWidthIsDefault}}
-      minWidth: {{minWidth}}{{/unless}}{{#if maxWidth}}
-      maxWidth: {{maxWidth}}{{/if}}{{#unless isSortable}}
-      isSortable: no{{/unless}}{{#unless isResizable}}
-      isResizable: no{{/unless}}{{#if canAutoResize}}
-      canAutoResize: yes{{/if}}{{#if isDateCell}}
-      getCellContent: (row) -> row.get('date').toDateString(){{else}}
-      getCellContent: (row) -> row.get('{{headerCellNameLowerCase}}').toFixed(2){{/if}}{{/each}}
+{{columnDefinitionDocumentation}}
+    {{/each}}
     [dateColumn, openColumn, highColumn, lowColumn, closeColumn]
 
   content: Ember.computed ->

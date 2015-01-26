@@ -95,13 +95,33 @@ App.ConfigurableColumnDefinition = Ember.Table.ColumnDefinition.extend
       return @get('maxWidth')
   .property 'maxWidth'
 
-  headerCellNameLowerCase: Ember.computed ->
-    @get('headerCellName').toLowerCase()
-  .property 'headerCellName'
-
-  isDateCell: Ember.computed.equal 'headerCellName', 'Date'
-  textAlignIsDefault: Ember.computed.equal 'textAlign', 'text-align-right'
-  minWidthIsDefault: Ember.computed.equal 'minWidth', 25
+  # Generate documentation on how to create a column like this
+  columnDefinitionDocumentation: Ember.computed ->
+    docString = ''
+    docString += '    ' + @get('headerCellName').toLowerCase() +
+      'Column = Ember.Table.ColumnDefinition.create\n'
+    unless @get('textAlign') is 'text-align-right'
+      docString += "      textAlign: '" + @get('textAlign') + "'\n"
+    docString += "      headerCellName: '" + @get('headerCellName') + "'\n"
+    unless @get('minWidth') is 25
+      docString += '      minWidth: ' + @get('minWidth') + '\n'
+    if @get('maxWidth')
+      docString += '      maxWidth: ' + @get('maxWidth') + '\n'
+    unless @get('isSortable')
+      docString += '      isSortable: no\n'
+    unless @get('isResizable')
+      docString += '      isResizable: no\n'
+    if @get('canAutoResize')
+      docString += '      canAutoResize: yes\n'
+    if @get('headerCellName') is 'Date'
+      docString +=
+        "      getCellContent: (row) -> row.get('date').toDateString()"
+    else
+      docString += "      getCellContent: (row) -> row.get('" +
+        @get('headerCellName').toLowerCase() + "').toFixed(2)"
+    docString
+  .property('headerCellName', 'textAlign', 'minWidth', 'maxWidth',
+    'isSortable', 'isResizable', 'canAutoResize')
 
 # TODO(azirbel): We extend this to create a very hacky way of calling
 # `@onResizeEnd` in the table, triggered by resizing the table's container. We
