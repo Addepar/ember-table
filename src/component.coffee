@@ -98,6 +98,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # Internal properties
   # ---------------------------------------------------------------------------
 
+  # Special flag used by child views to look up this component using
+  # nearestWithProperty()
+  isEmberTable: yes
+
   columnsFillTable: yes
 
   init: ->
@@ -196,6 +200,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     Ember.run.next this, @updateLayout
 
   tableWidthNowTooSmall: ->
+    return false unless (@get('_state') or @get('state')) is 'inDOM'
     oldTableWidth = @get '_width'
     newTableWidth = @$().parent().outerWidth()
     # TODO(azirbel): This should be 'columns', I believe. Fix separately.

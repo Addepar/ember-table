@@ -1,8 +1,3 @@
-###*
- * Multi Item View Collection View
- * @class
- * @alias Ember.Table.MultiItemViewCollectionView
- ###
 Ember.MultiItemViewCollectionView =
 Ember.CollectionView.extend Ember.AddeparMixins.StyleBindingsMixin,
   styleBindings:  'width'
@@ -67,11 +62,6 @@ Ember.TouchMoveHandlerMixin = Ember.Mixin.create
     @$().unbind 'touchmove'
     @_super()
 
-###*
-* Table Row Array Proxy
-* @class
-* @alias Ember.Table.RowArrayProxy
-###
 Ember.Table.RowArrayController = Ember.ArrayController.extend
   itemController: null
   content: null
@@ -101,3 +91,18 @@ Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create
     $tablesContainer = $(event.target).parents('.ember-table-tables-container')
     $horizontalScroll = $tablesContainer.find('.antiscroll-scrollbar-horizontal')
     $horizontalScroll.removeClass('antiscroll-scrollbar-shown')
+
+# Gives views access to the table component. With the current architecture,
+# this is necessary because views need access to the component's properties
+# (like height and columnMode) and may even need to call component functions
+# (trigger refresh layout).
+#
+# It is possible to override this behavior by passing your own tableComponent
+# to the views instead.
+Ember.Table.RegisterTableComponentMixin = Ember.Mixin.create
+  tableComponent: null
+
+  init: ->
+    unless @get('tableComponent')
+      @set('tableComponent', @nearestWithProperty('isEmberTable'))
+    @_super()
