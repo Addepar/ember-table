@@ -124,9 +124,11 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   tableRowViewClass: Ember.computed.alias 'tableRowView'
 
   onColumnSort: (column, newIndex) ->
-    columns  = @get 'columns'
+    # Fixed columns are not affected by column reordering
+    numFixedColumns = @get 'fixedColumns.length'
+    columns = @get 'columns'
     columns.removeObject column
-    columns.insertAt newIndex, column
+    columns.insertAt (numFixedColumns + newIndex), column
     @prepareTableColumns()
 
   # An array of Ember.Table.Row computed based on `content`

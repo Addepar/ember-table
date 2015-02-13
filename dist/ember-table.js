@@ -1198,10 +1198,11 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   tableRowView: 'Ember.Table.TableRow',
   tableRowViewClass: Ember.computed.alias('tableRowView'),
   onColumnSort: function(column, newIndex) {
-    var columns;
+    var columns, numFixedColumns;
+    numFixedColumns = this.get('fixedColumns.length');
     columns = this.get('columns');
     columns.removeObject(column);
-    columns.insertAt(newIndex, column);
+    columns.insertAt(numFixedColumns + newIndex, column);
     return this.prepareTableColumns();
   },
   bodyContent: Ember.computed(function() {
