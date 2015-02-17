@@ -1478,7 +1478,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }), 0);
   },
   isSelected: function(row) {
-    return this.get('_selection').contains(row);
+    return this.get('selection').contains(row.get('content'));
   },
   setSelected: function(row, val) {
     this.persistSelection();

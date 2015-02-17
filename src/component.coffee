@@ -385,7 +385,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # ---------------------------------------------------------------------------
 
   isSelected: (row) ->
-    @get('_selection').contains row
+    @get('selection').contains row.get('content')
 
   setSelected: (row, val) ->
     @persistSelection()
