@@ -1147,7 +1147,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   columnMode: 'standard',
   selectionMode: 'single',
   selection: Ember.computed(function(key, val) {
-    var content, rowToAdd, _i, _len, _ref, _ref1;
+    var content, rowToAdd, _i, _len;
     if (arguments.length > 1 && val) {
       if (this.get('selectionMode') === 'single') {
         this.get('persistedSelection').clear();
@@ -1167,13 +1167,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       }
       this.get('rangeSelection').clear();
     }
-    if (this.get('selectionMode') === 'single') {
-      return (_ref = this.get('_selection')) != null ? (_ref1 = _ref[0]) != null ? _ref1.get('content') : void 0 : void 0;
-    } else {
-      return this.get('_selection').map(function(row) {
-        return row.get('content');
-      });
-    }
+    return this.get('_selection').mapBy('content');
   }).property('_selection.[]', 'selectionMode'),
   isEmberTable: true,
   columnsFillTable: true,

@@ -88,10 +88,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
           rowToAdd = @findRow content
           @get('persistedSelection').addObject rowToAdd if rowToAdd
       @get('rangeSelection').clear()
-    if @get('selectionMode') is 'single'
-      return @get('_selection')?[0]?.get('content')
-    else
-      return @get('_selection').map (row) -> row.get('content')
+    return @get('_selection').mapBy 'content'
   .property '_selection.[]', 'selectionMode'
 
   # ---------------------------------------------------------------------------
