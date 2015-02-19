@@ -277,12 +277,13 @@ Ember.Table.RegisterTableComponentMixin,
 
   # `event` here is a jQuery event
   onColumnResize: (event, ui) ->
+    newWidth = Math.round(ui.size.width)
     if @get('tableComponent.columnMode') is 'standard'
-      @get('column').resize(ui.size.width)
+      @get('column').resize(newWidth)
       @set 'tableComponent.columnsFillTable', no
     else
-      diff = @get('width') - ui.size.width
-      @get('column').resize(ui.size.width)
+      diff = @get('width') - newWidth
+      @get('column').resize(newWidth)
       @get('nextResizableColumn').resize(
         @get('nextResizableColumn.width') + diff)
 

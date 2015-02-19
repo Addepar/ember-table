@@ -972,13 +972,14 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
     }
   }).property('column.isResizable', 'tableComponent.columnMode', 'nextResizableColumn'),
   onColumnResize: function(event, ui) {
-    var diff;
+    var diff, newWidth;
+    newWidth = Math.round(ui.size.width);
     if (this.get('tableComponent.columnMode') === 'standard') {
-      this.get('column').resize(ui.size.width);
+      this.get('column').resize(newWidth);
       this.set('tableComponent.columnsFillTable', false);
     } else {
-      diff = this.get('width') - ui.size.width;
-      this.get('column').resize(ui.size.width);
+      diff = this.get('width') - newWidth;
+      this.get('column').resize(newWidth);
       this.get('nextResizableColumn').resize(this.get('nextResizableColumn.width') + diff);
     }
     this.elementSizeDidChange();
