@@ -5,8 +5,8 @@ Ember.Table.Row = Ember.ObjectProxy.extend
     if arguments.length > 1
       @get('parentController').setSelected this, val
     @get('parentController').isSelected this
-  .property 'parentController._selection.[]'
+  .property 'parentController.selection.[]'
 
-  isShowing:  yes
+  isShowing: yes
 
-  isHovered:   no
+  isHovered: no

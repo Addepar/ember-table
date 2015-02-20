@@ -2,7 +2,7 @@ Ember.Table.EmberTableComponent =
 Ember.Component.extend Ember.AddeparMixins.StyleBindingsMixin,
 Ember.AddeparMixins.ResizeHandlerMixin,
   layoutName: 'components/ember-table'
-  classNames:        ['ember-table-tables-container']
+  classNames: ['ember-table-tables-container']
   classNameBindings: ['enableContentSelection:ember-table-content-selectable']
 
   # ---------------------------------------------------------------------------
@@ -11,7 +11,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # Values which are bound to the table's style attr. See
   # `Ember.StyleBindingsMixin` documentation for more details.
-  styleBindings:     ['height']
+  styleBindings: ['height']
 
   # An array of row objects. Usually a hash where the keys are column names and
   # the values are the rows's values. However, could be any object, since each
@@ -78,18 +78,11 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # 'single', the array will contain either one or zero elements.
   selection: Ember.computed (key, val) ->
     if arguments.length > 1 and val
-      if @get('selectionMode') is 'single'
-        @get('persistedSelection').clear()
-        rowToAdd = @findRow val
-        @get('persistedSelection').addObject rowToAdd if rowToAdd
-      else
-        @get('persistedSelection').clear()
-        for content in val
-          rowToAdd = @findRow content
-          @get('persistedSelection').addObject rowToAdd if rowToAdd
+      @get('persistedSelection').clear()
+      @get('persistedSelection').addObjects val
       @get('rangeSelection').clear()
-    return @get('_selection').mapBy 'content'
-  .property '_selection.[]', 'selectionMode'
+    @get('persistedSelection').copy().addObjects(@get('rangeSelection'))
+  .property 'persistedSelection.[]', 'rangeSelection.[]'
 
   # ---------------------------------------------------------------------------
   # Internal properties
@@ -381,55 +374,61 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # TODO: Make private or reorganize into a new section
   # ---------------------------------------------------------------------------
 
+  lastSelected: null
+
   isSelected: (row) ->
     @get('selection').contains row.get('content')
 
   setSelected: (row, val) ->
     @persistSelection()
+    item = row.get 'content'
     if val
-      @get('persistedSelection').addObject row
+      @get('persistedSelection').addObject item
     else
-      @get('persistedSelection').removeObject row
+      @get('persistedSelection').removeObject item
 
-  # rows that were selected directly or as part of a previous
+  # items that were selected directly or as part of a previous
   # range selection (shift-click)
   persistedSelection: Ember.computed -> Ember.A()
 
-  # rows that are part of the currently editable range selection
+  # items that are part of the currently editable range selection
   rangeSelection: Ember.computed -> Ember.A()
 
-  _selection: Ember.computed ->
-    @get('persistedSelection').copy().addObjects(@get('rangeSelection'))
-  .property 'persistedSelection.[]', 'rangeSelection.[]'
-
+  # TODO: Handle click event in the row view
   click: (event) ->
     row = @getRowForEvent event
-    return unless row
+    item = row?.get 'content'
+    return unless item
     return if @get('selectionMode') is 'none'
     if @get('selectionMode') is 'single'
       @get('persistedSelection').clear()
-      @get('persistedSelection').addObject row
+      @get('persistedSelection').addObject item
     else
       if event.shiftKey
         @get('rangeSelection').clear()
 
         lastIndex = @rowIndex(@get('lastSelected'))
+        # If the last selected row is no longer in the table, use the
+        # first row in the table
+        lastIndex = 0 if lastIndex is -1
+
         curIndex  = @rowIndex(@getRowForEvent(event))
 
         minIndex  = Math.min(lastIndex, curIndex)
         maxIndex  = Math.max(lastIndex, curIndex)
 
-        @get('rangeSelection').addObjects @get('bodyContent').slice(minIndex, maxIndex + 1)
+        @get('rangeSelection').addObjects(
+          @get('bodyContent').slice(minIndex, maxIndex + 1).mapBy('content'))
       else
         if !event.ctrlKey && !event.metaKey
           @get('persistedSelection').clear()
           @get('rangeSelection').clear()
         else
           @persistSelection()
-        if @get('persistedSelection').contains row
-          @get('persistedSelection').removeObject row
+        if @get('persistedSelection').contains item
+          @get('persistedSelection').removeObject item
         else
-          @get('persistedSelection').addObject row
+          @get('persistedSelection').addObject item
         @set('lastSelected', row)
 
   findRow: (content) ->
@@ -440,7 +439,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   rowIndex: (row) ->
     @get('bodyContent')?.indexOf(row)
 
-  persistSelection: () ->
+  persistSelection: ->
     @get('persistedSelection').addObjects(@get('rangeSelection'))
     @get('rangeSelection').clear()
 

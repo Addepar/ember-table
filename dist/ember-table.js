@@ -707,7 +707,7 @@ Ember.Table.Row = Ember.ObjectProxy.extend({
       this.get('parentController').setSelected(this, val);
     }
     return this.get('parentController').isSelected(this);
-  }).property('parentController._selection.[]'),
+  }).property('parentController.selection.[]'),
   isShowing: true,
   isHovered: false
 });
@@ -1147,28 +1147,13 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   columnMode: 'standard',
   selectionMode: 'single',
   selection: Ember.computed(function(key, val) {
-    var content, rowToAdd, _i, _len;
     if (arguments.length > 1 && val) {
-      if (this.get('selectionMode') === 'single') {
-        this.get('persistedSelection').clear();
-        rowToAdd = this.findRow(val);
-        if (rowToAdd) {
-          this.get('persistedSelection').addObject(rowToAdd);
-        }
-      } else {
-        this.get('persistedSelection').clear();
-        for (_i = 0, _len = val.length; _i < _len; _i++) {
-          content = val[_i];
-          rowToAdd = this.findRow(content);
-          if (rowToAdd) {
-            this.get('persistedSelection').addObject(rowToAdd);
-          }
-        }
-      }
+      this.get('persistedSelection').clear();
+      this.get('persistedSelection').addObjects(val);
       this.get('rangeSelection').clear();
     }
-    return this.get('_selection').mapBy('content');
-  }).property('_selection.[]', 'selectionMode'),
+    return this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
+  }).property('persistedSelection.[]', 'rangeSelection.[]'),
   isEmberTable: true,
   columnsFillTable: true,
   init: function() {
@@ -1471,15 +1456,18 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
       return total + w;
     }), 0);
   },
+  lastSelected: null,
   isSelected: function(row) {
     return this.get('selection').contains(row.get('content'));
   },
   setSelected: function(row, val) {
+    var item;
     this.persistSelection();
+    item = row.get('content');
     if (val) {
-      return this.get('persistedSelection').addObject(row);
+      return this.get('persistedSelection').addObject(item);
     } else {
-      return this.get('persistedSelection').removeObject(row);
+      return this.get('persistedSelection').removeObject(item);
     }
   },
   persistedSelection: Ember.computed(function() {
@@ -1488,13 +1476,11 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   rangeSelection: Ember.computed(function() {
     return Ember.A();
   }),
-  _selection: Ember.computed(function() {
-    return this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
-  }).property('persistedSelection.[]', 'rangeSelection.[]'),
   click: function(event) {
-    var curIndex, lastIndex, maxIndex, minIndex, row;
+    var curIndex, item, lastIndex, maxIndex, minIndex, row;
     row = this.getRowForEvent(event);
-    if (!row) {
+    item = row != null ? row.get('content') : void 0;
+    if (!item) {
       return;
     }
     if (this.get('selectionMode') === 'none') {
@@ -1502,15 +1488,18 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     }
     if (this.get('selectionMode') === 'single') {
       this.get('persistedSelection').clear();
-      return this.get('persistedSelection').addObject(row);
+      return this.get('persistedSelection').addObject(item);
     } else {
       if (event.shiftKey) {
         this.get('rangeSelection').clear();
         lastIndex = this.rowIndex(this.get('lastSelected'));
+        if (lastIndex === -1) {
+          lastIndex = 0;
+        }
         curIndex = this.rowIndex(this.getRowForEvent(event));
         minIndex = Math.min(lastIndex, curIndex);
         maxIndex = Math.max(lastIndex, curIndex);
-        return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1));
+        return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1).mapBy('content'));
       } else {
         if (!event.ctrlKey && !event.metaKey) {
           this.get('persistedSelection').clear();
@@ -1518,10 +1507,10 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
         } else {
           this.persistSelection();
         }
-        if (this.get('persistedSelection').contains(row)) {
-          this.get('persistedSelection').removeObject(row);
+        if (this.get('persistedSelection').contains(item)) {
+          this.get('persistedSelection').removeObject(item);
         } else {
-          this.get('persistedSelection').addObject(row);
+          this.get('persistedSelection').addObject(item);
         }
         return this.set('lastSelected', row);
       }
