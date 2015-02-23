@@ -77,12 +77,21 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   # An array of the rows currently selected. If `selectionMode` is set to
   # 'single', the array will contain either one or zero elements.
   selection: Ember.computed (key, val) ->
+    selectionMode = @get 'selectionMode'
     if arguments.length > 1 and val
       @get('persistedSelection').clear()
-      @get('persistedSelection').addObjects val
       @get('rangeSelection').clear()
-    @get('persistedSelection').copy().addObjects(@get('rangeSelection'))
-  .property 'persistedSelection.[]', 'rangeSelection.[]'
+      switch selectionMode
+        when 'single'
+          @get('persistedSelection').addObject val
+        when 'multiple'
+          @get('persistedSelection').addObjects val
+    selection = @get('persistedSelection').copy().addObjects(@get('rangeSelection'))
+    switch selectionMode
+      when 'none' then null
+      when 'single' then (selection[0] or null)
+      when 'multiple' then selection
+  .property 'persistedSelection.[]', 'rangeSelection.[]', 'selectionMode'
 
   # ---------------------------------------------------------------------------
   # Internal properties
@@ -110,7 +119,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # TODO(new-api): eliminate view alias
   # specify the view class to use for rendering the table rows
-  tableRowView:      'Ember.Table.TableRow'
+  tableRowView: 'Ember.Table.TableRow'
   tableRowViewClass: Ember.computed.alias 'tableRowView'
 
   onColumnSort: (column, newIndex) ->
@@ -137,14 +146,14 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   .property()
 
   fixedColumns: Ember.computed ->
-    columns         = @get 'columns'
+    columns = @get 'columns'
     return Ember.A() unless columns
     numFixedColumns = @get('numFixedColumns') or 0
     columns.slice(0, numFixedColumns) or []
   .property 'columns.@each', 'numFixedColumns'
 
   tableColumns: Ember.computed ->
-    columns         = @get 'columns'
+    columns = @get 'columns'
     return Ember.A() unless columns
     numFixedColumns = @get('numFixedColumns') or 0
     columns.slice(numFixedColumns, columns.get('length')) or []
@@ -377,7 +386,10 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   lastSelected: null
 
   isSelected: (row) ->
-    @get('selection').contains row.get('content')
+    switch @get('selectionMode')
+      when 'none' then no
+      when 'single' then @get('selection') is row.get('content')
+      when 'multiple' then @get('selection').contains row.get('content')
 
   setSelected: (row, val) ->
     @persistSelection()
@@ -399,37 +411,39 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     row = @getRowForEvent event
     item = row?.get 'content'
     return unless item
-    return if @get('selectionMode') is 'none'
-    if @get('selectionMode') is 'single'
-      @get('persistedSelection').clear()
-      @get('persistedSelection').addObject item
-    else
-      if event.shiftKey
-        @get('rangeSelection').clear()
-
-        lastIndex = @rowIndex(@get('lastSelected'))
-        # If the last selected row is no longer in the table, use the
-        # first row in the table
-        lastIndex = 0 if lastIndex is -1
-
-        curIndex  = @rowIndex(@getRowForEvent(event))
-
-        minIndex  = Math.min(lastIndex, curIndex)
-        maxIndex  = Math.max(lastIndex, curIndex)
-
-        @get('rangeSelection').addObjects(
-          @get('bodyContent').slice(minIndex, maxIndex + 1).mapBy('content'))
-      else
-        if !event.ctrlKey && !event.metaKey
-          @get('persistedSelection').clear()
+    switch @get('selectionMode')
+      when 'none'
+        return
+      when 'single'
+        @get('persistedSelection').clear()
+        @get('persistedSelection').addObject item
+      when 'multiple'
+        if event.shiftKey
           @get('rangeSelection').clear()
+
+          lastIndex = @rowIndex(@get('lastSelected'))
+          # If the last selected row is no longer in the table, use the
+          # first row in the table
+          lastIndex = 0 if lastIndex is -1
+
+          curIndex  = @rowIndex(@getRowForEvent(event))
+
+          minIndex  = Math.min(lastIndex, curIndex)
+          maxIndex  = Math.max(lastIndex, curIndex)
+
+          @get('rangeSelection').addObjects(
+            @get('bodyContent').slice(minIndex, maxIndex + 1).mapBy('content'))
         else
-          @persistSelection()
-        if @get('persistedSelection').contains item
-          @get('persistedSelection').removeObject item
-        else
-          @get('persistedSelection').addObject item
-        @set('lastSelected', row)
+          if !event.ctrlKey && !event.metaKey
+            @get('persistedSelection').clear()
+            @get('rangeSelection').clear()
+          else
+            @persistSelection()
+          if @get('persistedSelection').contains item
+            @get('persistedSelection').removeObject item
+          else
+            @get('persistedSelection').addObject item
+          @set('lastSelected', row)
 
   findRow: (content) ->
     for row in @get('bodyContent')
@@ -445,7 +459,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   getRowForEvent: (event) ->
     $rowView = $(event.target).parents('.ember-table-table-row')
-    view     = Ember.View.views[$rowView.attr('id')]
+    view = Ember.View.views[$rowView.attr('id')]
     view.get 'row' if view
 
 Ember.Handlebars.helper('table-component', Ember.Table.EmberTableComponent)

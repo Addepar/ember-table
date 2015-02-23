@@ -1147,13 +1147,29 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   columnMode: 'standard',
   selectionMode: 'single',
   selection: Ember.computed(function(key, val) {
+    var selection, selectionMode;
+    selectionMode = this.get('selectionMode');
     if (arguments.length > 1 && val) {
       this.get('persistedSelection').clear();
-      this.get('persistedSelection').addObjects(val);
       this.get('rangeSelection').clear();
+      switch (selectionMode) {
+        case 'single':
+          this.get('persistedSelection').addObject(val);
+          break;
+        case 'multiple':
+          this.get('persistedSelection').addObjects(val);
+      }
     }
-    return this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
-  }).property('persistedSelection.[]', 'rangeSelection.[]'),
+    selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
+    switch (selectionMode) {
+      case 'none':
+        return null;
+      case 'single':
+        return selection[0] || null;
+      case 'multiple':
+        return selection;
+    }
+  }).property('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode'),
   isEmberTable: true,
   columnsFillTable: true,
   init: function() {
@@ -1458,7 +1474,14 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   },
   lastSelected: null,
   isSelected: function(row) {
-    return this.get('selection').contains(row.get('content'));
+    switch (this.get('selectionMode')) {
+      case 'none':
+        return false;
+      case 'single':
+        return this.get('selection') === row.get('content');
+      case 'multiple':
+        return this.get('selection').contains(row.get('content'));
+    }
   },
   setSelected: function(row, val) {
     var item;
@@ -1483,37 +1506,37 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     if (!item) {
       return;
     }
-    if (this.get('selectionMode') === 'none') {
-      return;
-    }
-    if (this.get('selectionMode') === 'single') {
-      this.get('persistedSelection').clear();
-      return this.get('persistedSelection').addObject(item);
-    } else {
-      if (event.shiftKey) {
-        this.get('rangeSelection').clear();
-        lastIndex = this.rowIndex(this.get('lastSelected'));
-        if (lastIndex === -1) {
-          lastIndex = 0;
-        }
-        curIndex = this.rowIndex(this.getRowForEvent(event));
-        minIndex = Math.min(lastIndex, curIndex);
-        maxIndex = Math.max(lastIndex, curIndex);
-        return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1).mapBy('content'));
-      } else {
-        if (!event.ctrlKey && !event.metaKey) {
-          this.get('persistedSelection').clear();
+    switch (this.get('selectionMode')) {
+      case 'none':
+        break;
+      case 'single':
+        this.get('persistedSelection').clear();
+        return this.get('persistedSelection').addObject(item);
+      case 'multiple':
+        if (event.shiftKey) {
           this.get('rangeSelection').clear();
+          lastIndex = this.rowIndex(this.get('lastSelected'));
+          if (lastIndex === -1) {
+            lastIndex = 0;
+          }
+          curIndex = this.rowIndex(this.getRowForEvent(event));
+          minIndex = Math.min(lastIndex, curIndex);
+          maxIndex = Math.max(lastIndex, curIndex);
+          return this.get('rangeSelection').addObjects(this.get('bodyContent').slice(minIndex, maxIndex + 1).mapBy('content'));
         } else {
-          this.persistSelection();
+          if (!event.ctrlKey && !event.metaKey) {
+            this.get('persistedSelection').clear();
+            this.get('rangeSelection').clear();
+          } else {
+            this.persistSelection();
+          }
+          if (this.get('persistedSelection').contains(item)) {
+            this.get('persistedSelection').removeObject(item);
+          } else {
+            this.get('persistedSelection').addObject(item);
+          }
+          return this.set('lastSelected', row);
         }
-        if (this.get('persistedSelection').contains(item)) {
-          this.get('persistedSelection').removeObject(item);
-        } else {
-          this.get('persistedSelection').addObject(item);
-        }
-        return this.set('lastSelected', row);
-      }
     }
   },
   findRow: function(content) {

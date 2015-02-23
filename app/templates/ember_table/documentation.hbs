@@ -147,9 +147,12 @@
       <td>undefined</td>
       <td>
         <p>
-          An array of the rows currently selected. If
-          <code>selectionMode</code> is set to <code>'single'</code>, the array
-          will contain either one or zero elements.
+          The currently selected elements. If <code>selectionMode</code> is set
+          to <code>'none'</code>, <code>selection</code> is null. If
+          <code>selectionMode</code> is set to <code>'single'</code>,
+          <code>selection</code> is the selected element. If
+          <code>selectionMode</code> is set to <code>'multiple'</code>,
+          <code>selection</code> is an array of the selected elements.
         </p>
       </td>
     </tr>
