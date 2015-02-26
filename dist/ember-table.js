@@ -998,6 +998,9 @@ Ember.Table.HeaderCell = Ember.View.extend(Ember.AddeparMixins.StyleBindingsMixi
     });
     return this.set('tableComponent._contentHeaderHeight', maxHeight);
   },
+  cellWidthDidChange: Ember.observer(function() {
+    return Ember.run.schedule('afterRender', this, this.elementSizeDidChange);
+  }, 'width'),
   resizableObserver: Ember.observer(function() {
     return this.recomputeResizableHandle();
   }, 'resizableOption', 'column.isResizable', 'tableComponent.columnMode', 'nextResizableColumn'),

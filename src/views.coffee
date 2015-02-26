@@ -301,6 +301,10 @@ Ember.Table.RegisterTableComponentMixin,
       if thisHeight > maxHeight then maxHeight = thisHeight
     @set 'tableComponent._contentHeaderHeight', maxHeight
 
+  cellWidthDidChange: Ember.observer ->
+    Ember.run.schedule 'afterRender', this, @elementSizeDidChange
+  , 'width'
+
   resizableObserver: Ember.observer ->
     @recomputeResizableHandle()
   , 'resizableOption', 'column.isResizable', 'tableComponent.columnMode', \
