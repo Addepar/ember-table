@@ -27,8 +27,8 @@
   "dependencies": {
     "antiscroll": "daviesgeek/antiscroll#9b67eb3c01b530ab86484e6874e743518fa65579",
     "bootstrap": "3.0.0",
-    "ember": ">=1.4.0 < 1.9.0",
-    "handlebars": "~1.3.0",
+    "ember": ">=1.10.0 <1.11.0",
+    "handlebars": "2.0.0",
     "jquery": "^1.11.1",
     "jquery-mousewheel": "~3.1.4",
     "jquery-ui": "1.10.1"
