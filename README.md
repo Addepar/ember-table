@@ -15,7 +15,7 @@ http://addepar.github.com/ember-table/
 
 #### JS Bin Starter Kit
 
-http://emberjs.jsbin.com/totomugiqi/1/edit
+http://emberjs.jsbin.com/xavipu/1/edit
 
 #### Installation
 

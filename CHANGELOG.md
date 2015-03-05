@@ -1,5 +1,31 @@
 # Ember Table Changelog
 
+### Ember Table 0.4.1 _(March 5, 2015)_
+
+* Update version requirements for ember and jquery
+* Correct bad version-update regex
+* Round widths on column resize
+* Fix header height when table is resized
+* Add a mixin to give views access to tableComponent
+* Fix reordering problem and resizing handles
+* Make sure elements are sortable/resizable before destroying the
+  sortable/resizable property
+* Prevent jQuery UI from moving DOM nodes itself, otherwise Ember’s morph
+  library will lose track of DOM
+* Fix bug when destroying a not yet rendered header row
+* Fix on-destroy memory leaks
+* Fix various invalid HTML
+* Documentation updates
+  * Update savedWidth documentation
+  * Clean up migration guide for version 0.1.0
+  * Add migration guides for v0.2, v0.3, and v0.4
+  * Fix prettyprint DOM error in config column demo
+* Selection improvements
+  * Use a simple array for selections instead of ArrayProxy
+  * Don't add undefined elements to the selection
+  * Remove `_selection` and use content instead of rows in selection logic
+* Re-fix rendering issue in Linux Chrome v38
+
 ### Ember Table 0.4.0 _(January 6, 2015)_
 
 * Change `canAutoResize` default to `false`
