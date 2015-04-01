@@ -49,6 +49,13 @@ You can run the tests at http://localhost:8000/tests.
 * jquery.mousewheel
 * antiscroll
 
+## Browser Support
+We aim to support the last two major versions of every common browser.
+
+If you need to support further browsers, we welcome pull requests with fixes.
+
+Touch support may work but has not been tested.
+
 ## Contributing
 
 Got something to add? Great! Bug reports, feature ideas, and (especially) pull
