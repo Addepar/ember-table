@@ -15,12 +15,15 @@ Ember.TEMPLATES["body-container"] = Ember.HTMLBars.template((function() {
   var child0 = (function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createTextNode("        ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -46,7 +49,7 @@ Ember.TEMPLATES["body-container"] = Ember.HTMLBars.template((function() {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
         inline(env, morph0, context, "view", [get(env, context, "Ember.Table.LazyTableBlock")], {"classNames": "ember-table-left-table-block", "contentBinding": "controller.bodyContent", "columnsBinding": "controller.fixedColumns", "widthBinding": "controller._fixedBlockWidth", "numItemsShowingBinding": "controller._numItemsShowing", "scrollTopBinding": "controller._scrollTop", "startIndexBinding": "controller._startIndex"});
         return fragment;
       }
@@ -54,31 +57,38 @@ Ember.TEMPLATES["body-container"] = Ember.HTMLBars.template((function() {
   }());
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
     build: function build(dom) {
-      var el0 = dom.createElement("div");
-      dom.setAttribute(el0,"class","antiscroll-box");
-      var el1 = dom.createTextNode("\n  ");
-      dom.appendChild(el0, el1);
+      var el0 = dom.createDocumentFragment();
       var el1 = dom.createElement("div");
-      dom.setAttribute(el1,"class","antiscroll-inner");
-      var el2 = dom.createTextNode("\n    ");
-      dom.appendChild(el1, el2);
-      var el2 = dom.createElement("div");
-      dom.setAttribute(el2,"class","ember-table-table-scrollable-wrapper");
-      var el3 = dom.createTextNode("\n");
-      dom.appendChild(el2, el3);
-      var el3 = dom.createTextNode("      ");
-      dom.appendChild(el2, el3);
-      var el3 = dom.createTextNode("\n    ");
-      dom.appendChild(el2, el3);
-      dom.appendChild(el1, el2);
+      dom.setAttribute(el1,"class","antiscroll-box");
       var el2 = dom.createTextNode("\n  ");
       dom.appendChild(el1, el2);
-      dom.appendChild(el0, el1);
-      var el1 = dom.createTextNode("\n");
+      var el2 = dom.createElement("div");
+      dom.setAttribute(el2,"class","antiscroll-inner");
+      var el3 = dom.createTextNode("\n    ");
+      dom.appendChild(el2, el3);
+      var el3 = dom.createElement("div");
+      dom.setAttribute(el3,"class","ember-table-table-scrollable-wrapper");
+      var el4 = dom.createTextNode("\n");
+      dom.appendChild(el3, el4);
+      var el4 = dom.createComment("");
+      dom.appendChild(el3, el4);
+      var el4 = dom.createTextNode("      ");
+      dom.appendChild(el3, el4);
+      var el4 = dom.createComment("");
+      dom.appendChild(el3, el4);
+      var el4 = dom.createTextNode("\n    ");
+      dom.appendChild(el3, el4);
+      dom.appendChild(el2, el3);
+      var el3 = dom.createTextNode("\n  ");
+      dom.appendChild(el2, el3);
+      dom.appendChild(el1, el2);
+      var el2 = dom.createTextNode("\n");
+      dom.appendChild(el1, el2);
       dom.appendChild(el0, el1);
       return el0;
     },
@@ -102,9 +112,9 @@ Ember.TEMPLATES["body-container"] = Ember.HTMLBars.template((function() {
       } else {
         fragment = this.build(dom);
       }
-      var element0 = dom.childAt(fragment, [1, 1]);
-      var morph0 = dom.createMorphAt(element0,0,1);
-      var morph1 = dom.createMorphAt(element0,1,2);
+      var element0 = dom.childAt(fragment, [0, 1, 1]);
+      var morph0 = dom.createMorphAt(element0,1,1);
+      var morph1 = dom.createMorphAt(element0,3,3);
       block(env, morph0, context, "if", [get(env, context, "controller.numFixedColumns")], {}, child0, null);
       inline(env, morph1, context, "view", [get(env, context, "Ember.Table.LazyTableBlock")], {"classNames": "ember-table-right-table-block", "contentBinding": "controller.bodyContent", "columnsBinding": "controller.tableColumns", "scrollLeftBinding": "controller._tableScrollLeft", "widthBinding": "controller._tableBlockWidth", "numItemsShowingBinding": "controller._numItemsShowing", "scrollTopBinding": "controller._scrollTop", "startIndexBinding": "controller._startIndex"});
       return fragment;
@@ -116,12 +126,15 @@ Ember.TEMPLATES["components/ember-table"] = Ember.HTMLBars.template((function() 
   var child0 = (function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createTextNode("  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -147,7 +160,7 @@ Ember.TEMPLATES["components/ember-table"] = Ember.HTMLBars.template((function() 
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
         inline(env, morph0, context, "view", [get(env, context, "Ember.Table.HeaderTableContainer")], {});
         return fragment;
       }
@@ -156,12 +169,15 @@ Ember.TEMPLATES["components/ember-table"] = Ember.HTMLBars.template((function() 
   var child1 = (function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createTextNode("  ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -187,7 +203,7 @@ Ember.TEMPLATES["components/ember-table"] = Ember.HTMLBars.template((function() 
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
         inline(env, morph0, context, "view", [get(env, context, "Ember.Table.FooterTableContainer")], {});
         return fragment;
       }
@@ -195,20 +211,25 @@ Ember.TEMPLATES["components/ember-table"] = Ember.HTMLBars.template((function() 
   }());
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
     build: function build(dom) {
       var el0 = dom.createDocumentFragment();
-      var el1 = dom.createTextNode("");
+      var el1 = dom.createComment("");
       dom.appendChild(el0, el1);
-      var el1 = dom.createTextNode("");
+      var el1 = dom.createComment("");
+      dom.appendChild(el0, el1);
+      var el1 = dom.createTextNode("\n");
+      dom.appendChild(el0, el1);
+      var el1 = dom.createComment("");
+      dom.appendChild(el0, el1);
+      var el1 = dom.createComment("");
       dom.appendChild(el0, el1);
       var el1 = dom.createTextNode("\n");
       dom.appendChild(el0, el1);
-      var el1 = dom.createTextNode("");
-      dom.appendChild(el0, el1);
-      var el1 = dom.createTextNode("\n");
+      var el1 = dom.createComment("");
       dom.appendChild(el0, el1);
       var el1 = dom.createTextNode("\n");
       dom.appendChild(el0, el1);
@@ -234,12 +255,12 @@ Ember.TEMPLATES["components/ember-table"] = Ember.HTMLBars.template((function() 
       } else {
         fragment = this.build(dom);
       }
-      if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1,3]); }
-      var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
-      var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
-      var morph2 = dom.createMorphAt(fragment,2,3,contextualElement);
-      var morph3 = dom.createMorphAt(fragment,3,4,contextualElement);
-      var morph4 = dom.createMorphAt(fragment,4,5,contextualElement);
+      var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+      var morph1 = dom.createMorphAt(fragment,1,1,contextualElement);
+      var morph2 = dom.createMorphAt(fragment,3,3,contextualElement);
+      var morph3 = dom.createMorphAt(fragment,4,4,contextualElement);
+      var morph4 = dom.createMorphAt(fragment,6,6,contextualElement);
+      dom.insertBoundary(fragment, 0);
       block(env, morph0, context, "if", [get(env, context, "controller.hasHeader")], {}, child0, null);
       inline(env, morph1, context, "view", [get(env, context, "Ember.Table.BodyTableContainer")], {});
       block(env, morph2, context, "if", [get(env, context, "controller.hasFooter")], {}, child1, null);
@@ -254,12 +275,15 @@ Ember.TEMPLATES["footer-container"] = Ember.HTMLBars.template((function() {
   var child0 = (function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createTextNode("    ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -285,7 +309,7 @@ Ember.TEMPLATES["footer-container"] = Ember.HTMLBars.template((function() {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
         inline(env, morph0, context, "view", [get(env, context, "Ember.Table.TableBlock")], {"classNames": "ember-table-left-table-block", "contentBinding": "controller.footerContent", "columnsBinding": "controller.fixedColumns", "widthBinding": "controller._fixedBlockWidth", "heightBinding": "controller.footerHeight"});
         return fragment;
       }
@@ -293,6 +317,7 @@ Ember.TEMPLATES["footer-container"] = Ember.HTMLBars.template((function() {
   }());
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
@@ -302,7 +327,11 @@ Ember.TEMPLATES["footer-container"] = Ember.HTMLBars.template((function() {
       dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
       var el2 = dom.createTextNode("\n");
       dom.appendChild(el1, el2);
+      var el2 = dom.createComment("");
+      dom.appendChild(el1, el2);
       var el2 = dom.createTextNode("  ");
+      dom.appendChild(el1, el2);
+      var el2 = dom.createComment("");
       dom.appendChild(el1, el2);
       var el2 = dom.createTextNode("\n");
       dom.appendChild(el1, el2);
@@ -332,8 +361,8 @@ Ember.TEMPLATES["footer-container"] = Ember.HTMLBars.template((function() {
         fragment = this.build(dom);
       }
       var element0 = dom.childAt(fragment, [0]);
-      var morph0 = dom.createMorphAt(element0,0,1);
-      var morph1 = dom.createMorphAt(element0,1,2);
+      var morph0 = dom.createMorphAt(element0,1,1);
+      var morph1 = dom.createMorphAt(element0,3,3);
       block(env, morph0, context, "if", [get(env, context, "controller.numFixedColumns")], {}, child0, null);
       inline(env, morph1, context, "view", [get(env, context, "Ember.Table.TableBlock")], {"classNames": "ember-table-right-table-block", "contentBinding": "controller.footerContent", "columnsBinding": "controller.tableColumns", "scrollLeftBinding": "controller._tableScrollLeft", "widthBinding": "controller._tableBlockWidth", "heightBinding": "controller.footerHeight"});
       return fragment;
@@ -344,22 +373,27 @@ Ember.TEMPLATES["footer-container"] = Ember.HTMLBars.template((function() {
 Ember.TEMPLATES["header-cell"] = Ember.HTMLBars.template((function() {
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
     build: function build(dom) {
-      var el0 = dom.createElement("div");
-      dom.setAttribute(el0,"class","ember-table-content-container");
-      var el1 = dom.createTextNode("\n  ");
-      dom.appendChild(el0, el1);
-      var el1 = dom.createElement("span");
-      dom.setAttribute(el1,"class","ember-table-content");
-      var el2 = dom.createTextNode("\n    ");
-      dom.appendChild(el1, el2);
+      var el0 = dom.createDocumentFragment();
+      var el1 = dom.createElement("div");
+      dom.setAttribute(el1,"class","ember-table-content-container");
       var el2 = dom.createTextNode("\n  ");
       dom.appendChild(el1, el2);
-      dom.appendChild(el0, el1);
-      var el1 = dom.createTextNode("\n");
+      var el2 = dom.createElement("span");
+      dom.setAttribute(el2,"class","ember-table-content");
+      var el3 = dom.createTextNode("\n    ");
+      dom.appendChild(el2, el3);
+      var el3 = dom.createComment("");
+      dom.appendChild(el2, el3);
+      var el3 = dom.createTextNode("\n  ");
+      dom.appendChild(el2, el3);
+      dom.appendChild(el1, el2);
+      var el2 = dom.createTextNode("\n");
+      dom.appendChild(el1, el2);
       dom.appendChild(el0, el1);
       return el0;
     },
@@ -383,8 +417,8 @@ Ember.TEMPLATES["header-cell"] = Ember.HTMLBars.template((function() {
       } else {
         fragment = this.build(dom);
       }
-      var element0 = fragment;
-      var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
+      var element0 = dom.childAt(fragment, [0]);
+      var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),1,1);
       element(env, element0, context, "action", ["sortByColumn", get(env, context, "view.content")], {});
       content(env, morph0, context, "view.content.headerCellName");
       return fragment;
@@ -396,12 +430,15 @@ Ember.TEMPLATES["header-container"] = Ember.HTMLBars.template((function() {
   var child0 = (function() {
     return {
       isHTMLBars: true,
+      revision: "Ember@1.11.1",
       blockParams: 0,
       cachedFragment: null,
       hasRendered: false,
       build: function build(dom) {
         var el0 = dom.createDocumentFragment();
         var el1 = dom.createTextNode("    ");
+        dom.appendChild(el0, el1);
+        var el1 = dom.createComment("");
         dom.appendChild(el0, el1);
         var el1 = dom.createTextNode("\n");
         dom.appendChild(el0, el1);
@@ -427,7 +464,7 @@ Ember.TEMPLATES["header-container"] = Ember.HTMLBars.template((function() {
         } else {
           fragment = this.build(dom);
         }
-        var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+        var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
         inline(env, morph0, context, "view", [get(env, context, "Ember.Table.HeaderBlock")], {"classNames": "ember-table-left-table-block", "columnsBinding": "controller.fixedColumns", "widthBinding": "controller._fixedBlockWidth", "heightBinding": "controller.headerHeight"});
         return fragment;
       }
@@ -435,6 +472,7 @@ Ember.TEMPLATES["header-container"] = Ember.HTMLBars.template((function() {
   }());
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
@@ -444,7 +482,11 @@ Ember.TEMPLATES["header-container"] = Ember.HTMLBars.template((function() {
       dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
       var el2 = dom.createTextNode("\n");
       dom.appendChild(el1, el2);
+      var el2 = dom.createComment("");
+      dom.appendChild(el1, el2);
       var el2 = dom.createTextNode("  ");
+      dom.appendChild(el1, el2);
+      var el2 = dom.createComment("");
       dom.appendChild(el1, el2);
       var el2 = dom.createTextNode("\n");
       dom.appendChild(el1, el2);
@@ -474,8 +516,8 @@ Ember.TEMPLATES["header-container"] = Ember.HTMLBars.template((function() {
         fragment = this.build(dom);
       }
       var element0 = dom.childAt(fragment, [0]);
-      var morph0 = dom.createMorphAt(element0,0,1);
-      var morph1 = dom.createMorphAt(element0,1,2);
+      var morph0 = dom.createMorphAt(element0,1,1);
+      var morph1 = dom.createMorphAt(element0,3,3);
       block(env, morph0, context, "if", [get(env, context, "controller.numFixedColumns")], {}, child0, null);
       inline(env, morph1, context, "view", [get(env, context, "Ember.Table.HeaderBlock")], {"classNames": "ember-table-right-table-block", "columnsBinding": "controller.tableColumns", "scrollLeftBinding": "controller._tableScrollLeft", "widthBinding": "controller._tableBlockWidth", "heightBinding": "controller.headerHeight"});
       return fragment;
@@ -486,12 +528,13 @@ Ember.TEMPLATES["header-container"] = Ember.HTMLBars.template((function() {
 Ember.TEMPLATES["header-row"] = Ember.HTMLBars.template((function() {
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
     build: function build(dom) {
       var el0 = dom.createDocumentFragment();
-      var el1 = dom.createTextNode("");
+      var el1 = dom.createComment("");
       dom.appendChild(el0, el1);
       var el1 = dom.createTextNode("\n");
       dom.appendChild(el0, el1);
@@ -517,8 +560,8 @@ Ember.TEMPLATES["header-row"] = Ember.HTMLBars.template((function() {
       } else {
         fragment = this.build(dom);
       }
-      if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-      var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+      var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+      dom.insertBoundary(fragment, 0);
       inline(env, morph0, context, "view", [get(env, context, "Ember.MultiItemViewCollectionView")], {"contentBinding": "view.content", "itemViewClassField": "headerCellViewClass", "widthBinding": "controller._tableColumnsWidth"});
       return fragment;
     }
@@ -528,6 +571,7 @@ Ember.TEMPLATES["header-row"] = Ember.HTMLBars.template((function() {
 Ember.TEMPLATES["scroll-container"] = Ember.HTMLBars.template((function() {
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
@@ -540,6 +584,8 @@ Ember.TEMPLATES["scroll-container"] = Ember.HTMLBars.template((function() {
       var el2 = dom.createElement("div");
       dom.setAttribute(el2,"class","antiscroll-inner");
       var el3 = dom.createTextNode("\n    ");
+      dom.appendChild(el2, el3);
+      var el3 = dom.createComment("");
       dom.appendChild(el2, el3);
       var el3 = dom.createTextNode("\n  ");
       dom.appendChild(el2, el3);
@@ -571,7 +617,7 @@ Ember.TEMPLATES["scroll-container"] = Ember.HTMLBars.template((function() {
       } else {
         fragment = this.build(dom);
       }
-      var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),0,1);
+      var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),1,1);
       inline(env, morph0, context, "view", [get(env, context, "Ember.Table.ScrollPanel")], {});
       return fragment;
     }
@@ -581,15 +627,20 @@ Ember.TEMPLATES["scroll-container"] = Ember.HTMLBars.template((function() {
 Ember.TEMPLATES["table-cell"] = Ember.HTMLBars.template((function() {
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
     build: function build(dom) {
-      var el0 = dom.createElement("span");
-      dom.setAttribute(el0,"class","ember-table-content");
-      var el1 = dom.createTextNode("\n  ");
-      dom.appendChild(el0, el1);
-      var el1 = dom.createTextNode("\n");
+      var el0 = dom.createDocumentFragment();
+      var el1 = dom.createElement("span");
+      dom.setAttribute(el1,"class","ember-table-content");
+      var el2 = dom.createTextNode("\n  ");
+      dom.appendChild(el1, el2);
+      var el2 = dom.createComment("");
+      dom.appendChild(el1, el2);
+      var el2 = dom.createTextNode("\n");
+      dom.appendChild(el1, el2);
       dom.appendChild(el0, el1);
       return el0;
     },
@@ -613,7 +664,7 @@ Ember.TEMPLATES["table-cell"] = Ember.HTMLBars.template((function() {
       } else {
         fragment = this.build(dom);
       }
-      var morph0 = dom.createMorphAt(fragment,0,1);
+      var morph0 = dom.createMorphAt(dom.childAt(fragment, [0]),1,1);
       content(env, morph0, context, "view.cellContent");
       return fragment;
     }
@@ -623,12 +674,13 @@ Ember.TEMPLATES["table-cell"] = Ember.HTMLBars.template((function() {
 Ember.TEMPLATES["table-row"] = Ember.HTMLBars.template((function() {
   return {
     isHTMLBars: true,
+    revision: "Ember@1.11.1",
     blockParams: 0,
     cachedFragment: null,
     hasRendered: false,
     build: function build(dom) {
       var el0 = dom.createDocumentFragment();
-      var el1 = dom.createTextNode("");
+      var el1 = dom.createComment("");
       dom.appendChild(el0, el1);
       var el1 = dom.createTextNode("\n");
       dom.appendChild(el0, el1);
@@ -654,8 +706,8 @@ Ember.TEMPLATES["table-row"] = Ember.HTMLBars.template((function() {
       } else {
         fragment = this.build(dom);
       }
-      if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
-      var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+      var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+      dom.insertBoundary(fragment, 0);
       inline(env, morph0, context, "view", [get(env, context, "Ember.MultiItemViewCollectionView")], {"rowBinding": "view.row", "contentBinding": "view.columns", "itemViewClassField": "tableCellViewClass", "widthBinding": "controller._tableColumnsWidth"});
       return fragment;
     }
