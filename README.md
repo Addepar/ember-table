@@ -49,6 +49,11 @@ You can run the tests at http://localhost:8000/tests.
 * jquery.mousewheel
 * antiscroll
 
+## Using with other Ember versions
+
+Support for Ember 1.9, 1.10, and 1.11 (1.11.1 required) is available via
+branches of that name (e.g. `ember-1.9`)
+
 ## Contributing
 
 Got something to add? Great! Bug reports, feature ideas, and (especially) pull
