@@ -194,8 +194,8 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   elementSizeDidChange: ->
     return unless (@get('_state') or @get('state')) is 'inDOM'
-    @set '_width', @$().parent().outerWidth()
-    @set '_height', @$().parent().outerHeight()
+    @set '_width', @$().parent().width() # fixing margin problems see issue #304
+    @set '_height', @$().parent().height()
     # we need to wait for the table to be fully rendered before antiscroll can
     # be used
     Ember.run.next this, @updateLayout
@@ -203,7 +203,7 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   tableWidthNowTooSmall: ->
     return false unless (@get('_state') or @get('state')) is 'inDOM'
     oldTableWidth = @get '_width'
-    newTableWidth = @$().parent().outerWidth()
+    newTableWidth = @$().parent().width()
     # TODO(azirbel): This should be 'columns', I believe. Fix separately.
     totalColumnWidth = @_getTotalWidth @get('tableColumns')
     return (oldTableWidth > totalColumnWidth) and (newTableWidth < totalColumnWidth)
