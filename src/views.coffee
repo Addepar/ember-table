@@ -153,7 +153,7 @@ Ember.Table.RegisterTableComponentMixin,
     opacity: 0.9
     placeholder: 'ui-state-highlight'
     scroll: true
-    tolerance: 'intersect'
+    tolerance: 'pointer'
     update: jQuery.proxy(@onColumnSortDone,   this)
     stop:   jQuery.proxy(@onColumnSortStop,   this)
     sort:   jQuery.proxy(@onColumnSortChange, this)
