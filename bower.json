@@ -27,7 +27,7 @@
   "dependencies": {
     "antiscroll": "daviesgeek/antiscroll#9b67eb3c01b530ab86484e6874e743518fa65579",
     "bootstrap": "3.0.0",
-    "ember": "1.11.2",
+    "ember": "1.11.3",
     "handlebars": "2.0.0",
     "jquery": "^1.11.1",
     "jquery-mousewheel": "~3.1.4",
