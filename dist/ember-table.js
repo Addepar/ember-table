@@ -747,7 +747,7 @@ var define, requireModule, require, requirejs;
           });
           styleString = styleTokens.join('');
           if (styleString.length !== 0) {
-            return styleString;
+            return styleString.htmlSafe().toString();
           }
         });
         styleComputed.property.apply(styleComputed, properties);
