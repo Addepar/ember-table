@@ -131,17 +131,17 @@ App.MyTableView = EmberTable.TableContainerView.extend (...)</pre>
           sure it looks like the structure of the new Ember Table examples. You
           can see one {{#link-to 'simple'}}here{{/link-to}}. In
           particular, you might get errors if you don’t properly bind your
-          columns and content of the table, using <code>columnsBinding=</code>
-          and <code>contentBinding=</code>.
+          columns and content of the table, using <code>columns=</code>
+          and <code>content=</code>.
           <br/><br/>
           Both of these settings refer to variables in the corresponding
           controller (which here should be <code>MyTableController</code>), such that if you
-          set <code>columnsBinding=exampleVariable</code>, then the columns will be bound
+          set <code>columns=exampleVariable</code>, then the columns will be bound
           to <code>exampleVariable</code> in the controller. This gives you control over
           the look and content of the table.
           <br/><br/>
           Before, you may have had
-          <code>controllerBinding=</code> here. You don’t need this any more: the
+          <code>controller=</code> here. You don’t need this any more: the
           controller being used with this template will be used for the table
           too, by default.
         </li>

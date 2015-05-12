@@ -1275,10 +1275,10 @@ var define, requireModule, require, requirejs;
 
 
       data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {hash:{
-        'contentBinding': ("view.content"),
+        'content': ("view.content"),
         'itemViewClassField': ("headerCellViewClass"),
-        'widthBinding': ("controller._tableColumnsWidth")
-      },hashTypes:{'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["STRING"],data:data})));
+        'width': ("controller._tableColumnsWidth")
+      },hashTypes:{'content': "ID",'itemViewClassField': "STRING",'width': "ID"},hashContexts:{'content': depth0,'itemViewClassField': depth0,'width': depth0},contexts:[depth0],types:["STRING"],data:data})));
       data.buffer.push("\n");
       return buffer;
       
@@ -1373,11 +1373,11 @@ var define, requireModule, require, requirejs;
 
 
       data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {hash:{
-        'rowBinding': ("view.row"),
-        'contentBinding': ("view.columns"),
+        'row': ("view.row"),
+        'content': ("view.columns"),
         'itemViewClassField': ("tableCellViewClass"),
-        'widthBinding': ("controller._tableColumnsWidth")
-      },hashTypes:{'rowBinding': "STRING",'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'rowBinding': depth0,'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["STRING"],data:data})));
+        'width': ("controller._tableColumnsWidth")
+      },hashTypes:{'row': "ID",'content': "ID",'itemViewClassField': "STRING",'width': "ID"},hashContexts:{'row': depth0,'content': depth0,'itemViewClassField': depth0,'width': depth0},contexts:[depth0],types:["STRING"],data:data})));
       data.buffer.push("\n");
       return buffer;
       
