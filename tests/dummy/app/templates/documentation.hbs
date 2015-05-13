@@ -11,10 +11,12 @@
     </tr>
     <tr>
       <td>content <b>(required)</b></td>
-      <td>null</td>
+      <td>[]</td>
       <td>
         <p>
-          An array of row objects. Usually a hash where the keys are column
+          An array of row objects, or a promise that resolves to an array 
+          of row objects (so compatible with ember-data). 
+          Usually each row is a hash where the keys are column
           names and the values are the rows's values. However, could be any
           object, since each column can define a function to return the column
           value given the row object. See

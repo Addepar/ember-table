@@ -142,7 +142,7 @@ var define, requireModule, require, requirejs;
       // and the values are the rows's values. However, could be any object, since
       // each column can define a function to return the column value given the row
       // object. See `Ember.Table.ColumnDefinition.getCellContent`.
-      content: null,
+      content: [],
 
       // An array of column definitions: see `Ember.Table.ColumnDefinition`. Allows
       // each column to have its own configuration.
@@ -236,6 +236,40 @@ var define, requireModule, require, requirejs;
 
       columnsFillTable: true,
 
+      // _resolvedContent is an intermediate property between content and rows
+      // This allows content to be a plain array or a promise resolving to an array
+      _resolvedContent: function(key, value) {
+        if (arguments.length > 1) {
+          return value;
+        } else {
+          var _this = this;
+          value = [];
+
+          var content = this.get('content');
+          if (content.then)
+          {
+            // content is a promise
+            content.then(function(resolvedContent) {
+              // when the promise resolves, set this property so it gets cached
+              _this.set('_resolvedContent', resolvedContent);
+
+              // if the promise resolves immediately, set `value` so we return
+              // the resolved value and not []
+              value = resolvedContent;
+            });
+
+            // returns [] if the promise doesn't resolve immediately, or 
+            // the resolved value if it's ready
+            return value;
+          }
+          else
+          {
+            // content is not a promise
+            return content;
+          }
+        }
+      }.property('content'),
+
       init: function() {
         this._super();
         if (!Ember.$.ui) {
@@ -273,9 +307,9 @@ var define, requireModule, require, requirejs;
           parentController: this,
           container: this.get('container'),
           itemController: Row,
-          content: this.get('content')
+          content: this.get('_resolvedContent')
         });
-      }).property('content.[]'),
+      }).property('_resolvedContent.[]'),
 
       // An array of Ember.Table.Row
       footerContent: Ember.computed(function(key, value) {
