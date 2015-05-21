@@ -36,3 +36,14 @@ App.EmberTableSimpleController = Ember.Controller.extend
       close: Math.random() * 100 - 50
       volume: Math.random() * 1000000
   .property 'numRows'
+
+  actions:
+    addRow: ->
+      @set 'numRows', @get('numRows') + 1
+      @get('content').push
+        date: new Date()
+        open: Math.random() * 100
+        high: Math.random() * 100 + 50
+        low: Math.random() * 100 - 50
+        close: Math.random() * 100
+

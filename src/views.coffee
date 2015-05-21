@@ -53,8 +53,8 @@ Ember.Table.RegisterTableComponentMixin,
   height:   Ember.computed.alias 'tableComponent.rowHeight'
 
   isLastRow: Ember.computed ->
-    @get('row') is @get('tableComponent.bodyContent.lastObject')
-  .property 'tableComponent.bodyContent.lastObject', 'row'
+    @get('row') is @get('tableComponent.bodyContent.lastItem')
+  .property 'tableComponent.bodyContent.lastItem', 'row'
 
   mouseEnter: (event) ->
     row = @get 'row'
