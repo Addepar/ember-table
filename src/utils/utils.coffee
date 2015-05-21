@@ -72,13 +72,18 @@ Ember.Table.RowArrayController = Ember.ArrayController.extend
     subControllers = @get '_subControllers'
     subController = subControllers[idx]
 
+    @set('lastItem', subController) if @isLastItem(idx)
     return subController if subController
     subController = @get('itemController').create
       target: this
       parentController: @get('parentController') or this
       content: object
     subControllers[idx] = subController;
+    @set('lastItem',subController) if @isLastItem(idx)
     return subController;
+
+  isLastItem: (idx) ->
+    return @get('content').length - 1 == idx
 
 # HACK: We want the horizontal scroll to show on mouse enter and leave.
 Ember.Table.ShowHorizontalScrollMixin = Ember.Mixin.create
