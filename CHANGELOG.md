@@ -1,5 +1,17 @@
 # Ember Table Changelog
 
+### Ember Table 0.5.0 _(May 21, 2015)_
+
+* Move to Ember CLI
+  * Convert to JS
+  * Works with ember-cli style apps
+  * Backwards-compatible with globals apps (no changes required)
+  * Rebuilt demo app
+* Move back to using pointer style sortable tolerance from intersect
+* Fix #304 - use `width` instead of `outerWidth`
+* Explain ember version support in the README
+* Fix style bindings mixin not observing changes after init
+
 ### Ember Table 0.4.1 _(March 5, 2015)_
 
 * Update version requirements for ember and jquery
