@@ -1,0 +1,174 @@
+{{!-- To add shadow main-content-container-shadow --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Migration Guides</h1>
+  <div class="row">
+    <div class="col-md-9">
+      <h2>Migrating to version 0.4.0</h2>
+      <p>
+        Version 0.4.0 contains major changes to column resizing.
+      </p>
+      <p>
+        In version 0.2, setting the table's <code>forceFillColumns</code>
+        property and configuring each column's <code>canAutoResize</code>
+        property let you configure the table to scale automatically when
+        rendered into containers of different sizes.
+      </p>
+      <p>
+        In version 0.4, the table-wide <code>forceFillColumns</code> setting
+        has been removed and each column defines its own resize behavior.  Use
+        <code>isResizable</code> to set whether the column can be resized at
+        all (manually or automatically), <code>canAutoResize</code> to set
+        whether the column will attempt to scale its width to different table
+        sizes, and <code>savedWidth</code> to set the column's initial width or
+        persist its width once resized.
+      </p>
+      <p>
+        It was previously possible to extend Ember Table so that it would
+        behave in a "fluid" way, meaning that resizing one column steals
+        width from its neighboring column. This is now supported in Ember Table
+        out of the box: just set <code>columnMode="fluid"</code>.
+      </p>
+      <p>
+        To get a sense for the new column resizing changes, check out the
+        {{#link-to 'configurable-columns'}}configurable column demo.{{/link-to}}
+      </p>
+      <h3>API Changes</h3>
+      <ul class="styled">
+        <li>Removed: <code>EmberTableComponent.forceFillColumns</code></li>
+        <li>Removed: <code>ColumnDefinition.columnWidth</code></li>
+        <li>Removed: <code>ColumnDefinition.defaultColumnWidth</code></li>
+        <li>Added: <code>EmberTableComponent.columnMode</code></li>
+        <li>Added: <code>ColumnDefinition.savedWidth</code></li>
+      </ul>
+      <h3>Upgrade steps</h3>
+      <ol class="styled styled-spacious">
+        <li>
+          Replace <code>columnWidth</code> and
+          <code>defaultColumnWidth</code> with <code>savedWidth</code>. This
+          will set the column's initial width, and will change if the column is
+          manually resized. If you want to persist changes to column sizes,
+          simply bind to and persist <code>savedWidth</code>.
+        </li>
+        <li>
+          Do not use <code>forceFillColumns</code> as it no longer has any
+          effect. Columns will fill as before if their
+          <code>canAutoResize</code> property is <code>true</code>.
+        </li>
+        <li>
+          Make sure your columns have <code>canAutoResize</code> set correctly.
+          In version 0.2 this defaulted to <code>true</code>, but only made a
+          difference if <code>forceFillColumns</code> was enabled. Now it
+          defaults to <code>false</code>, but if a column sets it to
+          <code>true</code>, the force fill behavior is implicitly triggered.
+        </li>
+      </ol>
+
+      <h2>Migrating to version 0.3.0</h2>
+      <p>
+        Version 0.3.0 includes major column resizing changes, but with
+        <code>canAutoResize</code> defaulting to <code>true</code>.  We
+        recommend skipping this version and upgrading directly to 0.4.0; see
+        the 0.4.0 migration guide.
+      </p>
+
+      <h2>Migrating to version 0.2.0</h2>
+      <p>
+        A full migration step is not available for this version, but it
+        contains only minor API changes.
+      </p>
+      <p>
+        Version 0.2 uses row objects to wrap content in the table. Because of
+        this, change any accesses to row data (e.g. in
+        <code>getCellContent</code>) from <code>row['date']</code> to
+        <code>row.get('date')</code>.
+      </p>
+
+      <h2>Migrating from old versions to version 0.1.0</h2>
+      <p>
+        Version 0.1.0 of Ember Table is a bit of a restructure - we’re hoping
+        that the new organization will make it simpler and easier to set up,
+        but for existing users, you’ll have to make a few changes to upgrade to
+        the new Ember Table.
+      </p>
+      <h3>Upgrade steps</h3>
+      <ol class="styled styled-spacious">
+        <li>
+          Upgrade <code>ember-table.js</code> and <code>ember-table.css</code>.
+          If you’re not on the latest version of <a target="_BLANK"
+          href="http://emberjs.com/">Ember.js</a>, now might be a good time to
+          upgrade that as well. This guide was written using Ember 1.0.0 and
+          Ember Table 0.1.0.
+        </li>
+        <li>
+          The major change is moving from separate table Views and Controllers
+          to a unified table Component. You can read up on Ember Components
+          <a target="_BLANK"
+          href="http://emberjs.com/guides/components/">here</a>. So instead of
+          having lines like this:
+          <div class="highlight">
+<pre class="prettyprint lang-js">App.MyTableController = Ember.Table.TableController.extend (...)
+App.MyTableView = EmberTable.TableContainerView.extend (...)</pre>
+          </div>
+          You’ll have everything in one place:
+          <div class="highlight">
+<pre class="prettyprint lang-js">App.MyTableController = Ember.Controller.extend (...)</pre>
+          </div>
+          For starters, just change the type of your MyTableController from the old version to the new.
+        </li>
+        <li>
+          Update your handlebars file. Before, it might have looked like:
+          <br/>
+          <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;view Ember.Table.TablesContainer …&#125;&#125;</pre>
+          </div>
+          After the restructure, it should look like this:<br/>
+          <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;table-component …&#125;&#125;</pre>
+          </div>
+        </li>
+        <li>
+          While you’re modifying that handlebars file, you may want to make
+          sure it looks like the structure of the new Ember Table examples. You
+          can see one {{#link-to 'simple'}}here{{/link-to}}. In
+          particular, you might get errors if you don’t properly bind your
+          columns and content of the table, using <code>columnsBinding=</code>
+          and <code>contentBinding=</code>.
+          <br/><br/>
+          Both of these settings refer to variables in the corresponding
+          controller (which here should be <code>MyTableController</code>), such that if you
+          set <code>columnsBinding=exampleVariable</code>, then the columns will be bound
+          to <code>exampleVariable</code> in the controller. This gives you control over
+          the look and content of the table.
+          <br/><br/>
+          Before, you may have had
+          <code>controllerBinding=</code> here. You don’t need this any more: the
+          controller being used with this template will be used for the table
+          too, by default.
+        </li>
+        <li>
+          Move any properties you had defined in your
+          <code>TableContainerView</code> (if
+          you had one) into the controller. See the examples for more
+          information on how table properties should be set now.
+        </li>
+      </ol>
+      <h3>Troubleshooting</h3>
+      <ul class="styled styled-spacious">
+        <li>
+          If you were using old Ember Table objects like the
+          <code>RowArrayProxy</code>,
+          take another look and consider whether you really need it. During my
+          migration I was able to remove it by changing the
+          <code>contentBinding=</code>
+          in my handlebars file to a more appropriate variable for content.
+        </li>
+        <li>
+          If you are having errors with template names not being found, it
+          may be due to a change with inferring names. For me, my old template
+          names used hyphens, and changing them to underscores automatically
+          connected them to the rest of my application.
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

@@ -1,12 +1,22 @@
-bower_components/
-build/
-doc/
-gh_pages/
-node_modules/
-tests/lib
-tests/css
-vendor/
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
 .DS_Store
+
+# compiled output
+/tmp
+/ember-dist
+
+# dependencies
+/node_modules
+/bower_components
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage/*
+/libpeerconnection.log
+npm-debug.log
+testem.log
+
+# grunt-release-it
 .stage
-*.swo
-*.swp
