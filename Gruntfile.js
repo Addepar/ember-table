@@ -177,7 +177,7 @@ module.exports = function (grunt) {
               'vendor/handlebars/handlebars.js',
               'vendor/modernizr/modernizr.js',
               'vendor/d3/d3.js',
-              'vendor/jquery/jquery.js',
+              'vendor/jquery/dist/jquery.js',
               'vendor/jquery-ui/ui/jquery-ui.custom.js',
               'vendor/jquery-mousewheel/jquery.mousewheel.js'
             ],
