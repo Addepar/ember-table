@@ -1,7 +1,7 @@
 var Writer = require('broccoli-writer');
 var fs = require('fs');
 var path = require('path');
-var Promise = require('RSVP').Promise;
+var Promise = require('rsvp').Promise;
 var walk = require('walk-sync');
 
 // TODO(azirbel): Log ember version and register with Ember.libraries?
