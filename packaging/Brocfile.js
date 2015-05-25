@@ -19,7 +19,8 @@ var addonTree = pickFiles('addon', {
 });
 
 // Compile templates
-var templateTree = templateCompiler('../app/templates', { isHTMLBars: true,
+var templateTree = templateCompiler('app/templates', {
+  isHTMLBars: true,
   templateCompiler: require('../bower_components/ember/ember-template-compiler')
 });
 templateTree = pickFiles(templateTree, {srcDir: '/', destDir: 'ember-table/templates'});
