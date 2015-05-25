@@ -1110,278 +1110,58 @@ var define, requireModule, require, requirejs;
       }).property('width', 'maxWidth')
     });
   });
-;define("ember-table/templates/body-table-container", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
+;define("ember-table/templates/application", 
+  ["exports"],
+  function(__exports__) {
     "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-    function program1(depth0,data) {
-      
-      var buffer = '';
-      data.buffer.push("\n        ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {hash:{
-        'classNames': ("ember-table-left-table-block"),
-        'content': ("bodyContent"),
-        'columns': ("fixedColumns"),
-        'width': ("_fixedBlockWidth"),
-        'numItemsShowing': ("_numItemsShowing"),
-        'scrollTop': ("_scrollTop"),
-        'startIndex': ("_startIndex")
-      },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'width': "ID",'numItemsShowing': "ID",'scrollTop': "ID",'startIndex': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'width': depth0,'numItemsShowing': depth0,'scrollTop': depth0,'startIndex': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n      ");
-      return buffer;
-      }
-
-      data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n      ");
-      stack1 = helpers['if'].call(depth0, "numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n      ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {hash:{
-        'classNames': ("ember-table-right-table-block"),
-        'content': ("bodyContent"),
-        'columns': ("tableColumns"),
-        'scrollLeft': ("_tableScrollLeft"),
-        'width': ("_tableBlockWidth"),
-        'numItemsShowing': ("_numItemsShowing"),
-        'scrollTop': ("_scrollTop"),
-        'startIndex': ("_startIndex")
-      },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'scrollLeft': "ID",'width': "ID",'numItemsShowing': "ID",'scrollTop': "ID",'startIndex': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'scrollLeft': depth0,'width': depth0,'numItemsShowing': depth0,'scrollTop': depth0,'startIndex': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n    </div>\n  </div>\n</div>\n");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/components/ember-table", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-    function program1(depth0,data) {
-      
-      var buffer = '';
-      data.buffer.push("\n  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n");
-      return buffer;
-      }
-
-    function program3(depth0,data) {
-      
-      var buffer = '';
-      data.buffer.push("\n  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "footer-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n");
-      return buffer;
-      }
-
-      stack1 = helpers['if'].call(depth0, "hasHeader", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "body-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n");
-      stack1 = helpers['if'].call(depth0, "hasFooter", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
-      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "column-sortable-indicator", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/footer-table-container", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-    function program1(depth0,data) {
-      
-      var buffer = '';
-      data.buffer.push("\n    ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {hash:{
-        'classNames': ("ember-table-left-table-block"),
-        'content': ("footerContent"),
-        'columns': ("fixedColumns"),
-        'width': ("_fixedBlockWidth"),
-        'height': ("footerHeight")
-      },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n  ");
-      return buffer;
-      }
-
-      data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
-      stack1 = helpers['if'].call(depth0, "numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {hash:{
-        'classNames': ("ember-table-right-table-block"),
-        'content': ("footerContent"),
-        'columns': ("tableColumns"),
-        'scrollLeft': ("_tableScrollLeft"),
-        'width': ("_tableBlockWidth"),
-        'height': ("footerHeight")
-      },hashTypes:{'classNames': "STRING",'content': "ID",'columns': "ID",'scrollLeft': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'content': depth0,'columns': depth0,'scrollLeft': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n</div>\n");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/header-cell", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, escapeExpression=this.escapeExpression;
-
-
-      data.buffer.push("<div class=\"ember-table-content-container\" ");
-      data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0,depth0],types:["STRING","ID"],data:data})));
-      data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-      stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n  </span>\n</div>");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/header-row", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', escapeExpression=this.escapeExpression;
-
-
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {hash:{
-        'contentBinding': ("view.content"),
-        'itemViewClassField': ("headerCellViewClass"),
-        'widthBinding': ("controller._tableColumnsWidth")
-      },hashTypes:{'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/header-table-container", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
-
-    function program1(depth0,data) {
-      
-      var buffer = '';
-      data.buffer.push("\n    ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {hash:{
-        'classNames': ("ember-table-left-table-block"),
-        'columns': ("fixedColumns"),
-        'width': ("_fixedBlockWidth"),
-        'height': ("headerHeight")
-      },hashTypes:{'classNames': "STRING",'columns': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'columns': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n  ");
-      return buffer;
-      }
-
-      data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n  ");
-      stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
-      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {hash:{
-        'classNames': ("ember-table-right-table-block"),
-        'columns': ("tableColumns"),
-        'scrollLeft': ("_tableScrollLeft"),
-        'width': ("_tableBlockWidth"),
-        'height': ("headerHeight")
-      },hashTypes:{'classNames': "STRING",'columns': "ID",'scrollLeft': "ID",'width': "ID",'height': "ID"},hashContexts:{'classNames': depth0,'columns': depth0,'scrollLeft': depth0,'width': depth0,'height': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n</div>\n");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/scroll-container", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', escapeExpression=this.escapeExpression;
-
-
-      data.buffer.push("<div class=\"antiscroll-wrap\">\n  <div class=\"antiscroll-inner\">\n    ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-panel", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n  </div>\n</div>\n");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/table-cell", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', stack1;
-
-
-      data.buffer.push("<span class=\"ember-table-content\">\n  ");
-      stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data});
-      if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
-      data.buffer.push("\n</span>");
-      return buffer;
-      
-    });
-  });
-;define("ember-table/templates/table-row", 
-  ["ember","exports"],
-  function(__dependency1__, __exports__) {
-    "use strict";
-    var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
-    this.compilerInfo = [4,'>= 1.0.0'];
-    helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
-      var buffer = '', escapeExpression=this.escapeExpression;
-
-
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {hash:{
-        'rowBinding': ("view.row"),
-        'contentBinding': ("view.columns"),
-        'itemViewClassField': ("tableCellViewClass"),
-        'widthBinding': ("controller._tableColumnsWidth")
-      },hashTypes:{'rowBinding': "STRING",'contentBinding': "STRING",'itemViewClassField': "STRING",'widthBinding': "STRING"},hashContexts:{'rowBinding': depth0,'contentBinding': depth0,'itemViewClassField': depth0,'widthBinding': depth0},contexts:[depth0],types:["STRING"],data:data})));
-      data.buffer.push("\n");
-      return buffer;
-      
-    });
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.0",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("h2");
+          dom.setAttribute(el1,"id","title");
+          var el2 = dom.createTextNode("Welcome to Ember.js");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,2,2,contextualElement);
+          content(env, morph0, context, "outlet");
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/views/body-table-container", 
   ["ember","ember-table/views/table-container","ember-table/mixins/show-horizontal-scroll","ember-table/mixins/register-table-component","ember-table/mixins/mouse-wheel-handler","ember-table/mixins/touch-move-handler","ember-table/mixins/scroll-handler","exports"],
@@ -2179,15 +1959,7 @@ var define, requireModule, require, requirejs;
 
 window.Ember.Table = Ember.Namespace.create();
 window.Ember.AddeparMixins = {};
-window.Ember.TEMPLATES['body-table-container'] = require('ember-table/templates/body-table-container')['default'];
-window.Ember.TEMPLATES['components/ember-table'] = require('ember-table/templates/components/ember-table')['default'];
-window.Ember.TEMPLATES['footer-table-container'] = require('ember-table/templates/footer-table-container')['default'];
-window.Ember.TEMPLATES['header-cell'] = require('ember-table/templates/header-cell')['default'];
-window.Ember.TEMPLATES['header-row'] = require('ember-table/templates/header-row')['default'];
-window.Ember.TEMPLATES['header-table-container'] = require('ember-table/templates/header-table-container')['default'];
-window.Ember.TEMPLATES['scroll-container'] = require('ember-table/templates/scroll-container')['default'];
-window.Ember.TEMPLATES['table-cell'] = require('ember-table/templates/table-cell')['default'];
-window.Ember.TEMPLATES['table-row'] = require('ember-table/templates/table-row')['default'];
+window.Ember.TEMPLATES['application'] = require('ember-table/templates/application')['default'];
 window.Ember.Table.EmberTableComponent = require('ember-table/components/ember-table')['default'];
 window.Ember.Table.RowArrayController = require('ember-table/controllers/row-array')['default'];
 window.Ember.Table.Row = require('ember-table/controllers/row')['default'];

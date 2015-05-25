@@ -4,7 +4,7 @@
   "dependencies": {
     "antiscroll": "azirbel/antiscroll#90391fb371c7be769bc32e7287c5271981428356",
     "handlebars": "~1.3.0",
-    "ember": ">=1.4 <1.9",
+    "ember": "1.12",
     "jquery": "^1.11.1",
     "jquery-mousewheel": "~3.1.4",
     "jquery-ui": "~1.11.4"
