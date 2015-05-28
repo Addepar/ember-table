@@ -3,7 +3,7 @@
     {{action 'toggleCollapse' view.row}}>
   {{fa-icon "caret-down" classNames="ember-table-toggle-icon"}}
 </span>
-<div class="ember-table-content-container" {{action 'sortByColumn' view.column}}>
+<div class="ember-table-content-container" {{action 'columnHeaderClicked' view.column}}>
   <span class="ember-table-content">
     {{view.column.headerCellName}}
   </span>
