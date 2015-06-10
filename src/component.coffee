@@ -182,6 +182,15 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     @elementSizeDidChange()
     @doForceFillColumns()
 
+  willDestroyElement: ->
+    antiscrollElements = @$ '.antiscroll-wrap'
+    antiscrollElements.each (i, antiscrollElement) ->
+      antiscroll = Ember.$(antiscrollElement).data('antiscroll')
+      if antiscroll
+        antiscroll.destroy()
+        Ember.$(antiscrollElement).removeData('antiscroll')
+    @_super()
+
   onResizeEnd: ->
     # we need to put this on the run loop, because resize event came from
     # window. Otherwise, we get this warning when used in tests. You have

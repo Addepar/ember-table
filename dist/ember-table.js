@@ -1263,6 +1263,19 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     this.elementSizeDidChange();
     return this.doForceFillColumns();
   },
+  willDestroyElement: function() {
+    var antiscrollElements;
+    antiscrollElements = this.$('.antiscroll-wrap');
+    antiscrollElements.each(function(i, antiscrollElement) {
+      var antiscroll;
+      antiscroll = Ember.$(antiscrollElement).data('antiscroll');
+      if (antiscroll) {
+        antiscroll.destroy();
+        return Ember.$(antiscrollElement).removeData('antiscroll');
+      }
+    });
+    return this._super();
+  },
   onResizeEnd: function() {
     if (this.tableWidthNowTooSmall()) {
       this.set('columnsFillTable', true);
