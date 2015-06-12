@@ -87,7 +87,7 @@ module.exports = function (grunt) {
 
     'release-it': {
       options: {
-        'pkgFiles': ['package.json', 'bower.json'],
+        'pkgFiles': ['package.json'],
         'commitMessage': 'Release %s',
         'tagName': 'v%s',
         'tagAnnotation': 'Release %s',
