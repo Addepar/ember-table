@@ -5,6 +5,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-banner');
   grunt.loadNpmTasks('grunt-broccoli');
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-release-it');
   grunt.loadNpmTasks('grunt-text-replace');
@@ -24,6 +25,8 @@ module.exports = function (grunt) {
         config: 'packaging/Brocfile.js'
       }
     },
+
+    clean: ['tmp', 'ember-dist', 'node_modules', 'bower_components'],
 
     replace: {
       // The VERSION file for easy reference of the current version

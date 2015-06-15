@@ -13,8 +13,17 @@ RegisterTableComponentMixin, {
   styleBindings: ['width', 'height'],
   row: Ember.computed.alias('content'),
   columns: Ember.computed.alias('parentView.columns'),
+  expanded: Ember.computed.alias('tableComponent.expandRows'),
+  expandedRowHeight: Ember.computed.alias('tableComponent.expandedRowHeight'),
   width: Ember.computed.alias('tableComponent._rowWidth'),
   height: Ember.computed.alias('tableComponent.rowHeight'),
+  columnHeight: function() {
+    var height = this.get('height');
+    if (this.get('expanded')) { 
+      height = height - this.get('expandedRowHeight');
+    }
+    return height;
+  }.property('tableComponent.rowHeight'),
 
   isLastRow: Ember.computed(function() {
     return this.get('row') ===

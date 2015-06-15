@@ -19,6 +19,7 @@ Router.map(function() {
   this.route('sparkline');
   this.route('horizon');
   this.route('configurable-columns');
+  this.route('expandable-rows');
 
   this.route('community-examples');
 

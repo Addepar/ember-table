@@ -90,22 +90,27 @@ import ColumnDefinition from 'ember-table/models/column-definition';
 export default Ember.Controller.extend({
   tableColumns: Ember.computed(function() { {{#each columns}}
 {{columnDefinitionDocumentation}}{{/each}}
-    [dateColumn, openColumn, highColumn, lowColumn, closeColumn]
+    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
+  }),
 
   tableContent: Ember.computed(function() {
-    return _.range(100).map(function(index) {
-      var date = new Date();
-      date.setDate(date.getDate() + index);
-      return {
+    var content = [];
+    var date;
+    for (var i = 0; i &lt; 100; i++) {
+      date = new Date();
+      date.setDate(date.getDate() + i);
+      content.pushObject({
         date: date,
         open: Math.random() * 100 - 50,
         high: Math.random() * 100 - 50,
         low: Math.random() * 100 - 50,
         close: Math.random() * 100 - 50,
         volume: Math.random() * 1000000
-      };
-    });
-  })</pre>
+      });
+    }
+    return content;
+  })
+});</pre>
       </div>
     </div>
   </div>

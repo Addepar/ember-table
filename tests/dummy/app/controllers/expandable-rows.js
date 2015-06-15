@@ -54,7 +54,8 @@ export default Ember.Controller.extend({
         high: Math.random() * 100 - 50,
         low: Math.random() * 100 - 50,
         close: Math.random() * 100 - 50,
-        volume: Math.random() * 1000000
+        volume: Math.random() * 1000000,
+        expandedContent: 'Hello World'
       });
     }
     return content;

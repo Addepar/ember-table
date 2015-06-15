@@ -50,22 +50,26 @@ export default Ember.Controller.extend({
   tableContent: Ember.computed(function() {
     var randomWalk = function(numSteps) {
       var lastValue = 0;
-      // TODO(azirbel): This doesn't seem like a map to me
-      return _.range(numSteps).map(function() {
+      var walk = [];
+      for (var i = 0; i < numSteps; i++) {
         lastValue = lastValue + d3.random.normal()();
-        return lastValue;
-      });
+        walk.push(lastValue);
+      }
+      return walk;
     };
-    return _.range(100).map(function(index) {
-      var data = randomWalk(100);
-      return {
-        name: index,
+    var content = [];
+    var data;
+    for (var i = 0; i < 100; i++) {
+      data = randomWalk(100);
+      content.pushObject({
+        name: i,
         timeseries: data,
         open: data[0],
         close: data[99],
         low: Math.min.apply(null, data),
         high: Math.max.apply(null, data)
-      };
-    });
+      });
+    }
+    return content;
   })
 });

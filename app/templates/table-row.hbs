@@ -1,6 +1,15 @@
 {{view "multi-item-collection"
-  rowBinding="view.row"
-  contentBinding="view.columns"
+  row=view.row
+  content=view.columns
   itemViewClassField="tableCellViewClass"
-  widthBinding="controller._tableColumnsWidth"
+  width=controller._tableColumnsWidth
+  height=view.columnHeight
 }}
+
+{{#if view.expanded}}
+  {{view "expanded-content"
+    content=view.row.expandedContent
+    height=view.expandedRowHeight
+    width=controller._tableColumnsWidth
+  }}
+{{/if}}

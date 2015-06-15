@@ -1,0 +1,44 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Expandable Rows Demo</small></h1>
+
+  <p>Perhaps you might need to have some toggleable extra data about each item!.</p>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="configuration-container">
+        <div class="title-text">Configure Demo</div>
+        <div class="table-options-footer">
+          <div class="fluid-mode-text">Expand Rows</div>
+          {{input class="checkbox-input" type="checkbox" checked=expandRows}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="example-container js-resizable-container">
+        <div class="ember-table-example-container-small">
+          {{ember-table
+            hasFooter=false
+            columns=tableColumns
+            content=tableContent
+            expandRows=expandRows
+          }}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>Template</h3>
+      <div class="highlight">
+<pre class="prettyprint lang-html">&#123;&#123;ember-table
+  hasFooter=false
+  columns=columns
+  content=content
+  expandRows={{#if expandRows}}true{{else}}false{{/if}}
+&#125;&#125;</pre>
+      </div>
+    </div>
+  </div>
+</div>

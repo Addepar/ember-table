@@ -23,12 +23,12 @@ export default Ember.ArrayProxy.extend({
         return _this.createGithubEvent(row, event);
       });
     });
-    _.range(start, end).forEach(function(index) {
+    for (var index = start; index < end; index++) {
       content[index] = Ember.Object.create({
         eventId: index,
         isLoaded: false
       });
-    });
+    }
   },
 
   objectAt: function(index) {
