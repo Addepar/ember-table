@@ -204,6 +204,13 @@
 .ember-table-left-table-block .ember-table-cell {
   border-right: 1px solid #dcdcdc !important;
 }
+/* Expanded Content */
+.ember-table-expanded-content {
+  font-family: UniversNextW01-Regular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  border-top: 1px dotted #dcdcdc;
+  padding: 5px;
+}
 /* Header Container */
 .ember-table-header-container {
   border-bottom: 1px solid #dcdcdc;
@@ -484,6 +491,11 @@
 }
 .ember-table-body-container .ember-table-table-row.ember-table-selected .ember-table-cell {
   border-right: 1px solid #1d6bac;
+}
+.ember-table-body-container .ember-table-table-row.ember-table-selected .ember-table-expanded-content {
+  font-family: UniversNextW01-Regular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  border-top: 1px dotted #1d6bac;
 }
 .ember-table-financial {
   /* Table Structures */

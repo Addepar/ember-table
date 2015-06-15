@@ -326,6 +326,29 @@ var define, requireModule, require, requirejs;
       },
 
       // ---------------------------------------------------------------------------
+      // Expandable Rows
+      // ---------------------------------------------------------------------------
+
+      // Can be toggled on and off
+      expandRows: false,
+
+      // Allocate this much px to the expanded row.
+      expandedRowHeight: 30,
+
+      expandRowHeight: function() {
+        var oldHeight = this.get('rowHeight');
+        var expandRows = this.get('expandRows');
+        if (!this.get('originalHeight')) {
+          this.set('originalHeight', oldHeight);
+        }
+        if (expandRows === true) {
+          this.set('rowHeight', this.get('originalHeight') + this.get('expandedRowHeight'));
+        }  else if (expandRows === false) {
+          this.set('rowHeight', this.get('originalHeight'));
+        }
+      }.observes('expandRows').on('init'),
+      
+      // ---------------------------------------------------------------------------
       // View concerns
       // ---------------------------------------------------------------------------
 
@@ -747,7 +770,7 @@ var define, requireModule, require, requirejs;
           });
           styleString = styleTokens.join('');
           if (styleString.length !== 0) {
-            return styleString;
+            return styleString.htmlSafe();
           }
         });
         styleComputed.property.apply(styleComputed, properties);
@@ -1118,7 +1141,7 @@ var define, requireModule, require, requirejs;
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.12.0",
+          revision: "Ember@1.12.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -1160,7 +1183,7 @@ var define, requireModule, require, requirejs;
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1235,7 +1258,7 @@ var define, requireModule, require, requirejs;
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.12.0",
+          revision: "Ember@1.12.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -1278,7 +1301,7 @@ var define, requireModule, require, requirejs;
       var child1 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.12.0",
+          revision: "Ember@1.12.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -1320,7 +1343,7 @@ var define, requireModule, require, requirejs;
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1380,6 +1403,53 @@ var define, requireModule, require, requirejs;
       };
     }()));
   });
+;define("ember-table/templates/expanded-content", 
+  ["exports"],
+  function(__exports__) {
+    "use strict";
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      return {
+        isHTMLBars: true,
+        revision: "Ember@1.12.1",
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createComment("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          dom.insertBoundary(fragment, 0);
+          content(env, morph0, context, "view.content");
+          return fragment;
+        }
+      };
+    }()));
+  });
 ;define("ember-table/templates/footer-table-container", 
   ["exports"],
   function(__exports__) {
@@ -1388,7 +1458,7 @@ var define, requireModule, require, requirejs;
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.12.0",
+          revision: "Ember@1.12.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -1430,7 +1500,7 @@ var define, requireModule, require, requirejs;
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1490,7 +1560,7 @@ var define, requireModule, require, requirejs;
     __exports__["default"] = Ember.HTMLBars.template((function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1550,7 +1620,7 @@ var define, requireModule, require, requirejs;
     __exports__["default"] = Ember.HTMLBars.template((function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1564,7 +1634,7 @@ var define, requireModule, require, requirejs;
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, inline = hooks.inline;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -1584,7 +1654,7 @@ var define, requireModule, require, requirejs;
           }
           var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
           dom.insertBoundary(fragment, 0);
-          inline(env, morph0, context, "view", ["multi-item-collection"], {"contentBinding": "view.content", "itemViewClassField": "headerCellViewClass", "widthBinding": "controller._tableColumnsWidth"});
+          inline(env, morph0, context, "view", ["multi-item-collection"], {"content": get(env, context, "view.content"), "itemViewClassField": "headerCellViewClass", "width": get(env, context, "controller._tableColumnsWidth")});
           return fragment;
         }
       };
@@ -1598,7 +1668,7 @@ var define, requireModule, require, requirejs;
       var child0 = (function() {
         return {
           isHTMLBars: true,
-          revision: "Ember@1.12.0",
+          revision: "Ember@1.12.1",
           blockParams: 0,
           cachedFragment: null,
           hasRendered: false,
@@ -1640,7 +1710,7 @@ var define, requireModule, require, requirejs;
       }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1700,7 +1770,7 @@ var define, requireModule, require, requirejs;
     __exports__["default"] = Ember.HTMLBars.template((function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1760,7 +1830,7 @@ var define, requireModule, require, requirejs;
     __exports__["default"] = Ember.HTMLBars.template((function() {
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1809,9 +1879,52 @@ var define, requireModule, require, requirejs;
   function(__exports__) {
     "use strict";
     __exports__["default"] = Ember.HTMLBars.template((function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          revision: "Ember@1.12.1",
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("  ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createComment("");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,1,1,contextualElement);
+            inline(env, morph0, context, "view", ["expanded-content"], {"content": get(env, context, "view.row.expandedContent"), "height": get(env, context, "view.expandedRowHeight"), "width": get(env, context, "controller._tableColumnsWidth")});
+            return fragment;
+          }
+        };
+      }());
       return {
         isHTMLBars: true,
-        revision: "Ember@1.12.0",
+        revision: "Ember@1.12.1",
         blockParams: 0,
         cachedFragment: null,
         hasRendered: false,
@@ -1819,13 +1932,15 @@ var define, requireModule, require, requirejs;
           var el0 = dom.createDocumentFragment();
           var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
-          var el1 = dom.createTextNode("\n");
+          var el1 = dom.createTextNode("\n\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createComment("");
           dom.appendChild(el0, el1);
           return el0;
         },
         render: function render(context, env, contextualElement) {
           var dom = env.dom;
-          var hooks = env.hooks, inline = hooks.inline;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline, block = hooks.block;
           dom.detectNamespace(contextualElement);
           var fragment;
           if (env.useFragmentCache && dom.canClone) {
@@ -1844,8 +1959,11 @@ var define, requireModule, require, requirejs;
             fragment = this.build(dom);
           }
           var morph0 = dom.createMorphAt(fragment,0,0,contextualElement);
+          var morph1 = dom.createMorphAt(fragment,2,2,contextualElement);
+          dom.insertBoundary(fragment, null);
           dom.insertBoundary(fragment, 0);
-          inline(env, morph0, context, "view", ["multi-item-collection"], {"rowBinding": "view.row", "contentBinding": "view.columns", "itemViewClassField": "tableCellViewClass", "widthBinding": "controller._tableColumnsWidth"});
+          inline(env, morph0, context, "view", ["multi-item-collection"], {"row": get(env, context, "view.row"), "content": get(env, context, "view.columns"), "itemViewClassField": "tableCellViewClass", "width": get(env, context, "controller._tableColumnsWidth"), "height": get(env, context, "view.columnHeight")});
+          block(env, morph1, context, "if", [get(env, context, "view.expanded")], {}, child0, null);
           return fragment;
         }
       };
@@ -1931,6 +2049,19 @@ var define, requireModule, require, requirejs;
       styleBindings: ['left', 'height'],
       left: Ember.computed.alias('tableComponent._sortableIndicatorLeft'),
       height: Ember.computed.alias('tableComponent._height')
+    });
+  });
+;define("ember-table/views/expanded-content", 
+  ["ember","ember-table/mixins/style-bindings","exports"],
+  function(__dependency1__, __dependency2__, __exports__) {
+    "use strict";
+    var Ember = __dependency1__["default"];
+    var StyleBindingsMixin = __dependency2__["default"];
+
+    __exports__["default"] = Ember.View.extend(StyleBindingsMixin, {
+      templateName: 'expanded-content',
+      styleBindings: ['width', 'height'],
+      classNames: 'ember-table-expanded-content'
     });
   });
 ;define("ember-table/views/footer-table-container", 
@@ -2444,7 +2575,7 @@ var define, requireModule, require, requirejs;
 
     __exports__["default"] = Ember.CollectionView.extend(
     StyleBindingsMixin, {
-      styleBindings: 'width',
+      styleBindings: ['width', 'height'],
       itemViewClassField: null,
 
       createChildView: function(view, attrs) {
@@ -2608,8 +2739,17 @@ var define, requireModule, require, requirejs;
       styleBindings: ['width', 'height'],
       row: Ember.computed.alias('content'),
       columns: Ember.computed.alias('parentView.columns'),
+      expanded: Ember.computed.alias('tableComponent.expandRows'),
+      expandedRowHeight: Ember.computed.alias('tableComponent.expandedRowHeight'),
       width: Ember.computed.alias('tableComponent._rowWidth'),
       height: Ember.computed.alias('tableComponent.rowHeight'),
+      columnHeight: function() {
+        var height = this.get('height');
+        if (this.get('expanded')) { 
+          height = height - this.get('expandedRowHeight');
+        }
+        return height;
+      }.property('tableComponent.rowHeight'),
 
       isLastRow: Ember.computed(function() {
         return this.get('row') ===
@@ -2649,6 +2789,7 @@ window.Ember.Table = Ember.Namespace.create();
 window.Ember.AddeparMixins = {};
 window.Ember.TEMPLATES['body-table-container'] = require('ember-table/templates/body-table-container')['default'];
 window.Ember.TEMPLATES['components/ember-table'] = require('ember-table/templates/components/ember-table')['default'];
+window.Ember.TEMPLATES['expanded-content'] = require('ember-table/templates/expanded-content')['default'];
 window.Ember.TEMPLATES['footer-table-container'] = require('ember-table/templates/footer-table-container')['default'];
 window.Ember.TEMPLATES['header-cell'] = require('ember-table/templates/header-cell')['default'];
 window.Ember.TEMPLATES['header-row'] = require('ember-table/templates/header-row')['default'];
