@@ -62,18 +62,21 @@ export default Ember.Controller.extend({
   }),
 
   content: Ember.computed(function() {
-    return _.range(100).map(function(index) {
-      var date = new Date();
-      date.setDate(date.getDate() + index);
-      return {
+    var content = [];
+    var date;
+    for (var i = 0; i < 100; i++) {
+      date = new Date();
+      date.setDate(date.getDate() + i);
+      content.pushObject({
         date: date,
         open: Math.random() * 100 - 50,
         high: Math.random() * 100 - 50,
         low: Math.random() * 100 - 50,
         close: Math.random() * 100 - 50,
         volume: Math.random() * 1000000
-      };
-    });
+      });
+    }
+    return content;
   }),
 
   actions: {

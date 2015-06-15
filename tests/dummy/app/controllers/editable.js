@@ -45,16 +45,19 @@ export default Ember.Controller.extend({
   }),
 
   tableContent: Ember.computed(function() {
-    return _.range(100).map(function(index) {
-      var date = new Date();
-      date.setDate(date.getDate() + index);
-      return {
-        index: index,
+    var content = [];
+    var date;
+    for (var i = 0; i < 100; i++) {
+      date = new Date();
+      date.setDate(date.getDate() + i);
+      content.pushObject({
+        index: i,
         date: date,
         open: Math.random() * 100 - 50,
         close: Math.random() * 100 - 50,
         rating: Math.round(Math.random() * 4)
-      };
-    });
+      });
+    }
+    return content;
   })
 });

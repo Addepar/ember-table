@@ -22,14 +22,17 @@ export default Ember.Controller.extend({
   tableContent: Ember.computed(function() {
     var normal = d3.random.normal(1.5, 3);
     var data;
-    return _.range(100).map(function(index) {
-      data = _.range(100).map(function(i) {
-        return [i, normal()];
-      });
-      return {
-        name: index,
+    var content = [];
+    for (var i = 0; i < 100; i++) {
+      data = [];
+      for (var j = 0; j < 100; j++) {
+        data.push([j, normal()]);
+      }
+      content.pushObject({
+        name: i,
         data: data
-      };
-    });
+      });
+    }
+    return content;
   })
 });

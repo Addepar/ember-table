@@ -8,9 +8,11 @@ export default TableCell.extend({
 
   horizonContent: Ember.computed(function() {
     var normal = d3.random.normal(1.5, 3);
-    return _.range(100).map(function(index) {
-      return [index, normal()];
-    });
+    var content = [];
+    for (var i = 0; i < 100; i++) {
+      content.pushObject([i, normal()]);
+    }
+    return content;
   }).property(),
 
   onWidthDidChange: Ember.observer(function() {
