@@ -3,4 +3,13 @@
   content=view.columns
   itemViewClassField="tableCellViewClass"
   width=controller._tableColumnsWidth
+  height=view.columnHeight
 }}
+
+{{#if view.expanded}}
+  {{view "expanded-content"
+    content=view.row.expandedContent
+    height=view.expandedRowHeight
+    width=controller._tableColumnsWidth
+  }}
+{{/if}}

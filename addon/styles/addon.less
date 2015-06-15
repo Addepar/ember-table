@@ -263,6 +263,15 @@
   border-right: 1px solid @table-col-border-color !important;
 }
 
+/* Expanded Content */
+
+.ember-table-expanded-content {
+  font-family: UniversNextW01-Regular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  border-top: 1px dotted #dcdcdc;
+  padding: 5px;
+}
+
 /* Header Container */
 
 .ember-table-header-container {
@@ -612,6 +621,11 @@
 
     .ember-table-cell {
       border-right: 1px solid darken(@table-row-selected-color, 7%);
+    }
+    .ember-table-expanded-content {
+      font-family: UniversNextW01-Regular, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      font-size: 12px;
+      border-top: 1px dotted darken(@table-row-selected-color, 7%);
     }
   }
 }

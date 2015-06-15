@@ -205,6 +205,29 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   },
 
   // ---------------------------------------------------------------------------
+  // Expandable Rows
+  // ---------------------------------------------------------------------------
+
+  // Can be toggled on and off
+  expandRows: false,
+
+  // Allocate this much px to the expanded row.
+  expandedRowHeight: 30,
+
+  expandRowHeight: function() {
+    var oldHeight = this.get('rowHeight');
+    var expandedRowHeight = oldHeight + this.get('expandedRowHeight');
+    var unexpandedRowHeight = oldHeight - this.get('expandedRowHeight');
+    var expandRows = this.get('expandRows');
+
+    if (expandRows === true) {
+      this.set('rowHeight', expandedRowHeight);
+    }  else if (expandRows === false) {
+      this.set('rowHeight', unexpandedRowHeight);
+    }
+  }.observes('expandRows'),
+  
+  // ---------------------------------------------------------------------------
   // View concerns
   // ---------------------------------------------------------------------------
 
