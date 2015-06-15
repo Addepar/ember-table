@@ -96,7 +96,7 @@ export default Ember.Controller.extend({
   tableContent: Ember.computed(function() {
     var content = [];
     var date;
-    for (var i = 0; i < 100; i++) {
+    for (var i = 0; i &lt; 100; i++) {
       date = new Date();
       date.setDate(date.getDate() + i);
       content.pushObject({
