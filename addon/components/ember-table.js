@@ -216,16 +216,16 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   expandRowHeight: function() {
     var oldHeight = this.get('rowHeight');
-    var expandedRowHeight = oldHeight + this.get('expandedRowHeight');
-    var unexpandedRowHeight = oldHeight - this.get('expandedRowHeight');
     var expandRows = this.get('expandRows');
-
-    if (expandRows === true) {
-      this.set('rowHeight', expandedRowHeight);
-    }  else if (expandRows === false) {
-      this.set('rowHeight', unexpandedRowHeight);
+    if (!this.get('originalHeight')) {
+      this.set('originalHeight', oldHeight);
     }
-  }.observes('expandRows'),
+    if (expandRows === true) {
+      this.set('rowHeight', this.get('originalHeight') + this.get('expandedRowHeight'));
+    }  else if (expandRows === false) {
+      this.set('rowHeight', this.get('originalHeight'));
+    }
+  }.observes('expandRows').on('init'),
   
   // ---------------------------------------------------------------------------
   // View concerns
