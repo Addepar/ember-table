@@ -2,7 +2,7 @@
   "name": "ember-table",
   "version": "0.5.0",
   "dependencies": {
-    "antiscroll": "azirbel/antiscroll#90391fb371c7be769bc32e7287c5271981428356",
+    "antiscroll": "Addepar/antiscroll#b48c6a0225ae9a2cfbcd551b65e740d16294f359",
     "handlebars": "~1.3.0",
     "ember": ">=1.4 <1.9",
     "jquery": "^1.11.1",
