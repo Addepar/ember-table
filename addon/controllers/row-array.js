@@ -20,6 +20,14 @@ export default Ember.ArrayController.extend({
       content: object
     });
     subControllers[idx] = subController;
+    if (this._isLastItem(idx)) {
+      //set last row controller so that a table row can compare with this property to find if it is last row
+      this.set('lastItem', subController);
+    }
     return subController;
+  },
+
+  _isLastItem: function(idx) {
+    return this.get('content').length - 1 === idx;
   }
 });
