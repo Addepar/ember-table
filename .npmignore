@@ -1,4 +1,5 @@
 bower_components/
+ember-dist/
 tests/
 tmp/
 
@@ -7,6 +8,7 @@ tmp/
 .ember-cli
 .travis.yml
 .npmignore
+.stage
 **/.gitkeep
 bower.json
 Brocfile.js
