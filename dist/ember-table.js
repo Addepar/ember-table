@@ -1952,7 +1952,7 @@ var define, requireModule, require, requirejs;
           var itemIndex = startIndex + i;
           childView = childViews.objectAt(itemIndex % numShownViews);
           var item = content.objectAt(itemIndex);
-          if (item !== childView.get('content')) {
+          if (childView && item !== childView.get('content')) {
             childView.teardownContent();
             childView.set('itemIndex', itemIndex);
             childView.set('content', item);
