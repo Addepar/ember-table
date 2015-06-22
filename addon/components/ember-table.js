@@ -105,6 +105,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     }
   }).property('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode'),
 
+  _selectionChanged: Ember.observer('selection', function() {
+    this.sendAction('selectionChanged', this.get('selection'));
+  }),
+
   // ---------------------------------------------------------------------------
   // Internal properties
   // ---------------------------------------------------------------------------
