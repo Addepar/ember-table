@@ -1324,7 +1324,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
     allColumns = this.get('columns');
     columnsToResize = allColumns.filterProperty('canAutoResize');
     unresizableColumns = allColumns.filterProperty('canAutoResize', false);
-    availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns);
+    availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns) - this.get('_hackyPadding');
     doNextLoop = true;
     _results = [];
     while (doNextLoop) {
@@ -1361,6 +1361,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   _width: null,
   _height: null,
   _contentHeaderHeight: null,
+  _hackyPadding: 3,
   _hasVerticalScrollbar: Ember.computed(function() {
     var contentHeight, height;
     height = this.get('_height');
@@ -1396,7 +1397,7 @@ Ember.Table.EmberTableComponent = Ember.Component.extend(Ember.AddeparMixins.Sty
   }).property('fixedColumns.@each.width'),
   _tableColumnsWidth: Ember.computed(function() {
     var availableWidth, contentWidth;
-    contentWidth = this._getTotalWidth(this.get('tableColumns')) + 3;
+    contentWidth = this._getTotalWidth(this.get('tableColumns')) + this.get('_hackyPadding');
     availableWidth = this.get('_width') - this.get('_fixedColumnsWidth');
     if (contentWidth > availableWidth) {
       return contentWidth;

@@ -242,7 +242,11 @@ Ember.AddeparMixins.ResizeHandlerMixin,
     allColumns = @get('columns')
     columnsToResize = allColumns.filterProperty('canAutoResize')
     unresizableColumns = allColumns.filterProperty('canAutoResize', no)
-    availableWidth = @get('_width') - @_getTotalWidth(unresizableColumns)
+    # Hack: We added hacky padding to the right of the table content so that
+    # we can reorder into the last column. Now we need to substract it to get
+    # the correct width
+    availableWidth = @get('_width') - @_getTotalWidth(unresizableColumns) -
+      @get('_hackyPadding')
     doNextLoop = yes
     while doNextLoop
       # doNextLoop will be true if any column fails to resize to its expected
@@ -284,6 +288,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
   _width: null
   _height: null
   _contentHeaderHeight: null
+  # Hack: We add 3px padding to the right of the table content so that we can
+  # reorder into the last column.
+  _hackyPadding: 3
 
   _hasVerticalScrollbar: Ember.computed ->
     height = @get('_height')
@@ -313,9 +320,9 @@ Ember.AddeparMixins.ResizeHandlerMixin,
 
   # Actual width of the (non-fixed) columns
   _tableColumnsWidth: Ember.computed ->
-    # Hack: We add 3px padding to the right of the table content so that we can
+    # Hack: We add hacky padding to the right of the table content so that we can
     # reorder into the last column.
-    contentWidth = @_getTotalWidth(@get('tableColumns')) + 3
+    contentWidth = @_getTotalWidth(@get('tableColumns')) + @get('_hackyPadding')
     availableWidth = @get('_width') - @get('_fixedColumnsWidth')
     if contentWidth > availableWidth then contentWidth else availableWidth
   .property 'tableColumns.@each.width', '_width', '_fixedColumnsWidth'
