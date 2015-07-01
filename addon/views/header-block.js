@@ -9,5 +9,12 @@ export default TableBlock.extend({
 
   content: Ember.computed(function() {
     return [this.get('columns')];
-  }).property('columns')
+  }).property('columns'),
+
+  onColumnsDidChange: Ember.observer(function() {
+    var _this = this;
+    Ember.run.schedule('afterRender', function() {
+      _this.$().scrollLeft(_this.get('scrollLeft'));
+    });
+  }, 'content')
 });

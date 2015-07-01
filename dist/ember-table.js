@@ -1149,7 +1149,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1195,7 +1196,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1239,7 +1241,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1281,7 +1284,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression;
@@ -1302,7 +1306,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', escapeExpression=this.escapeExpression;
@@ -1323,7 +1328,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1363,7 +1369,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', escapeExpression=this.escapeExpression;
@@ -1381,7 +1388,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1;
@@ -1400,7 +1408,8 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
+    /**/) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', escapeExpression=this.escapeExpression;
@@ -1565,7 +1574,14 @@ var define, requireModule, require, requirejs;
 
       content: Ember.computed(function() {
         return [this.get('columns')];
-      }).property('columns')
+      }).property('columns'),
+
+      onColumnsDidChange: Ember.observer(function() {
+        var _this = this;
+        Ember.run.schedule('afterRender', function() {
+          _this.$().scrollLeft(_this.get('scrollLeft'));
+        });
+      }, 'content')
     });
   });
 ;define("ember-table/views/table-block", 
@@ -1766,7 +1782,6 @@ var define, requireModule, require, requirejs;
       styleBindings: ['width'],
       columns: Ember.computed.alias('content'),
       width: Ember.computed.alias('tableComponent._rowWidth'),
-      scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
 
       // Options for jQuery UI sortable
       sortableOption: Ember.computed(function() {
@@ -1786,10 +1801,6 @@ var define, requireModule, require, requirejs;
         };
       }),
 
-      onScrollLeftDidChange: Ember.observer(function() {
-        this.$().scrollLeft(this.get('scrollLeft'));
-      }, 'scrollLeft'),
-
       didInsertElement: function() {
         this._super();
         if (this.get('tableComponent.enableColumnReorder')) {
@@ -1806,11 +1817,6 @@ var define, requireModule, require, requirejs;
           }
         }
         this._super();
-      },
-
-      onScroll: function(event) {
-        this.set('scrollLeft', event.target.scrollLeft);
-        event.preventDefault();
       },
 
       onColumnSortStop: function() {

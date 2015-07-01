@@ -11,7 +11,6 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
   styleBindings: ['width'],
   columns: Ember.computed.alias('content'),
   width: Ember.computed.alias('tableComponent._rowWidth'),
-  scrollLeft: Ember.computed.alias('tableComponent._tableScrollLeft'),
 
   // Options for jQuery UI sortable
   sortableOption: Ember.computed(function() {
@@ -31,10 +30,6 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     };
   }),
 
-  onScrollLeftDidChange: Ember.observer(function() {
-    this.$().scrollLeft(this.get('scrollLeft'));
-  }, 'scrollLeft'),
-
   didInsertElement: function() {
     this._super();
     if (this.get('tableComponent.enableColumnReorder')) {
@@ -51,11 +46,6 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
       }
     }
     this._super();
-  },
-
-  onScroll: function(event) {
-    this.set('scrollLeft', event.target.scrollLeft);
-    event.preventDefault();
   },
 
   onColumnSortStop: function() {
