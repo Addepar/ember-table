@@ -45,41 +45,47 @@ export default ColumnDefinition.extend({
     }
   }).property('maxWidth'),
 
-  columnDefinitionDocumentation: Ember.computed(function() {
-    var docString = '';
-    docString += '    var ' + this.get('headerCellName').toLowerCase() +
-      'Column = ColumnDefinition.create({\n';
-    if (this.get('textAlign') !== 'text-align-right') {
-      docString += "      textAlign: '" + this.get('textAlign') + "',\n";
-    }
-    docString += "      headerCellName: '" + this.get('headerCellName') + "',\n";
-    if (this.get('minWidth') !== 25) {
-      docString += '      minWidth: ' + this.get('minWidth') + ',\n';
-    }
-    if (this.get('maxWidth')) {
-      docString += '      maxWidth: ' + this.get('maxWidth') + ',\n';
-    }
-    if (!this.get('isSortable')) {
-      docString += '      isSortable: false,\n';
-    }
-    if (!this.get('isResizable')) {
-      docString += '      isResizable: false,\n';
-    }
-    if (this.get('canAutoResize')) {
-      docString += '      canAutoResize: true,\n';
-    }
-    if (this.get('headerCellName') === 'Date') {
-      docString += "      getCellContent: function(row) {\n" +
-        "        return row.get('date').toDateString();\n" +
-        "      }\n";
-    } else {
-      docString += "      getCellContent: function(row) {\n" +
-        "        return row.get('" + this.get('headerCellName').toLowerCase() +
-        "').toFixed(2);\n" +
-        "      }\n";
-    }
-    docString += "    });";
-    return docString;
-  }).property('headerCellName', 'textAlign', 'minWidth', 'maxWidth',
-      'isSortable', 'isResizable', 'canAutoResize')
+  documentation: Ember.computed(
+    'headerCellName',
+    'textAlign',
+    'minWidth',
+    'maxWidth',
+    'isSortable',
+    'isResizable',
+    'canAutoResize', function() {
+      var docString = '';
+      docString += '    var ' + this.get('headerCellName').toLowerCase() +
+        'Column = ColumnDefinition.create({\n';
+      if (this.get('textAlign') !== 'text-align-right') {
+        docString += "      textAlign: '" + this.get('textAlign') + "',\n";
+      }
+      docString += "      headerCellName: '" + this.get('headerCellName') + "',\n";
+      if (this.get('minWidth') !== 25) {
+        docString += '      minWidth: ' + this.get('minWidth') + ',\n';
+      }
+      if (this.get('maxWidth')) {
+        docString += '      maxWidth: ' + this.get('maxWidth') + ',\n';
+      }
+      if (!this.get('isSortable')) {
+        docString += '      isSortable: false,\n';
+      }
+      if (!this.get('isResizable')) {
+        docString += '      isResizable: false,\n';
+      }
+      if (this.get('canAutoResize')) {
+        docString += '      canAutoResize: true,\n';
+      }
+      if (this.get('headerCellName') === 'Date') {
+        docString += "      getCellContent: function(row) {\n" +
+          "        return row.get('date').toDateString();\n" +
+          "      }\n";
+      } else {
+        docString += "      getCellContent: function(row) {\n" +
+          "        return row.get('" + this.get('headerCellName').toLowerCase() +
+          "').toFixed(2);\n" +
+          "      }\n";
+      }
+      docString += "    });";
+      return docString;
+    })
 });
