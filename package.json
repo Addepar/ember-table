@@ -9,7 +9,7 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "test": "ember test"
+    "test": "ember try:testall"
   },
   "repository": "https://github.com/Addepar/ember-table",
   "engines": {
@@ -17,13 +17,22 @@
   },
   "author": "",
   "license": "BSD",
-  "dependencies": {
-    "ember-cli-less": "~1.3.1"
-  },
   "devDependencies": {
-    "body-parser": "^1.2.0",
+    "broccoli-asset-rev": "^2.0.2",
+    "ember-cli": "0.2.7",
+    "ember-cli-app-version": "0.4.0",
+    "ember-cli-content-security-policy": "0.4.0",
+    "ember-cli-dependency-checker": "^1.0.0",
+    "ember-cli-htmlbars": "0.7.6",
+    "ember-cli-ic-ajax": "0.1.1",
+    "ember-cli-inject-live-reload": "^1.3.0",
+    "ember-cli-qunit": "0.3.13",
+    "ember-cli-uglify": "^1.0.1",
+    "ember-data": "1.0.0-beta.18",
+    "ember-disable-proxy-controllers": "^1.0.0",
+    "ember-export-application-global": "^1.0.2",
+    "ember-try": "0.0.6",
     "broccoli": "^0.13.0",
-    "broccoli-asset-rev": "^2.0.0",
     "broccoli-cli": "~1.0.0",
     "broccoli-es3-safe-recast": "^1.0.0",
     "broccoli-es6-concatenator": "^0.1.11",
@@ -34,20 +43,8 @@
     "broccoli-merge-trees": "^0.2.1",
     "broccoli-static-compiler": "^0.2.1",
     "broccoli-writer": "^0.1.1",
-    "ember-cli": "0.2.0",
-    "ember-cli-6to5": "^3.0.0",
-    "ember-cli-app-version": "0.3.1",
-    "ember-cli-content-security-policy": "0.4.0",
-    "ember-cli-dependency-checker": "0.0.7",
     "ember-cli-font-awesome": "0.0.7",
-    "ember-cli-htmlbars": "0.7.9",
-    "ember-cli-ic-ajax": "0.1.1",
-    "ember-cli-inject-live-reload": "^1.3.0",
-    "ember-cli-qunit": "0.3.7",
     "ember-cli-replace": "~0.1.0",
-    "ember-cli-uglify": "1.0.1",
-    "ember-export-application-global": "^1.0.2",
-    "express": "^4.8.5",
     "glob": "^4.0.5",
     "grunt": "~0.4.1",
     "grunt-banner": "~0.2.2",
@@ -64,6 +61,10 @@
   "keywords": [
     "ember-addon"
   ],
+  "dependencies": {
+    "ember-cli-babel": "^5.0.0",
+    "ember-cli-less": "~1.3.1"
+  },
   "ember-addon": {
     "configPath": "tests/dummy/config",
     "demoURL": "https://addepar.github.io/ember-table/#/overview"
