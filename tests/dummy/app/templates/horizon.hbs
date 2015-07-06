@@ -5,30 +5,33 @@
     <div class="col-md-12">
       <div class="example-container">
         <div class="ember-table-example-container">
-          {{partial "horizon-table/horizon-table"}}
+          {{! BEGIN-SNIPPET horizon-table}}
+          {{ember-table
+            hasHeader=true
+            hasFooter=false
+            numFixedColumns=0
+            rowHeight=30
+            columns=tableColumns
+            content=tableContent
+          }}
+          {{! END-SNIPPET}}
         </div>
       </div>
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Template</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/horizon-table/horizon-table.hbs}</pre>
-      </div>
+      {{code-snippet name="horizon-table.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{controllers/horizon.js}</pre>
-      </div>
+      {{code-snippet name="horizon-controller.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/horizon-table-cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/horizon-table-cell.js}</pre>
-      </div>
+      {{code-snippet name="horizon-table-cell.js"}}
     </div>
 
   </div>

@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET financial-table-component
 import Ember from 'ember';
 import TableComponent from 'ember-table/components/ember-table';
 import ColumnDefinition from 'ember-table/models/column-definition';
@@ -189,3 +190,4 @@ export default TableComponent.extend({
     }
   },
 });
+// END-SNIPPET

@@ -5,37 +5,37 @@
     <div class="col-md-12">
       <div class="example-container">
         <div class="ember-table-example-container">
-          {{partial "bar-table/bar-table"}}
+          {{!// BEGIN-SNIPPET bars-table}}
+          {{ember-table
+            hasHeader=true
+            hasFooter=false
+            rowHeight=30
+            columns=tableColumns
+            content=tableContent
+          }}
+          {{!// END-SNIPPET}}
         </div>
       </div>
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Template</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/bar-table/bar-table.hbs}</pre>
-      </div>
+      {{code-snippet name="bars-table.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{controllers/bars.js}</pre>
-      </div>
+      {{code-snippet name="bars-controller.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/bar-table-cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/bar-table-cell.js}</pre>
-      </div>
+      {{code-snippet name="bar-table-cell.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>templates/bar-table/bar-cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/bar-table/bar-cell.hbs}</pre>
-      </div>
+      {{code-snippet name="bar-cell.hbs"}}
     </div>
   </div>
 </div>

@@ -5,44 +5,48 @@
     <div class="col-md-12">
       <div class="example-container">
         <div class="ember-table-example-container">
-          {{partial "editable-table/editable-table"}}
+          {{! BEGIN-SNIPPET editable-table}}
+          {{ember-table
+            hasHeader=true
+            hasFooter=false
+            numFixedColumns=0
+            rowHeight=30
+            columns=tableColumns
+            content=tableContent
+          }}
+          {{! END-SNIPPET}}
         </div>
       </div>
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Template</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/editable-table/editable-table.hbs}</pre>
-      </div>
+      {{code-snippet name="editable-table.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{controllers/editable.js}</pre>
-      </div>
+      {{code-snippet name="editable-controller.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
-      <h3>views/editable_table_cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/editable-table-cell.js}</pre>
-      </div>
+      <h3>views/editable-table-cell.js</h3>
+      {{code-snippet name="editable-table-cell.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
-      <h3>templates/editable-table/editable_table_cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/editable-table/editable-table-cell.hbs}</pre>
-      </div>
+      <h3>templates/editable-table/editable-table-cell.hbs</h3>
+      {{code-snippet name="editable-table-cell.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
-      <h3>templates/editable-table/rating_table_cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/editable-table/rating-table-cell.hbs}</pre>
-      </div>
+      <h3>views/rating-table-cell.js</h3>
+      {{code-snippet name="rating-table-cell.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>templates/editable-table/rating-table-cell.hbs</h3>
+      {{code-snippet name="rating-table-cell.hbs"}}
     </div>
   </div>
 </div>

@@ -5,7 +5,17 @@
     <div class="col-md-12">
       <div class="example-container">
         <div class="ember-table-example-container">
-          {{partial "ajax-table/ajax-table"}}
+          {{!// BEGIN-SNIPPET ajax-table}}
+          {{ember-table
+            hasHeader=true
+            hasFooter=false
+            numFixedColumns=0
+            numRows=100
+            rowHeight=35
+            columns=tableColumns
+            content=tableContent
+          }}
+          {{!// END-SNIPPET}}
         </div>
       </div>
       <div class="example-description">
@@ -15,37 +25,27 @@
 
     <div class="col-md-12 bumper-30">
       <h3>Template</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/ajax-table/ajax-table.hbs}</pre>
-      </div>
+      {{code-snippet name="ajax-table.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{controllers/ajax.js}</pre>
-      </div>
+      {{code-snippet name="ajax-controller.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/ajax-image-table-cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/ajax-image-table-cell.js}</pre>
-      </div>
+      {{code-snippet name="ajax-image-table-cell.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>templates/ajax-table/ajax-cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/ajax-table/ajax-cell.hbs}</pre>
-      </div>
+      {{code-snippet name="ajax-cell.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/ajax-table-lazy-data-source.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/ajax-table-lazy-data-source.js}</pre>
-      </div>
+      {{code-snippet name="ajax-table-lazy-data-source.js"}}
     </div>
   </div>
 </div>

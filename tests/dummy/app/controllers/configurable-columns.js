@@ -1,6 +1,8 @@
 import Ember from 'ember';
 import ConfigurableColumnDefinition from
   '../views/configurable-column-definition';
+import {randomNumber, randomDate} from '../utils/random';
+
 
 export default Ember.Controller.extend({
   isFluid: false,
@@ -65,15 +67,14 @@ export default Ember.Controller.extend({
     var content = [];
     var date;
     for (var i = 0; i < 100; i++) {
-      date = new Date();
-      date.setDate(date.getDate() + i);
+      date = randomDate(new Date(2000, 1, 5), new Date(2012, 2, 2));
       content.pushObject({
         date: date,
-        open: Math.random() * 100 - 50,
-        high: Math.random() * 100 - 50,
-        low: Math.random() * 100 - 50,
-        close: Math.random() * 100 - 50,
-        volume: Math.random() * 1000000
+        open: randomNumber(100) - 50,
+        high: randomNumber(100) - 50,
+        low: randomNumber(100) - 50,
+        close: randomNumber(100) - 50,
+        volume: randomNumber(100) * 1000000
       });
     }
     return content;

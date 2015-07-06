@@ -5,93 +5,73 @@
     <div class="col-md-12">
       <div class="example-container">
         <div class="ember-table-example-container ember-table-financial">
-          {{partial "financial-table/financial-table"}}
+          {{! BEGIN-SNIPPET financial-table}}
+          {{financial-table
+            data=data
+          }}
+          {{! END-SNIPPET}}
         </div>
       </div>
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Template</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/financial-table/financial-table.hbs}</pre>
-      </div>
+      {{code-snippet name="financial-table.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{controllers/financial.js}</pre>
-      </div>
+      {{code-snippet name="financial-controller.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>components/financial-table.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{components/financial-table.js}</pre>
-      </div>
+      {{code-snippet name="financial-table-component.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/financial-table-cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/financial-table-cell.js}</pre>
-      </div>
+      {{code-snippet name="financial-table-cell.js"}}
     </div>
-    
+
     <div class="col-md-12 bumper-30">
       <h3>templates/financial-table/financial-table-cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/financial-table/financial-table-cell.hbs}</pre>
-      </div>
+      {{code-snippet name="financial-table-cell-template.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/financial-table-header-cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/financial-table-header-cell.js}</pre>
-      </div>
+      {{code-snippet name="financial-table-header-cell.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>templates/financial-table/financial-table-tree-cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/financial-table/financial-table-tree-cell.hbs}</pre>
-      </div>
+      {{code-snippet name="financial-table-tree-cell-template.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/financial-table-header-tree-cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/financial-table-header-tree-cell.js}</pre>
-      </div>
+      {{code-snippet name="financial-table-header-tree-cell.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>templates/financial-table/financial-table-header-cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/financial-table/financial-table-header-cell.hbs}</pre>
-      </div>
+      {{code-snippet name="financial-table-header-cell-template.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/financial-table-tree-cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/financial-table-tree-cell.js}</pre>
-      </div>
+      {{code-snippet name="financial-table-tree-cell.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>templates/financial-table/financial-table-header-tree-cell.hbs</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/financial-table/financial-table-header-tree-cell.hbs}</pre>
-      </div>
+      {{code-snippet name="financial-table-header-tree-cell-template.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>views/financial-table-tree-row.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/financial-table-tree-row.js}</pre>
-      </div>
+      {{code-snippet name="financial-table-tree-row.js"}}
     </div>
   </div>
 </div>

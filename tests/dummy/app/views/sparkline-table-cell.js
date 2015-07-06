@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET sparkline-table-cell
 import Ember from 'ember';
 import TableCell from 'ember-table/views/table-cell';
 
@@ -41,3 +42,4 @@ export default TableCell.extend({
     }).attr('fill', 'none');
   }
 });
+// END-SNIPPET

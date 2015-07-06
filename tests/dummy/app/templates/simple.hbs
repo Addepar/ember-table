@@ -5,7 +5,13 @@
     <div class="col-md-12">
       <div class="example-container">
         <div class="ember-table-example-container">
-          {{partial "simple-table/simple-table"}}
+          {{!// BEGIN-SNIPPET simple-table}}
+          {{ember-table
+            hasFooter=false
+            columns=tableColumns
+            content=tableContent
+          }}
+          {{!// END-SNIPPET}}
         </div>
       </div>
     </div>
@@ -13,16 +19,12 @@
     {{!-- TODO(azirbel): Re-enable prettyprint or similar formatter --}}
     <div class="col-md-12 bumper-30">
       <h3>Template</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/simple-table/simple-table.hbs}</pre>
-      </div>
+      {{code-snippet name="simple-table.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{controllers/simple.js}</pre>
-      </div>
+      {{code-snippet name="simple-controller.js"}}
     </div>
   </div>
 </div>

@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET editable-table-cell
 import Ember from 'ember';
 import TableCell from 'ember-table/views/table-cell';
 
@@ -28,3 +29,4 @@ export default TableCell.extend({
     event.stopPropagation();
   }
 });
+// END-SNIPPET

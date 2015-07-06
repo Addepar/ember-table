@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET bar-table-cell
 import Ember from 'ember';
 import TableCell from 'ember-table/views/table-cell';
 
@@ -19,3 +20,4 @@ export default TableCell.extend({
     return 'width: ' + (this.get('barWidth')) + '%;';
   }).property('barWidth')
 });
+// END-SNIPPET

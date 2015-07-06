@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET horizon-table-cell
 import Ember from 'ember';
 import TableCell from 'ember-table/views/table-cell';
 import d3HorizonUtils from '../utils/horizon';
@@ -35,4 +36,4 @@ export default TableCell.extend({
     svg.data([data]).call(chart);
   }
 });
-
+// END-SNIPPET

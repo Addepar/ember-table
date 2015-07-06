@@ -5,30 +5,33 @@
     <div class="col-md-12">
       <div class="example-container">
         <div class="ember-table-example-container">
-          {{partial "sparkline-table/sparkline-table"}}
+          {{! BEGIN-SNIPPET sparkline-table}}
+          {{ember-table
+            hasHeader=true
+            hasFooter=false
+            numFixedColumns=1
+            rowHeight=30
+            columns=tableColumns
+            content=tableContent
+          }}
+          {{! END-SNIPPET}}
         </div>
       </div>
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Template</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-html">@@{templates/sparkline-table/sparkline-table.hbs}</pre>
-      </div>
+      {{code-snippet name="sparkline-table.hbs"}}
     </div>
 
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{controllers/sparkline.js}</pre>
-      </div>
+      {{code-snippet name="sparkline-controller.js"}}
     </div>
 
     <div class="col-md-12 bumper-30">
-      <h3>views/sparkline_table_cell.js</h3>
-      <div class="highlight">
-        <pre class="prettyprint lang-js">@@{views/sparkline-table-cell.js}</pre>
-      </div>
+      <h3>views/sparkline-table-cell.js</h3>
+      {{code-snippet name="sparkline-table-cell.js"}}
     </div>
   </div>
 </div>

@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET rating-table-cell
 import Ember from 'ember';
 import TableCell from 'ember-table/views/table-cell';
 
@@ -29,3 +30,4 @@ export default TableCell.extend({
     this.applyRating(rating);
   }
 });
+// END-SNIPPET

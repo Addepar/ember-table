@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET ajax-controller
 import Ember from 'ember';
 import ColumnDefinition from 'ember-table/models/column-definition';
 import AjaxTableLazyDataSource from
@@ -29,3 +30,4 @@ export default Ember.Controller.extend({
     });
   })
 });
+// END-SNIPPET

@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET financial-table-tree-row
 import Row from 'ember-table/controllers/row';
 
 export default Row.extend({
@@ -86,3 +87,4 @@ export default Row.extend({
     }
   }
 });
+// END-SNIPPET

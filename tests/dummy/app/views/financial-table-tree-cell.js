@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET financial-table-tree-cell
 import Ember from 'ember';
 import TableCell from 'ember-table/views/table-cell';
 
@@ -9,3 +10,4 @@ export default TableCell.extend({
     return 'padding-left:' + (this.get('row.indentation')) + 'px;';
   }).property('row.indentation')
 });
+// END-SNIPPET

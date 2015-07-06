@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET ajax-table-lazy-data-source
 import Ember from 'ember';
 
 export default Ember.ArrayProxy.extend({
@@ -41,3 +42,4 @@ export default Ember.ArrayProxy.extend({
     return content[index];
   }
 });
+// END-SNIPPET

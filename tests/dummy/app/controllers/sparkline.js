@@ -1,3 +1,4 @@
+// BEGIN-SNIPPET sparkline-controller
 import Ember from 'ember';
 import ColumnDefinition from 'ember-table/models/column-definition';
 
@@ -73,3 +74,4 @@ export default Ember.Controller.extend({
     return content;
   })
 });
+// END-SNIPPET
