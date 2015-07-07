@@ -83,34 +83,7 @@
     <div class="col-md-12 bumper-30">
       <h3>Controller</h3>
       <div class="highlight">
-<pre class="lang-js">
-import Ember from 'ember';
-import ColumnDefinition from 'ember-table/models/column-definition';
-
-export default Ember.Controller.extend({
-  tableColumns: Ember.computed(function() { {{#each columns}}
-{{columnDefinitionDocumentation}}{{/each}}
-    return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
-  }),
-
-  tableContent: Ember.computed(function() {
-    var content = [];
-    var date;
-    for (var i = 0; i < 100; i++) {
-      date = new Date();
-      date.setDate(date.getDate() + i);
-      content.pushObject({
-        date: date,
-        open: Math.random() * 100 - 50,
-        high: Math.random() * 100 - 50,
-        low: Math.random() * 100 - 50,
-        close: Math.random() * 100 - 50,
-        volume: Math.random() * 1000000
-      });
-    }
-    return content;
-  })
-});</pre>
+<pre class="lang-js">{{configurable-table-source columns=columns}}</pre>
       </div>
     </div>
   </div>

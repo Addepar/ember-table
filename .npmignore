@@ -2,6 +2,7 @@ bower_components/
 ember-dist/
 tests/
 tmp/
+dist/
 
 .bowerrc
 .editorconfig
