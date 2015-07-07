@@ -1,5 +1,23 @@
 # Ember Table Changelog
 
+### Ember Table 0.5.1 _(July 7, 2015)_
+
+* Fix antiscroll cleanup
+* Fix lazy container `childView` bug
+* Fix issue #165, isLastRow property problem.
+* Add ember-dist and .stage to .npmignore
+* Remove moot `version` property from bower.json
+* Mention supported browsers in readme
+* Header aligns properly after reordering columns
+* Update .npmignore to prevent packaging tmp dir
+* Escape style bindings
+* Allow `content` to be a promise
+* Change binding syntax from `xBinding="var"` to `x=var`
+* Use Addepar repo for antiscroll; apply bugfixes
+* Add `demoURL` to package.json
+* Add `grunt clean` task to clear temp files
+* Remove demo app's dependency on lodash
+
 ### Ember Table 0.5.0 _(May 21, 2015)_
 
 * Move to Ember CLI
