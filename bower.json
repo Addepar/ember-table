@@ -1,7 +1,7 @@
 {
   "name": "ember-table",
   "dependencies": {
-    "antiscroll": "Addepar/antiscroll#b48c6a0225ae9a2cfbcd551b65e740d16294f359",
+    "antiscroll": "Addepar/antiscroll#e0d1538cf4f3fd61c5bedd6168df86d651f125da",
     "handlebars": "~1.3.0",
     "ember": ">=1.4 <1.9",
     "jquery": "^1.11.1",
