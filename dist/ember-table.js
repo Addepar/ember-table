@@ -380,6 +380,7 @@ var define, requireModule, require, requirejs;
         columns.removeObject(column);
         columns.insertAt(numFixedColumns + newIndex, column);
         this.prepareTableColumns();
+        this.sendAction('onColumnReordered', columns, column, newIndex);
       },
 
       // An array of Ember.Table.Row computed based on `content`
@@ -2289,6 +2290,8 @@ var define, requireModule, require, requirejs;
         if (event.type === 'resizestop') {
           this.get('tableComponent').elementSizeDidChange();
         }
+
+        this.get('context').sendAction('onColumnResized', this.get('column'), newWidth);
       },
 
       elementSizeDidChange: function() {
