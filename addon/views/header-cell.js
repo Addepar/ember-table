@@ -114,6 +114,8 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     if (event.type === 'resizestop') {
       this.get('tableComponent').elementSizeDidChange();
     }
+
+    this.get('context').sendAction('onColumnResized', this.get('column'), newWidth);
   },
 
   elementSizeDidChange: function() {
