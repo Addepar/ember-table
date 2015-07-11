@@ -1,6 +1,17 @@
 # Ember Table Changelog
 
+### Ember Table 0.6.0 _(July 10, 2015)_
+
+_Compatible with Ember 1.9_
+
+* Support for Ember 1.9
+    * Precompiled templates (for use outside of ember-cli) are
+      compiled with Handlebars 2.0, so they will work with
+      Ember 1.9 apps.
+
 ### Ember Table 0.5.1 _(July 7, 2015)_
+
+_Compatible with Ember 1.4 through 1.8_
 
 * Fix antiscroll cleanup
 * Fix lazy container `childView` bug

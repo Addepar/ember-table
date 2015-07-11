@@ -1,6 +1,6 @@
 {
   "name": "ember-table",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "Table built using Ember.js that lazily renders rows.",
   "directories": {
     "doc": "doc",
