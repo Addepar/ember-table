@@ -8,7 +8,7 @@ var pickFiles = require('broccoli-static-compiler');
 var compileES6 = require('broccoli-es6-concatenator');
 var ES6Modules = require('broccoli-es6modules');
 var es3Safe = require('broccoli-es3-safe-recast');
-var templateCompiler = require('broccoli-ember-hbs-template-compiler');
+var HtmlbarsCompiler = require('ember-cli-htmlbars');
 var less = require('broccoli-less-single');
 var wrap = require('./wrap');
 var globals = require('./globals');
@@ -19,7 +19,8 @@ var addonTree = pickFiles('addon', {
 });
 
 // Compile templates
-var templateTree = templateCompiler('app/templates', { module: true });
+var templateTree = new HtmlbarsCompiler('app/templates');
+
 templateTree = pickFiles(templateTree, {srcDir: '/', destDir: 'ember-table/templates'});
 
 var sourceTree = mergeTrees([templateTree, addonTree], {overwrite: true});
