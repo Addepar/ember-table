@@ -19,7 +19,12 @@ var addonTree = pickFiles('addon', {
 });
 
 // Compile templates
-var templateTree = new HtmlbarsCompiler('app/templates');
+var templateTree = new HtmlbarsCompiler('app/templates', {
+  isHtmlBars: true,
+
+  // provide the templateCompiler that is paired with your Ember version
+  templateCompiler: require('../bower_components/ember/ember-template-compiler')
+});
 
 templateTree = pickFiles(templateTree, {srcDir: '/', destDir: 'ember-table/templates'});
 

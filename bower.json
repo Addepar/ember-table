@@ -2,8 +2,7 @@
   "name": "ember-table",
   "dependencies": {
     "antiscroll": "Addepar/antiscroll#e0d1538cf4f3fd61c5bedd6168df86d651f125da",
-    "handlebars": "2.0.0",
-    "ember": ">=1.9 <1.10",
+    "ember": ">=1.10 <1.11",
     "jquery": "^1.11.1",
     "jquery-mousewheel": "~3.1.4",
     "jquery-ui": "~1.11.4"

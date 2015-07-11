@@ -1162,207 +1162,692 @@ var define, requireModule, require, requirejs;
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("        ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {"name":"view","hash":{
-        'startIndex': ("_startIndex"),
-        'scrollTop': ("_scrollTop"),
-        'numItemsShowing': ("_numItemsShowing"),
-        'width': ("_fixedBlockWidth"),
-        'columns': ("fixedColumns"),
-        'content': ("bodyContent"),
-        'classNames': ("ember-table-left-table-block")
-      },"hashTypes":{'startIndex': "ID",'scrollTop': "ID",'numItemsShowing': "ID",'width': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'startIndex': depth0,'scrollTop': depth0,'numItemsShowing': depth0,'width': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var stack1, escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("<div class=\"antiscroll-box\">\n  <div class=\"antiscroll-inner\">\n    <div class=\"ember-table-table-scrollable-wrapper\">\n");
-      stack1 = helpers['if'].call(depth0, "numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-      if (stack1 != null) { data.buffer.push(stack1); }
-      data.buffer.push("      ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "lazy-table-block", {"name":"view","hash":{
-        'startIndex': ("_startIndex"),
-        'scrollTop': ("_scrollTop"),
-        'numItemsShowing': ("_numItemsShowing"),
-        'width': ("_tableBlockWidth"),
-        'scrollLeft': ("_tableScrollLeft"),
-        'columns': ("tableColumns"),
-        'content': ("bodyContent"),
-        'classNames': ("ember-table-right-table-block")
-      },"hashTypes":{'startIndex': "ID",'scrollTop': "ID",'numItemsShowing': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'startIndex': depth0,'scrollTop': depth0,'numItemsShowing': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n    </div>\n  </div>\n</div>\n");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("        ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+            inline(env, morph0, context, "view", ["lazy-table-block"], {"classNames": "ember-table-left-table-block", "content": get(env, context, "bodyContent"), "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "numItemsShowing": get(env, context, "_numItemsShowing"), "scrollTop": get(env, context, "_scrollTop"), "startIndex": get(env, context, "_startIndex")});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","antiscroll-box");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","antiscroll-inner");
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createElement("div");
+          dom.setAttribute(el3,"class","ember-table-table-scrollable-wrapper");
+          var el4 = dom.createTextNode("\n");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("      ");
+          dom.appendChild(el3, el4);
+          var el4 = dom.createTextNode("\n    ");
+          dom.appendChild(el3, el4);
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n  ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [0, 1, 1]);
+          var morph0 = dom.createMorphAt(element0,0,1);
+          var morph1 = dom.createMorphAt(element0,1,2);
+          block(env, morph0, context, "if", [get(env, context, "numFixedColumns")], {}, child0, null);
+          inline(env, morph1, context, "view", ["lazy-table-block"], {"classNames": "ember-table-right-table-block", "content": get(env, context, "bodyContent"), "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "numItemsShowing": get(env, context, "_numItemsShowing"), "scrollTop": get(env, context, "_scrollTop"), "startIndex": get(env, context, "_startIndex")});
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/components/ember-table", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"3":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "footer-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var stack1, escapeExpression=this.escapeExpression, buffer = '';
-      stack1 = helpers['if'].call(depth0, "hasHeader", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-      if (stack1 != null) { data.buffer.push(stack1); }
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "body-table-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      stack1 = helpers['if'].call(depth0, "hasFooter", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(3, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-      if (stack1 != null) { data.buffer.push(stack1); }
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-container", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "column-sortable-indicator", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("  ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+            inline(env, morph0, context, "view", ["header-table-container"], {});
+            return fragment;
+          }
+        };
+      }());
+      var child1 = (function() {
+        return {
+          isHTMLBars: true,
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("  ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+            inline(env, morph0, context, "view", ["footer-table-container"], {});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          if (this.cachedFragment) { dom.repairClonedNode(fragment,[0,1,3]); }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          var morph1 = dom.createMorphAt(fragment,1,2,contextualElement);
+          var morph2 = dom.createMorphAt(fragment,2,3,contextualElement);
+          var morph3 = dom.createMorphAt(fragment,3,4,contextualElement);
+          var morph4 = dom.createMorphAt(fragment,4,5,contextualElement);
+          block(env, morph0, context, "if", [get(env, context, "hasHeader")], {}, child0, null);
+          inline(env, morph1, context, "view", ["body-table-container"], {});
+          block(env, morph2, context, "if", [get(env, context, "hasFooter")], {}, child1, null);
+          inline(env, morph3, context, "view", ["scroll-container"], {});
+          inline(env, morph4, context, "view", ["column-sortable-indicator"], {});
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/footer-table-container", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("    ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {"name":"view","hash":{
-        'height': ("footerHeight"),
-        'width': ("_fixedBlockWidth"),
-        'columns': ("fixedColumns"),
-        'content': ("footerContent"),
-        'classNames': ("ember-table-left-table-block")
-      },"hashTypes":{'height': "ID",'width': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var stack1, escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
-      stack1 = helpers['if'].call(depth0, "numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-      if (stack1 != null) { data.buffer.push(stack1); }
-      data.buffer.push("  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "table-block", {"name":"view","hash":{
-        'height': ("footerHeight"),
-        'width': ("_tableBlockWidth"),
-        'scrollLeft': ("_tableScrollLeft"),
-        'columns': ("tableColumns"),
-        'content': ("footerContent"),
-        'classNames': ("ember-table-right-table-block")
-      },"hashTypes":{'height': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'content': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'content': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n</div>\n");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+            inline(env, morph0, context, "view", ["table-block"], {"classNames": "ember-table-left-table-block", "content": get(env, context, "footerContent"), "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "height": get(env, context, "footerHeight")});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [0]);
+          var morph0 = dom.createMorphAt(element0,0,1);
+          var morph1 = dom.createMorphAt(element0,1,2);
+          block(env, morph0, context, "if", [get(env, context, "numFixedColumns")], {}, child0, null);
+          inline(env, morph1, context, "view", ["table-block"], {"classNames": "ember-table-right-table-block", "content": get(env, context, "footerContent"), "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "height": get(env, context, "footerHeight")});
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/header-cell", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var stack1, escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("<div class=\"ember-table-content-container\" ");
-      data.buffer.push(escapeExpression(helpers.action.call(depth0, "sortByColumn", "view.content", {"name":"action","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING","ID"],"contexts":[depth0,depth0],"data":data})));
-      data.buffer.push(">\n  <span class=\"ember-table-content\">\n    ");
-      stack1 = helpers._triageMustache.call(depth0, "view.content.headerCellName", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-      if (stack1 != null) { data.buffer.push(stack1); }
-      data.buffer.push("\n  </span>\n</div>");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createElement("div");
+          dom.setAttribute(el0,"class","ember-table-content-container");
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createElement("span");
+          dom.setAttribute(el1,"class","ember-table-content");
+          var el2 = dom.createTextNode("\n    ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, element = hooks.element, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = fragment;
+          var morph0 = dom.createMorphAt(dom.childAt(element0, [1]),0,1);
+          element(env, element0, context, "action", ["sortByColumn", get(env, context, "view.content")], {});
+          content(env, morph0, context, "view.content.headerCellName");
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/header-row", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {"name":"view","hash":{
-        'width': ("controller._tableColumnsWidth"),
-        'itemViewClassField': ("headerCellViewClass"),
-        'content': ("view.content")
-      },"hashTypes":{'width': "ID",'itemViewClassField': "STRING",'content': "ID"},"hashContexts":{'width': depth0,'itemViewClassField': depth0,'content': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", ["multi-item-collection"], {"content": get(env, context, "view.content"), "itemViewClassField": "headerCellViewClass", "width": get(env, context, "controller._tableColumnsWidth")});
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/header-table-container", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"1":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("    ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {"name":"view","hash":{
-        'height': ("headerHeight"),
-        'width': ("_fixedBlockWidth"),
-        'columns': ("fixedColumns"),
-        'classNames': ("ember-table-left-table-block")
-      },"hashTypes":{'height': "ID",'width': "ID",'columns': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'columns': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var stack1, escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("<div class=\"ember-table-table-fixed-wrapper\">\n");
-      stack1 = helpers['if'].call(depth0, "controller.numFixedColumns", {"name":"if","hash":{},"hashTypes":{},"hashContexts":{},"fn":this.program(1, data),"inverse":this.noop,"types":["ID"],"contexts":[depth0],"data":data});
-      if (stack1 != null) { data.buffer.push(stack1); }
-      data.buffer.push("  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-block", {"name":"view","hash":{
-        'height': ("headerHeight"),
-        'width': ("_tableBlockWidth"),
-        'scrollLeft': ("_tableScrollLeft"),
-        'columns': ("tableColumns"),
-        'classNames': ("ember-table-right-table-block")
-      },"hashTypes":{'height': "ID",'width': "ID",'scrollLeft': "ID",'columns': "ID",'classNames': "STRING"},"hashContexts":{'height': depth0,'width': depth0,'scrollLeft': depth0,'columns': depth0,'classNames': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n</div>\n");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      var child0 = (function() {
+        return {
+          isHTMLBars: true,
+          blockParams: 0,
+          cachedFragment: null,
+          hasRendered: false,
+          build: function build(dom) {
+            var el0 = dom.createDocumentFragment();
+            var el1 = dom.createTextNode("    ");
+            dom.appendChild(el0, el1);
+            var el1 = dom.createTextNode("\n");
+            dom.appendChild(el0, el1);
+            return el0;
+          },
+          render: function render(context, env, contextualElement) {
+            var dom = env.dom;
+            var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+            dom.detectNamespace(contextualElement);
+            var fragment;
+            if (env.useFragmentCache && dom.canClone) {
+              if (this.cachedFragment === null) {
+                fragment = this.build(dom);
+                if (this.hasRendered) {
+                  this.cachedFragment = fragment;
+                } else {
+                  this.hasRendered = true;
+                }
+              }
+              if (this.cachedFragment) {
+                fragment = dom.cloneNode(this.cachedFragment, true);
+              }
+            } else {
+              fragment = this.build(dom);
+            }
+            var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+            inline(env, morph0, context, "view", ["header-block"], {"classNames": "ember-table-left-table-block", "columns": get(env, context, "fixedColumns"), "width": get(env, context, "_fixedBlockWidth"), "height": get(env, context, "headerHeight")});
+            return fragment;
+          }
+        };
+      }());
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","ember-table-table-fixed-wrapper");
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, block = hooks.block, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var element0 = dom.childAt(fragment, [0]);
+          var morph0 = dom.createMorphAt(element0,0,1);
+          var morph1 = dom.createMorphAt(element0,1,2);
+          block(env, morph0, context, "if", [get(env, context, "controller.numFixedColumns")], {}, child0, null);
+          inline(env, morph1, context, "view", ["header-block"], {"classNames": "ember-table-right-table-block", "columns": get(env, context, "tableColumns"), "scrollLeft": get(env, context, "_tableScrollLeft"), "width": get(env, context, "_tableBlockWidth"), "height": get(env, context, "headerHeight")});
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/scroll-container", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push("<div class=\"antiscroll-wrap\">\n  <div class=\"antiscroll-inner\">\n    ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "scroll-panel", {"name":"view","hash":{},"hashTypes":{},"hashContexts":{},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n  </div>\n</div>\n");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createElement("div");
+          dom.setAttribute(el1,"class","antiscroll-wrap");
+          var el2 = dom.createTextNode("\n  ");
+          dom.appendChild(el1, el2);
+          var el2 = dom.createElement("div");
+          dom.setAttribute(el2,"class","antiscroll-inner");
+          var el3 = dom.createTextNode("\n    ");
+          dom.appendChild(el2, el3);
+          var el3 = dom.createTextNode("\n  ");
+          dom.appendChild(el2, el3);
+          dom.appendChild(el1, el2);
+          var el2 = dom.createTextNode("\n");
+          dom.appendChild(el1, el2);
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(dom.childAt(fragment, [0, 1]),0,1);
+          inline(env, morph0, context, "view", ["scroll-panel"], {});
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/table-cell", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var stack1, buffer = '';
-      data.buffer.push("<span class=\"ember-table-content\">\n  ");
-      stack1 = helpers._triageMustache.call(depth0, "view.cellContent", {"name":"_triageMustache","hash":{},"hashTypes":{},"hashContexts":{},"types":["ID"],"contexts":[depth0],"data":data});
-      if (stack1 != null) { data.buffer.push(stack1); }
-      data.buffer.push("\n</span>");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createElement("span");
+          dom.setAttribute(el0,"class","ember-table-content");
+          var el1 = dom.createTextNode("\n  ");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, content = hooks.content;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          var morph0 = dom.createMorphAt(fragment,0,1);
+          content(env, morph0, context, "view.cellContent");
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/templates/table-row", 
   ["exports"],
   function(__exports__) {
     "use strict";
-    __exports__["default"] = Ember.Handlebars.template({"compiler":[6,">= 2.0.0-beta.1"],"main":function(depth0,helpers,partials,data) {
-      var escapeExpression=this.escapeExpression, buffer = '';
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "multi-item-collection", {"name":"view","hash":{
-        'width': ("controller._tableColumnsWidth"),
-        'itemViewClassField': ("tableCellViewClass"),
-        'content': ("view.columns"),
-        'row': ("view.row")
-      },"hashTypes":{'width': "ID",'itemViewClassField': "STRING",'content': "ID",'row': "ID"},"hashContexts":{'width': depth0,'itemViewClassField': depth0,'content': depth0,'row': depth0},"types":["STRING"],"contexts":[depth0],"data":data})));
-      data.buffer.push("\n");
-      return buffer;
-    },"useData":true});
+    __exports__["default"] = Ember.HTMLBars.template((function() {
+      return {
+        isHTMLBars: true,
+        blockParams: 0,
+        cachedFragment: null,
+        hasRendered: false,
+        build: function build(dom) {
+          var el0 = dom.createDocumentFragment();
+          var el1 = dom.createTextNode("");
+          dom.appendChild(el0, el1);
+          var el1 = dom.createTextNode("\n");
+          dom.appendChild(el0, el1);
+          return el0;
+        },
+        render: function render(context, env, contextualElement) {
+          var dom = env.dom;
+          var hooks = env.hooks, get = hooks.get, inline = hooks.inline;
+          dom.detectNamespace(contextualElement);
+          var fragment;
+          if (env.useFragmentCache && dom.canClone) {
+            if (this.cachedFragment === null) {
+              fragment = this.build(dom);
+              if (this.hasRendered) {
+                this.cachedFragment = fragment;
+              } else {
+                this.hasRendered = true;
+              }
+            }
+            if (this.cachedFragment) {
+              fragment = dom.cloneNode(this.cachedFragment, true);
+            }
+          } else {
+            fragment = this.build(dom);
+          }
+          if (this.cachedFragment) { dom.repairClonedNode(fragment,[0]); }
+          var morph0 = dom.createMorphAt(fragment,0,1,contextualElement);
+          inline(env, morph0, context, "view", ["multi-item-collection"], {"row": get(env, context, "view.row"), "content": get(env, context, "view.columns"), "itemViewClassField": "tableCellViewClass", "width": get(env, context, "controller._tableColumnsWidth")});
+          return fragment;
+        }
+      };
+    }()));
   });
 ;define("ember-table/views/body-table-container", 
   ["ember","ember-table/views/table-container","ember-table/mixins/show-horizontal-scroll","ember-table/mixins/register-table-component","ember-table/mixins/mouse-wheel-handler","ember-table/mixins/touch-move-handler","ember-table/mixins/scroll-handler","exports"],
