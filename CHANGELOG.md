@@ -1,5 +1,15 @@
 # Ember Table Changelog
 
+### Ember Table 0.8.0 _(July 13, 2015)_
+
+_Compatible with Ember 1.11.3_
+
+* Support for Ember 1.11.3
+    * Unfortunately, the template compiler checks against the version number of
+      precompiled templates - including the patch version (1.11.3). If you are
+      using the globals build (dist/ folder) and a different version of ember,
+      you will need to fork ember-table and recompile with `grunt dist`.
+
 ### Ember Table 0.7.0 _(July 13, 2015)_
 
 _Compatible with Ember 1.10_
@@ -8,8 +18,6 @@ _Compatible with Ember 1.10_
     * Precompiled templates (for use outside of ember-cli) are
       compiled with Htmlbars, so they will work with
       Ember 1.10 apps.
-
-### Ember Table 0.5.1 _(July 7, 2015)_
 
 ### Ember Table 0.6.0 _(July 10, 2015)_
 
