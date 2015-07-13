@@ -1,5 +1,16 @@
 # Ember Table Changelog
 
+### Ember Table 0.7.0 _(July 13, 2015)_
+
+_Compatible with Ember 1.10_
+
+* Support for Ember 1.10
+    * Precompiled templates (for use outside of ember-cli) are
+      compiled with Htmlbars, so they will work with
+      Ember 1.10 apps.
+
+### Ember Table 0.5.1 _(July 7, 2015)_
+
 ### Ember Table 0.6.0 _(July 10, 2015)_
 
 _Compatible with Ember 1.9_
