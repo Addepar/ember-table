@@ -29,21 +29,26 @@ skip("columnsFillTable=true and canAutoResize=true fills up the table", function
   });
 });
 
-skip("columnsFillTable=false does not fill up the table", function(assert){
+test("columnsFillTable=false does not fill up the table", function(assert){
   visit('/resize-container-test?rowCount=12&columnsFillTable=false');
   showHalf();
   andThen(function(){
     showScrollbarsWhenNecessary();
     assert.ok(horizontalScrollShown());
-    const antiscrollInner = getAntiscrollInner();
-    const scrollLeft = antiscrollInner.scrollLeft();
-    antiscrollInner.scrollLeft(20);
-    assert.equal(antiscrollInner.scrollLeft(), 20, "antiscroll inner should have scroll position of 20");
+    const $rightBlock = rightBlock();
+    assert.equal($rightBlock.scrollLeft(), 0, "left scroll is 0 before scrolling");
+    // scroll right block by 50 px
+    $rightBlock.scrollLeft(50);
+    assert.equal($rightBlock.scrollLeft(), 50, "antiscroll inner should have scroll position of 50");
   });
 });
 
-function getAntiscrollInner() {
+function inner() {
   return $('.antiscroll-inner');
+}
+
+function rightBlock() {
+  return $('.ember-table-table-scrollable-wrapper .ember-table-right-table-block');
 }
 
 function showScrollbarsWhenNecessary() {
