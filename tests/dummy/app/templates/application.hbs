@@ -28,8 +28,9 @@
 {{!-- Main Container --}}
 <div class="container">
   <div class="row">
-
-    {{partial "sub-navigation"}}
+    {{#unless isTestRoute}}
+      {{partial "sub-navigation"}}
+    {{/unless}}
 
     {{outlet}}
   </div>
