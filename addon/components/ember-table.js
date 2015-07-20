@@ -311,10 +311,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
       return;
     }
     // updating antiscroll
-    this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();
     if (this.get('columnsFillTable')) {
       this.doForceFillColumns();
     }
+    this.scheduleAntiscrollRebuild();
   },
 
   // Iteratively adjusts column widths to adjust to a changed table width.
