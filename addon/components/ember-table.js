@@ -137,7 +137,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
           value = resolvedContent;
         });
 
-        // returns [] if the promise doesn't resolve immediately, or 
+        // returns [] if the promise doesn't resolve immediately, or
         // the resolved value if it's ready
         return value;
       }
@@ -282,7 +282,17 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     this.set('_height', this.$().parent().height());
     // we need to wait for the table to be fully rendered before antiscroll can
     // be used
-    Ember.run.next(this, this.updateLayout);
+    this.scheduleAntiscrollRebuild();
+  },
+
+  scheduleAntiscrollRebuild() {
+    Ember.run.scheduleOnce('afterRender', this, this.rebuildAntiscroll);
+  },
+
+  rebuildAntiscroll() {
+    if (this._state !== 'inDOM'){ return; }
+
+    this.$('.antiscroll-wrap').antiscroll();
   },
 
   tableWidthNowTooSmall: function() {
@@ -301,10 +311,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
       return;
     }
     // updating antiscroll
-    this.$('.antiscroll-wrap').antiscroll().data('antiscroll').rebuild();
     if (this.get('columnsFillTable')) {
       this.doForceFillColumns();
     }
+    this.scheduleAntiscrollRebuild();
   },
 
   // Iteratively adjusts column widths to adjust to a changed table width.

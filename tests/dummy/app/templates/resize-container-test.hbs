@@ -1,0 +1,24 @@
+<h2>Resize Container Test</h2>
+<div class="row">
+  <div class="form-group col-sm-6">
+    <button type="button" class="resize-container-button btn btn-lg btn-default btn-sm" {{action 'toggleWidth'}}>
+      {{if isFullWidth 'Show Half' 'Show Full'}}
+    </button>
+  </div>
+</div>
+<div class="row">
+  <div class="table-container {{if isFullWidth 'col-sm-12' 'col-sm-6'}}">
+    {{ember-table
+      hasFooter=false
+      columnsFillTable=columnsFillTable
+      columns=tableColumns
+      content=tableContent
+      rowHeight=30
+    }}
+  </div>
+</div>
+<style type="text/css">
+  .table-container {
+    height: 400px;
+  }
+</style>
