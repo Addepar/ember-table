@@ -75,6 +75,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // through ctrl/cmd-click or shift-click).
   selectionMode: 'single',
 
+  // When max height is set the table will attempt to consume height up to
+  // specified height.
+  maxHeight: null,
+
   // ---------------------------------------------------------------------------
   // API - Outputs
   // ---------------------------------------------------------------------------
