@@ -6,6 +6,13 @@ import {
   } from 'qunit';
 import startApp from '../helpers/start-app';
 import {setRandomSeed} from 'dummy/utils/random';
+import {
+  inner,
+  rightBlock,
+  showScrollbarsWhenNecessary,
+  horizontalScrollShown,
+  verticalScrollShown
+} from '../helpers/ember-table';
 
 var application;
 
@@ -42,27 +49,6 @@ test("columnsFillTable=false does not fill up the table", function(assert){
     assert.equal($rightBlock.scrollLeft(), 50, "antiscroll inner should have scroll position of 50");
   });
 });
-
-function inner() {
-  return $('.antiscroll-inner');
-}
-
-function rightBlock() {
-  return $('.ember-table-table-scrollable-wrapper .ember-table-right-table-block');
-}
-
-function showScrollbarsWhenNecessary() {
-  // enter mouse into table to cause scrollbars to show
-  $('.antiscroll-wrap').mouseenter();
-}
-
-function horizontalScrollShown() {
-  return $('.antiscroll-scrollbar-horizontal.antiscroll-scrollbar-shown:visible').length > 0;
-}
-
-function verticalScrollShown() {
-  return $('.antiscroll-scrollbar-vertical.antiscroll-scrollbar-shown:visible').length > 0;
-}
 
 function showHalf() {
   click('button:contains(Show Half)');
