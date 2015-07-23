@@ -2134,6 +2134,9 @@ var define, requireModule, require, requirejs;
       onColumnsDidChange: Ember.observer(function() {
         var _this = this;
         Ember.run.schedule('afterRender', function() {
+          if ((_this.get('_state') || _this.get('state')) !== 'inDOM') {
+            return;
+          }
           _this.$().scrollLeft(_this.get('scrollLeft'));
         });
       }, 'content')
