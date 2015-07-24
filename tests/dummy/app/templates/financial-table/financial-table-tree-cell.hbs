@@ -1,5 +1,5 @@
 {{! BEGIN-SNIPPET financial-table-tree-cell-template}}
-<div class="ember-table-cell-container" {{bind-attr style="view.paddingStyle"}}>
+<div class="ember-table-cell-container" style={{view.paddingStyle}}>
   <span {{bind-attr class=":ember-table-toggle-span view.row.isLeaf::ember-table-toggle
     view.row.isCollapsed:ember-table-expand:ember-table-collapse"}}
     {{action 'toggleCollapse' view.row}}>
