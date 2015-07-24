@@ -47,17 +47,24 @@ StyleBindingsMixin, {
     }
   }, 'column.contentPath'),
 
-  cellContent: Ember.computed(function(key, value) {
-    var row = this.get('row');
-    var column = this.get('column');
-    if (!row || !column) {
-      return;
-    }
-    if (arguments.length === 1) {
-      value = column.getCellContent(row);
-    } else {
+  cellContent: Ember.computed('row.isLoaded', 'column', {
+    set: function(key, value) {
+      var row = this.get('row');
+      var column = this.get('column');
+      if (!row || !column) {
+        return;
+      }
       column.setCellContent(row, value);
+      return value;
+    },
+    get: function() {
+      var row = this.get('row');
+      var column = this.get('column');
+      if (!row || !column) {
+        return;
+      }
+      var value = column.getCellContent(row);
+      return value;
     }
-    return value;
-  }).property('row.isLoaded', 'column')
+  })
 });

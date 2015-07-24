@@ -81,29 +81,34 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   // An array of the rows currently selected. If `selectionMode` is set to
   // 'single', the array will contain either one or zero elements.
-  selection: Ember.computed(function(key, val) {
-    var selectionMode = this.get('selectionMode');
-    if (arguments.length > 1 && val) {
-      this.get('persistedSelection').clear();
-      this.get('rangeSelection').clear();
+  selection: Ember.computed('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode', {
+    set: function(key, val) {
+      if (val) {
+        var selectionMode = this.get('selectionMode');
+        this.get('persistedSelection').clear();
+        this.get('rangeSelection').clear();
+        switch (selectionMode) {
+          case 'single':
+            this.get('persistedSelection').addObject(val);
+            break;
+          case 'multiple':
+            this.get('persistedSelection').addObjects(val);
+        }
+      }
+    },
+    get: function() {
+      var selectionMode = this.get('selectionMode');
+      var selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
       switch (selectionMode) {
+        case 'none':
+          return null;
         case 'single':
-          this.get('persistedSelection').addObject(val);
-          break;
+          return selection[0] || null;
         case 'multiple':
-          this.get('persistedSelection').addObjects(val);
+          return selection;
       }
     }
-    var selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
-    switch (selectionMode) {
-      case 'none':
-        return null;
-      case 'single':
-        return selection[0] || null;
-      case 'multiple':
-        return selection;
-    }
-  }).property('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode'),
+  }),
 
   // ---------------------------------------------------------------------------
   // Internal properties
@@ -117,12 +122,13 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   // _resolvedContent is an intermediate property between content and rows
   // This allows content to be a plain array or a promise resolving to an array
-  _resolvedContent: function(key, value) {
-    if (arguments.length > 1) {
+  _resolvedContent: Ember.computed('content', {
+    set: function(key, value) {
       return value;
-    } else {
-      var _this = this;
-      value = [];
+    },
+    get: function() {
+      var _this = this,
+          value = [];
 
       var content = this.get('content');
       if (content.then)
@@ -147,7 +153,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
         return content;
       }
     }
-  }.property('content'),
+  }),
 
   init: function() {
     this._super();
@@ -191,13 +197,15 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   }).property('_resolvedContent.[]'),
 
   // An array of Ember.Table.Row
-  footerContent: Ember.computed(function(key, value) {
-    if (value) {
-      return value;
-    } else {
-      return Ember.A();
+  footerContent: Ember.computed({
+    set: function(key, value) {
+      if (value) {
+        return value;
+      } else {
+        return Ember.A();
+      }
     }
-  }).property(),
+  }),
 
   fixedColumns: Ember.computed(function() {
     var columns = this.get('columns');
