@@ -303,11 +303,15 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   scheduleForceFillColumns() {
     if (this.get('columnsFillTable')) {
-      Ember.run.scheduleOnce('afterRender', this, this.doForceFillColumns);
+      // forcefill should only happen one time in a calculation cycle but
+      // after sync and before antiscroll is rebuilt
+      Ember.run.scheduleOnce('actions', this, this.doForceFillColumns);
     }
   },
 
   scheduleAntiscrollRebuild() {
+    // antiscroll renders after all properties are computed and DOM was
+    // updated. This gives Ember opportunity to apply css to style tag
     Ember.run.scheduleOnce('afterRender', this, this.rebuildAntiscroll);
   },
 
