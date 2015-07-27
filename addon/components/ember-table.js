@@ -250,7 +250,6 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     this._super();
     this.set('_tableScrollTop', 0);
     this.elementSizeDidChange();
-    this.doForceFillColumns();
   },
 
   willDestroyElement: function() {
@@ -291,6 +290,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   updateWidth() {
     this.set('_width', this.$().parent().width());
+    this.scheduleForceFillColumns();
   },
 
   updateHeight() {
@@ -299,6 +299,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
       this.set('_height', this.$().parent().outerHeight());
     }
     this.scheduleAntiscrollRebuild();
+  },
+
+  scheduleForceFillColumns() {
+    Ember.run.scheduleOnce('afterRender', this, this.doForceFillColumns);
   },
 
   scheduleAntiscrollRebuild() {
