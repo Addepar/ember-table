@@ -1,0 +1,152 @@
+{{!-- Content Column --}}
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Ember Table</h1>
+      <p class="elevated">Ember table allows you to render very
+      large data sets by only rendering the rows that are being
+      displayed.<br />It is written as an ember component with an API that is
+      easy to understand and extend.</p>
+
+      <div class="example-container">
+        <div class="ember-table-example-container ember-table-financial">
+          {{financial-table
+            data=data
+          }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <h3>Features</h3>
+      <ul class="styled">
+        <li>Lazy rendering and support for millions of rows</li>
+        <li>Support for column resizing and reordering</li>
+        <li>Configurable, customizable, and extendable</li>
+      </ul>
+    </div>
+    <div class="col-md-6">
+      <h3>Dependencies</h3>
+      <ul class="styled">
+        <li><a target="_BLANK" href="http://emberjs.com/">ember</a></li>
+        <li><a target="_BLANK" href="http://jqueryui.com/download/#!components=1110001010000000000000000000000000">
+          jquery-ui</a>
+          <br>
+          <small>(only core, widget, mouse, resizable, and sortable modules required)</small>
+        </li>
+        <li><a target="_BLANK" href="https://github.com/brandonaaron/jquery-mousewheel">jquery.mousewheel</a></li>
+        <li><a target="_BLANK" href="https://github.com/azirbel/antiscroll">antiscroll</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <hr>
+      <h1>Examples</h1>
+      <p class="elevated">The examples below demonstrate how you can extend and customize the table.</p>
+      <div class="row ember-table-examples">
+        {{#link-to 'simple'}}
+          <div class="col-md-4">
+            <h4>Hello World Table</h4>
+            <img class="preview-box" src="images/preview_table_simple.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'ajax'}}
+          <div class="col-md-4">
+            <h4>AJAX cells</h4>
+            <img class="preview-box" src="images/preview_table_ajax.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'bars'}}
+          <div class="col-md-4">
+            <h4>Bar cells</h4>
+            <img class="preview-box" src="images/preview_table_bars.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'dynamic-bars'}}
+          <div class="col-md-4">
+            <h4>Dynamic bar cells</h4>
+            <img class="preview-box" src="images/preview_table_dynamic_bars.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'financial'}}
+          <div class="col-md-4">
+            <h4>Tree & financial table</h4>
+            <img class="preview-box" src="images/preview_table_financial.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'editable'}}
+          <div class="col-md-4">
+            <h4>Editable cell</h4>
+            <img class="preview-box" src="images/preview_table_editable.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'sparkline'}}
+          <div class="col-md-4">
+            <h4>Sparkline cell using D3.js</h4>
+            <img class="preview-box" src="images/preview_table_sparkline.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'horizon'}}
+          <div class="col-md-4">
+            <h4>Horizon cell using D3.js</h4>
+            <img class="preview-box" src="images/preview_table_horizon.png" />
+          </div>
+        {{/link-to}}
+        {{#link-to 'configurable-columns'}}
+          <div class="col-md-4">
+            <h4>Configurable Column Demo</h4>
+            <img class="preview-box" src="images/preview_table_simple.png" />
+          </div>
+        {{/link-to}}
+      </div>
+      <p>Looking for more ways to extend ember-table? Check out the {{#link-to 'community-examples'}}Community Examples{{/link-to}}.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <hr>
+      <h1>Getting Started</h1>
+      <p>You will need <a target="_BLANK" href="http://nodejs.org/">node</a> installed as a development dependency.</p>
+      <p><a target="_BLANK" href="https://github.com/Addepar/ember-table/">Clone it from Github</a> or <a target="_BLANK" href="https://github.com/Addepar/ember-table/releases">download the ZIP repo</a></p>
+      <div class="highlight">
+<pre><code>$ npm install -g grunt-cli
+$ npm install
+$ bower install
+$ ember serve</code></pre>
+      <p>Go to your browser and navigate to <a target="_BLANK" href="http://localhost:4200">localhost:4200</a></p>
+      </div>
+    </div>
+    <div class="col-md-6">
+      <hr>
+      <h1>Contributing</h1>
+      <p>You can contribute to this project in one of two ways:</p>
+      <ul class="styled">
+        <li>Browse the ember-table <a target="_BLANK" href="https://github.com/Addepar/ember-table/issues?state=open">issues</a> and report bugs</li>
+        <li>Clone the ember-table repo, make some changes according to our development guidelines and issue a pull-request with your changes.</li>
+      </ul>
+      <p>We keep the ember-table.js code to the minimum necessary, giving users as much control as possible.</p>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-6">
+      <hr>
+      <h1>Changelog</h1>
+      <p>The current version is 0.5.1.</p>
+      <p>For the full list of changes, please see <a target="_BLANK" href="https://github.com/Addepar/ember-table/blob/master/CHANGELOG.md">CHANGELOG.md</a>.</p>
+    </div>
+    <div class="col-md-6">
+      <hr>
+      <h1>Acknowledgements</h1>
+      <p><a target="_BLANK" href="https://github.com/Addepar/ember-table/graphs/contributors">List of Contributors on Github</a></p>
+      <p>With lots of help from the Ember.js team</p>
+      <p><a target="_BLANK" href="https://twitter.com/ebryn">ebryn</a>, <a target="_BLANK" href="https://twitter.com/tomdale">tomdale</a>, <a target="_BLANK" href="https://twitter.com/wycats">wycats</a></p>
+      <p>The original idea for lazy rendering was inspired by Erik Bryn.</p>
+    </div>
+  </div>
+</div>

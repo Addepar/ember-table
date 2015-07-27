@@ -1,37 +1,33 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset='UTF-8'/>
-    <meta http-equiv='content-type' content='text/html; charset=utf-8'/>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Dummy Tests</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Addepar Ember Table QUnit Test Runner</title>
+    {{content-for 'head'}}
+    {{content-for 'test-head'}}
 
-    <!-- Less CSS -->
-    <link rel="stylesheet" type="text/css" href="../dist/ember-table.css">
-    <link rel="stylesheet" type="text/css" href="css/qunit.css">
+    <link rel="stylesheet" href="assets/vendor.css">
+    <link rel="stylesheet" href="assets/dummy.css">
+    <link rel="stylesheet" href="assets/test-support.css">
 
-    <script src="lib/modernizr.js"></script>
-    <script src="lib/jquery.js"></script>
-    <script src="lib/jquery-ui.custom.js"></script>
-    <script src="lib/jquery.mousewheel.js"></script>
-    <script src="lib/handlebars.js"></script>
-    <script src="lib/ember.js"></script>
-    <script src="lib/d3.js"></script>
-    <script src='lib/qunit.js'></script>
+    {{content-for 'head-footer'}}
+    {{content-for 'test-head-footer'}}
+  </head>
+  <body>
 
-    <script src="../dist/ember-table.js"></script>
+    {{content-for 'body'}}
+    {{content-for 'test-body'}}
+    <script src="assets/vendor.js"></script>
+    <script src="assets/test-support.js"></script>
+    <script src="assets/dummy.js"></script>
+    <script src="testem.js"></script>
+    <script src="assets/test-loader.js"></script>
 
-    <!-- your tests, any and all to run with the given fixtures below -->
-    <script src='tests.js'></script>
-
-</head>
-<body>
-<div id="qunit"></div>
-<!-- QUnit fills this with results, etc -->
-<div id='qunit-fixture'>
-
-    <!-- any HTML you want to be present in each test (will be reset for each test) -->
-
-</div>
-</body>
+    {{content-for 'body-footer'}}
+    {{content-for 'test-body-footer'}}
+  </body>
 </html>

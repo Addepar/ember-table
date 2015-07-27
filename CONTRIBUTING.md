@@ -55,17 +55,15 @@ provide as much detail and context as possible.
 
 ## Writing Code in Ember Table
 
-Ember-table is written in [CoffeeScript](http://coffeescript.org/) and compiled
-into JavaScript using [Grunt](http://gruntjs.com/). Contributing to ember-table
-requires that you have grunt and NPM (for pulling in dependencies) locally
-installed.
+Ember Table is written as an Ember CLI addon. This means that source files are
+in the `addon` and `app` folders, the demo application is in the `tests/dummy`
+folder, and tests are in the `tests` folder.
 
-The `src` folder contains all the source code for the ember-table project
-itself. The `app` folder contains the sample app and documentation, and should
-be updated whenever changes will add functionality, modify or remove existing
-functionality, or change public APIs. The `dist` folder contains the compiled
-ember-table code and should not be directly modified but instead generated using
-`grunt dist`.
+Temporarily, we are supporting a globals-based build to be used with Ember apps
+that don't yet use Ember CLI. This build is created via code in the `packaging`
+folder, and the compiled files are in the `dist` folder. These files are
+checked into version control, but instead of modifying them directly, please
+generate them with `grunt dist`.
 
 ## Pull requests
 
@@ -139,7 +137,7 @@ included in the project:
     with a clear title and description against the `master` branch.
 
 **IMPORTANT**: By submitting a patch, you agree to allow the project owners to
-license your work under the terms of the [BSD License](LICENSE).
+license your work under the terms of the [BSD License](LICENSE.md).
 
 
 ## Running tests
@@ -158,7 +156,8 @@ Coming soon!
 ## License
 
 By contributing your code, you agree to license your contribution under the
-[BSD license](LICENSE).
+[BSD license](LICENSE.md).
 
 
 #### NOTE: Largely copied from https://github.com/twbs/bootstrap/blob/master/CONTRIBUTING.md
+
