@@ -302,7 +302,9 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   },
 
   scheduleForceFillColumns() {
-    Ember.run.scheduleOnce('afterRender', this, this.doForceFillColumns);
+    if (this.get('columnsFillTable')) {
+      Ember.run.scheduleOnce('afterRender', this, this.doForceFillColumns);
+    }
   },
 
   scheduleAntiscrollRebuild() {
@@ -331,9 +333,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
       return;
     }
     // updating antiscroll
-    if (this.get('columnsFillTable')) {
-      this.doForceFillColumns();
-    }
+    this.scheduleForceFillColumns();
     this.scheduleAntiscrollRebuild();
   },
 
