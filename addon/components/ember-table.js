@@ -288,12 +288,32 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     this.scheduleAntiscrollRebuild();
   },
 
+  /**
+   * Make sure to update the table width if the container width changed after
+   * the initial render. This might happen when the table height causes a
+   * page scroll bar to show after the page is rendered.
+   */
+  ensureWidth() {
+    const hasScrollbar = ()=>{
+      return Ember.$(window).height() < Ember.$('body').get('0').scrollHeight;
+    };
+    const beforeRender = hasScrollbar();
+    Ember.run.scheduleOnce('afterRender', this, function(){
+      if (this._state !== 'inDOM'){ return; }
+      if (!beforeRender && hasScrollbar()) {
+        this.updateWidth();
+        this.scheduleAntiscrollRebuild();
+      }
+    });
+  },
+
   updateWidth() {
     this.set('_width', this.$().parent().width());
     this.scheduleForceFillColumns();
   },
 
   updateHeight() {
+    this.ensureWidth();
     let maxHeight = this.get('maxHeight');
     if (maxHeight == null) {
       this.set('_height', this.$().parent().outerHeight());
