@@ -290,7 +290,9 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   },
 
   rebuildAntiscroll() {
-    if (this._state !== 'inDOM'){ return; }
+    if (this._state !== 'inDOM'){ 
+      return;
+    }
 
     this.$('.antiscroll-wrap').antiscroll();
   },
