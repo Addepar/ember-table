@@ -95,6 +95,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
             this.get('persistedSelection').addObjects(val);
         }
       }
+      return this.get('selection');
     },
     get: function() {
       var selectionMode = this.get('selectionMode');
@@ -127,8 +128,8 @@ StyleBindingsMixin, ResizeHandlerMixin, {
       return value;
     },
     get: function() {
-      var _this = this,
-          value = [];
+      var _this = this;
+      var value = [];
 
       var content = this.get('content');
       if (content.then)
@@ -200,11 +201,10 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // An array of Ember.Table.Row
   footerContent: Ember.computed({
     set: function(key, value) {
-      if (value) {
-        return value;
-      } else {
-        return Ember.A();
-      }
+      return value;
+    },
+    get: function() {
+      return Ember.A();
     }
   }),
 
