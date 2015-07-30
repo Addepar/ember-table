@@ -386,6 +386,7 @@ var define, requireModule, require, requirejs;
         columns.removeObject(column);
         columns.insertAt(numFixedColumns + newIndex, column);
         this.prepareTableColumns();
+        this.sendAction('onColumnReordered', columns, column, newIndex);
       },
 
       // An array of Ember.Table.Row computed based on `content`
@@ -871,7 +872,7 @@ var define, requireModule, require, requirejs;
           });
           styleString = styleTokens.join('');
           if (styleString.length !== 0) {
-            return styleString.htmlSafe().toString();
+            return new Ember.Handlebars.SafeString(styleString);
           }
         });
         styleComputed.property.apply(styleComputed, properties);
@@ -2145,6 +2146,9 @@ var define, requireModule, require, requirejs;
       onColumnsDidChange: Ember.observer(function() {
         var _this = this;
         Ember.run.schedule('afterRender', function() {
+          if ((_this.get('_state') || _this.get('state')) !== 'inDOM') {
+            return;
+          }
           _this.$().scrollLeft(_this.get('scrollLeft'));
         });
       }, 'content')
@@ -2297,6 +2301,8 @@ var define, requireModule, require, requirejs;
         if (event.type === 'resizestop') {
           this.get('tableComponent').elementSizeDidChange();
         }
+
+        this.get('context').sendAction('onColumnResized', this.get('column'), newWidth);
       },
 
       elementSizeDidChange: function() {

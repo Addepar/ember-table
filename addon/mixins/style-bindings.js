@@ -43,7 +43,7 @@ export default Ember.Mixin.create({
       });
       styleString = styleTokens.join('');
       if (styleString.length !== 0) {
-        return styleString.htmlSafe().toString();
+        return new Ember.Handlebars.SafeString(styleString);
       }
     });
     styleComputed.property.apply(styleComputed, properties);
