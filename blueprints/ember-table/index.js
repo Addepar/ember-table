@@ -8,7 +8,7 @@ module.exports = {
         // Antiscroll seems to be abandoned by its original authors. We need
         // two things: (1) a version in package.json, and (2) the name of the
         // package must be "antiscroll" to satisfy ember-cli.
-        'name': 'git://github.com/azirbel/antiscroll.git#90391fb371c7be769bc32e7287c5271981428356'
+        'name': 'git://github.com/Addepar/antiscroll.git#e0d1538cf4f3fd61c5bedd6168df86d651f125da'
       },
       {
         'name': 'jquery-mousewheel',
