@@ -8,6 +8,7 @@ export default Row.extend({
   isCollapsed: false,
   level: 0,
   isRoot: false,
+  isLeaf: false,
 
   depth: Ember.computed({
     get: function() {

@@ -55,6 +55,8 @@ export default TableComponent.extend({
       return self._recursiveCreateRow(row, child, rows).row;
     });
 
+    row.set('isLeaf', Ember.isEmpty(node.children));
+
     return { row: row, rows: rows };
   },
 

@@ -70,6 +70,7 @@ export default Ember.Controller.extend({
     var ageColumn = AggregateColumnDefinition.create({
       // supergroup doesn't aggregate root as node, see https://github.com/Sigfried/supergroup/issues/6
       headerCellName: 'Avg Age',
+      savedWidth: 60,
       getCellContent: function(row) {
         var value = (row.get('content.depth') === 0) ?
                       self.get('avgAge')
@@ -82,6 +83,7 @@ export default Ember.Controller.extend({
     var visitsColumn = AggregateColumnDefinition.create({
       // supergroup doesn't aggregate root as node, see https://github.com/Sigfried/supergroup/issues/6
       headerCellName: 'Visits',
+      savedWidth: 60,
       getCellContent: function(row) {
         var value = (row.get('content.depth') === 0) ?
                       self.get('totalVisits')
