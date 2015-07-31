@@ -17,6 +17,7 @@
     "jquery-ui": "~1.11.4",
     "d3": "~3.5.3",
     "bootstrap": "3.0.0",
-    "lodash": "^2.4.0"
+    "lodash": "^3.9.3",
+    "supergroup": "1.0.1"
   }
 }

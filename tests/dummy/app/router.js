@@ -24,6 +24,8 @@ Router.map(function() {
   this.route('community-examples');
 
   this.route('license');
+
+  this.route('sg-treetable');
 });
 
 export default Router;
