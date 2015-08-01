@@ -1,5 +1,18 @@
 # Ember Table Changelog
 
+### Ember Table 0.9.1 _(July 31, 2015)_
+
+* Use correct version of antiscroll in blueprint
+* add onColumnReordered and onColumnResized actions
+* Use SafeString to avoid style attributes warning
+* Add Travis build status to README
+* Add state inDOM check for an afterRender call
+* Don't test with release/beta/canary versions of Ember
+* Refactor tests and demo app
+    * Add acceptance tests
+    * Use code snippets for code samples
+    * Generate seeded random numbers
+
 ### Ember Table 0.9.0 _(July 15, 2015)_
 
 _Compatible with Ember 1.12.1_
