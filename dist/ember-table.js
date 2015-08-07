@@ -284,29 +284,35 @@ var define, requireModule, require, requirejs;
 
       // An array of the rows currently selected. If `selectionMode` is set to
       // 'single', the array will contain either one or zero elements.
-      selection: Ember.computed(function(key, val) {
-        var selectionMode = this.get('selectionMode');
-        if (arguments.length > 1 && val) {
-          this.get('persistedSelection').clear();
-          this.get('rangeSelection').clear();
+      selection: Ember.computed('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode', {
+        set: function(key, val) {
+          if (val) {
+            var selectionMode = this.get('selectionMode');
+            this.get('persistedSelection').clear();
+            this.get('rangeSelection').clear();
+            switch (selectionMode) {
+              case 'single':
+                this.get('persistedSelection').addObject(val);
+                break;
+              case 'multiple':
+                this.get('persistedSelection').addObjects(val);
+            }
+          }
+          return this.get('selection');
+        },
+        get: function() {
+          var selectionMode = this.get('selectionMode');
+          var selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
           switch (selectionMode) {
+            case 'none':
+              return null;
             case 'single':
-              this.get('persistedSelection').addObject(val);
-              break;
+              return selection[0] || null;
             case 'multiple':
-              this.get('persistedSelection').addObjects(val);
+              return selection;
           }
         }
-        var selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
-        switch (selectionMode) {
-          case 'none':
-            return null;
-          case 'single':
-            return selection[0] || null;
-          case 'multiple':
-            return selection;
-        }
-      }).property('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode'),
+      }),
 
       // ---------------------------------------------------------------------------
       // Internal properties
@@ -320,12 +326,13 @@ var define, requireModule, require, requirejs;
 
       // _resolvedContent is an intermediate property between content and rows
       // This allows content to be a plain array or a promise resolving to an array
-      _resolvedContent: function(key, value) {
-        if (arguments.length > 1) {
+      _resolvedContent: Ember.computed('content', {
+        set: function(key, value) {
           return value;
-        } else {
+        },
+        get: function() {
           var _this = this;
-          value = [];
+          var value = [];
 
           var content = this.get('content');
           if (content.then)
@@ -350,7 +357,7 @@ var define, requireModule, require, requirejs;
             return content;
           }
         }
-      }.property('content'),
+      }),
 
       init: function() {
         this._super();
@@ -395,13 +402,14 @@ var define, requireModule, require, requirejs;
       }).property('_resolvedContent.[]'),
 
       // An array of Ember.Table.Row
-      footerContent: Ember.computed(function(key, value) {
-        if (value) {
+      footerContent: Ember.computed({
+        set: function(key, value) {
           return value;
-        } else {
+        },
+        get: function() {
           return Ember.A();
         }
-      }).property(),
+      }),
 
       fixedColumns: Ember.computed(function() {
         var columns = this.get('columns');
@@ -993,12 +1001,15 @@ var define, requireModule, require, requirejs;
       isShowing: true,
       isHovered: false,
 
-      isSelected: Ember.computed(function(key, val) {
-        if (arguments.length > 1) {
+      isSelected: Ember.computed('parentController.selection.[]', {
+        set: function(key, val) {
           this.get('parentController').setSelected(this, val);
+          return this.get('parentController').isSelected(this);
+        },
+        get: function() {
+        	return this.get('parentController').isSelected(this);
         }
-        return this.get('parentController').isSelected(this);
-      }).property('parentController.selection.[]')
+      })
     });
   });
 ;define("ember-table/mixins/mouse-wheel-handler", 
@@ -2707,19 +2718,26 @@ var define, requireModule, require, requirejs;
         }
       }, 'column.contentPath'),
 
-      cellContent: Ember.computed(function(key, value) {
-        var row = this.get('row');
-        var column = this.get('column');
-        if (!row || !column) {
-          return;
-        }
-        if (arguments.length === 1) {
-          value = column.getCellContent(row);
-        } else {
+      cellContent: Ember.computed('row.isLoaded', 'column', {
+        set: function(key, value) {
+          var row = this.get('row');
+          var column = this.get('column');
+          if (!row || !column) {
+            return;
+          }
           column.setCellContent(row, value);
+          return value;
+        },
+        get: function() {
+          var row = this.get('row');
+          var column = this.get('column');
+          if (!row || !column) {
+            return;
+          }
+          var value = column.getCellContent(row);
+          return value;
         }
-        return value;
-      }).property('row.isLoaded', 'column')
+      })
     });
   });
 ;define("ember-table/views/table-row", 

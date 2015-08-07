@@ -8,23 +8,25 @@ import ColumnDefinition from 'ember-table/models/column-definition';
 export default ColumnDefinition.extend({
   savedWidth: void 0,
 
-  savedWidthValue: Ember.computed(function(key, value) {
-    if (arguments.length === 1) {
+  savedWidthValue: Ember.computed('savedWidth', {
+    get: function() {
       return this.get('savedWidth');
-    } else {
+    },
+    set: function(key, value) {
       this.set('savedWidth', parseInt(value));
       return this.get('savedWidth');
     }
-  }).property('savedWidth'),
+  }),
 
-  minWidthValue: Ember.computed(function(key, value) {
-    if (arguments.length === 1) {
+  minWidthValue: Ember.computed('minWidth', {
+    get: function() {
       return this.get('minWidth');
-    } else {
+    },
+    set: function(key, value) {
       this.set('minWidth', parseInt(value));
       return this.get('minWidth');
     }
-  }).property('minWidth'),
+  }),
 
   atMinWidth: Ember.computed(function() {
     return this.get('width') === this.get('minWidth');
@@ -36,14 +38,15 @@ export default ColumnDefinition.extend({
 
   maxWidth: undefined,
 
-  maxWidthValue: Ember.computed(function(key, value) {
-    if (arguments.length === 1) {
+  maxWidthValue: Ember.computed('maxWidth', {
+    get: function() {
       return this.get('maxWidth');
-    } else {
+    },
+    set: function(key, value) {
       this.set('maxWidth', parseInt(value));
       return this.get('maxWidth');
     }
-  }).property('maxWidth'),
+  }),
 
   columnDefinitionDocumentation: Ember.computed(function() {
     var docString = '';
