@@ -15,7 +15,7 @@ http://addepar.github.com/ember-table/
 
 #### JS Bin Starter Kit
 
-http://emberjs.jsbin.com/yocaxe/edit
+http://emberjs.jsbin.com/bihemir/edit
 
 #### Installation with Ember CLI (Recommended)
 

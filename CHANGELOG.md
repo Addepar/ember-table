@@ -1,5 +1,9 @@
 # Ember Table Changelog
 
+### Ember Table 0.9.2 _(August 7, 2015)_
+
+* Fix antiscroll blueprint more thoroughly
+
 ### Ember Table 0.9.1 _(July 31, 2015)_
 
 * Use correct version of antiscroll in blueprint
