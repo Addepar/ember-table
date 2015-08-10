@@ -1,5 +1,6 @@
 // BEGIN-SNIPPET sg-treetable-component
 import Ember from 'ember';
+import _ from 'npm:supergroup';
 import TableComponent from 'ember-table/components/ember-table';
 import TreeTableTreeRow from '../views/sg-treetable-tree-row';
 

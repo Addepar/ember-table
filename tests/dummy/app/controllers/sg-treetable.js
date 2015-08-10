@@ -1,5 +1,7 @@
 // BEGIN-SNIPPET sg-treetable-controller
 import Ember from 'ember';
+import _ from 'npm:supergroup';
+
 import sampledata from '../models/sampledata';
 import ColumnDefinition from 'ember-table/models/column-definition';
 import AggregateColumnDefinition from '../models/aggregate-column-definition';

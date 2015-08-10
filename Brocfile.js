@@ -7,7 +7,5 @@ var app = new EmberAddon({
 });
 
 app.import(app.bowerDirectory + '/d3/d3.js');
-app.import(app.bowerDirectory + '/lodash/lodash.js');
-app.import(app.bowerDirectory + '/supergroup/supergroup.js');
 
 module.exports = app.toTree();
