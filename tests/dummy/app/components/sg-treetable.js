@@ -17,8 +17,8 @@ export default TableComponent.extend({
   headerHeight: 70,
 
   data: null,
-  columns: Ember.A,
   dimentionDef: Ember.K,
+  aggregateColumns: [],
 
   dimentionColumn: Ember.computed('dimentionDef.@each', function() {
     var dimentionDef = this.get('dimentionDef');
@@ -37,12 +37,10 @@ export default TableComponent.extend({
 
   }),
 
-  aggregateColumns: [],
-
-  columns: Ember.computed('dimentionColumn',   'aggregateColumns.[]', function() {
-    var columns = this.get('aggregateColumns');
-    columns.unshiftObject( this.get('dimentionColumn') );
-    return columns;
+  columns: Ember.computed('dimentionColumn', 'aggregateColumns.[]', function() {
+    var cols = this.get('aggregateColumns');
+    cols.unshiftObject( this.get('dimentionColumn') );
+    return cols;
   }),
 
   _sgData: Ember.computed('data', 'dimentionDef.dimentionOrder', function() {
