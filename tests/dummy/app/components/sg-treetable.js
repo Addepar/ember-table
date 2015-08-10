@@ -3,6 +3,8 @@ import Ember from 'ember';
 import TableComponent from 'ember-table/components/ember-table';
 import TreeTableTreeRow from '../views/sg-treetable-tree-row';
 
+import TreeColumnDefinition from '../models/tree-column-definition';
+
 export default TableComponent.extend({
   // Overriding default properties
   layoutName: 'components/ember-table',
@@ -16,13 +18,38 @@ export default TableComponent.extend({
 
   data: null,
   columns: Ember.A,
-  dimentionsOrder: Ember.A([]),
+  dimentionDef: Ember.K,
 
-  _sgData: Ember.computed('data', 'dimentionsOrder', function() {
+  dimentionColumn: Ember.computed('dimentionDef.@each', function() {
+    var dimentionDef = this.get('dimentionDef');
+    var dimentionOrder = dimentionDef.dimentionOrder;
+    if (Ember.isEmpty(dimentionOrder)) {
+      return;
+    }
+
+    var name = _.map( dimentionOrder, function(key) {
+      return dimentionDef[key]['displayName'];
+    }).join(' ▸ ');
+
+    return TreeColumnDefinition.create({
+      headerCellName: name,
+    });
+
+  }),
+
+  aggregateColumns: [],
+
+  columns: Ember.computed('dimentionColumn',   'aggregateColumns.[]', function() {
+    var columns = this.get('aggregateColumns');
+    columns.unshiftObject( this.get('dimentionColumn') );
+    return columns;
+  }),
+
+  _sgData: Ember.computed('data', 'dimentionDef.dimentionOrder', function() {
     if (!this.get('data')) {
       return Ember.K;
     }
-    var groupedData = _.supergroup(this.get('data'), this.get('dimentionsOrder'));
+    var groupedData = _.supergroup(this.get('data'), this.get('dimentionDef.dimentionOrder'));
     return Ember.Object.create({
       root: groupedData.asRootVal('Total'),
       firstLevel: groupedData,

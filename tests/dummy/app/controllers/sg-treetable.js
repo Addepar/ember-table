@@ -3,17 +3,7 @@ import Ember from 'ember';
 import sampledata from '../models/sampledata';
 import ColumnDefinition from 'ember-table/models/column-definition';
 import AggregateColumnDefinition from '../models/aggregate-column-definition';
-import TreeColumnDefinition from '../models/tree-column-definition';
 import NumberFormatHelpers from '../utils/number-format';
-
-//TODO find proper place for this
-_.avg = function (array) {
-  if (array.length > 0) {
-      return _.reduce( array, function(sum, x) {
-        return sum + x;
-      }, 0) / array.length;
-  }
-};
 
 export default Ember.Controller.extend({
 
@@ -21,110 +11,68 @@ export default Ember.Controller.extend({
     return sampledata;
   }),
 
-  // supergroup doesn't aggregate root as node see https://github.com/Sigfried/supergroup/issues/6
-  totalCharge: Ember.computed('data', function() {
-    return _.sum( this.get('data').mapBy('charge'));
-  }),
+  // dimention definition: dimentionOrder is important for tree constructing
+  dimentionDef: {
+        dimentionOrder: ['physician', 'patient', 'unit'],
+        'physician': { displayName: 'Specialist' },
+        'patient':   { displayName: 'Patient' },
+        'unit':      { displayName: 'Unit' }
+  },
 
-  totalVisits: Ember.computed('data', function() {
-    return _.sum( this.get('data').mapBy('visits'));
-  }),
-
-  avgAge: Ember.computed('data', function() {
-    console.log(this.get('data').mapBy('patientAge'));
-    return _.avg( this.get('data').mapBy('patientAge') );
-  }),  
-
-  // dimentions properties for grouping into tree column
-  // list of properties could be extended if needed
-  dimentionDefs: Ember.computed(function() {
-    return {
-        'physician': {
-          displayName: 'Specialist',
-        },
-        'patient': { 
-          displayName: 'Patient'
-        },
-        'unit': { 
-          displayName: 'Unit'
-        }
-      };
-  }),
-
-  // dimentions order for tree constructiong
-  dimentionsOrder: Ember.computed(function() {
-    return ['physician', 'unit', 'patient'];
-  }),
-
-  // treetable columns: one treecolumn and many aggregationColumns
-  treetableColumns: Ember.computed('dimentionDefs', 'dimentionsOrder.[]', 'totalCharge', function() {
-    var self = this;
-    var name = this.get('dimentionsOrder').map(function(dim) {
-      return self.get('dimentionDefs')[dim]['displayName']; 
-    }).join(' ▸ ');
-
-    var nameDimColumn = TreeColumnDefinition.create({
-      headerCellName: name,
-    });
+  // treeColumn is computed by dimentionsOrder and dimentionDefs
+  // aggregateColumns should bee set manually
+  aggregateColumns: Ember.computed(function() {
 
     var ageColumn = AggregateColumnDefinition.create({
-      // supergroup doesn't aggregate root as node, see https://github.com/Sigfried/supergroup/issues/6
       headerCellName: 'Avg Age',
       savedWidth: 60,
       getCellContent: function(row) {
-        var value = (row.get('content.depth') === 0) ?
-                      self.get('avgAge')
-                      :
-                      row.get('content').aggregate(_.avg, 'patientAge');
-        return ( Math.floor(value) );
+        var value = row.get('content').aggregate(_.mean, 'patientAge');
+        return Math.floor( value );
       }
     });
 
     var visitsColumn = AggregateColumnDefinition.create({
-      // supergroup doesn't aggregate root as node, see https://github.com/Sigfried/supergroup/issues/6
       headerCellName: 'Visits',
       savedWidth: 60,
       getCellContent: function(row) {
-        var value = (row.get('content.depth') === 0) ?
-                      self.get('totalVisits')
-                      :
-                      row.get('content').aggregate(_.sum, 'visits');
+        var value = row.get('content').aggregate(_.sum, 'visits');
         return value;
       }
     });
 
-
     var chargeColumn = AggregateColumnDefinition.create({
-      // supergroup doesn't aggregate root as node, see https://github.com/Sigfried/supergroup/issues/6
       headerCellName: 'Sum Charge',
       getCellContent: function(row) {
-        var value = (row.get('content.depth') === 0) ?
-                      self.get('totalCharge')
-                      :
-                      row.get('content').aggregate(_.sum, 'charge');
+        var value = row.get('content').aggregate(_.sum, 'charge');
         return NumberFormatHelpers.toCurrency( value );
       }
     });
 
-    return [nameDimColumn, ageColumn, visitsColumn, chargeColumn];
+    return [ageColumn, visitsColumn, chargeColumn];
   }),
 
-  // tabletree state management
   treetableIsCollapsed: true,
+  // END-SNIPPET
 
   actions: {
     treeByPatient: function() {
-      this.set('dimentionsOrder', ['patient', 'unit', 'physician']);
+      this.set('dimentionDef.dimentionOrder', ['patient', 'unit', 'physician']);
       this.set('treetableIsCollapsed', true);
     },
 
     treeByPhysician: function() {
-      this.set('dimentionsOrder', ['physician', 'unit', 'patient']);
+      this.set('dimentionDef.dimentionOrder', ['physician', 'unit', 'patient']);
+      this.set('treetableIsCollapsed', true);
+    },
+
+    treeByUnit: function() {
+      this.set('dimentionDef.dimentionOrder', ['unit', 'physician', 'patient']);
       this.set('treetableIsCollapsed', true);
     }
   },
 
-// END-SNIPPET
+
 
   // columns for simple table to represent raw data 
   dataColumns: Ember.computed(function() {

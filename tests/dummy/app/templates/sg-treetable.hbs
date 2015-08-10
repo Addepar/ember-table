@@ -2,10 +2,11 @@
   <h1>Ember Table <small>Constructing TreeTable with SuperGroup.js</small></h1>
 
   <hr> 
-  Arrange tree 
+  <p> Tree is arranged <a {{action 'treeByPhysician'}} class="btn btn-default btn-xs"> by Specialist </a> by default.  Rearrange tree
     <a {{action 'treeByPatient'}} class="btn btn-default btn-xs"> by Patient </a> or 
-    <a {{action 'treeByPhysician'}} class="btn btn-default btn-xs"> by Specialist </a>.
-  <hr>
+     or
+    <a {{action 'treeByUnit'}} class="btn btn-default btn-xs"> by Unit </a>.
+  </p>
 
     <div class="row">
       <div class="col-md-6">
@@ -15,8 +16,8 @@
             {{! BEGIN-SNIPPET sg-treetable}}
             {{sg-treetable
               data=data
-              dimentionsOrder=dimentionsOrder
-              columns=treetableColumns
+              dimentionDef=dimentionDef
+              aggregateColumns=aggregateColumns
               selection=selection
               isCollapsed=treetableIsCollapsed
             }}
