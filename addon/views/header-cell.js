@@ -115,7 +115,7 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
       this.get('tableComponent').elementSizeDidChange();
     }
 
-    this.get('context').sendAction('onColumnResized', this.get('column'), newWidth);
+    this.get('tableComponent').sendAction('onColumnResized', this.get('column'), newWidth);
   },
 
   elementSizeDidChange: function() {
