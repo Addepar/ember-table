@@ -1,0 +1,20 @@
+{{#each lazyContent as |lazyRow|}}
+	{{component itemViewClass 
+		content=lazyRow
+		columns=columns
+		rowWidth=rowWidth
+	    enableColumnReorder=enableColumnReorder
+  		isShowingSortableIndicator=isShowingSortableIndicator
+  		sortableIndicatorLeft=sortableIndicatorLeft
+  		rowHeight=rowHeight
+  		rowWidth=rowWidth
+  		columnMode=columnMode
+  		columnsFillTable=columnsFillTable
+  		rowDidClick='rowDidClick'
+  		toggleRowCollapse='toggleRowCollapse'
+	}}
+{{/each}}
+
+{{!-- {{#each lazyItems as |lazyItem|}}
+	{{component itemViewClass content=lazyItem.content itemIndex=lazyItem.itemIndex}}
+{{/each}} --}}

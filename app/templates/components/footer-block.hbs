@@ -1,0 +1,13 @@
+{{#each content as |item|}}
+	{{component itemViewClass 
+		content=item
+		columns=columns
+		rowWidth=rowWidth
+	    enableColumnReorder=enableColumnReorder
+  		isShowingSortableIndicator=isShowingSortableIndicator
+  		sortableIndicatorLeft=sortableIndicatorLeft
+  		rowHeight=rowHeight
+  		columnMode=columnMode
+  		columnsFillTable=columnsFillTable
+	}}
+{{/each}}

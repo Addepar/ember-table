@@ -2,7 +2,7 @@
 import Ember from 'ember';
 import TableComponent from 'ember-table/components/ember-table';
 import ColumnDefinition from 'ember-table/models/column-definition';
-import FinancialTableTreeRow from '../views/financial-table-tree-row';
+import FinancialTableTreeRow from './financial-table/table-tree-row';
 import NumberFormatHelpers from '../utils/number-format';
 
 export default TableComponent.extend({
@@ -36,8 +36,8 @@ export default TableComponent.extend({
       return ColumnDefinition.create({
         index: index,
         headerCellName: name,
-        headerCellView: 'financial-table-header-cell',
-        tableCellView: 'financial-table-cell',
+        headerCellView: 'financial-table/header-cell',
+        tableCellView: 'financial-table/table-cell',
         getCellContent: function(row) {
           var object = row.get('values')[this.get('index')];
           if (object.type === 'money') {
@@ -52,7 +52,7 @@ export default TableComponent.extend({
     });
     columns.unshiftObject(this.get('groupingColumn'));
     return columns;
-  }).property('data.valueFactors.@each', 'groupingColumn'),
+  }).property('data.valueFactors.[]', 'groupingColumn'),
 
   groupingColumn: Ember.computed(function() {
     var groupingFactors = this.get('data.grouping_factors');
@@ -63,11 +63,11 @@ export default TableComponent.extend({
       isTreeColumn: true,
       isSortable: false,
       textAlign: 'text-align-left',
-      headerCellView: 'financial-table-header-tree-cell',
-      tableCellView: 'financial-table-tree-cell',
+      headerCellView: 'financial-table/header-tree-cell',
+      tableCellView: 'financial-table/table-tree-cell',
       contentPath: 'group_value'
     });
-  }).property('data.grouping_factors.@each'),
+  }).property('data.grouping_factors.[]'),
 
   root: Ember.computed(function() {
     var data = this.get('data');
@@ -97,8 +97,11 @@ export default TableComponent.extend({
     if (!rows) {
       return Ember.A();
     }
-    rows = rows.slice(1, rows.get('length'));
-    return rows.filterProperty('isShowing');
+    rows = rows.slice(1, rows.get('length')).filterBy('isShowing');
+    rows.forEach(function(row, index) {
+      return row.set('itemIndex', index);
+    });
+    return rows;
   }).property('rows'),
 
   footerContent: Ember.computed(function() {
@@ -126,7 +129,7 @@ export default TableComponent.extend({
   },
 
   createTree: function(parent, node) {
-    var row = FinancialTableTreeRow.create({ parentController: this });
+    var row = FinancialTableTreeRow.create({ tableComponent: this });
     // TODO(azirbel): better map function and _this use
     var children = (node.children || []).map((function(_this) {
       return function(child) {
@@ -182,7 +185,7 @@ export default TableComponent.extend({
       return this.notifyPropertyChange('rows');
     },
 
-    toggleCollapse: function(row) {
+    toggleRowCollapse: function(row) {
       row.toggleProperty('isCollapsed');
       Ember.run.next(this, function() {
         this.notifyPropertyChange('rows');

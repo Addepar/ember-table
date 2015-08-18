@@ -35,7 +35,7 @@ export default Ember.Mixin.create({
     return Ember.run.debounce(this, this.get('endResize'), event, this.get('resizeEndDelay'));
   },
 
-  didInsertElement: function() {
+  didRender: function() {
     this._super();
     return this._setupDocumentHandlers();
   },

@@ -1,0 +1,9 @@
+{{! BEGIN-SNIPPET editable-table-cell}}
+<span class="ember-table-content">
+  {{#if isEditing}}
+    {{editable-table/inner-textfield type=type value=cellContent focusOut='focusOut'}}
+  {{else}}
+    <span class='content'>{{cellContent}}</span>
+  {{/if}}
+</span>
+{{! END-SNIPPET}}

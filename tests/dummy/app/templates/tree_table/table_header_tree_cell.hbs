@@ -1,10 +1,10 @@
-<span {{bind-attr class=":ember-table-toggle-span view.row.isLeaf::ember-table-toggle
-    view.row.isCollapsed:ember-table-expand:ember-table-collapse"}}
-    {{action 'toggleCollapse' view.row}}>
+<span class="ember-table-toggle-span {{if row.isLeaf '' 'ember-table-toggle'}} 
+    {{if row.isCollapsed 'ember-table-expand' 'ember-table-collapse'}}"
+    {{action 'toggleCollapse' row}}>
   {{fa-icon "caret-down" classNames="ember-table-toggle-icon"}}
 </span>
-<div class="ember-table-content-container" {{action 'sortByColumn' view.column}}>
+<div class="ember-table-content-container" {{action 'sortByColumn' column}}>
   <span class="ember-table-content">
-    {{view.column.headerCellName}}
+    {{column.headerCellName}}
   </span>
 </div>

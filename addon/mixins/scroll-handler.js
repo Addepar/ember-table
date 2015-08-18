@@ -4,7 +4,7 @@ export default Ember.Mixin.create({
   onScroll: Ember.K,
   scrollElementSelector: '',
 
-  didInsertElement: function() {
+  didRender: function() {
     var _this = this;
     this._super();
     this.$(this.get('scrollElementSelector')).bind('scroll', function(event) {

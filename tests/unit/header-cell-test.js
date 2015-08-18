@@ -6,11 +6,8 @@ import {
 
 import ColumnDefinition from '../../models/column-definition';
 
-moduleFor('view:headerCell', 'Unit: Header Cell', {
-  unit: true,
-  needs: [
-    'template:header-cell'
-  ]
+moduleFor('component:headerCell', 'Unit: Header Cell', {
+  unit: true
 });
 
 test('The elementSizeDidChange scheduled task is canceled when the element is destroyed', function(assert) {

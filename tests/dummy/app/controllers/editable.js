@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
     var dateColumn = ColumnDefinition.create({
       savedWidth: 100,
       headerCellName: 'Date',
-      tableCellViewClass: 'date-picker-table-cell',
+      tableCellViewClass: 'editable-table/date-picker-table-cell',
       getCellContent: function(row) {
         return row.get('date').toString('yyyy-MM-dd');
       },
@@ -19,7 +19,7 @@ export default Ember.Controller.extend({
     var ratingColumn = ColumnDefinition.create({
       savedWidth: 150,
       headerCellName: 'Analyst Rating',
-      tableCellViewClass: 'rating-table-cell',
+      tableCellViewClass: 'editable-table/rating-table-cell',
       contentPath: 'rating',
       setCellContent: function(row, value) {
         return row.set('rating', value);
@@ -31,7 +31,7 @@ export default Ember.Controller.extend({
       return ColumnDefinition.create({
         savedWidth: 100,
         headerCellName: name,
-        tableCellViewClass: 'editable-table-cell',
+        tableCellViewClass: 'editable-table/editable-table-cell',
         getCellContent: function(row) {
           return row.get(key).toFixed(2);
         },
