@@ -28,5 +28,10 @@ ShowHorizontalScrollMixin, {
     columnDidSort: function(fromIndex, toIndex) {
       this.sendAction('columnDidSort', fromIndex, toIndex);
     },
+    
+    sortByColumn: function(column) {
+      this.sendAction('sortByColumn', column);
+    },
+
   }
 });

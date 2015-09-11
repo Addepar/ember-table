@@ -83,6 +83,10 @@ StyleBindingsMixin, {
   actions: {
     toggleTableCollapse: function() {
       this.sendAction('toggleTableCollapse');
-    }
+    },
+
+    sortByColumn: function(column) {
+      this.sendAction('sortByColumn', column);
+  },
   }
 });

@@ -1,5 +1,5 @@
 {{#each content as |item|}}
-	{{component itemViewClass 
+	{{component itemViewClass
 		content=item
 		rowWidth=rowWidth
 	    enableColumnReorder=enableColumnReorder
@@ -10,5 +10,6 @@
   		columnsFillTable=columnsFillTable
   		toggleTableCollapse='toggleTableCollapse'
       columnDidSort='columnDidSort'
+			sortByColumn='sortByColumn'
 	}}
 {{/each}}

@@ -6,7 +6,7 @@ export default Ember.Component.extend(TableBlock, {
   // TODO(new-api): Eliminate view alias
   itemView: 'header-row',
   itemViewClass: Ember.computed.alias('itemView'),
-  
+
   content: Ember.computed(function() {
     return [this.get('columns')];
   }).property('columns'),
@@ -29,5 +29,10 @@ export default Ember.Component.extend(TableBlock, {
     columnDidSort: function(fromIndex, toIndex) {
       this.sendAction('columnDidSort', fromIndex, toIndex);
     },
+
+    sortByColumn: function(column) {
+      this.sendAction('sortByColumn', column);
+    },
+
   }
 });
