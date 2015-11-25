@@ -575,13 +575,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   },
 
   findRow: function(content) {
-    // TODO(azirbel): Replace with filter
-    this.get('bodyContent').forEach(function(row) {
-      if (row.get('content') === content) {
-        return row;
-      }
-    });
-    return null;
+    return this.get('bodyContent').findBy('content', content) || null;
   },
 
   rowIndex: function(row) {
