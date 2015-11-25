@@ -87,6 +87,9 @@ StyleBindingsMixin, ResizeHandlerMixin, {
         this.get('persistedSelection').clear();
         this.get('rangeSelection').clear();
         switch (selectionMode) {
+          case 'none':
+            val = null;
+            break;
           case 'single':
             this.get('persistedSelection').addObject(val);
             break;
@@ -94,7 +97,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
             this.get('persistedSelection').addObjects(val);
         }
       }
-      return this.get('selection');
+      return val;
     },
     get: function() {
       var selectionMode = this.get('selectionMode');
@@ -582,7 +585,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // TODO(azirbel): Document
   actions: {
     addColumn: Ember.K,
-    
+
     sortByColumn: function(column) {
       this.sendAction('sortByColumn', column);
     },
