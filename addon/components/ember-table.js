@@ -192,13 +192,14 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   }).property('_resolvedContent.[]'),
 
   // An array of Ember.Table.Row
-  footerContent: Ember.computed(function(key, value) {
-    if (value) {
-      return value;
-    } else {
+  footerContent: Ember.computed({
+    get: function() {
       return Ember.A();
+    },
+    set: function(key, value) {
+      return value;
     }
-  }).property(),
+  }),
 
   fixedColumns: Ember.computed(function() {
     var columns = this.get('columns');
