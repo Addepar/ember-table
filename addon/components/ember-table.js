@@ -81,29 +81,43 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   // An array of the rows currently selected. If `selectionMode` is set to
   // 'single', the array will contain either one or zero elements.
-  selection: Ember.computed(function(key, val) {
-    var selectionMode = this.get('selectionMode');
-    if (arguments.length > 1 && val) {
-      this.get('persistedSelection').clear();
-      this.get('rangeSelection').clear();
+  selection: Ember.computed('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode', {
+    get: function() {
+      var selectionMode = this.get('selectionMode');
+      var selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
       switch (selectionMode) {
+        case 'none':
+          return null;
         case 'single':
-          this.get('persistedSelection').addObject(val);
-          break;
+          return selection[0] || null;
         case 'multiple':
-          this.get('persistedSelection').addObjects(val);
+          return selection;
+      }
+    },
+    set: function(key, val) {
+      var selectionMode = this.get('selectionMode');
+      if (arguments.length > 1 && val) {
+        this.get('persistedSelection').clear();
+        this.get('rangeSelection').clear();
+        switch (selectionMode) {
+          case 'single':
+            this.get('persistedSelection').addObject(val);
+            break;
+          case 'multiple':
+            this.get('persistedSelection').addObjects(val);
+        }
+      }
+      var selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
+      switch (selectionMode) {
+        case 'none':
+          return null;
+        case 'single':
+          return selection[0] || null;
+        case 'multiple':
+          return selection;
       }
     }
-    var selection = this.get('persistedSelection').copy().addObjects(this.get('rangeSelection'));
-    switch (selectionMode) {
-      case 'none':
-        return null;
-      case 'single':
-        return selection[0] || null;
-      case 'multiple':
-        return selection;
-    }
-  }).property('persistedSelection.[]', 'rangeSelection.[]', 'selectionMode'),
+  }),
 
   // ---------------------------------------------------------------------------
   // Internal properties
