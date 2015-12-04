@@ -83,6 +83,9 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     if (this.$().is('.ui-resizable')) {
       this.$().resizable('destroy');
     }
+
+    Ember.run.cancel(this._scheduledElementSizeDidChange);
+
     this._super();
   },
 
@@ -118,6 +121,14 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
     this.get('context').sendAction('onColumnResized', this.get('column'), newWidth);
   },
 
+  /**
+   * A Ember timer object representing a scheduled call to
+   * `elementSizeDidChange`.
+   * @private
+   * @type {Object}
+   */
+  _scheduledElementSizeDidChange: null,
+
   elementSizeDidChange: function() {
     var maxHeight = 0;
     // TODO(Louis): This seems bad...
@@ -127,11 +138,13 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
         maxHeight = thisHeight;
       }
     });
+
     this.set('tableComponent._contentHeaderHeight', maxHeight);
   },
 
   cellWidthDidChange: Ember.observer(function() {
-    Ember.run.schedule('afterRender', this, this.elementSizeDidChange);
+    this._scheduledElementSizeDidChange = Ember.run.scheduleOnce('afterRender',
+      this, this.elementSizeDidChange);
   }, 'width'),
 
   resizableObserver: Ember.observer(function() {
