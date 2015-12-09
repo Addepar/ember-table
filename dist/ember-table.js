@@ -340,7 +340,7 @@ var define, requireModule, require, requirejs;
               value = resolvedContent;
             });
 
-            // returns [] if the promise doesn't resolve immediately, or 
+            // returns [] if the promise doesn't resolve immediately, or
             // the resolved value if it's ready
             return value;
           }
@@ -510,6 +510,38 @@ var define, requireModule, require, requirejs;
         }
       },
 
+      /**
+       * Resizes a column, and returns whether or not the column is now at it's
+       * minimum or maximum.
+       *
+       * @private
+       * @param {ColumnDefinition} column The column to be resized
+       * @param {number} totalResizableWidth The total width of the table that
+       *   can be resized
+       * @param {number} availableWidth The total width available in the table
+       * @returns {boolean}
+       */
+      _resizeColumn: function(column, totalResizableWidth, availableWidth) {
+        var newWidth = Math.floor(column.get('width') / totalResizableWidth *
+          availableWidth);
+
+        var minWidth = column.get('minWidth');
+        var maxWidth = column.get('maxWidth');
+
+        if (newWidth < minWidth) {
+          column.set('width', minWidth);
+          availableWidth -= minWidth;
+          return true;
+        } else if (newWidth > maxWidth) {
+          column.set('width', maxWidth);
+          availableWidth -= maxWidth;
+          return true;
+        } else {
+          column.set('width', newWidth);
+          return false;
+        }
+      },
+
       // Iteratively adjusts column widths to adjust to a changed table width.
       // Attempts to scale columns proportionally. However, if a column hits a min
       // or max width after scaling proportionally, we need to respect that setting.
@@ -521,33 +553,26 @@ var define, requireModule, require, requirejs;
         var columnsToResize = allColumns.filterProperty('canAutoResize');
         var unresizableColumns = allColumns.filterProperty('canAutoResize', false);
         var availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns);
-        var doNextLoop = true;
-        var nextColumnsToResize = [];
-        var totalResizableWidth;
-        var newWidth;
 
-        while (doNextLoop) {
-          doNextLoop = false;
-          nextColumnsToResize = [];
-          totalResizableWidth = this._getTotalWidth(columnsToResize);
-          /*jshint loopfunc:true */
-          // TODO(azirbel): Revisit JSHint error above
-          columnsToResize.forEach(function(column) {
-            newWidth = Math.floor((column.get('width') / totalResizableWidth) * availableWidth);
-            if (newWidth < column.get('minWidth')) {
-              doNextLoop = true;
-              column.set('width', column.get('minWidth'));
-              availableWidth -= column.get('width');
-            } else if (newWidth > column.get('maxWidth')) {
-              doNextLoop = true;
-              column.set('width', column.get('maxWidth'));
-              availableWidth -= column.get('width');
+        var continueResizingColumns = true;
+        while (continueResizingColumns) {
+          var totalResizableWidth = this._getTotalWidth(columnsToResize);
+          var nextColumnsToResize = [];
+          continueResizingColumns = false;
+
+          for (var i = 0; i < columnsToResize.get('length'); ++i) {
+            var column = columnsToResize[i];
+            var isColumnAtExtremum = this._resizeColumn(column, totalResizableWidth,
+              availableWidth);
+
+            if (isColumnAtExtremum) {
+              continueResizingColumns = true;
             } else {
-              column.set('width', newWidth);
               nextColumnsToResize.pushObject(column);
             }
-            columnsToResize = nextColumnsToResize;
-          });
+          }
+
+          columnsToResize = nextColumnsToResize;
         }
       },
 
