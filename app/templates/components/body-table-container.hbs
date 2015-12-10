@@ -6,13 +6,13 @@
           content=bodyContent
           columns=fixedColumns
           blockWidth=fixedBlockWidth
-          numItemsShowing=_numItemsShowing
           scrollTop=_scrollTop
-          startIndex=_startIndex
           itemViewClass=itemViewClass
+          height=bodyHeight
           rowHeight=rowHeight
           rowWidth=rowWidth
           rowDidClick='rowDidClick'
+          scrollChange='scrollTopChange'
           toggleRowCollapse='toggleRowCollapse'
           class="ember-table-left-table-block"
         }}
@@ -21,14 +21,14 @@
         content=bodyContent
         columns=tableColumns
         scrollLeft=scrollLeft
-        blockWidth=tableBlockWidth
-        numItemsShowing=_numItemsShowing
         scrollTop=_scrollTop
-        startIndex=_startIndex
+        blockWidth=tableBlockWidth
         itemViewClass=itemViewClass
+        height=bodyHeight
         rowHeight=rowHeight
         rowWidth=rowWidth
         rowDidClick='rowDidClick'
+        scrollChange='scrollChange'
         toggleRowCollapse='toggleRowCollapse'
         class="ember-table-right-table-block"
       }}

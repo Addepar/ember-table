@@ -9,7 +9,7 @@ export default Ember.Component.extend( StyleBindingsMixin, {
   content: null,
   itemViewClass: null,
   rowHeight: null,
-  scrollTop: null,
+  scrollTop: 0,
   startIndex: null,
   blockWidth: null,
 
@@ -19,20 +19,9 @@ export default Ember.Component.extend( StyleBindingsMixin, {
 
   width: Ember.computed.alias('blockWidth'),
 
-  numChildViews: Ember.computed(function() {
-    return this.get('numItemsShowing') + 2;
-  }).property('numItemsShowing'),
-
-  onScrollLeftDidChange: Ember.observer('scrollLeft', function() {
-    this.$().scrollLeft(this.get('scrollLeft'));
-  }),
-
-  lazyContent: Ember.computed('numChildViews', 'startIndex', 'content.length', function(){
+  lazyContent: Ember.computed('content.length', function(){
     var content = this.get('content') || Ember.A([]);
-    var startIndex = this.get('startIndex') || 0;
-    var numChildViews = this.get('numChildViews') || 0;
-    var endIndex = startIndex + numChildViews;
-    return content.slice(startIndex, endIndex).map(function(row) { 
+    return content.map(function(row) {
       row.set('isHovered', false);
       return row;
     });
@@ -41,6 +30,10 @@ export default Ember.Component.extend( StyleBindingsMixin, {
   actions: {
     rowDidClick: function(row, event) {
       this.sendAction('rowDidClick', row, event);
+    },
+
+    scrollChange: function(scrollLeft, scrollTop) {
+      this.sendAction('scrollChange', scrollLeft, scrollTop);
     },
 
     toggleRowCollapse: function(row) {

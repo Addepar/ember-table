@@ -23,7 +23,7 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
   prepareContent: Ember.K,
 
   top: Ember.computed(function() {
-    return this.get('row.itemIndex') * this.get('rowHeight');
+    return 0; //this.get('row.itemIndex') * this.get('rowHeight');
   }).property('row.itemIndex', 'rowHeight'),
 
   // TODO(azirbel): Add explicit else case
