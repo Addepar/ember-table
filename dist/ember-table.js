@@ -523,19 +523,16 @@ var define, requireModule, require, requirejs;
        * @returns {boolean}
        */
       _resizeColumn: function(column, totalResizableWidth, availableWidth) {
-        var newWidth = Math.floor(column.get('width') / totalResizableWidth *
-          availableWidth);
+        var newWidth = Math.round(column.get('width') * (availableWidth / totalResizableWidth));
 
         var minWidth = column.get('minWidth');
         var maxWidth = column.get('maxWidth');
 
         if (newWidth < minWidth) {
           column.set('width', minWidth);
-          availableWidth -= minWidth;
           return true;
         } else if (newWidth > maxWidth) {
           column.set('width', maxWidth);
-          availableWidth -= maxWidth;
           return true;
         } else {
           column.set('width', newWidth);
@@ -568,6 +565,7 @@ var define, requireModule, require, requirejs;
 
             if (isColumnAtExtremum) {
               continueResizingColumns = true;
+              availableWidth -= column.get('width');
             } else {
               nextColumnsToResize.pushObject(column);
             }
