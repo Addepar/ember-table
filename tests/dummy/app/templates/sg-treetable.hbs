@@ -1,0 +1,104 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Constructing TreeTable with SuperGroup.js</small></h1>
+
+  <hr> 
+  <p> Tree is arranged <a {{action 'treeByPhysician'}} class="btn btn-default btn-xs"> by Specialist </a> by default.  Rearrange tree
+    <a {{action 'treeByPatient'}} class="btn btn-default btn-xs"> by Patient </a> or 
+     or
+    <a {{action 'treeByUnit'}} class="btn btn-default btn-xs"> by Unit </a>.
+  </p>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="example-container">
+          <div class="ember-table-example-container">
+            <div class="ember-table-example-container ember-table-financial">
+            {{! BEGIN-SNIPPET sg-treetable}}
+            {{sg-treetable
+              data=data
+              dimentionDef=dimentionDef
+              aggregateColumns=aggregateColumns
+              selection=selection
+              isCollapsed=treetableIsCollapsed
+            }}
+            {{! END-SNIPPET}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+   
+          <div class="ember-table-example-container">
+            <h3> Raw Data </h3>
+            {{ember-table
+              hasFooter=false
+              columns=dataColumns
+              content=filteredData
+            }}
+          </div>
+   
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>Template</h3>
+      {{code-snippet name="sg-treetable.hbs"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>Controller</h3>
+      {{code-snippet name="sg-treetable-controller.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>components/sg-treetable.js</h3>
+      {{code-snippet name="sg-treetable-component.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>views/sg-treetable-tree-row.js</h3>
+      {{code-snippet name="sg-treetable-tree-row.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>views/sg-treetable-cell.js</h3>
+      {{code-snippet name="sg-treetable-cell.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>templates/sg-treetable/sg-treetable-cell.hbs</h3>
+      {{code-snippet name="sg-treetable-cell-template.hbs"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>views/sg-treetable-header-cell.js</h3>
+      {{code-snippet name="sg-treetable-header-cell.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>templates/sg-treetable/sg-treetable-tree-cell.hbs</h3>
+      {{code-snippet name="sg-treetable-tree-cell-template.hbs"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>views/sg-treetable-header-tree-cell.js</h3>
+      {{code-snippet name="sg-treetable-header-tree-cell.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>templates/sg-treetable/sg-treetable-header-cell.hbs</h3>
+      {{code-snippet name="sg-treetable-header-cell-template.hbs"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>views/sg-treetable-tree-cell.js</h3>
+      {{code-snippet name="sg-treetable-tree-cell.js"}}
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>templates/sg-treetable/sg-treetable-header-tree-cell.hbs</h3>
+      {{code-snippet name="sg-treetable-header-tree-cell-template.hbs"}}
+    </div>
+
+</div>
