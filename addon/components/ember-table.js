@@ -575,8 +575,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   },
 
   findRow: function(content) {
-    var row = this.get('bodyContent').findBy('content', content);
-    return row ? row : null;
+    return this.get('bodyContent').findBy('content', content) || null;
   },
 
   rowIndex: function(row) {
