@@ -15,5 +15,9 @@ module.exports = function(defaults) {
 
   app.import(app.bowerDirectory + '/d3/d3.js');
 
+  // requestAnimationFrame polyfill for CI with Phantomjs
+  // source https://gist.github.com/paulirish/1579671
+  app.import('vendor/raf.js', { type: 'test' });
+
   return app.toTree();
 };
