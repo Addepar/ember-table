@@ -1,8 +1,7 @@
 import Ember from 'ember';
 import ConfigurableColumnDefinition from
-  '../views/configurable-column-definition';
+  '../components/configurable-column-definition';
 import {randomNumber, randomDate} from '../utils/random';
-
 
 export default Ember.Controller.extend({
   isFluid: false,
@@ -63,7 +62,7 @@ export default Ember.Controller.extend({
     return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
   }),
 
-  content: Ember.computed(function() {
+  tableContent: Ember.computed(function() {
     var content = [];
     var date;
     for (var i = 0; i < 100; i++) {

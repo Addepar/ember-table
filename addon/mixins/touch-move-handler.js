@@ -3,7 +3,7 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   onTouchMove: Ember.K,
 
-  didInsertElement: function() {
+  didRender: function() {
     var _this = this;
     var startX = 0;
     var startY = 0;

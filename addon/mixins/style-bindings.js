@@ -32,7 +32,7 @@ export default Ember.Mixin.create({
       style = tmp[1];
       lookup[style || property] = property;
     });
-    styles = Ember.keys(lookup);
+    styles = Object.keys(lookup);
     properties = styles.map(function(style) {
       return lookup[style];
     });

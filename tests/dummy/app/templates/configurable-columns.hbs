@@ -28,16 +28,16 @@
               <th class="width-column">Actual Width</th>
               <th class="width-column">Saved Width</th>
             </tr>
-            {{#each columns}}
+            {{#each columns as |column|}}
               <tr>
-                <td>{{headerCellName}}</td>
-                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=isSortable}}</td>
-                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=isResizable}}</td>
-                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=canAutoResize}}</td>
-                <td {{bind-attr class="atMinWidth:at-limit"}}>{{input value=minWidthValue class="text-input" type="number" min="1"}}</td>
-                <td {{bind-attr class="atMaxWidth:at-limit"}}>{{input value=maxWidthValue class="text-input" type="number" min="1"}}</td>
-                <td>{{width}}</td>
-                <td>{{savedWidth}}</td>
+                <td>{{column.headerCellName}}</td>
+                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=column.isSortable}}</td>
+                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=column.isResizable}}</td>
+                <td class="checkbox-cell">{{input class="checkbox-input" type="checkbox" checked=column.canAutoResize}}</td>
+                <td class="{{if atMinWidth 'at-limit'}}">{{input value=column.minWidthValue class="text-input" type="number" min="1"}}</td>
+                <td class="{{if atMaxWidth 'at-limit'}}">{{input value=column.maxWidthValue class="text-input" type="number" min="1"}}</td>
+                <td>{{column.width}}</td>
+                <td>{{column.savedWidth}}</td>
               </tr>
             {{/each}}
           </tbody>
@@ -60,7 +60,7 @@
               hasFooter=false
               columnMode=columnMode
               columns=columns
-              content=content
+              content=tableContent
               parentWidth=demoTableWidth
             }}
           </div>
@@ -88,8 +88,8 @@ import Ember from 'ember';
 import ColumnDefinition from 'ember-table/models/column-definition';
 
 export default Ember.Controller.extend({
-  tableColumns: Ember.computed(function() { {{#each columns}}
-{{columnDefinitionDocumentation}}{{/each}}
+  tableColumns: Ember.computed(function() { {{#each columns as |column|}}
+{{column.columnDefinitionDocumentation}}{{/each}}
     return [dateColumn, openColumn, highColumn, lowColumn, closeColumn];
   }),
 

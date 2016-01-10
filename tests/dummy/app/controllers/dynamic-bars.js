@@ -36,7 +36,7 @@ export default Ember.Controller.extend({
       return ColumnDefinition.create({
         color: color,
         headerCellName: 'Bar',
-        tableCellViewClass: 'bar-table-cell',
+        tableCellViewClass: 'bar-table/bar-cell',
         contentPath: 'value' + (index + 1)
       });
     });
