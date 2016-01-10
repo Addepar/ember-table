@@ -1,0 +1,12 @@
+<div style={{rowWidthSafeString}}>
+{{#each content as |item|}}
+	{{component item.headerCellViewClass
+	    content=item
+	    headerHeight=headerHeight
+  		columnMode=columnMode
+  		columnsFillTable=columnsFillTable
+			toggleTableCollapse='toggleTableCollapse'
+			sortByColumn='sortByColumn'
+	}}
+{{/each}}
+</div>

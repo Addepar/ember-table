@@ -1,0 +1,23 @@
+<div class="ember-table-table-fixed-wrapper">
+  {{#if numFixedColumns}}
+    {{footer-block
+      itemViewClass=itemViewClass
+      content=footerContent
+      columns=fixedColumns
+      blockWidth=fixedBlockWidth
+      rowWidth=rowWidth
+      rowHeight=footerHeight
+      class="ember-table-left-table-block"
+    }}
+  {{/if}}
+  {{footer-block
+    itemViewClass=itemViewClass
+    content=footerContent
+    columns=tableColumns
+    blockWidth=tableBlockWidth
+    scrollLeft=scrollLeft
+    rowWidth=rowWidth
+    rowHeight=footerHeight
+    class="ember-table-right-table-block"
+  }}
+</div>

@@ -1,5 +1,7 @@
 import Ember from 'ember';
 
-export default Ember.Handlebars.makeBoundHelper(function(array, value){
+export default Ember.Helper.helper(function(params) {
+  let array = params[0];
+  let value = params[1];
   return (array || []).contains(value);
 });

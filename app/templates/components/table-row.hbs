@@ -1,0 +1,9 @@
+<div style={{rowWidthSafeString}}>
+{{#each columns as |item|}}
+	{{component item.tableCellViewClass
+	    content=item
+	    row=row
+	    toggleRowCollapse='toggleRowCollapse'
+	}}
+{{/each}}
+</div>

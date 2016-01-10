@@ -1,0 +1,12 @@
+{{! BEGIN-SNIPPET financial-table-tree-cell-template}}
+<div class="ember-table-cell-container" style={{paddingStyle}}>
+  <span class="ember-table-toggle-span {{if row.isLeaf '' 'ember-table-toggle'}} 
+    {{if row.isCollapsed 'ember-table-expand' 'ember-table-collapse'}}" 
+    {{action 'toggleRowCollapse' row}}>
+    {{fa-icon "caret-down" classNames="ember-table-toggle-icon"}}
+  </span>
+  <span class="ember-table-content">
+    {{cellContent}}
+  </span>
+</div>
+{{! END-SNIPPET}}

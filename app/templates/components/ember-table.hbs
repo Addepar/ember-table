@@ -1,9 +1,69 @@
 {{#if hasHeader}}
-  {{view "header-table-container"}}
+  {{header-table-container
+     numFixedColumns=numFixedColumns
+     tableColumns=tableColumns
+     fixedColumns=fixedColumns
+     fixedBlockWidth=_fixedBlockWidth
+     tableBlockWidth=_tableBlockWidth
+     headerHeight=_headerHeight
+     rowWidth=_rowWidth
+     tableContainerWidth=_tableContainerWidth
+     scrollLeft=_tableScrollLeft
+     enableColumnReorder=enableColumnReorder
+     isShowingSortableIndicator=_isShowingSortableIndicator
+     sortableIndicatorLeft=_sortableIndicatorLeft
+     columnMode=columnMode
+     columnsFillTable=columnsFillTable
+     toggleTableCollapse='toggleTableCollapse'
+     columnDidSort='columnDidSort'
+     sortByColumn='sortByColumn'
+  }}
 {{/if}}
-{{view "body-table-container"}}
+{{body-table-container
+  bodyContent=bodyContent
+  numFixedColumns=numFixedColumns
+  itemViewClass=tableRowViewClass
+	tableColumns=tableColumns
+	fixedColumns=fixedColumns
+	fixedBlockWidth=_fixedBlockWidth
+	tableBlockWidth=_tableBlockWidth
+  bodyHeight=_bodyHeight
+  bodyWidth=_width
+  rowHeight=rowHeight
+  rowWidth=_rowWidth
+  scrollLeft=_tableScrollLeft
+  rowDidClick='rowDidClick'
+  toggleRowCollapse='toggleRowCollapse'
+}}
 {{#if hasFooter}}
-  {{view "footer-table-container"}}
+  {{footer-table-container
+      footerContent=footerContent
+      numFixedColumns=numFixedColumns
+      itemViewClass=tableRowViewClass
+      tableColumns=tableColumns
+      fixedColumns=fixedColumns
+      fixedBlockWidth=_fixedBlockWidth
+      tableBlockWidth=_tableBlockWidth
+      footerHeight=footerHeight
+      tableContainerWidth=_tableContainerWidth
+      scrollLeft=_tableScrollLeft
+      headerHeight=_headerHeight
+      tableContentHeight=_tableContentHeight
+      bodyHeight=_bodyHeight
+      rowWidth=_rowWidth
+  }}
 {{/if}}
-{{view "scroll-container"}}
-{{view "column-sortable-indicator"}}
+{{scroll-container
+    scrollContainerWidth=_scrollContainerWidth
+    fixedColumnsWidth=_fixedColumnsWidth
+    scrollLeft=_tableScrollLeft
+    tableColumnsWidth=_tableColumnsWidth
+    tableContentHeight=_tableContentHeight
+    scrollLeftDidChange='scrollLeftDidChange'
+
+}}
+{{column-sortable-indicator
+   sortableIndicatorLeft=_sortableIndicatorLeft
+   tableHeight=_height
+   isShowingSortableIndicator=_isShowingSortableIndicator
+}}

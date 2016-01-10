@@ -1,0 +1,35 @@
+<div class="ember-table-table-fixed-wrapper">
+  {{#if numFixedColumns}}
+    {{header-block
+      columns=fixedColumns
+      blockWidth=fixedBlockWidth
+      rowWidth=rowWidth
+      rowHeight=headerHeight
+      headerHeight=headerHeight
+      enableColumnReorder=enableColumnReorder
+      isShowingSortableIndicator=isShowingSortableIndicator
+      sortableIndicatorLeft=sortableIndicatorLeft
+      columnMode=columnMode
+      columnsFillTable=columnsFillTable
+      toggleTableCollapse='toggleTableCollapse'
+      columnDidSort='columnDidSort'
+      sortByColumn='sortByColumn'
+      class="ember-table-left-table-block"
+    }}
+  {{/if}}
+  {{header-block
+    columns=tableColumns
+    scrollLeft=scrollLeft
+    blockWidth=tableBlockWidth
+    rowWidth=rowWidth
+    rowHeight=headerHeight
+    headerHeight=headerHeight
+    enableColumnReorder=enableColumnReorder
+    isShowingSortableIndicator=isShowingSortableIndicator
+    sortableIndicatorLeft=sortableIndicatorLeft
+    columnMode=columnMode
+    columnDidSort='columnDidSort'
+    sortByColumn='sortByColumn'
+    class="ember-table-right-table-block"
+  }}
+</div>

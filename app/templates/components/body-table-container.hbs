@@ -1,0 +1,37 @@
+<div class="antiscroll-box">
+  <div class="antiscroll-inner">
+    <div class="ember-table-table-scrollable-wrapper">
+      {{#if numFixedColumns}}
+        {{lazy-table-block
+          content=bodyContent
+          columns=fixedColumns
+          blockWidth=fixedBlockWidth
+          scrollTop=_scrollTop
+          itemViewClass=itemViewClass
+          height=bodyHeight
+          rowHeight=rowHeight
+          rowWidth=rowWidth
+          rowDidClick='rowDidClick'
+          scrollChange='scrollTopChange'
+          toggleRowCollapse='toggleRowCollapse'
+          class="ember-table-left-table-block"
+        }}
+      {{/if}}
+      {{lazy-table-block
+        content=bodyContent
+        columns=tableColumns
+        scrollLeft=scrollLeft
+        scrollTop=_scrollTop
+        blockWidth=tableBlockWidth
+        itemViewClass=itemViewClass
+        height=bodyHeight
+        rowHeight=rowHeight
+        rowWidth=rowWidth
+        rowDidClick='rowDidClick'
+        scrollChange='scrollChange'
+        toggleRowCollapse='toggleRowCollapse'
+        class="ember-table-right-table-block"
+      }}
+    </div>
+  </div>
+</div>
