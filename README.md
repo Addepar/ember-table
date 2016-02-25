@@ -8,7 +8,7 @@ that is easy to understand and extend.
 
 
 ## Demo and Documentation
-http://addepar.github.com/ember-table/
+http://opensource.addepar.com/ember-table/
 
 
 ## Getting Started

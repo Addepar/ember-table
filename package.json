@@ -69,6 +69,6 @@
   },
   "ember-addon": {
     "configPath": "tests/dummy/config",
-    "demoURL": "https://addepar.github.io/ember-table/#/overview"
+    "demoURL": "http://opensource.addepar.com/ember-table"
   }
 }
