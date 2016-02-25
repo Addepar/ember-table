@@ -59,7 +59,7 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
   }
 
-  if (environment === 'gh-pages') {
+  if (environment === 'production') {
     ENV.baseURL = '/ember-table/';
   }
 
