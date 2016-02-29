@@ -75,6 +75,13 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // through ctrl/cmd-click or shift-click).
   selectionMode: 'single',
 
+  // A flag to control whether the height of the container is used to
+  // calculate the table height. If 'isRestrictedToContainerHeight'
+  // is set to false, the table height will grow naturally without scrolling
+  // in it's container.
+  // @type {boolean}
+  isRestrictedToContainerHeight: true,
+
   // ---------------------------------------------------------------------------
   // API - Outputs
   // ---------------------------------------------------------------------------
@@ -408,9 +415,15 @@ StyleBindingsMixin, ResizeHandlerMixin, {
     var height = this.get('_height');
     var contentHeight = this.get('_tableContentHeight') +
         this.get('_headerHeight') + this.get('_footerHeight');
-    return Math.min(contentHeight, height);
+
+    if (this.get('isRestrictedToContainerHeight')) {
+      return Math.min(contentHeight, height);
+    }
+    else {
+      return contentHeight;
+    }
   }).property('_height', '_tableContentHeight', '_headerHeight',
-      '_footerHeight'),
+      '_footerHeight', 'isRestrictedToContainerHeight'),
 
   // Actual width of the fixed columns
   _fixedColumnsWidth: Ember.computed(function() {

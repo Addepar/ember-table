@@ -1,0 +1,31 @@
+<div class="col-md-10 col-md-offset-2 left-border main-content-container">
+  <h1>Ember Table <small>Table Height</small></h1>
+
+  <p>By default, tables calculate their height based on the height of the
+  container they are placed in so that they can scroll within.
+  If you do not want your table to scroll and instead to just grow naturally, or
+  if for some reason you cannot put a specific height on the table's container,
+  you can pass a flag to prevent it from restricting its height to the container.</p>
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="example-container">
+        <div class="">
+          {{!// BEGIN-SNIPPET table-height-table}}
+          {{ember-table
+            hasFooter=false
+            columns=tableColumns
+            content=tableContent
+            isRestrictedToContainerHeight=false
+          }}
+          {{!// END-SNIPPET}}
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-12 bumper-30">
+      <h3>Template</h3>
+      {{code-snippet name="table-height-table.hbs"}}
+    </div>
+  </div>
+</div>
