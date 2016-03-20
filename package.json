@@ -9,7 +9,6 @@
   "scripts": {
     "start": "ember server",
     "build": "ember build",
-    "postinstall": "bower install",
     "test": "ember try:testall"
   },
   "repository": "https://github.com/Addepar/ember-table",
