@@ -1,5 +1,5 @@
 import Ember from 'ember';
-import TableContainer from 'ember-table/views/table-container';
+import TableContainer from 'ember-table/components/table-container';
 import ShowHorizontalScrollMixin from 'ember-table/mixins/show-horizontal-scroll';
 import RegisterTableComponentMixin from 'ember-table/mixins/register-table-component';
 
