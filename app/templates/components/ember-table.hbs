@@ -3,7 +3,11 @@
     tableColumns=tableColumns
   }}
 {{/if}}
-{{body-table-container}}
+{{body-table-container
+    bodyContent=bodyContent
+    _numItemsShowing=_numItemsShowing
+    tableColumns=tableColumns
+}}
 {{#if hasFooter}}
   {{footer-table-container}}
 {{/if}}
