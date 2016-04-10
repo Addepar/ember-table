@@ -19,7 +19,15 @@
     _tableBlockWidth=_tableBlockWidth
 }}
 {{#if hasFooter}}
-  {{footer-table-container}}
+  {{footer-table-container
+    fixedColumns=fixedColumns
+    footerContent=footerContent
+    footerHeight=footerHeight
+    numFixedColumns=numFixedColumns
+    tableColumns=tableColumns
+    _fixedBlockWidth=_fixedBlockWidth
+    _tableBlockWidth=_tableBlockWidth
+  }}
 {{/if}}
 {{scroll-container}}
 {{column-sortable-indicator}}
