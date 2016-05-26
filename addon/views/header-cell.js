@@ -100,23 +100,25 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
 
   // `event` here is a jQuery event
   onColumnResize: function(event, ui) {
-    var newWidth = Math.round(ui.size.width);
-    if (this.get('tableComponent.columnMode') === 'standard') {
-      this.get('column').resize(newWidth);
-      this.set('tableComponent.columnsFillTable', false);
-    } else {
-      var diff = this.get('width') - newWidth;
-      this.get('column').resize(newWidth);
-      this.get('nextResizableColumn').resize(
-          this.get('nextResizableColumn.width') + diff);
-    }
+    Ember.run(this, function() {
+      var newWidth = Math.round(ui.size.width);
+      if (this.get('tableComponent.columnMode') === 'standard') {
+        this.get('column').resize(newWidth);
+        this.set('tableComponent.columnsFillTable', false);
+      } else {
+        var diff = this.get('width') - newWidth;
+        this.get('column').resize(newWidth);
+        this.get('nextResizableColumn').resize(
+            this.get('nextResizableColumn.width') + diff);
+      }
 
-    this.elementSizeDidChange();
+      this.elementSizeDidChange();
 
-    // Trigger the table resize (and redraw of layout) when resizing is done
-    if (event.type === 'resizestop') {
-      this.get('tableComponent').elementSizeDidChange();
-    }
+      // Trigger the table resize (and redraw of layout) when resizing is done
+      if (event.type === 'resizestop') {
+        this.get('tableComponent').elementSizeDidChange();
+      }
+    });
   },
 
   /**
