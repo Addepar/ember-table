@@ -37,17 +37,12 @@ test('The content is displayed', function(assert) {
   const columnsDefinitions = [
     ColumnDefinition.create({
       contentPath: 'value'
-    }),
-    ColumnDefinition.create({
-      contentPath: 'value'
     })
   ];
 
   this.set('columns', columnsDefinitions);
   this.set('content', [{
     value: 'a value'
-  }, {
-    value: 12
   }]);
 
   this.render(hbs`{{ember-table
@@ -55,7 +50,9 @@ test('The content is displayed', function(assert) {
     content=content
   }}`);
 
-  assert.equal(this.$('.ember-table-body-container .ember-table-table-row').length,
+  // We insert invisible rows if the height of the body of the table allows it.
+  // Not sure if it's a good idea.
+  assert.equal(this.$('.ember-table-body-container .ember-table-table-row:visible').length,
                1,
                'One row is inserted');
 });
