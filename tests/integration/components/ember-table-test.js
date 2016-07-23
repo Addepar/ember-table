@@ -52,9 +52,13 @@ test('The content is displayed', function(assert) {
 
   // We insert invisible rows if the height of the body of the table allows it.
   // Not sure if it's a good idea.
-  assert.equal(this.$('.ember-table-body-container .ember-table-table-row:visible').length,
+  const rows = this.$('.ember-table-body-container .ember-table-table-row:visible');
+  assert.equal(rows.length,
                1,
                'One row is inserted');
+  assert.equal(rows.height(),
+               30,
+               'The default row height is 30');
 });
 
 test('Fixed columns are rendered', function(assert) {
@@ -79,4 +83,35 @@ test('Fixed columns are rendered', function(assert) {
 
   this.set('numFixedColumns', 1);
   assert.equal(this.$('.ember-table-header-cell').length, 2, 'The columns are added');
+});
+
+test('The row height can be customized', function(assert) {
+  const columnsDefinitions = [
+    ColumnDefinition.create({
+      contentPath: 'value'
+    })
+  ];
+
+  this.set('columns', columnsDefinitions);
+  this.set('content', [{
+    value: 'a value'
+  }]);
+  this.set('rowHeight', 50);
+
+  this.render(hbs`{{ember-table
+    columns=columns
+    content=content
+    rowHeight=rowHeight
+  }}`);
+
+  // We insert invisible rows if the height of the body of the table allows it.
+  // Not sure if it's a good idea.
+  const $rows = this.$('.ember-table-body-container .ember-table-table-row:visible');
+  assert.equal($rows.height(),
+               50,
+               'The row height is the value passed when initializing the table');
+  this.set('rowHeight', 70);
+  assert.equal($rows.height(),
+               70,
+               'The row height changed');
 });
