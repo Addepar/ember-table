@@ -2,14 +2,14 @@ import { moduleForComponent, test } from 'ember-qunit';
 import EmberQunit from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import ColumnDefinition from 'ember-table/models/column-definition';
-import Random from '../../helpers/random';
+import HeaderCellView from 'ember-table/views/header-cell';
+import TableCellView from 'ember-table/views/table-cell';
 
 moduleForComponent('ember-table', 'Integration | Component | ember table', {
   integration: true
 });
 
 test('it renders', function(assert) {
-  Random.random();
   // Set any properties with this.set('myProperty', 'value');
   // Handle any actions with this.on('myAction', function(val) { ... });
   this.render(hbs`{{ember-table}}`);
@@ -320,6 +320,145 @@ test('selectionMode', function(assert) {
 test('selectionOutput', function(assert) {
 });
 
-test ('headerCellName', function(assert) {
->>>>>>> moar tests
+test('headerCellName', function(assert) {
+  const columnsDefinitions = [
+    ColumnDefinition.create({
+      headerCellName: 'column 1',
+      contentPath: 'value'
+    })
+  ];
+
+  this.set('columns', columnsDefinitions);
+  this.set('content', [{
+    value: 12
+  }]);
+
+  this.render(hbs`{{ember-table
+    columns=columns
+    content=content
+  }}`);
+
+  assert.equal(this.$('.ember-table-header-container .ember-table-header-cell').text().trim(),
+    'column 1',
+    'The column title can be set'
+  );
+});
+
+test ('contentPath', function(assert) {
+  const columnsDefinitions = [
+    ColumnDefinition.create({
+      headerCellName: 'column 1',
+      contentPath: 'anything'
+    })
+  ];
+
+  this.set('columns', columnsDefinitions);
+  this.set('content', [{
+    anything: 12
+  }]);
+
+  this.render(hbs`{{ember-table
+    columns=columns
+    content=content
+  }}`);
+
+  assert.equal(this.$('.ember-table-body-container .ember-table-cell:nth-of-type(1)').text().trim(),
+    '12',
+    'A column definition declares the path to the content'
+  );
+});
+
+test ('textAlign', function(assert) {
+  const columnDefinition = ColumnDefinition.create({
+    contentPath: 'value'
+  });
+
+  this.set('columns', [columnDefinition]);
+  this.set('content', [{
+    value: 12
+  }]);
+
+  this.render(hbs`{{ember-table
+    columns=columns
+    content=content
+  }}`);
+
+  assert.equal(this.$('.ember-table-body-container .ember-table-table-row:nth-of-type(1) .ember-table-cell').css('text-align'),
+    'right',
+    'The default text alignment is right'
+  );
+
+  // TODO: the documentation is wrong about the possible options (`right` instead of `text-align-right`)
+  Ember.run( function() {
+    columnDefinition.set('textAlign', 'text-align-left');
+  });
+  assert.equal(this.$('.ember-table-body-container .ember-table-table-row:nth-of-type(1) .ember-table-cell').css('text-align'),
+    'left',
+    'The text alignment is left'
+  );
+
+  Ember.run( function() {
+    columnDefinition.set('textAlign', 'text-align-center');
+  });
+  assert.equal(this.$('.ember-table-body-container .ember-table-table-row:nth-of-type(1) .ember-table-cell').css('text-align'),
+    'center',
+    'The text alignment is center'
+  );
+});
+
+test('headerCellView', function(assert) {
+  const columnDefinition = ColumnDefinition.create({
+    contentPath: 'value',
+    headerCellView: 'my-custom-header'
+  });
+
+  const CustomHeaderView = HeaderCellView.extend({
+    classNames: ['my-custom-header-class']
+  });
+
+  this.container.register('view:my-custom-header', CustomHeaderView);
+
+  this.set('columns', [columnDefinition]);
+  this.set('content', [{
+    value: 12
+  }]);
+
+  this.render(hbs`{{ember-table
+    columns=columns
+    content=content
+  }}`);
+
+  assert.equal(this.$('.ember-table-cell.my-custom-header-class').length,
+    1,
+    'The header cell class can be specified'
+  );
+});
+
+test('tableCellView', function(assert) {
+  const columnDefinition = ColumnDefinition.create({
+    contentPath: 'value',
+    tableCellView: 'my-custom-cell'
+  });
+
+  const CustomCellView = TableCellView.extend({
+    classNames: ['my-custom-cell-class']
+  });
+
+  this.container.register('view:my-custom-cell', CustomCellView);
+
+  this.set('columns', [columnDefinition]);
+  this.set('content', [{
+    value: 12
+  }]);
+
+  this.render(hbs`{{ember-table
+    columns=columns
+    content=content
+  }}`);
+
+  assert.equal(this.$('.ember-table-cell.my-custom-cell-class:contains(12)').length,
+    1,
+    'The content cell class can be specified'
+  );
+>>>>>>> wip - moar tests
 });
