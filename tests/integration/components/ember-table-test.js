@@ -460,5 +460,4 @@ test('tableCellView', function(assert) {
     1,
     'The content cell class can be specified'
   );
->>>>>>> wip - moar tests
 });
