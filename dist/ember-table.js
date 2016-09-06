@@ -196,6 +196,15 @@ var define, requireModule, require, requirejs;
       // through ctrl/cmd-click or shift-click).
       selectionMode: 'single',
 
+      //Name of header view used in the table. This property can be overridden to specify a custom view. The custom view must extend HeaderTableContainer
+      headerTableContainerView: 'header-table-container',
+
+      //Name of the body view used in the table.  This property can be overridden to specify a custom view. The custom view must extend BodyTableContainer
+      bodyTableContainerView: 'body-table-container',
+
+      //Name of the footer view used in the table.  This property can be overridden to specify a custom view. The custom view must extend BodyTableContainer
+      footerTableContainerView: 'footer-table-container',
+
       // ---------------------------------------------------------------------------
       // API - Outputs
       // ---------------------------------------------------------------------------
@@ -1188,8 +1197,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1235,8 +1243,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1245,7 +1252,7 @@ var define, requireModule, require, requirejs;
       
       var buffer = '';
       data.buffer.push("\n  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "header-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+      data.buffer.push(escapeExpression(helpers.view.call(depth0, "headerTableContainerView", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
       data.buffer.push("\n");
       return buffer;
       }
@@ -1254,7 +1261,7 @@ var define, requireModule, require, requirejs;
       
       var buffer = '';
       data.buffer.push("\n  ");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "footer-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+      data.buffer.push(escapeExpression(helpers.view.call(depth0, "footerTableContainerView", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
       data.buffer.push("\n");
       return buffer;
       }
@@ -1262,7 +1269,7 @@ var define, requireModule, require, requirejs;
       stack1 = helpers['if'].call(depth0, "hasHeader", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(1, program1, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
       data.buffer.push("\n");
-      data.buffer.push(escapeExpression(helpers.view.call(depth0, "body-table-container", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["STRING"],data:data})));
+      data.buffer.push(escapeExpression(helpers.view.call(depth0, "bodyTableContainerView", {hash:{},hashTypes:{},hashContexts:{},contexts:[depth0],types:["ID"],data:data})));
       data.buffer.push("\n");
       stack1 = helpers['if'].call(depth0, "hasFooter", {hash:{},hashTypes:{},hashContexts:{},inverse:self.noop,fn:self.program(3, program3, data),contexts:[depth0],types:["ID"],data:data});
       if(stack1 || stack1 === 0) { data.buffer.push(stack1); }
@@ -1280,8 +1287,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1323,8 +1329,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression;
@@ -1345,8 +1350,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', escapeExpression=this.escapeExpression;
@@ -1367,8 +1371,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1, escapeExpression=this.escapeExpression, self=this;
@@ -1408,8 +1411,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', escapeExpression=this.escapeExpression;
@@ -1427,8 +1429,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', stack1;
@@ -1447,8 +1448,7 @@ var define, requireModule, require, requirejs;
   function(__dependency1__, __exports__) {
     "use strict";
     var Ember = __dependency1__["default"];
-    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data
-    /**/) {
+    __exports__["default"] = Ember.Handlebars.template(function anonymous(Handlebars,depth0,helpers,partials,data) {
     this.compilerInfo = [4,'>= 1.0.0'];
     helpers = this.merge(helpers, Ember.Handlebars.helpers); data = data || {};
       var buffer = '', escapeExpression=this.escapeExpression;
