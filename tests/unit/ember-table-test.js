@@ -70,7 +70,7 @@ test('Overriding the headerTableContainerView property results in the specified 
   this.container.register('view:test-header-table-container', HeaderTableContainer.extend({
     classNames: ['test-header-table-container']
   }));
-  
+
   const emberTable = this.subject({
     headerTableContainerView: 'test-header-table-container',
     columns: [
@@ -86,7 +86,7 @@ test('Overriding the headerTableContainerView property results in the specified 
   Ember.run(() => emberTable.append());
 
   assert.ok(Ember.isPresent(emberTable.$('.test-header-table-container')),
-   'Can find class added by extended table body');
+   'Can find class added by extended table header');
 
   Ember.run(function() {
     emberTable.destroy();
@@ -116,7 +116,7 @@ test('Overriding the footerTableContainerView property results in the specified 
   Ember.run(() => emberTable.append());
 
   assert.ok(Ember.isPresent(emberTable.$('.test-footer-table-container')),
-   'Can find class added by extended table body');
+   'Can find class added by extended table footer');
 
   Ember.run(function() {
     emberTable.destroy();
