@@ -79,6 +79,6 @@ test('The elementSizeDidChange scheduled task is only called once when the task 
     'elementSizeDidChange is called when resizing elements');
 
   Ember.run(function() {
-      headerCell.destroy();
+    headerCell.destroy();
   });
 });
