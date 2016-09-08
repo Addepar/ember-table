@@ -75,6 +75,15 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // through ctrl/cmd-click or shift-click).
   selectionMode: 'single',
 
+  // Name of header view used in the table. This property can be overridden to specify a custom view. The custom view must extend HeaderTableContainer
+  headerTableContainerView: 'header-table-container',
+
+  // Name of the body view used in the table.  This property can be overridden to specify a custom view. The custom view must extend BodyTableContainer
+  bodyTableContainerView: 'body-table-container',
+
+  // Name of the footer view used in the table.  This property can be overridden to specify a custom view. The custom view must extend FooterTableContainer
+  footerTableContainerView: 'footer-table-container',
+
   // ---------------------------------------------------------------------------
   // API - Outputs
   // ---------------------------------------------------------------------------
