@@ -33,7 +33,7 @@ moduleForComponent('ember-table', 'Unit: Ember Table', {
   ]
 });
 
-test('Overriding the bodyTableContainerView property results in the specified being rendered', function(assert) {
+test('Overriding the bodyTableContainerView property results in the specified view being rendered', function(assert) {
   assert.expect(1);
 
   this.container.register('view:test-body-table-container', BodyTableContainer.extend({
@@ -64,7 +64,7 @@ test('Overriding the bodyTableContainerView property results in the specified be
 
 });
 
-test('Overriding the headerTableContainerView property results in the specified being rendered', function(assert) {
+test('Overriding the headerTableContainerView property results in the specified view being rendered', function(assert) {
   assert.expect(1);
 
   this.container.register('view:test-header-table-container', HeaderTableContainer.extend({
