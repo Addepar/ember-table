@@ -75,11 +75,13 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // through ctrl/cmd-click or shift-click).
   selectionMode: 'single',
 
-  // A flag to control whether the height of the container is used to
-  // calculate the table height. If 'isRestrictedToContainerHeight'
-  // is set to false, the table height will grow naturally without scrolling
-  // in it's container.
-  // @type {boolean}
+  /**
+   * A flag to control whether the height of the container is used to
+   * calculate the table height. If 'isRestrictedToContainerHeight'
+   * is set to false, the table height will grow naturally without scrolling
+   * in it's container.
+   * @type {boolean}
+   */
   isRestrictedToContainerHeight: true,
 
   // ---------------------------------------------------------------------------
