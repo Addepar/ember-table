@@ -17,7 +17,7 @@ RegisterTableComponentMixin, StyleBindingsMixin, {
   height: Ember.computed.alias('rowHeight'),
 
   rowWidthSafeString: Ember.computed('rowWidth', function() {
-    return new Ember.Handlebars.SafeString('width:' + this.get('rowWidth') + 'px;');
+    return Ember.String.htmlSafe('width:' + this.get('rowWidth') + 'px;');
   }),
 
   prepareContent: Ember.K,
