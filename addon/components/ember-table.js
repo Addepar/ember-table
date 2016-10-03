@@ -344,7 +344,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
   // they can be. Note that this may fail to arrive at the table width if the
   // resizable columns are all restricted by min/max widths.
   doForceFillColumns: function() {
-    var allColumns = this.get('columns');
+    var allColumns = this.get('columns') || Ember.A();
     var columnsToResize = allColumns.filterProperty('canAutoResize');
     var unresizableColumns = allColumns.filterProperty('canAutoResize', false);
     var availableWidth = this.get('_width') - this._getTotalWidth(unresizableColumns);
