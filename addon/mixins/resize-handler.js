@@ -1,5 +1,6 @@
 // TODO(azirbel): This needs to be an external dependency.
 import Ember from 'ember';
+import { addElementResizeListener, removeElementResizeListener } from './element-resize-listener';
 
 export default Ember.Mixin.create({
   resizeEndDelay: 200,
@@ -32,17 +33,17 @@ export default Ember.Mixin.create({
     if (typeof this.onResize === "function") {
       this.onResize(event);
     }
-    return Ember.run.debounce(this, this.get('endResize'), event, this.get('resizeEndDelay'));
+    Ember.run.debounce(this, this.get('endResize'), event, this.get('resizeEndDelay'));
   },
 
   didInsertElement: function() {
     this._super();
-    return this._setupDocumentHandlers();
+    this._setupDocumentHandlers();
   },
 
   willDestroyElement: function() {
     this._removeDocumentHandlers();
-    return this._super();
+    this._super();
   },
 
   _setupDocumentHandlers: function() {
@@ -50,11 +51,13 @@ export default Ember.Mixin.create({
       return;
     }
     this._resizeHandler = Ember.$.proxy(this.get('handleWindowResize'), this);
-    return Ember.$(window).on("resize." + this.elementId, this._resizeHandler);
+    Ember.$(window).on("resize." + this.elementId, this._resizeHandler);
+    addElementResizeListener(this.$()[0], Ember.run.bind(this, this.elementSizeDidChange));
   },
 
   _removeDocumentHandlers: function() {
     Ember.$(window).off("resize." + this.elementId, this._resizeHandler);
-    return this._resizeHandler = null;
+    removeElementResizeListener(this.$()[0], Ember.run.bind(this, this.elementSizeDidChange));
+    this._resizeHandler = null;
   }
 });
