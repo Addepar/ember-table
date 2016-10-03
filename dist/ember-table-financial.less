@@ -1,0 +1,224 @@
+//
+// Ember Table Financial Theme
+// -----------------------------------------------------------------------------
+
+.ember-table-financial {
+
+  /* Table Structures */
+
+  // TODO(Louis): This is a hack for now, it should be:
+  // &.ember-table-tables-container {
+  .ember-table-tables-container {
+    background-color: transparent;
+    border: none;
+    color: #77777a;
+    overflow: hidden;
+    .border-radius(0);
+    .box-sizing();
+
+    &.widget {
+      border: 1px solid @table-body-border-color;
+      border: 1px solid #cfd1d4;
+      .box-shadow(0 2px 4px rgba(0, 0, 0, 0.1));
+      .border-radius(2px);
+    }
+
+    * {
+      .user-select(none)
+    }
+  }
+
+  .ember-table-header-container,
+  .ember-table-footer-container {
+    .box-shadow(none);
+  }
+
+  .ember-table-header-row,
+  .ember-table-header-container .ember-table-table-fixed-wrapper {
+    background: transparent;
+    background-color: transparent;
+    .gradient(0);
+  }
+
+  /* Table Cell */
+
+  .ember-table-cell {
+    // Important: We defined font-size: 0 in .tables-container due to the use of
+    // display-inline: block. Font-size: 13px is used for the cell content
+    font-size: 13px;
+    // Use border left because of border-box
+    border-right: 16px solid transparent;
+  }
+
+  .ember-table-cell-container {
+    border-bottom: 1px dotted #bbb;
+  }
+
+  .ember-table-left-table-block .ember-table-cell {
+    border-right: 16px solid transparent !important;
+  }
+
+  /* Header Container */
+
+  .ember-table-header-container {
+    border-bottom-width: 0;
+  }
+
+  .ember-table-header-container .ember-table-right-table-block .ember-table-table-row {
+    width: 100%;
+    overflow-x: auto;
+    .box-sizing();
+
+    .ui-sortable {
+      // Dynamically set the width
+      overflow: hidden;
+    }
+  }
+
+  /* Header Cells */
+
+  .ember-table-header-cell {
+    font-weight: 600;
+    font-size: 9px !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    background: transparent;
+    background-color: transparent;
+
+    span {
+      line-height: 1;
+    }
+
+    .ember-table-header-content-container {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+
+      &:hover {
+        cursor: pointer;
+      }
+
+      .ember-table-content {
+        padding: 5px 0;
+        line-height: 1.4;
+        position: absolute;
+        bottom: 2px;
+        color: #999;
+      }
+    }
+
+    .ember-table-toggle {
+      position: relative;
+
+      i{
+        position: absolute;
+        bottom: 8px;
+        font-size: 13px;
+      }
+    }
+  }
+
+  .ember-table-header-cell.text-align-left .ember-table-content {
+    left: 0;
+  }
+
+  .ember-table-header-cell.text-align-right .ember-table-content {
+    right: 0;
+  }
+
+  .ember-table-table-header-tree-cell .ember-table-header-content-container {
+    left: 20px;
+  }
+
+  .ember-table-table-header-tree-cell .ember-table-toggle-span {
+    // Need to override stronger selectors
+    position: absolute !important;
+    top: 0;
+    left: 0;
+  }
+
+
+  // TODO(Louis): Need to add this during the drag
+  // > http://jqueryui.com/draggable/#cursor-style
+  // cursor: -webkit-grabbing; cursor: -moz-grabbing;
+
+  .ember-table-table-dropdown-toggle {
+    height: @table-header-cell-control-group-height - 1;
+    float: right;
+    margin: 0;
+    text-align: center;
+    padding: 3px 2px 0 2px;
+    color: darken(@table-header-cell-control-group-color, 50%);
+  }
+
+  /* Footer */
+
+  .ember-table-footer-container {
+    border: none;
+
+    .ember-table-cell-container {
+      border-top: 1px dotted #bbb;
+      border-bottom: none;
+    }
+  }
+
+  .ember-table-fixed-table-container.ember-table-header-container,
+  .ember-table-fixed-table-container.ember-table-footer-container {
+    background-color: transparent;
+  }
+
+  /* Add Column Button */
+
+  .ember-table-add-column-button {
+    display: none;
+  }
+
+  /* Levels */
+
+  .ember-table-table-row {
+    border-bottom-width: 0 !important;
+    // .transition(0.1s background-color linear);
+    color: #333;
+
+    &.ember-table-row-style-1 {
+      font-weight: bold;
+    }
+
+    &.ember-table-row-style-2 {
+      font-weight: normal;
+    }
+
+    &.ember-table-row-style-3 {
+      font-weight: 300;
+    }
+
+    &.ember-table-row-style-4 {
+      font-weight: 300;
+    }
+
+    &.ember-table-row-style-5 {
+      font-weight: 300;
+    }
+
+    &.ember-table-row-style-6 {
+      font-weight: 300;
+    }
+
+    &.ember-table-last-row .ember-table-cell-container {
+      border-bottom: none !important;
+    }
+
+    &.ember-table-selected .ember-table-cell {
+      // Note: must be the same as above
+      border-right: 16px solid transparent;
+    }
+  }
+
+  .ember-table-body-container .ember-table-table-row.ember-table-hover {
+    .ember-table-toggle.ember-table-collapse .ember-table-toggle-icon {
+      opacity: 0.3;
+    }
+  }
+}
