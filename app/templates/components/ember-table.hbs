@@ -1,9 +1,33 @@
 {{#if hasHeader}}
-  {{view "header-table-container"}}
+  {{header-table-container
+    fixedColumns=fixedColumns
+    numFixedColumns=numFixedColumns
+    tableColumns=tableColumns
+    _fixedBlockWidth=_fixedBlockWidth
+    _tableBlockWidth=_tableBlockWidth
+  }}
 {{/if}}
-{{view "body-table-container"}}
+{{body-table-container
+    bodyContent=bodyContent
+    fixedColumns=fixedColumns
+    numFixedColumns=numFixedColumns
+    tableColumns=tableColumns
+    _fixedBlockWidth=_fixedBlockWidth
+    _numItemsShowing=_numItemsShowing
+    _scrollTop=_scrollTop
+    _startIndex=_startIndex
+    _tableBlockWidth=_tableBlockWidth
+}}
 {{#if hasFooter}}
-  {{view "footer-table-container"}}
+  {{footer-table-container
+    fixedColumns=fixedColumns
+    footerContent=footerContent
+    footerHeight=footerHeight
+    numFixedColumns=numFixedColumns
+    tableColumns=tableColumns
+    _fixedBlockWidth=_fixedBlockWidth
+    _tableBlockWidth=_tableBlockWidth
+  }}
 {{/if}}
-{{view "scroll-container"}}
-{{view "column-sortable-indicator"}}
+{{scroll-container}}
+{{column-sortable-indicator}}
