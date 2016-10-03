@@ -11,6 +11,9 @@ that is easy to understand and extend.
 http://opensource.addepar.com/ember-table/
 
 
+## JS Bin Starter Kit
+http://emberjs.jsbin.com/zozonuxu/1/edit
+
 ## Getting Started
 
 #### JS Bin Starter Kit
