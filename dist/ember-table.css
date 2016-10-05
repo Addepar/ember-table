@@ -200,9 +200,7 @@
 .ember-table-left-table-block .ember-table-cell {
   margin-left: 0;
   margin-right: 0;
-}
-.ember-table-left-table-block .ember-table-cell {
-  border-right: 1px solid #dcdcdc !important;
+  border-right: 1px solid #dcdcdc;
 }
 /* Header Container */
 .ember-table-header-container {
@@ -554,7 +552,7 @@
   border-bottom: 1px dotted #bbb;
 }
 .ember-table-financial .ember-table-left-table-block .ember-table-cell {
-  border-right: 16px solid transparent !important;
+  border-right: 16px solid transparent;
 }
 .ember-table-financial .ember-table-header-container {
   border-bottom-width: 0;
