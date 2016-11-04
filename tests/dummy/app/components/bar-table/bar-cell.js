@@ -15,7 +15,7 @@ export default TableCell.extend({
   }).property('column', 'row', 'cellContent'),
 
   histogramStyle: Ember.computed(function() {
-    return new Ember.Handlebars.SafeString('width: ' + (this.get('barWidth')) + '%;');
+    return new Ember.String.htmlSafe('width: ' + (this.get('barWidth')) + '%;');
   }).property('barWidth')
 });
 // END-SNIPPET
