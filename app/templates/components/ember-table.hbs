@@ -1,9 +1,9 @@
 {{#if hasHeader}}
-  {{view headerTableContainerView}}
+  {{view view.headerTableContainerView}}
 {{/if}}
-{{view bodyTableContainerView}}
+{{view view.bodyTableContainerView}}
 {{#if hasFooter}}
-  {{view footerTableContainerView}}
+  {{view view.footerTableContainerView}}
 {{/if}}
 {{view "scroll-container"}}
 {{view "column-sortable-indicator"}}
