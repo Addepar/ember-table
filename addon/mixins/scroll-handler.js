@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  onScroll: Ember.K,
+  onScroll() {},
   scrollElementSelector: '',
 
   didInsertElement: function() {

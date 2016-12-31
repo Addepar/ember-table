@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  onMouseWheel: Ember.K,
+  onMouseWheel() {},
 
   didInsertElement: function() {
     var _this = this;

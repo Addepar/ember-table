@@ -4,9 +4,9 @@ import Ember from 'ember';
 export default Ember.Mixin.create({
   resizeEndDelay: 200,
   resizing: false,
-  onResizeStart: Ember.K,
-  onResizeEnd: Ember.K,
-  onResize: Ember.K,
+  onResizeStart() {},
+  onResizeEnd() {},
+  onResize() {},
 
   endResize: Ember.computed(function() {
     return function(event) {

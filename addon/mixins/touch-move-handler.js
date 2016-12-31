@@ -1,7 +1,7 @@
 import Ember from 'ember';
 
 export default Ember.Mixin.create({
-  onTouchMove: Ember.K,
+  onTouchMove() {},
 
   didInsertElement: function() {
     var _this = this;
