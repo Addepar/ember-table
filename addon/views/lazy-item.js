@@ -3,8 +3,8 @@ import StyleBindingsMixin from 'ember-table/mixins/style-bindings';
 
 export default Ember.View.extend(StyleBindingsMixin, {
   itemIndex: null,
-  prepareContent: Ember.K,
-  teardownContent: Ember.K,
+  prepareContent() {},
+  teardownContent() {},
   rowHeightBinding: 'parentView.rowHeight',
   styleBindings: ['width', 'top', 'display'],
 

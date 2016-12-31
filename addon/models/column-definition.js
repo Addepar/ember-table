@@ -61,7 +61,7 @@ export default Ember.Object.extend({
   // Override to maintain a consistent path to update cell values.
   // Recommended to make this a function which takes (row, value) and updates
   // the row value.
-  setCellContent: Ember.K,
+  setCellContent() {},
 
   // ---------------------------------------------------------------------------
   // Internal properties

@@ -630,7 +630,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   // TODO(azirbel): Document
   actions: {
-    addColumn: Ember.K,
-    sortByColumn: Ember.K
+    addColumn() {},
+    sortByColumn() {}
   }
 });
