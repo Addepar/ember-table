@@ -12,6 +12,9 @@ StyleBindingsMixin, RegisterTableComponentMixin, {
   content: null,
   scrollLeft: null,
 
+  // TODO(ember-1.11): Special property that passes through the current context, which was the previous behavior
+  keyword: true,
+
   onScrollLeftDidChange: Ember.observer(function() {
     this.$().scrollLeft(this.get('scrollLeft'));
   }, 'scrollLeft'),

@@ -6,6 +6,9 @@ StyleBindingsMixin, {
   styleBindings: 'width',
   itemViewClassField: null,
 
+  // TODO(ember-1.11): Special property that passes through the current context, which was the previous behavior
+  keyword: true,
+
   createChildView: function(view, attrs) {
     var itemViewClassField = this.get('itemViewClassField');
     var itemViewClass = attrs.content.get(itemViewClassField);

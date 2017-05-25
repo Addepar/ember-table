@@ -11,6 +11,9 @@ StyleBindingsMixin, {
   scrollTop: null,
   startIndex: null,
 
+  // TODO(ember-1.11): Special property that passes through the current context, which was the previous behavior
+  keyword: true,
+
   init: function() {
     this._super();
     return this.onNumChildViewsDidChange();
