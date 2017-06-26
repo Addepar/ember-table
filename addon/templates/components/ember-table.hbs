@@ -1,0 +1,31 @@
+<div class="table-container">
+  <table>
+    <tr>
+      {{#each columns as |column columnIndex|}}
+        {{#ember-table-header
+          index=columnIndex
+          enableColumnResize=enableColumnResize
+          onHeaderClicked="onHeaderClicked"
+          onColumnBoundaryPanned="onColumnBoundaryPanned"
+          width=column.width}}
+          {{column.columnName}}
+        {{/ember-table-header}}
+      {{/each}}
+    </tr>
+
+    {{#vertical-collection
+      items=rows
+      containerSelector=".table-container"
+      minHeight=20
+      tagName="tbody"
+      as |row rowIndex| }}
+      <tr class="table-row">
+        {{#each columns as |column columnIndex|}}
+          <td>
+            {{yield (get-path row column.valuePath) rowIndex columnIndex}}
+          </td>
+        {{/each}}
+      </tr>
+    {{/vertical-collection}}
+  </table>
+</div>

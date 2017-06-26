@@ -1,0 +1,11 @@
+{{rows.length}}
+
+{{#ember-table
+  rows=rows
+  enableColumnResize=true
+  columns=columns
+  as |cell rowIndex columnIndex|}}
+
+  {{cell}}
+
+{{/ember-table}}

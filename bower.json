@@ -1,4 +1,6 @@
 {
   "name": "ember-table-2",
-  "dependencies": {}
+  "dependencies": {
+    "hammer.js": "2.0.6"
+  }
 }

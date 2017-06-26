@@ -1,0 +1,37 @@
+.table-container {
+  border: 1px solid black;
+  width: 1000px;
+  height: 500px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  position: relative;
+  font-size: 30px;
+}
+
+table {
+  border-collapse: collapse;
+  max-width: 100%;
+  display: block;
+  /*allows max-width to work*/
+  overflow-x: auto;
+}
+table td, table th {
+  border: 1px solid black;
+}
+table td:first-child,
+table th:first-child {
+  background-color: pink;
+  width: 120px;
+  position: absolute;
+  left: 0;
+  word-wrap: break-word;
+}
+table td:first-child + td,
+table td:first-child + th,
+table th:first-child + td,
+table th:first-child + th {
+  display: block;
+  /* allows margin offset to work, also mysteriously fixes chrome offset */
+  margin-left: 120px;
+  /* padding-left: $fixed-col-width; */
+}
