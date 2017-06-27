@@ -1,6 +1,9 @@
 import Ember from 'ember';
 
 export default Ember.Controller.extend({
+  showTable: true,
+  showPanel: false,
+
   rows: Ember.computed(function() {
     const arr = Ember.A();
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -21,7 +24,7 @@ export default Ember.Controller.extend({
   columns: Ember.computed(function() {
     const arr = Ember.A();
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    const columnWidth = 120;
+    const columnWidth = 180;
 
     arr.pushObject(Ember.Object.create({
       columnName: 'Column id',
@@ -30,7 +33,7 @@ export default Ember.Controller.extend({
       width: columnWidth
     }));
 
-    for (let j = 0; j < 78; j++) {
+    for (let j = 0; j < 3; j++) {
       const obj = {};
       arr.pushObject(Ember.Object.create({
         columnName: 'Col ' + alphabet[j % 26],
@@ -43,8 +46,12 @@ export default Ember.Controller.extend({
   }),
 
   actions: {
-    onCellClicked(rowIndex, columnIndex) {
-      console.log(rowIndex, columnIndex)
+    onCheckboxClicked(value) {
+      this.set('showTable', value);
+    },
+
+    onPanelClicked(value) {
+      this.set('showPanel', value);
     }
   }
 });

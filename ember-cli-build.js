@@ -14,6 +14,7 @@ module.exports = function(defaults) {
   */
 
   app.import('bower_components/hammer.js/hammer.js');
+  app.import('bower_components/css-element-queries/src/ResizeSensor.js');
 
   return app.toTree();
 };

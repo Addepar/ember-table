@@ -1,26 +1,41 @@
+/* global Hammer */
 import Ember from 'ember';
+import { getHeaderCellStyle } from '../utils/fixed-column';
+import layout from '../templates/components/ember-table-header';
 
-const PRESS_OFFSET_THRESHOLD = 5;
+const PRESS_OFFSET_THRESHOLD = 10;
+
+const COLUMN_STATIC = 0;
+const COLUMN_RESIZE = 1;
+const COLUMN_REORDERING = 2;
 
 export default Ember.Component.extend({
+  layout,
   tagName: 'th',
   attributeBindings: ['style:style'],
+
+  fixedColumnWidth: 0,
 
   /**
    * X position where user last touches this component.
    */
   touchX: -1,
 
+  firstTouchX: -1,
+
   /**
-   * A variable used for column resizing. When user press mouse at a point that's close to column
-   * boundary (using some threshold), this variable set whether it's the left or right column.
+   * A variable used for column resizing & ordering. When user press mouse at a point that's close
+   * to column boundary (using some threshold), this variable set whether it's the left or right
+   * column.
    */
-  touchLineType: '',
+  columnState: COLUMN_STATIC,
 
   /**
    * Indicates if this header column can be resized or not. It's false by default.
    */
   enableColumnResize: false,
+
+  enableColumnReorder: false,
 
   hammer: null,
 
@@ -31,40 +46,64 @@ export default Ember.Component.extend({
     this.set('hammer', hammer)
 
     hammer.add(new Hammer.Press({ time: 10 }));
+
+
     hammer.on('press', (ev) => {
-      if (!this.get('enableColumnResize')) {
-        this.onTap(ev)
-        return
+      const box = this.element.getBoundingClientRect();
+      if (this.get('enableColumnResize')) {
+        if (box.right - ev.pointers[0].clientX < PRESS_OFFSET_THRESHOLD) {
+          this.set('columnState', COLUMN_RESIZE);
+        }
       }
 
-      const box = ev.target.getBoundingClientRect();
-      if (box.right - ev.pointers[0].clientX < PRESS_OFFSET_THRESHOLD) {
-        this.set('touchLineType', 'right');
-      } else if (ev.pointers[0].clientX - box.left < PRESS_OFFSET_THRESHOLD) {
-        this.set('touchLineType', 'left');
-      } else {
-        this.onTap(ev)
-      }
-
+      this.set('firstTouchX', ev.pointers[0].clientX)
       this.set('touchX', ev.pointers[0].clientX)
     })
 
-    hammer.on('pressup', (ev) => {
-      this.set('touchLineType', '')
+    hammer.on('tap', (ev) => {
+      this.set('columnState', COLUMN_STATIC);
     })
 
     hammer.on('panmove', (ev) => {
-      const touchLineType = this.get('touchLineType');
+      const columnState = this.get('columnState');
 
-      if (touchLineType == 'right') {
-        this.sendAction('onColumnBoundaryPanned', this.get('index'),
-          ev.pointers[0].clientX - this.get('touchX'), true)
-      } else if (touchLineType == 'left') {
-        this.sendAction('onColumnBoundaryPanned', this.get('index'),
-          ev.pointers[0].clientX - this.get('touchX'), false)
+      if (this.get('enableColumnResize') && columnState == COLUMN_RESIZE) {
+        this.sendAction('onColumnResized', this.get('columnIndex'),
+          ev.pointers[0].clientX - this.get('touchX'));
+        this.set('touchX', ev.pointers[0].clientX);
+        return;
       }
 
-      this.set('touchX', ev.pointers[0].clientX)
+      // Column reordering
+      if (this.get('enableColumnReorder')) {
+        // First fixed column cannot be moved.
+        const box = this.element.getBoundingClientRect();
+        if (this.get('fixedColumnWidth') > 0 && this.get('columnIndex') == 0) {
+          return;
+        }
+
+        this.sendAction('onColumnReorder', this.get('columnIndex'), box,
+          ev.pointers[0].clientX - this.get('firstTouchX'));
+        this.set('columnState', COLUMN_REORDERING);
+      }
+    })
+
+    hammer.on('panend', (ev) => {
+      const columnState = this.get('columnState');
+
+      switch (columnState) {
+        case COLUMN_REORDERING:
+          this.sendAction('onColumnReorderEnds', this.get('columnIndex'),
+            ev.pointers[0].clientX - this.get('firstTouchX'));
+        break;
+
+        case COLUMN_RESIZE:
+          this.sendAction('onColumnResizeEnded', this.get('columnIndex'),
+            ev.pointers[0].clientX - this.get('touchX'));
+        break;
+      }
+
+      this.set('columnState', COLUMN_STATIC);
     })
   },
 
@@ -72,22 +111,18 @@ export default Ember.Component.extend({
     const hammer = this.get('hammer')
 
     hammer.off('press')
-    hammer.off('pressup')
     hammer.off('panmove')
+    hammer.off('panend')
 
     this._super(...arguments);
   },
 
-  onTap(ev) {
-    this.sendAction('onHeaderClicked', this.get('index'))
+  onTap() {
+    this.sendAction('onHeaderClicked', this.get('columnIndex'))
   },
 
-  style: Ember.computed('width', function(){
-    let width = this.get('width')
-    if (width == undefined || typeof(width) !== 'number') {
-      width = 100
-    }
-
-    return `min-width: ${width}px; max-width: ${width}px;`
+  style: Ember.computed('width', 'columnIndex', 'fixedColumnWidth', function() {
+    return getHeaderCellStyle(this.get('width'), this.get('columnIndex'),
+      this.get('fixedColumnWidth'));
   })
 });

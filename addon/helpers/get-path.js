@@ -5,3 +5,9 @@ export function getPath(params) {
 }
 
 export default Ember.Helper.helper(getPath);
+
+// const helper = Ember.Handlebars.makeBoundHelper(function(object, path) {
+//   return Ember.get(object, path);
+// });
+
+// export default helper;
