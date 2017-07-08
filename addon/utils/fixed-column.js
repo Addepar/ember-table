@@ -5,7 +5,7 @@ const getHeaderCellStyle = function getHeaderCellStyle(width, columnIndex, fixed
     width = 100
   }
 
-  let style = `min-width: ${width}px; max-width: ${width}px; position: relative;`
+  let style = `min-width: ${width}px; max-width: ${width}px;`
 
   // fixedColumnWidth > 0 means this column is a fixed column.
   if (fixedColumnWidth > 0) {

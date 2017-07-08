@@ -33,7 +33,7 @@ export default Ember.Controller.extend({
       width: columnWidth
     }));
 
-    for (let j = 0; j < 3; j++) {
+    for (let j = 0; j < 26; j++) {
       const obj = {};
       arr.pushObject(Ember.Object.create({
         columnName: 'Col ' + alphabet[j % 26],
