@@ -1,5 +1,8 @@
 /* global Hammer */
 import Ember from 'ember';
+import { action, computed } from 'ember-decorators/object';
+import { property } from '../utils/class';
+
 import { getHeaderCellStyle } from '../utils/fixed-column';
 import layout from '../templates/components/ember-table-header';
 
@@ -9,41 +12,41 @@ const COLUMN_STATIC = 0;
 const COLUMN_RESIZE = 1;
 const COLUMN_REORDERING = 2;
 
-export default Ember.Component.extend({
-  layout,
-  tagName: 'th',
-  attributeBindings: ['style:style'],
+const { Component } = Ember;
 
-  fixedColumnWidth: 0,
+export default class EmberTableHeader extends Component {
+  @property layout = layout;
+  @property tagName = 'th';
+  @property attributeBindings = ['style:style'];
+
+  @property fixedColumnWidth = 0;
 
   /**
    * X position where user last touches this component.
    */
-  touchX: -1,
-
-  firstTouchX: -1,
+  @property _touchX = -1;
+  @property _firstTouchX = -1;
 
   /**
    * A variable used for column resizing & ordering. When user press mouse at a point that's close
    * to column boundary (using some threshold), this variable set whether it's the left or right
    * column.
    */
-  columnState: COLUMN_STATIC,
+  @property _columnState = COLUMN_STATIC;
 
   /**
    * Indicates if this header column can be resized or not. It's false by default.
    */
-  enableColumnResize: false,
+  @property enableColumnResize = false;
 
-  enableColumnReorder: false,
+  @property enableColumnReorder = false;
 
-  hammer: null,
+  @property _hammer = null;
 
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
 
     const hammer = new Hammer(this.element);
-    this.set('hammer', hammer)
 
     hammer.add(new Hammer.Press({ time: 10 }));
 
@@ -56,73 +59,97 @@ export default Ember.Component.extend({
         }
       }
 
-      this.set('firstTouchX', ev.pointers[0].clientX)
-      this.set('touchX', ev.pointers[0].clientX)
+      this._firstTouchX = ev.pointers[0].clientX;
+      this._touchX = ev.pointers[0].clientX;
     })
 
     hammer.on('tap', (ev) => {
-      this.set('columnState', COLUMN_STATIC);
+      this._columnState = COLUMN_STATIC;
     })
 
     hammer.on('panmove', (ev) => {
-      const columnState = this.get('columnState');
+      const columnIndex = this.get('columnIndex');
+      const enableColumnResize = this.get('enableColumnResize');
+      const enableColumnReorder = this.get('enableColumnReorder');
+      const fixedColumnWidth = this.get('fixedColumnWidth');
 
-      if (this.get('enableColumnResize') && columnState == COLUMN_RESIZE) {
-        this.sendAction('onColumnResized', this.get('columnIndex'),
-          ev.pointers[0].clientX - this.get('touchX'));
-        this.set('touchX', ev.pointers[0].clientX);
+      const {
+        _columnState,
+        _firstTouchX,
+        _touchX
+      } = this;
+
+      const { clientX } = ev.pointers[0];
+
+      if (enableColumnResize && _columnState == COLUMN_RESIZE) {
+        this.sendAction('onColumnResized', columnIndex, clientX - _touchX);
+
+        this._touchX = clientX;
         return;
       }
 
       // Column reordering
-      if (this.get('enableColumnReorder')) {
+      if (enableColumnReorder) {
         // First fixed column cannot be moved.
-        const box = this.element.getBoundingClientRect();
-        if (this.get('fixedColumnWidth') > 0 && this.get('columnIndex') == 0) {
+        if (fixedColumnWidth > 0 && columnIndex == 0) {
           return;
         }
 
-        this.sendAction('onColumnReorder', this.get('columnIndex'), box,
-          ev.pointers[0].clientX - this.get('firstTouchX'));
-        this.set('columnState', COLUMN_REORDERING);
+        const box = this.element.getBoundingClientRect();
+
+        this.sendAction('onColumnReorder', columnIndex, box, clientX - _firstTouchX);
+
+        this._columnState = _COLUMN_REORDERING;
       }
     })
 
     hammer.on('panend', (ev) => {
-      const columnState = this.get('columnState');
+      const columnIndex = this.get('columnIndx');
 
-      switch (columnState) {
+      const {
+        _columnState ,
+        _firstTouchX,
+        _touchX
+      } = this;
+
+      const { clientX } = ev.pointers[0];
+
+      switch (_columnState) {
         case COLUMN_REORDERING:
-          this.sendAction('onColumnReorderEnds', this.get('columnIndex'),
-            ev.pointers[0].clientX - this.get('firstTouchX'));
+          this.sendAction('onColumnReorderEnds', columnIndex, clientX - _firstTouchX);
         break;
 
         case COLUMN_RESIZE:
-          this.sendAction('onColumnResizeEnded', this.get('columnIndex'),
-            ev.pointers[0].clientX - this.get('touchX'));
+          this.sendAction('onColumnResizeEnded', columnIndex, clientX - _touchX);
         break;
       }
 
-      this.set('columnState', COLUMN_STATIC);
-    })
-  },
+      this._columnState = COLUMN_STATIC;
+    });
+
+    this._hammer = hammer;
+  }
 
   willDestroyElement() {
-    const hammer = this.get('hammer')
+    const hammer = this._hammer
 
     hammer.off('press')
     hammer.off('panmove')
     hammer.off('panend')
 
-    this._super(...arguments);
-  },
+    super.willDestroyElement(...arguments);
+  }
 
   onTap() {
     this.sendAction('onHeaderClicked', this.get('columnIndex'))
-  },
+  }
 
-  style: Ember.computed('width', 'columnIndex', 'fixedColumnWidth', function() {
-    return getHeaderCellStyle(this.get('width'), this.get('columnIndex'),
-      this.get('fixedColumnWidth'));
-  })
-});
+  @computed('width', 'columnIndex', 'fixedColumnWidth')
+  style() {
+    return getHeaderCellStyle(
+      this.get('width'),
+      this.get('columnIndex'),
+      this.get('fixedColumnWidth')
+    );
+  }
+}

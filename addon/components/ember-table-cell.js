@@ -1,14 +1,23 @@
 import Ember from 'ember';
-import layout from '../templates/components/ember-table-cell';
+import { computed } from 'ember-decorators/object';
+import { property } from '../utils/class';
+
 import { getHeaderCellStyle } from '../utils/fixed-column';
+import layout from '../templates/components/ember-table-cell';
 
-export default Ember.Component.extend({
-  layout,
-  tagName: 'td',
-  attributeBindings: ['style:style'],
+const { Component } = Ember;
 
-  style: Ember.computed('width', 'columnIndex', 'fixedColumnWidth', function() {
-    return getHeaderCellStyle(this.get('width'), this.get('columnIndex'),
-      this.get('fixedColumnWidth'));
-  })
-});
+export default class EmberTableCell extends Component {
+  @property layout = layout;
+  @property tagName = 'td';
+  @property attributeBindings = ['style:style'];
+
+  @computed('width', 'columnIndex', 'fixedColumnWidth')
+  style() {
+    return getHeaderCellStyle(
+      this.get('width'),
+      this.get('columnIndex'),
+      this.get('fixedColumnWidth')
+    );
+  }
+}
