@@ -18,10 +18,13 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "@html-next/vertical-collection": "git://github.com/html-next/vertical-collection.git#34dcd7b9133f1844553e96e44106abbc025d7dce",
+    "@html-next/vertical-collection": "1.0.0-beta.5",
+    "css-element-queries": "^0.4.0",
     "ember": "^1.0.3",
     "ember-cli-babel": "^5.1.7",
     "ember-cli-htmlbars": "^1.1.1",
+    "ember-cli-node-assets": "^0.2.2",
+    "hammerjs": "^2.0.8",
     "install": "^0.10.1"
   },
   "devDependencies": {
