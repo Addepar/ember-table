@@ -55,7 +55,7 @@ export default class EmberTableHeader extends Component {
       const box = this.element.getBoundingClientRect();
       if (this.get('enableColumnResize')) {
         if (box.right - ev.pointers[0].clientX < PRESS_OFFSET_THRESHOLD) {
-          this.set('columnState', COLUMN_RESIZE);
+          this._columnState = COLUMN_RESIZE;
         }
       }
 
@@ -99,12 +99,12 @@ export default class EmberTableHeader extends Component {
 
         this.sendAction('onColumnReorder', columnIndex, box, clientX - _firstTouchX);
 
-        this._columnState = _COLUMN_REORDERING;
+        this._columnState = COLUMN_REORDERING;
       }
     })
 
     hammer.on('panend', (ev) => {
-      const columnIndex = this.get('columnIndx');
+      const columnIndex = this.get('columnIndex');
 
       const {
         _columnState ,
