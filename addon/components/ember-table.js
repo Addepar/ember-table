@@ -4,40 +4,68 @@ import { property } from '../utils/class';
 
 import layout from '../templates/components/ember-table';
 
-const COLUMN_WIDTH_MIN = 25;
-
 const { Component } = Ember;
+
+const COLUMN_WIDTH_MIN = 25;
+const HEAD_ALIGN_BAR_WIDTH = 5;
 
 export default class EmberTable extends Component {
   @property layout = layout;
 
+  /**
+   * A variable to indicate if this table has fixed column or not. Current version of ember table
+   * only supports first column as fixed column.
+   */
   @property hasFixedColumn = false;
-
-  @computed('hasFixedColumn', 'columns.firstObject.width')
-  fixedColumnWidth() {
-    return this.get('hasFixedColumn') === true ? this.get('columns.firstObject.width') : 0;
-  }
 
   /**
    * Indicates if this table allows column resizing or not. It's false by default.
    */
   @property enableColumnResize = false;
 
+  /**
+   * Indicates if this table allows column reordering or not. It's false by default.
+   */
   @property enableColumnReorder = false;
 
   /**
+   * A temporary element created when moving column. This element represents the current position
+   * of the moving column. It has the same width and height with the moving column. Once moving
+   * completes, this element vanishes.
    */
   @property _headerGhostElement = null;
 
   /**
-   * @private
+   * A temporary vertical bar that show the column that user is about to move to. This bar aligns
+   * with the right (or left) boundary of next column, depending on whether user is moving the
+   * column right (or left).
    */
-  @property _currentColumnIndex = -1;
+  @property _headerAlignBar = null;
+
+  /**
+   * A variable used when moving column. This variables indicates the current column index that user
+   * is about to move to.
+   */
+  @property currentColumnIndex = -1;
+
+  /**
+   * A variable used when moving column. It indicates the horizontal distance from current moving
+   * column to table left boundary or fixed column (if fixed column is enabled).
+   */
   @property _currentColumnX = -1;
 
+  /**
+   * A sensor object that sends events to this table component when table size changes. When table
+   * is resized, we update the table width variable and all other properties dependent on table
+   * width is updated automatically.
+   */
   @property _resizeSensor = null;
 
-  @property _tableWidth = 0;
+  /**
+   * A variable to store table width. This is updated when table is created or resized. We need to
+   * store the table width because there are several computed property dependent on the table width.
+   */
+  @property tableWidth = 0;
 
   didInsertElement() {
     super.didInsertElement(...arguments);
@@ -104,6 +132,11 @@ export default class EmberTable extends Component {
         }
       }
     }
+  }
+
+  @computed('hasFixedColumn', 'columns.firstObject.width')
+  fixedColumnWidth() {
+    return this.get('hasFixedColumn') === true ? this.get('columns.firstObject.width') : 0;
   }
 
   /**
@@ -173,24 +206,42 @@ export default class EmberTable extends Component {
     this.fillupColumn();
   }
 
+  /**
+   * Creates header ghost element and the header aligned bar. Attached these element to the DOM.
+   * They will be removed when column reordering completes.
+   */
+  createGhostElement(containerElement, width, height) {
+    this._headerGhostElement = document.createElement("div");
+
+    this._headerGhostElement.style.width = `${width}px`;
+    this._headerGhostElement.style.height = `${height}px`;
+    this._headerGhostElement.style.top = '0px';
+    this._headerGhostElement.classList.add('header-ghost-element');
+
+    this._headerAlignBar = document.createElement("div");
+    this._headerAlignBar.style.width = `${HEAD_ALIGN_BAR_WIDTH}px`;
+    this._headerAlignBar.style.height = `${height}px`;
+    this._headerAlignBar.style.top = '0px';
+    this._headerAlignBar.classList.add('header-align-bar');
+
+    containerElement.appendChild(this._headerGhostElement);
+    containerElement.appendChild(this._headerAlignBar);
+  }
+
   @action
   onColumnReorder(columnIndex, header, deltaX) {
     const containerElement = this.element.getElementsByClassName('table-container')[0];
     const tableBoundingBox = containerElement.getBoundingClientRect();
     const columns = this.get('columns');
 
-    if (this.headerGhostElement == null) {
-      this.headerGhostElement = document.createElement("div");
+    if (this._headerGhostElement == null) {
+      this.createGhostElement(containerElement, header.width,
+        tableBoundingBox.bottom - tableBoundingBox.top);
 
-      this.headerGhostElement.style.width = `${header.width}px`;
-      this.headerGhostElement.style.height = `${tableBoundingBox.bottom - tableBoundingBox.top}px`;
-      this.headerGhostElement.style.top = '0px';
-      this.headerGhostElement.classList.add('header-ghost-element');
-
-      containerElement.appendChild(this.headerGhostElement);
+      containerElement.appendChild(this._headerGhostElement);
 
       this.currentColumnIndex = columnIndex;
-      this.currentColumnX = header.left - tableBoundingBox.left;
+      this._currentColumnX = header.left - tableBoundingBox.left;
       this.element.classList.add('unselectable');
     }
 
@@ -211,19 +262,24 @@ export default class EmberTable extends Component {
     if (ghostLeftX + header.width >= tableBoundingBox.right) {
       ghostLeftX = tableBoundingBox.right - header.width;
     }
-    this.headerGhostElement.style.left = `${ghostLeftX}px`;
+    this._headerGhostElement.style.left = `${ghostLeftX}px`;
 
-    // Update the index of column that the ghost header might be replacing.
+    // 3) Update the index of column that the ghost header might be replacing.
     const ghostCenterX = ghostLeftX + header.width / 2;
-    if (ghostCenterX < this.currentColumnX) {
+    if (ghostCenterX < this._currentColumnX) {
       if (this.currentColumnIndex > 0) {
+        // Current column is now the previous column
         this.currentColumnIndex--;
-        this.currentColumnX -= columns[this.currentColumnIndex].width;
+        this._currentColumnX -= columns[this.currentColumnIndex].width;
+        this._headerAlignBar.style.left = `${this._currentColumnX}px`;
       }
-    } else if (ghostCenterX >= this.currentColumnX + columns[this.currentColumnIndex].width) {
+    } else if (ghostCenterX >= this._currentColumnX + columns[this.currentColumnIndex].width) {
       if (this.currentColumnIndex < columns.length - 1) {
-        this.currentColumnX = this.currentColumnX + columns[this.currentColumnIndex].width;
+        // Current column is now the next column
+        this._currentColumnX = this._currentColumnX + columns[this.currentColumnIndex].width;
         this.currentColumnIndex++;
+        this._headerAlignBar.style.left =
+          `${this._currentColumnX + columns[this.currentColumnIndex].width - HEAD_ALIGN_BAR_WIDTH}px`;
       }
     }
   }
@@ -243,11 +299,13 @@ export default class EmberTable extends Component {
     }
 
     this.currentColumnIndex = -1;
-    this.currentColumnX = -1;
+    this._currentColumnX = -1;
 
-    // Update the column orders
-    this.element.getElementsByClassName('table-container')[0].removeChild(this.headerGhostElement);
-    this.headerGhostElement = null;
+    // Remove the header ghost element & aligned bar.
+    this.element.getElementsByClassName('table-container')[0].removeChild(this._headerGhostElement);
+    this.element.getElementsByClassName('table-container')[0].removeChild(this._headerAlignBar);
+    this._headerGhostElement = null;
+    this._headerAlignBar = null;
     this.element.classList.remove('unselectable');
   }
 

@@ -1,18 +1,17 @@
 /* global Hammer */
 import Ember from 'ember';
-import { action, computed } from 'ember-decorators/object';
+import { computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
 
 import { getHeaderCellStyle } from '../utils/fixed-column';
 import layout from '../templates/components/ember-table-header';
 
-const PRESS_OFFSET_THRESHOLD = 10;
+const { Component } = Ember;
 
+const PRESS_OFFSET_THRESHOLD = 10;
 const COLUMN_STATIC = 0;
 const COLUMN_RESIZE = 1;
 const COLUMN_REORDERING = 2;
-
-const { Component } = Ember;
 
 export default class EmberTableHeader extends Component {
   @property layout = layout;
@@ -22,10 +21,14 @@ export default class EmberTableHeader extends Component {
   @property fixedColumnWidth = 0;
 
   /**
+   * X position where user first touches on the header.
+   */
+  @property _firstTouchX = -1;
+
+  /**
    * X position where user last touches this component.
    */
   @property _touchX = -1;
-  @property _firstTouchX = -1;
 
   /**
    * A variable used for column resizing & ordering. When user press mouse at a point that's close
@@ -39,8 +42,14 @@ export default class EmberTableHeader extends Component {
    */
   @property enableColumnResize = false;
 
+  /**
+   * Indicates if this column can be reordered or not. It's false by default.
+   */
   @property enableColumnReorder = false;
 
+  /**
+   * An object that listens to touch/ press/ drag events.
+   */
   @property _hammer = null;
 
   didInsertElement() {
@@ -49,7 +58,6 @@ export default class EmberTableHeader extends Component {
     const hammer = new Hammer(this.element);
 
     hammer.add(new Hammer.Press({ time: 10 }));
-
 
     hammer.on('press', (ev) => {
       const box = this.element.getBoundingClientRect();
@@ -61,11 +69,11 @@ export default class EmberTableHeader extends Component {
 
       this._firstTouchX = ev.pointers[0].clientX;
       this._touchX = ev.pointers[0].clientX;
-    })
+    });
 
-    hammer.on('tap', (ev) => {
+    hammer.on('tap', () => {
       this._columnState = COLUMN_STATIC;
-    })
+    });
 
     hammer.on('panmove', (ev) => {
       const columnIndex = this.get('columnIndex');
@@ -101,13 +109,13 @@ export default class EmberTableHeader extends Component {
 
         this._columnState = COLUMN_REORDERING;
       }
-    })
+    });
 
     hammer.on('panend', (ev) => {
       const columnIndex = this.get('columnIndex');
 
       const {
-        _columnState ,
+        _columnState,
         _firstTouchX,
         _touchX
       } = this;
@@ -117,11 +125,11 @@ export default class EmberTableHeader extends Component {
       switch (_columnState) {
         case COLUMN_REORDERING:
           this.sendAction('onColumnReorderEnds', columnIndex, clientX - _firstTouchX);
-        break;
+          break;
 
         case COLUMN_RESIZE:
           this.sendAction('onColumnResizeEnded', columnIndex, clientX - _touchX);
-        break;
+          break;
       }
 
       this._columnState = COLUMN_STATIC;
@@ -131,17 +139,17 @@ export default class EmberTableHeader extends Component {
   }
 
   willDestroyElement() {
-    const hammer = this._hammer
+    const hammer = this._hammer;
 
-    hammer.off('press')
-    hammer.off('panmove')
-    hammer.off('panend')
+    hammer.off('press');
+    hammer.off('panmove');
+    hammer.off('panend');
 
     super.willDestroyElement(...arguments);
   }
 
   onTap() {
-    this.sendAction('onHeaderClicked', this.get('columnIndex'))
+    this.sendAction('onHeaderClicked', this.get('columnIndex'));
   }
 
   @computed('width', 'columnIndex', 'fixedColumnWidth')

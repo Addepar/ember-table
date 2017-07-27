@@ -31,6 +31,10 @@ table td, table th {
   box-sizing: border-box;
 }
 
+.table-header {
+  position: relative;
+}
+
 .header-resize-area {
   width: 10px;
   height: 100%;
@@ -42,9 +46,15 @@ table td, table th {
 
 .header-ghost-element {
   position: absolute;
-  background: pink;
+  background: #CCC;
   opacity: 0.8;
   cursor: move;
+}
+
+.header-align-bar {
+  position: absolute;
+  background: #444;
+  opacity: 0.6;
 }
 
 .horizontal-scroll-wrapper {
