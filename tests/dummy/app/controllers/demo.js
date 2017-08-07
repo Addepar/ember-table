@@ -8,7 +8,7 @@ export default Ember.Controller.extend({
     const arr = Ember.A();
     const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 500; i++) {
       const row = Ember.Object.create({
         'id': i
       });

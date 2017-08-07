@@ -1,47 +1,45 @@
-<div class="outer-wrapper">
-  <div class="table-container">
-    <table>
-      <tr>
+<div class="table-container">
+  <table>
+    <tr>
+      {{#each columns as |column columnIndex|}}
+        {{#ember-table-header
+          columnIndex=columnIndex
+          enableColumnResize=enableColumnResize
+          enableColumnReorder=enableColumnReorder
+          fixedColumnWidth=fixedColumnWidth
+          onHeaderClicked="onHeaderClicked"
+          onColumnResized="onColumnResized"
+          onColumnResizeEnded="onColumnResizeEnded"
+          onColumnReorder="onColumnReorder"
+          onColumnReorderEnds="onColumnReorderEnds"
+          width=column.width}}
+          {{column.columnName}}
+        {{/ember-table-header}}
+      {{/each}}
+    </tr>
+
+    {{#vertical-collection
+      items=rows
+      containerSelector=".table-container"
+      estimateHeight=20
+      tagName="tbody"
+      as |row rowIndex| }}
+      <tr class="table-row">
         {{#each columns as |column columnIndex|}}
-          {{#ember-table-header
+          {{#ember-table-cell
+            column=column
             columnIndex=columnIndex
-            enableColumnResize=enableColumnResize
-            enableColumnReorder=enableColumnReorder
             fixedColumnWidth=fixedColumnWidth
-            onHeaderClicked="onHeaderClicked"
-            onColumnResized="onColumnResized"
-            onColumnResizeEnded="onColumnResizeEnded"
-            onColumnReorder="onColumnReorder"
-            onColumnReorderEnds="onColumnReorderEnds"
-            width=column.width}}
-            {{column.columnName}}
-          {{/ember-table-header}}
+            width=column.width
+            fixedColumnWidth=fixedColumnWidth}}
+            {{yield (get-path row column.valuePath) rowIndex columnIndex}}
+          {{/ember-table-cell}}
         {{/each}}
       </tr>
+    {{/vertical-collection}}
+  </table>
+</div>
 
-      {{#vertical-collection
-        items=rows
-        containerSelector=".table-container"
-        estimateHeight=20
-        tagName="tbody"
-        as |row rowIndex| }}
-        <tr class="table-row">
-          {{#each columns as |column columnIndex|}}
-            {{#ember-table-cell
-              column=column
-              columnIndex=columnIndex
-              fixedColumnWidth=fixedColumnWidth
-              width=column.width
-              fixedColumnWidth=fixedColumnWidth}}
-              {{yield (get-path row column.valuePath) rowIndex columnIndex}}
-            {{/ember-table-cell}}
-          {{/each}}
-        </tr>
-      {{/vertical-collection}}
-    </table>
-  </div>
-
-  <div class="horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
-    <div class="horizontal-scroll" style={{horizontalScrollStyle}} />
-  </div>
+<div class="horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
+  <div class="horizontal-scroll" style={{horizontalScrollStyle}} />
 </div>

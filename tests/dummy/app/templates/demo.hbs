@@ -1,27 +1,15 @@
-<div style="margin-left: 100px; margin-right: 100px; overflow-x: hidden;">
-  <h1> This is header content </h1>
-  <div>
-    Show table <input type="checkbox" checked={{showTable}} onclick={{action "onCheckboxClicked" value="target.checked"}}>
-  </div>
+<div class="demo-container">
+  <div class="demo-table-wrapper">
+    {{#ember-table
+      rows=rows
+      enableColumnResize=true
+      enableColumnReorder=true
+      hasFixedColumn=true
+      columns=columns
+      as |cell rowIndex columnIndex|}}
 
-  <div style="display: inline;">
-    {{#if showTable}}
-      {{#ember-table
-        rows=rows
-        enableColumnResize=true
-        enableColumnReorder=true
-        hasFixedColumn=true
-        columns=columns
-        as |cell rowIndex columnIndex|}}
+      {{cell}}
 
-        {{cell}}
-
-      {{/ember-table}}
-    {{/if}}
-
-    {{#if showPanel}}
-      <div style="width: 1000px; height: 500px; border: solid 1px;">
-      </div>
-    {{/if}}
+    {{/ember-table}}
   </div>
 </div>

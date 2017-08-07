@@ -10,6 +10,9 @@ const COLUMN_WIDTH_MIN = 25;
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
 export default class EmberTable extends Component {
+  @property attributeBindings = ['style:style'];
+  @property classNames = ['outer-wrapper'];
+
   @property layout = layout;
 
   /**
@@ -67,25 +70,35 @@ export default class EmberTable extends Component {
    */
   @property tableWidth = 0;
 
+  /**
+   * Table height. This value is also equivalent to container height.
+   */
+  @property _height = 0;
+
   didInsertElement() {
     super.didInsertElement(...arguments);
 
-    this._resizeSensor = new ResizeSensor(this.element, () => {
+    requestAnimationFrame(() => {
+      this.set('_height', this.element.parentElement.offsetHeight);
+
       this.set('tableWidth', this.element.offsetWidth);
       this.fillupColumn();
+
+      // Sync between table & the horizontal div scroller.
+      const tableContainer = $(this.element).find('table');
+      const horizontalScrollContainer = $(this.element).find('.horizontal-scroll-wrapper');
+      horizontalScrollContainer.scroll(function () {
+        tableContainer.scrollLeft(horizontalScrollContainer.scrollLeft());
+      });
+      tableContainer.scroll(function () {
+          horizontalScrollContainer.scrollLeft(tableContainer.scrollLeft());
+      });
     });
 
-    this.set('tableWidth', this.element.offsetWidth);
-    this.fillupColumn();
-
-    // Sync between table & the horizontal div scroller.
-    const tableContainer = $(this.element).find('table');
-    const horizontalScrollContainer = $(this.element).find('.horizontal-scroll-wrapper');
-    horizontalScrollContainer.scroll(function () {
-      tableContainer.scrollLeft(horizontalScrollContainer.scrollLeft());
-    });
-    tableContainer.scroll(function () {
-        horizontalScrollContainer.scrollLeft(tableContainer.scrollLeft());
+    this._resizeSensor = new ResizeSensor(this.element, () => {
+      this.set('_height', this.element.parentElement.offsetHeight);
+      this.set('tableWidth', this.element.offsetWidth);
+      this.fillupColumn();
     });
   }
 
@@ -93,6 +106,16 @@ export default class EmberTable extends Component {
     this.get('resizeSensor').detach(this.element);
 
     super.willDestroyElement(...arguments);
+  }
+
+  @computed('_height')
+  style() {
+    const height = this.get('_height');
+    if (height == 0) {
+      return "";
+    }
+
+    return `height: ${height}px;`
   }
 
   /**
