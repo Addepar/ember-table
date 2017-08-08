@@ -6,9 +6,12 @@
       enableColumnReorder=true
       hasFixedColumn=true
       columns=columns
-      as |cell rowIndex columnIndex|}}
+      as |row columnValuePath rowIndex columnIndex|
+    }}
 
-      {{cell}}
+      <div {{action "onCellClicked" row}}>
+        {{get row.value columnValuePath}}
+      </div>
 
     {{/ember-table}}
   </div>

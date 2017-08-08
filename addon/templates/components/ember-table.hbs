@@ -32,7 +32,7 @@
             fixedColumnWidth=fixedColumnWidth
             width=column.width
             fixedColumnWidth=fixedColumnWidth}}
-            {{yield (get-path row column.valuePath) rowIndex columnIndex}}
+            {{yield row column.valuePath rowIndex columnIndex}}
           {{/ember-table-cell}}
         {{/each}}
       </tr>
