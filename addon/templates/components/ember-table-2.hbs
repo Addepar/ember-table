@@ -1,4 +1,4 @@
-<div class="table-container">
+<div class="et2-table-container">
   <table>
     <tr>
       {{#each columns as |column columnIndex|}}
@@ -20,11 +20,11 @@
 
     {{#vertical-collection
       items=rows
-      containerSelector=".table-container"
+      containerSelector=".et2-table-container"
       estimateHeight=20
       tagName="tbody"
       as |row rowIndex| }}
-      <tr class="table-row">
+      <tr class="et2-table-row">
         {{#each columns as |column columnIndex|}}
           {{#ember-table-cell
             column=column
@@ -40,6 +40,6 @@
   </table>
 </div>
 
-<div class="horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
-  <div class="horizontal-scroll" style={{horizontalScrollStyle}} />
+<div class="et2-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
+  <div class="et2-horizontal-scroll" style={{horizontalScrollStyle}} />
 </div>

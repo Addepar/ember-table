@@ -2,16 +2,16 @@ import Ember from 'ember';
 import { action, computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
 
-import layout from '../templates/components/ember-table';
+import layout from '../templates/components/ember-table-2';
 
 const { Component } = Ember;
 
 const COLUMN_WIDTH_MIN = 25;
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
-export default class EmberTable extends Component {
+export default class EmberTable2 extends Component {
   @property attributeBindings = ['style:style'];
-  @property classNames = ['outer-wrapper'];
+  @property classNames = ['et2-outer-wrapper'];
 
   @property layout = layout;
 
@@ -79,14 +79,14 @@ export default class EmberTable extends Component {
     super.didInsertElement(...arguments);
 
     requestAnimationFrame(() => {
-      this.set('_height', this.element.parentElement.offsetHeight);
+      this.set('_height', this.getHeightFromParent(this.element.parentElement));
 
       this.set('tableWidth', this.element.offsetWidth);
       this.fillupColumn();
 
       // Sync between table & the horizontal div scroller.
       const tableContainer = $(this.element).find('table');
-      const horizontalScrollContainer = $(this.element).find('.horizontal-scroll-wrapper');
+      const horizontalScrollContainer = $(this.element).find('.et2-horizontal-scroll-wrapper');
       horizontalScrollContainer.scroll(function () {
         tableContainer.scrollLeft(horizontalScrollContainer.scrollLeft());
       });
@@ -96,7 +96,7 @@ export default class EmberTable extends Component {
     });
 
     this._resizeSensor = new ResizeSensor(this.element, () => {
-      this.set('_height', this.element.parentElement.offsetHeight);
+      this.set('_height', this.getHeightFromParent(this.element.parentElement));
       this.set('tableWidth', this.element.offsetWidth);
       this.fillupColumn();
     });
@@ -108,6 +108,27 @@ export default class EmberTable extends Component {
     super.willDestroyElement(...arguments);
   }
 
+  /**
+   * Gets height of this table container. This is equivalent to the parent's heignt minus top and
+   * bottom paddings.
+   */
+  getHeightFromParent(parentElement) {
+    let paddingBottom = 0;
+    let paddingTop = 0;
+    const style = window.getComputedStyle(parentElement);
+    const paddingBottomString = style['padding-bottom'];
+    if (paddingBottomString && paddingBottomString.length > 0) {
+      paddingBottom = paddingBottomString.substr(0, paddingBottomString.length - 2);
+    }
+
+    const paddingTopString = style['padding-top'];
+    if (paddingTopString && paddingTopString.length > 0) {
+      paddingTop = paddingTopString.substr(0, paddingTopString.length - 2);
+    }
+
+    return parentElement.offsetHeight - paddingTop - paddingBottom;
+  }
+
   @computed('_height')
   style() {
     const height = this.get('_height');
@@ -115,7 +136,7 @@ export default class EmberTable extends Component {
       return "";
     }
 
-    return `height: ${height}px;`
+    return Ember.String.htmlSafe(`height: ${height}px;`);
   }
 
   /**
@@ -239,13 +260,13 @@ export default class EmberTable extends Component {
     this._headerGhostElement.style.width = `${width}px`;
     this._headerGhostElement.style.height = `${height}px`;
     this._headerGhostElement.style.top = '0px';
-    this._headerGhostElement.classList.add('header-ghost-element');
+    this._headerGhostElement.classList.add('et2-header-ghost-element');
 
     this._headerAlignBar = document.createElement("div");
     this._headerAlignBar.style.width = `${HEAD_ALIGN_BAR_WIDTH}px`;
     this._headerAlignBar.style.height = `${height}px`;
     this._headerAlignBar.style.top = '0px';
-    this._headerAlignBar.classList.add('header-align-bar');
+    this._headerAlignBar.classList.add('et2-header-align-bar');
 
     containerElement.appendChild(this._headerGhostElement);
     containerElement.appendChild(this._headerAlignBar);
@@ -253,7 +274,7 @@ export default class EmberTable extends Component {
 
   @action
   onColumnReorder(columnIndex, header, deltaX) {
-    const containerElement = this.element.getElementsByClassName('table-container')[0];
+    const containerElement = this.element.getElementsByClassName('et2-table-container')[0];
     const tableBoundingBox = containerElement.getBoundingClientRect();
     const columns = this.get('columns');
 
@@ -265,7 +286,7 @@ export default class EmberTable extends Component {
 
       this.currentColumnIndex = columnIndex;
       this._currentColumnX = header.left - tableBoundingBox.left;
-      this.element.classList.add('unselectable');
+      this.element.classList.add('et2-unselectable');
     }
 
     // Do not allow this ghost element to move out of table.
@@ -325,11 +346,11 @@ export default class EmberTable extends Component {
     this._currentColumnX = -1;
 
     // Remove the header ghost element & aligned bar.
-    this.element.getElementsByClassName('table-container')[0].removeChild(this._headerGhostElement);
-    this.element.getElementsByClassName('table-container')[0].removeChild(this._headerAlignBar);
+    this.element.getElementsByClassName('et2-table-container')[0].removeChild(this._headerGhostElement);
+    this.element.getElementsByClassName('et2-table-container')[0].removeChild(this._headerAlignBar);
     this._headerGhostElement = null;
     this._headerAlignBar = null;
-    this.element.classList.remove('unselectable');
+    this.element.classList.remove('et2-unselectable');
   }
 
   @action
