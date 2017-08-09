@@ -126,7 +126,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
 
   // _resolvedContent is an intermediate property between content and rows
   // This allows content to be a plain array or a promise resolving to an array
-  _resolvedContent: function(key, value) {
+  _resolvedContent: Ember.computed(function(key, value) {
     if (arguments.length > 1) {
       return value;
     } else {
@@ -156,7 +156,7 @@ StyleBindingsMixin, ResizeHandlerMixin, {
         return content;
       }
     }
-  }.property('content'),
+  }).property('content'),
 
   init: function() {
     this._super();
