@@ -1,8 +1,10 @@
+/* global ResizeSensor */
 import Ember from 'ember';
 import { action, computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
-
+import $ from 'jquery';
 import layout from '../templates/components/ember-table-2';
+import { htmlSafe } from '@ember/string';
 
 const { Component } = Ember;
 
@@ -87,11 +89,11 @@ export default class EmberTable2 extends Component {
       // Sync between table & the horizontal div scroller.
       const tableContainer = $(this.element).find('table');
       const horizontalScrollContainer = $(this.element).find('.et2-horizontal-scroll-wrapper');
-      horizontalScrollContainer.scroll(function () {
+      horizontalScrollContainer.scroll(function() {
         tableContainer.scrollLeft(horizontalScrollContainer.scrollLeft());
       });
-      tableContainer.scroll(function () {
-          horizontalScrollContainer.scrollLeft(tableContainer.scrollLeft());
+      tableContainer.scroll(function() {
+        horizontalScrollContainer.scrollLeft(tableContainer.scrollLeft());
       });
     });
 
@@ -133,10 +135,10 @@ export default class EmberTable2 extends Component {
   style() {
     const height = this.get('_height');
     if (height == 0) {
-      return "";
+      return '';
     }
 
-    return Ember.String.htmlSafe(`height: ${height}px;`);
+    return htmlSafe(`height: ${height}px;`);
   }
 
   /**
@@ -146,14 +148,14 @@ export default class EmberTable2 extends Component {
   fillupColumn() {
     const columns = this.get('columns');
     const tableWidth = this.get('tableWidth');
-    let sum = this.get('allColumnWidths');
+    const sum = this.get('allColumnWidths');
 
     if (sum < tableWidth - 1) {
       let delta = tableWidth - sum - 1;
       // If the table has fixed column, add all width difference to the fixed column. Otherwise,
       // split the diff among all columns.
       if (this.get('hasFixedColumn')) {
-        const column = columns[0];
+        const [column] = columns;
         column.set('width', column.get('width') + delta);
       } else {
         // Split delta equally among columns.
@@ -162,7 +164,7 @@ export default class EmberTable2 extends Component {
           columnDelta = 1;
         }
         for (let i = 0; i < columns.length; i++) {
-          const column = columns[0];
+          const [column] = columns;
           column.set('width', column.get('width') + Math.min(delta, columnDelta));
           delta -= columnDelta;
           if (delta <= 0) {
@@ -194,10 +196,9 @@ export default class EmberTable2 extends Component {
     'tableWidth'
   ) horizontalScrollWrapperStyle() {
     const columns = this.get('columns');
-    const left = this.get('hasFixedColumn') ? columns[0].width : 0;
     const visibility = this.get('tableWidth') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
 
-    return Ember.String.htmlSafe(`visibility: ${visibility}; left: ${columns[0].width}px; right: 0px;`);
+    return htmlSafe(`visibility: ${visibility}; left: ${columns[0].width}px; right: 0px;`);
   }
 
   /**
@@ -216,7 +217,7 @@ export default class EmberTable2 extends Component {
     }
 
     style = `width: ${width}px;`;
-    return Ember.String.htmlSafe(style);
+    return htmlSafe(style);
   }
 
   @computed('columns.@each.width')
@@ -239,14 +240,14 @@ export default class EmberTable2 extends Component {
     }
     column.set('width', width + delta);
 
-    if (!this.element.classList.contains('unselectable')) {
-      this.element.classList.add('unselectable');
+    if (!this.element.classList.contains('et2-unselectable')) {
+      this.element.classList.add('et2-unselectable');
     }
   }
 
   @action
-  onColumnResizeEnded(columnIndex, delta) {
-    this.element.classList.remove('unselectable');
+  onColumnResizeEnded() {
+    this.element.classList.remove('et2-unselectable');
     this.fillupColumn();
   }
 
@@ -255,14 +256,14 @@ export default class EmberTable2 extends Component {
    * They will be removed when column reordering completes.
    */
   createGhostElement(containerElement, width, height) {
-    this._headerGhostElement = document.createElement("div");
+    this._headerGhostElement = document.createElement('div');
 
     this._headerGhostElement.style.width = `${width}px`;
     this._headerGhostElement.style.height = `${height}px`;
     this._headerGhostElement.style.top = '0px';
     this._headerGhostElement.classList.add('et2-header-ghost-element');
 
-    this._headerAlignBar = document.createElement("div");
+    this._headerAlignBar = document.createElement('div');
     this._headerAlignBar.style.width = `${HEAD_ALIGN_BAR_WIDTH}px`;
     this._headerAlignBar.style.height = `${height}px`;
     this._headerAlignBar.style.top = '0px';
@@ -274,7 +275,7 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnReorder(columnIndex, header, deltaX) {
-    const containerElement = this.element.getElementsByClassName('et2-table-container')[0];
+    const [containerElement] = this.element.getElementsByClassName('et2-table-container');
     const tableBoundingBox = containerElement.getBoundingClientRect();
     const columns = this.get('columns');
 
@@ -293,7 +294,7 @@ export default class EmberTable2 extends Component {
     let ghostLeftX = header.left - tableBoundingBox.left + deltaX;
     // 1) Do not allow the ghost element to move out of left boundary.
     if (this.get('hasFixedColumn')) {
-      const scrollLeft = containerElement.getElementsByTagName('table')[0].scrollLeft;
+      const [{ scrollLeft }] = [containerElement.getElementsByTagName('table')];
 
       if (ghostLeftX < columns[0].width - scrollLeft) {
         ghostLeftX = columns[0].width - scrollLeft;
@@ -322,14 +323,14 @@ export default class EmberTable2 extends Component {
         // Current column is now the next column
         this._currentColumnX = this._currentColumnX + columns[this.currentColumnIndex].width;
         this.currentColumnIndex++;
-        this._headerAlignBar.style.left =
-          `${this._currentColumnX + columns[this.currentColumnIndex].width - HEAD_ALIGN_BAR_WIDTH}px`;
+        this._headerAlignBar.style.left
+          =  `${this._currentColumnX + columns[this.currentColumnIndex].width - HEAD_ALIGN_BAR_WIDTH}px`;
       }
     }
   }
 
   @action
-  onColumnReorderEnds(columnIndex, deltaX) {
+  onColumnReorderEnds(columnIndex) {
     if (this.currentColumnIndex != columnIndex) {
       const direction = this.currentColumnIndex > columnIndex ? 1 : -1;
 

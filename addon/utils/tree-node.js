@@ -1,5 +1,3 @@
-import Ember from 'ember';
-
 import { property } from '../utils/class';
 
 export default class TreeNode {
@@ -72,13 +70,13 @@ export default class TreeNode {
   }
 
   updateNext(nextNode) {
-    const children = this.children;
+    const { children } = this;
 
     if (children.length > 0) {
       this._setNextNode(children[0]);
     } else {
       this._setNextNode(nextNode);
-      return
+      return;
     }
 
     const originalNextNode = nextNode;

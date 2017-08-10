@@ -1,10 +1,11 @@
-import Ember from 'ember';
+import { get } from '@ember/object';
+import { helper } from '@ember/component/helper';
 
 export function getPath(params) {
-  return Ember.get(params[0], params[1]);
+  return get(params[0], params[1]);
 }
 
-export default Ember.Helper.helper(getPath);
+export default helper(getPath);
 
 // const helper = Ember.Handlebars.makeBoundHelper(function(object, path) {
 //   return Ember.get(object, path);

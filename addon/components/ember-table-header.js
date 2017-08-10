@@ -87,7 +87,7 @@ export default class EmberTableHeader extends Component {
         _touchX
       } = this;
 
-      const { clientX } = ev.pointers[0];
+      const [{ clientX }] = ev.pointers;
 
       if (enableColumnResize && _columnState == COLUMN_RESIZE) {
         this.sendAction('onColumnResized', columnIndex, clientX - _touchX);
@@ -120,7 +120,7 @@ export default class EmberTableHeader extends Component {
         _touchX
       } = this;
 
-      const { clientX } = ev.pointers[0];
+      const [{ clientX }] = ev.pointers;
 
       switch (_columnState) {
         case COLUMN_REORDERING:

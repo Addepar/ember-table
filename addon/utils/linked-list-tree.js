@@ -1,7 +1,7 @@
 import { property } from '../utils/class';
-import Ember from 'ember';
+import EmberObject from '@ember/object';
 
-export default class LinkedListTree extends Ember.Object {
+export default class LinkedListTree extends EmberObject {
   @property pointerNode = null;
   @property pointerIndex = -1;
 
@@ -21,7 +21,7 @@ export default class LinkedListTree extends Ember.Object {
   }
 
   objectAt(index) {
-    let direction = this.pointerIndex < index ? 1 : -1;
+    const direction = this.pointerIndex < index ? 1 : -1;
     while (index != this.pointerIndex) {
       this.pointerNode = this.pointerNode.nextWithDirection(direction);
       this.pointerIndex += direction;
