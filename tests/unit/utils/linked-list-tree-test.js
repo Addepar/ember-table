@@ -18,11 +18,11 @@ test('Test objectAt', function(assert) {
 
   let node = tree.objectAt(359);
   assert.equal(tree.pointerIndex, 359);
-  verifyTreePath(assert, node, ['Leaf 1', 'Group 2', 'Header 3', 'Root']);
+  verifyTreePath(assert, node, ['Leaf 1', 'Group 2', 'Header 3', 'Top Row']);
 
   node = tree.objectAt(67);
   assert.equal(tree.pointerIndex, 67);
-  verifyTreePath(assert, node, ['Leaf 9', 'Group 5', 'Header 0', 'Root']);
+  verifyTreePath(assert, node, ['Leaf 9', 'Group 5', 'Header 0', 'Top Row']);
 });
 
 test('Test expanding and collapsing rows', function(assert) {

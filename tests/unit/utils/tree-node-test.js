@@ -6,9 +6,10 @@ module('Unit | Utility | tree node');
 // Replace this with your real tests.
 test('Test next and preivous nodes', function(assert) {
   const root = generateBasicRoot();
-  assert.equal(root.nodeCount, 1111, 'Root has 1111 nodes including self');
+  const firstRow = root.next;
+  assert.equal(firstRow.nodeCount, 1111, 'Root has 1111 nodes, not including root');
 
-  let node = root.next.next; // Group 0
+  let node = firstRow.next.next; // Group 0
   assert.equal(node.value, 'Group 0', 'Next node is correct');
 
   // Test next nodes of the 10 leaf
@@ -26,11 +27,11 @@ test('Test next and preivous nodes', function(assert) {
   assert.equal(node.value, 'Group 0', 'Previous node of leaf 0 is correct');
 
   // Test next node on collapse of Header 0.
-  const header0 = root.next;
+  const header0 = firstRow.next;
   assert.equal(header0.nextOnCollapse.value, 'Header 1',
     'Next node on collapse of Header 0 is Header 1');
 
-  assert.equal(header0.nextWithDirection(-1).value, 'Root',
+  assert.equal(header0.nextWithDirection(-1).value, 'Top Row',
     'Next node with negative direction of header 0 is Root');
 
   assert.equal(header0.nextWithDirection(1).value, 'Group 0',

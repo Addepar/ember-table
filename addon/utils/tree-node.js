@@ -21,7 +21,7 @@ export default class TreeNode {
   /**
    * Original next node when tree is fully expanded.
    */
-  @property nextOriginal = null;
+  @property originalNext = null;
 
   /**
    * Current previous node (apply for both case expand & collapse).
@@ -31,7 +31,7 @@ export default class TreeNode {
   /**
    * Original previous node when the tree is fully expanded.
    */
-  @property previousOriginal = null;
+  @property originalPrevious = null;
 
   /**
    * Total number of node in this subtree (including this node).
@@ -63,11 +63,11 @@ export default class TreeNode {
 
   _setNextNode(node) {
     this.next = node;
-    this.nextOriginal = node;
+    this.originalNext = node;
 
     if (node != null) {
       node.previous = this;
-      node.previousOriginal = this;
+      node.originalPrevious = this;
     }
   }
 

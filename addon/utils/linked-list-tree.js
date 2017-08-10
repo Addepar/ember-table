@@ -2,17 +2,22 @@ import { property } from '../utils/class';
 import Ember from 'ember';
 
 export default class LinkedListTree extends Ember.Object {
-  @property root = null;
   @property pointerNode = null;
   @property pointerIndex = -1;
 
   constructor(root) {
     super();
 
-    this.root = root;
-    this.pointerNode = root;
+    root.updateNext(null);
+    root.updateNodeCountAndIndex(-1);
+
     this.pointerIndex = 0;
-    this.set('length', root.nodeCount);
+    // Root is a virtual node and will not be used for display
+    if (root.children.length > 0) {
+      this.pointerNode = root.children[0];
+    }
+
+    this.set('length', root.nodeCount - 1);
   }
 
   objectAt(index) {
@@ -70,9 +75,9 @@ export default class LinkedListTree extends Ember.Object {
     // Update next & previous link.
     const newNextNode = row.next;
     if (newNextNode != null) {
-      newNextNode.previous = newNextNode.previousOriginal;
+      newNextNode.previous = newNextNode.originalPrevious;
     }
-    row.next = row.nextOriginal;
+    row.next = row.originalNext;
 
     row.collapse = false;
     this.updateParentNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);

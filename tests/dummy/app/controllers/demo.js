@@ -19,12 +19,9 @@ export default Ember.Controller.extend({
   },
 
   rows: Ember.computed(function() {
-    const root = new TreeNode(null, this.getRow("Root"));
-
-    console.log(root.value.get('id'));
-
+    const topRow = new TreeNode(null, this.getRow("Top Row"));
     for (let i = 0; i < 10; i++) {
-      const header = new TreeNode(root, this.getRow("Header " + i));
+      const header = new TreeNode(topRow, this.getRow("Header " + i));
       for (let j = 0; j < 10; j++) {
         const group = new TreeNode(header, this.getRow("Group " + j));
         for (let k = 0; k < 10; k++) {
@@ -34,11 +31,11 @@ export default Ember.Controller.extend({
         header.addChild(group);
       }
 
-      root.addChild(header);
+      topRow.addChild(header);
     }
 
-    root.updateNext(null);
-    const nodeCount = root.updateNodeCountAndIndex(0);
+    const root = new TreeNode(null, null);
+    root.addChild(topRow);
 
     return new LinkedListTree(root);
   }),
