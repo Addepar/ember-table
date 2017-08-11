@@ -14,6 +14,7 @@ const HEAD_ALIGN_BAR_WIDTH = 5;
 export default class EmberTable2 extends Component {
   @property attributeBindings = ['style:style'];
   @property classNames = ['et2-outer-wrapper'];
+  @property tagName = 'table';
 
   @property layout = layout;
 
@@ -61,53 +62,80 @@ export default class EmberTable2 extends Component {
 
   /**
    * A sensor object that sends events to this table component when table size changes. When table
-   * is resized, we update the table width variable and all other properties dependent on table
-   * width is updated automatically.
+   * is resized, table width & height are updated and other computed properties depending on them
+   * also get updated.
    */
-  @property _resizeSensor = null;
+  @property _tableResizeSensor = null;
+
+  /**
+   * A sensor object that detect header row size change.
+   */
+  @property _headerResizeSensor = null;
 
   /**
    * A variable to store table width. This is updated when table is created or resized. We need to
    * store the table width because there are several computed property dependent on the table width.
    */
-  @property tableWidth = 0;
+  @property _width = 0;
 
   /**
    * Table height. This value is also equivalent to container height.
    */
   @property _height = 0;
 
+  @property _headerHeight = 0;
+
   didInsertElement() {
     super.didInsertElement(...arguments);
 
     requestAnimationFrame(() => {
       this.set('_height', this.getHeightFromParent(this.element.parentElement));
+      this.set('_headerHeight', this.element.getElementsByClassName('et2-thead-wrapper')[0].offsetHeight);
 
-      this.set('tableWidth', this.element.offsetWidth);
+      this.set('_width', this.element.offsetWidth);
       this.fillupColumn();
 
       // Sync between table & the horizontal div scroller.
-      const tableContainer = $(this.element).find('table');
+      const bodyScrollContainer = $(this.element).find('.et2-body-inner-wrapper');
+      const headerScrollContainer = $(this.element).find('.et2-thead');
       const horizontalScrollContainer = $(this.element).find('.et2-horizontal-scroll-wrapper');
-      horizontalScrollContainer.scroll(function() {
-        tableContainer.scrollLeft(horizontalScrollContainer.scrollLeft());
-      });
-      tableContainer.scroll(function() {
-        horizontalScrollContainer.scrollLeft(tableContainer.scrollLeft());
-      });
+
+      this.syncScroll([bodyScrollContainer, headerScrollContainer, horizontalScrollContainer]);
     });
 
-    this._resizeSensor = new ResizeSensor(this.element, () => {
+    this._tableResizeSensor = new ResizeSensor(this.element, () => {
       this.set('_height', this.getHeightFromParent(this.element.parentElement));
-      this.set('tableWidth', this.element.offsetWidth);
+      this.set('_width', this.element.offsetWidth);
       this.fillupColumn();
+    });
+
+    this._headerResizeSensor
+    = new ResizeSensor(this.element.getElementsByClassName('et2-thead-wrapper')[0], () => {
+      this.set('_headerHeight', this.element.getElementsByClassName('et2-thead-wrapper')[0].offsetHeight);
     });
   }
 
   willDestroyElement() {
-    this.get('resizeSensor').detach(this.element);
+    this.get('_tableResizeSensor').detach(this.element);
+    this.get('_headerResizeSensor').detach(this.element.getElementsByClassName('et2-thead-wrapper')[0]);
 
     super.willDestroyElement(...arguments);
+  }
+
+  /**
+   * Syncs horizontal scrolling between table, header, body & footer.
+   */
+  syncScroll(scrollElements) {
+    for (let i = 0; i < scrollElements.length; i++) {
+      scrollElements[i].scroll(function() {
+        const scrollPosition = scrollElements[i].scrollLeft();
+        for (let j = 0; j < scrollElements.length; j++) {
+          if (scrollElements[i] !== scrollElements[j]) {
+            scrollElements[j].scrollLeft(scrollPosition);
+          }
+        }
+      });
+    }
   }
 
   /**
@@ -141,13 +169,31 @@ export default class EmberTable2 extends Component {
     return htmlSafe(`height: ${height}px;`);
   }
 
+  @computed('_width')
+  theadWrapperStyle() {
+    return htmlSafe(`width: ${this.get('_width')}px;`);
+  }
+
+  @computed('_height', '_headerHeight')
+  tBodyWrapperStyle() {
+    const tableHeight = this.get('_height');
+    const headerHeight = this.get('_headerHeight');
+
+    let height = tableHeight - headerHeight;
+    if (height == 0) {
+      height = 1; // Set height at least 1 as vertical collection disallows 0px height.
+    }
+
+    return htmlSafe(`margin-top: ${headerHeight}px; max-height: ${height}px;`);
+  }
+
   /**
    * There are cases where the sum of all column width is smaller than the container width. In this
    * case, we want to auto increase width of some column. This function handles that logic.
    */
   fillupColumn() {
     const columns = this.get('columns');
-    const tableWidth = this.get('tableWidth');
+    const tableWidth = this.get('_width');
     const sum = this.get('allColumnWidths');
 
     if (sum < tableWidth - 1) {
@@ -193,10 +239,10 @@ export default class EmberTable2 extends Component {
     'hasFixedColumn',
     'columns.firstObject.width',
     'allColumnWidths',
-    'tableWidth'
+    '_width'
   ) horizontalScrollWrapperStyle() {
     const columns = this.get('columns');
-    const visibility = this.get('tableWidth') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
+    const visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
 
     return htmlSafe(`visibility: ${visibility}; left: ${columns[0].width}px; right: 0px;`);
   }
@@ -275,7 +321,7 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnReorder(columnIndex, header, deltaX) {
-    const [containerElement] = this.element.getElementsByClassName('et2-table-container');
+    const containerElement = this.element;
     const tableBoundingBox = containerElement.getBoundingClientRect();
     const columns = this.get('columns');
 
@@ -347,8 +393,8 @@ export default class EmberTable2 extends Component {
     this._currentColumnX = -1;
 
     // Remove the header ghost element & aligned bar.
-    this.element.getElementsByClassName('et2-table-container')[0].removeChild(this._headerGhostElement);
-    this.element.getElementsByClassName('et2-table-container')[0].removeChild(this._headerAlignBar);
+    this.element.removeChild(this._headerGhostElement);
+    this.element.removeChild(this._headerAlignBar);
     this._headerGhostElement = null;
     this._headerAlignBar = null;
     this.element.classList.remove('et2-unselectable');

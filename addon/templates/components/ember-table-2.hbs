@@ -1,5 +1,5 @@
-<div class="et2-table-container">
-  <table>
+<div class="et2-thead-wrapper" style={{theadWrapperStyle}}>
+  <thead class="et2-thead">
     <tr>
       {{#each columns as |column columnIndex|}}
         {{#ember-table-header
@@ -17,10 +17,14 @@
         {{/ember-table-header}}
       {{/each}}
     </tr>
+  </thead>
+</div>
 
+<div class="et2-body-outer-wrapper" style={{tBodyWrapperStyle}}>
+  <div class="et2-body-inner-wrapper">
     {{#vertical-collection
       items=rows
-      containerSelector=".et2-table-container"
+      containerSelector=".et2-body-outer-wrapper"
       estimateHeight=20
       tagName="tbody"
       as |row rowIndex| }}
@@ -37,7 +41,7 @@
         {{/each}}
       </tr>
     {{/vertical-collection}}
-  </table>
+  </div>
 </div>
 
 <div class="et2-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
