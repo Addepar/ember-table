@@ -17,12 +17,13 @@
   overflow-x: auto;
 }
 
-.et2-thead-wrapper {
-  position: absolute;
+.et2-thead-wrapper, .et2-footer-wrapper {
+  overflow-y: hidden;
   overflow-x: hidden;
+  flex: none;
 }
 
-.et2-thead {
+.et2-thead, .et2-tfooter {
   max-width: 100%;
   display: block;
   overflow-x: auto;
@@ -39,6 +40,8 @@ table {
   /*allows max-width to work*/
   overflow-x: hidden;
   box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 table td, table th {
@@ -97,7 +100,7 @@ table td, table th {
 }
 
 /* TODO(billy): do the same thing for IE. */
-table::-webkit-scrollbar, thead::-webkit-scrollbar, .et2-body-inner-wrapper::-webkit-scrollbar {
+table::-webkit-scrollbar, thead::-webkit-scrollbar, .et2-body-inner-wrapper::-webkit-scrollbar, tfoot::-webkit-scrollbar {
   width: 0px;  /* remove scrollbar space */
   height: 0px;
   background: transparent;  /* optional: just make scrollbar invisible */

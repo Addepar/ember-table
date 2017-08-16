@@ -35,6 +35,12 @@ export default class EmberTable2 extends Component {
   @property enableColumnReorder = false;
 
   /**
+   * Defines if this table has a footer or not.
+   * // TODO(Billy): replace this with an option to pass in footer component.
+   */
+  @property hasFooter = true;
+
+  /**
    * A temporary element created when moving column. This element represents the current position
    * of the moving column. It has the same width and height with the moving column. Once moving
    * completes, this element vanishes.
@@ -83,14 +89,11 @@ export default class EmberTable2 extends Component {
    */
   @property _height = 0;
 
-  @property _headerHeight = 0;
-
   didInsertElement() {
     super.didInsertElement(...arguments);
 
     requestAnimationFrame(() => {
       this.set('_height', this.getHeightFromParent(this.element.parentElement));
-      this.set('_headerHeight', this.element.getElementsByClassName('et2-thead-wrapper')[0].offsetHeight);
 
       this.set('_width', this.element.offsetWidth);
       this.fillupColumn();
@@ -98,20 +101,17 @@ export default class EmberTable2 extends Component {
       // Sync between table & the horizontal div scroller.
       const bodyScrollContainer = $(this.element).find('.et2-body-inner-wrapper');
       const headerScrollContainer = $(this.element).find('.et2-thead');
+      const footerScrollContainer = $(this.element).find('.et2-tfooter');
       const horizontalScrollContainer = $(this.element).find('.et2-horizontal-scroll-wrapper');
 
-      this.syncScroll([bodyScrollContainer, headerScrollContainer, horizontalScrollContainer]);
+      this.syncScroll([bodyScrollContainer, headerScrollContainer, horizontalScrollContainer,
+        footerScrollContainer]);
     });
 
     this._tableResizeSensor = new ResizeSensor(this.element, () => {
       this.set('_height', this.getHeightFromParent(this.element.parentElement));
       this.set('_width', this.element.offsetWidth);
       this.fillupColumn();
-    });
-
-    this._headerResizeSensor
-    = new ResizeSensor(this.element.getElementsByClassName('et2-thead-wrapper')[0], () => {
-      this.set('_headerHeight', this.element.getElementsByClassName('et2-thead-wrapper')[0].offsetHeight);
     });
   }
 
@@ -167,24 +167,6 @@ export default class EmberTable2 extends Component {
     }
 
     return htmlSafe(`height: ${height}px;`);
-  }
-
-  @computed('_width')
-  theadWrapperStyle() {
-    return htmlSafe(`width: ${this.get('_width')}px;`);
-  }
-
-  @computed('_height', '_headerHeight')
-  tBodyWrapperStyle() {
-    const tableHeight = this.get('_height');
-    const headerHeight = this.get('_headerHeight');
-
-    let height = tableHeight - headerHeight;
-    if (height == 0) {
-      height = 1; // Set height at least 1 as vertical collection disallows 0px height.
-    }
-
-    return htmlSafe(`margin-top: ${headerHeight}px; max-height: ${height}px;`);
   }
 
   /**

@@ -1,4 +1,4 @@
-<div class="et2-thead-wrapper" style={{theadWrapperStyle}}>
+<div class="et2-thead-wrapper">
   <thead class="et2-thead">
     <tr>
       {{#each columns as |column columnIndex|}}
@@ -12,7 +12,8 @@
           onColumnResizeEnded="onColumnResizeEnded"
           onColumnReorder="onColumnReorder"
           onColumnReorderEnds="onColumnReorderEnds"
-          width=column.width}}
+          width=column.width
+        }}
           {{column.columnName}}
         {{/ember-table-header}}
       {{/each}}
@@ -20,7 +21,7 @@
   </thead>
 </div>
 
-<div class="et2-body-outer-wrapper" style={{tBodyWrapperStyle}}>
+<div class="et2-body-outer-wrapper" >
   <div class="et2-body-inner-wrapper">
     {{#vertical-collection
       items=rows
@@ -47,3 +48,22 @@
 <div class="et2-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
   <div class="et2-horizontal-scroll" style={{horizontalScrollStyle}} />
 </div>
+
+
+{{#if hasFooter}}
+  <div class="et2-footer-wrapper">
+    <tfoot class="et2-tfooter">
+      <tr>
+        {{#each columns as |column columnIndex|}}
+          {{#ember-table-footer
+            columnIndex=columnIndex
+            fixedColumnWidth=fixedColumnWidth
+            width=column.width
+          }}
+            {{column.columnName}}
+          {{/ember-table-footer}}
+        {{/each}}
+      </tr>
+    </tfoot>
+  </div>
+{{/if}}
