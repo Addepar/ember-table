@@ -85,15 +85,27 @@ export default class EmberTable2 extends Component {
   @property _width = 0;
 
   /**
-   * Table height. This value is also equivalent to container height.
+   * Estimated height for each row.
    */
-  @property _height = 0;
+  @property estimateRowHeight = 20;
+
+  /**
+   * A value used by vertical collection. This is how many items that vertical collection should
+   * keep on either side of the viewport. This value is also used by the table to estimate how
+   * many items we should render at the begining as the container height could be 0 for VC initially
+   */
+  @property vcBufferSize = 2;
 
   didInsertElement() {
     super.didInsertElement(...arguments);
 
     requestAnimationFrame(() => {
-      this.set('_height', this.getHeightFromParent(this.element.parentElement));
+      const parentHeight = this.getHeightFromParent(this.element.parentElement);
+      let vcBufferSize = Math.round(parentHeight / (2 * this.get('estimateRowHeight')));
+      if (vcBufferSize == 0) {
+        vcBufferSize = vcBufferSize + 1;
+      }
+      this.set('vcBufferSize', vcBufferSize);
 
       this.set('_width', this.element.offsetWidth);
       this.fillupColumn();
@@ -109,7 +121,6 @@ export default class EmberTable2 extends Component {
     });
 
     this._tableResizeSensor = new ResizeSensor(this.element, () => {
-      this.set('_height', this.getHeightFromParent(this.element.parentElement));
       this.set('_width', this.element.offsetWidth);
       this.fillupColumn();
     });
@@ -157,16 +168,6 @@ export default class EmberTable2 extends Component {
     }
 
     return parentElement.offsetHeight - paddingTop - paddingBottom;
-  }
-
-  @computed('_height')
-  style() {
-    const height = this.get('_height');
-    if (height == 0) {
-      return '';
-    }
-
-    return htmlSafe(`height: ${height}px;`);
   }
 
   /**

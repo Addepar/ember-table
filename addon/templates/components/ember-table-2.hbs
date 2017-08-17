@@ -26,7 +26,8 @@
     {{#vertical-collection
       items=rows
       containerSelector=".et2-body-outer-wrapper"
-      estimateHeight=20
+      estimateHeight=estimateRowHeight
+      bufferSize=vcBufferSize
       tagName="tbody"
       as |row rowIndex| }}
       <tr class="et2-table-row">
@@ -44,13 +45,9 @@
   </div>
 </div>
 
-<div class="et2-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
-  <div class="et2-horizontal-scroll" style={{horizontalScrollStyle}} />
-</div>
 
-
-{{#if hasFooter}}
-  <div class="et2-footer-wrapper">
+<div class="et2-bottom-wrapper">
+  {{#if hasFooter}}
     <tfoot class="et2-tfooter">
       <tr>
         {{#each columns as |column columnIndex|}}
@@ -64,5 +61,10 @@
         {{/each}}
       </tr>
     </tfoot>
+  {{/if}}
+
+  <div class="et2-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
+    <div class="et2-horizontal-scroll" style={{horizontalScrollStyle}} />
   </div>
-{{/if}}
+</div>
+

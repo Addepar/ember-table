@@ -13,7 +13,6 @@
 
 .et2-body-outer-wrapper {
   width: 100%;
-  height: 100%;
   overflow-y: overlay;
   overflow-x: hidden;
   position: relative;
@@ -25,7 +24,8 @@
   overflow-x: auto;
 }
 
-.et2-thead-wrapper, .et2-footer-wrapper {
+.et2-thead-wrapper, .et2-bottom-wrapper {
+  position: relative;
   overflow-y: hidden;
   overflow-x: hidden;
   flex: none;
