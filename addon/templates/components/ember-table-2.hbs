@@ -29,18 +29,27 @@
       estimateHeight=estimateRowHeight
       bufferSize=vcBufferSize
       tagName="tbody"
-      as |row rowIndex| }}
-      <tr class="et2-table-row">
-        {{#each columns as |column columnIndex|}}
-          {{#ember-table-cell
-            width=column.width
-            columnIndex=columnIndex
-            hasFixedColumn=hasFixedColumn
-          }}
-            {{yield row column.valuePath rowIndex columnIndex}}
-          {{/ember-table-cell}}
-        {{/each}}
-      </tr>
+
+      as |row rowIndex|
+    }}
+      {{#ember-table-row
+        row=row
+        columns=columns
+        cellCache=cellCache
+        cellProxyClass=cellProxyClass
+
+        as |cell|
+      }}
+        {{#ember-table-cell
+          row=row
+          toggleRow="toggleRow"
+          width=cell.column.width
+          columnIndex=cell.columnIndex
+          hasFixedColumn=hasFixedColumn
+        }}
+          {{yield cell}}
+        {{/ember-table-cell}}
+      {{/ember-table-row}}
     {{/vertical-collection}}
   </div>
 </div>

@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import TreeNode from '../utils/tree-node';
 import LinkedListTree from '../utils/linked-list-tree';
-import { computed } from '@ember/object';
+import { computed, set } from '@ember/object';
 import EmberObject from '@ember/object';
 import { A as emberA } from '@ember/array';
 
@@ -74,11 +74,9 @@ export default Controller.extend({
       this.set('showPanel', value);
     },
 
-    onCellClicked(row) {
-      if (!row.collapse) {
-        this.get('rows').collapseNode(row);
-      } else {
-        this.get('rows').expand(row);
+    onCellClicked(cell) {
+      if (cell.get('columnIndex') !== 0) {
+        cell.set('wasClicked', true);
       }
     }
   }

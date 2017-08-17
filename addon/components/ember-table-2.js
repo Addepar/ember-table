@@ -2,6 +2,7 @@
 import Ember from 'ember';
 import { action, computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
+import CellProxy from '../utils/cell-proxy';
 import $ from 'jquery';
 import layout from '../templates/components/ember-table-2';
 import { htmlSafe } from '@ember/string';
@@ -95,6 +96,16 @@ export default class EmberTable2 extends Component {
    * many items we should render at the begining as the container height could be 0 for VC initially
    */
   @property vcBufferSize = 2;
+
+  init() {
+    super.init(...arguments);
+
+    this.cellCache = new WeakMap();
+
+    // Create a unique CellProxy class for this table instance, that way transient data won't
+    // pollute the prototype of the main proxy class.
+    this.cellProxyClass = class extends CellProxy {};
+  }
 
   didInsertElement() {
     super.didInsertElement(...arguments);
@@ -386,5 +397,14 @@ export default class EmberTable2 extends Component {
   @action
   onHeaderClicked() {
 
+  }
+
+  @action
+  toggleRow(row) {
+    if (!row.collapse) {
+      this.get('rows').collapseNode(row);
+    } else {
+      this.get('rows').expand(row);
+    }
   }
 }

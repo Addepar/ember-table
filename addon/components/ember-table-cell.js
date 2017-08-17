@@ -21,4 +21,10 @@ export default class EmberTableCell extends Component {
   get style() {
     return htmlSafe(`min-width: ${this.get('width')}px; max-width: ${this.get('width')}px;`);
   }
+
+  click() {
+    if (this.get('columnIndex') === 0) {
+      this.sendAction('toggleRow', this.get('row'));
+    }
+  }
 }

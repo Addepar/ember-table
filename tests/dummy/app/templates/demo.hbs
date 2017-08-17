@@ -6,11 +6,11 @@
       enableColumnReorder=true
       hasFixedColumn=true
       columns=columns
-      as |row columnValuePath rowIndex columnIndex|
+      as |cell|
     }}
 
-      <div {{action "onCellClicked" row}}>
-        {{get row.value columnValuePath}}
+      <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
+        {{cell.value}}
       </div>
 
     {{/ember-table-2}}

@@ -1,3 +1,6 @@
 module.exports = {
-  extends: '@addepar'
+  extends: '@addepar',
+  env: {
+    es6: true
+  }
 };

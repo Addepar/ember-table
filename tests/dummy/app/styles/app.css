@@ -39,3 +39,7 @@ table tfoot th {
   border-top: 2px solid black;
   border-bottom: none;
 }
+
+.red-cell {
+  background: red;
+}
