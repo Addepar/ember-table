@@ -4,9 +4,9 @@
       {{#each columns as |column columnIndex|}}
         {{#ember-table-header
           columnIndex=columnIndex
+          hasFixedColumn=hasFixedColumn
           enableColumnResize=enableColumnResize
           enableColumnReorder=enableColumnReorder
-          fixedColumnWidth=fixedColumnWidth
           onHeaderClicked="onHeaderClicked"
           onColumnResized="onColumnResized"
           onColumnResizeEnded="onColumnResizeEnded"
@@ -32,11 +32,10 @@
       <tr class="et2-table-row">
         {{#each columns as |column columnIndex|}}
           {{#ember-table-cell
-            column=column
-            columnIndex=columnIndex
-            fixedColumnWidth=fixedColumnWidth
             width=column.width
-            fixedColumnWidth=fixedColumnWidth}}
+            columnIndex=columnIndex
+            hasFixedColumn=hasFixedColumn
+          }}
             {{yield row column.valuePath rowIndex columnIndex}}
           {{/ember-table-cell}}
         {{/each}}
@@ -57,7 +56,7 @@
         {{#each columns as |column columnIndex|}}
           {{#ember-table-footer
             columnIndex=columnIndex
-            fixedColumnWidth=fixedColumnWidth
+            hasFixedColumn=hasFixedColumn
             width=column.width
           }}
             {{column.columnName}}

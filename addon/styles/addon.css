@@ -1,6 +1,14 @@
 .et2-outer-wrapper {
   width: 100%;
   height: 100%;
+  border-collapse: collapse;
+  max-width: 100%;
+  display: block;
+  /*allows max-width to work*/
+  overflow-x: hidden;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
 }
 
 .et2-body-outer-wrapper {
@@ -29,29 +37,12 @@
   overflow-x: auto;
 }
 
-div {
-  box-sizing: border-box;
-}
-
-table {
-  border-collapse: collapse;
-  max-width: 100%;
-  display: block;
-  /*allows max-width to work*/
-  overflow-x: hidden;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-}
-
-table td, table th {
-  border: 1px solid black;
-  box-sizing: border-box;
-  font-size: 30px;
-}
-
 .et2-table-header {
   position: relative;
+}
+
+.et2-fixed-table-header {
+  z-index: 1;
 }
 
 .et2-header-resize-area {
@@ -97,6 +88,10 @@ table td, table th {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.et2-fixed-table-cell, .et2-fixed-table-header, .et2-fixed-table-footer {
+  position: absolute;
 }
 
 /* TODO(billy): do the same thing for IE. */

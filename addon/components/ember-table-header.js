@@ -1,22 +1,18 @@
 /* global Hammer */
-import Ember from 'ember';
-import { computed } from 'ember-decorators/object';
+import EmberTableCell from './ember-table-cell';
+
 import { property } from '../utils/class';
 
-import { getHeaderCellStyle } from '../utils/fixed-column';
 import layout from '../templates/components/ember-table-header';
-
-const { Component } = Ember;
 
 const PRESS_OFFSET_THRESHOLD = 10;
 const COLUMN_STATIC = 0;
 const COLUMN_RESIZE = 1;
 const COLUMN_REORDERING = 2;
 
-export default class EmberTableHeader extends Component {
+export default class EmberTableHeader extends EmberTableCell {
   @property layout = layout;
   @property tagName = 'th';
-  @property attributeBindings = ['style:style'];
 
   @property fixedColumnWidth = 0;
 
@@ -150,14 +146,5 @@ export default class EmberTableHeader extends Component {
 
   onTap() {
     this.sendAction('onHeaderClicked', this.get('columnIndex'));
-  }
-
-  @computed('width', 'columnIndex', 'fixedColumnWidth')
-  style() {
-    return getHeaderCellStyle(
-      this.get('width'),
-      this.get('columnIndex'),
-      this.get('fixedColumnWidth')
-    );
   }
 }
