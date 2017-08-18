@@ -27,7 +27,7 @@ export default class LinkedListTree extends EmberObject {
       this.pointerIndex += direction;
     }
 
-    return this.pointerNode;
+    return this.pointerNode.value;
   }
 
   updateParentNodeCount(node, delta) {

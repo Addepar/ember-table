@@ -1,7 +1,7 @@
 import Controller from '@ember/controller';
 import TreeNode from '../utils/tree-node';
 import LinkedListTree from '../utils/linked-list-tree';
-import { computed, set } from '@ember/object';
+import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
 import { A as emberA } from '@ember/array';
 

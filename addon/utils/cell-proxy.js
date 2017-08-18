@@ -21,7 +21,7 @@ export default class CellProxy extends EmberObject {
     const row = this.get('row');
     const valuePath = this.get('column.valuePath');
 
-    return get(row.value, valuePath);
+    return get(row, valuePath);
   }
 
   set value(value) {
