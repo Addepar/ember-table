@@ -400,7 +400,11 @@ export default class EmberTable2 extends Component {
   }
 
   @action
-  toggleRow(row) {
+  toggleRow(rowValue) {
+    // TODO(Billy): move this out of the table. This might belong to ember tree table.
+    const tree = this.get('rows');
+    const row = tree.getTreeNodeFromRowValue(rowValue);
+
     if (!row.collapse) {
       this.get('rows').collapseNode(row);
     } else {
