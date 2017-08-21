@@ -1,7 +1,7 @@
 .et2-outer-wrapper {
+  border-collapse: collapse;
   width: 100%;
   height: 100%;
-  border-collapse: collapse;
   max-width: 100%;
   display: block;
   /*allows max-width to work*/
@@ -9,6 +9,12 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
 }
 
 .et2-body-outer-wrapper {

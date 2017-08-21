@@ -1,18 +1,16 @@
 <div class="demo-container">
-  <div class="demo-table-wrapper">
-    {{#ember-table-2
-      rows=rows
-      enableColumnResize=true
-      enableColumnReorder=true
-      hasFixedColumn=true
-      columns=columns
-      as |cell|
-    }}
+  {{#ember-table-2
+    rows=rows
+    enableColumnResize=true
+    enableColumnReorder=true
+    hasFixedColumn=true
+    columns=columns
+    as |cell|
+  }}
 
-      <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
-        {{cell.value}}
-      </div>
+    <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
+      {{cell.value}}
+    </div>
 
-    {{/ember-table-2}}
-  </div>
+  {{/ember-table-2}}
 </div>
