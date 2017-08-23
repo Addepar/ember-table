@@ -84,10 +84,8 @@ export default class EmberTableHeader extends EmberTableCell {
       } = this;
 
       const [{ clientX }] = ev.pointers;
-
       if (enableColumnResize && _columnState == COLUMN_RESIZE) {
         this.sendAction('onColumnResized', columnIndex, clientX - _touchX);
-
         this._touchX = clientX;
         return;
       }
@@ -100,7 +98,6 @@ export default class EmberTableHeader extends EmberTableCell {
         }
 
         const box = this.element.getBoundingClientRect();
-
         this.sendAction('onColumnReorder', columnIndex, box, clientX - _firstTouchX);
 
         this._columnState = COLUMN_REORDERING;

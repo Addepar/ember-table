@@ -6,6 +6,7 @@ import CellProxy from '../utils/cell-proxy';
 import $ from 'jquery';
 import layout from '../templates/components/ember-table-2';
 import { htmlSafe } from '@ember/string';
+import { run } from '@ember/runloop';
 
 const { Component } = Ember;
 
@@ -75,11 +76,6 @@ export default class EmberTable2 extends Component {
   @property _tableResizeSensor = null;
 
   /**
-   * A sensor object that detect header row size change.
-   */
-  @property _headerResizeSensor = null;
-
-  /**
    * A variable to store table width. This is updated when table is created or resized. We need to
    * store the table width because there are several computed property dependent on the table width.
    */
@@ -111,24 +107,26 @@ export default class EmberTable2 extends Component {
     super.didInsertElement(...arguments);
 
     requestAnimationFrame(() => {
-      const parentHeight = this.getHeightFromParent(this.element.parentElement);
-      let vcBufferSize = Math.round(parentHeight / (2 * this.get('estimateRowHeight')));
-      if (vcBufferSize == 0) {
-        vcBufferSize = vcBufferSize + 1;
-      }
-      this.set('vcBufferSize', vcBufferSize);
+      run(() => {
+        const parentHeight = this.getHeightFromParent(this.element.parentElement);
+        let vcBufferSize = Math.round(parentHeight / (2 * this.get('estimateRowHeight')));
+        if (vcBufferSize == 0) {
+          vcBufferSize = vcBufferSize + 1;
+        }
+        this.set('vcBufferSize', vcBufferSize);
 
-      this.set('_width', this.element.offsetWidth);
-      this.fillupColumn();
+        this.set('_width', this.element.offsetWidth);
+        this.fillupColumn();
 
-      // Sync between table & the horizontal div scroller.
-      const bodyScrollContainer = $(this.element).find('.et2-body-inner-wrapper');
-      const headerScrollContainer = $(this.element).find('.et2-thead');
-      const footerScrollContainer = $(this.element).find('.et2-tfooter');
-      const horizontalScrollContainer = $(this.element).find('.et2-horizontal-scroll-wrapper');
+        // Sync between table & the horizontal div scroller.
+        const bodyScrollContainer = $(this.element).find('.et2-body-inner-wrapper');
+        const headerScrollContainer = $(this.element).find('.et2-thead');
+        const footerScrollContainer = $(this.element).find('.et2-tfooter');
+        const horizontalScrollContainer = $(this.element).find('.et2-horizontal-scroll-wrapper');
 
-      this.syncScroll([bodyScrollContainer, headerScrollContainer, horizontalScrollContainer,
-        footerScrollContainer]);
+        this.syncScroll([bodyScrollContainer, headerScrollContainer, horizontalScrollContainer,
+          footerScrollContainer]);
+      });
     });
 
     this._tableResizeSensor = new ResizeSensor(this.element, () => {
@@ -139,7 +137,6 @@ export default class EmberTable2 extends Component {
 
   willDestroyElement() {
     this.get('_tableResizeSensor').detach(this.element);
-    this.get('_headerResizeSensor').detach(this.element.getElementsByClassName('et2-thead-wrapper')[0]);
 
     super.willDestroyElement(...arguments);
   }
