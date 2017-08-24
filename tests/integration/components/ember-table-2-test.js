@@ -1,13 +1,14 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import {
-  fullTable,
   simpleTable,
   generateColumns,
-  generateRows
+  generateRows,
+  setupFullTable
 } from '../../helpers/test-scenarios';
 import {
   pressElement,
-  moveMouse
+  moveMouse,
+  releasePress
 } from '../../helpers/drag-helper';
 
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
@@ -41,14 +42,7 @@ test('Ember table renders', async function(assert) {
 });
 
 test('Test resizing column', async function(assert) {
-  const rowCount = 20;
-  const columnCount = 56;
-  this.set('tableColumns', generateColumns(columnCount));
-  this.set('tableRows', generateRows(rowCount, columnCount));
-
-  this.render(fullTable);
-
-  await waitForRender();
+  setupFullTable(this);
 
   let header = find('.et2-thead tr th:nth-child(2)');
   const originalWidth = header.offsetWidth;
@@ -70,3 +64,32 @@ test('Test resizing column', async function(assert) {
   assert.equal(header.offsetWidth - originalWidth, 30, 'Column size is updated');
 });
 
+test('Test reodering columns', async function(assert) {
+  setupFullTable(this);
+
+  const header = find('.et2-thead tr th:nth-child(2)');
+  const box = header.getBoundingClientRect();
+  const width = header.offsetLeft;
+  const startX = (box.right + box.left) / 2;
+
+  // Case 1: Try to swap column A with fixed column. The table should prevent that action.
+  await pressElement(header, startX, header.clientHeight / 2);
+  await moveMouse(header, startX - width / 2, header.clientHeight / 2);
+  await moveMouse(header, startX - width, header.clientHeight / 2);
+  await releasePress(header, startX - width, header.clientHeight / 2);
+  assert.equal(find('.et2-thead tr th:nth-child(2)').innerText.trim(), 'Col A',
+    'Second column does not change');
+  assert.equal(find('.et2-thead tr th:nth-child(1)').innerText.trim(), 'Column id',
+    'First column does not change');
+
+  // Case 2: Move column A -> B
+  await pressElement(header, startX, header.clientHeight / 2);
+  await moveMouse(header, startX + width / 2, header.clientHeight / 2);
+  await moveMouse(header, startX + width, header.clientHeight / 2);
+  await releasePress(header, startX + width, header.clientHeight / 2);
+
+  assert.equal(find('.et2-thead tr th:nth-child(2)').innerText.trim(), 'Col B',
+    'Second column is swapped');
+  assert.equal(find('.et2-thead tr th:nth-child(3)').innerText.trim(), 'Col A',
+    'Third column is swapped');
+});

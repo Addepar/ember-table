@@ -17,7 +17,15 @@ export function moveMouse(target, x, y) {
   return (window.wait || wait)();
 }
 
-export function createMouseEvent(type, target, x, y) {
+export function releasePress(target, x, y) {
+  run(() => {
+    const event = createMouseEvent('pointerup', target, x, y);
+    target.dispatchEvent(event);
+  });
+  return (window.wait || wait)();
+}
+
+function createMouseEvent(type, target, x, y) {
   const event = target.ownerDocument.createEvent('MouseEvents');
   const opts = {
     type,

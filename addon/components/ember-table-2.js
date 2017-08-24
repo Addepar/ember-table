@@ -317,8 +317,7 @@ export default class EmberTable2 extends Component {
     const columns = this.get('columns');
 
     if (this._headerGhostElement == null) {
-      this.createGhostElement(containerElement, header.width,
-        tableBoundingBox.bottom - tableBoundingBox.top);
+      this.createGhostElement(containerElement, header.width, containerElement.offsetHeight);
 
       containerElement.appendChild(this._headerGhostElement);
 
@@ -331,7 +330,7 @@ export default class EmberTable2 extends Component {
     let ghostLeftX = header.left - tableBoundingBox.left + deltaX;
     // 1) Do not allow the ghost element to move out of left boundary.
     if (this.get('hasFixedColumn')) {
-      const [{ scrollLeft }] = [containerElement.getElementsByTagName('table')];
+      const { scrollLeft } = containerElement;
 
       if (ghostLeftX < columns[0].width - scrollLeft) {
         ghostLeftX = columns[0].width - scrollLeft;

@@ -1,6 +1,7 @@
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
 import EmberObject from '@ember/object';
+import waitForRender from 'dummy/tests/helpers/wait-for-render';
 
 export function generateRows(rowCount, columnCount) {
   const arr = emberA();
@@ -69,3 +70,12 @@ export const fullTable = hbs`
     {{/ember-table-2}}
   </div>
 `;
+
+export async function setupFullTable(testContext) {
+  const rowCount = 20;
+  const columnCount = 56;
+  testContext.set('tableColumns', generateColumns(columnCount));
+  testContext.set('tableRows', generateRows(rowCount, columnCount));
+  testContext.render(fullTable);
+  await waitForRender();
+}
