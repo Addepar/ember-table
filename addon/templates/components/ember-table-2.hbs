@@ -2,20 +2,24 @@
   <thead class="et2-thead">
     <tr>
       {{#each columns as |column columnIndex|}}
-        {{#ember-table-header
-          columnIndex=columnIndex
-          hasFixedColumn=hasFixedColumn
-          enableColumnResize=enableColumnResize
-          enableColumnReorder=enableColumnReorder
-          onHeaderClicked="onHeaderClicked"
-          onColumnResized="onColumnResized"
-          onColumnResizeEnded="onColumnResizeEnded"
-          onColumnReorder="onColumnReorder"
-          onColumnReorderEnds="onColumnReorderEnds"
-          width=column.width
-        }}
-          {{column.columnName}}
-        {{/ember-table-header}}
+        {{#if column.customHeader}}
+          {{component column.customHeader column=column columnIndex=columnIndex}}
+        {{else}}
+          {{#ember-table-header
+            columnIndex=columnIndex
+            hasFixedColumn=hasFixedColumn
+            enableColumnResize=enableColumnResize
+            enableColumnReorder=enableColumnReorder
+            onHeaderClicked="onHeaderClicked"
+            onColumnResized="onColumnResized"
+            onColumnResizeEnded="onColumnResizeEnded"
+            onColumnReorder="onColumnReorder"
+            onColumnReorderEnds="onColumnReorderEnds"
+            width=column.width
+          }}
+            {{column.columnName}}
+          {{/ember-table-header}}
+        {{/if}}
       {{/each}}
     </tr>
   </thead>

@@ -35,3 +35,15 @@ table tfoot th {
 .red-cell {
   background: red;
 }
+
+/* Custom component classes */
+.custom-component-container {
+  position: relative;
+  width: 360px;
+  height: 300px;
+}
+
+.cell-image {
+  height: 40px;
+  width: 40px;
+}

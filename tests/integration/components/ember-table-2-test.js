@@ -10,7 +10,7 @@ import {
   moveMouse,
   releasePress
 } from '../../helpers/drag-helper';
-
+import EmberObject from '@ember/object';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
 import {
   find,
@@ -92,4 +92,19 @@ test('Test reodering columns', async function(assert) {
     'Second column is swapped');
   assert.equal(find('.et2-thead tr th:nth-child(3)').innerText.trim(), 'Col A',
     'Third column is swapped');
+});
+
+test('Test custom header', async function(assert) {
+  this.set('tableColumns', [
+    EmberObject.create({
+      customHeader: 'custom-text-header',
+      width: 180
+    })
+  ]);
+  this.set('tableRows', []);
+  this.render(simpleTable);
+  await waitForRender();
+
+  assert.equal(find('.et2-thead tr th:nth-child(1)').innerText.trim(),
+    'This is custom text header.', 'Custom header is correct');
 });
