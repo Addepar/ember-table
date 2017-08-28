@@ -86,13 +86,6 @@ export default class EmberTable2 extends Component {
    */
   @property estimateRowHeight = 20;
 
-  /**
-   * A value used by vertical collection. This is how many items that vertical collection should
-   * keep on either side of the viewport. This value is also used by the table to estimate how
-   * many items we should render at the begining as the container height could be 0 for VC initially
-   */
-  @property vcBufferSize = 2;
-
   init() {
     super.init(...arguments);
 
@@ -108,13 +101,6 @@ export default class EmberTable2 extends Component {
 
     requestAnimationFrame(() => {
       run(() => {
-        const parentHeight = this.getHeightFromParent(this.element.parentElement);
-        let vcBufferSize = Math.round(parentHeight / (2 * this.get('estimateRowHeight')));
-        if (vcBufferSize == 0) {
-          vcBufferSize = vcBufferSize + 1;
-        }
-        this.set('vcBufferSize', vcBufferSize);
-
         this.set('_width', this.element.offsetWidth);
         this.fillupColumn();
 
@@ -155,27 +141,6 @@ export default class EmberTable2 extends Component {
         }
       });
     }
-  }
-
-  /**
-   * Gets height of this table container. This is equivalent to the parent's heignt minus top and
-   * bottom paddings.
-   */
-  getHeightFromParent(parentElement) {
-    let paddingBottom = 0;
-    let paddingTop = 0;
-    const style = window.getComputedStyle(parentElement);
-    const paddingBottomString = style['padding-bottom'];
-    if (paddingBottomString && paddingBottomString.length > 0) {
-      paddingBottom = paddingBottomString.substr(0, paddingBottomString.length - 2);
-    }
-
-    const paddingTopString = style['padding-top'];
-    if (paddingTopString && paddingTopString.length > 0) {
-      paddingTop = paddingTopString.substr(0, paddingTopString.length - 2);
-    }
-
-    return parentElement.offsetHeight - paddingTop - paddingBottom;
   }
 
   /**

@@ -5,6 +5,8 @@ import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
 import { A as emberA } from '@ember/array';
 
+const COLUMN_COUNT = 13;
+
 export default Controller.extend({
   showTable: true,
   showPanel: false,
@@ -14,7 +16,7 @@ export default Controller.extend({
     const row = EmberObject.create({
       'id': title
     });
-    for (let j = 0; j < 26; j++) {
+    for (let j = 0; j < COLUMN_COUNT; j++) {
       row.set(alphabet[j], alphabet[j]);
     }
     return row;
@@ -54,7 +56,7 @@ export default Controller.extend({
       width: columnWidth
     }));
 
-    for (let j = 0; j < 26; j++) {
+    for (let j = 0; j < COLUMN_COUNT; j++) {
       arr.pushObject(EmberObject.create({
         columnName: `Col ${alphabet[j % 26]}`,
         valuePath: alphabet[j % 26],

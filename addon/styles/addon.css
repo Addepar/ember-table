@@ -19,6 +19,7 @@
 
 .et2-body-outer-wrapper {
   width: 100%;
+  height: 100%; /* This is needed by vertical collection. */
   overflow-y: overlay;
   overflow-x: hidden;
   position: relative;
