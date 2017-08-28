@@ -7,6 +7,8 @@ import $ from 'jquery';
 import layout from '../templates/components/ember-table-2';
 import { htmlSafe } from '@ember/string';
 import { run } from '@ember/runloop';
+import { isNone } from '@ember/utils';
+import { get, set } from '@ember/object';
 
 const { Component } = Ember;
 
@@ -86,6 +88,15 @@ export default class EmberTable2 extends Component {
    */
   @property estimateRowHeight = 20;
 
+  /**
+   * A string value that defines table row component. By default, this is using ember table row
+   * component but outer application can override this value to use their custom row. This is
+   * useful when user wants to have custom action on entire row instead of cell (e.g. highlight row
+   * when mouse hovers, select & unselect rows). However, the custom row component must extend the
+   * EmberTableRow class and should not override handlebar template.
+   */
+  @property rowComponent = 'ember-table-row';
+
   init() {
     super.init(...arguments);
 
@@ -94,6 +105,15 @@ export default class EmberTable2 extends Component {
     // Create a unique CellProxy class for this table instance, that way transient data won't
     // pollute the prototype of the main proxy class.
     this.cellProxyClass = class extends CellProxy {};
+
+    const columns = this.get('columns');
+    for (const column of columns) {
+      if (isNone(get(column, 'headerComponent'))) {
+        set(column, '_headerComponent', 'ember-table-header');
+      } else {
+        set(column, '_headerComponent', get(column, 'headerComponent'));
+      }
+    }
   }
 
   didInsertElement() {

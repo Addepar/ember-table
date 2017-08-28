@@ -2,24 +2,23 @@
   <thead class="et2-thead">
     <tr>
       {{#each columns as |column columnIndex|}}
-        {{#if column.customHeader}}
-          {{component column.customHeader column=column columnIndex=columnIndex}}
-        {{else}}
-          {{#ember-table-header
-            columnIndex=columnIndex
-            hasFixedColumn=hasFixedColumn
-            enableColumnResize=enableColumnResize
-            enableColumnReorder=enableColumnReorder
-            onHeaderClicked="onHeaderClicked"
-            onColumnResized="onColumnResized"
-            onColumnResizeEnded="onColumnResizeEnded"
-            onColumnReorder="onColumnReorder"
-            onColumnReorderEnds="onColumnReorderEnds"
-            width=column.width
-          }}
+        {{#component column._headerComponent
+          column=column
+          columnIndex=columnIndex
+          hasFixedColumn=hasFixedColumn
+          enableColumnResize=enableColumnResize
+          enableColumnReorder=enableColumnReorder
+          onHeaderClicked="onHeaderClicked"
+          onColumnResized="onColumnResized"
+          onColumnResizeEnded="onColumnResizeEnded"
+          onColumnReorder="onColumnReorder"
+          onColumnReorderEnds="onColumnReorderEnds"
+          width=column.width
+        }}
+          {{#unless column.headerComponent}}
             {{column.columnName}}
-          {{/ember-table-header}}
-        {{/if}}
+          {{/unless}}
+        {{/component}}
       {{/each}}
     </tr>
   </thead>
@@ -35,7 +34,7 @@
 
       as |row rowIndex|
     }}
-      {{#ember-table-row
+      {{#component rowComponent
         row=row
         columns=columns
         cellCache=cellCache
@@ -52,11 +51,10 @@
         }}
           {{yield cell}}
         {{/ember-table-cell}}
-      {{/ember-table-row}}
+      {{/component}}
     {{/vertical-collection}}
   </div>
 </div>
-
 
 <div class="et2-bottom-wrapper">
   {{#if hasFooter}}

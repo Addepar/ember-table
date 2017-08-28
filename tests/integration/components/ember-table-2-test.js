@@ -3,14 +3,12 @@ import {
   simpleTable,
   generateColumns,
   generateRows,
-  setupFullTable
+  setupFullTable,
+  setupCustomComponentTable,
+  moveTableColumn,
+  getHeaderElement,
+  resizeColumn
 } from '../../helpers/test-scenarios';
-import {
-  pressElement,
-  moveMouse,
-  releasePress
-} from '../../helpers/drag-helper';
-import EmberObject from '@ember/object';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
 import {
   find,
@@ -44,67 +42,52 @@ test('Ember table renders', async function(assert) {
 test('Test resizing column', async function(assert) {
   setupFullTable(this);
 
-  let header = find('.et2-thead tr th:nth-child(2)');
-  const originalWidth = header.offsetWidth;
-  const box = header.getBoundingClientRect();
-  const deltaX = 30;
-  const startX = box.right - 5;
-  await pressElement(header, startX, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX, header.clientHeight / 2);
-
-  assert.equal(header.offsetWidth - originalWidth, 30, 'Column size is updated');
+  let originalWidth = getHeaderElement(2).offsetWidth;
+  await resizeColumn(2, 30);
+  assert.equal(getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
 
   // Fixed column can also be resized
-  header = find('.et2-thead tr th:nth-child(1)');
-  await pressElement(header, startX, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX, header.clientHeight / 2);
-
-  assert.equal(header.offsetWidth - originalWidth, 30, 'Column size is updated');
+  originalWidth = getHeaderElement(1).offsetWidth;
+  await resizeColumn(1, 30);
+  assert.equal(getHeaderElement(1).offsetWidth - originalWidth, 30, 'Column size is updated');
 });
 
 test('Test reodering columns', async function(assert) {
   setupFullTable(this);
 
-  const header = find('.et2-thead tr th:nth-child(2)');
-  const box = header.getBoundingClientRect();
-  const width = header.offsetLeft;
-  const startX = (box.right + box.left) / 2;
-
   // Case 1: Try to swap column A with fixed column. The table should prevent that action.
-  await pressElement(header, startX, header.clientHeight / 2);
-  await moveMouse(header, startX - width / 2, header.clientHeight / 2);
-  await moveMouse(header, startX - width, header.clientHeight / 2);
-  await releasePress(header, startX - width, header.clientHeight / 2);
-  assert.equal(find('.et2-thead tr th:nth-child(2)').innerText.trim(), 'Col A',
-    'Second column does not change');
-  assert.equal(find('.et2-thead tr th:nth-child(1)').innerText.trim(), 'Column id',
-    'First column does not change');
+  await moveTableColumn(2, -1);
+
+  assert.equal(getHeaderElement(2).innerText.trim(), 'Col A', 'Second column does not change');
+  assert.equal(getHeaderElement(1).innerText.trim(), 'Column id', 'First column does not change');
 
   // Case 2: Move column A -> B
-  await pressElement(header, startX, header.clientHeight / 2);
-  await moveMouse(header, startX + width / 2, header.clientHeight / 2);
-  await moveMouse(header, startX + width, header.clientHeight / 2);
-  await releasePress(header, startX + width, header.clientHeight / 2);
+  await moveTableColumn(2, 1);
 
-  assert.equal(find('.et2-thead tr th:nth-child(2)').innerText.trim(), 'Col B',
+  assert.equal(find(getHeaderElement(2)).innerText.trim(), 'Col B',
     'Second column is swapped');
   assert.equal(find('.et2-thead tr th:nth-child(3)').innerText.trim(), 'Col A',
     'Third column is swapped');
 });
 
 test('Test custom header', async function(assert) {
-  this.set('tableColumns', [
-    EmberObject.create({
-      customHeader: 'custom-text-header',
-      width: 180
-    })
-  ]);
-  this.set('tableRows', []);
-  this.render(simpleTable);
-  await waitForRender();
+  setupCustomComponentTable(this, 'custom-text-header', 'custom-row');
+  assert.equal(getHeaderElement(1).innerText.trim(), 'Custom header Column id',
+    'Custom header is correct');
 
-  assert.equal(find('.et2-thead tr th:nth-child(1)').innerText.trim(),
-    'This is custom text header.', 'Custom header is correct');
+  // Veritfy that you can reorder custom header.
+  await moveTableColumn(2, 1);
+
+  assert.equal(getHeaderElement(2).innerText.trim(), 'Custom header Col B',
+    'Custom column can be swapped');
+});
+
+test('Test custom row', async function(assert) {
+  setupCustomComponentTable(this, null, 'custom-row');
+
+  // TODO(Billy): Because of the slow table rendering, we need to scroll a bit for the table to
+  // be fully rendered. Remove this scroll when table rendering issue is fixed.
+  await scrollTo('.et2-body-outer-wrapper', 0, 10);
+
+  assert.ok(find('tbody tr').className.indexOf('custom-row') >= 0, 'Table has custom row');
 });

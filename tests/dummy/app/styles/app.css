@@ -47,3 +47,7 @@ table tfoot th {
   height: 40px;
   width: 40px;
 }
+
+.custom-row {
+  background: green;
+}
