@@ -12,7 +12,6 @@ import { get, set } from '@ember/object';
 
 const { Component } = Ember;
 
-const COLUMN_WIDTH_MIN = 25;
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
 export default class EmberTable2 extends Component {
@@ -22,21 +21,10 @@ export default class EmberTable2 extends Component {
 
   @property layout = layout;
 
-  /**
-   * A variable to indicate if this table has fixed column or not. Current version of ember table
-   * only supports first column as fixed column.
-   */
-  @property hasFixedColumn = false;
-
-  /**
-   * Indicates if this table allows column resizing or not. It's false by default.
-   */
-  @property enableColumnResize = false;
-
-  /**
-   * Indicates if this table allows column reordering or not. It's false by default.
-   */
-  @property enableColumnReorder = false;
+  @computed('columns.firstObject.isFixed')
+  get hasFixedColumn() {
+    return this.get('columns.firstObject.isFixed');
+  }
 
   /**
    * Defines if this table has a footer or not.
@@ -166,6 +154,7 @@ export default class EmberTable2 extends Component {
   /**
    * There are cases where the sum of all column width is smaller than the container width. In this
    * case, we want to auto increase width of some column. This function handles that logic.
+   * TODO(Billy): rewrite this function's logic to take into account min & max width.
    */
   fillupColumn() {
     const columns = this.get('columns');
@@ -257,9 +246,14 @@ export default class EmberTable2 extends Component {
     const columns = this.get('columns');
     const column = columns[columnIndex];
     const width = column.get('width');
-    if (width + delta < COLUMN_WIDTH_MIN) {
+    const maxWidth = column.get('maxWidth');
+    if (width + delta < column.get('minWidth')) {
       return;
     }
+    if (maxWidth !== undefined && maxWidth < width + delta) {
+      return;
+    }
+
     column.set('width', width + delta);
 
     if (!this.element.classList.contains('et2-unselectable')) {

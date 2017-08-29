@@ -1,7 +1,7 @@
 <div class="et2-table-header {{if isFixed 'et2-fixed-table-header'}}" style={{style}}>
   {{yield}}
 
-  {{#if enableColumnResize}}
+  {{#if column.isResizable}}
     <div class="et2-header-resize-area">
     </div>
   {{/if}}

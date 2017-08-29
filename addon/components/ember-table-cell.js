@@ -12,14 +12,14 @@ export default class EmberTableCell extends Component {
   @property tagName = 'td';
   @property attributeBindings = ['style:style'];
 
-  @computed('columnIndex', 'hasfixedColumn')
+  @computed('columnIndex', 'column.isFixed')
   get isFixed() {
-    return this.get('columnIndex') === 0 && this.get('hasFixedColumn');
+    return this.get('columnIndex') === 0 && this.get('column.isFixed');
   }
 
-  @computed('width')
+  @computed('column.width')
   get style() {
-    return htmlSafe(`min-width: ${this.get('width')}px; max-width: ${this.get('width')}px;`);
+    return htmlSafe(`min-width: ${this.get('column.width')}px; max-width: ${this.get('column.width')}px;`);
   }
 
   click() {

@@ -5,9 +5,6 @@
         {{#component column._headerComponent
           column=column
           columnIndex=columnIndex
-          hasFixedColumn=hasFixedColumn
-          enableColumnResize=enableColumnResize
-          enableColumnReorder=enableColumnReorder
           onHeaderClicked="onHeaderClicked"
           onColumnResized="onColumnResized"
           onColumnResizeEnded="onColumnResizeEnded"
@@ -45,9 +42,8 @@
         {{#ember-table-cell
           row=row
           toggleRow="toggleRow"
-          width=cell.column.width
+          column=cell.column
           columnIndex=cell.columnIndex
-          hasFixedColumn=hasFixedColumn
         }}
           {{yield cell}}
         {{/ember-table-cell}}
@@ -62,9 +58,8 @@
       <tr>
         {{#each columns as |column columnIndex|}}
           {{#ember-table-footer
+            column=column
             columnIndex=columnIndex
-            hasFixedColumn=hasFixedColumn
-            width=column.width
           }}
             {{column.columnName}}
           {{/ember-table-footer}}

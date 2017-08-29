@@ -34,7 +34,7 @@ test('Ember table renders', async function(assert) {
   // Check column header count
   assert.equal(findAll('thead tr th').length, columnCount, `Header has ${columnCount} columns`);
   const bodyRows = find('tbody').getElementsByTagName('tr');
-  const lastRowName = bodyRows[bodyRows.length - 1].getElementsByTagName('td')[0].innerHTML.trim();
+  const lastRowName = bodyRows[bodyRows.length - 1].getElementsByTagName('td')[0].innerText;
   // Check last row does appear
   assert.equal(lastRowName, `Row ${rowCount - 1}`, 'Last row name is correct');
 });
@@ -44,6 +44,7 @@ test('Test resizing column', async function(assert) {
 
   let originalWidth = getHeaderElement(2).offsetWidth;
   await resizeColumn(2, 30);
+
   assert.equal(getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
 
   // Fixed column can also be resized

@@ -1,7 +1,8 @@
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
-import EmberObject from '@ember/object';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
+import ColumnDefinition from 'ember-table-2/utils/column-definition';
+
 import {
   find
 } from 'ember-native-dom-helpers';
@@ -16,7 +17,7 @@ export function generateRows(rowCount, columnCount) {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   for (let i = 0; i < rowCount; i++) {
-    const row = EmberObject.create({
+    const row = ColumnDefinition.create({
       'id': `Row ${i}`
     });
     for (let j = 0; j < columnCount - 1; j++) {
@@ -33,15 +34,15 @@ export function generateColumns(columnCount) {
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const columnWidth = 180;
 
-  arr.pushObject(EmberObject.create({
+  arr.pushObject(ColumnDefinition.create({
     columnName: 'Column id',
     valuePath: 'id',
-    isFixedColumn: true,
+    isFixed: true,
     width: columnWidth
   }));
 
   for (let j = 0; j < columnCount - 1; j++) {
-    arr.pushObject(EmberObject.create({
+    arr.pushObject(ColumnDefinition.create({
       columnName: `Col ${alphabet[j % 26]}`,
       valuePath: alphabet[j % 26],
       width: columnWidth
@@ -67,12 +68,9 @@ export const simpleTable = hbs`
 export const fullTable = hbs`
   <div style="height: 500px;">
     {{#ember-table-2
-      enableColumnResize=true
-      enableColumnReorder=true
-      hasFixedColumn=true
       columns=tableColumns
-      rowComponent=customRow
       rows=tableRows
+      rowComponent=customRow
       as |cell|
     }}
       {{cell.value}}

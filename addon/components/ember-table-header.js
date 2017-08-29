@@ -2,6 +2,7 @@
 import EmberTableCell from './ember-table-cell';
 
 import { property } from '../utils/class';
+import { computed } from 'ember-decorators/object';
 
 import layout from '../templates/components/ember-table-header';
 
@@ -34,14 +35,17 @@ export default class EmberTableHeader extends EmberTableCell {
   @property _columnState = COLUMN_STATIC;
 
   /**
-   * Indicates if this header column can be resized or not. It's false by default.
-   */
-  @property enableColumnResize = false;
-
-  /**
    * Indicates if this column can be reordered or not. It's false by default.
    */
-  @property enableColumnReorder = false;
+  @computed('column.isResizable')
+  get enableColumnResize() {
+    return this.get('column.isResizable');
+  }
+
+  @computed('column.isReorderable', 'isFixed')
+  get enableColumnReorder() {
+    return this.get('column.isReorderable') && !this.get('isFixed');
+  }
 
   /**
    * An object that listens to touch/ press/ drag events.

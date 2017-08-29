@@ -1,5 +1,6 @@
 import Controller from '@ember/controller';
 import TreeNode from '../utils/tree-node';
+import ColumnDefinition from '../utils/column-definition';
 import LinkedListTree from '../utils/linked-list-tree';
 import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
@@ -48,19 +49,22 @@ export default Controller.extend({
     const arr = emberA();
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const columnWidth = 180;
+    const maxWidth = 400;
 
-    arr.pushObject(EmberObject.create({
+    arr.pushObject(ColumnDefinition.create({
       columnName: 'Column id',
       valuePath: 'id',
-      isFixedColumn: true,
-      width: columnWidth
+      isFixed: true,
+      width: columnWidth,
+      maxWidth
     }));
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
-      arr.pushObject(EmberObject.create({
+      arr.pushObject(ColumnDefinition.create({
         columnName: `Col ${alphabet[j % 26]}`,
         valuePath: alphabet[j % 26],
-        width: columnWidth
+        width: columnWidth,
+        maxWidth
       }));
     }
 
