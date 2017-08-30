@@ -7,8 +7,6 @@ import $ from 'jquery';
 import layout from '../templates/components/ember-table-2';
 import { htmlSafe } from '@ember/string';
 import { run } from '@ember/runloop';
-import { isNone } from '@ember/utils';
-import { get, set } from '@ember/object';
 
 const { Component } = Ember;
 
@@ -20,11 +18,6 @@ export default class EmberTable2 extends Component {
   @property tagName = 'table';
 
   @property layout = layout;
-
-  @computed('columns.firstObject.isFixed')
-  get hasFixedColumn() {
-    return this.get('columns.firstObject.isFixed');
-  }
 
   /**
    * Defines if this table has a footer or not.
@@ -77,6 +70,19 @@ export default class EmberTable2 extends Component {
   @property estimateRowHeight = 20;
 
   /**
+   * Indicates how many left columns will be fixed. With current implementation, only 1 single
+   * left most column can be a fixed column. Later version of Ember table could change
+   * implementation to support multiple fixed columns.
+   */
+  @property numFixedColumns = 0;
+
+  @computed('numFixedColumns')
+  get hasFixedColumn() {
+    const numFixedColumns = this.get('numFixedColumns');
+    return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
+  }
+
+  /**
    * A string value that defines table row component. By default, this is using ember table row
    * component but outer application can override this value to use their custom row. This is
    * useful when user wants to have custom action on entire row instead of cell (e.g. highlight row
@@ -93,15 +99,6 @@ export default class EmberTable2 extends Component {
     // Create a unique CellProxy class for this table instance, that way transient data won't
     // pollute the prototype of the main proxy class.
     this.cellProxyClass = class extends CellProxy {};
-
-    const columns = this.get('columns');
-    for (const column of columns) {
-      if (isNone(get(column, 'headerComponent'))) {
-        set(column, '_headerComponent', 'ember-table-header');
-      } else {
-        set(column, '_headerComponent', get(column, 'headerComponent'));
-      }
-    }
   }
 
   didInsertElement() {

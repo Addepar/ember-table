@@ -1,4 +1,4 @@
-import EmberTableCell from '../components/ember-table-cell';
+import Component from '@ember/component';
 
-export default class ImageCell extends EmberTableCell {
+export default class ImageCell extends Component {
 }

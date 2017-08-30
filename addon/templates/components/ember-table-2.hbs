@@ -2,9 +2,10 @@
   <thead class="et2-thead">
     <tr>
       {{#each columns as |column columnIndex|}}
-        {{#component column._headerComponent
+        {{#ember-table-header
           column=column
           columnIndex=columnIndex
+          numFixedColumns=numFixedColumns
           onHeaderClicked="onHeaderClicked"
           onColumnResized="onColumnResized"
           onColumnResizeEnded="onColumnResizeEnded"
@@ -12,10 +13,7 @@
           onColumnReorderEnds="onColumnReorderEnds"
           width=column.width
         }}
-          {{#unless column.headerComponent}}
-            {{column.columnName}}
-          {{/unless}}
-        {{/component}}
+        {{/ember-table-header}}
       {{/each}}
     </tr>
   </thead>
@@ -44,8 +42,11 @@
           toggleRow="toggleRow"
           column=cell.column
           columnIndex=cell.columnIndex
+          numFixedColumns=numFixedColumns
         }}
-          {{yield cell}}
+          {{#unless cell.column.cellComponent}}
+            {{yield cell}}
+          {{/unless}}
         {{/ember-table-cell}}
       {{/component}}
     {{/vertical-collection}}
@@ -60,6 +61,7 @@
           {{#ember-table-footer
             column=column
             columnIndex=columnIndex
+            numFixedColumns=numFixedColumns
           }}
             {{column.columnName}}
           {{/ember-table-footer}}

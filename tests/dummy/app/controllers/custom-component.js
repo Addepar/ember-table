@@ -26,7 +26,7 @@ export default Controller.extend({
     }));
     arr.push(EmberObject.create({
       headerComponent: 'custom-text-header',
-      customCell: 'image-cell',
+      cellComponent: 'image-cell',
       valuePath: 'url',
       width: 180
     }));

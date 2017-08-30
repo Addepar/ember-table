@@ -1,4 +1,4 @@
-import EmberTableHeader from '../components/ember-table-header';
+import Component from '@ember/component';
 
-export default class CutomTextHeaderComponent extends EmberTableHeader {
+export default class CutomTextHeaderComponent extends Component {
 }

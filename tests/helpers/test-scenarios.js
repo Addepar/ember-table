@@ -12,6 +12,15 @@ import {
   releasePress
 } from './drag-helper';
 
+export const DEFAULT_TABLE_OPTIONS = {
+  numFixedColumns: 1
+};
+
+export const DEFAULT_FULL_TABLE_COLUMN_OPTIONS = {
+  isResizable: true,
+  isReorderable: true
+};
+
 export function generateRows(rowCount, columnCount) {
   const arr = emberA();
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -29,7 +38,7 @@ export function generateRows(rowCount, columnCount) {
   return arr;
 }
 
-export function generateColumns(columnCount) {
+export function generateColumns(columnCount, columnOptions) {
   const arr = emberA();
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const columnWidth = 180;
@@ -37,16 +46,25 @@ export function generateColumns(columnCount) {
   arr.pushObject(ColumnDefinition.create({
     columnName: 'Column id',
     valuePath: 'id',
-    isFixed: true,
     width: columnWidth
   }));
 
   for (let j = 0; j < columnCount - 1; j++) {
-    arr.pushObject(ColumnDefinition.create({
+    const columnDefinition = ColumnDefinition.create({
       columnName: `Col ${alphabet[j % 26]}`,
       valuePath: alphabet[j % 26],
       width: columnWidth
-    }));
+    });
+
+    arr.pushObject(columnDefinition);
+  }
+
+  for (const columnDefinition of arr) {
+    for (const property in columnOptions) {
+      if (columnOptions.hasOwnProperty(property)) {
+        columnDefinition.set(property, columnOptions[property]);
+      }
+    }
   }
 
   return arr;
@@ -70,7 +88,8 @@ export const fullTable = hbs`
     {{#ember-table-2
       columns=tableColumns
       rows=tableRows
-      rowComponent=customRow
+      rowComponent=rowComponent
+      numFixedColumns=numFixedColumns
       as |cell|
     }}
       {{cell.value}}
@@ -78,25 +97,18 @@ export const fullTable = hbs`
   </div>
 `;
 
-export async function setupCustomComponentTable(testContext, customHeader, customRow) {
-  const rowCount = 5;
-  const columnCount = 3;
-  const columns = generateColumns(columnCount);
-  for (const column of columns) {
-    column.set('headerComponent', customHeader);
-  }
-  testContext.set('tableColumns', columns);
-  testContext.set('tableRows', generateRows(rowCount, columnCount));
-  testContext.set('customRow', customRow);
-
-  testContext.render(fullTable);
-  await waitForRender();
-}
-
-export async function setupFullTable(testContext) {
+export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_OPTIONS,
+  columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS) {
   const rowCount = 20;
   const columnCount = 10;
-  testContext.set('tableColumns', generateColumns(columnCount));
+
+  for (const property in tableOptions) {
+    if (tableOptions.hasOwnProperty(property)) {
+      testContext.set(property, tableOptions[property]);
+    }
+  }
+
+  testContext.set('tableColumns', generateColumns(columnCount, columnOptions));
   testContext.set('tableRows', generateRows(rowCount, columnCount));
   testContext.render(fullTable);
   await waitForRender();

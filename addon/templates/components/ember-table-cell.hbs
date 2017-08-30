@@ -1,7 +1,12 @@
-{{#if isFixed}}
-  <div class="et2-fixed-table-cell" style={{style}}>
+<div class={{fixedCellClass}} style={{style}}>
+  {{#if column.cellComponent}}
+    {{#component column.cellComponent
+      column=column
+      value=value
+    }}
+
+    {{/component}}
+  {{else}}
     {{yield}}
-  </div>
-{{else}}
-  {{yield}}
-{{/if}}
+  {{/if}}
+</div>

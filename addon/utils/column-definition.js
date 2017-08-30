@@ -14,31 +14,24 @@ export default class ColumnDefinition extends EmberObject {
   @property valuePath = '';
 
   /**
-   * Indicates if the column is a fixed column or not. With current implementation, only 1 single
-   * left most column can be a fixed column. Later version of Ember table could change
-   * implementation to support multiple fixed columns.
-   */
-  @property isFixed = false;
-
-  /**
-   * Custom component passed in by user.
+   * Custom header component passed in by user.
    */
   @property headerComponent = null;
 
   /**
-   * Default header component if user does not define any custom header.
+   * Custom cell component passed in by user.
    */
-  @property _headerComponent = 'ember-table-header';
+  @property cellComponent = null;
 
   /**
-   * Indicates if this column can be resized or not. It's true by default.
+   * Indicates if this column can be resized or not. It's false by default.
    */
-  @property isResizable = true;
+  @property isResizable = false;
 
   /**
-   * Indicates if this column can be reordered or not. It's true by default.
+   * Indicates if this column can be reordered or not. It's false by default.
    */
-  @property isReorderable = true;
+  @property isReorderable = false;
 
   /**
    * Current width of the table.

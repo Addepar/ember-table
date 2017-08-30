@@ -1,5 +1,13 @@
 <div class="et2-table-header {{if isFixed 'et2-fixed-table-header'}}" style={{style}}>
-  {{yield}}
+  {{#if column.headerComponent}}
+    {{#component column.headerComponent
+      column=column
+      columnIndex=columnIndex
+    }}
+    {{/component}}
+  {{else}}
+    {{column.columnName}}
+  {{/if}}
 
   {{#if column.isResizable}}
     <div class="et2-header-resize-area">

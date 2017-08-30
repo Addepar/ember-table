@@ -54,7 +54,6 @@ export default Controller.extend({
     arr.pushObject(ColumnDefinition.create({
       columnName: 'Column id',
       valuePath: 'id',
-      isFixed: true,
       width: columnWidth,
       maxWidth
     }));
@@ -64,7 +63,9 @@ export default Controller.extend({
         columnName: `Col ${alphabet[j % 26]}`,
         valuePath: alphabet[j % 26],
         width: columnWidth,
-        maxWidth
+        maxWidth,
+        isResizable: true,
+        isReorderable: true
       }));
     }
 
