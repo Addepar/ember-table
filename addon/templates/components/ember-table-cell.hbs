@@ -1,8 +1,8 @@
 <div class={{fixedCellClass}} style={{style}}>
   {{#if column.cellComponent}}
     {{#component column.cellComponent
-      column=column
-      value=value
+      cell=cell
+      onCellEvent="onCellEvent"
     }}
 
     {{/component}}

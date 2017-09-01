@@ -1,15 +1,18 @@
 import { get } from '@ember/object';
 import Component from '@ember/component';
-import { computed } from 'ember-decorators/object';
+import { action, computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
 
 import layout from '../templates/components/ember-table-row';
+
+const DEFAULT_FIXED_CELL_BACKGROUND = 'et2-fixed-table-cell-background';
 
 export default class EmberTableRow extends Component {
   @property layout = layout;
   @property tagName = 'tr';
   @property classNames = ['et2-table-row'];
   @property _cells = null;
+  @property classNameBindings = ['isHovered:et2-table-cell-mouse-over']
 
   init() {
     super.init(...arguments);
@@ -44,5 +47,32 @@ export default class EmberTableRow extends Component {
     }
 
     return _cells;
+  }
+
+  /**
+   * Sets background cell color programmatically because for fixed column, the fixed view is
+   * positioned absolute above table row and override row color when mouse hovers/ selects row.
+   * We have to programatically updates fixed cell background color.
+   */
+  @computed('isHovered')
+  get fixedCellBackgroundClass() {
+    if (this.get('isHovered')) {
+      return 'et2-table-cell-mouse-over';
+    }
+
+    return DEFAULT_FIXED_CELL_BACKGROUND;
+  }
+
+  mouseEnter() {
+    this.set('isHovered', true);
+  }
+
+  mouseLeave() {
+    this.set('isHovered', false);
+  }
+
+  @action
+  onCellEvent(args) {
+    this.sendAction('onCellEvent', args);
   }
 }

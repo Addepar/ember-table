@@ -320,6 +320,9 @@ export default class EmberTable2 extends Component {
       ghostLeftX = tableBoundingBox.right - header.width;
     }
     this._headerGhostElement.style.left = `${ghostLeftX}px`;
+    if (this._headerAlignBar.style.left === '') {
+      this._headerAlignBar.style.left = `${this._currentColumnX}px`;
+    }
 
     // 3) Update the index of column that the ghost header might be replacing.
     const ghostCenterX = ghostLeftX + header.width / 2;
@@ -366,21 +369,16 @@ export default class EmberTable2 extends Component {
     this.element.classList.remove('et2-unselectable');
   }
 
-  @action
-  onHeaderClicked() {
+  sendCellEvent(eventObj) {
+    if (!eventObj.eventName) {
+      throw new Error('Event name should be defined');
+    }
 
+    this.sendAction(eventObj.eventName, eventObj.data);
   }
 
   @action
-  toggleRow(rowValue) {
-    // TODO(Billy): move this out of the table. This might belong to ember tree table.
-    const tree = this.get('rows');
-    const row = tree.getTreeNodeFromRowValue(rowValue);
-
-    if (!row.collapse) {
-      this.get('rows').collapseNode(row);
-    } else {
-      this.get('rows').expand(row);
-    }
+  onCellEvent(eventObj) {
+    this.sendCellEvent(eventObj);
   }
 }

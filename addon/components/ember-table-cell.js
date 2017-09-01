@@ -1,23 +1,22 @@
-import Ember from 'ember';
+import Component from '@ember/component';
 import { htmlSafe } from '@ember/string';
-import { computed } from 'ember-decorators/object';
+import { action, computed } from 'ember-decorators/object';
 import { get } from '@ember/object';
 import { property } from '../utils/class';
 
 import layout from '../templates/components/ember-table-cell';
 
-const { Component } = Ember;
-
 export default class EmberTableCell extends Component {
   @property layout = layout;
   @property tagName = 'td';
   @property attributeBindings = ['style:style'];
+  @property classNameBindings = [':et2-table-cell']
 
   @computed('columnIndex', 'numFixedColumns')
   get isFixed() {
     const numFixedColumns = this.get('numFixedColumns');
-    return this.get('columnIndex') === 0 && Number.isInteger(numFixedColumns) &&
-    numFixedColumns !== 0;
+    return this.get('columnIndex') === 0 && Number.isInteger(numFixedColumns)
+      && numFixedColumns !== 0;
   }
 
   @computed('row', 'column.valuePath')
@@ -30,17 +29,21 @@ export default class EmberTableCell extends Component {
 
   @computed('column.width')
   get style() {
-    return htmlSafe(`min-width: ${this.get('column.width')}px; max-width: ${this.get('column.width')}px;`);
+    return htmlSafe(`width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px; max-width: ${this.get('column.width')}px;`);
   }
 
-  @computed('isFixed')
+  @computed('isFixed', 'fixedCellBackgroundClass')
   get fixedCellClass() {
-    return this.get('isFixed') === true ? 'et2-fixed-table-cell' : '';
+    if (this.get('isFixed') === false) {
+      return '';
+    }
+
+    const backgroundClass = this.get('fixedCellBackgroundClass');
+    return `et2-fixed-table-cell ${backgroundClass}`;
   }
 
-  click() {
-    if (this.get('columnIndex') === 0) {
-      this.sendAction('toggleRow', this.get('row'));
-    }
+  @action
+  onCellEvent(args) {
+    this.sendAction('onCellEvent', args);
   }
 }

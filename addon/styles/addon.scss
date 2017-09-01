@@ -31,6 +31,10 @@
   overflow-x: auto;
 }
 
+.et2-table-header-inner {
+  position: relative;
+}
+
 .et2-thead-wrapper, .et2-bottom-wrapper {
   position: relative;
   overflow-y: hidden;
@@ -42,10 +46,6 @@
   max-width: 100%;
   display: block;
   overflow-x: auto;
-}
-
-.et2-table-header {
-  position: relative;
 }
 
 .et2-fixed-table-header {
@@ -106,4 +106,72 @@ table::-webkit-scrollbar, thead::-webkit-scrollbar, .et2-body-inner-wrapper::-we
   width: 0px;  /* remove scrollbar space */
   height: 0px;
   background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+/************************************************************************************************/
+/* Addepar style */
+/************************************************************************************************/
+$table-header-background-color: #f8f8f8;
+$table-border-color: #dcdcdc;
+$table-hover-color: #e5edf8;
+
+.standard-table {
+  border: solid 1px #ddd;
+
+  .et2-thead-wrapper {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+  }
+
+  thead, tfoot {
+    background-color: $table-header-background-color;
+    border-bottom: 1px $table-border-color;
+  }
+
+  tbody tr {
+    border-bottom: 1px dotted $table-border-color;
+  }
+
+  .et2-table-cell {
+    vertical-align: top;
+    box-sizing: border-box;
+
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 100%;
+    border-right: 1px solid $table-border-color;
+
+    font-size: 20px;
+
+    text-align: left;
+  }
+
+  .et2-table-header-inner {
+    font-family: 'Univers LT W01 65 Bold';
+
+    line-height: 1.4;
+    bottom: 2px;
+    font-weight: bold;
+    width: 100%;
+    text-align: center;
+    padding: 5px 0px 3px 0px;
+  }
+
+  .et2-fixed-table-cell, .et2-fixed-table-header, .et2-fixed-table-footer {
+    box-sizing: border-box;
+    border-right: 1px solid $table-border-color;
+    margin-left: -0.5px;
+  }
+
+  .et2-fixed-table-cell-background {
+    background-color: white;
+  }
+
+  .et2-table-cell-mouse-over {
+    cursor: pointer;
+    background-color: $table-hover-color;
+  }
+
+  .et2-fixed-table-header, .et2-fixed-table-footer {
+    background-color: $table-header-background-color;
+  }
 }

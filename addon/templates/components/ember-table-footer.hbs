@@ -1,7 +1,3 @@
-{{#if isFixed}}
-  <div class="et2-fixed-table-footer" style={{style}}>
-    {{yield}}
-  </div>
-{{else}}
+<div class="{{if isFixed 'et2-fixed-table-footer'}}" style={{style}}>
   {{yield}}
-{{/if}}
+</div>

@@ -144,8 +144,4 @@ export default class EmberTableHeader extends EmberTableCell {
 
     super.willDestroyElement(...arguments);
   }
-
-  onTap() {
-    this.sendAction('onHeaderClicked', this.get('columnIndex'));
-  }
 }

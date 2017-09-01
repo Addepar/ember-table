@@ -55,6 +55,7 @@ export default Controller.extend({
       columnName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
+      cellComponent: 'addepar/standard-grouping-cell',
       maxWidth
     }));
 

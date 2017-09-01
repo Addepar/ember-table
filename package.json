@@ -24,6 +24,7 @@
     "ember-cli-babel": "^6.7.1",
     "ember-cli-htmlbars": "^2.0.1",
     "ember-cli-node-assets": "^0.2.2",
+    "ember-cli-sass": "^7.0.0",
     "ember-decorators": "^1.2.1",
     "hammerjs": "^2.0.8",
     "install": "^0.10.1"

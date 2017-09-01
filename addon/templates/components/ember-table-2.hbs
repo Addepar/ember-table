@@ -6,7 +6,6 @@
           column=column
           columnIndex=columnIndex
           numFixedColumns=numFixedColumns
-          onHeaderClicked="onHeaderClicked"
           onColumnResized="onColumnResized"
           onColumnResizeEnded="onColumnResizeEnded"
           onColumnReorder="onColumnReorder"
@@ -33,21 +32,13 @@
         row=row
         columns=columns
         cellCache=cellCache
+        numFixedColumns=numFixedColumns
         cellProxyClass=cellProxyClass
+        onCellEvent="onCellEvent"
 
         as |cell|
       }}
-        {{#ember-table-cell
-          row=row
-          toggleRow="toggleRow"
-          column=cell.column
-          columnIndex=cell.columnIndex
-          numFixedColumns=numFixedColumns
-        }}
-          {{#unless cell.column.cellComponent}}
-            {{yield cell}}
-          {{/unless}}
-        {{/ember-table-cell}}
+        {{yield cell}}
       {{/component}}
     {{/vertical-collection}}
   </div>
