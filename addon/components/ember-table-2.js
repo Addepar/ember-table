@@ -12,6 +12,9 @@ const { Component } = Ember;
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
+const COLUMN_MODE_STANDARD = 'standard';
+const COLUMN_MODE_FLUID = 'fluid';
+
 export default class EmberTable2 extends Component {
   @property attributeBindings = ['style:style'];
   @property classNames = ['et2-outer-wrapper'];
@@ -24,6 +27,25 @@ export default class EmberTable2 extends Component {
    * // TODO(Billy): replace this with an option to pass in footer component.
    */
   @property hasFooter = true;
+
+  /**
+   * Estimated height for each row.
+   */
+  @property estimateRowHeight = 20;
+
+  /**
+   * Indicates how many left columns will be fixed. With current implementation, only 1 single
+   * left most column can be a fixed column. Later version of Ember table could change
+   * implementation to support multiple fixed columns.
+   */
+  @property numFixedColumns = 0;
+
+  /**
+   *Sets which column resizing behavior to use. Possible values are <code>'standard'</code>
+   * (resizing a column pushes or pulls all other columns) and <code>'fluid'</code> (resizing a
+   * column steals width from neighboring columns).
+   */
+  @property columnMode = COLUMN_MODE_STANDARD;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -43,7 +65,7 @@ export default class EmberTable2 extends Component {
    * A variable used when moving column. This variables indicates the current column index that user
    * is about to move to.
    */
-  @property currentColumnIndex = -1;
+  @property _currentColumnIndex = -1;
 
   /**
    * A variable used when moving column. It indicates the horizontal distance from current moving
@@ -63,18 +85,6 @@ export default class EmberTable2 extends Component {
    * store the table width because there are several computed property dependent on the table width.
    */
   @property _width = 0;
-
-  /**
-   * Estimated height for each row.
-   */
-  @property estimateRowHeight = 20;
-
-  /**
-   * Indicates how many left columns will be fixed. With current implementation, only 1 single
-   * left most column can be a fixed column. Later version of Ember table could change
-   * implementation to support multiple fixed columns.
-   */
-  @property numFixedColumns = 0;
 
   @computed('numFixedColumns')
   get hasFixedColumn() {
@@ -247,11 +257,18 @@ export default class EmberTable2 extends Component {
     if (width + delta < column.get('minWidth')) {
       return;
     }
-    if (maxWidth !== undefined && maxWidth < width + delta) {
+
+    const columnMode = this.get('columnMode');
+    if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1 &&
+        columns[columnIndex + 1].get('width') - delta < columns[columnIndex + 1].get('minWidth')) {
+      // Resizing this column makes the next column smaller than its min width.
       return;
     }
 
     column.set('width', width + delta);
+    if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1) {
+      columns[columnIndex + 1].set('width', columns[columnIndex + 1].get('width') - delta);
+    }
 
     if (!this.element.classList.contains('et2-unselectable')) {
       this.element.classList.add('et2-unselectable');
@@ -297,7 +314,7 @@ export default class EmberTable2 extends Component {
 
       containerElement.appendChild(this._headerGhostElement);
 
-      this.currentColumnIndex = columnIndex;
+      this._currentColumnIndex = columnIndex;
       this._currentColumnX = header.left - tableBoundingBox.left;
       this.element.classList.add('et2-unselectable');
     }
@@ -327,38 +344,38 @@ export default class EmberTable2 extends Component {
     // 3) Update the index of column that the ghost header might be replacing.
     const ghostCenterX = ghostLeftX + header.width / 2;
     if (ghostCenterX < this._currentColumnX) {
-      if (this.currentColumnIndex > 0) {
+      if (this._currentColumnIndex > 0) {
         // Current column is now the previous column
-        this.currentColumnIndex--;
-        this._currentColumnX -= columns[this.currentColumnIndex].width;
+        this._currentColumnIndex--;
+        this._currentColumnX -= columns[this._currentColumnIndex].width;
         this._headerAlignBar.style.left = `${this._currentColumnX}px`;
       }
-    } else if (ghostCenterX >= this._currentColumnX + columns[this.currentColumnIndex].width) {
-      if (this.currentColumnIndex < columns.length - 1) {
+    } else if (ghostCenterX >= this._currentColumnX + columns[this._currentColumnIndex].width) {
+      if (this._currentColumnIndex < columns.length - 1) {
         // Current column is now the next column
-        this._currentColumnX = this._currentColumnX + columns[this.currentColumnIndex].width;
-        this.currentColumnIndex++;
+        this._currentColumnX = this._currentColumnX + columns[this._currentColumnIndex].width;
+        this._currentColumnIndex++;
         this._headerAlignBar.style.left
-          =  `${this._currentColumnX + columns[this.currentColumnIndex].width - HEAD_ALIGN_BAR_WIDTH}px`;
+          =  `${this._currentColumnX + columns[this._currentColumnIndex].width - HEAD_ALIGN_BAR_WIDTH}px`;
       }
     }
   }
 
   @action
   onColumnReorderEnds(columnIndex) {
-    if (this.currentColumnIndex != columnIndex) {
-      const direction = this.currentColumnIndex > columnIndex ? 1 : -1;
+    if (this._currentColumnIndex != columnIndex) {
+      const direction = this._currentColumnIndex > columnIndex ? 1 : -1;
 
       const columns = this.get('columns');
       const temp = columns[columnIndex];
 
-      for (let i = columnIndex; i !== this.currentColumnIndex; i += direction) {
+      for (let i = columnIndex; i !== this._currentColumnIndex; i += direction) {
         columns.replace(i, 1, columns[i + direction]);
       }
-      columns.replace(this.currentColumnIndex, 1, temp);
+      columns.replace(this._currentColumnIndex, 1, temp);
     }
 
-    this.currentColumnIndex = -1;
+    this._currentColumnIndex = -1;
     this._currentColumnX = -1;
 
     // Remove the header ghost element & aligned bar.

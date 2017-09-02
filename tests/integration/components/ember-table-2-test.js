@@ -47,7 +47,7 @@ test('Ember table renders', async function(assert) {
 // Tests with or without custom header.
 const customHeaderTests = [null, 'custom-text-header'];
 for (const customHeader of customHeaderTests) {
-  const headerTest = customHeader ? 'customer header ' : '';
+  const headerTest = customHeader ? 'custom header ' : '';
 
   // Test resizing column
   test(`Test ${headerTest}resizing column`, async function(assert) {
@@ -64,6 +64,19 @@ for (const customHeader of customHeaderTests) {
     await resizeColumn(1, 30);
 
     assert.equal(getHeaderElement(1).offsetWidth - originalWidth, 30, 'Fixed column size is updated');
+  });
+
+  // Test resizing fluid column
+  test(`Test ${headerTest}resizing fluid column`, async function(assert) {
+    const tableOptions = { headerComponent: customHeader, columnMode: 'fluid' };
+    setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
+
+    let originalWidth = getHeaderElement(2).offsetWidth;
+    await resizeColumn(2, 30);
+
+    assert.equal(getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
+    assert.equal(getHeaderElement(3).offsetWidth - originalWidth, -30,
+        'Next column shrinks in fluid mode');
   });
 
   // Reodering columns with fixed column

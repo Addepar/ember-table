@@ -49,14 +49,12 @@ export default Controller.extend({
     const arr = emberA();
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const columnWidth = 180;
-    const maxWidth = 400;
 
     arr.pushObject(ColumnDefinition.create({
       columnName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
-      cellComponent: 'addepar/standard-grouping-cell',
-      maxWidth
+      cellComponent: 'addepar/standard-grouping-cell'
     }));
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
@@ -64,7 +62,6 @@ export default Controller.extend({
         columnName: `Col ${alphabet[j % 26]}`,
         valuePath: alphabet[j % 26],
         width: columnWidth,
-        maxWidth,
         isResizable: true,
         isReorderable: true
       }));

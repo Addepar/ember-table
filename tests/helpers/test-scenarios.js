@@ -13,7 +13,8 @@ import {
 } from './drag-helper';
 
 export const DEFAULT_TABLE_OPTIONS = {
-  numFixedColumns: 1
+  numFixedColumns: 1,
+  columnMode: 'standard'
 };
 
 export const DEFAULT_FULL_TABLE_COLUMN_OPTIONS = {
@@ -90,6 +91,7 @@ export const fullTable = hbs`
       rows=tableRows
       rowComponent=rowComponent
       numFixedColumns=numFixedColumns
+      columnMode=columnMode
       as |cell|
     }}
       {{cell.value}}
