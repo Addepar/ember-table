@@ -1,5 +1,5 @@
 import EmberObject from '@ember/object';
-import { property } from './class';
+import { property } from '../utils/class';
 
 export default class ColumnDefinition extends EmberObject {
   /**

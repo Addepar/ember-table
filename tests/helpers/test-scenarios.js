@@ -1,7 +1,7 @@
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
-import ColumnDefinition from 'ember-table-2/utils/column-definition';
+import ColumnDefinition from 'ember-table-2/models/column-definition';
 
 import {
   find

@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import TreeNode from '../utils/tree-node';
-import ColumnDefinition from '../utils/column-definition';
+import ColumnDefinition from '../models/column-definition';
 import LinkedListTree from '../utils/linked-list-tree';
 import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
