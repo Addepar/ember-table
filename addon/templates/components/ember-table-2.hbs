@@ -28,18 +28,8 @@
 
       as |row rowIndex|
     }}
-      {{#component rowComponent
-        row=row
-        columns=columns
-        cellCache=cellCache
-        numFixedColumns=numFixedColumns
-        cellProxyClass=cellProxyClass
-        onCellEvent="onCellEvent"
 
-        as |cell|
-      }}
-        {{yield cell}}
-      {{/component}}
+      {{yield row rowIndex api}}
     {{/vertical-collection}}
   </div>
 </div>

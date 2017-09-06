@@ -1,19 +1,21 @@
 /* global ResizeSensor */
-import Ember from 'ember';
 import { action, computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
-import CellProxy from '../utils/cell-proxy';
 import $ from 'jquery';
 import layout from '../templates/components/ember-table-2';
 import { htmlSafe } from '@ember/string';
 import { run } from '@ember/runloop';
-
-const { Component } = Ember;
+import Component from '@ember/component';
+import CellProxy from '../utils/cell-proxy';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
 const COLUMN_MODE_STANDARD = 'standard';
 const COLUMN_MODE_FLUID = 'fluid';
+
+const SELECTION_MODE_NONE = 'none';
+const SELECTION_MODE_SINGLE = 'single';
+const SELECTION_MODE_MULTIPLE = 'multiple';
 
 export default class EmberTable2 extends Component {
   @property attributeBindings = ['style:style'];
@@ -46,6 +48,13 @@ export default class EmberTable2 extends Component {
    * column steals width from neighboring columns).
    */
   @property columnMode = COLUMN_MODE_STANDARD;
+
+  /**
+   * Sets which row selection behavior to follow. Possible values are 'none' (clicking on a row
+   * does nothing), 'single' (clicking on a row selects it and deselects other rows), and 'multiple'
+   * (multiple rows can be selected through ctrl/cmd-click or shift-click).
+   */
+  @property selectionMode = 'single';
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -86,20 +95,13 @@ export default class EmberTable2 extends Component {
    */
   @property _width = 0;
 
+  @property lastSelectedIndex = -1;
+
   @computed('numFixedColumns')
   get hasFixedColumn() {
     const numFixedColumns = this.get('numFixedColumns');
     return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
   }
-
-  /**
-   * A string value that defines table row component. By default, this is using ember table row
-   * component but outer application can override this value to use their custom row. This is
-   * useful when user wants to have custom action on entire row instead of cell (e.g. highlight row
-   * when mouse hovers, select & unselect rows). However, the custom row component must extend the
-   * EmberTableRow class and should not override handlebar template.
-   */
-  @property rowComponent = 'ember-table-row';
 
   init() {
     super.init(...arguments);
@@ -109,6 +111,8 @@ export default class EmberTable2 extends Component {
     // Create a unique CellProxy class for this table instance, that way transient data won't
     // pollute the prototype of the main proxy class.
     this.cellProxyClass = class extends CellProxy {};
+
+    this.set('selectedRows', []);
   }
 
   didInsertElement() {
@@ -253,14 +257,13 @@ export default class EmberTable2 extends Component {
     const columns = this.get('columns');
     const column = columns[columnIndex];
     const width = column.get('width');
-    const maxWidth = column.get('maxWidth');
     if (width + delta < column.get('minWidth')) {
       return;
     }
 
     const columnMode = this.get('columnMode');
-    if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1 &&
-        columns[columnIndex + 1].get('width') - delta < columns[columnIndex + 1].get('minWidth')) {
+    if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1
+      && columns[columnIndex + 1].get('width') - delta < columns[columnIndex + 1].get('minWidth')) {
       // Resizing this column makes the next column smaller than its min width.
       return;
     }
@@ -386,16 +389,51 @@ export default class EmberTable2 extends Component {
     this.element.classList.remove('et2-unselectable');
   }
 
-  sendCellEvent(eventObj) {
-    if (!eventObj.eventName) {
-      throw new Error('Event name should be defined');
+  @action
+  onRowClicked(event, rowIndex) {
+    const rows = this.get('rows');
+    const item = rows.objectAt(rowIndex);
+
+    let selectedRows = this.get('selectedRows').slice();
+
+    switch (this.get('selectionMode')) {
+      case SELECTION_MODE_NONE:
+        return;
+      case SELECTION_MODE_SINGLE:
+        this.lastSelectedIndex = rowIndex;
+        selectedRows = [item];
+        break;
+      case SELECTION_MODE_MULTIPLE:
+        if (event.shiftKey) {
+          let { lastSelectedIndex } = this;
+          if (lastSelectedIndex === -1) {
+            lastSelectedIndex = 0;
+          }
+
+          const minIndex = Math.min(lastSelectedIndex, rowIndex);
+          const maxIndex = Math.max(lastSelectedIndex, rowIndex);
+
+          // Use a set to avoid item duplication
+          const rowsSet = new Set(selectedRows);
+          for (let i = minIndex; i <= maxIndex; i++) {
+            const obj = rows.objectAt(i);
+            if (!rowsSet.has(obj)) {
+              selectedRows.push(rows.objectAt(i));
+            }
+          }
+        } else {
+          if (!event.ctrlKey && !event.metaKey) {
+            selectedRows = [];
+          }
+
+          if (selectedRows.indexOf(item) < 0) {
+            selectedRows.push(item);
+          }
+          this.lastSelectedIndex = rowIndex;
+        }
+        break;
     }
 
-    this.sendAction(eventObj.eventName, eventObj.data);
-  }
-
-  @action
-  onCellEvent(eventObj) {
-    this.sendCellEvent(eventObj);
+    this.set('selectedRows', selectedRows);
   }
 }

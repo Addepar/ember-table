@@ -53,8 +53,7 @@ export default Controller.extend({
     arr.pushObject(ColumnDefinition.create({
       columnName: 'Column id',
       valuePath: 'id',
-      width: columnWidth,
-      cellComponent: 'addepar/standard-grouping-cell'
+      width: columnWidth
     }));
 
     for (let j = 0; j < COLUMN_COUNT; j++) {

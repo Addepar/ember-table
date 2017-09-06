@@ -1,12 +1,3 @@
 <div class={{fixedCellClass}} style={{style}}>
-  {{#if column.cellComponent}}
-    {{#component column.cellComponent
-      cell=cell
-      onCellEvent="onCellEvent"
-    }}
-
-    {{/component}}
-  {{else}}
-    {{yield}}
-  {{/if}}
+  {{yield cell}}
 </div>

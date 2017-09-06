@@ -1,16 +1,13 @@
 {{#each cells as |cell columnIndex|}}
   {{#ember-table-cell
     row=row
-    onCellEvent="onCellEvent"
     column=cell.column
     columnIndex=columnIndex
     isHovered=isHovered
-    fixedCellBackgroundClass=fixedCellBackgroundClass
+    isSelected=isSelected
     numFixedColumns=numFixedColumns
     cell=cell
   }}
-    {{#unless cell.column.cellComponent}}
-      {{yield cell columnIndex}}
-    {{/unless}}
+    {{yield cell columnIndex}}
   {{/ember-table-cell}}
 {{/each}}

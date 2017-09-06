@@ -1,16 +1,21 @@
-
 <div class="demo-container">
-  {{#addepar/standard-table
+  {{#ember-table-2
     rows=rows
     columns=columns
-    numFixedColumns=1
     columnMode="fluid"
-    as |cell|
+    numFixedColumns=1
+    as |row rowIndex api|
   }}
 
-    <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
-      {{cell.value}}
-    </div>
+    {{#ember-table-row
+      row=row
+      rowIndex=rowIndex
 
-  {{/addepar/standard-table}}
+      as |cell|
+    }}
+      <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
+        {{cell.value}}
+      </div>
+    {{/ember-table-row}}
+  {{/ember-table-2}}
 </div>

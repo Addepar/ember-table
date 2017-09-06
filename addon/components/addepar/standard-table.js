@@ -1,13 +1,16 @@
-import EmberTable from '../ember-table-2';
 import { action } from 'ember-decorators/object';
+import { property } from '../../utils/class';
+import layout from '../../templates/components/addepar/standard-table';
+import Component from '@ember/component';
 
-export default class StandardTable extends EmberTable {
-  didInsertElement() {
-    super.didInsertElement(...arguments);
+// TODO(Billy): rename this to tree table.
+export default class StandardTable extends Component {
+  @property classNames = ['et2-outer-wrapper', 'standard-table'];
+  @property layout = layout;
 
-    this.element.classList.add('standard-table');
-  }
-
+  /**
+   * @override
+   */
   @action
   onCellEvent(eventObj) {
     if (eventObj.eventName === '_toggleRow') {
@@ -22,6 +25,6 @@ export default class StandardTable extends EmberTable {
       return;
     }
 
-    this.sendCellEvent(eventObj);
+    this.sendEvent(eventObj);
   }
 }

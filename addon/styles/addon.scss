@@ -115,7 +115,7 @@ $table-header-background-color: #f8f8f8;
 $table-border-color: #dcdcdc;
 $table-hover-color: #e5edf8;
 
-.standard-table {
+.et2-outer-wrapper {
   border: solid 1px #ddd;
 
   .et2-thead-wrapper {
@@ -169,6 +169,10 @@ $table-hover-color: #e5edf8;
   .et2-table-cell-mouse-over {
     cursor: pointer;
     background-color: $table-hover-color;
+  }
+
+  .et2-table-cell-selected {
+    background-color: #227ecb;
   }
 
   .et2-fixed-table-header, .et2-fixed-table-footer {

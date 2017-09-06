@@ -32,13 +32,20 @@ export default class EmberTableCell extends Component {
     return htmlSafe(`width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px; max-width: ${this.get('column.width')}px;`);
   }
 
-  @computed('isFixed', 'fixedCellBackgroundClass')
+  @computed('isFixed', 'isHovered', 'isSelected')
   get fixedCellClass() {
     if (this.get('isFixed') === false) {
       return '';
     }
 
-    const backgroundClass = this.get('fixedCellBackgroundClass');
+    let backgroundClass = 'et2-fixed-table-cell-background';
+    if (this.get('isHovered')) {
+      backgroundClass = 'et2-table-cell-mouse-over';
+    }
+    // Selected row takes precedence over mouse over.
+    if (this.get('isSelected')) {
+      backgroundClass = 'et2-table-cell-selected';
+    }
     return `et2-fixed-table-cell ${backgroundClass}`;
   }
 
