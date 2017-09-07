@@ -34,18 +34,8 @@ export default class CellProxy extends EmberObject {
   unknownProperty(key) {
     const prototype = Object.getPrototypeOf(this);
 
-    prototype[key] = emberComputed('row', 'column.valuePath', {
-      get() {
-        const cache = this.get('_cache');
-        const row = this.get('row');
-        const valuePath = this.get('column.valuePath');
-
-        if (cache.has(row)) {
-          return cache.get(row)[`${valuePath}:${key}`];
-        }
-      },
-
-      set(value) {
+    prototype[key] = emberComputed('row', 'column.valuePath', function(key, value) {
+      if (arguments.length > 1) {
         const cache = this.get('_cache');
         const row = this.get('row');
         const valuePath = this.get('column.valuePath');
@@ -56,6 +46,16 @@ export default class CellProxy extends EmberObject {
 
         return cache.get(row)[`${valuePath}:${key}`] = value;
       }
+
+      const cache = this.get('_cache');
+      const row = this.get('row');
+      const valuePath = this.get('column.valuePath');
+
+      if (cache.has(row)) {
+        return cache.get(row)[`${valuePath}:${key}`];
+      }
+
+      return null;
     });
   }
 }

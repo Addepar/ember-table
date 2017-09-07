@@ -6,6 +6,7 @@ import { property } from '../utils/class';
 import layout from '../templates/components/ember-table-row';
 import EmberTableComponent from './ember-table-2';
 import { assert } from "@ember/debug"
+import { A as EmberA } from '@ember/array';
 
 export default class EmberTableRow extends Component {
   @property layout = layout;
@@ -19,7 +20,7 @@ export default class EmberTableRow extends Component {
 
   init() {
     super.init(...arguments);
-    this._cells = [];
+    this._cells = EmberA();
 
     this._table = this.nearestOfType(EmberTableComponent);
 

@@ -29,7 +29,10 @@
       as |row rowIndex|
     }}
 
-      {{yield row rowIndex api}}
+      {{yield (table-hash
+        row=row
+        rowIndex=rowIndex)
+      }}
     {{/vertical-collection}}
   </div>
 </div>

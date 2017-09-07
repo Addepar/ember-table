@@ -4,12 +4,11 @@
     columns=columns
     columnMode="fluid"
     numFixedColumns=1
-    as |row rowIndex api|
+    as |t|
   }}
-
     {{#ember-table-row
-      row=row
-      rowIndex=rowIndex
+      row=t.row
+      rowIndex=t.rowIndex
 
       as |cell|
     }}
