@@ -338,6 +338,18 @@ export default class EmberTable2 extends Component {
     return sum;
   }
 
+  @computed('cellCache', 'cellProxyClass', 'numFixedColumns', 'targetObject', 'columns', 'selectedRows')
+  api() {
+    return {
+      cellCache: this.cellCache,
+      cellProxyClass: this.cellProxyClass,
+      numFixedColumns: this.numFixedColumns,
+      targetObject: this,
+      columns: this.columns,
+      selectedRows: this.selectedRows
+    };
+  }
+
   @action
   onColumnResized(columnIndex, delta) {
     const columns = this.get('columns');

@@ -26,12 +26,13 @@
       estimateHeight=estimateRowHeight
       tagName="tbody"
 
-      as |row rowIndex|
+      as |rowValue rowIndex|
     }}
 
       {{yield (table-hash
-        row=row
-        rowIndex=rowIndex)
+        value=rowValue
+        index=rowIndex
+        api=api)
       }}
     {{/vertical-collection}}
   </div>

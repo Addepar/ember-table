@@ -4,9 +4,8 @@ import { computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
 
 import layout from '../templates/components/ember-table-row';
-import EmberTableComponent from './ember-table-2';
-import { assert } from "@ember/debug"
-import { A as EmberA } from '@ember/array';
+import { A as emberA } from '@ember/array';
+import { readOnly } from '@ember/object/computed';
 
 export default class EmberTableRow extends Component {
   @property layout = layout;
@@ -16,19 +15,19 @@ export default class EmberTableRow extends Component {
   @property classNameBindings = ['isHovered:et2-table-cell-mouse-over', 'isSelected:et2-table-cell-selected']
   @property selected = false;
 
-  @property _table = false;
+  @property columns = readOnly('row.api.columns');
+  @property cellProxyClass = readOnly('row.api.cellProxyClass');
+  @property cellCache = readOnly('row.api.cellCache');
+  @property numFixedColumns = readOnly('row.api.numFixedColumns');
+  @property targetObject = readOnly('row.api.targetObject');
+  @property selectedRows = readOnly('row.api.selectedRows');
+
+  @property rowValue = readOnly('row.value');
+  @property rowIndex = readOnly('row.index');
 
   init() {
     super.init(...arguments);
-    this._cells = EmberA();
-
-    this._table = this.nearestOfType(EmberTableComponent);
-
-    this.cellProxyClass = this._table.cellProxyClass;
-    this.cellCache = this._table.cellCache;
-    this.numFixedColumns = this._table.numFixedColumns;
-    this.targetObjet = this._table.targetObject;
-    this.columns = this._table.columns;
+    this._cells = emberA();
   }
 
   @computed('columns.[]')
@@ -42,7 +41,7 @@ export default class EmberTableRow extends Component {
 
     if (numColumns !== _cells.length) {
       while (_cells.length < numColumns) {
-        _cells.push(this.cellProxyClass.create({ _cache, _rowComponent }));
+        _cells.push(this.get('cellProxyClass').create({ _cache, _rowComponent }));
       }
 
       while (_cells.length > numColumns) {
@@ -61,13 +60,13 @@ export default class EmberTableRow extends Component {
     return _cells;
   }
 
-  @computed('_table.selectedRows.[]', 'row')
+  @computed('selectedRows.[]', 'rowValue')
   get isSelected() {
-    return this.get('_table.selectedRows').indexOf(this.get('row')) >= 0;
+    return this.get('selectedRows').indexOf(this.get('rowValue')) >= 0;
   }
 
   click(event) {
-    this._table.send('onRowClicked', event, this.get('rowIndex'));
+    this.get('targetObject').send('onRowClicked', event, this.get('rowIndex'));
   }
 
   mouseEnter() {

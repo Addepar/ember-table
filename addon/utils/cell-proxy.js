@@ -3,6 +3,7 @@ import EmberObject, { computed as emberComputed, get, set } from '@ember/object'
 import { computed, readOnly } from 'ember-decorators/object';
 import { alias } from 'ember-decorators/object/computed';
 import { property } from '../utils/class';
+import Ember from 'ember';
 
 export default class CellProxy extends EmberObject {
   @property column = null;
@@ -10,52 +11,72 @@ export default class CellProxy extends EmberObject {
   @property _cache = null;
   @property _rowComponent = null;
 
-  @readOnly @alias('_rowComponent.row') row;
+  @readOnly @alias('_rowComponent.rowValue') rowValue;
 
   init() {
     this.setProperties = Object.create(null);
   }
 
-  @computed('row', 'column.valuePath')
+  @computed('rowValue', 'column.valuePath')
   get value() {
-    const row = this.get('row');
+    const rowValue = this.get('rowValue');
     const valuePath = this.get('column.valuePath');
 
-    return get(row, valuePath);
+    return get(rowValue, valuePath);
   }
 
   set value(value) {
-    const row = this.get('row');
+    const rowValue = this.get('rowValue');
     const valuePath = this.get('column.valuePath');
 
-    set(row, valuePath, value);
+    set(rowValue, valuePath, value);
   }
 
   unknownProperty(key) {
     const prototype = Object.getPrototypeOf(this);
 
-    prototype[key] = emberComputed('row', 'column.valuePath', function(key, value) {
-      if (arguments.length > 1) {
-        const cache = this.get('_cache');
-        const row = this.get('row');
-        const valuePath = this.get('column.valuePath');
+    const setValueFunc = (context, k, value) => {
+      const cache = context.get('_cache');
+      const rowValue = context.get('rowValue');
+      const valuePath = context.get('column.valuePath');
 
-        if (!cache.has(row)) {
-          cache.set(row, Object.create(null));
+      if (!cache.has(rowValue)) {
+        cache.set(rowValue, Object.create(null));
+      }
+
+      return cache.get(rowValue)[`${valuePath}:${k}`] = value;
+    };
+
+    const getValueFunc = (context, key) => {
+      const cache = context.get('_cache');
+      const rowValue = context.get('rowValue');
+      const valuePath = context.get('column.valuePath');
+
+      if (cache.has(rowValue)) {
+        return cache.get(rowValue)[`${valuePath}:${key}`];
+      }
+
+      return undefined;
+    };
+
+    if (Ember.VERSION < '1.13') {
+      prototype[key] = emberComputed('rowValue', 'column.valuePath', function(key, value) {
+        if (arguments.length > 1) {
+          return setValueFunc(this, key, value);
         }
 
-        return cache.get(row)[`${valuePath}:${key}`] = value;
-      }
+        return getValueFunc(this, key);
+      });
+    } else {
+      prototype[key] = emberComputed('rowValue', 'column.valuePath', {
+        get(key) {
+          return getValueFunc(this, key);
+        },
 
-      const cache = this.get('_cache');
-      const row = this.get('row');
-      const valuePath = this.get('column.valuePath');
-
-      if (cache.has(row)) {
-        return cache.get(row)[`${valuePath}:${key}`];
-      }
-
-      return null;
-    });
+        set(key, value) {
+          return setValueFunc(this, key, value);
+        }
+      });
+    }
   }
 }
