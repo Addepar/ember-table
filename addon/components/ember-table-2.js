@@ -1,7 +1,6 @@
 /* global ResizeSensor */
 import { action, computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
-import $ from 'jquery';
 import layout from '../templates/components/ember-table-2';
 import { htmlSafe } from '@ember/string';
 import { run } from '@ember/runloop';
@@ -90,6 +89,14 @@ export default class EmberTable2 extends Component {
   @property _tableResizeSensor = null;
 
   /**
+   * Handlers used for synchronizing scroll positions across the scroll containers
+   */
+  @property _scrollHandler = null;
+  @property _wheelHandler = null;
+  @property _touchstartHandler = null;
+  @property _touchmoveHandler = null;
+
+  /**
    * A variable to store table width. This is updated when table is created or resized. We need to
    * store the table width because there are several computed property dependent on the table width.
    */
@@ -118,19 +125,25 @@ export default class EmberTable2 extends Component {
   didInsertElement() {
     super.didInsertElement(...arguments);
 
+    this.setupScrollSync();
+    this.setupColumnFillup();
+  }
+
+  willDestroyElement() {
+    this.teardownColumnFillup();
+    this.teardownScrollSync();
+
+    super.willDestroyElement(...arguments);
+  }
+
+  /**
+   * Sets up handlers to fillup the table container to its full width
+   */
+  setupColumnFillup() {
     requestAnimationFrame(() => {
       run(() => {
         this.set('_width', this.element.offsetWidth);
         this.fillupColumn();
-
-        // Sync between table & the horizontal div scroller.
-        const bodyScrollContainer = $(this.element).find('.et2-body-inner-wrapper');
-        const headerScrollContainer = $(this.element).find('.et2-thead');
-        const footerScrollContainer = $(this.element).find('.et2-tfooter');
-        const horizontalScrollContainer = $(this.element).find('.et2-horizontal-scroll-wrapper');
-
-        this.syncScroll([bodyScrollContainer, headerScrollContainer, horizontalScrollContainer,
-          footerScrollContainer]);
       });
     });
 
@@ -140,26 +153,99 @@ export default class EmberTable2 extends Component {
     });
   }
 
-  willDestroyElement() {
-    this.get('_tableResizeSensor').detach(this.element);
-
-    super.willDestroyElement(...arguments);
-  }
-
   /**
    * Syncs horizontal scrolling between table, header, body & footer.
    */
-  syncScroll(scrollElements) {
-    for (let i = 0; i < scrollElements.length; i++) {
-      scrollElements[i].scroll(function() {
-        const scrollPosition = scrollElements[i].scrollLeft();
-        for (let j = 0; j < scrollElements.length; j++) {
-          if (scrollElements[i] !== scrollElements[j]) {
-            scrollElements[j].scrollLeft(scrollPosition);
-          }
-        }
-      });
-    }
+  setupScrollSync() {
+    const scrollBar = this.element.querySelector('.et2-horizontal-scroll-wrapper');
+
+    const bodyScrollContainer = this.element.querySelector('.et2-body-inner-wrapper');
+    const headerScrollContainer = this.element.querySelector('.et2-thead');
+    const footerScrollContainer = this.element.querySelector('.et2-tfooter');
+
+    const scrollElements = [
+      bodyScrollContainer,
+      headerScrollContainer,
+      footerScrollContainer
+    ];
+
+    let prevClientX, prevClientY;
+
+    this._wheelHandler = (event) => {
+      if (Math.abs(event.deltaX) < Math.abs(event.deltaY)) {
+        return;
+      }
+
+      event.preventDefault();
+
+      scrollBar.scrollLeft += event.deltaX;
+
+      for (const scrollElement of scrollElements) {
+        scrollElement.scrollLeft = scrollBar.scrollLeft;
+      }
+    };
+
+    this._scrollHandler = () => {
+      for (const scrollElement of scrollElements) {
+        scrollElement.scrollLeft = scrollBar.scrollLeft;
+      }
+    };
+
+    this._touchstartHandler = (event) => {
+      const { clientX, clientY } = event.touches[0];
+
+      prevClientX = clientX;
+      prevClientY = clientY;
+    };
+
+    this._touchmoveHandler = (event) => {
+      const { clientX, clientY } = event.touches[0];
+
+      const deltaX = clientX - prevClientX;
+      const deltaY = clientY - prevClientY;
+
+      if (Math.abs(deltaX) < Math.abs(deltaY)) {
+        return;
+      }
+
+      event.preventDefault();
+
+      scrollBar.scrollLeft -= deltaX;
+
+      for (const scrollElement of scrollElements) {
+        scrollElement.scrollLeft = scrollBar.scrollLeft;
+      }
+
+      prevClientX = clientX;
+      prevClientY = clientY;
+    };
+
+    this.element.addEventListener('wheel', this._wheelHandler);
+    scrollBar.addEventListener('scroll', this._scrollHandler);
+
+    bodyScrollContainer.addEventListener('touchstart', this._touchstartHandler);
+    bodyScrollContainer.addEventListener('touchmove', this._touchmoveHandler);
+  }
+
+  /**
+   * Teardown the column fillup listeners
+   */
+  teardownColumnFillup() {
+    this.get('_tableResizeSensor').detach(this.element);
+  }
+
+  /**
+   * Teardown the scroll syncing
+   */
+  teardownScrollSync() {
+    const scrollBar = this.element.querySelector('.et2-horizontal-scroll-wrapper');
+    const bodyScrollContainer = this.element.querySelector('.et2-body-inner-wrapper');
+
+    this.element.removeEventListener('wheel', this._wheelHandler);
+    scrollBar.removeEventListener('scroll', this._scrollHandler);
+
+    bodyScrollContainer.removeEventListener('touchstart', this._touchstartHandler);
+    bodyScrollContainer.removeEventListener('touchmove', this._touchmoveHandler);
   }
 
   /**

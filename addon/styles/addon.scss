@@ -28,7 +28,7 @@
 .et2-body-inner-wrapper {
   max-width: 100%;
   display: block;
-  overflow-x: auto;
+  overflow-x: hidden;
 }
 
 .et2-table-header-inner {
@@ -37,15 +37,14 @@
 
 .et2-thead-wrapper, .et2-bottom-wrapper {
   position: relative;
-  overflow-y: hidden;
-  overflow-x: hidden;
+  overflow: hidden;
   flex: none;
 }
 
 .et2-thead, .et2-tfooter {
   max-width: 100%;
   display: block;
-  overflow-x: auto;
+  overflow: hidden;
 }
 
 .et2-fixed-table-header {
