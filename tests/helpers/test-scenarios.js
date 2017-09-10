@@ -117,7 +117,7 @@ export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_O
 }
 
 export async function moveTableColumn(columnIndex, deltaPosition) {
-  const header = find(`.et2-thead tr th:nth-child(${columnIndex})`);
+  const header = find(`.et-thead tr th:nth-child(${columnIndex})`);
   const box = header.getBoundingClientRect();
   const width = header.offsetLeft;
   const startX = (box.right + box.left) / 2;
@@ -139,5 +139,5 @@ export async function resizeColumn(columnIndex, deltaX) {
 }
 
 export function getHeaderElement(headerIndex) {
-  return find(`.et2-thead tr th:nth-child(${headerIndex})`);
+  return find(`.et-thead tr th:nth-child(${headerIndex})`);
 }

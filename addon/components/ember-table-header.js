@@ -1,5 +1,5 @@
 /* global Hammer */
-import EmberTableCell from './ember-table-cell';
+import EmberTableBaseCell from './ember-table-base-cell';
 
 import { property } from '../utils/class';
 import { computed } from 'ember-decorators/object';
@@ -11,9 +11,10 @@ const COLUMN_STATIC = 0;
 const COLUMN_RESIZE = 1;
 const COLUMN_REORDERING = 2;
 
-export default class EmberTableHeader extends EmberTableCell {
+export default class EmberTableHeader extends EmberTableBaseCell {
   @property layout = layout;
   @property tagName = 'th';
+  @property classNameBindings = ['isFixed::et-th']
 
   @property fixedColumnWidth = 0;
 

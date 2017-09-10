@@ -1,110 +1,91 @@
-.et2-outer-wrapper {
+.et-table {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+
+  position: relative;
   border-collapse: collapse;
   width: 100%;
   height: 100%;
   max-width: 100%;
-  display: block;
-  /*allows max-width to work*/
-  overflow-x: hidden;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
 
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  position: absolute;
-}
+  .et-thead, .et-tbody, .et-tfoot {
+    display: block;
+    overflow-x: hidden;
+  }
 
-.et2-body-outer-wrapper {
-  width: 100%;
-  height: 100%; /* This is needed by vertical collection. */
-  overflow-y: overlay;
-  overflow-x: hidden;
-  position: relative;
-}
+  .et-thead, .et-tfoot {
+    z-index: 2;
+  }
 
-.et2-body-inner-wrapper {
-  max-width: 100%;
-  display: block;
-  overflow-x: hidden;
-}
+  .et-tr {
+    display: inline-flex;
+  }
 
-.et2-table-header-inner {
-  position: relative;
-}
+  .et-td, .et-th {
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    display: block;
+    position: relative;
 
-.et2-thead-wrapper, .et2-bottom-wrapper {
-  position: relative;
-  overflow: hidden;
-  flex: none;
-}
+    &.is-fixed {
+      position: absolute;
+      left: 0;
+      margin-top: -1px;
+      z-index: 1;
+    }
+  }
 
-.et2-thead, .et2-tfooter {
-  max-width: 100%;
-  display: block;
-  overflow: hidden;
-}
+  .et-tbody-container {
+    overflow-y: scroll;
+    flex: 1;
+    position: relative;
+  }
 
-.et2-fixed-table-header {
-  z-index: 1;
-}
+  .et-horizontal-scroll-wrapper {
+    position: absolute;
+    bottom: 0;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    height: 20px;
+    opacity: 0.7;
+    border: none 0px;
+  }
 
-.et2-header-resize-area {
-  width: 10px;
-  height: 100%;
-  top: 0px;
-  right: 0px;
-  position: absolute;
-  cursor: col-resize;
-}
+  .et-horizontal-scroll {
+    height: 1px;
+  }
 
-.et2-header-ghost-element {
-  position: absolute;
-  background: #CCC;
-  opacity: 0.8;
-  cursor: move;
-}
+  .et-header-resize-area {
+    width: 10px;
+    height: 100%;
+    top: 0px;
+    right: 0px;
+    position: absolute;
+    cursor: col-resize;
+  }
 
-.et2-header-align-bar {
-  position: absolute;
-  background: #444;
-  opacity: 0.6;
-}
+  .et-header-ghost-element {
+    position: absolute;
+    background: #CCC;
+    opacity: 0.8;
+    cursor: move;
+  }
 
-.et2-horizontal-scroll-wrapper {
-  position: absolute;
-  bottom: 0;
-  overflow-x: scroll;
-  overflow-y: hidden;
-  height: 20px;
-  opacity: 0.7;
-  border: none 0px;
-}
+  .et-header-align-bar {
+    position: absolute;
+    background: #444;
+    opacity: 0.6;
+  }
 
-.et2-horizontal-scroll {
-  height: 1px;
-}
-
-.et2-unselectable {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.et2-fixed-table-cell, .et2-fixed-table-header, .et2-fixed-table-footer {
-  position: absolute;
-}
-
-/* TODO(billy): do the same thing for IE. */
-table::-webkit-scrollbar, thead::-webkit-scrollbar, .et2-body-inner-wrapper::-webkit-scrollbar, tfoot::-webkit-scrollbar {
-  width: 0px;  /* remove scrollbar space */
-  height: 0px;
-  background: transparent;  /* optional: just make scrollbar invisible */
+  .et-unselectable {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 }
 
 /************************************************************************************************/
@@ -114,67 +95,51 @@ $table-header-background-color: #f8f8f8;
 $table-border-color: #dcdcdc;
 $table-hover-color: #e5edf8;
 
-.et2-outer-wrapper {
+.et-table {
   border: solid 1px #ddd;
 
-  .et2-thead-wrapper {
+  .et-thead {
+    border-bottom: solid 1px $table-border-color;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
   }
 
-  thead, tfoot {
-    background-color: $table-header-background-color;
-    border-bottom: 1px $table-border-color;
+  .et-tfoot {
+    border-top: solid 1px $table-border-color;
   }
 
-  tbody tr {
-    border-bottom: 1px dotted $table-border-color;
-  }
-
-  .et2-table-cell {
-    vertical-align: top;
-    box-sizing: border-box;
-
+  .et-th, .et-td {
     white-space: nowrap;
     text-overflow: ellipsis;
-    height: 100%;
-    border-right: 1px solid $table-border-color;
-
     font-size: 20px;
-
-    text-align: left;
   }
 
-  .et2-table-header-inner {
-    font-family: 'Univers LT W01 65 Bold';
+  .et-td {
+    text-align: left;
+    background-color: white;
+    border-bottom: 1px dotted $table-border-color;
+    border-right: 1px solid $table-border-color;
+  }
 
+  .et-th {
+    background-color: $table-header-background-color;
+    font-family: 'Univers LT W01 65 Bold';
     line-height: 1.4;
-    bottom: 2px;
     font-weight: bold;
-    width: 100%;
     text-align: center;
     padding: 5px 0px 3px 0px;
+    border-right: solid 1px $table-border-color;
   }
 
-  .et2-fixed-table-cell, .et2-fixed-table-header, .et2-fixed-table-footer {
-    box-sizing: border-box;
-    border-right: 1px solid $table-border-color;
-    margin-left: -0.5px;
+  .et-tr:hover {
+    .et-td, .et-th {
+      cursor: pointer;
+      background-color: $table-hover-color;
+    }
   }
 
-  .et2-fixed-table-cell-background {
-    background-color: white;
-  }
-
-  .et2-table-cell-mouse-over {
-    cursor: pointer;
-    background-color: $table-hover-color;
-  }
-
-  .et2-table-cell-selected {
-    background-color: #227ecb;
-  }
-
-  .et2-fixed-table-header, .et2-fixed-table-footer {
-    background-color: $table-header-background-color;
+  .et-tr.is-selected {
+    .et-td, .et-th {
+      background-color: #227ecb;
+    }
   }
 }

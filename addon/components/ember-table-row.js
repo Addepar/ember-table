@@ -10,9 +10,9 @@ import { readOnly } from '@ember/object/computed';
 export default class EmberTableRow extends Component {
   @property layout = layout;
   @property tagName = 'tr';
-  @property classNames = ['et2-table-row'];
+  @property classNames = ['et-tr'];
   @property _cells = null;
-  @property classNameBindings = ['isHovered:et2-table-cell-mouse-over', 'isSelected:et2-table-cell-selected']
+  @property classNameBindings = ['isSelected']
   @property selected = false;
 
   @property columns = readOnly('row.api.columns');
@@ -67,13 +67,5 @@ export default class EmberTableRow extends Component {
 
   click(event) {
     this.get('targetObject').send('onRowClicked', event, this.get('rowIndex'));
-  }
-
-  mouseEnter() {
-    this.set('isHovered', true);
-  }
-
-  mouseLeave() {
-    this.set('isHovered', false);
   }
 }

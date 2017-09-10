@@ -1,30 +1,27 @@
-<div class="et2-thead-wrapper">
-  <thead class="et2-thead">
-    <tr>
-      {{#each columns as |column columnIndex|}}
-        {{#ember-table-header
-          column=column
-          columnIndex=columnIndex
-          numFixedColumns=numFixedColumns
-          onColumnResized="onColumnResized"
-          onColumnResizeEnded="onColumnResizeEnded"
-          onColumnReorder="onColumnReorder"
-          onColumnReorderEnds="onColumnReorderEnds"
-          width=column.width
-        }}
-        {{/ember-table-header}}
-      {{/each}}
-    </tr>
-  </thead>
-</div>
+<thead class="et-thead">
+  <tr class="et-tr">
+    {{#each columns as |column columnIndex|}}
+      {{#ember-table-header
+        column=column
+        columnIndex=columnIndex
+        numFixedColumns=numFixedColumns
+        onColumnResized="onColumnResized"
+        onColumnResizeEnded="onColumnResizeEnded"
+        onColumnReorder="onColumnReorder"
+        onColumnReorderEnds="onColumnReorderEnds"
+        width=column.width
+      }}
+      {{/ember-table-header}}
+    {{/each}}
+  </tr>
+</thead>
 
-<div class="et2-body-outer-wrapper" >
-  <div class="et2-body-inner-wrapper">
+  <div class="et-tbody-container">
     {{#vertical-collection
       items=rows
-      containerSelector=".et2-body-outer-wrapper"
       estimateHeight=estimateRowHeight
       tagName="tbody"
+      class="et-tbody"
 
       as |rowValue rowIndex|
     }}
@@ -36,27 +33,24 @@
       }}
     {{/vertical-collection}}
   </div>
-</div>
 
-<div class="et2-bottom-wrapper">
-  {{#if hasFooter}}
-    <tfoot class="et2-tfooter">
-      <tr>
-        {{#each columns as |column columnIndex|}}
-          {{#ember-table-footer
-            column=column
-            columnIndex=columnIndex
-            numFixedColumns=numFixedColumns
-          }}
-            {{column.columnName}}
-          {{/ember-table-footer}}
-        {{/each}}
-      </tr>
-    </tfoot>
-  {{/if}}
+{{#if hasFooter}}
+  <tfoot class="et-tfoot">
+    <tr class="et-tr">
+      {{#each columns as |column columnIndex|}}
+        {{#ember-table-footer
+          column=column
+          columnIndex=columnIndex
+          numFixedColumns=numFixedColumns
+        }}
+          {{column.columnName}}
+        {{/ember-table-footer}}
+      {{/each}}
+    </tr>
+  </tfoot>
+{{/if}}
 
-  <div class="et2-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
-    <div class="et2-horizontal-scroll" style={{horizontalScrollStyle}} />
-  </div>
+<div class="et-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
+  <div class="et-horizontal-scroll" style={{horizontalScrollStyle}} />
 </div>
 

@@ -5,7 +5,7 @@ import Component from '@ember/component';
 
 // TODO(Billy): rename this to tree table.
 export default class StandardTable extends Component {
-  @property classNames = ['et2-outer-wrapper', 'standard-table'];
+  @property classNames = ['standard-table'];
   @property layout = layout;
 
   /**

@@ -18,7 +18,7 @@ const SELECTION_MODE_MULTIPLE = 'multiple';
 
 export default class EmberTable2 extends Component {
   @property attributeBindings = ['style:style'];
-  @property classNames = ['et2-outer-wrapper'];
+  @property classNames = ['et-table'];
   @property tagName = 'table';
 
   @property layout = layout;
@@ -157,11 +157,11 @@ export default class EmberTable2 extends Component {
    * Syncs horizontal scrolling between table, header, body & footer.
    */
   setupScrollSync() {
-    const scrollBar = this.element.querySelector('.et2-horizontal-scroll-wrapper');
+    const scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
 
-    const bodyScrollContainer = this.element.querySelector('.et2-body-inner-wrapper');
-    const headerScrollContainer = this.element.querySelector('.et2-thead');
-    const footerScrollContainer = this.element.querySelector('.et2-tfooter');
+    const bodyScrollContainer = this.element.querySelector('tbody');
+    const headerScrollContainer = this.element.querySelector('thead');
+    const footerScrollContainer = this.element.querySelector('tfoot');
 
     const scrollElements = [
       bodyScrollContainer,
@@ -238,8 +238,8 @@ export default class EmberTable2 extends Component {
    * Teardown the scroll syncing
    */
   teardownScrollSync() {
-    const scrollBar = this.element.querySelector('.et2-horizontal-scroll-wrapper');
-    const bodyScrollContainer = this.element.querySelector('.et2-body-inner-wrapper');
+    const scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
+    const bodyScrollContainer = this.element.querySelector('tbody');
 
     this.element.removeEventListener('wheel', this._wheelHandler);
     scrollBar.removeEventListener('scroll', this._scrollHandler);
@@ -371,14 +371,14 @@ export default class EmberTable2 extends Component {
       columns[columnIndex + 1].set('width', columns[columnIndex + 1].get('width') - delta);
     }
 
-    if (!this.element.classList.contains('et2-unselectable')) {
-      this.element.classList.add('et2-unselectable');
+    if (!this.element.classList.contains('et-unselectable')) {
+      this.element.classList.add('et-unselectable');
     }
   }
 
   @action
   onColumnResizeEnded() {
-    this.element.classList.remove('et2-unselectable');
+    this.element.classList.remove('et-unselectable');
     this.fillupColumn();
   }
 
@@ -392,13 +392,13 @@ export default class EmberTable2 extends Component {
     this._headerGhostElement.style.width = `${width}px`;
     this._headerGhostElement.style.height = `${height}px`;
     this._headerGhostElement.style.top = '0px';
-    this._headerGhostElement.classList.add('et2-header-ghost-element');
+    this._headerGhostElement.classList.add('et-header-ghost-element');
 
     this._headerAlignBar = document.createElement('div');
     this._headerAlignBar.style.width = `${HEAD_ALIGN_BAR_WIDTH}px`;
     this._headerAlignBar.style.height = `${height}px`;
     this._headerAlignBar.style.top = '0px';
-    this._headerAlignBar.classList.add('et2-header-align-bar');
+    this._headerAlignBar.classList.add('et-header-align-bar');
 
     containerElement.appendChild(this._headerGhostElement);
     containerElement.appendChild(this._headerAlignBar);
@@ -417,7 +417,7 @@ export default class EmberTable2 extends Component {
 
       this._currentColumnIndex = columnIndex;
       this._currentColumnX = header.left - tableBoundingBox.left;
-      this.element.classList.add('et2-unselectable');
+      this.element.classList.add('et-unselectable');
     }
 
     // Do not allow this ghost element to move out of table.
@@ -484,7 +484,7 @@ export default class EmberTable2 extends Component {
     this.element.removeChild(this._headerAlignBar);
     this._headerGhostElement = null;
     this._headerAlignBar = null;
-    this.element.classList.remove('et2-unselectable');
+    this.element.classList.remove('et-unselectable');
   }
 
   @action

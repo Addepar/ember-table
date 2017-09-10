@@ -34,7 +34,7 @@ test('Ember table renders', async function(assert) {
   this.render(simpleTable);
 
   await waitForRender();
-  await scrollTo('.et2-body-outer-wrapper', 0, 600);
+  await scrollTo('.et-tbody-container', 0, 600);
 
   // Check column header count
   assert.equal(findAll('thead tr th').length, columnCount, `Header has ${columnCount} columns`);
@@ -94,7 +94,7 @@ for (const customHeader of customHeaderTests) {
 
     assert.equal(find(getHeaderElement(2)).innerText.trim(), 'Col B',
       'Second column is swapped');
-    assert.equal(find('.et2-thead tr th:nth-child(3)').innerText.trim(), 'Col A',
+    assert.equal(find('.et-thead tr th:nth-child(3)').innerText.trim(), 'Col A',
       'Third column is swapped');
   });
 
@@ -124,7 +124,7 @@ test('Test custom row', async function(assert) {
 
   // TODO(Billy): Because of the slow table rendering, we need to scroll a bit for the table to
   // be fully rendered. Remove this scroll when table rendering issue is fixed.
-  await scrollTo('.et2-body-outer-wrapper', 0, 10);
+  await scrollTo('.et-tbody-container', 0, 10);
 
   assert.ok(find('tbody tr').className.indexOf('custom-row') >= 0, 'Table has custom row');
 });

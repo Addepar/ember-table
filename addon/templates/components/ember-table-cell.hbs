@@ -1,3 +1,7 @@
-<div class={{fixedCellClass}} style={{style}}>
+{{#if isFixed}}
+  <div class="et-td is-fixed">
+    {{yield cell}}
+  </div>
+{{else}}
   {{yield cell}}
-</div>
+{{/if}}
