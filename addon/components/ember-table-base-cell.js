@@ -24,6 +24,10 @@ export default class EmberTableCell extends Component {
   didInsertElement() {
     if (this.get('isFixed')) {
       this.scheduleSync();
+
+      // TODO: For now we are just watching rows for changes in height, but
+      // theoretically anything can change the height of a row. We need
+      // to come up with a better solution.
       addObserver(this, 'rowValue', this, this.scheduleSync);
     }
   }
