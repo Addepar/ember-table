@@ -1,36 +1,52 @@
 import Component from '@ember/component';
-import { addObserver, removeObserver } from "@ember/object/observers";
+
+import { addObserver, removeObserver } from '@ember/object/observers';
 import { htmlSafe } from '@ember/string';
 import { action, computed } from 'ember-decorators/object';
 import { get } from '@ember/object';
 import { property } from '../utils/class';
+import { scheduler, Token } from '../-private';
 
 export default class EmberTableCell extends Component {
   @property tagName = 'td';
   @property attributeBindings = ['style:style'];
 
+  init() {
+    super.init(...arguments);
+
+    this.token = new Token();
+  }
+
+  willDestroy() {
+    this.token.cancel();
+  }
+
   didInsertElement() {
-    requestAnimationFrame(() => this.syncChildSize());
-    addObserver(this, 'row.value', this, this.syncChildSize);
+    if (this.get('isFixed')) {
+      this.scheduleSync();
+      addObserver(this, 'rowValue', this, this.scheduleSync);
+    }
   }
 
   willDestroyElement() {
-    removeObserver(this, 'row.value', this, this.syncChildSize);
+    if (this.get('isFixed')) {
+      removeObserver(this, 'rowValue', this, this.scheduleSync);
+    }
   }
 
-  syncChildSize() {
-    if (this.get('isFixed')) {
-      const { width, height } = this.element.getBoundingClientRect();
-      this.element.firstElementChild.style.width = `${width}px`;
-      this.element.firstElementChild.style.height = `${height}px`;
-    }
+  scheduleSync() {
+    scheduler.schedule('sync', () => {
+      const { height } = this.element.getBoundingClientRect();
+
+      this.set('cellHeight', height || 0);
+    }, this.token);
   }
 
   @computed('columnIndex', 'numFixedColumns')
   get isFixed() {
     const numFixedColumns = this.get('numFixedColumns');
     return this.get('columnIndex') === 0 && Number.isInteger(numFixedColumns)
-      && numFixedColumns !== 0;
+    && numFixedColumns !== 0;
   }
 
   @computed('row', 'column.valuePath')
@@ -44,6 +60,11 @@ export default class EmberTableCell extends Component {
   @computed('column.width')
   get style() {
     return htmlSafe(`width: ${this.get('column.width')}px;`);
+  }
+
+  @computed('column.width', 'cellHeight')
+  get fixedCellStyle() {
+    return htmlSafe(`width: ${this.get('column.width')}px; height: ${this.get('cellHeight')}px;`);
   }
 
   @action
