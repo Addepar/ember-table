@@ -27,7 +27,7 @@ export default class EmberTable2 extends Component {
    * Defines if this table has a footer or not.
    * // TODO(Billy): replace this with an option to pass in footer component.
    */
-  @property hasFooter = true;
+  @property hasFooter = false;
 
   /**
    * Estimated height for each row.
@@ -167,7 +167,9 @@ export default class EmberTable2 extends Component {
       bodyScrollContainer,
       headerScrollContainer,
       footerScrollContainer
-    ];
+    ].filter((item) => {
+      return item;
+    });
 
     let prevClientX, prevClientY;
 
@@ -305,8 +307,9 @@ export default class EmberTable2 extends Component {
   ) horizontalScrollWrapperStyle() {
     const columns = this.get('columns');
     const visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
+    const left = this.get('hasFixedColumn') ? columns[0].width : 0;
 
-    return htmlSafe(`visibility: ${visibility}; left: ${columns[0].width}px; right: 0px;`);
+    return htmlSafe(`visibility: ${visibility}; left: ${left}px; right: 0px;`);
   }
 
   /**
