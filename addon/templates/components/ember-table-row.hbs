@@ -1,11 +1,13 @@
 {{#each cells as |cell columnIndex|}}
-  {{#ember-table-cell
+  {{#component _outerCellComponent
     rowValue=rowValue
+    rowIndex=rowIndex
+    extraRowData=extraRowData
     column=cell.column
     columnIndex=columnIndex
     numFixedColumns=numFixedColumns
     cell=cell
   }}
-    {{yield cell columnIndex}}
-  {{/ember-table-cell}}
+    {{yield cell rowValue rowIndex}}
+  {{/component}}
 {{/each}}

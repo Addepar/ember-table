@@ -1,19 +1,24 @@
 <div class="demo-container">
-  {{#ember-table-2
-    rows=rows
+  {{#tree-table
+    tree=rows
     columns=columns
     columnMode="fluid"
     numFixedColumns=1
     as |t|
   }}
-    {{#ember-table-row
+    {{#tree-table-row
       row=t
 
       as |cell|
     }}
-      <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
-        {{cell.value}}
-      </div>
-    {{/ember-table-row}}
-  {{/ember-table-2}}
+
+      {{#if cell.column.cellComponent}}
+        {{component cell.column.cellComponent cell=cell}}
+      {{else}}
+        <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
+          {{cell.value}}
+        </div>
+      {{/if}}
+    {{/tree-table-row}}
+  {{/tree-table}}
 </div>

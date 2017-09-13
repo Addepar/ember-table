@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { htmlSafe } from '@ember/string';
 import { action, computed } from 'ember-decorators/object';

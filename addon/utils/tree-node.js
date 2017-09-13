@@ -94,6 +94,13 @@ export default class TreeNode {
     }
   }
 
+  updateDepth(depth) {
+    this.depth = depth;
+    for (const child of this.children) {
+      child.updateDepth(depth + 1);
+    }
+  }
+
   updateNodeCountAndIndex(currentIndex) {
     this.nodeCount = 1;
     this.index = currentIndex;

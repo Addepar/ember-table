@@ -12,6 +12,7 @@ export default class CellProxy extends EmberObject {
   @property _rowComponent = null;
 
   @readOnly @alias('_rowComponent.rowValue') rowValue;
+  @readOnly @alias('_rowComponent.rowIndex') rowIndex;
 
   init() {
     this.setProperties = Object.create(null);

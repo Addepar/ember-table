@@ -13,6 +13,13 @@ export default class EmberTableRow extends Component {
   @property classNames = ['et-tr'];
   @property _cells = null;
   @property classNameBindings = ['isSelected']
+  /**
+   * Component that for table cell. This outer cell is a <td> component that wraps outside the
+   * rendered cell view.
+   */
+  @property _outerCellComponent = 'ember-table-cell';
+  @property _cells = null;
+
   @property selected = false;
 
   @property columns = readOnly('row.api.columns');
@@ -55,6 +62,8 @@ export default class EmberTableRow extends Component {
 
       cell.set('column', column);
       cell.set('columnIndex', i);
+      cell.set('row', this.get('row'));
+      cell.set('targetTable', this.get('targetObject'));
     }
 
     return _cells;

@@ -192,14 +192,14 @@ export default class EmberTable2 extends Component {
     };
 
     this._touchstartHandler = (event) => {
-      const { clientX, clientY } = event.touches[0];
+      const [{ clientX, clientY }] = event.touches;
 
       prevClientX = clientX;
       prevClientY = clientY;
     };
 
     this._touchmoveHandler = (event) => {
-      const { clientX, clientY } = event.touches[0];
+      const [{ clientX, clientY }] = event.touches;
 
       const deltaX = clientX - prevClientX;
       const deltaY = clientY - prevClientY;

@@ -11,6 +11,7 @@ export default class LinkedListTree extends EmberObject {
 
     root.updateNext(null);
     root.updateNodeCountAndIndex(-1);
+    root.updateDepth(-1);
 
     this.pointerIndex = 0;
     // Root is a virtual node and will not be used for display
@@ -43,7 +44,7 @@ export default class LinkedListTree extends EmberObject {
       this.pointerIndex += direction;
     }
 
-    return this.pointerNode.value;
+    return this.pointerNode;
   }
 
   updateParentNodeCount(node, delta) {

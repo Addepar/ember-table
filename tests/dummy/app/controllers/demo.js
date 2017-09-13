@@ -53,7 +53,8 @@ export default Controller.extend({
     arr.pushObject(ColumnDefinition.create({
       columnName: 'Column id',
       valuePath: 'id',
-      width: columnWidth
+      width: columnWidth,
+      cellComponent: 'tree-table-grouping-cell'
     }));
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
@@ -70,14 +71,6 @@ export default Controller.extend({
   }),
 
   actions: {
-    onCheckboxClicked(value) {
-      this.set('showTable', value);
-    },
-
-    onPanelClicked(value) {
-      this.set('showPanel', value);
-    },
-
     onCellClicked(cell) {
       if (cell.get('columnIndex') !== 0) {
         cell.set('wasClicked', true);
