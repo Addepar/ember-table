@@ -5,9 +5,6 @@ import {
   generateColumns,
   generateRows,
   setupFullTable,
-  moveTableColumn,
-  getHeaderElement,
-  resizeColumn,
   DEFAULT_FULL_TABLE_COLUMN_OPTIONS
 } from '../../helpers/test-scenarios';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
@@ -16,6 +13,7 @@ import {
   findAll,
   scrollTo
 } from 'ember-native-dom-helpers';
+import tableHelpers from '../../helpers/table-helper';
 
 const {
   merge
@@ -34,7 +32,7 @@ test('Ember table renders', async function(assert) {
   this.render(simpleTable);
 
   await waitForRender();
-  await scrollTo('.et-tbody-container', 0, 600);
+  await scrollTo(find('[data-test-body-container]'), 0, 600);
 
   // Check column header count
   assert.equal(findAll('thead tr th').length, columnCount, `Header has ${columnCount} columns`);
@@ -54,16 +52,16 @@ for (const customHeader of customHeaderTests) {
     const tableOptions = { headerComponent: customHeader };
     setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
 
-    let originalWidth = getHeaderElement(2).offsetWidth;
-    await resizeColumn(2, 30);
+    let originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
+    await tableHelpers.resizeColumn(2, 30);
 
-    assert.equal(getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
+    assert.equal(tableHelpers.getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
 
     // Fixed column can also be resized
-    originalWidth = getHeaderElement(1).offsetWidth;
-    await resizeColumn(1, 30);
+    originalWidth = tableHelpers.getHeaderElement(1).offsetWidth;
+    await tableHelpers.resizeColumn(1, 30);
 
-    assert.equal(getHeaderElement(1).offsetWidth - originalWidth, 30, 'Fixed column size is updated');
+    assert.equal(tableHelpers.getHeaderElement(1).offsetWidth - originalWidth, 30, 'Fixed column size is updated');
   });
 
   // Test resizing fluid column
@@ -71,11 +69,11 @@ for (const customHeader of customHeaderTests) {
     const tableOptions = { headerComponent: customHeader, columnMode: 'fluid' };
     setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
 
-    const originalWidth = getHeaderElement(2).offsetWidth;
-    await resizeColumn(2, 30);
+    const originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
+    await tableHelpers.resizeColumn(2, 30);
 
-    assert.equal(getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
-    assert.equal(getHeaderElement(3).offsetWidth - originalWidth, -30,
+    assert.equal(tableHelpers.getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
+    assert.equal(tableHelpers.getHeaderElement(3).offsetWidth - originalWidth, -30,
         'Next column shrinks in fluid mode');
   });
 
@@ -84,15 +82,15 @@ for (const customHeader of customHeaderTests) {
     setupFullTable(this);
 
     // Case 1: Try to swap column A with fixed column. The table should prevent that action.
-    await moveTableColumn(2, -1);
+    await tableHelpers.moveTableColumn(2, -1);
 
-    assert.equal(getHeaderElement(2).innerText.trim(), 'Col A', 'Second column does not change');
-    assert.equal(getHeaderElement(1).innerText.trim(), 'Column id', 'First column does not change');
+    assert.equal(tableHelpers.getHeaderElement(2).innerText.trim(), 'Col A', 'Second column does not change');
+    assert.equal(tableHelpers.getHeaderElement(1).innerText.trim(), 'Column id', 'First column does not change');
 
     // Case 2: Move column A -> B
-    await moveTableColumn(2, 1);
+    await tableHelpers.moveTableColumn(2, 1);
 
-    assert.equal(find(getHeaderElement(2)).innerText.trim(), 'Col B',
+    assert.equal(find(tableHelpers.getHeaderElement(2)).innerText.trim(), 'Col B',
       'Second column is swapped');
     assert.equal(find('.et-thead tr th:nth-child(3)').innerText.trim(), 'Col A',
       'Third column is swapped');
@@ -106,25 +104,19 @@ for (const customHeader of customHeaderTests) {
     });
 
     // With table without fixed column, you can swap first column.
-    await moveTableColumn(2, -1);
+    await tableHelpers.moveTableColumn(2, -1);
 
-    assert.equal(getHeaderElement(2).innerText.trim(),
+    assert.equal(tableHelpers.getHeaderElement(2).innerText.trim(),
       customHeader ? 'Custom header Column id' : 'Column id',
       'Second column does not change');
-    assert.equal(getHeaderElement(1).innerText.trim(),
+    assert.equal(tableHelpers.getHeaderElement(1).innerText.trim(),
       customHeader ? 'Custom header Col A' : 'Col A',
       'First column does not change');
   });
 }
 
 test('Test custom row', async function(assert) {
-  setupFullTable(this, {
-    rowComponent: 'custom-row'
-  });
-
-  // TODO(Billy): Because of the slow table rendering, we need to scroll a bit for the table to
-  // be fully rendered. Remove this scroll when table rendering issue is fixed.
-  await scrollTo('.et-tbody-container', 0, 10);
-
+  setupFullTable(this, {}, {}, 'custom-row');
+  await waitForRender();
   assert.ok(find('tbody tr').className.indexOf('custom-row') >= 0, 'Table has custom row');
 });

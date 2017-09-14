@@ -1,5 +1,4 @@
 import { property } from '../utils/class';
-import { get } from '@ember/object';
 import { computed } from 'ember-decorators/object';
 import { htmlSafe } from '@ember/string';
 import Component from '@ember/component';

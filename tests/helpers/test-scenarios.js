@@ -3,15 +3,6 @@ import { A as emberA } from '@ember/array';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
 import ColumnDefinition from 'ember-table-2/models/column-definition';
 
-import {
-  find
-} from 'ember-native-dom-helpers';
-import {
-  pressElement,
-  moveMouse,
-  releasePress
-} from './drag-helper';
-
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
   columnMode: 'standard'
@@ -76,9 +67,17 @@ export const simpleTable = hbs`
     {{#ember-table-2
       columns=tableColumns
       rows=tableRows
-      as |cell|
+      estimateRowHeight=13
+      as |r|
     }}
-      {{cell.value}}
+
+      {{#ember-table-row
+        row=r
+
+        as |cell|
+      }}
+        {{cell.value}}
+      {{/ember-table-row}}
     {{/ember-table-2}}
   </div>
 `;
@@ -89,18 +88,25 @@ export const fullTable = hbs`
     {{#ember-table-2
       columns=tableColumns
       rows=tableRows
-      rowComponent=rowComponent
       numFixedColumns=numFixedColumns
       columnMode=columnMode
-      as |cell|
+
+      as |r|
     }}
-      {{cell.value}}
+
+      {{#component rowComponent
+        row=r
+
+        as |cell|
+      }}
+        {{cell.value}}
+      {{/component}}
     {{/ember-table-2}}
   </div>
 `;
 
 export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_OPTIONS,
-  columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS) {
+  columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS, rowComponent = 'ember-table-row') {
   const rowCount = 20;
   const columnCount = 10;
 
@@ -112,32 +118,7 @@ export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_O
 
   testContext.set('tableColumns', generateColumns(columnCount, columnOptions));
   testContext.set('tableRows', generateRows(rowCount, columnCount));
+  testContext.set('rowComponent', rowComponent)
   testContext.render(fullTable);
   await waitForRender();
-}
-
-export async function moveTableColumn(columnIndex, deltaPosition) {
-  const header = find(`.et-thead tr th:nth-child(${columnIndex})`);
-  const box = header.getBoundingClientRect();
-  const width = header.offsetLeft;
-  const startX = (box.right + box.left) / 2;
-  const deltaX = deltaPosition * width;
-
-  await pressElement(header, startX, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX, header.clientHeight / 2);
-  await releasePress(header, startX + deltaX, header.clientHeight / 2);
-}
-
-export async function resizeColumn(columnIndex, deltaX) {
-  const header = getHeaderElement(columnIndex);
-  const box = header.getBoundingClientRect();
-  const startX = box.right - 5;
-  await pressElement(header, startX, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
-  await moveMouse(header, startX + deltaX, header.clientHeight / 2);
-}
-
-export function getHeaderElement(headerIndex) {
-  return find(`.et-thead tr th:nth-child(${headerIndex})`);
 }
