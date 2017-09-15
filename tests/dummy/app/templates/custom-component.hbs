@@ -1,0 +1,16 @@
+<div class="custom-component-container">
+  {{#ember-table-2
+    rows=rows
+    columns=columns
+    rowComponent="custom-row"
+    as |cell|
+  }}
+
+    {{#if cell.column.customCell}}
+      {{component cell.column.customCell data=cell.value}}
+    {{else}}
+      {{cell.value}}
+    {{/if}}
+
+  {{/ember-table-2}}
+</div>
