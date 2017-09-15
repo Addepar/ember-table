@@ -1,5 +1,5 @@
-import layout from '../templates/components/ember-table-2';
-import EmberTable2 from './ember-table-2';
+import layout from '../templates/components/ember-table';
+import EmberTable2 from './ember-table';
 import { property } from '../utils/class';
 import { action } from 'ember-decorators/object';
 import { readOnly } from '@ember/object/computed';
