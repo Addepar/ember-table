@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
-import ColumnDefinition from 'ember-table-2/models/column-definition';
+import ColumnDefinition from 'ember-table/models/column-definition';
 
 export default Controller.extend({
 

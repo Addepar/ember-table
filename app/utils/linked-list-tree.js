@@ -1,1 +1,1 @@
-export { default } from 'ember-table-2/utils/linked-list-tree';
+export { default } from 'ember-table/utils/linked-list-tree';

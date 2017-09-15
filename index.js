@@ -2,7 +2,7 @@
 'use strict';
 
 module.exports = {
-  name: 'ember-table-2',
+  name: 'ember-table',
 
   options: {
     nodeAssets: {

@@ -1,1 +1,1 @@
-export { default } from 'ember-table-2/utils/tree-node';
+export { default } from 'ember-table/utils/tree-node';

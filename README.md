@@ -1,11 +1,11 @@
-# ember-table-2
+# ember-table
 
 This README outlines the details of collaborating on this Ember addon.
 
 ## Installation
 
 * `git clone <repository-url>` this repository
-* `cd ember-table-2`
+* `cd ember-table`
 * `npm install`
 
 ## Running

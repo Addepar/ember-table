@@ -1,1 +1,1 @@
-export { default } from 'ember-table-2/templates/test';
+export { default } from 'ember-table/templates/test';
