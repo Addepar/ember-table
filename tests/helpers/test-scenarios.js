@@ -118,7 +118,7 @@ export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_O
 
   testContext.set('tableColumns', generateColumns(columnCount, columnOptions));
   testContext.set('tableRows', generateRows(rowCount, columnCount));
-  testContext.set('rowComponent', rowComponent)
+  testContext.set('rowComponent', rowComponent);
   testContext.render(fullTable);
   await waitForRender();
 }

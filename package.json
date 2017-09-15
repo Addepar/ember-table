@@ -18,7 +18,7 @@
     "test": "ember try:each"
   },
   "dependencies": {
-    "@html-next/vertical-collection": "https://github.com/html-next/vertical-collection.git#d17ec8a81ee3a714e6011929e0f753487e08096a",
+    "@html-next/vertical-collection": "https://github.com/html-next/vertical-collection.git#27bd1d2f5708a985a082a6faca973b0d88c4e525",
     "css-element-queries": "^0.4.0",
     "ember": "^1.0.3",
     "ember-cli-babel": "^6.7.1",

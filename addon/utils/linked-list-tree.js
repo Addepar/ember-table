@@ -4,7 +4,6 @@ import EmberObject from '@ember/object';
 export default class LinkedListTree extends EmberObject {
   @property pointerNode = null;
   @property pointerIndex = -1;
-  @property valueToNodeMap = null;
 
   constructor(root) {
     super();
@@ -20,21 +19,6 @@ export default class LinkedListTree extends EmberObject {
     }
 
     this.set('length', root.nodeCount - 1);
-
-    // TODO(Billy): find a different way to avoid using this weak map.
-    this.valueToNodeMap = new WeakMap();
-    let pointer = this.pointerNode;
-    while (pointer != null) {
-      this.valueToNodeMap.set(pointer.value, pointer);
-      pointer = pointer.next;
-    }
-  }
-
-  /**
-   * Returns a TreeNode associated with a row value.
-   */
-  getTreeNodeFromRowValue(rowValue) {
-    return this.valueToNodeMap.get(rowValue);
   }
 
   objectAt(index) {

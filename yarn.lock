@@ -90,9 +90,9 @@
   dependencies:
     "@glimmer/util" "^0.22.3"
 
-"@html-next/vertical-collection@https://github.com/html-next/vertical-collection.git#d17ec8a81ee3a714e6011929e0f753487e08096a":
+"@html-next/vertical-collection@https://github.com/html-next/vertical-collection.git#27bd1d2f5708a985a082a6faca973b0d88c4e525":
   version "1.0.0-beta.7"
-  resolved "https://github.com/html-next/vertical-collection.git#d17ec8a81ee3a714e6011929e0f753487e08096a"
+  resolved "https://github.com/html-next/vertical-collection.git#27bd1d2f5708a985a082a6faca973b0d88c4e525"
   dependencies:
     babel-plugin-filter-imports "^0.3.1"
     babel-plugin-transform-es2015-block-scoping "^6.24.1"
