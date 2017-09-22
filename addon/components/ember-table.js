@@ -1,11 +1,12 @@
 /* global ResizeSensor */
 import { action, computed } from 'ember-decorators/object';
 import { property } from '../utils/class';
-import layout from '../templates/components/ember-table-2';
+import layout from '../templates/components/ember-table';
 import { htmlSafe } from '@ember/string';
 import { run } from '@ember/runloop';
 import Component from '@ember/component';
 import CellProxy from '../utils/cell-proxy';
+import { move } from '../utils/array';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
@@ -468,15 +469,7 @@ export default class EmberTable2 extends Component {
   @action
   onColumnReorderEnds(columnIndex) {
     if (this._currentColumnIndex != columnIndex) {
-      const direction = this._currentColumnIndex > columnIndex ? 1 : -1;
-
-      const columns = this.get('columns');
-      const temp = columns[columnIndex];
-
-      for (let i = columnIndex; i !== this._currentColumnIndex; i += direction) {
-        columns.replace(i, 1, columns[i + direction]);
-      }
-      columns.replace(this._currentColumnIndex, 1, temp);
+      move(this, 'columns', columnIndex, this._currentColumnIndex);
     }
 
     this._currentColumnIndex = -1;

@@ -1,1 +1,1 @@
-export { default } from 'ember-table-2/models/column-definition';
+export { default } from 'ember-table/models/column-definition';

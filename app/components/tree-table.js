@@ -1,1 +1,1 @@
-export { default } from 'ember-table-2/components/tree-table';
+export { default } from 'ember-table/components/tree-table';

@@ -1,7 +1,7 @@
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
-import ColumnDefinition from 'ember-table-2/models/column-definition';
+import ColumnDefinition from 'ember-table/models/column-definition';
 
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
@@ -64,7 +64,7 @@ export function generateColumns(columnCount, columnOptions) {
 
 export const simpleTable = hbs`
   <div style="height: 500px;">
-    {{#ember-table-2
+    {{#ember-table
       columns=tableColumns
       rows=tableRows
       estimateRowHeight=13
@@ -78,14 +78,14 @@ export const simpleTable = hbs`
       }}
         {{cell.value}}
       {{/ember-table-row}}
-    {{/ember-table-2}}
+    {{/ember-table}}
   </div>
 `;
 
 // Table with fixed column, column resizing, column grouping enabled
 export const fullTable = hbs`
   <div style="height: 500px;">
-    {{#ember-table-2
+    {{#ember-table
       columns=tableColumns
       rows=tableRows
       numFixedColumns=numFixedColumns
@@ -101,7 +101,7 @@ export const fullTable = hbs`
       }}
         {{cell.value}}
       {{/component}}
-    {{/ember-table-2}}
+    {{/ember-table}}
   </div>
 `;
 

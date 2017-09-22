@@ -1,1 +1,1 @@
-export { default } from 'ember-table-2/routes/test';
+export { default } from 'ember-table/routes/test';

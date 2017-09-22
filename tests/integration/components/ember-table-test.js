@@ -19,7 +19,7 @@ const {
   merge
 } = Ember;
 
-moduleForComponent('ember-table-2', 'Integration | Component | ember table 2', {
+moduleForComponent('ember-table', 'Integration | Component | ember table', {
   integration: true
 });
 
