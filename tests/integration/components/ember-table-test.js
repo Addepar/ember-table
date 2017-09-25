@@ -113,6 +113,17 @@ for (const customHeader of customHeaderTests) {
       customHeader ? 'Custom header Col A' : 'Col A',
       'First column does not change');
   });
+
+  test(`Test ${headerTest}column fill up proportional mode`, async function(assert) {
+    setupFullTable(this, { columnsFillupMode: "proportional" }, { headerComponent: customHeader });
+
+    await scrollTo(find('[data-test-body-container]'), 0, 10);
+
+    for (let i = 1; i <= 10; i++) {
+      assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - 128) <= 2,
+        'Table header have same width in proportional fill up mode.');
+    }
+  });
 }
 
 test('Test custom row', async function(assert) {

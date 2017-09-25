@@ -5,7 +5,8 @@ import ColumnDefinition from 'ember-table/models/column-definition';
 
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
-  columnMode: 'standard'
+  columnMode: 'standard',
+  columnsFillupMode: 'none'
 };
 
 export const DEFAULT_FULL_TABLE_COLUMN_OPTIONS = {
@@ -90,6 +91,7 @@ export const fullTable = hbs`
       rows=tableRows
       numFixedColumns=numFixedColumns
       columnMode=columnMode
+      columnsFillupMode=columnsFillupMode
 
       as |r|
     }}

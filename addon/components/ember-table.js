@@ -13,6 +13,7 @@ const HEAD_ALIGN_BAR_WIDTH = 5;
 const COLUMN_MODE_STANDARD = 'standard';
 const COLUMN_MODE_FLUID = 'fluid';
 
+const COLUMN_FILLUP_MODE_NONE = 'none';
 const COLUMN_FILLUP_MODE_PROPORTIONAL = 'proportional';
 const COLUMN_FILLUP_MODE_FIRST_COLUMN = 'first_column';
 
@@ -59,7 +60,14 @@ export default class EmberTable2 extends Component {
    */
   @property selectionMode = SELECTION_MODE_SINGLE;
 
-  @property columnsFillupMode = SELECTION_MODE_SINGLE;
+  /**
+   * A configuration that controls how columns shrink (or extend) when total column width does not
+   * match table width. Behavior of column modification is as follow:
+   * 1) "none": nothing changed to the column
+   * 2) "proportional": extra space is distributed equally among all columns
+   * 3) "first_column": extra space is added into the first column.
+   */
+  @property columnsFillupMode = COLUMN_FILLUP_MODE_NONE;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -267,7 +275,6 @@ export default class EmberTable2 extends Component {
     const sum = this.get('allColumnWidths');
     const columnsFillupMode = this.get('columnsFillupMode');
 
-    // if (sum < tableWidth - 1) {
     if (sum !== tableWidth) {
       let delta = tableWidth - sum - 1;
       // If the table has fixed column, add all width difference to the fixed column. Otherwise,
@@ -275,24 +282,12 @@ export default class EmberTable2 extends Component {
       if (columnsFillupMode === COLUMN_FILLUP_MODE_FIRST_COLUMN) {
         const [column] = columns;
         column.set('width', column.get('width') + delta);
-      } else {
+      } else if (columnsFillupMode === COLUMN_FILLUP_MODE_PROPORTIONAL) {
         // Split delta equally among columns.
         let columnDelta = delta / columns.length;
-        if (columnDelta < 1) {
-          columnDelta = 1;
-        }
         for (let i = 0; i < columns.length; i++) {
-          const [column] = columns;
-          column.set('width', column.get('width') + Math.min(delta, columnDelta));
-          delta -= columnDelta;
-          if (delta <= 0) {
-            break;
-          }
-        }
-
-        if (delta > 0) {
-          const column = columns.get('lastObject');
-          column.set('width', column.get('width') + delta);
+          const column = columns[i];
+          column.set('width', Math.min(column.get('width') + columnDelta), column.get('minWidth'));
         }
       }
     }
