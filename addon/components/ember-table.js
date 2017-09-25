@@ -13,6 +13,9 @@ const HEAD_ALIGN_BAR_WIDTH = 5;
 const COLUMN_MODE_STANDARD = 'standard';
 const COLUMN_MODE_FLUID = 'fluid';
 
+const COLUMN_FILLUP_MODE_PROPORTIONAL = 'proportional';
+const COLUMN_FILLUP_MODE_FIRST_COLUMN = 'first_column';
+
 const SELECTION_MODE_NONE = 'none';
 const SELECTION_MODE_SINGLE = 'single';
 const SELECTION_MODE_MULTIPLE = 'multiple';
@@ -54,7 +57,9 @@ export default class EmberTable2 extends Component {
    * does nothing), 'single' (clicking on a row selects it and deselects other rows), and 'multiple'
    * (multiple rows can be selected through ctrl/cmd-click or shift-click).
    */
-  @property selectionMode = 'single';
+  @property selectionMode = SELECTION_MODE_SINGLE;
+
+  @property columnsFillupMode = SELECTION_MODE_SINGLE;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -260,12 +265,14 @@ export default class EmberTable2 extends Component {
     const columns = this.get('columns');
     const tableWidth = this.get('_width');
     const sum = this.get('allColumnWidths');
+    const columnsFillupMode = this.get('columnsFillupMode');
 
-    if (sum < tableWidth - 1) {
+    // if (sum < tableWidth - 1) {
+    if (sum !== tableWidth) {
       let delta = tableWidth - sum - 1;
       // If the table has fixed column, add all width difference to the fixed column. Otherwise,
       // split the diff among all columns.
-      if (this.get('hasFixedColumn')) {
+      if (columnsFillupMode === COLUMN_FILLUP_MODE_FIRST_COLUMN) {
         const [column] = columns;
         column.set('width', column.get('width') + delta);
       } else {
