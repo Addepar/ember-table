@@ -1,0 +1,23 @@
+<h2>
+Click on Header to sort
+</h2>
+
+<div class="custom-component-container">
+  {{#ember-table
+    rows=sortedRows
+    columns=columns
+    headerComponent="custom-header"
+    onHeaderEvent="onHeaderEvent"
+    as |t|
+  }}
+
+    {{#ember-table-row
+      row=t
+
+      as |cell|
+    }}
+
+      {{cell.value}}
+    {{/ember-table-row}}
+  {{/ember-table}}
+</div>

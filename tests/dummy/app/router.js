@@ -9,6 +9,7 @@ const Router = EmberRouter.extend({
 Router.map(function() {
   this.route('demo');
   this.route('custom-component');
+  this.route('custom-header');
   this.route('addepar');
 });
 
