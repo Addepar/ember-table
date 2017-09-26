@@ -276,7 +276,7 @@ export default class EmberTable2 extends Component {
     const columnsFillupMode = this.get('columnsFillupMode');
 
     if (sum !== tableWidth) {
-      let delta = tableWidth - sum - 1;
+      const delta = tableWidth - sum - 1;
       // If the table has fixed column, add all width difference to the fixed column. Otherwise,
       // split the diff among all columns.
       if (columnsFillupMode === COLUMN_FILLUP_MODE_FIRST_COLUMN) {
@@ -284,7 +284,7 @@ export default class EmberTable2 extends Component {
         column.set('width', column.get('width') + delta);
       } else if (columnsFillupMode === COLUMN_FILLUP_MODE_PROPORTIONAL) {
         // Split delta equally among columns.
-        let columnDelta = delta / columns.length;
+        const columnDelta = delta / columns.length;
         for (let i = 0; i < columns.length; i++) {
           const column = columns[i];
           column.set('width', Math.min(column.get('width') + columnDelta), column.get('minWidth'));

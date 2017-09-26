@@ -115,7 +115,7 @@ for (const customHeader of customHeaderTests) {
   });
 
   test(`Test ${headerTest}column fill up - proportional mode`, async function(assert) {
-    await setupFullTable(this, { columnsFillupMode: "proportional" }, { headerComponent: customHeader });
+    await setupFullTable(this, { columnsFillupMode: 'proportional' }, { headerComponent: customHeader });
 
     for (let i = 1; i <= 10; i++) {
       assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - 128) <= 2,
