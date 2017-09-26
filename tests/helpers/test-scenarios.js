@@ -107,7 +107,7 @@ export const fullTable = hbs`
   </div>
 `;
 
-export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_OPTIONS,
+export function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_OPTIONS,
   columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS, rowComponent = 'ember-table-row') {
   const rowCount = 20;
   const columnCount = 10;
@@ -122,5 +122,5 @@ export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_O
   testContext.set('tableRows', generateRows(rowCount, columnCount));
   testContext.set('rowComponent', rowComponent);
   testContext.render(fullTable);
-  await waitForRender();
+  return waitForRender();
 }

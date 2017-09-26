@@ -50,7 +50,7 @@ for (const customHeader of customHeaderTests) {
   // Test resizing column
   test(`Test ${headerTest}resizing column`, async function(assert) {
     const tableOptions = { headerComponent: customHeader };
-    setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
+    await setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
 
     let originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
     await tableHelpers.resizeColumn(2, 30);
@@ -67,7 +67,7 @@ for (const customHeader of customHeaderTests) {
   // Test resizing fluid column
   test(`Test ${headerTest}resizing fluid column`, async function(assert) {
     const tableOptions = { headerComponent: customHeader, columnMode: 'fluid' };
-    setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
+    await setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
 
     const originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
     await tableHelpers.resizeColumn(2, 30);
@@ -79,7 +79,7 @@ for (const customHeader of customHeaderTests) {
 
   // Reodering columns with fixed column
   test(`Test ${headerTest}reordering columns with fixed column`, async function(assert) {
-    setupFullTable(this);
+    await setupFullTable(this);
 
     // Case 1: Try to swap column A with fixed column. The table should prevent that action.
     await tableHelpers.moveTableColumn(2, -1);
@@ -98,7 +98,7 @@ for (const customHeader of customHeaderTests) {
 
   // Reodering columns without fixed column
   test(`Test ${headerTest}reordering columns without fixed column`, async function(assert) {
-    setupFullTable(this, {}, {
+    await setupFullTable(this, {}, {
       isReorderable: true,
       headerComponent: customHeader
     });
@@ -114,20 +114,26 @@ for (const customHeader of customHeaderTests) {
       'First column does not change');
   });
 
-  test(`Test ${headerTest}column fill up proportional mode`, async function(assert) {
-    setupFullTable(this, { columnsFillupMode: "proportional" }, { headerComponent: customHeader });
-
-    await scrollTo(find('[data-test-body-container]'), 0, 10);
+  test(`Test ${headerTest}column fill up - proportional mode`, async function(assert) {
+    await setupFullTable(this, { columnsFillupMode: "proportional" }, { headerComponent: customHeader });
 
     for (let i = 1; i <= 10; i++) {
       assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - 128) <= 2,
         'Table header have same width in proportional fill up mode.');
     }
   });
+
+  test(`Test ${headerTest}column fill up - none mode`, async function(assert) {
+    await setupFullTable(this, {}, { headerComponent: customHeader });
+
+    for (let i = 1; i <= 10; i++) {
+      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, 180,
+        'Table header have same width in proportional fill up mode.');
+    }
+  });
 }
 
 test('Test custom row', async function(assert) {
-  setupFullTable(this, {}, {}, 'custom-row');
-  await waitForRender();
+  await setupFullTable(this, {}, {}, 'custom-row');
   assert.ok(find('tbody tr').className.indexOf('custom-row') >= 0, 'Table has custom row');
 });
