@@ -117,8 +117,10 @@ for (const customHeader of customHeaderTests) {
   test(`Test ${headerTest}column fill up - proportional mode`, async function(assert) {
     await setupFullTable(this, { columnsFillupMode: 'proportional' }, { headerComponent: customHeader });
 
-    for (let i = 1; i <= 10; i++) {
-      assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - 128) <= 2,
+    const headerCount = findAll('.et-thead tr th').length;
+    const expectedWidth = find('.et-thead tr').offsetWidth / headerCount;
+    for (let i = 1; i <= headerCount; i++) {
+      assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - expectedWidth) <= 1,
         'Table header have same width in proportional fill up mode.');
     }
   });
@@ -126,7 +128,8 @@ for (const customHeader of customHeaderTests) {
   test(`Test ${headerTest}column fill up - none mode`, async function(assert) {
     await setupFullTable(this, {}, { headerComponent: customHeader });
 
-    for (let i = 1; i <= 10; i++) {
+    const headerCount = findAll('.et-thead tr th').length;
+    for (let i = 1; i <= headerCount; i++) {
       assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, 180,
         'Table header have same width in proportional fill up mode.');
     }
