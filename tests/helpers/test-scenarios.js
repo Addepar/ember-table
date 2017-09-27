@@ -19,6 +19,8 @@ export const DEFAULT_ROW_COLUMN_COUNT = {
   columnCount: 10
 };
 
+export const DEFAULT_COLUMN_WIDTH = 180;
+
 export function generateRows(rowCount, columnCount) {
   const arr = emberA();
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -39,7 +41,7 @@ export function generateRows(rowCount, columnCount) {
 export function generateColumns(columnCount, columnOptions) {
   const arr = emberA();
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const columnWidth = 180;
+  const columnWidth = DEFAULT_COLUMN_WIDTH;
 
   arr.pushObject(ColumnDefinition.create({
     columnName: 'Column id',

@@ -6,7 +6,8 @@ import {
   generateRows,
   setupFullTable,
   DEFAULT_FULL_TABLE_COLUMN_OPTIONS,
-  DEFAULT_ROW_COLUMN_COUNT
+  DEFAULT_ROW_COLUMN_COUNT,
+  DEFAULT_COLUMN_WIDTH
 } from '../../helpers/test-scenarios';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
 import {
@@ -127,12 +128,12 @@ for (const customHeader of customHeaderTests) {
   });
 
   test(`Test ${headerTest}column fill up - none mode`, async function(assert) {
-    await setupFullTable(this, {}, { headerComponent: customHeader });
+    await setupFullTable(this, { tableFillupMode: 'none' }, { headerComponent: customHeader });
 
     const headerCount = findAll('.et-thead tr th').length;
     for (let i = 1; i <= headerCount; i++) {
-      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, 180,
-        'Table header have same width in proportional fill up mode.');
+      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, DEFAULT_COLUMN_WIDTH,
+        'Table header have same width in none fill up mode.');
     }
   });
 
@@ -145,10 +146,10 @@ for (const customHeader of customHeaderTests) {
     const firstColumnWidth = tableHelpers.getHeaderElement(1).offsetWidth;
 
     assert.ok(
-      Math.abs(tableWidth - firstColumnWidth - 180 * (headerCount - 1)) <= 1,
-      'First column takes extra sapce in first column fill up mode.');
+      Math.abs(tableWidth - firstColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,
+      'First column takes extra space in first column fill up mode.');
     for (let i = 2; i <= headerCount; i++) {
-      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, 180,
+      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, DEFAULT_COLUMN_WIDTH,
         'Other columns keep same width in first column fill up mode.');
     }
   });
@@ -162,10 +163,10 @@ for (const customHeader of customHeaderTests) {
     const lastColumnWidth = tableHelpers.getHeaderElement(headerCount).offsetWidth;
 
     assert.ok(
-      Math.abs(tableWidth - lastColumnWidth - 180 * (headerCount - 1)) <= 1,
-      'Last column takes extra sapce in last column fill up mode.');
+      Math.abs(tableWidth - lastColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,
+      'Last column takes extra space in last column fill up mode.');
     for (let i = 1; i < headerCount; i++) {
-      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, 180,
+      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, DEFAULT_COLUMN_WIDTH,
         'Other columns keep same width in last column fill up mode.');
     }
   });
