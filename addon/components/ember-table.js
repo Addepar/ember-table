@@ -278,8 +278,7 @@ export default class EmberTable2 extends Component {
 
     if (sum !== tableWidth) {
       const delta = tableWidth - sum - 1;
-      // If the table has fixed column, add all width difference to the fixed column. Otherwise,
-      // split the diff among all columns.
+      // Distribute the delta in pixel among columns according to the table fill up mode.
       if (tableFillupMode === TABLE_FILLUP_MODE_FIRST_COLUMN) {
         const [column] = columns;
         column.set('width', column.get('width') + delta);
