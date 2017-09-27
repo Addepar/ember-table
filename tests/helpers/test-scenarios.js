@@ -14,6 +14,11 @@ export const DEFAULT_FULL_TABLE_COLUMN_OPTIONS = {
   isReorderable: true
 };
 
+export const DEFAULT_ROW_COLUMN_COUNT = {
+  rowCount: 20,
+  columnCount: 10
+};
+
 export function generateRows(rowCount, columnCount) {
   const arr = emberA();
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -107,17 +112,20 @@ export const fullTable = hbs`
   </div>
 `;
 
-export function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_OPTIONS,
-  columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS, rowComponent = 'ember-table-row') {
-  const rowCount = 20;
-  const columnCount = 10;
-
+export function setupFullTable(
+    testContext,
+    tableOptions = DEFAULT_TABLE_OPTIONS,
+    columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS,
+    rowColumnCount = DEFAULT_ROW_COLUMN_COUNT,
+    rowComponent = 'ember-table-row'
+  ) {
   for (const property in tableOptions) {
     if (tableOptions.hasOwnProperty(property)) {
       testContext.set(property, tableOptions[property]);
     }
   }
 
+  const { rowCount, columnCount } = rowColumnCount;
   testContext.set('tableColumns', generateColumns(columnCount, columnOptions));
   testContext.set('tableRows', generateRows(rowCount, columnCount));
   testContext.set('rowComponent', rowComponent);

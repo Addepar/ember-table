@@ -5,7 +5,8 @@ import {
   generateColumns,
   generateRows,
   setupFullTable,
-  DEFAULT_FULL_TABLE_COLUMN_OPTIONS
+  DEFAULT_FULL_TABLE_COLUMN_OPTIONS,
+  DEFAULT_ROW_COLUMN_COUNT
 } from '../../helpers/test-scenarios';
 import waitForRender from 'dummy/tests/helpers/wait-for-render';
 import {
@@ -134,9 +135,43 @@ for (const customHeader of customHeaderTests) {
         'Table header have same width in proportional fill up mode.');
     }
   });
+
+  test(`Test ${headerTest}column fill up - first column mode`, async function(assert) {
+    await setupFullTable(this, { tableFillupMode: 'first_column' },
+      { headerComponent: customHeader }, { rowCount: 20, columnCount: 3 });
+
+    const headerCount = findAll('.et-thead tr th').length;
+    const tableWidth = find('.et-thead').offsetWidth;
+    const firstColumnWidth = tableHelpers.getHeaderElement(1).offsetWidth;
+
+    assert.ok(
+      Math.abs(tableWidth - firstColumnWidth - 180 * (headerCount - 1)) <= 1,
+      'First column takes extra sapce in first column fill up mode.');
+    for (let i = 2; i <= headerCount; i++) {
+      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, 180,
+        'Other columns keep same width in first column fill up mode.');
+    }
+  });
+
+  test(`Test ${headerTest}column fill up - last column mode`, async function(assert) {
+    await setupFullTable(this, { tableFillupMode: 'last_column' },
+      { headerComponent: customHeader }, { rowCount: 20, columnCount: 3 });
+
+    const headerCount = findAll('.et-thead tr th').length;
+    const tableWidth = find('.et-thead').offsetWidth;
+    const lastColumnWidth = tableHelpers.getHeaderElement(headerCount).offsetWidth;
+
+    assert.ok(
+      Math.abs(tableWidth - lastColumnWidth - 180 * (headerCount - 1)) <= 1,
+      'Last column takes extra sapce in last column fill up mode.');
+    for (let i = 1; i < headerCount; i++) {
+      assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, 180,
+        'Other columns keep same width in last column fill up mode.');
+    }
+  });
 }
 
 test('Test custom row', async function(assert) {
-  await setupFullTable(this, {}, {}, 'custom-row');
+  await setupFullTable(this, {}, {}, DEFAULT_ROW_COLUMN_COUNT, 'custom-row');
   assert.ok(find('tbody tr').className.indexOf('custom-row') >= 0, 'Table has custom row');
 });

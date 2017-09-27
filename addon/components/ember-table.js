@@ -292,7 +292,8 @@ export default class EmberTable2 extends Component {
         }
       } else if (tableFillupMode === TABLE_FILLUP_MODE_LAST_COLUMN) {
         // Add all delta to last column
-        columns[columns.length - 1].set('width', columns[columns.length - 1].get('width') + delta);
+        const lastColumn = columns[columns.length - 1];
+        lastColumn.set('width', lastColumn.get('width') + delta);
       }
     }
   }
