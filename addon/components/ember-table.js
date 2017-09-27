@@ -13,9 +13,10 @@ const HEAD_ALIGN_BAR_WIDTH = 5;
 const COLUMN_MODE_STANDARD = 'standard';
 const COLUMN_MODE_FLUID = 'fluid';
 
-const COLUMN_FILLUP_MODE_NONE = 'none';
-const COLUMN_FILLUP_MODE_PROPORTIONAL = 'proportional';
-const COLUMN_FILLUP_MODE_FIRST_COLUMN = 'first_column';
+const TABLE_FILLUP_MODE_NONE = 'none';
+const TABLE_FILLUP_MODE_EQUAL_COLUMN = 'equal_column';
+const TABLE_FILLUP_MODE_FIRST_COLUMN = 'first_column';
+const TABLE_FILLUP_MODE_LAST_COLUMN = 'last_column';
 
 const SELECTION_MODE_NONE = 'none';
 const SELECTION_MODE_SINGLE = 'single';
@@ -64,10 +65,11 @@ export default class EmberTable2 extends Component {
    * A configuration that controls how columns shrink (or extend) when total column width does not
    * match table width. Behavior of column modification is as follow:
    * 1) "none": nothing changed to the column
-   * 2) "proportional": extra space is distributed equally among all columns
+   * 2) "equal_column": extra space is distributed equally among all columns
    * 3) "first_column": extra space is added into the first column.
+   * 4) "last_column": extra space is added into the last column.
    */
-  @property columnsFillupMode = COLUMN_FILLUP_MODE_NONE;
+  @property tableFillupMode = TABLE_FILLUP_MODE_NONE;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -265,30 +267,32 @@ export default class EmberTable2 extends Component {
   }
 
   /**
-   * There are cases where the sum of all column width is smaller than the container width. In this
-   * case, we want to auto increase width of some column. This function handles that logic.
-   * TODO(Billy): rewrite this function's logic to take into account min & max width.
+   * There are cases where the sum of all column width is smaller or bigger than the container
+   * width. In this case, we might want to adjust width of every single column.
    */
   fillupColumn() {
     const columns = this.get('columns');
     const tableWidth = this.get('_width');
     const sum = this.get('allColumnWidths');
-    const columnsFillupMode = this.get('columnsFillupMode');
+    const tableFillupMode = this.get('tableFillupMode');
 
     if (sum !== tableWidth) {
       const delta = tableWidth - sum - 1;
       // If the table has fixed column, add all width difference to the fixed column. Otherwise,
       // split the diff among all columns.
-      if (columnsFillupMode === COLUMN_FILLUP_MODE_FIRST_COLUMN) {
+      if (tableFillupMode === TABLE_FILLUP_MODE_FIRST_COLUMN) {
         const [column] = columns;
         column.set('width', column.get('width') + delta);
-      } else if (columnsFillupMode === COLUMN_FILLUP_MODE_PROPORTIONAL) {
-        // Split delta equally among columns.
+      } else if (tableFillupMode === TABLE_FILLUP_MODE_EQUAL_COLUMN) {
+        // Split delta by their proportion.
         const columnDelta = delta / columns.length;
         for (let i = 0; i < columns.length; i++) {
           const column = columns[i];
           column.set('width', Math.min(column.get('width') + columnDelta), column.get('minWidth'));
         }
+      } else if (tableFillupMode === TABLE_FILLUP_MODE_LAST_COLUMN) {
+        // Add all delta to last column
+        columns[columns.length - 1].set('width', columns[columns.length - 1].get('width') + delta);
       }
     }
   }

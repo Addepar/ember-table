@@ -114,8 +114,8 @@ for (const customHeader of customHeaderTests) {
       'First column does not change');
   });
 
-  test(`Test ${headerTest}column fill up - proportional mode`, async function(assert) {
-    await setupFullTable(this, { columnsFillupMode: 'proportional' }, { headerComponent: customHeader });
+  test(`Test ${headerTest}column fill up - equal column mode`, async function(assert) {
+    await setupFullTable(this, { tableFillupMode: 'equal_column' }, { headerComponent: customHeader });
 
     const headerCount = findAll('.et-thead tr th').length;
     const expectedWidth = find('.et-thead tr').offsetWidth / headerCount;
