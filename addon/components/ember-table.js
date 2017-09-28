@@ -57,7 +57,7 @@ export default class EmberTable2 extends Component {
   @property selectionMode = 'single';
 
   /**
-   * Default theme of this table.
+   * Theme of this table. Override this property to have custom theme for the table.
    */
   @property tableTheme = 'et-default-theme';
 
