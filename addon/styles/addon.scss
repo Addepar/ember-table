@@ -72,15 +72,10 @@
 
   .et-header-ghost-element {
     position: absolute;
-    background: #CCC;
-    opacity: 0.8;
-    cursor: move;
   }
 
   .et-header-align-bar {
     position: absolute;
-    background: #444;
-    opacity: 0.6;
   }
 
   .et-unselectable {
@@ -100,7 +95,7 @@ $table-header-background-color: #f8f8f8;
 $table-border-color: #dcdcdc;
 $table-hover-color: #e5edf8;
 
-.et-table {
+.et-default-theme {
   border: solid 1px #ddd;
 
   .et-thead {
@@ -146,5 +141,16 @@ $table-hover-color: #e5edf8;
     .et-td, .et-th {
       background-color: #227ecb;
     }
+  }
+
+  .et-header-ghost-element {
+    background: #CCC;
+    opacity: 0.8;
+    cursor: move;
+  }
+
+  .et-header-align-bar {
+    background: #444;
+    opacity: 0.6;
   }
 }

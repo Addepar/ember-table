@@ -19,7 +19,7 @@ const SELECTION_MODE_MULTIPLE = 'multiple';
 
 export default class EmberTable2 extends Component {
   @property attributeBindings = ['style:style'];
-  @property classNames = ['et-table'];
+  @property classNameBindings = ['tableClass'];
   @property tagName = 'table';
 
   @property layout = layout;
@@ -55,6 +55,11 @@ export default class EmberTable2 extends Component {
    * (multiple rows can be selected through ctrl/cmd-click or shift-click).
    */
   @property selectionMode = 'single';
+
+  /**
+   * Default theme of this table.
+   */
+  @property tableTheme = 'et-default-theme';
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -104,6 +109,12 @@ export default class EmberTable2 extends Component {
   @property _width = 0;
 
   @property lastSelectedIndex = -1;
+
+  @computed('tableTheme')
+  tableClass() {
+    const tableTheme = this.get('tableTheme');
+    return `et-table ${tableTheme}`;
+  }
 
   @computed('numFixedColumns')
   get hasFixedColumn() {
