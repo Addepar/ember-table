@@ -116,29 +116,29 @@ for (const customHeader of customHeaderTests) {
       'First column does not change');
   });
 
-  test(`Test ${headerTest}column fill up - equal column mode`, async function(assert) {
-    await setupFullTable(this, { tableFillupMode: 'equal_column' }, { headerComponent: customHeader });
+  test(`Test ${headerTest}column resize - equal column mode`, async function(assert) {
+    await setupFullTable(this, { tableResizeMode: 'equal_column' }, { headerComponent: customHeader });
 
     const headerCount = findAll('.et-thead tr th').length;
     const expectedWidth = find('.et-thead tr').offsetWidth / headerCount;
     for (let i = 1; i <= headerCount; i++) {
       assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - expectedWidth) <= 1,
-        'Table header have same width in proportional fill up mode.');
+        'Table header have same width in equal resize mode.');
     }
   });
 
-  test(`Test ${headerTest}column fill up - none mode`, async function(assert) {
-    await setupFullTable(this, { tableFillupMode: 'none' }, { headerComponent: customHeader });
+  test(`Test ${headerTest}column resize - none mode`, async function(assert) {
+    await setupFullTable(this, { tableResizeMode: 'none' }, { headerComponent: customHeader });
 
     const headerCount = findAll('.et-thead tr th').length;
     for (let i = 1; i <= headerCount; i++) {
       assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, DEFAULT_COLUMN_WIDTH,
-        'Table header have same width in none fill up mode.');
+        'Table header keeps origial width in none resize mode.');
     }
   });
 
-  test(`Test ${headerTest}column fill up - first column mode`, async function(assert) {
-    await setupFullTable(this, { tableFillupMode: 'first_column' },
+  test(`Test ${headerTest}column resize - first column mode`, async function(assert) {
+    await setupFullTable(this, { tableResizeMode: 'first_column' },
       { headerComponent: customHeader }, { rowCount: 20, columnCount: 3 });
 
     const headerCount = findAll('.et-thead tr th').length;
@@ -147,15 +147,15 @@ for (const customHeader of customHeaderTests) {
 
     assert.ok(
       Math.abs(tableWidth - firstColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,
-      'First column takes extra space in first column fill up mode.');
+      'First column takes extra space in first column resize mode.');
     for (let i = 2; i <= headerCount; i++) {
       assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, DEFAULT_COLUMN_WIDTH,
-        'Other columns keep same width in first column fill up mode.');
+        'Other columns keep same width in first column resize mode.');
     }
   });
 
-  test(`Test ${headerTest}column fill up - last column mode`, async function(assert) {
-    await setupFullTable(this, { tableFillupMode: 'last_column' },
+  test(`Test ${headerTest}column resize - last column mode`, async function(assert) {
+    await setupFullTable(this, { tableResizeMode: 'last_column' },
       { headerComponent: customHeader }, { rowCount: 20, columnCount: 3 });
 
     const headerCount = findAll('.et-thead tr th').length;
@@ -164,10 +164,10 @@ for (const customHeader of customHeaderTests) {
 
     assert.ok(
       Math.abs(tableWidth - lastColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,
-      'Last column takes extra space in last column fill up mode.');
+      'Last column takes extra space in last column resize mode.');
     for (let i = 1; i < headerCount; i++) {
       assert.equal(tableHelpers.getHeaderElement(i).offsetWidth, DEFAULT_COLUMN_WIDTH,
-        'Other columns keep same width in last column fill up mode.');
+        'Other columns keep same width in last column resize mode.');
     }
   });
 }

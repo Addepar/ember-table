@@ -13,10 +13,10 @@ const HEAD_ALIGN_BAR_WIDTH = 5;
 const COLUMN_MODE_STANDARD = 'standard';
 const COLUMN_MODE_FLUID = 'fluid';
 
-const TABLE_FILLUP_MODE_NONE = 'none';
-const TABLE_FILLUP_MODE_EQUAL_COLUMN = 'equal_column';
-const TABLE_FILLUP_MODE_FIRST_COLUMN = 'first_column';
-const TABLE_FILLUP_MODE_LAST_COLUMN = 'last_column';
+const TABLE_RESIZE_MODE_NONE = 'none';
+const TABLE_RESIZE_MODE_EQUAL_COLUMN = 'equal_column';
+const TABLE_RESIZE_MODE_FIRST_COLUMN = 'first_column';
+const TABLE_RESIZE_MODE_LAST_COLUMN = 'last_column';
 
 const SELECTION_MODE_NONE = 'none';
 const SELECTION_MODE_SINGLE = 'single';
@@ -69,7 +69,7 @@ export default class EmberTable2 extends Component {
    * 3) "first_column": extra space is added into the first column.
    * 4) "last_column": extra space is added into the last column.
    */
-  @property tableFillupMode = TABLE_FILLUP_MODE_NONE;
+  @property tableResizeMode = TABLE_RESIZE_MODE_NONE;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -274,22 +274,22 @@ export default class EmberTable2 extends Component {
     const columns = this.get('columns');
     const tableWidth = this.get('_width');
     const sum = this.get('allColumnWidths');
-    const tableFillupMode = this.get('tableFillupMode');
+    const tableResizeMode = this.get('tableResizeMode');
 
     if (sum !== tableWidth) {
       const delta = tableWidth - sum - 1;
       // Distribute the delta in pixel among columns according to the table fill up mode.
-      if (tableFillupMode === TABLE_FILLUP_MODE_FIRST_COLUMN) {
+      if (tableResizeMode === TABLE_RESIZE_MODE_FIRST_COLUMN) {
         const [column] = columns;
         column.set('width', column.get('width') + delta);
-      } else if (tableFillupMode === TABLE_FILLUP_MODE_EQUAL_COLUMN) {
+      } else if (tableResizeMode === TABLE_RESIZE_MODE_EQUAL_COLUMN) {
         // Split delta by their proportion.
         const columnDelta = delta / columns.length;
         for (let i = 0; i < columns.length; i++) {
           const column = columns[i];
           column.set('width', Math.min(column.get('width') + columnDelta), column.get('minWidth'));
         }
-      } else if (tableFillupMode === TABLE_FILLUP_MODE_LAST_COLUMN) {
+      } else if (tableResizeMode === TABLE_RESIZE_MODE_LAST_COLUMN) {
         // Add all delta to last column
         const lastColumn = columns[columns.length - 1];
         lastColumn.set('width', lastColumn.get('width') + delta);
