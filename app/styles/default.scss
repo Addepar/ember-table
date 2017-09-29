@@ -1,0 +1,66 @@
+/************************************************************************************************/
+/* Table default style */
+/************************************************************************************************/
+$table-header-background-color: #f8f8f8;
+$table-border-color: #dcdcdc;
+$table-hover-color: #e5edf8;
+
+.et-default-theme {
+  border: solid 1px #ddd;
+
+  .et-thead {
+    border-bottom: solid 1px $table-border-color;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+  }
+
+  .et-tfoot {
+    border-top: solid 1px $table-border-color;
+  }
+
+  .et-th, .et-td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    font-size: 20px;
+  }
+
+  .et-td {
+    text-align: left;
+    background-color: white;
+    border-bottom: 1px dotted $table-border-color;
+    border-right: 1px solid $table-border-color;
+  }
+
+  .et-th {
+    background-color: $table-header-background-color;
+    font-family: 'Univers LT W01 65 Bold';
+    line-height: 1.4;
+    font-weight: bold;
+    text-align: center;
+    padding: 5px 0px 3px 0px;
+    border-right: solid 1px $table-border-color;
+  }
+
+  .et-tr:hover {
+    .et-td, .et-th {
+      cursor: pointer;
+      background-color: $table-hover-color;
+    }
+  }
+
+  .et-tr.is-selected {
+    .et-td, .et-th {
+      background-color: #227ecb;
+    }
+  }
+
+  .et-header-ghost-element {
+    background: #CCC;
+    opacity: 0.8;
+    cursor: move;
+  }
+
+  .et-header-align-bar {
+    background: #444;
+    opacity: 0.6;
+  }
+}
