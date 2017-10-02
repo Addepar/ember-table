@@ -5,13 +5,21 @@ import ColumnDefinition from 'ember-table/models/column-definition';
 
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
-  columnMode: 'standard'
+  columnMode: 'standard',
+  tableResizeMode: 'none'
 };
 
 export const DEFAULT_FULL_TABLE_COLUMN_OPTIONS = {
   isResizable: true,
   isReorderable: true
 };
+
+export const DEFAULT_ROW_COLUMN_COUNT = {
+  rowCount: 20,
+  columnCount: 10
+};
+
+export const DEFAULT_COLUMN_WIDTH = 180;
 
 export function generateRows(rowCount, columnCount) {
   const arr = emberA();
@@ -33,7 +41,7 @@ export function generateRows(rowCount, columnCount) {
 export function generateColumns(columnCount, columnOptions) {
   const arr = emberA();
   const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const columnWidth = 180;
+  const columnWidth = DEFAULT_COLUMN_WIDTH;
 
   arr.pushObject(ColumnDefinition.create({
     columnName: 'Column id',
@@ -90,6 +98,7 @@ export const fullTable = hbs`
       rows=tableRows
       numFixedColumns=numFixedColumns
       columnMode=columnMode
+      tableResizeMode=tableResizeMode
 
       as |r|
     }}
@@ -105,20 +114,23 @@ export const fullTable = hbs`
   </div>
 `;
 
-export async function setupFullTable(testContext, tableOptions = DEFAULT_TABLE_OPTIONS,
-  columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS, rowComponent = 'ember-table-row') {
-  const rowCount = 20;
-  const columnCount = 10;
-
+export function setupFullTable(
+    testContext,
+    tableOptions = DEFAULT_TABLE_OPTIONS,
+    columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS,
+    rowColumnCount = DEFAULT_ROW_COLUMN_COUNT,
+    rowComponent = 'ember-table-row'
+  ) {
   for (const property in tableOptions) {
     if (tableOptions.hasOwnProperty(property)) {
       testContext.set(property, tableOptions[property]);
     }
   }
 
+  const { rowCount, columnCount } = rowColumnCount;
   testContext.set('tableColumns', generateColumns(columnCount, columnOptions));
   testContext.set('tableRows', generateRows(rowCount, columnCount));
   testContext.set('rowComponent', rowComponent);
   testContext.render(fullTable);
-  await waitForRender();
+  return waitForRender();
 }
