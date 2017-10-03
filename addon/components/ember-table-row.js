@@ -1,16 +1,18 @@
 import { get } from '@ember/object';
 import Component from '@ember/component';
 import { computed } from 'ember-decorators/object';
+import { classNames } from 'ember-decorators/component';
 import { property } from '../utils/class';
 
 import layout from '../templates/components/ember-table-row';
 import { A as emberA } from '@ember/array';
 import { readOnly } from '@ember/object/computed';
 
+@classNames('et-tr')
 export default class EmberTableRow extends Component {
   @property layout = layout;
   @property tagName = 'tr';
-  @property classNames = ['et-tr'];
+
   @property _cells = null;
   @property classNameBindings = ['isSelected']
   /**

@@ -1,5 +1,6 @@
 /* global ResizeSensor */
 import { action, computed } from 'ember-decorators/object';
+import { classNames } from 'ember-decorators/component';
 import { property } from '../utils/class';
 import layout from '../templates/components/ember-table';
 import { htmlSafe } from '@ember/string';
@@ -22,9 +23,9 @@ const SELECTION_MODE_NONE = 'none';
 const SELECTION_MODE_SINGLE = 'single';
 const SELECTION_MODE_MULTIPLE = 'multiple';
 
+@classNames('et-table')
 export default class EmberTable2 extends Component {
   @property attributeBindings = ['style:style'];
-  @property classNames = ['et-table'];
   @property tagName = 'table';
 
   @property layout = layout;
