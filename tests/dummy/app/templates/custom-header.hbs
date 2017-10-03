@@ -1,0 +1,16 @@
+<div class="demo-container">
+  {{#ember-table
+    rows=rows
+    columns=columns
+    tableResizeMode="equal_column"
+    onHeaderEvent="onHeaderEvent"
+    as |t|
+  }}
+    {{#ember-table-row
+      row=t
+      as |cell|
+    }}
+      {{cell.value}}
+    {{/ember-table-row}}
+  {{/ember-table}}
+</div>

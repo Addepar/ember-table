@@ -537,4 +537,9 @@ export default class EmberTable2 extends Component {
 
     this.set('selectedRows', selectedRows);
   }
+
+  @action
+  onHeaderEvent(data) {
+    this.sendAction('onHeaderEvent', data);
+  }
 }
