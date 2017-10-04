@@ -5,7 +5,6 @@ import {
   generateColumns,
   generateRows,
   setupFullTable,
-  DEFAULT_FULL_TABLE_COLUMN_OPTIONS,
   DEFAULT_ROW_COLUMN_COUNT,
   DEFAULT_COLUMN_WIDTH
 } from '../../helpers/test-scenarios';
@@ -16,10 +15,6 @@ import {
   scrollTo
 } from 'ember-native-dom-helpers';
 import tableHelpers from '../../helpers/table-helper';
-
-const {
-  merge
-} = Ember;
 
 moduleForComponent('ember-table', 'Integration | Component | ember table', {
   integration: true
@@ -45,14 +40,13 @@ test('Ember table renders', async function(assert) {
 });
 
 // Tests with or without custom header.
-const customHeaderTests = [null, 'custom-text-header'];
+const customHeaderTests = [null, 'custom-header'];
 for (const customHeader of customHeaderTests) {
   const headerTest = customHeader ? 'custom header ' : '';
 
   // Test resizing column
   test(`Test ${headerTest}resizing column`, async function(assert) {
-    const tableOptions = { headerComponent: customHeader };
-    await setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
+    await setupFullTable(this, {}, { headerComponent: customHeader });
 
     let originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
     await tableHelpers.resizeColumn(2, 30);
@@ -68,8 +62,7 @@ for (const customHeader of customHeaderTests) {
 
   // Test resizing fluid column
   test(`Test ${headerTest}resizing fluid column`, async function(assert) {
-    const tableOptions = { headerComponent: customHeader, columnMode: 'fluid' };
-    await setupFullTable(this, merge(tableOptions, DEFAULT_FULL_TABLE_COLUMN_OPTIONS));
+    await setupFullTable(this, { headerComponent: customHeader, columnMode: 'fluid' });
 
     const originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
     await tableHelpers.resizeColumn(2, 30);
@@ -100,7 +93,7 @@ for (const customHeader of customHeaderTests) {
 
   // Reodering columns without fixed column
   test(`Test ${headerTest}reordering columns without fixed column`, async function(assert) {
-    await setupFullTable(this, {}, {
+    await setupFullTable(this, { numFixedColumns: 0 }, {
       isReorderable: true,
       headerComponent: customHeader
     });
@@ -108,12 +101,10 @@ for (const customHeader of customHeaderTests) {
     // With table without fixed column, you can swap first column.
     await tableHelpers.moveTableColumn(2, -1);
 
-    assert.equal(tableHelpers.getHeaderElement(2).innerText.trim(),
-      customHeader ? 'Custom header Column id' : 'Column id',
-      'Second column does not change');
-    assert.equal(tableHelpers.getHeaderElement(1).innerText.trim(),
-      customHeader ? 'Custom header Col A' : 'Col A',
-      'First column does not change');
+    assert.equal(tableHelpers.getHeaderElement(2).innerText.trim(), 'Column id',
+      'Second column is swapped');
+    assert.equal(tableHelpers.getHeaderElement(1).innerText.trim(), 'Col A',
+      'First column is swapped');
   });
 
   test(`Test ${headerTest}column resize - equal column mode`, async function(assert) {

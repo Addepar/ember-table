@@ -1,4 +1,7 @@
 <div class="demo-container">
+  {{#if clickedColumn}}
+    {{clickedColumn}} is clicked.
+  {{/if}}
   {{#ember-table
     rows=rows
     columns=columns
