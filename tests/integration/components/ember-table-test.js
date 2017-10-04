@@ -1,5 +1,4 @@
 import { moduleForComponent, test } from 'ember-qunit';
-import Ember from 'ember';
 import {
   simpleTable,
   generateColumns,
