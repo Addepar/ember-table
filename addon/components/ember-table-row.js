@@ -28,7 +28,6 @@ export default class EmberTableRow extends Component {
   @property cellProxyClass = readOnly('row.api.cellProxyClass');
   @property cellCache = readOnly('row.api.cellCache');
   @property numFixedColumns = readOnly('row.api.numFixedColumns');
-  @property targetObject = readOnly('row.api.targetObject');
   @property selectedRows = readOnly('row.api.selectedRows');
 
   @property rowValue = readOnly('row.value');
@@ -77,6 +76,13 @@ export default class EmberTableRow extends Component {
   }
 
   click(event) {
-    this.get('targetObject').send('onRowClicked', event, this.get('rowIndex'));
+    const tableObject = this.get('row.api.targetObject');
+    tableObject.send('onRowClicked', event, this.get('rowIndex'));
+
+    this.sendAction('onClick', event, this.get('rowIndex'), this.get('rowValue'));
+  }
+
+  doubleClick(event) {
+    this.sendAction('onDoubleClick', event, this.get('rowIndex'), this.get('rowValue'));
   }
 }

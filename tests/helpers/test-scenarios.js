@@ -9,11 +9,6 @@ export const DEFAULT_TABLE_OPTIONS = {
   tableResizeMode: 'none'
 };
 
-export const DEFAULT_FULL_TABLE_COLUMN_OPTIONS = {
-  isResizable: true,
-  isReorderable: true
-};
-
 export const DEFAULT_ROW_COLUMN_COUNT = {
   rowCount: 20,
   columnCount: 10
@@ -46,14 +41,17 @@ export function generateColumns(columnCount, columnOptions) {
   arr.pushObject(ColumnDefinition.create({
     columnName: 'Column id',
     valuePath: 'id',
-    width: columnWidth
+    width: columnWidth,
+    isResizable: true
   }));
 
   for (let j = 0; j < columnCount - 1; j++) {
     const columnDefinition = ColumnDefinition.create({
       columnName: `Col ${alphabet[j % 26]}`,
       valuePath: alphabet[j % 26],
-      width: columnWidth
+      width: columnWidth,
+      isResizable: true,
+      isReorderable: true
     });
 
     arr.pushObject(columnDefinition);
@@ -116,11 +114,18 @@ export const fullTable = hbs`
 
 export function setupFullTable(
     testContext,
-    tableOptions = DEFAULT_TABLE_OPTIONS,
-    columnOptions = DEFAULT_FULL_TABLE_COLUMN_OPTIONS,
+    tableOptions = {},
+    columnOptions = {},
     rowColumnCount = DEFAULT_ROW_COLUMN_COUNT,
     rowComponent = 'ember-table-row'
   ) {
+
+  for (const property in DEFAULT_TABLE_OPTIONS) {
+    if (DEFAULT_TABLE_OPTIONS.hasOwnProperty(property)) {
+      testContext.set(property, DEFAULT_TABLE_OPTIONS[property]);
+    }
+  }
+
   for (const property in tableOptions) {
     if (tableOptions.hasOwnProperty(property)) {
       testContext.set(property, tableOptions[property]);

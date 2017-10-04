@@ -2,7 +2,7 @@
 import EmberTableBaseCell from './ember-table-base-cell';
 
 import { property } from '../utils/class';
-import { computed } from 'ember-decorators/object';
+import { action, computed } from 'ember-decorators/object';
 
 import layout from '../templates/components/ember-table-header';
 
@@ -144,5 +144,10 @@ export default class EmberTableHeader extends EmberTableBaseCell {
     hammer.off('panend');
 
     super.willDestroyElement(...arguments);
+  }
+
+  @action
+  onHeaderEvent(data) {
+    this.sendAction('onHeaderEvent', data);
   }
 }
