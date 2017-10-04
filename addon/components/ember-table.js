@@ -491,7 +491,7 @@ export default class EmberTable2 extends Component {
   }
 
   @action
-  onClick(event, rowIndex) {
+  onRowClicked(event, rowIndex) {
     const rows = this.get('rows');
     const item = rows.objectAt(rowIndex);
 

@@ -77,7 +77,7 @@ export default class EmberTableRow extends Component {
 
   click(event) {
     const tableObject = this.get('row.api.targetObject');
-    tableObject.send('onClick', event, this.get('rowIndex'));
+    tableObject.send('onRowClicked', event, this.get('rowIndex'));
 
     this.sendAction('onClick', event, this.get('rowIndex'), this.get('rowValue'));
   }
