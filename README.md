@@ -1,26 +1,108 @@
-# ember-table
+# Ember Table
 
-This README outlines the details of collaborating on this Ember addon.
+An addon to support large data set and a number of features around table. `Ember Table` can
+handle over 100,000 rows without and rendering or performance issue.
 
-## Installation
+## Install
 
-* `git clone <repository-url>` this repository
-* `cd ember-table`
-* `npm install`
+```bash
+ember install ember-table
+```
 
-## Running
+## Features
+- Column resizing, column reordering.
+- Table resizing.
+- Fixed first column.
+- Custom row and custom header.
+- Handles transient state at cell level.
+- Single, multiple row selection.
+- Table grouping.
 
-* `ember serve`
-* Visit your app at [http://localhost:4200](http://localhost:4200).
+## Usage.
 
-## Running Tests
+To use `Ember Table`, you need to create `columns` and `rows` dataset.
 
-* `npm test` (Runs `ember try:each` to test your addon against multiple Ember versions)
-* `ember test`
-* `ember test --server`
+`columns` is an array of `ColumnDefinition` which has multiple fields to define behavior of column.
+Two required field for `ColumnDefinition` is `columnName` and `valuePath`.
 
-## Building
+```javascript
+  columns: computed(function() {
+    const columns = emberA();
 
-* `ember build`
+    columns.pushObject(ColumnDefinition.create({
+      columnName: `Open time`,
+      valuePath: `open`
+    }));
+    columns.pushObject(ColumnDefinition.create({
+      columnName: `Close time`,
+      valuePath: `close`
+    }));
 
-For more information on using ember-cli, visit [https://ember-cli.com/](https://ember-cli.com/).
+    return columns;
+  })
+```
+
+`rows` could be a javascript array, ember array or any data structure that implements `length` and
+`objectAt(index)`. This flexibity gives application to avoid having all data at front but loads more
+data as user scrolls. Each object in the `rows` data structure should contains all fields defined
+by all `valuePath` in `columns` array.
+
+```javascript
+  rows: computed(function() {
+    const rows = emberA();
+
+    rows.pushObject({
+      open: '8AM',
+      close: '8PM'
+    });
+
+    rows.pushObject({
+      open: '11AM',
+      close: '9PM'
+    });
+
+    return rows;
+  })
+```
+
+### Template
+
+The following template renders a simple table.
+
+```
+  {{#ember-table
+    rows=rows
+    columns=columns
+    as |t|
+  }}
+    {{#ember-table-row
+      row=t
+      as |cell|
+    }}
+      {{cell.value}}
+    {{/ember-table-row}}
+  {{/ember-table}}
+```
+
+To have your own custom cell, pass in the cell component name in each element of `columns` array and
+specify it in the template.
+
+```
+  {{#ember-table
+    rows=rows
+    columns=columns
+    as |t|
+  }}
+    {{#ember-table-row
+      row=t
+      as |cell|
+    }}
+      {{#component cell.column.cellComponent
+        cell=cell
+      }}
+    {{/ember-table-row}}
+  {{/ember-table}}
+```
+
+The rendered table is a plain table without any styling. You can define styling for your own table.
+If you want to use default table style, import the `ember-table/default` SASS file.
