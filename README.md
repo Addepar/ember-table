@@ -26,20 +26,16 @@ To use `Ember Table`, you need to create `columns` and `rows` dataset.
 Two required field for `ColumnDefinition` is `columnName` and `valuePath`.
 
 ```javascript
-  columns: computed(function() {
-    const columns = emberA();
-
-    columns.pushObject(ColumnDefinition.create({
+  columns: [
+    ColumnDefinition.create({
       columnName: `Open time`,
       valuePath: `open`
-    }));
-    columns.pushObject(ColumnDefinition.create({
+    }),
+    ColumnDefinition.create({
       columnName: `Close time`,
       valuePath: `close`
-    }));
-
-    return columns;
-  })
+    })
+  ]
 ```
 
 `rows` could be a javascript array, ember array or any data structure that implements `length` and
@@ -73,10 +69,10 @@ The following template renders a simple table.
   {{#ember-table
     rows=rows
     columns=columns
-    as |t|
+    as |row|
   }}
     {{#ember-table-row
-      row=t
+      row=row
       as |cell|
     }}
       {{cell.value}}
@@ -91,10 +87,10 @@ specify it in the template.
   {{#ember-table
     rows=rows
     columns=columns
-    as |t|
+    as |row|
   }}
     {{#ember-table-row
-      row=t
+      row=row
       as |cell|
     }}
       {{#component cell.column.cellComponent
