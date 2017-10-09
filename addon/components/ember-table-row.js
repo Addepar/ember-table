@@ -64,7 +64,7 @@ export default class EmberTableRow extends Component {
       cell.set('column', column);
       cell.set('columnIndex', i);
       cell.set('row', this.get('row'));
-      cell.set('targetTable', this.get('targetObject'));
+      cell.set('targetTable', this.get('row.api.targetObject'));
     }
 
     return _cells;

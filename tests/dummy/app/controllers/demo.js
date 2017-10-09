@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import TreeNode from '../utils/tree-node';
-import ColumnDefinition from '../models/column-definition';
 import LinkedListTree from '../utils/linked-list-tree';
 import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
@@ -50,21 +49,21 @@ export default Controller.extend({
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     const columnWidth = 180;
 
-    arr.pushObject(ColumnDefinition.create({
+    arr.pushObject({
       columnName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
       cellComponent: 'tree-table-grouping-cell'
-    }));
+    });
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
-      arr.pushObject(ColumnDefinition.create({
+      arr.pushObject({
         columnName: `Col ${alphabet[j % 26]}`,
         valuePath: alphabet[j % 26],
         width: columnWidth,
         isResizable: true,
         isReorderable: true
-      }));
+      });
     }
 
     return arr;

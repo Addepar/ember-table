@@ -8,6 +8,7 @@ import { run } from '@ember/runloop';
 import Component from '@ember/component';
 import CellProxy from '../utils/cell-proxy';
 import { move } from '../utils/array';
+import { get, set } from '@ember/object';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
@@ -282,18 +283,18 @@ export default class EmberTable2 extends Component {
       // Distribute the delta in pixel among columns according to the table fill up mode.
       if (tableResizeMode === TABLE_RESIZE_MODE_FIRST_COLUMN) {
         const [column] = columns;
-        column.set('width', column.get('width') + delta);
+        set(column, 'width', get(column, 'width') + delta);
       } else if (tableResizeMode === TABLE_RESIZE_MODE_EQUAL_COLUMN) {
         // Split delta by their proportion.
         const columnDelta = delta / columns.length;
         for (let i = 0; i < columns.length; i++) {
           const column = columns[i];
-          column.set('width', Math.min(column.get('width') + columnDelta), column.get('minWidth'));
+          set(column, 'width', Math.min(get(column, 'width')  + columnDelta), get(column, 'minWidth'));
         }
       } else if (tableResizeMode === TABLE_RESIZE_MODE_LAST_COLUMN) {
         // Add all delta to last column
         const lastColumn = columns[columns.length - 1];
-        lastColumn.set('width', lastColumn.get('width') + delta);
+        set(lastColumn, 'width', get(lastColumn, 'width') + delta);
       }
     }
   }
@@ -365,21 +366,22 @@ export default class EmberTable2 extends Component {
   onColumnResized(columnIndex, delta) {
     const columns = this.get('columns');
     const column = columns[columnIndex];
-    const width = column.get('width');
-    if (width + delta < column.get('minWidth')) {
+    const width = get(column, 'width');
+    if (width + delta < get(column, 'minWidth')) {
       return;
     }
 
     const columnMode = this.get('columnMode');
     if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1
-      && columns[columnIndex + 1].get('width') - delta < columns[columnIndex + 1].get('minWidth')) {
+      && get(columns[columnIndex + 1], 'width') - delta < get(columns[columnIndex + 1], 'minWidth')) {
       // Resizing this column makes the next column smaller than its min width.
       return;
     }
 
-    column.set('width', width + delta);
+    set(column, 'width', width + delta);
     if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1) {
-      columns[columnIndex + 1].set('width', columns[columnIndex + 1].get('width') - delta);
+      const oldWidth = get(columns[columnIndex + 1], 'width');
+      set(columns[columnIndex + 1], 'width', oldWidth - delta);
     }
 
     if (!this.element.classList.contains('et-unselectable')) {
