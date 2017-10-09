@@ -62,12 +62,13 @@ export default class EmberTableCell extends Component {
 
   @computed('column.width')
   get style() {
-    return htmlSafe(`width: ${this.get('column.width')}px;`);
+    return htmlSafe(`width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px;`);
   }
 
   @computed('column.width', 'cellHeight')
   get fixedCellStyle() {
-    return htmlSafe(`width: ${this.get('column.width')}px; height: ${this.get('cellHeight')}px;`);
+    return htmlSafe(`width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px; \
+height: ${this.get('cellHeight')}px;`);
   }
 
   @action
