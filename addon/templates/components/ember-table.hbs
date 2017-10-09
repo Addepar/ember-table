@@ -1,0 +1,56 @@
+<thead class="et-thead">
+  <tr class="et-tr">
+    {{#each columns as |column columnIndex|}}
+      {{#ember-table-header
+        column=column
+        columnIndex=columnIndex
+        numFixedColumns=numFixedColumns
+        onColumnResized="onColumnResized"
+        onColumnResizeEnded="onColumnResizeEnded"
+        onColumnReorder="onColumnReorder"
+        onColumnReorderEnds="onColumnReorderEnds"
+        onHeaderEvent="onHeaderEvent"
+        width=column.width
+      }}
+      {{/ember-table-header}}
+    {{/each}}
+  </tr>
+</thead>
+
+  <div class="et-tbody-container" data-test-body-container>
+    {{#vertical-collection rows
+      estimateHeight=estimateRowHeight
+      tagName="tbody"
+      class="et-tbody"
+
+      as |rowValue rowIndex|
+    }}
+
+      {{yield (table-hash
+        value=rowValue
+        index=rowIndex
+        api=api)
+      }}
+    {{/vertical-collection}}
+  </div>
+
+{{#if hasFooter}}
+  <tfoot class="et-tfoot">
+    <tr class="et-tr">
+      {{#each columns as |column columnIndex|}}
+        {{#ember-table-footer
+          column=column
+          columnIndex=columnIndex
+          numFixedColumns=numFixedColumns
+        }}
+          {{column.columnName}}
+        {{/ember-table-footer}}
+      {{/each}}
+    </tr>
+  </tfoot>
+{{/if}}
+
+<div class="et-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
+  <div class="et-horizontal-scroll" style={{horizontalScrollStyle}} />
+</div>
+

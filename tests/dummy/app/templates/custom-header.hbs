@@ -1,0 +1,19 @@
+<div class="demo-container">
+  {{#if clickedColumn}}
+    {{clickedColumn}} is clicked.
+  {{/if}}
+  {{#ember-table
+    rows=rows
+    columns=columns
+    tableResizeMode="equal_column"
+    onHeaderEvent="onHeaderEvent"
+    as |t|
+  }}
+    {{#ember-table-row
+      row=t
+      as |cell|
+    }}
+      {{cell.value}}
+    {{/ember-table-row}}
+  {{/ember-table}}
+</div>
