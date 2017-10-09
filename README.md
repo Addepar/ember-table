@@ -22,19 +22,19 @@ ember install ember-table
 
 To use `Ember Table`, you need to create `columns` and `rows` dataset.
 
-`columns` is an array of `ColumnDefinition` which has multiple fields to define behavior of column.
-Two required field for `ColumnDefinition` is `columnName` and `valuePath`.
+`columns` is an array of objects which has multiple fields to define behavior of column.
+Two required field in each object is `columnName` and `valuePath`.
 
 ```javascript
   columns: [
-    ColumnDefinition.create({
+    {
       columnName: `Open time`,
       valuePath: `open`
-    }),
-    ColumnDefinition.create({
+    },
+    {
       columnName: `Close time`,
       valuePath: `close`
-    })
+    }
   ]
 ```
 
