@@ -4,7 +4,7 @@ import { htmlSafe } from '@ember/string';
 import { action, computed } from 'ember-decorators/object';
 import { get } from '@ember/object';
 import { property } from '../utils/class';
-import { scheduler, Token } from '../-private';
+import { scheduler, Token } from 'ember-raf-scheduler';
 
 export default class EmberTableCell extends Component {
   @property tagName = 'td';

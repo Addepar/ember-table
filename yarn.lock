@@ -2484,6 +2484,12 @@ ember-qunit@^2.1.3:
   dependencies:
     ember-test-helpers "^0.6.3"
 
+ember-raf-scheduler@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ember-raf-scheduler/-/ember-raf-scheduler-0.1.0.tgz#a22a02d238c374499231c03ab9c5b9887c72a853"
+  dependencies:
+    ember-cli-babel "^6.6.0"
+
 ember-resolver@^4.0.0:
   version "4.3.0"
   resolved "https://registry.yarnpkg.com/ember-resolver/-/ember-resolver-4.3.0.tgz#aaf0e43646be2e7da14399a0c2e9574c2130ce69"
