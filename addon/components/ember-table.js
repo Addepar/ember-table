@@ -316,7 +316,7 @@ export default class EmberTable2 extends Component {
   ) horizontalScrollWrapperStyle() {
     const columns = this.get('columns');
     const visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
-    const left = this.get('hasFixedColumn') ? columns[0].width : 0;
+    const left = this.get('hasFixedColumn') ? get(columns[0], 'width') : 0;
 
     return htmlSafe(`visibility: ${visibility}; left: ${left}px; right: 0px;`);
   }
@@ -333,7 +333,7 @@ export default class EmberTable2 extends Component {
     let width = 0;
 
     for (let i = hasFixedColumn ? 1 : 0; i < columns.length; i++) {
-      width += columns[i].width;
+      width += get(columns[i], 'width');
     }
 
     style = `width: ${width}px;`;
@@ -345,7 +345,7 @@ export default class EmberTable2 extends Component {
     const columns = this.get('columns');
     let sum = 0;
     for (let i = 0; i < columns.length; i++) {
-      sum += columns[i].width;
+      sum += get(columns[i], 'width');
     }
     return sum;
   }
@@ -439,8 +439,8 @@ export default class EmberTable2 extends Component {
     if (this.get('hasFixedColumn')) {
       const { scrollLeft } = containerElement;
 
-      if (ghostLeftX < columns[0].width - scrollLeft) {
-        ghostLeftX = columns[0].width - scrollLeft;
+      if (ghostLeftX < get(columns[0], 'width') - scrollLeft) {
+        ghostLeftX = get(columns[0], 'width'); - scrollLeft;
       }
     }
     if (ghostLeftX < 0) {
@@ -461,16 +461,16 @@ export default class EmberTable2 extends Component {
       if (this._currentColumnIndex > 0) {
         // Current column is now the previous column
         this._currentColumnIndex--;
-        this._currentColumnX -= columns[this._currentColumnIndex].width;
+        this._currentColumnX -= get(columns[this._currentColumnIndex], 'width');
         this._headerAlignBar.style.left = `${this._currentColumnX}px`;
       }
-    } else if (ghostCenterX >= this._currentColumnX + columns[this._currentColumnIndex].width) {
+    } else if (ghostCenterX >= this._currentColumnX + get(columns[this._currentColumnIndex], 'width')) {
       if (this._currentColumnIndex < columns.length - 1) {
         // Current column is now the next column
-        this._currentColumnX = this._currentColumnX + columns[this._currentColumnIndex].width;
+        this._currentColumnX = this._currentColumnX + get(columns[this._currentColumnIndex], 'width');
         this._currentColumnIndex++;
         this._headerAlignBar.style.left
-          =  `${this._currentColumnX + columns[this._currentColumnIndex].width - HEAD_ALIGN_BAR_WIDTH}px`;
+          =  `${this._currentColumnX + get(columns[this._currentColumnIndex], 'width') - HEAD_ALIGN_BAR_WIDTH}px`;
       }
     }
   }
