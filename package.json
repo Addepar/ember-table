@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@html-next/vertical-collection": "https://github.com/html-next/vertical-collection.git#27bd1d2f5708a985a082a6faca973b0d88c4e525",
+    "ember-raf-scheduler": "^0.1.0",
     "css-element-queries": "^0.4.0",
     "ember": "^1.0.3",
     "ember-cli-babel": "^6.7.1",
