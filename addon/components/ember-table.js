@@ -440,7 +440,7 @@ export default class EmberTable2 extends Component {
       const { scrollLeft } = containerElement;
 
       if (ghostLeftX < get(columns[0], 'width') - scrollLeft) {
-        ghostLeftX = get(columns[0], 'width'); - scrollLeft;
+        ghostLeftX = get(columns[0], 'width') - scrollLeft;
       }
     }
     if (ghostLeftX < 0) {
