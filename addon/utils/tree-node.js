@@ -27,11 +27,6 @@ export default class TreeNode {
   @property previous = null;
 
   /**
-   * Original previous node when the tree is fully expanded.
-   */
-  @property originalPrevious = null;
-
-  /**
    * Total number of node in this subtree (including this node).
    */
   @property nodeCount = null;
@@ -65,7 +60,6 @@ export default class TreeNode {
 
     if (node != null) {
       node.previous = this;
-      node.originalPrevious = this;
     }
   }
 

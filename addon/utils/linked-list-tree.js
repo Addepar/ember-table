@@ -5,6 +5,12 @@ export default class LinkedListTree extends EmberObject {
   @property pointerNode = null;
   @property pointerIndex = -1;
 
+  /**
+   * When a node is collapsed, this map stores list of previous nodes for the node next to the
+   * collapsed node. This is used to retrieve correct previous node upon node expansion.
+   */
+  @property _previousNodes = null;
+
   constructor(root) {
     super();
 
@@ -19,6 +25,8 @@ export default class LinkedListTree extends EmberObject {
     }
 
     this.set('length', root.nodeCount - 1);
+
+    this._previousNodes = new WeakMap();
   }
 
   objectAt(index) {
@@ -61,6 +69,15 @@ export default class LinkedListTree extends EmberObject {
     const newNextNode = row.nextOnCollapse;
     row.next = newNextNode;
     if (newNextNode != null) {
+      // The newNextNode could have some previous nodes before. Push the collapsed row to the
+      // previous node list.
+      let previousNodes = this._previousNodes.get(newNextNode);
+      if (previousNodes === undefined) {
+        previousNodes = [];
+      }
+      previousNodes.push(newNextNode.previous);
+      this._previousNodes.set(newNextNode, previousNodes);
+
       newNextNode.previous = row;
     }
 
@@ -76,7 +93,13 @@ export default class LinkedListTree extends EmberObject {
     // Update next & previous link.
     const newNextNode = row.next;
     if (newNextNode != null) {
-      newNextNode.previous = newNextNode.originalPrevious;
+      const previousNodes = this._previousNodes.get(newNextNode);
+      newNextNode.previous = previousNodes[previousNodes.length - 1];
+
+      previousNodes.pop();
+      if (previousNodes.length === 0) {
+        this._previousNodes.delete(newNextNode);
+      }
     }
     row.next = row.originalNext;
 
