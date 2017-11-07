@@ -56,3 +56,23 @@ test('Test expanding and collapsing rows', function(assert) {
   assert.equal(node.value, 'Group 2');
   assert.equal(tree.get('length'), 1111);
 });
+
+test('Previous node is correct after several rows collapse & expansion.', function(assert) {
+  const tree = new LinkedListTree(generateBasicRoot(3));
+
+  // Collapse Top Row -> Header 0 -> Group 2
+  tree.collapseNode(tree.objectAt(10));
+
+  // Collapse Top Row -> Header 0
+  tree.collapseNode(tree.objectAt(1));
+
+  // Expand Top Row -> Header 0
+  tree.expand(tree.objectAt(1));
+
+  // Move to pointer to the row 36
+  tree.objectAt(0);
+  tree.objectAt(36);
+
+  assert.equal(tree.objectAt(0).value, 'Top Row');
+  assert.equal(tree.objectAt(1).value, 'Header 0');
+});
