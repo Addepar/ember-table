@@ -1,13 +1,13 @@
 import TreeNode from 'dummy/utils/tree-node';
 
-const generateBasicRoot = () => {
+const generateBasicRoot = (childCount = 10) => {
   const topRow = new TreeNode(null, 'Top Row');
 
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < childCount; i++) {
     const header = new TreeNode(topRow, `Header ${i}`);
-    for (let j = 0; j < 10; j++) {
+    for (let j = 0; j < childCount; j++) {
       const group = new TreeNode(header, `Group ${j}`);
-      for (let k = 0; k < 10; k++) {
+      for (let k = 0; k < childCount; k++) {
         group.addChild(new TreeNode(group, `Leaf ${k}`));
       }
 
