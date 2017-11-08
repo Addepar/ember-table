@@ -492,6 +492,40 @@ export default class EmberTable2 extends Component {
     this.element.classList.remove('et-unselectable');
   }
 
+  selectMultipleRows(event, rowIndex) {
+    const rows = this.get('rows');
+    const item = rows.objectAt(rowIndex);
+    let selectedRows = this.get('selectedRows').slice();
+
+    if (event.shiftKey) {
+      let { lastSelectedIndex } = this;
+      if (lastSelectedIndex === -1) {
+        lastSelectedIndex = 0;
+      }
+
+      const minIndex = Math.min(lastSelectedIndex, rowIndex);
+      const maxIndex = Math.max(lastSelectedIndex, rowIndex);
+
+      // Use a set to avoid item duplication
+      const rowsSet = new Set(selectedRows);
+      for (let i = minIndex; i <= maxIndex; i++) {
+        const obj = rows.objectAt(i);
+        if (!rowsSet.has(obj)) {
+          selectedRows.push(rows.objectAt(i));
+        }
+      }
+    } else {
+      if (!event.ctrlKey && !event.metaKey) {
+        selectedRows = [];
+      }
+
+      if (selectedRows.indexOf(item) < 0) {
+        selectedRows.push(item);
+      }
+      this.lastSelectedIndex = rowIndex;
+    }
+  }
+
   @action
   onRowClicked(event, rowIndex) {
     const rows = this.get('rows');
@@ -507,33 +541,7 @@ export default class EmberTable2 extends Component {
         selectedRows = [item];
         break;
       case SELECTION_MODE_MULTIPLE:
-        if (event.shiftKey) {
-          let { lastSelectedIndex } = this;
-          if (lastSelectedIndex === -1) {
-            lastSelectedIndex = 0;
-          }
-
-          const minIndex = Math.min(lastSelectedIndex, rowIndex);
-          const maxIndex = Math.max(lastSelectedIndex, rowIndex);
-
-          // Use a set to avoid item duplication
-          const rowsSet = new Set(selectedRows);
-          for (let i = minIndex; i <= maxIndex; i++) {
-            const obj = rows.objectAt(i);
-            if (!rowsSet.has(obj)) {
-              selectedRows.push(rows.objectAt(i));
-            }
-          }
-        } else {
-          if (!event.ctrlKey && !event.metaKey) {
-            selectedRows = [];
-          }
-
-          if (selectedRows.indexOf(item) < 0) {
-            selectedRows.push(item);
-          }
-          this.lastSelectedIndex = rowIndex;
-        }
+        this.selectMultipleRows(event, rowIndex);
         break;
     }
 
