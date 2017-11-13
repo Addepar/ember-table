@@ -147,7 +147,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   }
 
   @action
-  onHeaderEvent(data) {
-    this.sendAction('onHeaderEvent', data);
+  onHeaderEvent() {
+    this.sendAction('onHeaderEvent', ...arguments);
   }
 }
