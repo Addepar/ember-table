@@ -1,10 +1,10 @@
-<thead class="et-thead">
-  {{#if customHeaderRowComponent}}
-    {{component customHeaderRowComponent
-      columns=columns
-      onHeaderEvent="onHeaderEvent"
-    }}
-  {{else}}
+{{#if customHeaderRowComponent}}
+  {{component customHeaderRowComponent
+    columns=columns
+    onHeaderEvent="onHeaderEvent"
+  }}
+{{else}}
+  <thead class="et-thead">
     <tr class="et-tr">
       {{#each columns as |column columnIndex|}}
         {{#ember-table-header-cell
@@ -21,8 +21,8 @@
         {{/ember-table-header-cell}}
       {{/each}}
     </tr>
-  {{/if}}
-</thead>
+  </thead>
+{{/if}}
 
   <div class="et-tbody-container" data-test-body-container>
     {{#vertical-collection rows

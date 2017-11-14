@@ -1,0 +1,16 @@
+<tr class="custom-header-row">
+  <th colspan="2">
+    Group 0
+  </th>
+  <th colspan="1">
+    Group 1
+  </th>
+</tr>
+
+<tr class="custom-header-row">
+  {{#each columns as |column index|}}
+    <th style="width: 266px;" colspan="1" >
+      Column {{index}}
+    </th>
+  {{/each}}
+</tr>
