@@ -1,20 +1,27 @@
 <thead class="et-thead">
-  <tr class="et-tr">
-    {{#each columns as |column columnIndex|}}
-      {{#ember-table-header
-        column=column
-        columnIndex=columnIndex
-        numFixedColumns=numFixedColumns
-        onColumnResized="onColumnResized"
-        onColumnResizeEnded="onColumnResizeEnded"
-        onColumnReorder="onColumnReorder"
-        onColumnReorderEnds="onColumnReorderEnds"
-        onHeaderEvent="onHeaderEvent"
-        width=column.width
-      }}
-      {{/ember-table-header}}
-    {{/each}}
-  </tr>
+  {{#if customHeaderRowComponent}}
+    {{component customHeaderRowComponent
+      columns=columns
+      onHeaderEvent="onHeaderEvent"
+    }}
+  {{else}}
+    <tr class="et-tr">
+      {{#each columns as |column columnIndex|}}
+        {{#ember-table-header-cell
+          column=column
+          columnIndex=columnIndex
+          numFixedColumns=numFixedColumns
+          onColumnResized="onColumnResized"
+          onColumnResizeEnded="onColumnResizeEnded"
+          onColumnReorder="onColumnReorder"
+          onColumnReorderEnds="onColumnReorderEnds"
+          onHeaderEvent="onHeaderEvent"
+          width=column.width
+        }}
+        {{/ember-table-header-cell}}
+      {{/each}}
+    </tr>
+  {{/if}}
 </thead>
 
   <div class="et-tbody-container" data-test-body-container>
@@ -53,4 +60,3 @@
 <div class="et-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
   <div class="et-horizontal-scroll" style={{horizontalScrollStyle}} />
 </div>
-

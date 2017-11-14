@@ -4,7 +4,7 @@ import EmberTableBaseCell from './ember-table-base-cell';
 import { property } from '../utils/class';
 import { action, computed } from 'ember-decorators/object';
 
-import layout from '../templates/components/ember-table-header';
+import layout from '../templates/components/ember-table-header-cell';
 
 const PRESS_OFFSET_THRESHOLD = 10;
 const COLUMN_STATIC = 0;
