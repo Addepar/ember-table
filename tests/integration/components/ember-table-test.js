@@ -39,7 +39,7 @@ test('Ember table renders', async function(assert) {
 });
 
 // Tests with or without custom header.
-const customHeaderTests = [null, 'custom-header'];
+const customHeaderTests = [null, 'custom-header-cell'];
 for (const customHeader of customHeaderTests) {
   const headerTest = customHeader ? 'custom header ' : '';
 

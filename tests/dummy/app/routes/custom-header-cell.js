@@ -12,7 +12,7 @@ export default class CustomHeader extends Route {
 
     const columns = simpleController.get('columns');
     for (const column of columns) {
-      column.set('headerComponent', 'custom-header');
+      column.set('headerComponent', 'custom-header-cell');
     }
     controller.set('columns', columns);
     this.set('controller', controller);
