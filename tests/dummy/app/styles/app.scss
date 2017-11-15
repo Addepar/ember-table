@@ -28,3 +28,15 @@
 .custom-row {
   background: green;
 }
+
+.custom-header-row {
+  border: 1px black solid;
+
+  th {
+    border: 1px black solid;
+  }
+}
+
+th, td {
+  box-sizing: border-box;
+}

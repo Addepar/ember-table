@@ -24,7 +24,7 @@
 
   // Fixed td/th elements don't have classes, so we need
   // to make sure we override the base styles no matter what
-  td, th, .et-td, .et-th {
+  .et-td, .et-th {
     box-sizing: border-box;
     flex: 1 1 auto;
     display: block;

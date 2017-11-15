@@ -74,6 +74,11 @@ export default class EmberTable2 extends Component {
   @property tableResizeMode = TABLE_RESIZE_MODE_NONE;
 
   /**
+   * Custom table header. Used when user does not want to use default table header row.
+   */
+  @property customHeaderRowComponent = null;
+
+  /**
    * A temporary element created when moving column. This element represents the current position
    * of the moving column. It has the same width and height with the moving column. Once moving
    * completes, this element vanishes.

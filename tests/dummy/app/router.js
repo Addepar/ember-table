@@ -11,6 +11,7 @@ Router.map(function() {
   this.route('simple');
   this.route('custom-component');
   this.route('custom-header');
+  this.route('custom-header-cell');
   this.route('addepar');
 });
 

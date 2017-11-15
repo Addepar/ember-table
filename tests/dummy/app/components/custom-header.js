@@ -1,12 +1,8 @@
 import { classNames } from 'ember-decorators/component';
 import Component from '@ember/component';
+import { property } from '../utils/class';
 
 @classNames('custom-header')
 export default class CustomHeader extends Component {
-  click() {
-    this.sendAction('onHeaderEvent', {
-      eventName: 'click',
-      column: this.get('column')
-    });
-  }
+  @property tagName = 'thead';
 }
