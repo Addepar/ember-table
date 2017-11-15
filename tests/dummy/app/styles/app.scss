@@ -36,3 +36,7 @@
     border: 1px black solid;
   }
 }
+
+th, td {
+  box-sizing: border-box;
+}

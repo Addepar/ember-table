@@ -112,7 +112,7 @@ for (const customHeader of customHeaderTests) {
     const headerCount = findAll('.et-thead tr th').length;
     const expectedWidth = find('.et-thead tr').offsetWidth / headerCount;
     for (let i = 1; i <= headerCount; i++) {
-      assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - expectedWidth) <= 2,
+      assert.ok(Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - expectedWidth) <= 1,
         'Table header have same width in equal resize mode.');
     }
   });
