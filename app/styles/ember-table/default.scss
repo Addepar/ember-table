@@ -9,7 +9,6 @@ $table-hover-color: #e5edf8;
   border: solid 1px #ddd;
 
   .et-thead {
-    border-bottom: solid 1px $table-border-color;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
   }
 
@@ -38,6 +37,7 @@ $table-hover-color: #e5edf8;
     text-align: center;
     padding: 5px 0px 3px 0px;
     border-right: solid 1px $table-border-color;
+    border-bottom: 1px dotted $table-border-color;
   }
 
   .et-tr:hover {

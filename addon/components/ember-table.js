@@ -9,6 +9,7 @@ import Component from '@ember/component';
 import CellProxy from '../utils/cell-proxy';
 import { move } from '../utils/array';
 import { get, set } from '@ember/object';
+import { isNone } from '@ember/utils';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
@@ -281,7 +282,7 @@ export default class EmberTable2 extends Component {
    * width. In this case, we might want to adjust width of every single column.
    */
   fillupColumn() {
-    let columns = this.get('columns');
+    let columns = this.get('bodyColumns');
     let tableWidth = this.get('_width');
     let sum = this.get('allColumnWidths');
     let tableResizeMode = this.get('tableResizeMode');
@@ -305,11 +306,57 @@ export default class EmberTable2 extends Component {
         set(lastColumn, 'width', get(lastColumn, 'width') + delta);
       }
     }
+
+    if (this.get('hasSubcolumns')) {
+      const groupColumns = this.get('columns');
+      groupColumns.forEach((groupColumn) => {
+        let totalWidth = 0;
+        get(groupColumn, 'subcolumns').forEach((subcolumn) => {
+          totalWidth += get(subcolumn, 'width');
+        });
+        set(groupColumn, 'width', totalWidth);
+      });
+    }
   }
 
-  @computed('hasFixedColumn', 'columns.firstObject.width')
+  @computed('hasFixedColumn', 'bodyColumns.firstObject.width')
   fixedColumnWidth() {
-    return this.get('hasFixedColumn') === true ? this.get('columns.firstObject.width') : 0;
+    return this.get('hasFixedColumn') === true ? this.get('bodyColumns.firstObject.width') : 0;
+  }
+
+  @computed('columns.@each.subcolumns')
+  hasSubcolumns() {
+    const columns = this.get('columns');
+    for (let i = 0; i < get(columns, 'length'); i++) {
+      const subcolumns = get(columns[i], 'subcolumns');
+      if (subcolumns !== undefined && subcolumns.length > 0) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Columns that are be used in table body. In normal use case, the body columns are the same with
+   * table header columns. However, if header columns have subcolumns, this body columns are the
+   * concatentation of all subcolumns.
+   */
+  @computed('hasSubcolumns', 'columns.@each.subcolumns')
+  bodyColumns() {
+    if (this.get('hasSubcolumns') !== true) {
+      return this.get('columns');
+    }
+
+    const bodyColumns = [];
+    this.get('columns').forEach((column) => {
+      const subcolumns = get(column, 'subcolumns');
+      if (isNone(subcolumns) || get(subcolumns, 'length') === 0) {
+        bodyColumns.push(column);
+      } else {
+        subcolumns.forEach((subcolumn) => bodyColumns.push(subcolumn));
+      }
+    });
+    return bodyColumns;
   }
 
   /**
@@ -318,11 +365,11 @@ export default class EmberTable2 extends Component {
    */
   @computed(
     'hasFixedColumn',
-    'columns.firstObject.width',
+    'bodyColumns.firstObject.width',
     'allColumnWidths',
     '_width'
   ) horizontalScrollWrapperStyle() {
-    let columns = this.get('columns');
+    let columns = this.get('bodyColumns');
     let visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
     let left = this.get('hasFixedColumn') ? get(columns[0], 'width') : 0;
 
@@ -333,11 +380,11 @@ export default class EmberTable2 extends Component {
    * Computed style for horizontal scroll element. This is computed so that its width matches
    * table's width and the table and the element can share same scrolling.
    */
-  @computed('hasFixedColumn', 'columns.@each.width')
+  @computed('hasFixedColumn', 'bodyColumns.@each.width')
   horizontalScrollStyle() {
     let style = '';
     let hasFixedColumn = this.get('hasFixedColumn');
-    let columns = this.get('columns');
+    let columns = this.get('bodyColumns');
     let width = 0;
 
     for (let i = hasFixedColumn ? 1 : 0; i < columns.length; i++) {
@@ -348,9 +395,9 @@ export default class EmberTable2 extends Component {
     return htmlSafe(style);
   }
 
-  @computed('columns.@each.width')
+  @computed('bodyColumns.@each.width')
   allColumnWidths() {
-    let columns = this.get('columns');
+    let columns = this.get('bodyColumns');
     let sum = 0;
     for (let i = 0; i < columns.length; i++) {
       sum += get(columns[i], 'width');
@@ -363,7 +410,7 @@ export default class EmberTable2 extends Component {
     'cellProxyClass',
     'numFixedColumns',
     'targetObject',
-    'columns',
+    'bodyColumns',
     'selectedRows',
     'estimateRowHeight',
     'staticHeight'
@@ -381,7 +428,7 @@ export default class EmberTable2 extends Component {
       cellProxyClass: this.cellProxyClass,
       numFixedColumns: this.numFixedColumns,
       targetObject: this,
-      columns: this.columns,
+      columns: this.get('bodyColumns'),
       selectedRows: this.selectedRows,
       staticRowHeight
     };
@@ -389,7 +436,12 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnResized(columnIndex, delta) {
-    let columns = this.get('columns');
+    if (this.get('hasSubcolumns')) {
+      // Disable column reordering when table has subcolumn.
+      return;
+    }
+
+    let columns = this.get('bodyColumns');
     let column = columns[columnIndex];
     let width = get(column, 'width');
     if (width + delta < get(column, 'minWidth')) {
@@ -418,6 +470,11 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnResizeEnded() {
+    if (this.get('hasSubcolumns')) {
+      // Disable column reordering when table has subcolumn.
+      return;
+    }
+
     this.element.classList.remove('et-unselectable');
     this.fillupColumn();
   }
@@ -446,9 +503,14 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnReorder(columnIndex, header, deltaX) {
+    if (this.get('hasSubcolumns')) {
+      // Disable column reordering when table has subcolumn.
+      return;
+    }
+
     let containerElement = this.element;
     let tableBoundingBox = containerElement.getBoundingClientRect();
-    let columns = this.get('columns');
+    let columns = this.get('bodyColumns');
 
     if (this._headerGhostElement === null) {
       this.createGhostElement(containerElement, header.width, containerElement.offsetHeight);
@@ -504,8 +566,13 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnReorderEnds(columnIndex) {
-    if (this._currentColumnIndex !== columnIndex) {
-      move(this, 'columns', columnIndex, this._currentColumnIndex);
+    if (this.get('hasSubcolumns')) {
+      // Disable column reordering when table has subcolumn.
+      return;
+    }
+
+    if (this._currentColumnIndex != columnIndex) {
+      move(this, 'bodyColumns', columnIndex, this._currentColumnIndex);
     }
 
     this._currentColumnIndex = -1;
