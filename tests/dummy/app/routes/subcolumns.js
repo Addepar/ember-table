@@ -3,7 +3,6 @@ import { generateAlphabetColumns, generateAlphabetRows } from '../utils/data-gen
 
 export default class CustomHeader extends Route {
   setupController(controller) {
-    const simpleController = this.controllerFor('simple');
     controller.set('rows', generateAlphabetRows(4, 100));
 
     const groupColumns = [];
