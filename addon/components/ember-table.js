@@ -308,8 +308,7 @@ export default class EmberTable2 extends Component {
     }
 
     if (this.get('hasSubcolumns')) {
-      const groupColumns = this.get('columns');
-      groupColumns.forEach((groupColumn) => {
+      columns.forEach((groupColumn) => {
         const subcolumns = get(groupColumn, 'subcolumns');
         if (subcolumns) {
           // Each subcolumn has equal width.
@@ -398,9 +397,9 @@ export default class EmberTable2 extends Component {
     return htmlSafe(style);
   }
 
-  @computed('bodyColumns.@each.width')
+  @computed('columns.@each.width')
   allColumnWidths() {
-    let columns = this.get('bodyColumns');
+    let columns = this.get('columns');
     let sum = 0;
     for (let i = 0; i < columns.length; i++) {
       sum += get(columns[i], 'width');

@@ -3,18 +3,28 @@ import { generateAlphabetColumns, generateAlphabetRows } from '../utils/data-gen
 
 export default class CustomHeader extends Route {
   setupController(controller) {
-    controller.set('rows', generateAlphabetRows(4, 100));
+    const rows = generateAlphabetRows(4, 100);
+    rows.forEach((row, index) => row.rowIndex = `Row ${index}`);
+    controller.set('rows', rows);
 
     const groupColumns = [];
-    const allSubcolumns = generateAlphabetColumns(4);
+    const bodyColumns = generateAlphabetColumns(4);
 
     groupColumns.push({
-      columnName: 'Group 0',
-      subcolumns: allSubcolumns.slice(0, 2)
+      columnName: 'Row indexes',
+      valuePath: 'rowIndex',
+      width: 200
     });
+
     groupColumns.push({
       columnName: 'Group 1',
-      subcolumns: allSubcolumns.slice(2, 4)
+      subcolumns: bodyColumns.slice(0, 2),
+      width: 300
+    });
+    groupColumns.push({
+      columnName: 'Group 2',
+      subcolumns: bodyColumns.slice(2, 4),
+      width: 300
     });
 
     controller.set('columns', groupColumns);
