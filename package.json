@@ -31,7 +31,7 @@
     "install": "^0.10.1"
   },
   "devDependencies": {
-    "@addepar/eslint-config": "^1.0.0",
+    "@addepar/eslint-config": "^3.0.0",
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^3.0.0",
     "ember-cli": "~2.16.2",
