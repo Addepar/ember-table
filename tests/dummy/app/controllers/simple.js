@@ -9,9 +9,9 @@ const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 export default class SimpleController extends Controller {
   @computed
   rows() {
-    const rows = emberA();
+    let rows = emberA();
     for (let i = 0; i < 1000; i++) {
-      const obj = {};
+      let obj = {};
       for (let j = 0; j < COLUMN_COUNT; j++) {
         obj[ALPHABET[j % 26]] = ALPHABET[j % 26];
       }
@@ -23,8 +23,8 @@ export default class SimpleController extends Controller {
 
   @computed
   columns() {
-    const columns = emberA();
-    const columnWidth = 180;
+    let columns = emberA();
+    let columnWidth = 180;
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
       columns.pushObject(ColumnDefinition.create({
