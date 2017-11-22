@@ -6,7 +6,8 @@ import wait from 'ember-test-helpers/wait';
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
   columnMode: 'standard',
-  tableResizeMode: 'none'
+  tableResizeMode: 'none',
+  rowHeight: -1,
 };
 
 export const DEFAULT_ROW_COLUMN_COUNT = {
@@ -97,6 +98,7 @@ export const fullTable = hbs`
       numFixedColumns=numFixedColumns
       columnMode=columnMode
       tableResizeMode=tableResizeMode
+      rowHeight=rowHeight
 
       as |r|
     }}

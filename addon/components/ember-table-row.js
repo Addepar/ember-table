@@ -15,6 +15,8 @@ export default class EmberTableRow extends Component {
 
   @property _cells = null;
   @property classNameBindings = ['isSelected'];
+  @property attributeBindings = ['style:style'];
+
   /**
    * Component that for table cell. This outer cell is a <td> component that wraps outside the
    * rendered cell view.
@@ -73,6 +75,15 @@ export default class EmberTableRow extends Component {
   @computed('selectedRows.[]', 'rowValue')
   get isSelected() {
     return this.get('selectedRows').indexOf(this.get('rowValue')) >= 0;
+  }
+
+  @computed('row.api.rowHeight')
+  style() {
+    const rowHeight = this.get('row.api.rowHeight');
+    if (rowHeight > 0) {
+      return `height: ${rowHeight}px;`;
+    }
+    return '';
   }
 
   click(event) {

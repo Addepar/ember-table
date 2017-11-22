@@ -205,3 +205,8 @@ test('Test custom row', async function(assert) {
   await setupFullTable(this, {}, {}, DEFAULT_ROW_COLUMN_COUNT, 'custom-row');
   assert.ok(find('tbody tr').className.indexOf('custom-row') >= 0, 'Table has custom row');
 });
+
+test('Custom row height', async function(assert) {
+  await setupFullTable(this, {rowHeight: 100}, {});
+  assert.ok(find('tbody tr').offsetHeight, 100, 'Row height is set to custom height.');
+});

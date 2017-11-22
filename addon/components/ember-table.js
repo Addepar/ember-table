@@ -74,6 +74,11 @@ export default class EmberTable2 extends Component {
   @property tableResizeMode = TABLE_RESIZE_MODE_NONE;
 
   /**
+   * Height of each individual row.
+   */
+  @property rowHeight = -1;
+
+  /**
    * A temporary element created when moving column. This element represents the current position
    * of the moving column. It has the same width and height with the moving column. Once moving
    * completes, this element vanishes.
@@ -350,9 +355,10 @@ export default class EmberTable2 extends Component {
     return sum;
   }
 
-  @computed('cellCache', 'cellProxyClass', 'numFixedColumns', 'targetObject', 'columns', 'selectedRows')
+  @computed('cellCache', 'cellProxyClass', 'numFixedColumns', 'targetObject', 'columns', 'selectedRows', 'rowHeight')
   api() {
     return {
+      rowHeight: this.get('rowHeight'),
       cellCache: this.cellCache,
       cellProxyClass: this.cellProxyClass,
       numFixedColumns: this.numFixedColumns,
