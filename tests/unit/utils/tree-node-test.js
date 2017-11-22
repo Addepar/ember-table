@@ -28,12 +28,21 @@ test('Test next and preivous nodes', function(assert) {
 
   // Test next node on collapse of Header 0.
   const header0 = firstRow.next;
-  assert.equal(header0.nextOnCollapse.value, 'Header 1',
-    'Next node on collapse of Header 0 is Header 1');
+  assert.equal(
+    header0.nextOnCollapse.value,
+    'Header 1',
+    'Next node on collapse of Header 0 is Header 1'
+  );
 
-  assert.equal(header0.nextWithDirection(-1).value, 'Top Row',
-    'Next node with negative direction of header 0 is Root');
+  assert.equal(
+    header0.nextWithDirection(-1).value,
+    'Top Row',
+    'Next node with negative direction of header 0 is Root'
+  );
 
-  assert.equal(header0.nextWithDirection(1).value, 'Group 0',
-    'Next node with positive direction of header 0 is Group 0');
+  assert.equal(
+    header0.nextWithDirection(1).value,
+    'Group 0',
+    'Next node with positive direction of header 0 is Group 0'
+  );
 });
