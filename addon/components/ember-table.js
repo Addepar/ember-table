@@ -69,8 +69,8 @@ export default class EmberTable2 extends Component {
   @property tableResizeMode = TABLE_RESIZE_MODE_NONE;
 
   /**
-   * Height of each individual row. By default, this value is the height of each row. This value
-   * could be overriden to specify fixed height for each row in the table.
+   * Height of each individual row. By default, table row height is not static and equivalent to its
+   * content. If this value is set, table sets row height to this value.
    */
   @property staticHeight = -1;
 
