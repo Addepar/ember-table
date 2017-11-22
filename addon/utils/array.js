@@ -2,9 +2,9 @@
  * Cycle shift an internal [start..end] to [start + 1...end, start].
  */
 export function move(context, arrayName, start, end) {
-  const items = context.get(arrayName);
+  let items = context.get(arrayName);
   let destItem, sourceItem;
-  const direction = start < end ? 1 : 0;
+  let direction = start < end ? 1 : 0;
 
   if (items.objectAt && items.removeObject && items.insertAt) {
     // Ember Array

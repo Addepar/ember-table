@@ -5,5 +5,5 @@ import layout from '../templates/components/ember-table-cell';
 
 export default class EmberTableCell extends EmberTableBaseCell {
   @property layout = layout;
-  @property classNameBindings = ['isFixed::et-td']
+  @property classNameBindings = ['isFixed::et-td'];
 }

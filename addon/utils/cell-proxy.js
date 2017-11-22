@@ -25,26 +25,26 @@ export default class CellProxy extends EmberObject {
 
   @computed('rowValue', 'column.valuePath')
   get value() {
-    const rowValue = this.get('rowValue');
-    const valuePath = this.get('column.valuePath');
+    let rowValue = this.get('rowValue');
+    let valuePath = this.get('column.valuePath');
 
     return get(rowValue, valuePath);
   }
 
   set value(value) {
-    const rowValue = this.get('rowValue');
-    const valuePath = this.get('column.valuePath');
+    let rowValue = this.get('rowValue');
+    let valuePath = this.get('column.valuePath');
 
     set(rowValue, valuePath, value);
   }
 
   unknownProperty(key) {
-    const prototype = Object.getPrototypeOf(this);
+    let prototype = Object.getPrototypeOf(this);
 
-    const setValueFunc = (context, k, value) => {
-      const cache = context.get('_cache');
-      const rowValue = context.get('rowValue');
-      const valuePath = context.get('column.valuePath');
+    let setValueFunc = (context, k, value) => {
+      let cache = context.get('_cache');
+      let rowValue = context.get('rowValue');
+      let valuePath = context.get('column.valuePath');
 
       if (!cache.has(rowValue)) {
         cache.set(rowValue, Object.create(null));
@@ -53,10 +53,10 @@ export default class CellProxy extends EmberObject {
       return cache.get(rowValue)[`${valuePath}:${k}`] = value;
     };
 
-    const getValueFunc = (context, key) => {
-      const cache = context.get('_cache');
-      const rowValue = context.get('rowValue');
-      const valuePath = context.get('column.valuePath');
+    let getValueFunc = (context, key) => {
+      let cache = context.get('_cache');
+      let rowValue = context.get('rowValue');
+      let valuePath = context.get('column.valuePath');
 
       if (cache.has(rowValue)) {
         return cache.get(rowValue)[`${valuePath}:${key}`];

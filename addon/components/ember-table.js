@@ -124,7 +124,7 @@ export default class EmberTable2 extends Component {
 
   @computed('numFixedColumns')
   get hasFixedColumn() {
-    const numFixedColumns = this.get('numFixedColumns');
+    let numFixedColumns = this.get('numFixedColumns');
     return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
   }
 
@@ -175,13 +175,13 @@ export default class EmberTable2 extends Component {
    * Syncs horizontal scrolling between table, header, body & footer.
    */
   setupScrollSync() {
-    const scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
+    let scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
 
-    const bodyScrollContainer = this.element.querySelector('tbody');
-    const headerScrollContainer = this.element.querySelector('thead');
-    const footerScrollContainer = this.element.querySelector('tfoot');
+    let bodyScrollContainer = this.element.querySelector('tbody');
+    let headerScrollContainer = this.element.querySelector('thead');
+    let footerScrollContainer = this.element.querySelector('tfoot');
 
-    const scrollElements = [
+    let scrollElements = [
       bodyScrollContainer,
       headerScrollContainer,
       footerScrollContainer
@@ -200,29 +200,29 @@ export default class EmberTable2 extends Component {
 
       scrollBar.scrollLeft += event.deltaX;
 
-      for (const scrollElement of scrollElements) {
+      for (let scrollElement of scrollElements) {
         scrollElement.scrollLeft = scrollBar.scrollLeft;
       }
     };
 
     this._scrollHandler = () => {
-      for (const scrollElement of scrollElements) {
+      for (let scrollElement of scrollElements) {
         scrollElement.scrollLeft = scrollBar.scrollLeft;
       }
     };
 
     this._touchstartHandler = (event) => {
-      const [{ clientX, clientY }] = event.touches;
+      let [{ clientX, clientY }] = event.touches;
 
       prevClientX = clientX;
       prevClientY = clientY;
     };
 
     this._touchmoveHandler = (event) => {
-      const [{ clientX, clientY }] = event.touches;
+      let [{ clientX, clientY }] = event.touches;
 
-      const deltaX = clientX - prevClientX;
-      const deltaY = clientY - prevClientY;
+      let deltaX = clientX - prevClientX;
+      let deltaY = clientY - prevClientY;
 
       if (Math.abs(deltaX) < Math.abs(deltaY)) {
         return;
@@ -232,7 +232,7 @@ export default class EmberTable2 extends Component {
 
       scrollBar.scrollLeft -= deltaX;
 
-      for (const scrollElement of scrollElements) {
+      for (let scrollElement of scrollElements) {
         scrollElement.scrollLeft = scrollBar.scrollLeft;
       }
 
@@ -258,8 +258,8 @@ export default class EmberTable2 extends Component {
    * Teardown the scroll syncing
    */
   teardownScrollSync() {
-    const scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
-    const bodyScrollContainer = this.element.querySelector('tbody');
+    let scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
+    let bodyScrollContainer = this.element.querySelector('tbody');
 
     this.element.removeEventListener('wheel', this._wheelHandler);
     scrollBar.removeEventListener('scroll', this._scrollHandler);
@@ -273,27 +273,27 @@ export default class EmberTable2 extends Component {
    * width. In this case, we might want to adjust width of every single column.
    */
   fillupColumn() {
-    const columns = this.get('columns');
-    const tableWidth = this.get('_width');
-    const sum = this.get('allColumnWidths');
-    const tableResizeMode = this.get('tableResizeMode');
+    let columns = this.get('columns');
+    let tableWidth = this.get('_width');
+    let sum = this.get('allColumnWidths');
+    let tableResizeMode = this.get('tableResizeMode');
 
     if (sum !== tableWidth) {
-      const delta = tableWidth - sum - 1;
+      let delta = tableWidth - sum - 1;
       // Distribute the delta in pixel among columns according to the table fill up mode.
       if (tableResizeMode === TABLE_RESIZE_MODE_FIRST_COLUMN) {
-        const [column] = columns;
+        let [column] = columns;
         set(column, 'width', get(column, 'width') + delta);
       } else if (tableResizeMode === TABLE_RESIZE_MODE_EQUAL_COLUMN) {
         // Split delta by their proportion.
-        const columnDelta = delta / columns.length;
+        let columnDelta = delta / columns.length;
         for (let i = 0; i < columns.length; i++) {
-          const column = columns[i];
+          let column = columns[i];
           set(column, 'width', Math.min(get(column, 'width')  + columnDelta), get(column, 'minWidth'));
         }
       } else if (tableResizeMode === TABLE_RESIZE_MODE_LAST_COLUMN) {
         // Add all delta to last column
-        const lastColumn = columns[columns.length - 1];
+        let lastColumn = columns[columns.length - 1];
         set(lastColumn, 'width', get(lastColumn, 'width') + delta);
       }
     }
@@ -314,9 +314,9 @@ export default class EmberTable2 extends Component {
     'allColumnWidths',
     '_width'
   ) horizontalScrollWrapperStyle() {
-    const columns = this.get('columns');
-    const visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
-    const left = this.get('hasFixedColumn') ? get(columns[0], 'width') : 0;
+    let columns = this.get('columns');
+    let visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
+    let left = this.get('hasFixedColumn') ? get(columns[0], 'width') : 0;
 
     return htmlSafe(`visibility: ${visibility}; left: ${left}px; right: 0px;`);
   }
@@ -328,8 +328,8 @@ export default class EmberTable2 extends Component {
   @computed('hasFixedColumn', 'columns.@each.width')
   horizontalScrollStyle() {
     let style = '';
-    const hasFixedColumn = this.get('hasFixedColumn');
-    const columns = this.get('columns');
+    let hasFixedColumn = this.get('hasFixedColumn');
+    let columns = this.get('columns');
     let width = 0;
 
     for (let i = hasFixedColumn ? 1 : 0; i < columns.length; i++) {
@@ -342,7 +342,7 @@ export default class EmberTable2 extends Component {
 
   @computed('columns.@each.width')
   allColumnWidths() {
-    const columns = this.get('columns');
+    let columns = this.get('columns');
     let sum = 0;
     for (let i = 0; i < columns.length; i++) {
       sum += get(columns[i], 'width');
@@ -364,23 +364,25 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnResized(columnIndex, delta) {
-    const columns = this.get('columns');
-    const column = columns[columnIndex];
-    const width = get(column, 'width');
+    let columns = this.get('columns');
+    let column = columns[columnIndex];
+    let width = get(column, 'width');
     if (width + delta < get(column, 'minWidth')) {
       return;
     }
 
-    const columnMode = this.get('columnMode');
-    if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1
-      && get(columns[columnIndex + 1], 'width') - delta < get(columns[columnIndex + 1], 'minWidth')) {
+    let columnMode = this.get('columnMode');
+    if (
+      columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1
+      && get(columns[columnIndex + 1], 'width') - delta < get(columns[columnIndex + 1], 'minWidth')
+    ) {
       // Resizing this column makes the next column smaller than its min width.
       return;
     }
 
     set(column, 'width', width + delta);
     if (columnMode === COLUMN_MODE_FLUID && columnIndex < columns.length - 1) {
-      const oldWidth = get(columns[columnIndex + 1], 'width');
+      let oldWidth = get(columns[columnIndex + 1], 'width');
       set(columns[columnIndex + 1], 'width', oldWidth - delta);
     }
 
@@ -419,11 +421,11 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnReorder(columnIndex, header, deltaX) {
-    const containerElement = this.element;
-    const tableBoundingBox = containerElement.getBoundingClientRect();
-    const columns = this.get('columns');
+    let containerElement = this.element;
+    let tableBoundingBox = containerElement.getBoundingClientRect();
+    let columns = this.get('columns');
 
-    if (this._headerGhostElement == null) {
+    if (this._headerGhostElement === null) {
       this.createGhostElement(containerElement, header.width, containerElement.offsetHeight);
 
       containerElement.appendChild(this._headerGhostElement);
@@ -437,7 +439,7 @@ export default class EmberTable2 extends Component {
     let ghostLeftX = header.left - tableBoundingBox.left + deltaX;
     // 1) Do not allow the ghost element to move out of left boundary.
     if (this.get('hasFixedColumn')) {
-      const { scrollLeft } = containerElement;
+      let { scrollLeft } = containerElement;
 
       if (ghostLeftX < get(columns[0], 'width') - scrollLeft) {
         ghostLeftX = get(columns[0], 'width') - scrollLeft;
@@ -456,7 +458,7 @@ export default class EmberTable2 extends Component {
     }
 
     // 3) Update the index of column that the ghost header might be replacing.
-    const ghostCenterX = ghostLeftX + header.width / 2;
+    let ghostCenterX = ghostLeftX + header.width / 2;
     if (ghostCenterX < this._currentColumnX) {
       if (this._currentColumnIndex > 0) {
         // Current column is now the previous column
@@ -477,7 +479,7 @@ export default class EmberTable2 extends Component {
 
   @action
   onColumnReorderEnds(columnIndex) {
-    if (this._currentColumnIndex != columnIndex) {
+    if (this._currentColumnIndex !== columnIndex) {
       move(this, 'columns', columnIndex, this._currentColumnIndex);
     }
 
@@ -494,8 +496,8 @@ export default class EmberTable2 extends Component {
 
   @action
   onRowClicked(event, rowIndex) {
-    const rows = this.get('rows');
-    const item = rows.objectAt(rowIndex);
+    let rows = this.get('rows');
+    let item = rows.objectAt(rowIndex);
 
     let selectedRows = this.get('selectedRows').slice();
 
@@ -513,13 +515,13 @@ export default class EmberTable2 extends Component {
             lastSelectedIndex = 0;
           }
 
-          const minIndex = Math.min(lastSelectedIndex, rowIndex);
-          const maxIndex = Math.max(lastSelectedIndex, rowIndex);
+          let minIndex = Math.min(lastSelectedIndex, rowIndex);
+          let maxIndex = Math.max(lastSelectedIndex, rowIndex);
 
           // Use a set to avoid item duplication
-          const rowsSet = new Set(selectedRows);
+          let rowsSet = new Set(selectedRows);
           for (let i = minIndex; i <= maxIndex; i++) {
-            const obj = rows.objectAt(i);
+            let obj = rows.objectAt(i);
             if (!rowsSet.has(obj)) {
               selectedRows.push(rows.objectAt(i));
             }

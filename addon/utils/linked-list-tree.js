@@ -30,8 +30,8 @@ export default class LinkedListTree extends EmberObject {
   }
 
   objectAt(index) {
-    const direction = this.pointerIndex < index ? 1 : -1;
-    while (index != this.pointerIndex) {
+    let direction = this.pointerIndex < index ? 1 : -1;
+    while (index !== this.pointerIndex) {
       this.pointerNode = this.pointerNode.nextWithDirection(direction);
       this.pointerIndex += direction;
     }
@@ -41,7 +41,7 @@ export default class LinkedListTree extends EmberObject {
 
   updateParentNodeCount(node, delta) {
     node = node.parent;
-    while (node != null) {
+    while (node !== null) {
       node.nodeCountDelta += delta;
       node = node.parent;
     }
@@ -54,8 +54,8 @@ export default class LinkedListTree extends EmberObject {
    * tree is fully expanded and it always show the correct relative position between 2 rows.
    */
   movePointerToRow(row) {
-    const direction = this.pointerNode.index < row.index ? 1 : -1;
-    while (row.index != this.pointerNode.index) {
+    let direction = this.pointerNode.index < row.index ? 1 : -1;
+    while (row.index !== this.pointerNode.index) {
       this.pointerNode = this.pointerNode.nextWithDirection(direction);
       this.pointerIndex += direction;
     }
@@ -66,9 +66,9 @@ export default class LinkedListTree extends EmberObject {
     this.movePointerToRow(row);
 
     // Update next & previous link.
-    const newNextNode = row.nextOnCollapse;
+    let newNextNode = row.nextOnCollapse;
     row.next = newNextNode;
-    if (newNextNode != null) {
+    if (newNextNode !== null) {
       // The newNextNode could have some previous nodes before. Push the collapsed row to the
       // previous node list.
       let previousNodes = this._previousNodes.get(newNextNode);
@@ -91,9 +91,9 @@ export default class LinkedListTree extends EmberObject {
     this.movePointerToRow(row);
 
     // Update next & previous link.
-    const newNextNode = row.next;
-    if (newNextNode != null) {
-      const previousNodes = this._previousNodes.get(newNextNode);
+    let newNextNode = row.next;
+    if (newNextNode !== null) {
+      let previousNodes = this._previousNodes.get(newNextNode);
       newNextNode.previous = previousNodes[previousNodes.length - 1];
 
       previousNodes.pop();
