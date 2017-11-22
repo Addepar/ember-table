@@ -18,20 +18,21 @@
 </thead>
 
   <div class="et-tbody-container" data-test-body-container>
-    {{#vertical-collection rows
-      estimateHeight=estimateRowHeight
-      tagName="tbody"
-      class="et-tbody"
+    <tbody class="et-tbody">
+      {{#vertical-collection rows
+        estimateHeight=estimateRowHeight
+        containerSelector=".et-tbody-container"
 
-      as |rowValue rowIndex|
-    }}
-
-      {{yield (hash
-        value=rowValue
-        index=rowIndex
-        api=api)
+        as |rowValue rowIndex|
       }}
-    {{/vertical-collection}}
+
+        {{yield (hash
+          value=rowValue
+          index=rowIndex
+          api=api)
+        }}
+      {{/vertical-collection}}
+    </tbody>
   </div>
 
 {{#if hasFooter}}
