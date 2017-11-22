@@ -6,5 +6,5 @@ import layout from '../templates/components/ember-table-footer';
 export default class EmberTableFooter extends EmberTableBaseCell {
   @property layout = layout;
   @property tagName = 'th';
-  @property classNameBindings = ['isFixed::et-th']
+  @property classNameBindings = ['isFixed::et-th'];
 }

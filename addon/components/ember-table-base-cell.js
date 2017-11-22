@@ -39,7 +39,7 @@ export default class EmberTableCell extends Component {
 
   scheduleSync() {
     scheduler.schedule('sync', () => {
-      const { height } = this.element.getBoundingClientRect();
+      let { height } = this.element.getBoundingClientRect();
 
       this.set('cellHeight', height || 0);
     }, this.token);
@@ -47,15 +47,15 @@ export default class EmberTableCell extends Component {
 
   @computed('columnIndex', 'numFixedColumns')
   get isFixed() {
-    const numFixedColumns = this.get('numFixedColumns');
+    let numFixedColumns = this.get('numFixedColumns');
     return this.get('columnIndex') === 0 && Number.isInteger(numFixedColumns)
     && numFixedColumns !== 0;
   }
 
   @computed('row', 'column.valuePath')
   get value() {
-    const row = this.get('row');
-    const valuePath = this.get('column.valuePath');
+    let row = this.get('row');
+    let valuePath = this.get('column.valuePath');
 
     return get(row, valuePath);
   }
