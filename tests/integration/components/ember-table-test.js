@@ -20,8 +20,8 @@ moduleForComponent('ember-table', 'Integration | Component | ember table', {
 });
 
 test('Ember table renders', async function(assert) {
-  const rowCount = 20;
-  const columnCount = 15;
+  let rowCount = 20;
+  let columnCount = 15;
   this.set('tableColumns', generateColumns(columnCount));
   this.set('tableRows', generateRows(rowCount, columnCount));
 
@@ -32,16 +32,16 @@ test('Ember table renders', async function(assert) {
 
   // Check column header count
   assert.equal(findAll('thead tr th').length, columnCount, `Header has ${columnCount} columns`);
-  const bodyRows = find('tbody').getElementsByTagName('tr');
-  const lastRowName = bodyRows[bodyRows.length - 1].getElementsByTagName('td')[0].innerText.trim();
+  let bodyRows = find('tbody').getElementsByTagName('tr');
+  let lastRowName = bodyRows[bodyRows.length - 1].getElementsByTagName('td')[0].innerText.trim();
   // Check last row does appear
   assert.equal(lastRowName, `Row ${rowCount - 1}`, 'Last row name is correct');
 });
 
 // Tests with or without custom header.
-const customHeaderTests = [null, 'custom-header'];
-for (const customHeader of customHeaderTests) {
-  const headerTest = customHeader ? 'custom header ' : '';
+let customHeaderTests = [null, 'custom-header'];
+for (let customHeader of customHeaderTests) {
+  let headerTest = customHeader ? 'custom header ' : '';
 
   // Test resizing column
   test(`Test ${headerTest}resizing column`, async function(assert) {
@@ -63,7 +63,7 @@ for (const customHeader of customHeaderTests) {
   test(`Test ${headerTest}resizing fluid column`, async function(assert) {
     await setupFullTable(this, { headerComponent: customHeader, columnMode: 'fluid' });
 
-    const originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
+    let originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
     await tableHelpers.resizeColumn(2, 30);
 
     assert.equal(tableHelpers.getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
@@ -124,8 +124,8 @@ for (const customHeader of customHeaderTests) {
   test(`Test ${headerTest}column resize - equal column mode`, async function(assert) {
     await setupFullTable(this, { tableResizeMode: 'equal_column' }, { headerComponent: customHeader });
 
-    const headerCount = findAll('.et-thead tr th').length;
-    const expectedWidth = find('.et-thead tr').offsetWidth / headerCount;
+    let headerCount = findAll('.et-thead tr th').length;
+    let expectedWidth = find('.et-thead tr').offsetWidth / headerCount;
     for (let i = 1; i <= headerCount; i++) {
       assert.ok(
         Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - expectedWidth) <= 1,
@@ -137,7 +137,7 @@ for (const customHeader of customHeaderTests) {
   test(`Test ${headerTest}column resize - none mode`, async function(assert) {
     await setupFullTable(this, { tableResizeMode: 'none' }, { headerComponent: customHeader });
 
-    const headerCount = findAll('.et-thead tr th').length;
+    let headerCount = findAll('.et-thead tr th').length;
     for (let i = 1; i <= headerCount; i++) {
       assert.equal(
         tableHelpers.getHeaderElement(i).offsetWidth,
@@ -155,9 +155,9 @@ for (const customHeader of customHeaderTests) {
       { rowCount: 20, columnCount: 3 }
     );
 
-    const headerCount = findAll('.et-thead tr th').length;
-    const tableWidth = find('.et-thead').offsetWidth;
-    const firstColumnWidth = tableHelpers.getHeaderElement(1).offsetWidth;
+    let headerCount = findAll('.et-thead tr th').length;
+    let tableWidth = find('.et-thead').offsetWidth;
+    let firstColumnWidth = tableHelpers.getHeaderElement(1).offsetWidth;
 
     assert.ok(
       Math.abs(tableWidth - firstColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,
@@ -180,9 +180,9 @@ for (const customHeader of customHeaderTests) {
       { rowCount: 20, columnCount: 3 }
     );
 
-    const headerCount = findAll('.et-thead tr th').length;
-    const tableWidth = find('.et-thead').offsetWidth;
-    const lastColumnWidth = tableHelpers.getHeaderElement(headerCount).offsetWidth;
+    let headerCount = findAll('.et-thead tr th').length;
+    let tableWidth = find('.et-thead').offsetWidth;
+    let lastColumnWidth = tableHelpers.getHeaderElement(headerCount).offsetWidth;
 
     assert.ok(
       Math.abs(tableWidth - lastColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,

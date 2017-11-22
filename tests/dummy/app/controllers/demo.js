@@ -12,8 +12,8 @@ export default Controller.extend({
   showPanel: false,
 
   getRow(title) {
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const row = EmberObject.create({
+    let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let row = EmberObject.create({
       'id': title
     });
     for (let j = 0; j < COLUMN_COUNT; j++) {
@@ -23,11 +23,11 @@ export default Controller.extend({
   },
 
   rows: computed(function() {
-    const topRow = new TreeNode(null, this.getRow('Top Row'));
+    let topRow = new TreeNode(null, this.getRow('Top Row'));
     for (let i = 0; i < 10; i++) {
-      const header = new TreeNode(topRow, this.getRow(`Header ${i}`));
+      let header = new TreeNode(topRow, this.getRow(`Header ${i}`));
       for (let j = 0; j < 10; j++) {
-        const group = new TreeNode(header, this.getRow(`Group ${j}`));
+        let group = new TreeNode(header, this.getRow(`Group ${j}`));
         for (let k = 0; k < 10; k++) {
           group.addChild(new TreeNode(group, this.getRow(`Leaf ${k}`)));
         }
@@ -38,16 +38,16 @@ export default Controller.extend({
       topRow.addChild(header);
     }
 
-    const root = new TreeNode(null, null);
+    let root = new TreeNode(null, null);
     root.addChild(topRow);
 
     return new LinkedListTree(root);
   }),
 
   columns: computed(function() {
-    const arr = emberA();
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const columnWidth = 180;
+    let arr = emberA();
+    let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let columnWidth = 180;
 
     arr.pushObject({
       columnName: 'Column id',

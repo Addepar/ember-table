@@ -10,7 +10,7 @@ export default class TreeTableGroupingCell extends Component {
 
   @computed('cell.row.value')
   style() {
-    const rowNode = this.get('cell.row.value');
+    let rowNode = this.get('cell.row.value');
     return htmlSafe(`padding-left: ${rowNode.depth * 20}px;`);
   }
 }

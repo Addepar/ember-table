@@ -4,11 +4,11 @@ import EmberObject from '@ember/object';
 
 export default Controller.extend({
   rows: computed(function() {
-    const arr = [];
-    const names = ['Tom', 'Cyril'];
+    let arr = [];
+    let names = ['Tom', 'Cyril'];
 
     for (let i = 0; i < 2; i++) {
-      const row = EmberObject.create({
+      let row = EmberObject.create({
         'name': names[i],
         'url': 'images/tomster.png'
       });
@@ -18,7 +18,7 @@ export default Controller.extend({
   }),
 
   columns: computed(function() {
-    const arr = [];
+    let arr = [];
     arr.push(EmberObject.create({
       columnName: 'Name',
       valuePath: 'name',
