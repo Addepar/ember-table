@@ -47,21 +47,21 @@ function createMouseEvent(type, target, x, y) {
 
   // Pass in the options
   event.initMouseEvent(
-      opts.type,
-      opts.canBubble,
-      opts.cancelable,
-      opts.view,
-      opts.detail,
-      opts.screenX,
-      opts.screenY,
-      opts.clientX,
-      opts.clientY,
-      opts.ctrlKey,
-      opts.altKey,
-      opts.shiftKey,
-      opts.metaKey,
-      opts.button,
-      opts.relatedTarget
+    opts.type,
+    opts.canBubble,
+    opts.cancelable,
+    opts.view,
+    opts.detail,
+    opts.screenX,
+    opts.screenY,
+    opts.clientX,
+    opts.clientY,
+    opts.ctrlKey,
+    opts.altKey,
+    opts.shiftKey,
+    opts.metaKey,
+    opts.button,
+    opts.relatedTarget
   );
   return event;
 }

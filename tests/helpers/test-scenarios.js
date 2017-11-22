@@ -113,12 +113,12 @@ export const fullTable = hbs`
 `;
 
 export function setupFullTable(
-    testContext,
-    tableOptions = {},
-    columnOptions = {},
-    rowColumnCount = DEFAULT_ROW_COLUMN_COUNT,
-    rowComponent = 'ember-table-row'
-  ) {
+  testContext,
+  tableOptions = {},
+  columnOptions = {},
+  rowColumnCount = DEFAULT_ROW_COLUMN_COUNT,
+  rowComponent = 'ember-table-row'
+) {
 
   for (const property in DEFAULT_TABLE_OPTIONS) {
     if (DEFAULT_TABLE_OPTIONS.hasOwnProperty(property)) {
