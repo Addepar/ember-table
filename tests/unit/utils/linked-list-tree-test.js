@@ -13,7 +13,7 @@ function verifyTreePath(assert, node, expectedTreePath) {
 
 // Replace this with your real tests.
 test('Test objectAt', function(assert) {
-  const tree = new LinkedListTree(generateBasicRoot());
+  let tree = new LinkedListTree(generateBasicRoot());
   assert.equal(tree.get('length'), 1111, 'Tree has 1111 nodes');
 
   let node = tree.objectAt(359);
@@ -26,7 +26,7 @@ test('Test objectAt', function(assert) {
 });
 
 test('Test expanding and collapsing rows', function(assert) {
-  const tree = new LinkedListTree(generateBasicRoot());
+  let tree = new LinkedListTree(generateBasicRoot());
 
   let node = tree.objectAt(24); // Group 2
   tree.collapseNode(node);
@@ -58,7 +58,7 @@ test('Test expanding and collapsing rows', function(assert) {
 });
 
 test('Previous node is correct after several rows collapse & expansion.', function(assert) {
-  const tree = new LinkedListTree(generateBasicRoot(3));
+  let tree = new LinkedListTree(generateBasicRoot(3));
 
   // Collapse Top Row -> Header 0 -> Group 2
   tree.collapseNode(tree.objectAt(10));

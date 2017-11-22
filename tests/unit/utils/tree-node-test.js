@@ -5,8 +5,8 @@ module('Unit | Utility | tree node');
 
 // Replace this with your real tests.
 test('Test next and preivous nodes', function(assert) {
-  const root = generateBasicRoot();
-  const firstRow = root.next;
+  let root = generateBasicRoot();
+  let firstRow = root.next;
   assert.equal(firstRow.nodeCount, 1111, 'Root has 1111 nodes, not including root');
 
   let node = firstRow.next.next; // Group 0
@@ -27,7 +27,7 @@ test('Test next and preivous nodes', function(assert) {
   assert.equal(node.value, 'Group 0', 'Previous node of leaf 0 is correct');
 
   // Test next node on collapse of Header 0.
-  const header0 = firstRow.next;
+  let header0 = firstRow.next;
   assert.equal(
     header0.nextOnCollapse.value,
     'Header 1',
