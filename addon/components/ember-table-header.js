@@ -14,7 +14,7 @@ const COLUMN_REORDERING = 2;
 export default class EmberTableHeader extends EmberTableBaseCell {
   @property layout = layout;
   @property tagName = 'th';
-  @property classNameBindings = ['isFixed::et-th']
+  @property classNameBindings = ['isFixed::et-th'];
 
   @property fixedColumnWidth = 0;
 
@@ -56,12 +56,12 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   didInsertElement() {
     super.didInsertElement(...arguments);
 
-    const hammer = new Hammer(this.element);
+    let hammer = new Hammer(this.element);
 
     hammer.add(new Hammer.Press({ time: 10 }));
 
     hammer.on('press', (ev) => {
-      const box = this.element.getBoundingClientRect();
+      let box = this.element.getBoundingClientRect();
       if (this.get('enableColumnResize')) {
         if (box.right - ev.pointers[0].clientX < PRESS_OFFSET_THRESHOLD) {
           this._columnState = COLUMN_RESIZE;
@@ -77,19 +77,19 @@ export default class EmberTableHeader extends EmberTableBaseCell {
     });
 
     hammer.on('panmove', (ev) => {
-      const columnIndex = this.get('columnIndex');
-      const enableColumnResize = this.get('enableColumnResize');
-      const enableColumnReorder = this.get('enableColumnReorder');
-      const fixedColumnWidth = this.get('fixedColumnWidth');
+      let columnIndex = this.get('columnIndex');
+      let enableColumnResize = this.get('enableColumnResize');
+      let enableColumnReorder = this.get('enableColumnReorder');
+      let fixedColumnWidth = this.get('fixedColumnWidth');
 
-      const {
+      let {
         _columnState,
         _firstTouchX,
         _touchX
       } = this;
 
-      const [{ clientX }] = ev.pointers;
-      if (enableColumnResize && _columnState == COLUMN_RESIZE) {
+      let [{ clientX }] = ev.pointers;
+      if (enableColumnResize && _columnState === COLUMN_RESIZE) {
         this.sendAction('onColumnResized', columnIndex, clientX - _touchX);
         this._touchX = clientX;
         return;
@@ -98,11 +98,11 @@ export default class EmberTableHeader extends EmberTableBaseCell {
       // Column reordering
       if (enableColumnReorder) {
         // First fixed column cannot be moved.
-        if (fixedColumnWidth > 0 && columnIndex == 0) {
+        if (fixedColumnWidth > 0 && columnIndex === 0) {
           return;
         }
 
-        const box = this.element.getBoundingClientRect();
+        let box = this.element.getBoundingClientRect();
         this.sendAction('onColumnReorder', columnIndex, box, clientX - _firstTouchX);
 
         this._columnState = COLUMN_REORDERING;
@@ -110,15 +110,15 @@ export default class EmberTableHeader extends EmberTableBaseCell {
     });
 
     hammer.on('panend', (ev) => {
-      const columnIndex = this.get('columnIndex');
+      let columnIndex = this.get('columnIndex');
 
-      const {
+      let {
         _columnState,
         _firstTouchX,
         _touchX
       } = this;
 
-      const [{ clientX }] = ev.pointers;
+      let [{ clientX }] = ev.pointers;
 
       switch (_columnState) {
         case COLUMN_REORDERING:
@@ -137,7 +137,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   }
 
   willDestroyElement() {
-    const hammer = this._hammer;
+    let hammer = this._hammer;
 
     hammer.off('press');
     hammer.off('panmove');

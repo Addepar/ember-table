@@ -9,11 +9,11 @@ import {
 } from './drag-helper';
 
 export async function moveTableColumn(columnIndex, deltaPosition) {
-  const header = find(`.et-thead tr th:nth-child(${columnIndex})`);
-  const box = header.getBoundingClientRect();
-  const width = header.offsetLeft;
-  const startX = (box.right + box.left) / 2;
-  const deltaX = deltaPosition * width;
+  let header = find(`.et-thead tr th:nth-child(${columnIndex})`);
+  let box = header.getBoundingClientRect();
+  let width = header.offsetLeft;
+  let startX = (box.right + box.left) / 2;
+  let deltaX = deltaPosition * width;
 
   await pressElement(header, startX, header.clientHeight / 2);
   await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
@@ -22,9 +22,9 @@ export async function moveTableColumn(columnIndex, deltaPosition) {
 }
 
 export async function resizeColumn(columnIndex, deltaX) {
-  const header = getHeaderElement(columnIndex);
-  const box = header.getBoundingClientRect();
-  const startX = box.right - 5;
+  let header = getHeaderElement(columnIndex);
+  let box = header.getBoundingClientRect();
+  let startX = box.right - 5;
   await pressElement(header, startX, header.clientHeight / 2);
   await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
   await moveMouse(header, startX + deltaX, header.clientHeight / 2);
