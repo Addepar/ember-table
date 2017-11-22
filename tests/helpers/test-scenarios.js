@@ -1,7 +1,7 @@
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
-import waitForRender from 'dummy/tests/helpers/wait-for-render';
 import ColumnDefinition from 'ember-table/models/column-definition';
+import wait from 'ember-test-helpers/wait';
 
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
@@ -137,5 +137,5 @@ export function setupFullTable(
   testContext.set('tableRows', generateRows(rowCount, columnCount));
   testContext.set('rowComponent', rowComponent);
   testContext.render(fullTable);
-  return waitForRender();
+  return wait();
 }

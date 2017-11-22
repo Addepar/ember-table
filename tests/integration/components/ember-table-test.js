@@ -1,4 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
+import wait from 'ember-test-helpers/wait';
+
 import {
   simpleTable,
   generateColumns,
@@ -7,12 +9,13 @@ import {
   DEFAULT_ROW_COLUMN_COUNT,
   DEFAULT_COLUMN_WIDTH
 } from '../../helpers/test-scenarios';
-import waitForRender from 'dummy/tests/helpers/wait-for-render';
+
 import {
   find,
   findAll,
   scrollTo
 } from 'ember-native-dom-helpers';
+
 import tableHelpers from '../../helpers/table-helper';
 
 moduleForComponent('ember-table', 'Integration | Component | ember table', {
@@ -27,7 +30,7 @@ test('Ember table renders', async function(assert) {
 
   this.render(simpleTable);
 
-  await waitForRender();
+  await wait();
   await scrollTo(find('[data-test-body-container]'), 0, 600);
 
   // Check column header count
