@@ -5,6 +5,7 @@ import { action, computed } from 'ember-decorators/object';
 import { get } from '@ember/object';
 import { property } from '../utils/class';
 import { scheduler, Token } from 'ember-raf-scheduler';
+import { isNone } from '@ember/utils';
 
 export default class EmberTableCell extends Component {
   @property tagName = 'td';
@@ -40,6 +41,12 @@ export default class EmberTableCell extends Component {
   scheduleSync() {
     scheduler.schedule('sync', () => {
       let { height } = this.element.getBoundingClientRect();
+      if (this.get('isFixed')) {
+        // Get the max height of the div element height and other cells height in case other cells
+        // are empty.
+        const fixedDivElement = this.element.getElementsByClassName('is-fixed')[0];
+        height = Math.max(height, fixedDivElement.getBoundingClientRect().height);
+      }
 
       this.set('cellHeight', height || 0);
     }, this.token);
@@ -60,9 +67,15 @@ export default class EmberTableCell extends Component {
     return get(row, valuePath);
   }
 
-  @computed('column.width')
+  @computed('column.width', 'cellHeight', 'isFixed')
   get style() {
-    return htmlSafe(`width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px;`);
+    let style = `width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px`;
+    const cellHeight = this.get('cellHeight');
+    if (!isNone(cellHeight) && this.get('isFixed')) {
+      style = `${style}; height: ${cellHeight}px;`;
+    }
+
+    return htmlSafe(style);
   }
 
   @computed('column.width', 'cellHeight')
