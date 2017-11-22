@@ -7,7 +7,7 @@ export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
   columnMode: 'standard',
   tableResizeMode: 'none',
-  rowHeight: -1,
+  staticHeight: -1
 };
 
 export const DEFAULT_ROW_COLUMN_COUNT = {
@@ -98,7 +98,7 @@ export const fullTable = hbs`
       numFixedColumns=numFixedColumns
       columnMode=columnMode
       tableResizeMode=tableResizeMode
-      rowHeight=rowHeight
+      staticHeight=staticHeight
 
       as |r|
     }}

@@ -79,7 +79,7 @@ export default class EmberTableRow extends Component {
 
   @computed('row.api.rowHeight')
   style() {
-    const rowHeight = this.get('row.api.rowHeight');
+    let rowHeight = this.get('row.api.rowHeight');
     if (rowHeight > 0) {
       return `height: ${rowHeight}px;`;
     }

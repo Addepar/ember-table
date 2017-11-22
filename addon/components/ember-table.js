@@ -38,11 +38,6 @@ export default class EmberTable2 extends Component {
   @property hasFooter = false;
 
   /**
-   * Estimated height for each row.
-   */
-  @property estimateRowHeight = 20;
-
-  /**
    * Indicates how many left columns will be fixed. With current implementation, only 1 single
    * left most column can be a fixed column. Later version of Ember table could change
    * implementation to support multiple fixed columns.
@@ -77,7 +72,7 @@ export default class EmberTable2 extends Component {
    * Height of each individual row. By default, this value is the height of each row. This value
    * could be overriden to specify fixed height for each row in the table.
    */
-  @property rowHeight = -1;
+  @property staticHeight = -1;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -132,6 +127,18 @@ export default class EmberTable2 extends Component {
   get hasFixedColumn() {
     let numFixedColumns = this.get('numFixedColumns');
     return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
+  }
+
+  /**
+   * Estimated height for each row.
+   */
+  @computed('staticHeight')
+  estimateRowHeight() {
+    let staticHeight = this.get('staticHeight');
+    if (staticHeight < 0) {
+      return 20; // Default value used as estimated height for vertical collection
+    }
+    return staticHeight;
   }
 
   init() {
