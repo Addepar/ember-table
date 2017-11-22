@@ -1,4 +1,8 @@
-import EmberObject, { computed as emberComputed, get, set } from '@ember/object';
+import EmberObject, {
+  computed as emberComputed,
+  get,
+  set
+} from '@ember/object';
 
 import { computed, readOnly } from 'ember-decorators/object';
 import { alias } from 'ember-decorators/object/computed';
