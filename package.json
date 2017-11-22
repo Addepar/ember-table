@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@addepar/ice-box": "^0.1.3",
-    "@html-next/vertical-collection": "https://github.com/html-next/vertical-collection.git#27bd1d2f5708a985a082a6faca973b0d88c4e525",
+    "@html-next/vertical-collection": "1.0.0-beta.9",
     "css-element-queries": "^0.4.0",
     "ember": "^1.0.3",
     "ember-cli-babel": "^6.7.1",
