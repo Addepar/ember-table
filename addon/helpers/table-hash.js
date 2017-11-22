@@ -1,3 +1,4 @@
+import { helper } from '@ember/component/helper';
 import Ember from 'ember';
 
 let helper = null;
@@ -7,7 +8,7 @@ if (Ember.VERSION < '1.13') {
     return args.hash;
   });
 } else {
-  helper = Ember.Helper.helper(function(_, obj) {
+  helper = helper(function(_, obj) {
     return obj;
   });
 }
