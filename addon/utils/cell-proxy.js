@@ -4,10 +4,11 @@ import EmberObject, {
   set
 } from '@ember/object';
 
+import { SUPPORTS_NEW_COMPUTED } from 'ember-compatibility-helpers';
+
 import { computed, readOnly } from 'ember-decorators/object';
 import { alias } from 'ember-decorators/object/computed';
 import { property } from '../utils/class';
-import Ember from 'ember';
 
 export default class CellProxy extends EmberObject {
   @property column = null;
@@ -64,15 +65,7 @@ export default class CellProxy extends EmberObject {
       return undefined;
     };
 
-    if (Ember.VERSION < '1.13') {
-      prototype[key] = emberComputed('rowValue', 'column.valuePath', function(key, value) {
-        if (arguments.length > 1) {
-          return setValueFunc(this, key, value);
-        }
-
-        return getValueFunc(this, key);
-      });
-    } else {
+    if (SUPPORTS_NEW_COMPUTED) {
       prototype[key] = emberComputed('rowValue', 'column.valuePath', {
         get(key) {
           return getValueFunc(this, key);
@@ -81,6 +74,14 @@ export default class CellProxy extends EmberObject {
         set(key, value) {
           return setValueFunc(this, key, value);
         }
+      });
+    } else {
+      prototype[key] = emberComputed('rowValue', 'column.valuePath', function(key, value) {
+        if (arguments.length > 1) {
+          return setValueFunc(this, key, value);
+        }
+
+        return getValueFunc(this, key);
       });
     }
   }
