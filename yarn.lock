@@ -36,11 +36,10 @@
   dependencies:
     "@glimmer/di" "^0.2.0"
 
-"@html-next/vertical-collection@https://github.com/html-next/vertical-collection.git#27bd1d2f5708a985a082a6faca973b0d88c4e525":
-  version "1.0.0-beta.7"
-  resolved "https://github.com/html-next/vertical-collection.git#27bd1d2f5708a985a082a6faca973b0d88c4e525"
+"@html-next/vertical-collection@1.0.0-beta.9":
+  version "1.0.0-beta.9"
+  resolved "https://registry.yarnpkg.com/@html-next/vertical-collection/-/vertical-collection-1.0.0-beta.9.tgz#a23fe4d82e4ef059e955abe276f57f27269b37a5"
   dependencies:
-    babel-plugin-filter-imports "^0.3.1"
     babel-plugin-transform-es2015-block-scoping "^6.24.1"
     babel6-plugin-strip-class-callcheck "^6.0.0"
     broccoli-funnel "^1.2.0"
@@ -48,6 +47,8 @@
     broccoli-rollup "^1.2.0"
     ember-cli-babel "^6.0.0-beta.10"
     ember-cli-htmlbars "^1.1.1"
+    ember-compatibility-helpers "^0.1.2"
+    ember-raf-scheduler "0.1.0"
 
 abbrev@1:
   version "1.1.0"
@@ -585,10 +586,6 @@ babel-plugin-ember-modules-api-polyfill@^2.0.1:
 babel-plugin-eval@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/babel-plugin-eval/-/babel-plugin-eval-1.0.1.tgz#a2faed25ce6be69ade4bfec263f70169195950da"
-
-babel-plugin-filter-imports@^0.3.1:
-  version "0.3.1"
-  resolved "https://registry.yarnpkg.com/babel-plugin-filter-imports/-/babel-plugin-filter-imports-0.3.1.tgz#e7859b56886b175dd2616425d277b219e209ea8b"
 
 babel-plugin-htmlbars-inline-precompile@^0.2.3:
   version "0.2.3"
@@ -2577,7 +2574,7 @@ ember-qunit@^2.1.3:
   dependencies:
     ember-test-helpers "^0.6.3"
 
-ember-raf-scheduler@^0.1.0:
+ember-raf-scheduler@0.1.0, ember-raf-scheduler@^0.1.0:
   version "0.1.0"
   resolved "https://registry.yarnpkg.com/ember-raf-scheduler/-/ember-raf-scheduler-0.1.0.tgz#a22a02d238c374499231c03ab9c5b9887c72a853"
   dependencies:
