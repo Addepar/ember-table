@@ -7,6 +7,7 @@ import { property } from '../utils/class';
 import layout from '../templates/components/ember-table-row';
 import { A as emberA } from '@ember/array';
 import { readOnly } from '@ember/object/computed';
+import { isNone } from '@ember/utils';
 
 @classNames('et-tr')
 export default class EmberTableRow extends Component {
@@ -15,6 +16,8 @@ export default class EmberTableRow extends Component {
 
   @property _cells = null;
   @property classNameBindings = ['isSelected'];
+  @property attributeBindings = ['style:style'];
+
   /**
    * Component that for table cell. This outer cell is a <td> component that wraps outside the
    * rendered cell view.
@@ -73,6 +76,15 @@ export default class EmberTableRow extends Component {
   @computed('selectedRows.[]', 'rowValue')
   get isSelected() {
     return this.get('selectedRows').indexOf(this.get('rowValue')) >= 0;
+  }
+
+  @computed('row.api.staticRowHeight')
+  style() {
+    let staticRowHeight = this.get('row.api.staticRowHeight');
+    if (!isNone(staticRowHeight)) {
+      return `height: ${staticRowHeight}px;`;
+    }
+    return '';
   }
 
   click(event) {
