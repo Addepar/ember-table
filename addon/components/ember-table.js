@@ -372,7 +372,7 @@ export default class EmberTable2 extends Component {
     let staticHeight = this.get('staticHeight');
     let staticRowHeight = null;
     if (staticHeight === true) {
-      staticHeight = this.get('estimateRowHeight');
+      staticRowHeight = this.get('estimateRowHeight');
     }
 
     return {
