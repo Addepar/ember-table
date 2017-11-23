@@ -1,12 +1,13 @@
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
-import waitForRender from 'dummy/tests/helpers/wait-for-render';
 import ColumnDefinition from 'ember-table/models/column-definition';
+import wait from 'ember-test-helpers/wait';
 
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
   columnMode: 'standard',
-  tableResizeMode: 'none'
+  tableResizeMode: 'none',
+  estimateRowHeight: 20
 };
 
 export const DEFAULT_ROW_COLUMN_COUNT = {
@@ -17,11 +18,11 @@ export const DEFAULT_ROW_COLUMN_COUNT = {
 export const DEFAULT_COLUMN_WIDTH = 180;
 
 export function generateRows(rowCount, columnCount) {
-  const arr = emberA();
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let arr = emberA();
+  let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   for (let i = 0; i < rowCount; i++) {
-    const row = ColumnDefinition.create({
+    let row = ColumnDefinition.create({
       'id': `Row ${i}`
     });
     for (let j = 0; j < columnCount - 1; j++) {
@@ -34,9 +35,9 @@ export function generateRows(rowCount, columnCount) {
 }
 
 export function generateColumns(columnCount, columnOptions) {
-  const arr = emberA();
-  const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  const columnWidth = DEFAULT_COLUMN_WIDTH;
+  let arr = emberA();
+  let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  let columnWidth = DEFAULT_COLUMN_WIDTH;
 
   arr.pushObject(ColumnDefinition.create({
     columnName: 'Column id',
@@ -46,7 +47,7 @@ export function generateColumns(columnCount, columnOptions) {
   }));
 
   for (let j = 0; j < columnCount - 1; j++) {
-    const columnDefinition = ColumnDefinition.create({
+    let columnDefinition = ColumnDefinition.create({
       columnName: `Col ${alphabet[j % 26]}`,
       valuePath: alphabet[j % 26],
       width: columnWidth,
@@ -57,8 +58,8 @@ export function generateColumns(columnCount, columnOptions) {
     arr.pushObject(columnDefinition);
   }
 
-  for (const columnDefinition of arr) {
-    for (const property in columnOptions) {
+  for (let columnDefinition of arr) {
+    for (let property in columnOptions) {
       if (columnOptions.hasOwnProperty(property)) {
         columnDefinition.set(property, columnOptions[property]);
       }
@@ -97,6 +98,8 @@ export const fullTable = hbs`
       numFixedColumns=numFixedColumns
       columnMode=columnMode
       tableResizeMode=tableResizeMode
+      staticHeight=staticHeight
+      estimateRowHeight=estimateRowHeight
 
       as |r|
     }}
@@ -113,29 +116,29 @@ export const fullTable = hbs`
 `;
 
 export function setupFullTable(
-    testContext,
-    tableOptions = {},
-    columnOptions = {},
-    rowColumnCount = DEFAULT_ROW_COLUMN_COUNT,
-    rowComponent = 'ember-table-row'
-  ) {
+  testContext,
+  tableOptions = {},
+  columnOptions = {},
+  rowColumnCount = DEFAULT_ROW_COLUMN_COUNT,
+  rowComponent = 'ember-table-row'
+) {
 
-  for (const property in DEFAULT_TABLE_OPTIONS) {
+  for (let property in DEFAULT_TABLE_OPTIONS) {
     if (DEFAULT_TABLE_OPTIONS.hasOwnProperty(property)) {
       testContext.set(property, DEFAULT_TABLE_OPTIONS[property]);
     }
   }
 
-  for (const property in tableOptions) {
+  for (let property in tableOptions) {
     if (tableOptions.hasOwnProperty(property)) {
       testContext.set(property, tableOptions[property]);
     }
   }
 
-  const { rowCount, columnCount } = rowColumnCount;
+  let { rowCount, columnCount } = rowColumnCount;
   testContext.set('tableColumns', generateColumns(columnCount, columnOptions));
   testContext.set('tableRows', generateRows(rowCount, columnCount));
   testContext.set('rowComponent', rowComponent);
   testContext.render(fullTable);
-  return waitForRender();
+  return wait();
 }

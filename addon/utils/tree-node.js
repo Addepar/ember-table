@@ -58,13 +58,13 @@ export default class TreeNode {
     this.next = node;
     this.originalNext = node;
 
-    if (node != null) {
+    if (node !== null) {
       node.previous = this;
     }
   }
 
   updateNext(nextNode) {
-    const { children } = this;
+    let { children } = this;
 
     if (children.length > 0) {
       this._setNextNode(children[0]);
@@ -73,14 +73,14 @@ export default class TreeNode {
       return;
     }
 
-    const originalNextNode = nextNode;
+    let originalNextNode = nextNode;
 
     // iterate from the last to first child of this node.
     for (let i = children.length - 1; i >= 0; i--) {
       children[i].updateNext(nextNode);
       nextNode = children[i];
 
-      if (i == children.length - 1) {
+      if (i === children.length - 1) {
         children[i].nextOnCollapse = originalNextNode;
       } else {
         children[i].nextOnCollapse = children[i + 1];
@@ -90,7 +90,7 @@ export default class TreeNode {
 
   updateDepth(depth) {
     this.depth = depth;
-    for (const child of this.children) {
+    for (let child of this.children) {
       child.updateDepth(depth + 1);
     }
   }

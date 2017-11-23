@@ -11,7 +11,7 @@ export default class TreeTable extends EmberTable2 {
 
   @action
   onRowToggled(row) {
-    const { tree } = this;
+    let { tree } = this;
 
     if (row.collapse) {
       tree.expand(row);

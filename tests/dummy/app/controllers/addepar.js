@@ -5,7 +5,7 @@ import ColumnDefinition from 'ember-table/models/column-definition';
 export default Controller.extend({
 
   rows: computed(function() {
-    const arr = [];
+    let arr = [];
 
     for (let i = 0; i < 20; i++) {
       arr.push({
@@ -27,7 +27,7 @@ export default Controller.extend({
   },
 
   columns: computed(function() {
-    const arr = [];
+    let arr = [];
 
     arr.push(this.createHeader('Data', 'date'));
     arr.push(this.createHeader('Open', 'open'));

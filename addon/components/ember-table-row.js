@@ -7,6 +7,7 @@ import { property } from '../utils/class';
 import layout from '../templates/components/ember-table-row';
 import { A as emberA } from '@ember/array';
 import { readOnly } from '@ember/object/computed';
+import { isNone } from '@ember/utils';
 
 @classNames('et-tr')
 export default class EmberTableRow extends Component {
@@ -14,7 +15,9 @@ export default class EmberTableRow extends Component {
   @property tagName = 'tr';
 
   @property _cells = null;
-  @property classNameBindings = ['isSelected']
+  @property classNameBindings = ['isSelected'];
+  @property attributeBindings = ['style:style'];
+
   /**
    * Component that for table cell. This outer cell is a <td> component that wraps outside the
    * rendered cell view.
@@ -40,12 +43,12 @@ export default class EmberTableRow extends Component {
 
   @computed('columns.[]')
   cells() {
-    const _rowComponent = this;
-    const _cache = this.get('cellCache');
-    const columns = this.get('columns');
-    const numColumns = get(columns, 'length');
+    let _rowComponent = this;
+    let _cache = this.get('cellCache');
+    let columns = this.get('columns');
+    let numColumns = get(columns, 'length');
 
-    const { _cells } = this;
+    let { _cells } = this;
 
     if (numColumns !== _cells.length) {
       while (_cells.length < numColumns) {
@@ -58,8 +61,8 @@ export default class EmberTableRow extends Component {
     }
 
     for (let i = 0; i < numColumns; i++) {
-      const cell = _cells[i];
-      const column = columns.objectAt !== undefined ? columns.objectAt(i) : columns[i];
+      let cell = _cells[i];
+      let column = columns.objectAt !== undefined ? columns.objectAt(i) : columns[i];
 
       cell.set('column', column);
       cell.set('columnIndex', i);
@@ -75,8 +78,17 @@ export default class EmberTableRow extends Component {
     return this.get('selectedRows').indexOf(this.get('rowValue')) >= 0;
   }
 
+  @computed('row.api.staticRowHeight')
+  style() {
+    let staticRowHeight = this.get('row.api.staticRowHeight');
+    if (!isNone(staticRowHeight)) {
+      return `height: ${staticRowHeight}px;`;
+    }
+    return '';
+  }
+
   click(event) {
-    const tableObject = this.get('row.api.targetObject');
+    let tableObject = this.get('row.api.targetObject');
     tableObject.send('onRowClicked', event, this.get('rowIndex'));
 
     this.sendAction('onClick', event, this.get('rowIndex'), this.get('rowValue'));

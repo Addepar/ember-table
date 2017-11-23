@@ -3,7 +3,7 @@ import wait from 'ember-test-helpers/wait';
 
 export function pressElement(target, x, y) {
   run(() => {
-    const event = createMouseEvent('pointerdown', target, x, y);
+    let event = createMouseEvent('pointerdown', target, x, y);
     target.dispatchEvent(event);
   });
   return (window.wait || wait)();
@@ -11,7 +11,7 @@ export function pressElement(target, x, y) {
 
 export function moveMouse(target, x, y) {
   run(() => {
-    const event = createMouseEvent('pointermove', target, x, y);
+    let event = createMouseEvent('pointermove', target, x, y);
     target.dispatchEvent(event);
   });
   return (window.wait || wait)();
@@ -19,15 +19,15 @@ export function moveMouse(target, x, y) {
 
 export function releasePress(target, x, y) {
   run(() => {
-    const event = createMouseEvent('pointerup', target, x, y);
+    let event = createMouseEvent('pointerup', target, x, y);
     target.dispatchEvent(event);
   });
   return (window.wait || wait)();
 }
 
 function createMouseEvent(type, target, x, y) {
-  const event = target.ownerDocument.createEvent('MouseEvents');
-  const opts = {
+  let event = target.ownerDocument.createEvent('MouseEvents');
+  let opts = {
     type,
     canBubble: true,
     cancelable: true,
@@ -47,21 +47,21 @@ function createMouseEvent(type, target, x, y) {
 
   // Pass in the options
   event.initMouseEvent(
-      opts.type,
-      opts.canBubble,
-      opts.cancelable,
-      opts.view,
-      opts.detail,
-      opts.screenX,
-      opts.screenY,
-      opts.clientX,
-      opts.clientY,
-      opts.ctrlKey,
-      opts.altKey,
-      opts.shiftKey,
-      opts.metaKey,
-      opts.button,
-      opts.relatedTarget
+    opts.type,
+    opts.canBubble,
+    opts.cancelable,
+    opts.view,
+    opts.detail,
+    opts.screenX,
+    opts.screenY,
+    opts.clientX,
+    opts.clientY,
+    opts.ctrlKey,
+    opts.altKey,
+    opts.shiftKey,
+    opts.metaKey,
+    opts.button,
+    opts.relatedTarget
   );
   return event;
 }
