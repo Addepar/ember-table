@@ -2,15 +2,9 @@
 # yarn lockfile v1
 
 
-<<<<<<< HEAD
 "@addepar/eslint-config@^3.0.0":
   version "3.0.0"
   resolved "https://addepar.jfrog.io/addepar/api/npm/npm/@addepar/eslint-config/-/eslint-config-3.0.0.tgz#766f7a3b3202b2bb782631e9fb8857fe81f862ab"
-=======
-"@addepar/eslint-config@^1.0.0":
-  version "1.0.0"
-  resolved "https://addepar.jfrog.io/addepar/api/npm/npm/@addepar/eslint-config/-/eslint-config-1.0.0.tgz#5a517e6dab0fbf81572b2675a61b4f0830e74c31"
->>>>>>> Support subcolumns
   dependencies:
     babel-eslint "^7.2.3"
     eslint "^4.0.0"
