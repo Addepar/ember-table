@@ -7,6 +7,7 @@ import { property } from '../utils/class';
 import layout from '../templates/components/ember-table-row';
 import { A as emberA } from '@ember/array';
 import { readOnly } from '@ember/object/computed';
+import { isNone } from '@ember/utils';
 
 @classNames('et-tr')
 export default class EmberTableRow extends Component {
@@ -77,11 +78,11 @@ export default class EmberTableRow extends Component {
     return this.get('selectedRows').indexOf(this.get('rowValue')) >= 0;
   }
 
-  @computed('row.api.rowHeight')
+  @computed('row.api.staticRowHeight')
   style() {
-    let rowHeight = this.get('row.api.rowHeight');
-    if (rowHeight > 0) {
-      return `height: ${rowHeight}px;`;
+    let staticRowHeight = this.get('row.api.staticRowHeight');
+    if (!isNone(staticRowHeight)) {
+      return `height: ${staticRowHeight}px;`;
     }
     return '';
   }

@@ -69,10 +69,17 @@ export default class EmberTable2 extends Component {
   @property tableResizeMode = TABLE_RESIZE_MODE_NONE;
 
   /**
-   * Height of each individual row. By default, table row height is not static and equivalent to its
-   * content. If this value is set, table sets row height to this value.
+   * Estimated height for each row. This number is used to decide how many rows will be rendered at
+   * initial rendering.
    */
-  @property staticHeight = -1;
+  @property estimateRowHeight = 20;
+
+  /**
+   * A flag that controls if all rows have same static height or not. By default it is set to false
+   * and row height is dependent on its internal content. If it is set to true, all rows have the
+   * same height equivalent to estimateRowHeight.
+   */
+  @property staticHeight = false;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -127,18 +134,6 @@ export default class EmberTable2 extends Component {
   get hasFixedColumn() {
     let numFixedColumns = this.get('numFixedColumns');
     return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
-  }
-
-  /**
-   * Estimated height for each row.
-   */
-  @computed('staticHeight')
-  estimateRowHeight() {
-    let staticHeight = this.get('staticHeight');
-    if (staticHeight < 0) {
-      return 20; // Default value used as estimated height for vertical collection
-    }
-    return staticHeight;
   }
 
   init() {
@@ -363,8 +358,23 @@ export default class EmberTable2 extends Component {
     return sum;
   }
 
-  @computed('cellCache', 'cellProxyClass', 'numFixedColumns', 'targetObject', 'columns', 'selectedRows', 'rowHeight')
+  @computed(
+    'cellCache',
+    'cellProxyClass',
+    'numFixedColumns',
+    'targetObject',
+    'columns',
+    'selectedRows',
+    'estimateRowHeight',
+    'staticHeight'
+  )
   api() {
+    let staticHeight = this.get('staticHeight');
+    let staticRowHeight = null;
+    if (staticHeight === true) {
+      staticHeight = this.get('estimateRowHeight');
+    }
+
     return {
       rowHeight: this.get('rowHeight'),
       cellCache: this.cellCache,
@@ -372,7 +382,8 @@ export default class EmberTable2 extends Component {
       numFixedColumns: this.numFixedColumns,
       targetObject: this,
       columns: this.columns,
-      selectedRows: this.selectedRows
+      selectedRows: this.selectedRows,
+      staticRowHeight
     };
   }
 
