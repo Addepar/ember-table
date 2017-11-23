@@ -38,11 +38,6 @@ export default class EmberTable2 extends Component {
   @property hasFooter = false;
 
   /**
-   * Estimated height for each row.
-   */
-  @property estimateRowHeight = 20;
-
-  /**
    * Indicates how many left columns will be fixed. With current implementation, only 1 single
    * left most column can be a fixed column. Later version of Ember table could change
    * implementation to support multiple fixed columns.
@@ -72,6 +67,19 @@ export default class EmberTable2 extends Component {
    * 4) "last_column": extra space is added into the last column.
    */
   @property tableResizeMode = TABLE_RESIZE_MODE_NONE;
+
+  /**
+   * Estimated height for each row. This number is used to decide how many rows will be rendered at
+   * initial rendering.
+   */
+  @property estimateRowHeight = 20;
+
+  /**
+   * A flag that controls if all rows have same static height or not. By default it is set to false
+   * and row height is dependent on its internal content. If it is set to true, all rows have the
+   * same height equivalent to estimateRowHeight.
+   */
+  @property staticHeight = false;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -350,15 +358,32 @@ export default class EmberTable2 extends Component {
     return sum;
   }
 
-  @computed('cellCache', 'cellProxyClass', 'numFixedColumns', 'targetObject', 'columns', 'selectedRows')
+  @computed(
+    'cellCache',
+    'cellProxyClass',
+    'numFixedColumns',
+    'targetObject',
+    'columns',
+    'selectedRows',
+    'estimateRowHeight',
+    'staticHeight'
+  )
   api() {
+    let staticHeight = this.get('staticHeight');
+    let staticRowHeight = null;
+    if (staticHeight === true) {
+      staticRowHeight = this.get('estimateRowHeight');
+    }
+
     return {
+      rowHeight: this.get('rowHeight'),
       cellCache: this.cellCache,
       cellProxyClass: this.cellProxyClass,
       numFixedColumns: this.numFixedColumns,
       targetObject: this,
       columns: this.columns,
-      selectedRows: this.selectedRows
+      selectedRows: this.selectedRows,
+      staticRowHeight
     };
   }
 
