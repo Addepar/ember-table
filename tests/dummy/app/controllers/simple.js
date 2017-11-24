@@ -3,7 +3,7 @@ import ColumnDefinition from '../models/column-definition';
 import { computed } from 'ember-decorators/object';
 import { A as emberA } from '@ember/array';
 
-const COLUMN_COUNT = 3;
+const COLUMN_COUNT = 4;
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export default class SimpleController extends Controller {
