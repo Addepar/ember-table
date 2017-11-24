@@ -233,7 +233,7 @@ test('Table with subcolumns', async function(assert) {
     if (i > 0) {
       set(column, 'subcolumns', subcolumns);
     }
-  };
+  }
 
   let rows = generateRows(30, columnCount * 2);
   await setupFullTable(this, { columns, rows });
