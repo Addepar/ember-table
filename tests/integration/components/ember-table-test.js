@@ -1,6 +1,7 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
 import { get, set } from '@ember/object';
+import { A as emberA } from '@ember/array';
 
 import {
   simpleTable,
@@ -220,16 +221,17 @@ test('Table with subcolumns', async function(assert) {
   for (let i = 0; i < columns.length; i++) {
     let column = columns[i];
     set(column, 'columnName', `Group ${i}`);
-    let subcolumns = [
-      {
-        columnName: 'Col 1',
-        valuePath: get(column, 'valuePath')
-      },
-      {
-        columnName: 'Col 2',
-        valuePath: get(column, 'valuePath')
-      }
-    ];
+    let subcolumns = emberA();
+
+    subcolumns.pushObject({
+      columnName: 'Col 1',
+      valuePath: get(column, 'valuePath')
+    });
+    subcolumns.pushObject({
+      columnName: 'Col 2',
+      valuePath: get(column, 'valuePath')
+    });
+
     if (i > 0) {
       set(column, 'subcolumns', subcolumns);
     }
