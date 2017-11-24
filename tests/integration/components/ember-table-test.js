@@ -1,5 +1,6 @@
 import { moduleForComponent, test } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
+import { get, set } from '@ember/object';
 
 import {
   simpleTable,
@@ -25,8 +26,8 @@ moduleForComponent('ember-table', 'Integration | Component | ember table', {
 test('Ember table renders', async function(assert) {
   let rowCount = 20;
   let columnCount = 15;
-  this.set('tableColumns', generateColumns(columnCount));
-  this.set('tableRows', generateRows(rowCount, columnCount));
+  this.set('columns', generateColumns(columnCount));
+  this.set('rows', generateRows(rowCount, columnCount));
 
   this.render(simpleTable);
 
@@ -209,4 +210,44 @@ test('Test custom row', async function(assert) {
 test('Custom row height', async function(assert) {
   await setupFullTable(this, { staticHeight: true, estimateRowHeight: 100 }, {});
   assert.equal(find('tbody tr').offsetHeight, 100, 'Row height is set to custom height.');
+});
+
+test('Table with subcolumns', async function(assert) {
+  let columnCount = 10;
+  let columns = generateColumns(columnCount);
+  // Add subcolumns
+  columns.forEach((column, index) => {
+    set(column, 'columnName', `Group ${index}`);
+    let subcolumns = [
+      {
+        columnName: 'Col 1',
+        valuePath: get(column, 'valuePath')
+      },
+      {
+        columnName: 'Col 2',
+        valuePath: get(column, 'valuePath')
+      }
+    ];
+    if (index > 0) {
+      set(column, 'subcolumns', subcolumns);
+    }
+  });
+
+  let rows = generateRows(30, columnCount * 2);
+  await setupFullTable(this, { columns, rows });
+
+  assert.equal(findAll('thead tr').length, 2, 'There are 2 rows in the header.');
+  let firstRow = findAll('thead tr')[0];
+  let children = firstRow.getElementsByTagName('th');
+  for (let i = 0; i < children.length; i++) {
+    assert.equal(children[i].textContent.trim(), `Group ${i}`, `Group ${i} name is correct`);
+  }
+
+  // Sub columns
+  let secondRow = findAll('thead tr')[1];
+  children = secondRow.getElementsByTagName('th');
+  for (let i = 0; i < children.length; i++) {
+    let expectColumnName = (i % 2 === 0) ? 'Col 1' : 'Col 2';
+    assert.equal(children[i].textContent.trim(), expectColumnName, 'Subcolumn name is correct');
+  }
 });

@@ -2,6 +2,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
 import ColumnDefinition from 'ember-table/models/column-definition';
 import wait from 'ember-test-helpers/wait';
+import { isNone } from '@ember/utils';
 
 export const DEFAULT_TABLE_OPTIONS = {
   numFixedColumns: 1,
@@ -72,8 +73,8 @@ export function generateColumns(columnCount, columnOptions) {
 export const simpleTable = hbs`
   <div style="height: 500px;">
     {{#ember-table
-      columns=tableColumns
-      rows=tableRows
+      columns=columns
+      rows=rows
       estimateRowHeight=13
       as |r|
     }}
@@ -93,8 +94,8 @@ export const simpleTable = hbs`
 export const fullTable = hbs`
   <div style="height: 500px;">
     {{#ember-table
-      columns=tableColumns
-      rows=tableRows
+      columns=columns
+      rows=rows
       numFixedColumns=numFixedColumns
       columnMode=columnMode
       tableResizeMode=tableResizeMode
@@ -136,8 +137,13 @@ export function setupFullTable(
   }
 
   let { rowCount, columnCount } = rowColumnCount;
-  testContext.set('tableColumns', generateColumns(columnCount, columnOptions));
-  testContext.set('tableRows', generateRows(rowCount, columnCount));
+  if (isNone(tableOptions.columns)) {
+    testContext.set('columns', generateColumns(columnCount, columnOptions));
+  }
+  if (isNone(tableOptions.rows)) {
+    testContext.set('rows', generateRows(rowCount, columnCount));
+  }
+
   testContext.set('rowComponent', rowComponent);
   testContext.render(fullTable);
   return wait();
