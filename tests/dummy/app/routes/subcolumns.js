@@ -3,12 +3,12 @@ import { generateAlphabetColumns, generateAlphabetRows } from '../utils/data-gen
 
 export default class CustomHeader extends Route {
   setupController(controller) {
-    const rows = generateAlphabetRows(10, 100);
+    let rows = generateAlphabetRows(10, 100);
     rows.forEach((row, index) => row.rowIndex = `Row ${index}`);
     controller.set('rows', rows);
 
-    const groupColumns = [];
-    const bodyColumns = generateAlphabetColumns(10);
+    let groupColumns = [];
+    let bodyColumns = generateAlphabetColumns(10);
 
     groupColumns.push({
       columnName: 'Row indexes',

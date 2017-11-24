@@ -282,7 +282,7 @@ export default class EmberTable2 extends Component {
    * minWidth value instead.
    */
   setColumnWidth(column, newWidth) {
-    const minWidth = get(column, 'minWidth') || 0;
+    let minWidth = get(column, 'minWidth') || 0;
     set(column, 'width', Math.max(newWidth, minWidth));
   }
 
@@ -318,10 +318,10 @@ export default class EmberTable2 extends Component {
 
     if (this.get('hasSubcolumns')) {
       columns.forEach((groupColumn) => {
-        const subcolumns = get(groupColumn, 'subcolumns');
+        let subcolumns = get(groupColumn, 'subcolumns');
         if (subcolumns) {
           // Each subcolumn has equal width.
-          const subcolumnWidth = get(groupColumn, 'width') / get(subcolumns, 'length');
+          let subcolumnWidth = get(groupColumn, 'width') / get(subcolumns, 'length');
           subcolumns.forEach((subcolumn) => {
             set(subcolumn, 'width', subcolumnWidth);
           });
@@ -337,9 +337,9 @@ export default class EmberTable2 extends Component {
 
   @computed('columns.@each.subcolumns')
   hasSubcolumns() {
-    const columns = this.get('columns');
+    let columns = this.get('columns');
     for (let i = 0; i < get(columns, 'length'); i++) {
-      const subcolumns = get(columns[i], 'subcolumns');
+      let subcolumns = get(columns[i], 'subcolumns');
       if (subcolumns !== undefined && subcolumns.length > 0) {
         return true;
       }
@@ -358,9 +358,9 @@ export default class EmberTable2 extends Component {
       return this.get('columns');
     }
 
-    const bodyColumns = [];
+    let bodyColumns = [];
     this.get('columns').forEach((column) => {
-      const subcolumns = get(column, 'subcolumns');
+      let subcolumns = get(column, 'subcolumns');
       if (isNone(subcolumns) || get(subcolumns, 'length') === 0) {
         bodyColumns.push(column);
       } else {
@@ -582,7 +582,7 @@ export default class EmberTable2 extends Component {
       return;
     }
 
-    if (this._currentColumnIndex != columnIndex) {
+    if (this._currentColumnIndex !== columnIndex) {
       move(this, 'bodyColumns', columnIndex, this._currentColumnIndex);
     }
 

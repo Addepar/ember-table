@@ -1,8 +1,8 @@
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export function generateAlphabetColumns(columnCount) {
-  const columns = [];
-  const columnWidth = 180;
+  let columns = [];
+  let columnWidth = 180;
 
   for (let j = 0; j < columnCount; j++) {
     columns.push({
@@ -18,9 +18,9 @@ export function generateAlphabetColumns(columnCount) {
 }
 
 export function generateAlphabetRows(columnCount, rowsCount) {
-  const rows = [];
+  let rows = [];
   for (let i = 0; i < rowsCount; i++) {
-    const obj = {};
+    let obj = {};
     for (let j = 0; j < columnCount; j++) {
       obj[ALPHABET[j % 26]] = ALPHABET[j % 26];
     }
