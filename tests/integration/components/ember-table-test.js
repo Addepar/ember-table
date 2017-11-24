@@ -216,8 +216,10 @@ test('Table with subcolumns', async function(assert) {
   let columnCount = 10;
   let columns = generateColumns(columnCount);
   // Add subcolumns
-  columns.forEach((column, index) => {
-    set(column, 'columnName', `Group ${index}`);
+
+  for (let i = 0; i < columns.length; i++) {
+    let column = columns[i];
+    set(column, 'columnName', `Group ${i}`);
     let subcolumns = [
       {
         columnName: 'Col 1',
@@ -228,10 +230,10 @@ test('Table with subcolumns', async function(assert) {
         valuePath: get(column, 'valuePath')
       }
     ];
-    if (index > 0) {
+    if (i > 0) {
       set(column, 'subcolumns', subcolumns);
     }
-  });
+  };
 
   let rows = generateRows(30, columnCount * 2);
   await setupFullTable(this, { columns, rows });
