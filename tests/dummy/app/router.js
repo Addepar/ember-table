@@ -12,6 +12,7 @@ Router.map(function() {
   this.route('custom-component');
   this.route('custom-header');
   this.route('addepar');
+  this.route('subcolumns');
 });
 
 export default Router;

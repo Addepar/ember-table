@@ -18,26 +18,32 @@
     z-index: 2;
   }
 
-  .et-tr {
+  .et-tbody .et-tr {
     display: inline-flex;
+    // Fixed td elements don't have classes, so we need to make sure we override the base styles no
+    // matter what
+    .et-td {
+      display: block;
+    }
   }
 
-  // Fixed td/th elements don't have classes, so we need
-  // to make sure we override the base styles no matter what
   td, th, .et-td, .et-th {
     box-sizing: border-box;
-    flex: 1 1 auto;
-    display: block;
+    vertical-align: inherit;
   }
 
   .et-td, .et-th {
     position: relative;
-
     &.is-fixed {
       position: absolute;
       left: 0;
-      margin-top: -1px;
       z-index: 1;
+    }
+  }
+
+  .et-th {
+    &.is-fixed {
+      top: 0px;
     }
   }
 

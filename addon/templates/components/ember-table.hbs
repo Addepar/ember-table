@@ -3,6 +3,7 @@
     {{#each columns as |column columnIndex|}}
       {{#ember-table-header
         column=column
+        tableHasSubcolumns=hasSubcolumns
         columnIndex=columnIndex
         numFixedColumns=numFixedColumns
         onColumnResized="onColumnResized"
@@ -15,6 +16,28 @@
       {{/ember-table-header}}
     {{/each}}
   </tr>
+
+  {{#if hasSubcolumns}}
+    <tr class="et-tr">
+      {{#each columns as |column columnIndex|}}
+        {{#each column.subcolumns as |subcolumn subcolumnIndex|}}
+          {{#ember-table-header
+            column=subcolumn
+            tableHasSubcolumns=false
+            columnIndex=columnIndex
+            numFixedColumns=numFixedColumns
+            onColumnResized="onColumnResized"
+            onColumnResizeEnded="onColumnResizeEnded"
+            onColumnReorder="onColumnReorder"
+            onColumnReorderEnds="onColumnReorderEnds"
+            onHeaderEvent="onHeaderEvent"
+            width=column.width
+          }}
+          {{/ember-table-header}}
+        {{/each}}
+      {{/each}}
+    </tr>
+  {{/if}}
 </thead>
 
   <div class="et-tbody-container" data-test-body-container>
@@ -39,7 +62,7 @@
 {{#if hasFooter}}
   <tfoot class="et-tfoot">
     <tr class="et-tr">
-      {{#each columns as |column columnIndex|}}
+      {{#each bodyColumns as |column columnIndex|}}
         {{#ember-table-footer
           column=column
           columnIndex=columnIndex

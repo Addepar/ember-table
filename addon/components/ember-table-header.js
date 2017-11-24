@@ -3,6 +3,8 @@ import EmberTableBaseCell from './ember-table-base-cell';
 
 import { property } from '../utils/class';
 import { action, computed } from 'ember-decorators/object';
+import { isNone } from '@ember/utils';
+import { get } from '@ember/object';
 
 import layout from '../templates/components/ember-table-header';
 
@@ -15,6 +17,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   @property layout = layout;
   @property tagName = 'th';
   @property classNameBindings = ['isFixed::et-th'];
+  @property attributeBindings = ['style:style', 'rowSpan:rowspan', 'columnSpan:colspan'];
 
   @property fixedColumnWidth = 0;
 
@@ -46,6 +49,30 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   @computed('column.isReorderable', 'isFixed')
   get enableColumnReorder() {
     return this.get('column.isReorderable') && !this.get('isFixed');
+  }
+
+  @computed('column.subcolumns.length')
+  columnSpan() {
+    let subcolumnsLength = get(this, 'column.subcolumns.length');
+    if (isNone(subcolumnsLength) || subcolumnsLength <= 1) {
+      return 1;
+    }
+
+    return subcolumnsLength;
+  }
+
+  @computed('tableHasSubcolumns', 'column.subcolumns.length')
+  rowSpan() {
+    if (this.get('tableHasSubcolumns') !== true) {
+      return 1;
+    }
+
+    let subcolumnsLength = get(this, 'column.subcolumns.length');
+    if (isNone(subcolumnsLength) || subcolumnsLength === 0) {
+      return 2;
+    }
+
+    return 1;
   }
 
   /**
