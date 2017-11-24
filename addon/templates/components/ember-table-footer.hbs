@@ -1,7 +1,23 @@
 {{#if isFixed}}
-  <div class="et-th is-fixed" style={{fixedCellStyle}}>
-    {{yield}}
+  <div class="et-tf is-fixed" style={{fixedCellStyle}}>
+    {{#if column.footerComponent}}
+      {{#component column.footerComponent
+        column=column
+        columnIndex=columnIndex
+      }}
+      {{/component}}
+    {{else}}
+      {{column.footerName}}
+    {{/if}}
   </div>
 {{else}}
-  {{yield}}
+  {{#if column.footerComponent}}
+    {{#component column.footerComponent
+      column=column
+      columnIndex=columnIndex
+    }}
+    {{/component}}
+  {{else}}
+    {{column.footerName}}
+  {{/if}}
 {{/if}}

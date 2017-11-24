@@ -1,7 +1,7 @@
 <thead class="et-thead">
   <tr class="et-tr">
     {{#each columns as |column columnIndex|}}
-      {{#ember-table-header
+      {{ember-table-header
         column=column
         tableHasSubcolumns=hasSubcolumns
         columnIndex=columnIndex
@@ -13,7 +13,6 @@
         onHeaderEvent="onHeaderEvent"
         width=column.width
       }}
-      {{/ember-table-header}}
     {{/each}}
   </tr>
 
@@ -21,7 +20,7 @@
     <tr class="et-tr">
       {{#each columns as |column columnIndex|}}
         {{#each column.subcolumns as |subcolumn subcolumnIndex|}}
-          {{#ember-table-header
+          {{ember-table-header
             column=subcolumn
             tableHasSubcolumns=false
             columnIndex=columnIndex
@@ -33,7 +32,6 @@
             onHeaderEvent="onHeaderEvent"
             width=column.width
           }}
-          {{/ember-table-header}}
         {{/each}}
       {{/each}}
     </tr>
@@ -62,15 +60,14 @@
 {{#if hasFooter}}
   <tfoot class="et-tfoot">
     <tr class="et-tr">
-      {{#each bodyColumns as |column columnIndex|}}
-        {{#ember-table-footer
-          column=column
-          columnIndex=columnIndex
-          numFixedColumns=numFixedColumns
-        }}
-          {{column.columnName}}
-        {{/ember-table-footer}}
-      {{/each}}
+    {{#each columns as |column columnIndex|}}
+      {{ember-table-footer
+        column=column
+        columnIndex=columnIndex
+        numFixedColumns=numFixedColumns
+        width=column.width
+      }}
+    {{/each}}
     </tr>
   </tfoot>
 {{/if}}

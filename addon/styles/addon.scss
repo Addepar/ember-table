@@ -32,7 +32,7 @@
     vertical-align: inherit;
   }
 
-  .et-td, .et-th {
+  .et-td, .et-th, .et-tf {
     position: relative;
     &.is-fixed {
       position: absolute;
@@ -43,7 +43,13 @@
 
   .et-th {
     &.is-fixed {
-      top: 0px;
+      top: 0;
+    }
+  }
+
+  .et-tf {
+    &.is-fixed {
+      bottom: 0;
     }
   }
 

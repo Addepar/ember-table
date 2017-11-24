@@ -51,6 +51,7 @@ export default Controller.extend({
 
     arr.pushObject({
       columnName: 'Column id',
+      footerName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
       cellComponent: 'tree-table-grouping-cell'
@@ -59,6 +60,7 @@ export default Controller.extend({
     for (let j = 0; j < COLUMN_COUNT; j++) {
       arr.pushObject({
         columnName: `Col ${alphabet[j % 26]}`,
+        footerName: `Col ${alphabet[j % 26]}`,
         valuePath: alphabet[j % 26],
         width: columnWidth,
         isResizable: true,

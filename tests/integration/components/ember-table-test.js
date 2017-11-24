@@ -255,3 +255,24 @@ test('Table with subcolumns', async function(assert) {
     assert.equal(children[i].textContent.trim(), expectColumnName, 'Subcolumn name is correct');
   }
 });
+
+test('Custom footer', async function(assert) {
+  let columnCount = 10;
+  let columns = generateColumns(columnCount);
+  for (let i = 0; i < columns.length; i++) {
+    columns[i].footerComponent = 'custom-footer';
+  }
+
+  await setupFullTable(this, { columns, hasFooter: true });
+
+  assert.equal(findAll('table tfoot').length, 1, 'Footer is present in the table');
+  let footer = find('table tfoot tr');
+  let children = footer.getElementsByTagName('td');
+  for (let i = 0; i < children.length; i++) {
+    assert.equal(
+      children[i].getElementsByClassName('custom-footer').length,
+      1,
+      'Custom footer class is present.'
+    );
+  }
+});
