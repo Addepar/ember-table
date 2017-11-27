@@ -47,7 +47,6 @@
 
         as |rowValue rowIndex|
       }}
-
         {{yield (hash
           value=rowValue
           index=rowIndex
@@ -57,18 +56,21 @@
     </tbody>
   </div>
 
-{{#if hasFooter}}
+{{#if footerRows}}
   <tfoot class="et-tfoot">
-    <tr class="et-tr">
-    {{#each columns as |column columnIndex|}}
-      {{ember-table-footer
-        column=column
-        columnIndex=columnIndex
-        numFixedColumns=numFixedColumns
-        width=column.width
-      }}
+    {{#each footerRows as |footerRow footerRowIndex|}}
+      <tr class="et-tr">
+      {{#each bodyColumns as |column columnIndex|}}
+        {{ember-table-footer
+          column=column
+          rowValue=footerRow
+          rowIndex=footerRowIndex
+          columnIndex=columnIndex
+          numFixedColumns=numFixedColumns
+        }}
+      {{/each}}
+      </tr>
     {{/each}}
-    </tr>
   </tfoot>
 {{/if}}
 

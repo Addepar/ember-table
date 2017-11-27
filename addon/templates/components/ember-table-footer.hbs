@@ -3,21 +3,27 @@
     {{#if column.footerComponent}}
       {{#component column.footerComponent
         column=column
+        rowValue=rowValue
+        rowIndex=rowIndex
         columnIndex=columnIndex
+        footerValue=footerValue
       }}
       {{/component}}
     {{else}}
-      {{column.footerName}}
+      {{footerValue}}
     {{/if}}
   </div>
 {{else}}
   {{#if column.footerComponent}}
     {{#component column.footerComponent
       column=column
+      rowValue=rowValue
+      rowIndex=rowIndex
       columnIndex=columnIndex
+      footerValue=footerValue
     }}
     {{/component}}
   {{else}}
-    {{column.footerName}}
+    {{footerValue}}
   {{/if}}
 {{/if}}

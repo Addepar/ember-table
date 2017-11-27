@@ -259,11 +259,16 @@ test('Table with subcolumns', async function(assert) {
 test('Custom footer', async function(assert) {
   let columnCount = 10;
   let columns = generateColumns(columnCount);
+  let footerRows = emberA();
+  let row = {};
   for (let i = 0; i < columns.length; i++) {
-    columns[i].footerComponent = 'custom-footer';
+    let column = columns[i];
+    column.footerComponent = 'custom-footer';
+    row[get(column, 'valuePath')] = `Footer ${i}`;
   }
+  footerRows.pushObject(row);
 
-  await setupFullTable(this, { columns, hasFooter: true });
+  await setupFullTable(this, { columns, footerRows });
 
   assert.equal(findAll('table tfoot').length, 1, 'Footer is present in the table');
   let footer = find('table tfoot tr');
