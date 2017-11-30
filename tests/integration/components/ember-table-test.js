@@ -19,6 +19,7 @@ import {
 } from 'ember-native-dom-helpers';
 
 import tableHelpers from '../../helpers/table-helper';
+import TablePage from 'ember-table/test-support/pages/ember-table-page'
 
 moduleForComponent('ember-table', 'Integration | Component | ember table', {
   integration: true
@@ -210,7 +211,10 @@ test('Test custom row', async function(assert) {
 
 test('Custom row height', async function(assert) {
   await setupFullTable(this, { staticHeight: true, estimateRowHeight: 100 }, {});
-  assert.equal(find('tbody tr').offsetHeight, 100, 'Row height is set to custom height.');
+
+  let table = TablePage.create();
+
+  assert.equal(table.body.rows.eq(0).height, 100, 'Row height is set to custom height.');
 });
 
 test('Table with subcolumns', async function(assert) {
