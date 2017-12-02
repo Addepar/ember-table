@@ -10,6 +10,7 @@ import CellProxy from '../utils/cell-proxy';
 import { move } from '../utils/array';
 import { get, set } from '@ember/object';
 import { isNone } from '@ember/utils';
+import { A as emberA } from '@ember/array';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
@@ -31,12 +32,6 @@ export default class EmberTable2 extends Component {
   @property tagName = 'table';
 
   @property layout = layout;
-
-  /**
-   * Defines if this table has a footer or not.
-   * // TODO(Billy): replace this with an option to pass in footer component.
-   */
-  @property hasFooter = false;
 
   /**
    * Indicates how many left columns will be fixed. With current implementation, only 1 single
@@ -81,6 +76,11 @@ export default class EmberTable2 extends Component {
    * same height equivalent to estimateRowHeight.
    */
   @property staticHeight = false;
+
+  /**
+   * Optional footer content displayed in the footer area.
+   */
+  @property footerRows = null;
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -358,13 +358,13 @@ export default class EmberTable2 extends Component {
       return this.get('columns');
     }
 
-    let bodyColumns = [];
+    let bodyColumns = emberA();
     this.get('columns').forEach((column) => {
       let subcolumns = get(column, 'subcolumns');
       if (isNone(subcolumns) || get(subcolumns, 'length') === 0) {
-        bodyColumns.push(column);
+        bodyColumns.pushObject(column);
       } else {
-        subcolumns.forEach((subcolumn) => bodyColumns.push(subcolumn));
+        subcolumns.forEach((subcolumn) => bodyColumns.pushObject(subcolumn));
       }
     });
     return bodyColumns;

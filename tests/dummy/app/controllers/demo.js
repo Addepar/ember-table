@@ -6,18 +6,18 @@ import EmberObject from '@ember/object';
 import { A as emberA } from '@ember/array';
 
 const COLUMN_COUNT = 13;
+const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export default Controller.extend({
   showTable: true,
   showPanel: false,
 
   getRow(title) {
-    let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let row = EmberObject.create({
       'id': title
     });
     for (let j = 0; j < COLUMN_COUNT; j++) {
-      row.set(alphabet[j], alphabet[j]);
+      row.set(ALPHABET[j], ALPHABET[j]);
     }
     return row;
   },
@@ -46,11 +46,11 @@ export default Controller.extend({
 
   columns: computed(function() {
     let arr = emberA();
-    let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
     let columnWidth = 180;
 
     arr.pushObject({
       columnName: 'Column id',
+      footerName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
       cellComponent: 'tree-table-grouping-cell'
@@ -58,8 +58,9 @@ export default Controller.extend({
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
       arr.pushObject({
-        columnName: `Col ${alphabet[j % 26]}`,
-        valuePath: alphabet[j % 26],
+        columnName: `Col ${ALPHABET[j % 26]}`,
+        footerName: `Col ${ALPHABET[j % 26]}`,
+        valuePath: ALPHABET[j % 26],
         width: columnWidth,
         isResizable: true,
         isReorderable: true
@@ -67,6 +68,16 @@ export default Controller.extend({
     }
 
     return arr;
+  }),
+
+  footerRows: computed(function() {
+    let footerRows = emberA();
+    let row = { id: 'Column Id' };
+    for (let j = 0; j < COLUMN_COUNT; j++) {
+      row[ALPHABET[j % 26]] = ALPHABET[j % 26];
+    }
+    footerRows.pushObject(row);
+    return footerRows;
   }),
 
   actions: {

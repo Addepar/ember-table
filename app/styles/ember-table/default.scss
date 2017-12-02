@@ -17,7 +17,7 @@ $table-hover-color: #e5edf8;
     border-top: solid 1px $table-border-color;
   }
 
-  .et-th, .et-td {
+  .et-th, .et-td, .et-tf {
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 20px;
@@ -30,12 +30,12 @@ $table-hover-color: #e5edf8;
   }
 
   .et-td {
-    &:first-child {
+    &.is-fixed {
       margin-top: -1px;
     }
   }
 
-  .et-th, th {
+  .et-th, th, .et-tf {
     padding: 5px 0px 3px 0px;
     background-color: $table-header-background-color;
     font-family: 'Univers LT W01 65 Bold';
@@ -43,13 +43,13 @@ $table-hover-color: #e5edf8;
     font-weight: bold;
     text-align: center;
     box-sizing: border-box;
-
-    &.et-th {
-      border-right: solid 1px $table-border-color;
-    }
     &:not(.is-fixed) {
       border-bottom: 1px solid $table-border-color;
     }
+  }
+
+  .et-th, .et-tf {
+    border-right: solid 1px $table-border-color;
   }
 
   .et-tr:hover {

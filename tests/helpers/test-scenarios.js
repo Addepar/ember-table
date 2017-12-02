@@ -101,7 +101,7 @@ export const fullTable = hbs`
       tableResizeMode=tableResizeMode
       staticHeight=staticHeight
       estimateRowHeight=estimateRowHeight
-
+      footerRows=footerRows
       as |r|
     }}
 

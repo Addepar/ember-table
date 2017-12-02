@@ -102,3 +102,18 @@ specify it in the template.
 
 The rendered table is a plain table without any styling. You can define styling for your own table.
 If you want to use default table style, import the `ember-table/default` SASS file.
+
+### Optional Footer
+To use footer for your table, pass `footerRows` param to ember table. Each element in `footerRows` represents a row in table footer. The footer row takes `valuePath` field in each column to render data for each footer cell, similar to table body.
+
+### Custom header and custom footer
+By default Ember table cell renderes simple text defined inside each `column`. To custom table header or footer, you can pass in `headerComponent` and `footerComponent` fields in each column data.
+#### Usage
+```
+{
+  headerComponent: 'complex-header',
+  footerComponent: 'custom-footer',
+  valuePath: 'url',
+  width: 180
+}
+```
