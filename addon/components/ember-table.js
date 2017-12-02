@@ -129,6 +129,12 @@ export default class EmberTable2 extends Component {
    */
   @property _width = 0;
 
+  /**
+   * A variable that tells vertical-collection if all table rows should be rendered. If true,
+   * occlusion is disabled and there may be significant performance penalties.
+   */
+  @property renderAll = false;
+
   @property lastSelectedIndex = -1;
 
   @computed('numFixedColumns')
