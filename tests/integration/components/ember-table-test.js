@@ -20,6 +20,7 @@ import {
 
 import tableHelpers from '../../helpers/table-helper';
 import TablePage from 'ember-table/test-support/pages/ember-table-page';
+import { collection, hasClass } from 'ember-classy-page-object';
 
 moduleForComponent('ember-table', 'Integration | Component | ember table', {
   integration: true
@@ -227,9 +228,15 @@ for (let customHeader of customHeaderTests) {
 test('Test custom row', async function(assert) {
   await setupFullTable(this, {}, {}, DEFAULT_ROW_COLUMN_COUNT, 'custom-row');
 
-  let tablePage = TablePage.create();
+  let tablePage = TablePage.extend({
+    body: {
+      rows: collection({
+        isCustomRow: hasClass('custom-row')
+      })
+    }
+  }).create();
 
-  assert.ok(tablePage.body.rows.eq(0).containsClass('custom-row'), 'Table has custom row');
+  assert.ok(tablePage.body.rows.eq(0).isCustomRow, 'Table has custom row');
 });
 
 test('Custom row height', async function(assert) {

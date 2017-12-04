@@ -1,8 +1,6 @@
-import Ceibo from 'ceibo';
-
 import PageObject from 'ember-classy-page-object';
-import EmberTableBodyPage from './ember-table-body-page';
-import EmberTableHeaderPage from './ember-table-header-page';
+import EmberTableBodyPage from './-private/ember-table-body-page';
+import EmberTableHeaderPage from './-private/ember-table-header-page';
 
 /**
  * Ember Table page object. Use this page object and its nested header/body object to retrieve table

@@ -1,8 +1,8 @@
-import PageObject, { collection, count } from 'ember-classy-page-object';
+import { collection, count } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 import { getter } from 'ember-cli-page-object/macros';
 
-export default PageObject.extend({
+export default {
   scope: 'thead',
 
   /**
@@ -37,4 +37,4 @@ export default PageObject.extend({
   width: getter(function() {
     return findElement(this).offsetWidth;
   })
-});
+};

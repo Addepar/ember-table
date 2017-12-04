@@ -1,9 +1,9 @@
-import PageObject, { collection, hasClass } from 'ember-classy-page-object';
+import { collection, hasClass } from 'ember-classy-page-object';
 import { findAll } from 'ember-native-dom-helpers';
 import { findElement } from 'ember-classy-page-object/extend';
-import { getter } from 'ember-cli-page-object/macros';
+import { get } from '@ember/object';
 
-export default PageObject.extend({
+export default {
   scope: 'tbody',
 
   /**
@@ -23,9 +23,9 @@ export default PageObject.extend({
     /**
      * Returns the height of selected row.
      */
-    height: getter(function() {
+    get height() {
       return findElement(this).offsetHeight;
-    }),
+    },
 
     /**
      * Checks if the selected row contains a specific class.
@@ -41,4 +41,4 @@ export default PageObject.extend({
   getCell(rowIndex, columnIndex) {
     return this.rows.eq(rowIndex).cells.eq(columnIndex);
   }
-});
+};
