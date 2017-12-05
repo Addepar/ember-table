@@ -1,7 +1,8 @@
 # Ember Table
 
 An addon to support large data set and a number of features around table. `Ember Table` can
-handle over 100,000 rows without and rendering or performance issue.
+handle over 100,000 rows without and rendering or performance issue. This version of `Ember Table`
+supports Ember 1.11 to latest version of Ember.
 
 ## Install
 
@@ -104,10 +105,16 @@ The rendered table is a plain table without any styling. You can define styling 
 If you want to use default table style, import the `ember-table/default` SASS file.
 
 ### Optional Footer
-To use footer for your table, pass `footerRows` param to ember table. Each element in `footerRows` represents a row in table footer. The footer row takes `valuePath` field in each column to render data for each footer cell, similar to table body.
+To use footer for your table, pass `footerRows` param to ember table. Each element in `footerRows`
+represents a row in table footer. The footer row takes `valuePath` field in each column to render
+data for each footer cell, similar to table body.
 
 ### Custom header and custom footer
-By default Ember table cell renderes simple text defined inside each `column`. To custom table header or footer, you can pass in `headerComponent` and `footerComponent` fields in each column data.
+By default Ember table header renders text defined by `columnName` or `footerValue` inside each
+`column`. To customize table header or footer, you can pass in `headerComponent` and
+`footerComponent` fields in each column data. When the `headerComponent`(or `footerComponent`) is
+defined, the `columnName`(or `footerValue`) field is ignored.
+
 #### Usage
 ```
 {
@@ -117,3 +124,19 @@ By default Ember table cell renderes simple text defined inside each `column`. T
   width: 180
 }
 ```
+
+## Migrating from old Ember table
+To support smooth migration from old version of Ember table (support only till ember 1.11), we have
+move the old source code to separate package [ember-table-legacy](https://github.com/Addepar/ember-table-legacy).
+It's a separate package from this Ember table package and you can install it using yarn or npm.
+This allows you to have 2 versions of ember table in your code base and you can start your migrating
+one table at at time. The recommended migration steps are as follows (if you are using ember 1.11):
+
+1) Rename all your ember-table import to ember-table-legacy. (for example:
+`import EmberTable from 'ember-table/components/ember-table'` becomes
+`import EmberTableLegacy from 'ember-table-legacy/components/ember-table-legacy'`. Remove reference
+of `ember-table` in `package.json`.
+2) Install `ember-table-legacy` using `yarn add ember-table-legacy` or `npm install ember-table-legacy`
+3) Run your app to make sure that it works without issue.
+4) Reinstall the latest version of this `ember-table` repo.
+5) You can start using new version of Ember table from now or replacing the old ones.
