@@ -117,3 +117,11 @@ By default Ember table cell renderes simple text defined inside each `column`. T
   width: 180
 }
 ```
+## Migrating from old Ember table
+To support smooth migration from old version of Ember table (support only till ember 1.11), we have move the old source code to separate package [ember-table-legacy](https://github.com/Addepar/ember-table-legacy). It's a separate package from this Ember table package and you can install it using yarn or npm. This allows you to have 2 versions of ember table in your code base and you can start your migrating one table at at time. The recommended migration steps is as follow (if you are using ember 1.11):
+
+1) Rename all your ember-table impot to ember-table-legacy. (for example: `import EmberTable from 'ember-table/components/ember-table'` becomes `import EmberTableLegacy from 'ember-table-legacy/components/ember-table-legacy'`. Remove reference of `ember-table` in `package.json`.
+2) Install `ember-table-legacy` using `yarn add ember-table-legacy` or `npm install ember-table-legacy`
+3) Run your app to make sure that it works without issue.
+4) Install this `ember-table` repo
+5) You can start using new version of Ember table from now or replace the old ones.
