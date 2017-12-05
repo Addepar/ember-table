@@ -1,7 +1,7 @@
 # Ember Table
 
 An addon to support large data set and a number of features around table. `Ember Table` can
-handle over 100,000 rows without and rendering or performance issue.
+handle over 100,000 rows without and rendering or performance issue. This version of `Ember Table` supports 1.11 to latest version of Ember.
 
 ## Install
 
