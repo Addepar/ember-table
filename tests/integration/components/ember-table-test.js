@@ -19,6 +19,8 @@ import {
 } from 'ember-native-dom-helpers';
 
 import tableHelpers from '../../helpers/table-helper';
+import TablePage from 'ember-table/test-support/pages/ember-table-page';
+import { collection, hasClass } from 'ember-classy-page-object';
 
 moduleForComponent('ember-table', 'Integration | Component | ember table', {
   integration: true
@@ -52,28 +54,32 @@ for (let customHeader of customHeaderTests) {
   test(`Test ${headerTest}resizing column`, async function(assert) {
     await setupFullTable(this, {}, { headerComponent: customHeader });
 
-    let originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
+    let tablePage = TablePage.create();
+
+    let originalWidth = tablePage.header.columns.eq(1).width;
     await tableHelpers.resizeColumn(2, 30);
 
-    assert.equal(tableHelpers.getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
+    assert.equal(tablePage.header.columns.eq(1).width - originalWidth, 30, 'Column size is updated');
 
     // Fixed column can also be resized
-    originalWidth = tableHelpers.getHeaderElement(1).offsetWidth;
+    originalWidth = tablePage.header.columns.eq(0).width;
     await tableHelpers.resizeColumn(1, 30);
 
-    assert.equal(tableHelpers.getHeaderElement(1).offsetWidth - originalWidth, 30, 'Fixed column size is updated');
+    assert.equal(tablePage.header.columns.eq(0).width - originalWidth, 30, 'Fixed column size is updated');
   });
 
   // Test resizing fluid column
   test(`Test ${headerTest}resizing fluid column`, async function(assert) {
     await setupFullTable(this, { headerComponent: customHeader, columnMode: 'fluid' });
 
-    let originalWidth = tableHelpers.getHeaderElement(2).offsetWidth;
+    let tablePage = TablePage.create();
+
+    let originalWidth = tablePage.header.columns.eq(1).width;
     await tableHelpers.resizeColumn(2, 30);
 
-    assert.equal(tableHelpers.getHeaderElement(2).offsetWidth - originalWidth, 30, 'Column size is updated');
+    assert.equal(tablePage.header.columns.eq(1).width - originalWidth, 30, 'Column size is updated');
     assert.equal(
-      tableHelpers.getHeaderElement(3).offsetWidth - originalWidth,
+      tablePage.header.columns.eq(2).width - originalWidth,
       -30,
       'Next column shrinks in fluid mode'
     );
@@ -83,22 +89,32 @@ for (let customHeader of customHeaderTests) {
   test(`Test ${headerTest}reordering columns with fixed column`, async function(assert) {
     await setupFullTable(this);
 
+    let tablePage = TablePage.create();
+
     // Case 1: Try to swap column A with fixed column. The table should prevent that action.
     await tableHelpers.moveTableColumn(2, -1);
 
-    assert.equal(tableHelpers.getHeaderElement(2).innerText.trim(), 'Col A', 'Second column does not change');
-    assert.equal(tableHelpers.getHeaderElement(1).innerText.trim(), 'Column id', 'First column does not change');
+    assert.equal(
+      tablePage.header.columns.eq(1).text.trim(),
+      'Col A',
+      'Second column does not change'
+    );
+    assert.equal(
+      tablePage.header.columns.eq(0).text.trim(),
+      'Column id',
+      'First column does not change'
+    );
 
     // Case 2: Move column A -> B
     await tableHelpers.moveTableColumn(2, 1);
 
     assert.equal(
-      find(tableHelpers.getHeaderElement(2)).innerText.trim(),
+      tablePage.header.columns.eq(1).text.trim(),
       'Col B',
       'Second column is swapped'
     );
     assert.equal(
-      find('.et-thead tr th:nth-child(3)').innerText.trim(),
+      tablePage.header.columns.eq(2).text.trim(),
       'Col A',
       'Third column is swapped'
     );
@@ -111,29 +127,29 @@ for (let customHeader of customHeaderTests) {
       headerComponent: customHeader
     });
 
+    let tablePage = TablePage.create();
+
     // With table without fixed column, you can swap first column.
     await tableHelpers.moveTableColumn(2, -1);
 
     assert.equal(
-      tableHelpers.getHeaderElement(2).innerText.trim(),
+      tablePage.header.columns.eq(1).text.trim(),
       'Column id',
       'Second column is swapped'
     );
-    assert.equal(
-      tableHelpers.getHeaderElement(1).innerText.trim(),
-      'Col A',
-      'First column is swapped'
-    );
+    assert.equal(tablePage.header.columns.eq(0).text.trim(), 'Col A', 'First column is swapped');
   });
 
   test(`Test ${headerTest}column resize - equal column mode`, async function(assert) {
     await setupFullTable(this, { tableResizeMode: 'equal_column' }, { headerComponent: customHeader });
 
-    let headerCount = findAll('.et-thead tr th').length;
-    let expectedWidth = find('.et-thead tr').offsetWidth / headerCount;
-    for (let i = 1; i <= headerCount; i++) {
+    let tablePage = TablePage.create();
+
+    let headerCount = tablePage.header.columnCount;
+    let expectedWidth = tablePage.header.width / headerCount;
+    for (let i = 0; i < headerCount; i++) {
       assert.ok(
-        Math.abs(tableHelpers.getHeaderElement(i).offsetWidth - expectedWidth) <= 1,
+        Math.abs(tablePage.header.columns.eq(i).width - expectedWidth) <= 1,
         'Table header have same width in equal resize mode.'
       );
     }
@@ -142,10 +158,12 @@ for (let customHeader of customHeaderTests) {
   test(`Test ${headerTest}column resize - none mode`, async function(assert) {
     await setupFullTable(this, { tableResizeMode: 'none' }, { headerComponent: customHeader });
 
-    let headerCount = findAll('.et-thead tr th').length;
-    for (let i = 1; i <= headerCount; i++) {
+    let tablePage = TablePage.create();
+
+    let headerCount = tablePage.header.columnCount;
+    for (let i = 0; i < headerCount; i++) {
       assert.equal(
-        tableHelpers.getHeaderElement(i).offsetWidth,
+        tablePage.header.columns.eq(i).width,
         DEFAULT_COLUMN_WIDTH,
         'Table header keeps origial width in none resize mode.'
       );
@@ -160,17 +178,19 @@ for (let customHeader of customHeaderTests) {
       { rowCount: 20, columnCount: 3 }
     );
 
-    let headerCount = findAll('.et-thead tr th').length;
-    let tableWidth = find('.et-thead').offsetWidth;
-    let firstColumnWidth = tableHelpers.getHeaderElement(1).offsetWidth;
+    let tablePage = TablePage.create();
+
+    let headerCount = tablePage.header.columnCount;
+    let tableWidth = tablePage.header.width;
+    let firstColumnWidth = tablePage.header.columns.eq(0).width;
 
     assert.ok(
       Math.abs(tableWidth - firstColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,
       'First column takes extra space in first column resize mode.'
     );
-    for (let i = 2; i <= headerCount; i++) {
+    for (let i = 1; i < headerCount; i++) {
       assert.equal(
-        tableHelpers.getHeaderElement(i).offsetWidth,
+        tablePage.header.columns.eq(i).width,
         DEFAULT_COLUMN_WIDTH,
         'Other columns keep same width in first column resize mode.'
       );
@@ -185,17 +205,19 @@ for (let customHeader of customHeaderTests) {
       { rowCount: 20, columnCount: 3 }
     );
 
-    let headerCount = findAll('.et-thead tr th').length;
-    let tableWidth = find('.et-thead').offsetWidth;
-    let lastColumnWidth = tableHelpers.getHeaderElement(headerCount).offsetWidth;
+    let tablePage = TablePage.create();
+
+    let headerCount = tablePage.header.columnCount;
+    let tableWidth = tablePage.header.width;
+    let lastColumnWidth = tablePage.header.columns.eq(headerCount - 1).width;
 
     assert.ok(
       Math.abs(tableWidth - lastColumnWidth - DEFAULT_COLUMN_WIDTH * (headerCount - 1)) <= 1,
       'Last column takes extra space in last column resize mode.'
     );
-    for (let i = 1; i < headerCount; i++) {
+    for (let i = 0; i < headerCount - 1; i++) {
       assert.equal(
-        tableHelpers.getHeaderElement(i).offsetWidth,
+        tablePage.header.columns.eq(i).width,
         DEFAULT_COLUMN_WIDTH,
         'Other columns keep same width in last column resize mode.'
       );
@@ -205,12 +227,24 @@ for (let customHeader of customHeaderTests) {
 
 test('Test custom row', async function(assert) {
   await setupFullTable(this, {}, {}, DEFAULT_ROW_COLUMN_COUNT, 'custom-row');
-  assert.ok(find('tbody tr').className.indexOf('custom-row') >= 0, 'Table has custom row');
+
+  let tablePage = TablePage.extend({
+    body: {
+      rows: collection({
+        isCustomRow: hasClass('custom-row')
+      })
+    }
+  }).create();
+
+  assert.ok(tablePage.body.rows.eq(0).isCustomRow, 'Table has custom row');
 });
 
 test('Custom row height', async function(assert) {
   await setupFullTable(this, { staticHeight: true, estimateRowHeight: 100 }, {});
-  assert.equal(find('tbody tr').offsetHeight, 100, 'Row height is set to custom height.');
+
+  let tablePage = TablePage.create();
+
+  assert.equal(tablePage.body.rows.eq(0).height, 100, 'Row height is set to custom height.');
 });
 
 test('Table with subcolumns', async function(assert) {
