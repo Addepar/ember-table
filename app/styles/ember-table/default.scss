@@ -9,34 +9,46 @@ $table-hover-color: #e5edf8;
   border: solid 1px #ddd;
 
   .et-thead {
-    border-bottom: solid 1px $table-border-color;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1)
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+
   }
 
   .et-tfoot {
     border-top: solid 1px $table-border-color;
   }
 
-  .et-th, .et-td {
+  .et-th, .et-td, .et-tf {
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 20px;
   }
 
-  .et-td {
-    text-align: left;
+  td, .et-td {
+    border-bottom: $table-border-color 1px dotted;
+    border-right: $table-border-color 1px solid;
     background-color: white;
-    border-bottom: 1px dotted $table-border-color;
-    border-right: 1px solid $table-border-color;
   }
 
-  .et-th {
+  .et-td {
+    &.is-fixed {
+      margin-top: -1px;
+    }
+  }
+
+  .et-th, th, .et-tf {
+    padding: 5px 0px 3px 0px;
     background-color: $table-header-background-color;
     font-family: 'Univers LT W01 65 Bold';
     line-height: 1.4;
     font-weight: bold;
     text-align: center;
-    padding: 5px 0px 3px 0px;
+    box-sizing: border-box;
+    &:not(.is-fixed) {
+      border-bottom: 1px solid $table-border-color;
+    }
+  }
+
+  .et-th, .et-tf {
     border-right: solid 1px $table-border-color;
   }
 

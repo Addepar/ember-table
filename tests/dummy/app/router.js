@@ -11,7 +11,9 @@ Router.map(function() {
   this.route('simple');
   this.route('custom-component');
   this.route('custom-header');
+  this.route('custom-footer');
   this.route('addepar');
+  this.route('subcolumns');
 });
 
 export default Router;

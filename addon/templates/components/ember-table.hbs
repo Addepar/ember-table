@@ -1,8 +1,9 @@
 <thead class="et-thead">
   <tr class="et-tr">
     {{#each columns as |column columnIndex|}}
-      {{#ember-table-header
+      {{ember-table-header
         column=column
+        tableHasSubcolumns=hasSubcolumns
         columnIndex=columnIndex
         numFixedColumns=numFixedColumns
         onColumnResized="onColumnResized"
@@ -12,9 +13,29 @@
         onHeaderEvent="onHeaderEvent"
         width=column.width
       }}
-      {{/ember-table-header}}
     {{/each}}
   </tr>
+
+  {{#if hasSubcolumns}}
+    <tr class="et-tr">
+      {{#each columns as |column columnIndex|}}
+        {{#each column.subcolumns as |subcolumn subcolumnIndex|}}
+          {{ember-table-header
+            column=subcolumn
+            tableHasSubcolumns=false
+            columnIndex=columnIndex
+            numFixedColumns=numFixedColumns
+            onColumnResized="onColumnResized"
+            onColumnResizeEnded="onColumnResizeEnded"
+            onColumnReorder="onColumnReorder"
+            onColumnReorderEnds="onColumnReorderEnds"
+            onHeaderEvent="onHeaderEvent"
+            width=column.width
+          }}
+        {{/each}}
+      {{/each}}
+    </tr>
+  {{/if}}
 </thead>
 
   <div class="et-tbody-container" data-test-body-container>
@@ -26,7 +47,6 @@
 
         as |rowValue rowIndex|
       }}
-
         {{yield (hash
           value=rowValue
           index=rowIndex
@@ -36,19 +56,21 @@
     </tbody>
   </div>
 
-{{#if hasFooter}}
+{{#if footerRows}}
   <tfoot class="et-tfoot">
-    <tr class="et-tr">
-      {{#each columns as |column columnIndex|}}
-        {{#ember-table-footer
+    {{#each footerRows as |footerRow footerRowIndex|}}
+      <tr class="et-tr">
+      {{#each bodyColumns as |column columnIndex|}}
+        {{ember-table-footer
           column=column
+          rowValue=footerRow
+          rowIndex=footerRowIndex
           columnIndex=columnIndex
           numFixedColumns=numFixedColumns
         }}
-          {{column.columnName}}
-        {{/ember-table-footer}}
       {{/each}}
-    </tr>
+      </tr>
+    {{/each}}
   </tfoot>
 {{/if}}
 
