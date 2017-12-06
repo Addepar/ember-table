@@ -81,7 +81,7 @@ export default class LinkedListTree extends EmberObject {
       newNextNode.previous = row;
     }
 
-    row.collapse = true;
+    Ember.set(row, 'collapse', true);
     this.updateParentNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
     this.notifyPropertyChange('[]');
   }
@@ -103,7 +103,7 @@ export default class LinkedListTree extends EmberObject {
     }
     row.next = row.originalNext;
 
-    row.collapse = false;
+    Ember.set(row, 'collapse', false);
     this.updateParentNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
     this.notifyPropertyChange('[]');
   }

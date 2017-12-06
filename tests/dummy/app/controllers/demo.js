@@ -40,8 +40,10 @@ export default Controller.extend({
 
     let root = new TreeNode(null, null);
     root.addChild(topRow);
+    const tree = new LinkedListTree(root);
+    tree.collapseNode(topRow);
 
-    return new LinkedListTree(root);
+    return tree;
   }),
 
   columns: computed(function() {
