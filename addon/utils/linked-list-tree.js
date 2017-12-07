@@ -1,5 +1,5 @@
 import { property } from '../utils/class';
-import EmberObject from '@ember/object';
+import EmberObject, { set } from '@ember/object';
 
 export default class LinkedListTree extends EmberObject {
   @property pointerNode = null;
@@ -81,7 +81,7 @@ export default class LinkedListTree extends EmberObject {
       newNextNode.previous = row;
     }
 
-    row.collapse = true;
+    set(row, 'collapse', true);
     this.updateParentNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
     this.notifyPropertyChange('[]');
   }
@@ -103,7 +103,7 @@ export default class LinkedListTree extends EmberObject {
     }
     row.next = row.originalNext;
 
-    row.collapse = false;
+    set(row, 'collapse', false);
     this.updateParentNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
     this.notifyPropertyChange('[]');
   }
