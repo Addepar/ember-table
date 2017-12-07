@@ -26,13 +26,6 @@ export default {
     get height() {
       return findElement(this).offsetHeight;
     },
-
-    /**
-     * Checks if the selected row contains a specific class.
-     */
-    containsClass(clazz) {
-      return findElement(this).className.indexOf(clazz) >= 0;
-    }
   }),
 
   /**
@@ -40,5 +33,17 @@ export default {
    */
   getCell(rowIndex, columnIndex) {
     return this.rows.eq(rowIndex).cells.eq(columnIndex);
+  },
+
+  footer: {
+    scope: 'tfoot',
+
+    rows: collection({
+      scope: 'tr',
+
+      cells: collection({
+        scope: 'td'
+      })
+    })
   }
 };

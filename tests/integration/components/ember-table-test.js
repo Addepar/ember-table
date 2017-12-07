@@ -57,15 +57,16 @@ for (let customHeader of customHeaderTests) {
     let tablePage = TablePage.create();
 
     let originalWidth = tablePage.header.columns.eq(1).width;
-    await tableHelpers.resizeColumn(2, 30);
-
+    await tablePage.header.columns.eq(1).resize(30);
     assert.equal(tablePage.header.columns.eq(1).width - originalWidth, 30, 'Column size is updated');
 
     // Fixed column can also be resized
     originalWidth = tablePage.header.columns.eq(0).width;
-    await tableHelpers.resizeColumn(1, 30);
-
-    assert.equal(tablePage.header.columns.eq(0).width - originalWidth, 30, 'Fixed column size is updated');
+    await tablePage.header.columns.eq(0).resize(30);
+    assert.equal(
+      tablePage.header.columns.eq(0).width - originalWidth, 30,
+      'Fixed column size is updated'
+    );
   });
 
   // Test resizing fluid column
@@ -75,7 +76,7 @@ for (let customHeader of customHeaderTests) {
     let tablePage = TablePage.create();
 
     let originalWidth = tablePage.header.columns.eq(1).width;
-    await tableHelpers.resizeColumn(2, 30);
+    await tablePage.header.columns.eq(1).resize(30);
 
     assert.equal(tablePage.header.columns.eq(1).width - originalWidth, 30, 'Column size is updated');
     assert.equal(

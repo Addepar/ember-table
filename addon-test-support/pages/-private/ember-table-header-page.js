@@ -2,6 +2,12 @@ import { collection, count } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 import { getter } from 'ember-cli-page-object/macros';
 
+import {
+  pressElement,
+  moveMouse,
+  releasePress
+} from './drag-helper';
+
 export default {
   scope: 'thead',
 
@@ -24,6 +30,15 @@ export default {
     height: getter(function() {
       return findElement(this).offsetHeight;
     }),
+
+    async resize(deltaX) {
+      let header = findElement(this);
+      let box = header.getBoundingClientRect();
+      let startX = box.right - 5;
+      await pressElement(header, startX, header.clientHeight / 2);
+      await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
+      await moveMouse(header, startX + deltaX, header.clientHeight / 2);
+    }
   }),
 
   /**
