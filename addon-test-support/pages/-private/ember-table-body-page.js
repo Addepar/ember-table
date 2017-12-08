@@ -33,17 +33,5 @@ export default {
    */
   getCell(rowIndex, columnIndex) {
     return this.rows.eq(rowIndex).cells.eq(columnIndex);
-  },
-
-  footer: {
-    scope: 'tfoot',
-
-    rows: collection({
-      scope: 'tr',
-
-      cells: collection({
-        scope: 'td'
-      })
-    })
   }
 };
