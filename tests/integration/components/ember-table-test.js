@@ -18,7 +18,6 @@ import {
   scrollTo
 } from 'ember-native-dom-helpers';
 
-import tableHelpers from '../../helpers/table-helper';
 import TablePage from 'ember-table/test-support/pages/ember-table-page';
 import { collection, hasClass } from 'ember-classy-page-object';
 
@@ -64,7 +63,8 @@ for (let customHeader of customHeaderTests) {
     originalWidth = tablePage.header.columns.eq(0).width;
     await tablePage.header.columns.eq(0).resize(30);
     assert.equal(
-      tablePage.header.columns.eq(0).width - originalWidth, 30,
+      tablePage.header.columns.eq(0).width - originalWidth,
+      30,
       'Fixed column size is updated'
     );
   });
@@ -93,7 +93,7 @@ for (let customHeader of customHeaderTests) {
     let tablePage = TablePage.create();
 
     // Case 1: Try to swap column A with fixed column. The table should prevent that action.
-    await tableHelpers.moveTableColumn(2, -1);
+    await tablePage.header.columns.eq(1).move(-1);
 
     assert.equal(
       tablePage.header.columns.eq(1).text.trim(),
@@ -107,8 +107,7 @@ for (let customHeader of customHeaderTests) {
     );
 
     // Case 2: Move column A -> B
-    await tableHelpers.moveTableColumn(2, 1);
-
+    await tablePage.header.columns.eq(1).move(1);
     assert.equal(
       tablePage.header.columns.eq(1).text.trim(),
       'Col B',
@@ -131,8 +130,7 @@ for (let customHeader of customHeaderTests) {
     let tablePage = TablePage.create();
 
     // With table without fixed column, you can swap first column.
-    await tableHelpers.moveTableColumn(2, -1);
-
+    await tablePage.header.columns.eq(1).move(-1);
     assert.equal(
       tablePage.header.columns.eq(1).text.trim(),
       'Column id',

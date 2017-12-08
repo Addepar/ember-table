@@ -31,6 +31,9 @@ export default {
       return findElement(this).offsetHeight;
     }),
 
+    /**
+     * Resizes this column by dragging right border several pixels.
+     */
     async resize(deltaX) {
       let header = findElement(this);
       let box = header.getBoundingClientRect();
@@ -38,6 +41,22 @@ export default {
       await pressElement(header, startX, header.clientHeight / 2);
       await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
       await moveMouse(header, startX + deltaX, header.clientHeight / 2);
+    },
+
+    /**
+     * Moves this header to left (or right) by several indexes.
+     */
+    async move(deltaPosition) {
+      let header = findElement(this);
+      let box = header.getBoundingClientRect();
+      let width = header.offsetLeft;
+      let startX = (box.right + box.left) / 2;
+      let deltaX = deltaPosition * width;
+
+      await pressElement(header, startX, header.clientHeight / 2);
+      await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
+      await moveMouse(header, startX + deltaX, header.clientHeight / 2);
+      await releasePress(header, startX + deltaX, header.clientHeight / 2);
     }
   }),
 
