@@ -93,7 +93,7 @@ for (let customHeader of customHeaderTests) {
     let tablePage = TablePage.create();
 
     // Case 1: Try to swap column A with fixed column. The table should prevent that action.
-    await tablePage.header.columns.eq(1).move(-1);
+    await tablePage.header.columns.eq(1).moveByIndex(-1);
 
     assert.equal(
       tablePage.header.columns.eq(1).text.trim(),
@@ -107,7 +107,7 @@ for (let customHeader of customHeaderTests) {
     );
 
     // Case 2: Move column A -> B
-    await tablePage.header.columns.eq(1).move(1);
+    await tablePage.header.columns.eq(1).moveByIndex(1);
     assert.equal(
       tablePage.header.columns.eq(1).text.trim(),
       'Col B',
@@ -130,7 +130,7 @@ for (let customHeader of customHeaderTests) {
     let tablePage = TablePage.create();
 
     // With table without fixed column, you can swap first column.
-    await tablePage.header.columns.eq(1).move(-1);
+    await tablePage.header.columns.eq(1).moveByIndex(-1);
     assert.equal(
       tablePage.header.columns.eq(1).text.trim(),
       'Column id',

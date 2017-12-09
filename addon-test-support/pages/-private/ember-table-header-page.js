@@ -46,13 +46,26 @@ export default {
     /**
      * Moves this header to left (or right) by several indexes.
      */
-    async move(deltaPosition) {
+    async moveByIndex(deltaPosition) {
+      let header = findElement(this);
+      let box = header.getBoundingClientRect();
+      let width = header.offsetLeft;
+      let deltaX = deltaPosition * width;
+      let startX = (box.right + box.left) / 2;
+
+      await this._moveByPixel(header, startX, deltaX);
+    },
+
+    async moveByPixel(deltaX) {
       let header = findElement(this);
       let box = header.getBoundingClientRect();
       let width = header.offsetLeft;
       let startX = (box.right + box.left) / 2;
-      let deltaX = deltaPosition * width;
 
+      await this._moveByPixel(header, startX, deltaX);
+    },
+
+    async _moveByPixel(header, startX, deltaX) {
       await pressElement(header, startX, header.clientHeight / 2);
       await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
       await moveMouse(header, startX + deltaX, header.clientHeight / 2);
