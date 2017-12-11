@@ -10,7 +10,7 @@ export default class EmberTableFooter extends EmberTableBaseCell {
   @property classNameBindings = ['isFixed::et-tf'];
 
   @computed('column.valuePath', 'rowValue')
-  footerValue() {
+  get footerValue() {
     let valuePath = this.get('column.valuePath');
     let rowValue = this.get('rowValue');
 

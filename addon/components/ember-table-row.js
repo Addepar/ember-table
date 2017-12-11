@@ -42,7 +42,7 @@ export default class EmberTableRow extends Component {
   }
 
   @computed('columns.[]')
-  cells() {
+  get cells() {
     let _rowComponent = this;
     let _cache = this.get('cellCache');
     let columns = this.get('columns');
@@ -79,7 +79,7 @@ export default class EmberTableRow extends Component {
   }
 
   @computed('row.api.staticRowHeight')
-  style() {
+  get style() {
     let staticRowHeight = this.get('row.api.staticRowHeight');
     if (!isNone(staticRowHeight)) {
       return `height: ${staticRowHeight}px;`;

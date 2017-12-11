@@ -52,7 +52,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   }
 
   @computed('column.subcolumns.length')
-  columnSpan() {
+  get columnSpan() {
     let subcolumnsLength = get(this, 'column.subcolumns.length');
     if (isNone(subcolumnsLength) || subcolumnsLength <= 1) {
       return 1;
@@ -62,7 +62,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   }
 
   @computed('tableHasSubcolumns', 'column.subcolumns.length')
-  rowSpan() {
+  get rowSpan() {
     if (this.get('tableHasSubcolumns') !== true) {
       return 1;
     }
