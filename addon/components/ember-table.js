@@ -331,12 +331,12 @@ export default class EmberTable2 extends Component {
   }
 
   @computed('hasFixedColumn', 'bodyColumns.firstObject.width')
-  fixedColumnWidth() {
+  get fixedColumnWidth() {
     return this.get('hasFixedColumn') === true ? this.get('bodyColumns.firstObject.width') : 0;
   }
 
   @computed('columns.@each.subcolumns')
-  hasSubcolumns() {
+  get hasSubcolumns() {
     let columns = this.get('columns');
     for (let i = 0; i < get(columns, 'length'); i++) {
       let subcolumns = get(columns[i], 'subcolumns');
@@ -353,7 +353,7 @@ export default class EmberTable2 extends Component {
    * concatentation of all subcolumns.
    */
   @computed('hasSubcolumns', 'columns.@each.subcolumns')
-  bodyColumns() {
+  get bodyColumns() {
     if (this.get('hasSubcolumns') !== true) {
       return this.get('columns');
     }
@@ -379,7 +379,7 @@ export default class EmberTable2 extends Component {
     'bodyColumns.firstObject.width',
     'allColumnWidths',
     '_width'
-  ) horizontalScrollWrapperStyle() {
+  ) get horizontalScrollWrapperStyle() {
     let columns = this.get('bodyColumns');
     let visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
     let left = this.get('hasFixedColumn') ? get(columns[0], 'width') : 0;
@@ -392,7 +392,7 @@ export default class EmberTable2 extends Component {
    * table's width and the table and the element can share same scrolling.
    */
   @computed('hasFixedColumn', 'bodyColumns.@each.width')
-  horizontalScrollStyle() {
+  get horizontalScrollStyle() {
     let style = '';
     let hasFixedColumn = this.get('hasFixedColumn');
     let columns = this.get('bodyColumns');
@@ -407,7 +407,7 @@ export default class EmberTable2 extends Component {
   }
 
   @computed('columns.@each.width')
-  allColumnWidths() {
+  get allColumnWidths() {
     let columns = this.get('columns');
     let sum = 0;
     for (let i = 0; i < columns.length; i++) {
@@ -426,7 +426,7 @@ export default class EmberTable2 extends Component {
     'estimateRowHeight',
     'staticHeight'
   )
-  api() {
+  get api() {
     let staticHeight = this.get('staticHeight');
     let staticRowHeight = null;
     if (staticHeight === true) {

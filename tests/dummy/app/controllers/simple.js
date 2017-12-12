@@ -8,7 +8,7 @@ const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 export default class SimpleController extends Controller {
   @computed
-  rows() {
+  get rows() {
     let rows = emberA();
     for (let i = 0; i < 1000; i++) {
       let obj = {};
@@ -22,7 +22,7 @@ export default class SimpleController extends Controller {
   }
 
   @computed
-  columns() {
+  get columns() {
     let columns = emberA();
     let columnWidth = 180;
 
