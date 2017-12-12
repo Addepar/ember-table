@@ -175,10 +175,8 @@ export default class EmberTable2 extends Component {
     });
 
     this._tableResizeSensor = new ResizeSensor(this.element, () => {
-      run(() => {
-        this.set('_width', this.element.offsetWidth);
-        this.fillupColumn();
-      });
+      this.set('_width', this.element.offsetWidth);
+      this.fillupColumn();
     });
   }
 
