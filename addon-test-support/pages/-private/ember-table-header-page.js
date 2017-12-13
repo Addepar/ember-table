@@ -44,7 +44,10 @@ export default {
     },
 
     /**
-     * Moves this header to left (or right) by several indexes.
+     * Moves this header to left (or right).
+     *
+     * @params deltaPosition Indicates how many index this column should move. Tthis is a positive
+     *    number if the column is moved to its right and negative if it's moved to its left.
      */
     async moveByIndex(deltaPosition) {
       let header = findElement(this);
@@ -56,6 +59,12 @@ export default {
       await this._moveByPixel(header, startX, deltaX);
     },
 
+    /**
+     * Moves this header to left (or right) by a certain pixel.
+     *
+     * @params deltaPosition Indicates how many pixels this column should move. Tthis is a positive
+     *    number if the column is moved to its right and negative if it's moved to its left.
+     */
     async moveByPixel(deltaX) {
       let header = findElement(this);
       let box = header.getBoundingClientRect();
