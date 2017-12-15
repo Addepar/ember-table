@@ -340,6 +340,7 @@ export default class EmberTable2 extends Component {
   @computed('columns.@each.subcolumns')
   get hasSubcolumns() {
     let columns = this.get('columns');
+
     for (let i = 0; i < get(columns, 'length'); i++) {
       let subcolumns = get(columns[i], 'subcolumns');
       if (subcolumns !== undefined && subcolumns.length > 0) {
@@ -384,7 +385,12 @@ export default class EmberTable2 extends Component {
   ) get horizontalScrollWrapperStyle() {
     let columns = this.get('bodyColumns');
     let visibility = this.get('_width') < this.get('allColumnWidths') ? 'visibility' : 'hidden';
-    let left = this.get('hasFixedColumn') ? get(columns[0], 'width') : 0;
+    let left;
+    if (get(columns, 'length') > 0 && this.get('hasFixedColumn')) {
+      left = get(columns[0], 'width');
+    } else {
+      left = 0;
+    }
 
     return htmlSafe(`visibility: ${visibility}; left: ${left}px; right: 0px;`);
   }
