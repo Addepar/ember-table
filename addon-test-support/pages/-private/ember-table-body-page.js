@@ -26,13 +26,6 @@ export default {
     get height() {
       return findElement(this).offsetHeight;
     },
-
-    /**
-     * Checks if the selected row contains a specific class.
-     */
-    containsClass(clazz) {
-      return findElement(this).className.indexOf(clazz) >= 0;
-    }
   }),
 
   /**
