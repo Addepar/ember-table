@@ -11,6 +11,7 @@ import { move } from '../utils/array';
 import { get, set } from '@ember/object';
 import { isNone } from '@ember/utils';
 import { A as emberA } from '@ember/array';
+import { scheduler, Token } from 'ember-raf-scheduler';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
@@ -147,6 +148,8 @@ export default class EmberTable2 extends Component {
     this.cellProxyClass = class extends CellProxy {};
 
     this.set('selectedRows', []);
+
+    this.token = new Token();
   }
 
   didInsertElement() {
@@ -159,6 +162,7 @@ export default class EmberTable2 extends Component {
   willDestroyElement() {
     this.teardownColumnFillup();
     this.teardownScrollSync();
+    this.token.cancel();
 
     super.willDestroyElement(...arguments);
   }
@@ -167,15 +171,17 @@ export default class EmberTable2 extends Component {
    * Sets up handlers to fillup the table container to its full width
    */
   setupColumnFillup() {
-    requestAnimationFrame(() => {
-      run(() => {
-        this.set('_width', this.element.offsetWidth);
-        this.fillupColumn();
-      });
-    });
+    scheduler.schedule('sync', () => {
+      this.set('_width', this.element.offsetWidth);
+      this.fillupColumn();
+    }, this.token);
 
     this._tableResizeSensor = new ResizeSensor(this.element, () => {
       run(() => {
+        if (this.get('isDestroying')) {
+          return;
+        }
+
         this.set('_width', this.element.offsetWidth);
         this.fillupColumn();
       });
