@@ -584,11 +584,14 @@ export default class EmberTable2 extends Component {
   }
 
   @action
-  onColumnReorderEnds(columnIndex) {
+  onColumnReorderEnded(columnIndex) {
     if (this.get('hasSubcolumns')) {
       // Disable column reordering when table has subcolumn.
       return;
     }
+
+    let newIndex = this._currentColumnIndex;
+    let oldIndex = columnIndex;
 
     if (this._currentColumnIndex !== columnIndex) {
       move(this, 'bodyColumns', columnIndex, this._currentColumnIndex);
@@ -603,6 +606,9 @@ export default class EmberTable2 extends Component {
     this._headerGhostElement = null;
     this._headerAlignBar = null;
     this.element.classList.remove('et-unselectable');
+
+    // Send action up to controller
+    this.sendAction('onColumnSwapped', oldIndex, newIndex);
   }
 
   @action

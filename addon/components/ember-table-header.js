@@ -149,7 +149,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
 
       switch (_columnState) {
         case COLUMN_REORDERING:
-          this.sendAction('onColumnReorderEnds', columnIndex, clientX - _firstTouchX);
+          this.sendAction('onColumnReorderEnded', columnIndex, clientX - _firstTouchX);
           break;
 
         case COLUMN_RESIZE:
