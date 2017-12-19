@@ -360,3 +360,41 @@ test('Footer event', async function(assert) {
   let outerFooterCell = findElement(tablePage.footer.rows.eq(0).cells.eq(1));
   click(outerFooterCell.getElementsByClassName('custom-footer')[0]);
 });
+
+test('Swapping column event', async function(assert) {
+  let rowCount = 20;
+  let columnCount = 15;
+  this.set('columns', generateColumns(columnCount));
+  this.set('rows', generateRows(rowCount, columnCount));
+
+  this.on('onColumnReordered', () => {
+    assert.ok(true, 'Column swap event is sent to outer controller');
+  });
+  this.render(hbs`
+    <div style="height: 500px;">
+      {{#ember-table
+        columns=columns
+        rows=rows
+        estimateRowHeight=13
+        onColumnReordered='onColumnReordered'
+        as |r|
+      }}
+        {{#ember-table-row
+          row=r
+          as |cell|
+        }}
+          {{cell.value}}
+        {{/ember-table-row}}
+      {{/ember-table}}
+    </div>
+  `);
+
+  let tablePage = TablePage.create();
+  // await tablePage.header.columns.eq(1).moveByIndex(1);
+  await tablePage.header.columns.eq(1).moveByIndex(-1);
+  assert.equal(
+    tablePage.header.columns.eq(1).text.trim(),
+    'Column id',
+    'Second column is swapped'
+  );
+});
