@@ -657,4 +657,9 @@ export default class EmberTable2 extends Component {
   onHeaderEvent() {
     this.sendAction('onHeaderEvent', ...arguments);
   }
+
+  @action
+  onFooterEvent() {
+    this.sendAction('onFooterEvent', ...arguments);
+  }
 }
