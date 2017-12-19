@@ -2,6 +2,8 @@ import { moduleForComponent, test } from 'ember-qunit';
 import wait from 'ember-test-helpers/wait';
 import { get, set } from '@ember/object';
 import { A as emberA } from '@ember/array';
+import { findElement } from 'ember-classy-page-object/extend';
+import hbs from 'htmlbars-inline-precompile';
 
 import {
   simpleTable,
@@ -15,7 +17,8 @@ import {
 import {
   find,
   findAll,
-  scrollTo
+  scrollTo,
+  click
 } from 'ember-native-dom-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table-page';
@@ -128,7 +131,6 @@ for (let customHeader of customHeaderTests) {
     });
 
     let tablePage = TablePage.create();
-
     // With table without fixed column, you can swap first column.
     await tablePage.header.columns.eq(1).moveByIndex(-1);
     assert.equal(
@@ -289,9 +291,7 @@ test('Table with subcolumns', async function(assert) {
   }
 });
 
-test('Custom footer', async function(assert) {
-  let columnCount = 10;
-  let columns = generateColumns(columnCount);
+function generateCustomFooterRows(columns) {
   let footerRows = emberA();
   let row = {};
   for (let i = 0; i < columns.length; i++) {
@@ -300,7 +300,13 @@ test('Custom footer', async function(assert) {
     row[get(column, 'valuePath')] = `Footer ${i}`;
   }
   footerRows.pushObject(row);
+  return footerRows;
+}
 
+test('Custom footer', async function(assert) {
+  let columnCount = 10;
+  let columns = generateColumns(columnCount);
+  let footerRows = generateCustomFooterRows(columns);
   await setupFullTable(this, { columns, footerRows });
 
   assert.equal(findAll('table tfoot').length, 1, 'Footer is present in the table');
@@ -313,4 +319,44 @@ test('Custom footer', async function(assert) {
       'Custom footer class is present.'
     );
   }
+});
+
+test('Footer event', async function(assert) {
+  assert.expect(1);
+
+  let columnCount = 10;
+  let columns = generateColumns(columnCount);
+  let footerRows = generateCustomFooterRows(columns);
+
+  this.set('columns', columns);
+  this.set('rows', generateRows(10, columnCount));
+  this.set('footerRows', footerRows);
+
+  this.on('onTableFooterEvent', () => {
+    assert.ok(true, 'Footer event is sent to outer controller');
+  });
+  this.render(hbs`
+    <div style="height: 500px;">
+      {{#ember-table
+        columns=columns
+        rows=rows
+        estimateRowHeight=13
+        footerRows=footerRows
+        onFooterEvent='onTableFooterEvent'
+        as |r|
+      }}
+        {{#ember-table-row
+          row=r
+          as |cell|
+        }}
+          {{cell.value}}
+        {{/ember-table-row}}
+      {{/ember-table}}
+    </div>
+  `);
+
+  let tablePage = TablePage.create();
+
+  let outerFooterCell = findElement(tablePage.footer.rows.eq(0).cells.eq(1));
+  click(outerFooterCell.getElementsByClassName('custom-footer')[0]);
 });
