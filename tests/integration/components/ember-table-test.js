@@ -367,7 +367,7 @@ test('Swapping column event', async function(assert) {
   this.set('columns', generateColumns(columnCount));
   this.set('rows', generateRows(rowCount, columnCount));
 
-  this.on('onColumnSwapped', () => {
+  this.on('onColumnReordered', () => {
     assert.ok(true, 'Column swap event is sent to outer controller');
   });
   this.render(hbs`
@@ -376,7 +376,7 @@ test('Swapping column event', async function(assert) {
         columns=columns
         rows=rows
         estimateRowHeight=13
-        onColumnSwapped='onColumnSwapped'
+        onColumnReordered='onColumnReordered'
         as |r|
       }}
         {{#ember-table-row

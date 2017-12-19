@@ -608,7 +608,7 @@ export default class EmberTable2 extends Component {
     this.element.classList.remove('et-unselectable');
 
     // Send action up to controller
-    this.sendAction('onColumnSwapped', oldIndex, newIndex);
+    this.sendAction('onColumnReordered', oldIndex, newIndex);
   }
 
   @action
