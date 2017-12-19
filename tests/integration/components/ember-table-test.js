@@ -324,10 +324,6 @@ test('Custom footer', async function(assert) {
 test('Footer event', async function(assert) {
   assert.expect(1);
 
-  let callback = () => {
-    assert.ok(true, 'Footer event is sent to outer controller');
-  };
-
   let columnCount = 10;
   let columns = generateColumns(columnCount);
   let footerRows = generateCustomFooterRows(columns);
@@ -336,49 +332,28 @@ test('Footer event', async function(assert) {
   this.set('rows', generateRows(10, columnCount));
   this.set('footerRows', footerRows);
 
-  if (Ember.VERSION >= '1.13') { // eslint-disable-line no-restricted-globals, no-undef
-    this.set('onTableFooterEvent', callback);
-    this.render(hbs`
-      <div style="height: 500px;">
-        {{#ember-table
-          columns=columns
-          rows=rows
-          estimateRowHeight=13
-          footerRows=footerRows
-          onFooterEvent=(action onTableFooterEvent)
-          as |r|
+  this.on('onTableFooterEvent', () => {
+    assert.ok(true, 'Footer event is sent to outer controller');
+  });
+  this.render(hbs`
+    <div style="height: 500px;">
+      {{#ember-table
+        columns=columns
+        rows=rows
+        estimateRowHeight=13
+        footerRows=footerRows
+        onFooterEvent='onTableFooterEvent'
+        as |r|
+      }}
+        {{#ember-table-row
+          row=r
+          as |cell|
         }}
-          {{#ember-table-row
-            row=r
-            as |cell|
-          }}
-            {{cell.value}}
-          {{/ember-table-row}}
-        {{/ember-table}}
-      </div>
-    `);
-  } else {
-    this.on('onTableFooterEvent', callback);
-    this.render(hbs`
-      <div style="height: 500px;">
-        {{#ember-table
-          columns=columns
-          rows=rows
-          estimateRowHeight=13
-          footerRows=footerRows
-          onFooterEvent='onTableFooterEvent'
-          as |r|
-        }}
-          {{#ember-table-row
-            row=r
-            as |cell|
-          }}
-            {{cell.value}}
-          {{/ember-table-row}}
-        {{/ember-table}}
-      </div>
-    `);
-  }
+          {{cell.value}}
+        {{/ember-table-row}}
+      {{/ember-table}}
+    </div>
+  `);
 
   let tablePage = TablePage.create();
 
