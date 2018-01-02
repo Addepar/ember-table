@@ -398,3 +398,38 @@ test('Swapping column event', async function(assert) {
     'Second column is swapped'
   );
 });
+
+test('Destroying table ignores resize event and does not trigger error', async function(assert) {
+  assert.expect(0);
+
+  let rowCount = 20;
+  let columnCount = 15;
+  this.set('columns', generateColumns(columnCount));
+  this.set('rows', generateRows(rowCount, columnCount));
+  this.set('showComponent', true);
+
+  this.render(hbs`
+    {{#if showComponent}}
+      <div id="container" style="height: 500px;">
+        {{#ember-table
+          columns=columns
+          rows=rows
+          estimateRowHeight=13
+          as |r|
+        }}
+
+          {{#ember-table-row
+            row=r
+
+            as |cell|
+          }}
+            {{cell.value}}
+          {{/ember-table-row}}
+        {{/ember-table}}
+      </div>
+    {{/if}}
+  `);
+
+  find('#container').style.height = '600px';
+  this.set('showComponent', false);
+});
