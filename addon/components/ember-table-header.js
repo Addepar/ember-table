@@ -85,7 +85,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
 
     let hammer = new Hammer(this.element);
 
-    hammer.add(new Hammer.Press({ time: 10 }));
+    hammer.add(new Hammer.Press({ time: 0 }));
 
     hammer.on('press', (ev) => {
       let box = this.element.getBoundingClientRect();
