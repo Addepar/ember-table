@@ -1,78 +1,82 @@
-<thead class="et-thead">
-  <tr class="et-tr">
-    {{#each columns as |column columnIndex|}}
-      {{ember-table-header
-        column=column
-        tableHasSubcolumns=hasSubcolumns
-        columnIndex=columnIndex
-        numFixedColumns=numFixedColumns
-        onColumnResized="onColumnResized"
-        onColumnResizeEnded="onColumnResizeEnded"
-        onColumnReorder="onColumnReorder"
-        onColumnReorderEnded="onColumnReorderEnded"
-        onHeaderEvent="onHeaderEvent"
-        width=column.width
-      }}
-    {{/each}}
-  </tr>
-
-  {{#if hasSubcolumns}}
+<div class="et-thead-container">
+  <thead class="et-thead">
     <tr class="et-tr">
       {{#each columns as |column columnIndex|}}
-        {{#each column.subcolumns as |subcolumn subcolumnIndex|}}
-          {{ember-table-header
-            column=subcolumn
-            tableHasSubcolumns=false
-            columnIndex=columnIndex
-            numFixedColumns=numFixedColumns
-            onColumnResized="onColumnResized"
-            onColumnResizeEnded="onColumnResizeEnded"
-            onColumnReorder="onColumnReorder"
-            onColumnReorderEnded="onColumnReorderEnded"
-            onHeaderEvent="onHeaderEvent"
-            width=column.width
-          }}
-        {{/each}}
-      {{/each}}
-    </tr>
-  {{/if}}
-</thead>
-
-  <div class="et-tbody-container" data-test-body-container>
-    <tbody class="et-tbody">
-      {{#vertical-collection rows
-        estimateHeight=estimateRowHeight
-        staticHeight=staticHeight
-        containerSelector=".et-tbody-container"
-
-        as |rowValue rowIndex|
-      }}
-        {{yield (hash
-          value=rowValue
-          index=rowIndex
-          api=api)
-        }}
-      {{/vertical-collection}}
-    </tbody>
-  </div>
-
-{{#if footerRows}}
-  <tfoot class="et-tfoot">
-    {{#each footerRows as |footerRow footerRowIndex|}}
-      <tr class="et-tr">
-      {{#each bodyColumns as |column columnIndex|}}
-        {{ember-table-footer
+        {{ember-table-header
           column=column
-          rowValue=footerRow
-          rowIndex=footerRowIndex
+          tableHasSubcolumns=hasSubcolumns
           columnIndex=columnIndex
           numFixedColumns=numFixedColumns
-          onFooterEvent="onFooterEvent"
+          onColumnResized="onColumnResized"
+          onColumnResizeEnded="onColumnResizeEnded"
+          onColumnReorder="onColumnReorder"
+          onColumnReorderEnded="onColumnReorderEnded"
+          onHeaderEvent="onHeaderEvent"
+          width=column.width
         }}
       {{/each}}
+    </tr>
+
+    {{#if hasSubcolumns}}
+      <tr class="et-tr">
+        {{#each columns as |column columnIndex|}}
+          {{#each column.subcolumns as |subcolumn subcolumnIndex|}}
+            {{ember-table-header
+              column=subcolumn
+              tableHasSubcolumns=false
+              columnIndex=columnIndex
+              numFixedColumns=numFixedColumns
+              onColumnResized="onColumnResized"
+              onColumnResizeEnded="onColumnResizeEnded"
+              onColumnReorder="onColumnReorder"
+              onColumnReorderEnded="onColumnReorderEnded"
+              onHeaderEvent="onHeaderEvent"
+              width=column.width
+            }}
+          {{/each}}
+        {{/each}}
       </tr>
-    {{/each}}
-  </tfoot>
+    {{/if}}
+  </thead>
+</div>
+
+<div class="et-tbody-container" data-test-body-container>
+  <tbody class="et-tbody">
+    {{#vertical-collection rows
+      estimateHeight=estimateRowHeight
+      staticHeight=staticHeight
+      containerSelector=".et-tbody-container"
+
+      as |rowValue rowIndex|
+    }}
+      {{yield (hash
+        value=rowValue
+        index=rowIndex
+        api=api)
+      }}
+    {{/vertical-collection}}
+  </tbody>
+</div>
+
+{{#if footerRows}}
+  <div class="et-tfoot-container">
+    <tfoot class="et-tfoot">
+      {{#each footerRows as |footerRow footerRowIndex|}}
+        <tr class="et-tr">
+        {{#each bodyColumns as |column columnIndex|}}
+          {{ember-table-footer
+            column=column
+            rowValue=footerRow
+            rowIndex=footerRowIndex
+            columnIndex=columnIndex
+            numFixedColumns=numFixedColumns
+            onFooterEvent="onFooterEvent"
+          }}
+        {{/each}}
+        </tr>
+      {{/each}}
+    </tfoot>
+  </div>
 {{/if}}
 
 <div class="et-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
