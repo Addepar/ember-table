@@ -1,9 +1,15 @@
 import EmberTableBaseCell from './ember-table-base-cell';
-import { property } from '../utils/class';
+import { readOnly } from 'ember-decorators/object';
+import { alias } from 'ember-decorators/object/computed';
+import { className } from 'ember-decorators/component';
 
 import layout from '../templates/components/ember-table-cell';
 
 export default class EmberTableCell extends EmberTableBaseCell {
-  @property layout = layout;
-  @property classNameBindings = ['isFixed::et-td'];
+  layout = layout;
+
+  // We have to alias because the class name changes per base cell type
+  @className('', 'et-td')
+  @readOnly @alias('isFixed') _isFixed;
+
 }

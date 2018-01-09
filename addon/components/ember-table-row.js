@@ -1,48 +1,53 @@
-import { get } from '@ember/object';
+import { get, set } from '@ember/object';
 import Component from '@ember/component';
-import { computed } from 'ember-decorators/object';
-import { classNames } from 'ember-decorators/component';
-import { property } from '../utils/class';
+import { computed, readOnly } from 'ember-decorators/object';
+import { alias } from 'ember-decorators/object/computed';
+import { attribute, className, classNames, tagName } from 'ember-decorators/component';
+
+import { argument } from '@ember-decorators/argument';
+import { required } from '@ember-decorators/argument/validation';
+import { type } from '@ember-decorators/argument/type';
 
 import layout from '../templates/components/ember-table-row';
 import { A as emberA } from '@ember/array';
-import { readOnly } from '@ember/object/computed';
 import { isNone } from '@ember/utils';
 
+@tagName('tr')
 @classNames('et-tr')
 export default class EmberTableRow extends Component {
-  @property layout = layout;
-  @property tagName = 'tr';
-
-  @property _cells = null;
-  @property classNameBindings = ['isSelected'];
-  @property attributeBindings = ['style:style'];
+  layout = layout;
 
   /**
    * Component that for table cell. This outer cell is a <td> component that wraps outside the
    * rendered cell view.
    */
-  @property _outerCellComponent = 'ember-table-cell';
-  @property _cells = null;
+  _outerCellComponent = 'ember-table-cell';
+  _cells = null;
 
-  @property selected = false;
+  @argument
+  @required
+  @type('object')
+  row;
 
-  @property columns = readOnly('row.api.columns');
-  @property cellProxyClass = readOnly('row.api.cellProxyClass');
-  @property cellCache = readOnly('row.api.cellCache');
-  @property numFixedColumns = readOnly('row.api.numFixedColumns');
-  @property selectedRows = readOnly('row.api.selectedRows');
+  @readOnly @alias('row.api.columns') columns;
+  @readOnly @alias('row.api.cellProxyClass') cellProxyClass;
+  @readOnly @alias('row.api.cellCache') cellCache;
+  @readOnly @alias('row.api.numFixedColumns') numFixedColumns;
+  @readOnly @alias('row.api.selectedRows') selectedRows;
 
-  @property rowValue = readOnly('row.value');
-  @property rowIndex = readOnly('row.index');
+  @readOnly @alias('row.value') rowValue;
+  @readOnly @alias('row.index') rowIndex;
 
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
+
     this._cells = emberA();
   }
 
   @computed('columns.[]')
   get cells() {
+    let CellProxyClass = this.get('cellProxyClass');
+
     let _rowComponent = this;
     let _cache = this.get('cellCache');
     let columns = this.get('columns');
@@ -52,7 +57,7 @@ export default class EmberTableRow extends Component {
 
     if (numColumns !== _cells.length) {
       while (_cells.length < numColumns) {
-        _cells.push(this.get('cellProxyClass').create({ _cache, _rowComponent }));
+        _cells.push(CellProxyClass.create({ _cache, _rowComponent }));
       }
 
       while (_cells.length > numColumns) {
@@ -64,20 +69,22 @@ export default class EmberTableRow extends Component {
       let cell = _cells[i];
       let column = columns.objectAt !== undefined ? columns.objectAt(i) : columns[i];
 
-      cell.set('column', column);
-      cell.set('columnIndex', i);
-      cell.set('row', this.get('row'));
-      cell.set('targetTable', this.get('row.api.targetObject'));
+      set(cell, 'column', column);
+      set(cell, 'columnIndex', i);
+      set(cell, 'row', this.get('row'));
+      set(cell, 'targetTable', this.get('row.api.targetObject'));
     }
 
     return _cells;
   }
 
+  @className
   @computed('selectedRows.[]', 'rowValue')
   get isSelected() {
     return this.get('selectedRows').indexOf(this.get('rowValue')) >= 0;
   }
 
+  @attribute
   @computed('row.api.staticRowHeight')
   get style() {
     let staticRowHeight = this.get('row.api.staticRowHeight');

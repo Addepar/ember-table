@@ -8,32 +8,28 @@ import { SUPPORTS_NEW_COMPUTED } from 'ember-compatibility-helpers';
 
 import { computed, readOnly } from 'ember-decorators/object';
 import { alias } from 'ember-decorators/object/computed';
-import { property } from '../utils/class';
 
 export default class CellProxy extends EmberObject {
-  @property column = null;
+  column = null;
+  columnIndex = null;
 
-  @property _cache = null;
-  @property _rowComponent = null;
+  row = null;
+  targetTable = null;
 
   @readOnly @alias('_rowComponent.rowValue') rowValue;
   @readOnly @alias('_rowComponent.rowIndex') rowIndex;
 
-  init() {
-    this.setProperties = Object.create(null);
-  }
-
   @computed('rowValue', 'column.valuePath')
   get value() {
-    let rowValue = this.get('rowValue');
-    let valuePath = this.get('column.valuePath');
+    let rowValue = get(this, 'rowValue');
+    let valuePath = get(this, 'column.valuePath');
 
     return get(rowValue, valuePath);
   }
 
   set value(value) {
-    let rowValue = this.get('rowValue');
-    let valuePath = this.get('column.valuePath');
+    let rowValue = get(this, 'rowValue');
+    let valuePath = get(this, 'column.valuePath');
 
     set(rowValue, valuePath, value);
   }
@@ -42,9 +38,9 @@ export default class CellProxy extends EmberObject {
     let prototype = Object.getPrototypeOf(this);
 
     let setValueFunc = (context, k, value) => {
-      let cache = context.get('_cache');
-      let rowValue = context.get('rowValue');
-      let valuePath = context.get('column.valuePath');
+      let cache = get(context, '_cache');
+      let rowValue = get(context, 'rowValue');
+      let valuePath = get(context, 'column.valuePath');
 
       if (!cache.has(rowValue)) {
         cache.set(rowValue, Object.create(null));
@@ -54,9 +50,9 @@ export default class CellProxy extends EmberObject {
     };
 
     let getValueFunc = (context, key) => {
-      let cache = context.get('_cache');
-      let rowValue = context.get('rowValue');
-      let valuePath = context.get('column.valuePath');
+      let cache = get(context, '_cache');
+      let rowValue = get(context, 'rowValue');
+      let valuePath = get(context, 'column.valuePath');
 
       if (cache.has(rowValue)) {
         return cache.get(rowValue)[`${valuePath}:${key}`];

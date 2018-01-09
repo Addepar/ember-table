@@ -1,5 +1,4 @@
 import Controller from '@ember/controller';
-import ColumnDefinition from '../models/column-definition';
 import { computed } from 'ember-decorators/object';
 import { A as emberA } from '@ember/array';
 
@@ -27,13 +26,13 @@ export default class SimpleController extends Controller {
     let columnWidth = 180;
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
-      columns.pushObject(ColumnDefinition.create({
+      columns.pushObject({
         columnName: `Col ${ALPHABET[j % 26]}`,
         valuePath: ALPHABET[j % 26],
         width: columnWidth,
         isResizable: true,
         isReorderable: true
-      }));
+      });
     }
 
     return columns;
