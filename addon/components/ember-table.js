@@ -1,7 +1,12 @@
 /* global ResizeSensor */
 import { action, computed } from 'ember-decorators/object';
-import { classNames } from 'ember-decorators/component';
-import { property } from '../utils/class';
+import { tagName, classNames } from 'ember-decorators/component';
+
+import { argument } from '@ember-decorators/argument';
+import { required } from '@ember-decorators/argument/validation';
+import { type, optional } from '@ember-decorators/argument/type';
+import { Action } from '@ember-decorators/argument/types';
+
 import layout from '../templates/components/ember-table';
 import { htmlSafe } from '@ember/string';
 import { run } from '@ember/runloop';
@@ -27,33 +32,37 @@ const SELECTION_MODE_NONE = 'none';
 const SELECTION_MODE_SINGLE = 'single';
 const SELECTION_MODE_MULTIPLE = 'multiple';
 
+@tagName('table')
 @classNames('et-table')
-export default class EmberTable2 extends Component {
-  @property attributeBindings = ['style:style'];
-  @property tagName = 'table';
-
-  @property layout = layout;
+export default class EmberTable extends Component {
+  layout = layout;
 
   /**
    * Indicates how many left columns will be fixed. With current implementation, only 1 single
    * left most column can be a fixed column. Later version of Ember table could change
    * implementation to support multiple fixed columns.
    */
-  @property numFixedColumns = 0;
+  @argument({ defaultIfUndefined: true })
+  @type('number')
+  numFixedColumns = 0;
 
   /**
    *Sets which column resizing behavior to use. Possible values are <code>'standard'</code>
    * (resizing a column pushes or pulls all other columns) and <code>'fluid'</code> (resizing a
    * column steals width from neighboring columns).
    */
-  @property columnMode = COLUMN_MODE_STANDARD;
+  @argument({ defaultIfUndefined: true })
+  @type('string')
+  columnMode = COLUMN_MODE_STANDARD;
 
   /**
    * Sets which row selection behavior to follow. Possible values are 'none' (clicking on a row
    * does nothing), 'single' (clicking on a row selects it and deselects other rows), and 'multiple'
    * (multiple rows can be selected through ctrl/cmd-click or shift-click).
    */
-  @property selectionMode = SELECTION_MODE_SINGLE;
+  @argument({ defaultIfUndefined: true })
+  @type('string')
+  selectionMode = SELECTION_MODE_SINGLE;
 
   /**
    * A configuration that controls how columns shrink (or extend) when total column width does not
@@ -63,74 +72,119 @@ export default class EmberTable2 extends Component {
    * 3) "first_column": extra space is added into the first column.
    * 4) "last_column": extra space is added into the last column.
    */
-  @property tableResizeMode = TABLE_RESIZE_MODE_NONE;
+  @argument({ defaultIfUndefined: true })
+  @type('string')
+  tableResizeMode = TABLE_RESIZE_MODE_NONE;
 
   /**
    * Estimated height for each row. This number is used to decide how many rows will be rendered at
    * initial rendering.
    */
-  @property estimateRowHeight = 20;
+  @argument({ defaultIfUndefined: true })
+  @type('number')
+  estimateRowHeight = 20;
 
   /**
    * A flag that controls if all rows have same static height or not. By default it is set to false
    * and row height is dependent on its internal content. If it is set to true, all rows have the
    * same height equivalent to estimateRowHeight.
    */
-  @property staticHeight = false;
+  @argument({ defaultIfUndefined: true })
+  @type('boolean')
+  staticHeight = false;
+
+  /**
+   * The row items that the table should display
+   */
+  @argument
+  @required
+  @type('object')
+  rows;
+
+  /**
+   * The column definitions for the table
+   */
+  @argument
+  @required
+  @type(Array)
+  columns;
 
   /**
    * Optional footer content displayed in the footer area.
    */
-  @property footerRows = null;
+  @argument
+  @type(optional('object'))
+  footerRows = null;
+
+  /**
+   * An action passed in for header events
+   */
+  @argument
+  @type(optional(Action))
+  onHeaderEvent = null;
+
+  /**
+   * An action passed in for footer events
+   */
+  @argument
+  @type(optional(Action))
+  onFooterEvent = null;
+
+  /**
+   * An action passed in the column reordering event
+   */
+  @argument
+  @type(optional(Action))
+  onColumnReordered = null;
 
   /**
    * A temporary element created when moving column. This element represents the current position
    * of the moving column. It has the same width and height with the moving column. Once moving
    * completes, this element vanishes.
    */
-  @property _headerGhostElement = null;
+  _headerGhostElement = null;
 
   /**
    * A temporary vertical bar that show the column that user is about to move to. This bar aligns
    * with the right (or left) boundary of next column, depending on whether user is moving the
    * column right (or left).
    */
-  @property _headerAlignBar = null;
+  _headerAlignBar = null;
 
   /**
    * A variable used when moving column. This variables indicates the current column index that user
    * is about to move to.
    */
-  @property _currentColumnIndex = -1;
+  _currentColumnIndex = -1;
 
   /**
    * A variable used when moving column. It indicates the horizontal distance from current moving
    * column to table left boundary or fixed column (if fixed column is enabled).
    */
-  @property _currentColumnX = -1;
+  _currentColumnX = -1;
 
   /**
    * A sensor object that sends events to this table component when table size changes. When table
    * is resized, table width & height are updated and other computed properties depending on them
    * also get updated.
    */
-  @property _tableResizeSensor = null;
+  _tableResizeSensor = null;
 
   /**
    * Handlers used for synchronizing scroll positions across the scroll containers
    */
-  @property _scrollHandler = null;
-  @property _wheelHandler = null;
-  @property _touchstartHandler = null;
-  @property _touchmoveHandler = null;
+  _scrollHandler = null;
+  _wheelHandler = null;
+  _touchstartHandler = null;
+  _touchmoveHandler = null;
 
   /**
    * A variable to store table width. This is updated when table is created or resized. We need to
    * store the table width because there are several computed property dependent on the table width.
    */
-  @property _width = 0;
+  _width = 0;
 
-  @property lastSelectedIndex = -1;
+  lastSelectedIndex = -1;
 
   @computed('numFixedColumns')
   get hasFixedColumn() {
@@ -138,8 +192,8 @@ export default class EmberTable2 extends Component {
     return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
   }
 
-  init() {
-    super.init(...arguments);
+  constructor() {
+    super(...arguments);
 
     this.cellCache = new WeakMap();
 

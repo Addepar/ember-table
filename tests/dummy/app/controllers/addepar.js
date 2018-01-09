@@ -1,6 +1,5 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
-import ColumnDefinition from 'ember-table/models/column-definition';
 
 export default Controller.extend({
 
@@ -19,21 +18,17 @@ export default Controller.extend({
     return arr;
   }),
 
-  createHeader(name, valuePath) {
-    return ColumnDefinition.create({
-      columnName: name,
-      valuePath
-    });
-  },
-
-  columns: computed(function() {
-    let arr = [];
-
-    arr.push(this.createHeader('Data', 'date'));
-    arr.push(this.createHeader('Open', 'open'));
-    arr.push(this.createHeader('High', 'high'));
-    arr.push(this.createHeader('Low', 'low'));
-
-    return arr;
-  })
+  columns: [{
+    columnName: 'Data',
+    valuePath: 'date'
+  }, {
+    columnName: 'Open',
+    valuePath: 'open'
+  }, {
+    columnName: 'High',
+    valuePath: 'high'
+  }, {
+    columnName: 'Low',
+    valuePath: 'low'
+  }]
 });
