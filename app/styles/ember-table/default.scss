@@ -43,9 +43,7 @@ $table-hover-color: #e5edf8;
     font-weight: bold;
     text-align: center;
     box-sizing: border-box;
-    &:not(.is-fixed) {
-      border-bottom: 1px solid $table-border-color;
-    }
+    border-bottom: 1px solid $table-border-color;
   }
 
   .et-th, .et-tf {
