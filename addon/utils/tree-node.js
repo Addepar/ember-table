@@ -1,44 +1,43 @@
-import { property } from '../utils/class';
 
 export default class TreeNode {
-  @property parent = null;
-  @property children = null;
-  @property value = null;
+  parent = null;
+  children = null;
+  value = null;
 
   /**
    * Current next node (apply for both case expand & collapse).
    */
-  @property next = null;
+  next = null;
 
   /**
    * The next node when this tree collapse. This next node is usually the next sibling in the tree
    * or next sibling of one of its ancestor.
    */
-  @property nextOnCollapse = null;
+  nextOnCollapse = null;
 
   /**
    * Original next node when tree is fully expanded.
    */
-  @property originalNext = null;
+  originalNext = null;
 
   /**
    * Current previous node (apply for both case expand & collapse).
    */
-  @property previous = null;
+  previous = null;
 
   /**
    * Total number of node in this subtree (including this node).
    */
-  @property nodeCount = null;
+  nodeCount = null;
   /**
    * The number of nodes that has been collapsed by this node's children & grand-children. This
    * value is negative for easy computation.
    */
-  @property nodeCountDelta = 0;
+  nodeCountDelta = 0;
 
-  @property index = null;
+  index = null;
 
-  @property collapse = false;
+  collapse = false;
 
   constructor(parent, value) {
     this.children = [];

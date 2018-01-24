@@ -1,15 +1,14 @@
-import { property } from '../utils/class';
 import EmberObject, { set } from '@ember/object';
 
 export default class LinkedListTree extends EmberObject {
-  @property pointerNode = null;
-  @property pointerIndex = -1;
+  pointerNode = null;
+  pointerIndex = -1;
 
   /**
    * When a node is collapsed, this map stores list of previous nodes for the node next to the
    * collapsed node. This is used to retrieve correct previous node upon node expansion.
    */
-  @property _previousNodes = null;
+  _previousNodes = null;
 
   constructor(root) {
     super();
