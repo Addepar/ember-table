@@ -1,6 +1,5 @@
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
-import ColumnDefinition from 'ember-table/models/column-definition';
 import wait from 'ember-test-helpers/wait';
 import { isNone } from '@ember/utils';
 
@@ -23,11 +22,11 @@ export function generateRows(rowCount, columnCount) {
   let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
   for (let i = 0; i < rowCount; i++) {
-    let row = ColumnDefinition.create({
+    let row = {
       'id': `Row ${i}`
-    });
+    };
     for (let j = 0; j < columnCount - 1; j++) {
-      row.set(alphabet[j % 26], alphabet[j % 26]);
+      row[alphabet[j % 26]] = alphabet[j % 26];
     }
     arr.pushObject(row);
   }
@@ -40,21 +39,21 @@ export function generateColumns(columnCount, columnOptions) {
   let alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   let columnWidth = DEFAULT_COLUMN_WIDTH;
 
-  arr.pushObject(ColumnDefinition.create({
+  arr.pushObject({
     columnName: 'Column id',
     valuePath: 'id',
     width: columnWidth,
     isResizable: true
-  }));
+  });
 
   for (let j = 0; j < columnCount - 1; j++) {
-    let columnDefinition = ColumnDefinition.create({
+    let columnDefinition = {
       columnName: `Col ${alphabet[j % 26]}`,
       valuePath: alphabet[j % 26],
       width: columnWidth,
       isResizable: true,
       isReorderable: true
-    });
+    };
 
     arr.pushObject(columnDefinition);
   }
@@ -62,7 +61,7 @@ export function generateColumns(columnCount, columnOptions) {
   for (let columnDefinition of arr) {
     for (let property in columnOptions) {
       if (columnOptions.hasOwnProperty(property)) {
-        columnDefinition.set(property, columnOptions[property]);
+        columnDefinition[property] = columnOptions[property];
       }
     }
   }

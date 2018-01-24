@@ -1,8 +1,14 @@
 /* global Hammer */
 import EmberTableBaseCell from './ember-table-base-cell';
 
-import { property } from '../utils/class';
-import { action, computed } from 'ember-decorators/object';
+import { action, computed, readOnly } from 'ember-decorators/object';
+import { alias } from 'ember-decorators/object/computed';
+import { attribute, tagName, className } from 'ember-decorators/component';
+import { argument } from '@ember-decorators/argument';
+import { required } from '@ember-decorators/argument/validation';
+import { type } from '@ember-decorators/argument/type';
+import { Action } from '@ember-decorators/argument/types';
+
 import { isNone } from '@ember/utils';
 import { get } from '@ember/object';
 
@@ -13,30 +19,78 @@ const COLUMN_STATIC = 0;
 const COLUMN_RESIZE = 1;
 const COLUMN_REORDERING = 2;
 
+@tagName('th')
 export default class EmberTableHeader extends EmberTableBaseCell {
-  @property layout = layout;
-  @property tagName = 'th';
-  @property classNameBindings = ['isFixed::et-th'];
-  @property attributeBindings = ['style:style', 'rowSpan:rowspan', 'columnSpan:colspan'];
+  layout = layout;
 
-  @property fixedColumnWidth = 0;
+  // We have to alias because the class name changes per base cell type
+  @className('', 'et-th')
+  @readOnly @alias('isFixed') _isFixed;
+
+  @argument
+  @required
+  @type(Object)
+  column;
+
+  @argument
+  @required
+  @type('number')
+  columnIndex;
+
+  @argument
+  @required
+  @type('number')
+  width;
+
+  @argument
+  @type('boolean')
+  tableHasSubcolumns = false;
+
+  @argument
+  @type('number')
+  fixedColumnWidth = 0;
+
+  @argument
+  @type(Action)
+  onColumnResized;
+
+  @argument
+  @type(Action)
+  onColumnResizeEnded;
+
+  @argument
+  @type(Action)
+  onColumnReorder;
+
+  @argument
+  @type(Action)
+  onColumnReorderEnded;
+
+  @argument
+  @type(Action)
+  onHeaderEvent;
 
   /**
    * X position where user first touches on the header.
    */
-  @property _firstTouchX = -1;
+  _firstTouchX = -1;
 
   /**
    * X position where user last touches this component.
    */
-  @property _touchX = -1;
+  _touchX = -1;
 
   /**
    * A variable used for column resizing & ordering. When user press mouse at a point that's close
    * to column boundary (using some threshold), this variable set whether it's the left or right
    * column.
    */
-  @property _columnState = COLUMN_STATIC;
+  _columnState = COLUMN_STATIC;
+
+  /**
+   * An object that listens to touch/ press/ drag events.
+   */
+  _hammer = null;
 
   /**
    * Indicates if this column can be reordered or not. It's false by default.
@@ -51,6 +105,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
     return this.get('column.isReorderable') && !this.get('isFixed');
   }
 
+  @attribute
   @computed('column.subcolumns.length')
   get columnSpan() {
     let subcolumnsLength = get(this, 'column.subcolumns.length');
@@ -61,6 +116,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
     return subcolumnsLength;
   }
 
+  @attribute
   @computed('tableHasSubcolumns', 'column.subcolumns.length')
   get rowSpan() {
     if (this.get('tableHasSubcolumns') !== true) {
@@ -74,11 +130,6 @@ export default class EmberTableHeader extends EmberTableBaseCell {
 
     return 1;
   }
-
-  /**
-   * An object that listens to touch/ press/ drag events.
-   */
-  @property _hammer = null;
 
   didInsertElement() {
     super.didInsertElement(...arguments);

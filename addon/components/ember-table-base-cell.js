@@ -3,15 +3,40 @@ import { addObserver, removeObserver } from '@ember/object/observers';
 import { htmlSafe } from '@ember/string';
 import { action, computed } from 'ember-decorators/object';
 import { get } from '@ember/object';
-import { property } from '../utils/class';
 import { scheduler, Token } from 'ember-raf-scheduler';
 
-export default class EmberTableCell extends Component {
-  @property tagName = 'td';
-  @property attributeBindings = ['style:style'];
+import { tagName, attribute } from 'ember-decorators/component';
+import { argument } from '@ember-decorators/argument';
+import { type, optional } from '@ember-decorators/argument/type';
 
-  init() {
-    super.init(...arguments);
+@tagName('td')
+export default class EmberTableCell extends Component {
+  @argument
+  @type('any')
+  rowValue;
+
+  @argument
+  @type(optional('number'))
+  rowIndex;
+
+  @argument
+  @type('object')
+  column;
+
+  @argument
+  @type(optional('number'))
+  columnIndex;
+
+  @argument
+  @type(optional('number'))
+  numFixedColumns = 0;
+
+  @argument
+  @type(optional('object'))
+  cell;
+
+  constructor() {
+    super(...arguments);
 
     this.token = new Token();
   }
@@ -48,8 +73,9 @@ export default class EmberTableCell extends Component {
   @computed('columnIndex', 'numFixedColumns')
   get isFixed() {
     let numFixedColumns = this.get('numFixedColumns');
-    return this.get('columnIndex') === 0 && Number.isInteger(numFixedColumns)
-    && numFixedColumns !== 0;
+    return this.get('columnIndex') === 0
+      && Number.isInteger(numFixedColumns)
+      && numFixedColumns !== 0;
   }
 
   @computed('row', 'column.valuePath')
@@ -60,15 +86,20 @@ export default class EmberTableCell extends Component {
     return get(row, valuePath);
   }
 
+  @attribute
   @computed('column.width')
   get style() {
-    return htmlSafe(`width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px;`);
+    let width = this.get('column.width');
+
+    return htmlSafe(`width: ${width}px; min-width: ${width}px;`);
   }
 
   @computed('column.width', 'cellHeight')
   get fixedCellStyle() {
-    return htmlSafe(`width: ${this.get('column.width')}px; min-width: ${this.get('column.width')}px; \
-height: ${this.get('cellHeight')}px;`);
+    let width = this.get('column.width');
+    let height = this.get('cellHeight');
+
+    return htmlSafe(`width: ${width}px; min-width: ${width}px; height: ${height}px;`);
   }
 
   @action
