@@ -21,7 +21,7 @@
     "@addepar/ice-box": "^0.1.3",
     "@ember-decorators/argument": "^0.8.8",
     "@ember-decorators/babel-transforms": "^0.1.1",
-    "@html-next/vertical-collection": "https://github.com/html-next/vertical-collection.git#1a562628201d924de00e8d7d300e565944a920b4",
+    "@html-next/vertical-collection": "1.0.0-beta.10",
     "css-element-queries": "^0.4.0",
     "ember": "^1.0.3",
     "ember-cli-babel": "^6.7.1",
