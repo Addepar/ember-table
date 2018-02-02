@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed } from 'ember-decorators/object';
+import { action, computed } from 'ember-decorators/object';
 import { A as emberA } from '@ember/array';
 
 const COLUMN_COUNT = 4;
@@ -31,10 +31,16 @@ export default class SimpleController extends Controller {
         valuePath: ALPHABET[j % 26],
         width: columnWidth,
         isResizable: true,
-        isReorderable: true
+        isReorderable: true,
+        hasCheckbox: j === 0
       });
     }
 
     return columns;
+  }
+
+  @action
+  onSelect(selectedRows) {
+    this.set('selectedRows', selectedRows);
   }
 }

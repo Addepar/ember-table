@@ -1,4 +1,6 @@
 /* global ResizeSensor */
+import { assert } from '@ember/debug';
+
 import { action, computed } from 'ember-decorators/object';
 import { tagName, classNames } from 'ember-decorators/component';
 
@@ -28,7 +30,6 @@ const TABLE_RESIZE_MODE_EQUAL_COLUMN = 'equal_column';
 const TABLE_RESIZE_MODE_FIRST_COLUMN = 'first_column';
 const TABLE_RESIZE_MODE_LAST_COLUMN = 'last_column';
 
-const SELECTION_MODE_NONE = 'none';
 const SELECTION_MODE_SINGLE = 'single';
 const SELECTION_MODE_MULTIPLE = 'multiple';
 
@@ -62,7 +63,14 @@ export default class EmberTable extends Component {
    */
   @argument({ defaultIfUndefined: true })
   @type('string')
-  selectionMode = SELECTION_MODE_SINGLE;
+  selectionMode = SELECTION_MODE_MULTIPLE;
+
+  /**
+   * The currently list of currently selected rows
+   */
+  @argument({ defaultIfUndefined: true })
+  @type(Array)
+  selectedRows = [];
 
   /**
    * A configuration that controls how columns shrink (or extend) when total column width does not
@@ -115,6 +123,15 @@ export default class EmberTable extends Component {
   @argument
   @type(optional('object'))
   footerRows = null;
+
+  /**
+   * An action that triggers when the row selection of the table changes
+   *
+   * @param {Array} selectedRows - The new set of selected rows
+   */
+  @argument
+  @type(optional(Action))
+  onSelect = null;
 
   /**
    * An action passed in for header events
@@ -184,7 +201,10 @@ export default class EmberTable extends Component {
    */
   _width = 0;
 
-  lastSelectedIndex = -1;
+  /**
+   * The index of the last item that was selected, used for range selection
+   */
+  lastSelectedIndex = 0;
 
   @computed('numFixedColumns')
   get hasFixedColumn() {
@@ -201,13 +221,16 @@ export default class EmberTable extends Component {
     // pollute the prototype of the main proxy class.
     this.cellProxyClass = class extends CellProxy {};
 
-    this.set('selectedRows', []);
-
     this.token = new Token();
   }
 
   didInsertElement() {
     super.didInsertElement(...arguments);
+
+    assert(
+      "Cannot use checkbox columns with a selection mode other than 'multiple'",
+      this.get('selectionMode') === 'multiple' || !this.get('columns').some((c) => c.isCheckbox)
+    );
 
     this.setupScrollSync();
     this.setupColumnFillup();
@@ -503,15 +526,62 @@ export default class EmberTable extends Component {
 
     return {
       rowHeight: this.get('rowHeight'),
-      cellCache: this.cellCache,
-      cellProxyClass: this.cellProxyClass,
-      numFixedColumns: this.numFixedColumns,
+      cellCache: this.get('cellCache'),
+      cellProxyClass: this.get('cellProxyClass'),
+      numFixedColumns: this.get('numFixedColumns'),
       targetObject: this,
       columns: this.get('bodyColumns'),
-      selectedRows: this.selectedRows,
-      staticRowHeight
+      selectedRows: this.get('selectedRows'),
+      staticRowHeight,
+
+      selectRow: this.selectRow
     };
   }
+
+  selectRow = (rowIndex, { toggle, range }) => {
+    let rows = this.get('rows');
+    let row = rows.objectAt(rowIndex);
+    let selectionMode = this.get('selectionMode');
+
+    if (selectionMode === SELECTION_MODE_SINGLE) {
+      this.sendAction('onSelect', [row]);
+      return;
+    }
+
+    let selectedRows;
+
+    if (toggle) {
+      // Create a new array to ensure we trigger property changes
+      selectedRows = this.get('selectedRows').slice();
+      let index = selectedRows.indexOf(row);
+
+      if (index > -1) {
+        selectedRows.splice(index, 1);
+      } else {
+        selectedRows.push(row);
+      }
+    } else if (range) {
+      // Use a set to avoid item duplication
+      let rowSet = new Set(this.get('selectedRows'));
+
+      let { lastSelectedIndex } = this;
+
+      let minIndex = Math.min(lastSelectedIndex, rowIndex);
+      let maxIndex = Math.max(lastSelectedIndex, rowIndex);
+
+      for (let row of rows.slice(minIndex, maxIndex + 1)) {
+        rowSet.add(row);
+      }
+
+      selectedRows = Array.from(rowSet);
+    } else {
+      selectedRows = [row];
+    }
+
+    this.lastSelectedIndex = rowIndex;
+
+    this.sendAction('onSelect', selectedRows);
+  };
 
   @action
   onColumnResized(columnIndex, delta) {
@@ -669,54 +739,6 @@ export default class EmberTable extends Component {
 
     // Send action up to controller
     this.sendAction('onColumnReordered', oldIndex, newIndex);
-  }
-
-  @action
-  onRowClicked(event, rowIndex) {
-    let rows = this.get('rows');
-    let item = rows.objectAt(rowIndex);
-
-    let selectedRows = this.get('selectedRows').slice();
-
-    switch (this.get('selectionMode')) {
-      case SELECTION_MODE_NONE:
-        return;
-      case SELECTION_MODE_SINGLE:
-        this.lastSelectedIndex = rowIndex;
-        selectedRows = [item];
-        break;
-      case SELECTION_MODE_MULTIPLE:
-        if (event.shiftKey) {
-          let { lastSelectedIndex } = this;
-          if (lastSelectedIndex === -1) {
-            lastSelectedIndex = 0;
-          }
-
-          let minIndex = Math.min(lastSelectedIndex, rowIndex);
-          let maxIndex = Math.max(lastSelectedIndex, rowIndex);
-
-          // Use a set to avoid item duplication
-          let rowsSet = new Set(selectedRows);
-          for (let i = minIndex; i <= maxIndex; i++) {
-            let obj = rows.objectAt(i);
-            if (!rowsSet.has(obj)) {
-              selectedRows.push(rows.objectAt(i));
-            }
-          }
-        } else {
-          if (!event.ctrlKey && !event.metaKey) {
-            selectedRows = [];
-          }
-
-          if (selectedRows.indexOf(item) < 0) {
-            selectedRows.push(item);
-          }
-          this.lastSelectedIndex = rowIndex;
-        }
-        break;
-    }
-
-    this.set('selectedRows', selectedRows);
   }
 
   @action

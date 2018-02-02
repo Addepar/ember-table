@@ -106,4 +106,16 @@ export default class EmberTableCell extends Component {
   onCellEvent(args) {
     this.sendAction('onCellEvent', args);
   }
+
+  @action
+  onChecked() {
+    this.sendAction('onChecked');
+  }
+
+  @action
+  onCheckboxClicked(event) {
+    // Prevent the row from triggering any click events since this means that
+    // the checkbox was clicked and we want to toggle via that
+    event.stopPropagation();
+  }
 }
