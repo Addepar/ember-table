@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@addepar/eslint-config": "^3.0.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "broccoli-asset-rev": "^2.4.5",
     "ember-ajax": "^3.0.0",
     "ember-classy-page-object": "^0.4.4",

@@ -1,7 +1,7 @@
-import { collection, hasClass } from 'ember-classy-page-object';
-import { findAll } from 'ember-native-dom-helpers';
+import { alias, collection, hasClass, property } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
-import { get } from '@ember/object';
+
+import { click } from 'ember-native-dom-helpers';
 
 export default {
   scope: 'tbody',
@@ -26,6 +26,24 @@ export default {
     get height() {
       return findElement(this).offsetHeight;
     },
+
+    checkbox: {
+      scope: 'input[type="checkbox"]',
+      isChecked: property('checked')
+    },
+
+    toggle: alias('checkbox.click'),
+
+    isSelected: hasClass('is-selected'),
+
+    /**
+     * Helper function to click with options like the meta key and ctrl key set
+     *
+     * @param {Object} options - click event options
+     */
+    async clickWith(options) {
+      await click(findElement(this), options);
+    }
   }),
 
   /**
