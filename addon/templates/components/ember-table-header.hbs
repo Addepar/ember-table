@@ -4,7 +4,7 @@
       {{#component column.headerComponent
         column=column
         columnIndex=columnIndex
-        onHeaderEvent="onHeaderEvent"
+        onHeaderEvent="sendHeaderEvent"
       }}
       {{/component}}
     {{else}}
@@ -21,7 +21,7 @@
     {{#component column.headerComponent
       column=column
       columnIndex=columnIndex
-      onHeaderEvent="onHeaderEvent"
+      onHeaderEvent="sendHeaderEvent"
     }}
     {{/component}}
   {{else}}
