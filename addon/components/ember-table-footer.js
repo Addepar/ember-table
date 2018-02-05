@@ -30,7 +30,7 @@ export default class EmberTableFooter extends EmberTableBaseCell {
   }
 
   @action
-  onFooterEvent() {
+  sendFooterEvent() {
     this.sendAction('onFooterEvent', ...arguments);
   }
 }

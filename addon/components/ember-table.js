@@ -720,12 +720,12 @@ export default class EmberTable extends Component {
   }
 
   @action
-  onHeaderEvent() {
+  sendHeaderEvent() {
     this.sendAction('onHeaderEvent', ...arguments);
   }
 
   @action
-  onFooterEvent() {
+  sendFooterEvent() {
     this.sendAction('onFooterEvent', ...arguments);
   }
 }
