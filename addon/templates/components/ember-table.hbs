@@ -11,7 +11,7 @@
           onColumnResizeEnded="onColumnResizeEnded"
           onColumnReorder="onColumnReorder"
           onColumnReorderEnded="onColumnReorderEnded"
-          onHeaderEvent="onHeaderEvent"
+          onHeaderEvent="sendHeaderEvent"
           width=column.width
         }}
       {{/each}}
@@ -30,7 +30,7 @@
               onColumnResizeEnded="onColumnResizeEnded"
               onColumnReorder="onColumnReorder"
               onColumnReorderEnded="onColumnReorderEnded"
-              onHeaderEvent="onHeaderEvent"
+              onHeaderEvent="sendHeaderEvent"
               width=column.width
             }}
           {{/each}}
@@ -70,7 +70,7 @@
             rowIndex=footerRowIndex
             columnIndex=columnIndex
             numFixedColumns=numFixedColumns
-            onFooterEvent="onFooterEvent"
+            onFooterEvent="sendFooterEvent"
           }}
         {{/each}}
         </tr>
