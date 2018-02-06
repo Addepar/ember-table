@@ -1,6 +1,6 @@
 import { get, set } from '@ember/object';
 import Component from '@ember/component';
-import { computed, readOnly } from 'ember-decorators/object';
+import { action, computed, readOnly } from 'ember-decorators/object';
 import { alias } from 'ember-decorators/object/computed';
 import { attribute, className, classNames, tagName } from 'ember-decorators/component';
 
@@ -29,14 +29,16 @@ export default class EmberTableRow extends Component {
   @type('object')
   row;
 
-  @readOnly @alias('row.api.columns') columns;
-  @readOnly @alias('row.api.cellProxyClass') cellProxyClass;
-  @readOnly @alias('row.api.cellCache') cellCache;
-  @readOnly @alias('row.api.numFixedColumns') numFixedColumns;
-  @readOnly @alias('row.api.selectedRows') selectedRows;
+  @readOnly @alias('row.api') api;
 
   @readOnly @alias('row.value') rowValue;
   @readOnly @alias('row.index') rowIndex;
+
+  @readOnly @alias('api.columns') columns;
+  @readOnly @alias('api.cellProxyClass') cellProxyClass;
+  @readOnly @alias('api.cellCache') cellCache;
+  @readOnly @alias('api.numFixedColumns') numFixedColumns;
+  @readOnly @alias('api.selectedRows') selectedRows;
 
   constructor() {
     super(...arguments);
@@ -95,13 +97,27 @@ export default class EmberTableRow extends Component {
   }
 
   click(event) {
-    let tableObject = this.get('row.api.targetObject');
-    tableObject.send('onRowClicked', event, this.get('rowIndex'));
+    let api = this.get('api');
+    let rowIndex = this.get('rowIndex');
+    let rowValue = this.get('rowValue');
 
-    this.sendAction('onClick', event, this.get('rowIndex'), this.get('rowValue'));
+    api.selectRow(rowIndex, {
+      toggle: event.ctrlKey || event.metaKey,
+      range: event.shiftKey
+    });
+
+    this.sendAction('onClick', event, rowIndex, rowValue);
   }
 
   doubleClick(event) {
     this.sendAction('onDoubleClick', event, this.get('rowIndex'), this.get('rowValue'));
+  }
+
+  @action
+  toggleRowSelection() {
+    let api = this.get('api');
+    let rowIndex = this.get('rowIndex');
+
+    api.selectRow(rowIndex, { toggle: true });
   }
 }

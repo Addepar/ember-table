@@ -1,7 +1,13 @@
 {{#if isFixed}}
   <div class="et-td is-fixed" style={{fixedCellStyle}}>
+    {{#if column.hasCheckbox}}
+      {{-ember-table-private/simple-checkbox checked=rowSelected onClick="onCheckboxClicked" onChange="onChecked"}}
+    {{/if}}
     {{yield cell}}
   </div>
 {{else}}
+  {{#if column.hasCheckbox}}
+    {{-ember-table-private/simple-checkbox checked=rowSelected onClick="onCheckboxClicked" onChange="onChecked"}}
+  {{/if}}
   {{yield cell}}
 {{/if}}
