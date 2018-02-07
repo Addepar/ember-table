@@ -1,6 +1,6 @@
 import { module, moduleForComponent, test } from 'ember-qunit';
 
-import TablePage from 'ember-table/test-support/pages/ember-table-page';
+import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import generateTable from '../../helpers/generate-table';
 
@@ -240,11 +240,11 @@ module('Integration | selection', () => {
   test('Can disable selection by not using an action', async function(assert) {
     assert.expect(3);
 
-    await generateTable(this, {
-      onSelect() {
-        assert.ok(true, 'select called');
-      }
+    this.on('onSelect', () => {
+      assert.ok(true, 'select called');
     });
+
+    await generateTable(this);
 
     assert.ok(table.validateSelected(), 'rows are not selected');
 

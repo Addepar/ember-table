@@ -1,28 +1,26 @@
 {{#if isFixed}}
   <div class="et-tf is-fixed" style={{fixedCellStyle}}>
     {{#if column.footerComponent}}
-      {{#component column.footerComponent
+      {{component column.footerComponent
         column=column
         rowValue=rowValue
         rowIndex=rowIndex
         columnIndex=columnIndex
         onFooterEvent="sendFooterEvent"
       }}
-      {{/component}}
     {{else}}
       {{footerValue}}
     {{/if}}
   </div>
 {{else}}
   {{#if column.footerComponent}}
-    {{#component column.footerComponent
+    {{component column.footerComponent
       column=column
       rowValue=rowValue
       rowIndex=rowIndex
       columnIndex=columnIndex
       onFooterEvent="sendFooterEvent"
     }}
-    {{/component}}
   {{else}}
     {{footerValue}}
   {{/if}}
