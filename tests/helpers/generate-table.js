@@ -19,6 +19,7 @@ const fullTable = hbs`
       tableResizeMode=tableResizeMode
 
       onSelect="onSelect"
+      onFooterEvent="onFooterEvent"
 
       as |row|
     }}
@@ -34,14 +35,14 @@ const fullTable = hbs`
   </div>
 `;
 
-export function generateRows(rowCount, columnCount) {
+export function generateRows(rowCount, columnCount, prefix = '') {
   let arr = [];
 
   for (let i = 0; i < rowCount; i++) {
     let row = { 'id': `Row ${i}` };
 
     for (let j = 0; j < columnCount; j++) {
-      row[toBase26(j)] = `${i}${toBase26(j)}`;
+      row[toBase26(j)] = `${prefix}${i}${toBase26(j)}`;
     }
 
     arr.push(row);
@@ -50,13 +51,18 @@ export function generateRows(rowCount, columnCount) {
   return emberA(arr);
 }
 
-export function generateColumns(columnCount, columnOptions = {}) {
+export function generateColumns(columnCount, {
+  subcolumnCount = 0,
+  columnOffset = 0,
+
+  ...columnOptions
+} = {}) {
   let arr = [];
 
   for (let i = 0; i < columnCount; i++) {
     let columnDefinition = {
       columnName: toBase26(i),
-      valuePath: toBase26(i),
+      valuePath: toBase26(columnOffset + i),
       width: 100,
       isResizable: true,
       isReorderable: true
@@ -66,25 +72,36 @@ export function generateColumns(columnCount, columnOptions = {}) {
       columnDefinition[property] = columnOptions[property];
     }
 
+    if (subcolumnCount) {
+      columnDefinition.subcolumns = generateColumns(subcolumnCount, {
+        columnOffset: i,
+        ...columnOptions
+      });
+    }
+
     arr.push(columnDefinition);
   }
 
   return emberA(arr);
 }
 
-function defaultOnSelect(newRows) {
-  this.set('selectedRows', newRows);
-}
+const defaultActions = {
+  onSelect(newRows) {
+    this.set('selectedRows', newRows);
+  }
+};
 
 export default async function generateTable(testContext, {
-  columns,
   rows,
+  footerRows,
+  columns,
   rowCount = 10,
+  footerRowCount = 0,
   columnCount = 10,
+  columnOptions,
   hasCheckbox = false,
 
   rowComponent = 'ember-table-row',
-  onSelect = defaultOnSelect,
 
   ...options
 } = {}) {
@@ -94,16 +111,30 @@ export default async function generateTable(testContext, {
 
   testContext.set('rowComponent', rowComponent);
 
-  columns = columns || generateColumns(columnCount);
-  rows = rows || generateRows(rowCount, columns.length);
+  columns = columns || generateColumns(columnCount, columnOptions);
+
+  // Total column length is columns + subcolumns
+  let totalColumns = columns.length + columns.reduce((v, c) => {
+    return c.subcolumns ? v + c.subcolumns.length : v;
+  }, 0);
+
+  rows = rows || generateRows(rowCount, totalColumns);
+  footerRows = footerRows || generateRows(footerRowCount, totalColumns);
 
   // Set the checkbox value if it exists
   columns[0].hasCheckbox = hasCheckbox;
 
   testContext.set('columns', columns);
   testContext.set('rows', rows);
+  testContext.set('footerRows', footerRows);
 
-  testContext.on('onSelect', onSelect.bind(testContext));
+  for (let action in defaultActions) {
+    let actions = testContext.actions || testContext._actions;
+
+    if (actions && !actions[action]) {
+      testContext.on(action, defaultActions[action].bind(testContext));
+    }
+  }
 
   testContext.render(fullTable);
 
