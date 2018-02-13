@@ -4,6 +4,7 @@ import { get, set } from '@ember/object';
 import { A as emberA } from '@ember/array';
 import { findElement } from 'ember-classy-page-object/extend';
 import hbs from 'htmlbars-inline-precompile';
+import a11yAudit from 'ember-a11y-testing/test-support/audit';
 
 import {
   simpleTable,
@@ -433,3 +434,11 @@ test('Destroying table ignores resize event and does not trigger error', async f
   find('#container').style.height = '600px';
   this.set('showComponent', false);
 });
+
+test('Accessibility test', async function(assert) {
+  await setupFullTable(this, { numFixedColumns: 1 }, {});
+
+  await a11yAudit();
+  assert.ok(true, 'No accessibility error found');
+});
+
