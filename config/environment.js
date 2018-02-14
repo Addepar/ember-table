@@ -1,6 +1,20 @@
 /* eslint-env node */
 'use strict';
 
-module.exports = function(/* environment, appConfig */) {
-  return { };
+module.exports = function(environment /*, appConfig */) {
+  const ENV = {
+    environment
+  };
+
+  if (environment === 'development') {
+    ENV['ember-a11y-testing'] = {
+      componentOptions: {
+        turnAuditOff: true, // Change to true to disable the audit in development
+        visualNoiseLevel: 2,
+        axeViolationClassNames: ['alert-box', 'alert-box--a11y']
+      }
+    }
+  }
+
+  return ENV;
 };
