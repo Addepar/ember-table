@@ -7,13 +7,21 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('demo');
   this.route('simple');
-  this.route('custom-component');
-  this.route('custom-header');
-  this.route('custom-footer');
-  this.route('addepar');
-  this.route('subcolumns');
+  this.route('demo');
+  this.route('docs', function() {
+    this.route('installation');
+    this.route('quickstart');
+    this.route('examples', function() {
+      this.route('basic-table');
+    });
+
+    this.route('api', function() {
+      this.route('class', { path: '/:class_id' });
+    });
+  });
+
+  this.route('not-found', { path: '/*path' });
 });
 
 export default Router;
