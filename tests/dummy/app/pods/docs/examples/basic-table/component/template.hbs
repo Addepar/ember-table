@@ -1,12 +1,11 @@
+{{! BEGIN-SNIPPET docs-examples-basic-table.hbs }}
 <div class="demo-container">
-  {{#if clickedColumn}}
-    {{clickedColumn}} is clicked.
-  {{/if}}
   {{#ember-table
     rows=rows
     columns=columns
     tableResizeMode="equal_column"
-    onHeaderEvent="onHeaderEvent"
+    selectedRows=selectedRows
+    onSelect="onSelect"
     as |t|
   }}
     {{#ember-table-row
@@ -17,3 +16,4 @@
     {{/ember-table-row}}
   {{/ember-table}}
 </div>
+{{! END-SNIPPET }}
