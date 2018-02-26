@@ -1,8 +1,8 @@
 /* global ResizeSensor */
 import { assert } from '@ember/debug';
 
-import { action, computed } from 'ember-decorators/object';
-import { tagName, classNames } from 'ember-decorators/component';
+import { action, computed } from '@ember-decorators/object';
+import { tagName, classNames } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';

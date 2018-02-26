@@ -1,8 +1,7 @@
 import layout from '../templates/components/ember-table';
 import EmberTable from './ember-table';
-import { action } from 'ember-decorators/object';
-import { readOnly } from 'ember-decorators/object';
-import { alias } from 'ember-decorators/object/computed';
+import { action } from '@ember-decorators/object';
+import { readOnly } from '@ember-decorators/object/computed';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -16,7 +15,7 @@ export default class TreeTable extends EmberTable {
   @type('object')
   tree;
 
-  @readOnly @alias('tree') rows;
+  @readOnly('tree') rows;
 
   @action
   onRowToggled(row) {

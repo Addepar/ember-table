@@ -1,5 +1,5 @@
-import { attribute } from 'ember-decorators/component';
-import { computed } from 'ember-decorators/object';
+import { attribute } from '@ember-decorators/component';
+import { computed } from '@ember-decorators/object';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
 import { htmlSafe } from '@ember/string';

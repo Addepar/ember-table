@@ -1,8 +1,8 @@
 import { get, set } from '@ember/object';
 import Component from '@ember/component';
-import { action, computed, readOnly } from 'ember-decorators/object';
-import { alias } from 'ember-decorators/object/computed';
-import { attribute, className, classNames, tagName } from 'ember-decorators/component';
+import { action, computed } from '@ember-decorators/object';
+import { readOnly } from '@ember-decorators/object/computed';
+import { attribute, className, classNames, tagName } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -29,16 +29,16 @@ export default class EmberTableRow extends Component {
   @type('object')
   row;
 
-  @readOnly @alias('row.api') api;
+  @readOnly('row.api') api;
 
-  @readOnly @alias('row.value') rowValue;
-  @readOnly @alias('row.index') rowIndex;
+  @readOnly('row.value') rowValue;
+  @readOnly('row.index') rowIndex;
 
-  @readOnly @alias('api.columns') columns;
-  @readOnly @alias('api.cellProxyClass') cellProxyClass;
-  @readOnly @alias('api.cellCache') cellCache;
-  @readOnly @alias('api.numFixedColumns') numFixedColumns;
-  @readOnly @alias('api.selectedRows') selectedRows;
+  @readOnly('api.columns') columns;
+  @readOnly('api.cellProxyClass') cellProxyClass;
+  @readOnly('api.cellCache') cellCache;
+  @readOnly('api.numFixedColumns') numFixedColumns;
+  @readOnly('api.selectedRows') selectedRows;
 
   constructor() {
     super(...arguments);
