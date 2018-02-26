@@ -37,9 +37,8 @@ export default {
       let header = findElement(this);
       let box = header.getBoundingClientRect();
       let startX = box.right - 5;
-      await pressElement(header, startX, header.clientHeight / 2);
-      await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
-      await moveMouse(header, startX + deltaX, header.clientHeight / 2);
+
+      await this._moveByPixel(header, startX, deltaX);
     },
 
     /**
