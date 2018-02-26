@@ -6,8 +6,8 @@ import EmberObject, {
 
 import { SUPPORTS_NEW_COMPUTED } from 'ember-compatibility-helpers';
 
-import { computed, readOnly } from 'ember-decorators/object';
-import { alias } from 'ember-decorators/object/computed';
+import { computed } from '@ember-decorators/object';
+import { readOnly } from '@ember-decorators/object/computed';
 
 export default class CellProxy extends EmberObject {
   column = null;
@@ -16,8 +16,8 @@ export default class CellProxy extends EmberObject {
   row = null;
   targetTable = null;
 
-  @readOnly @alias('_rowComponent.rowValue') rowValue;
-  @readOnly @alias('_rowComponent.rowIndex') rowIndex;
+  @readOnly('_rowComponent.rowValue') rowValue;
+  @readOnly('_rowComponent.rowIndex') rowIndex;
 
   @computed('rowValue', 'column.valuePath')
   get value() {
