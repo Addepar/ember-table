@@ -1,8 +1,8 @@
 import Component from '@ember/component';
 import { get } from '@ember/object';
 
-import { computed } from 'ember-decorators/object';
-import { classNames } from 'ember-decorators/component';
+import { computed } from '@ember-decorators/object';
+import { classNames } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 
 @classNames('custom-footer')

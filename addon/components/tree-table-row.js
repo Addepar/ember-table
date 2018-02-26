@@ -1,6 +1,5 @@
 import EmberTableRow from './ember-table-row';
-import { readOnly } from 'ember-decorators/object';
-import { alias } from 'ember-decorators/object/computed';
+import { readOnly } from '@ember-decorators/object/computed';
 
 export default class TreeTableRow extends EmberTableRow {
   /**
@@ -11,5 +10,5 @@ export default class TreeTableRow extends EmberTableRow {
   /**
    * @override
    */
-  @readOnly @alias('row.value.value') rowValue;
+  @readOnly('row.value.value') rowValue;
 }

@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { action, computed } from 'ember-decorators/object';
+import { action, computed } from '@ember-decorators/object';
 import { A as emberA } from '@ember/array';
 
 const COLUMN_COUNT = 4;

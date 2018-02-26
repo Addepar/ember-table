@@ -28,7 +28,7 @@
     "ember-cli-node-assets": "^0.2.2",
     "ember-cli-sass": "^7.0.0",
     "ember-compatibility-helpers": "^0.1.2",
-    "ember-decorators": "^1.3.3",
+    "ember-decorators": "^2.0.0-beta.1",
     "ember-legacy-class-shim": "^1.0.0",
     "ember-raf-scheduler": "^0.1.0",
     "hammerjs": "^2.0.8"
