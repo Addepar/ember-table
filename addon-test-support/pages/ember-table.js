@@ -1,8 +1,9 @@
 import PageObject, { alias } from 'ember-classy-page-object';
-import EmberTableBodyPage from './-private/ember-table-body-page';
-import EmberTableFooterPage from './-private/ember-table-footer-page';
-import EmberTableHeaderPage from './-private/ember-table-header-page';
+import { findElement } from 'ember-classy-page-object/extend';
 
+import EmberTableBodyPage from './-private/ember-table-body';
+import EmberTableFooterPage from './-private/ember-table-footer';
+import EmberTableHeaderPage from './-private/ember-table-header';
 
 /**
  * Ember Table page object. Use this page object and its nested header/body object to retrieve table
@@ -25,6 +26,17 @@ export default PageObject.extend({
   footer: EmberTableFooterPage,
 
   rows: alias('body.rows'),
+  getCell: alias('body.getCell'),
+
+  headers: alias('header.columns'),
+  subheaders: alias('header.subcolumns'),
+
+  /**
+   * Returns the table width.
+   */
+  get width() {
+    return findElement(this).offsetWidth;
+  },
 
   /**
    * Selects a row in the body
