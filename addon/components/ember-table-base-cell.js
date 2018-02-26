@@ -1,11 +1,11 @@
 import Component from '@ember/component';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { htmlSafe } from '@ember/string';
-import { action, computed } from 'ember-decorators/object';
 import { get } from '@ember/object';
 import { scheduler, Token } from 'ember-raf-scheduler';
 
-import { tagName, attribute } from 'ember-decorators/component';
+import { action, computed } from '@ember-decorators/object';
+import { tagName, attribute } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
 

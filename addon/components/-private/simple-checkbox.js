@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { tagName, attribute } from 'ember-decorators/component';
+import { tagName, attribute } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
