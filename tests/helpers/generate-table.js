@@ -23,6 +23,8 @@ const fullTable = hbs`
       onColumnReordered="onColumnReordered"
       onColumnResized="onColumnResized"
 
+      data-test-ember-table=true
+
       as |row|
     }}
 

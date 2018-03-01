@@ -1,96 +1,62 @@
-.et-table {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-
+.ember-table {
   position: relative;
-  border-collapse: collapse;
-  width: 100%;
+  overflow: scroll;
   max-height: 100%;
   max-width: 100%;
+  box-sizing: border-box;
 
-  .et-tbody, .et-thead, .et-tfoot {
-    display: block;
-    overflow-x: hidden;
+  table {
+    border-spacing: 0;
+    table-layout: fixed;
+
+    // Hack to get table to respect the widths of columns that
+    // have been set manually
+    width: 0;
   }
 
-  .et-thead-container, .et-tfoot-container {
+  td.is-fixed, th.is-fixed {
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+  }
+
+  thead {
+    top: 0;
     z-index: 2;
-  }
-
-  .et-tr {
-    display: inline-flex;
-    // Fixed td elements don't have classes, so we need to make sure we override the base styles no
-    // matter what
-    .et-td, .et-th {
-      display: block;
-    }
-  }
-
-  td, th, .et-td, .et-th {
     box-sizing: border-box;
-    vertical-align: inherit;
-    padding: 0px;
-  }
 
-  .et-td, .et-th, .et-tf {
-    position: relative;
-    &.is-fixed {
-      position: absolute;
-      left: 0;
-      z-index: 1;
-    }
-  }
-
-  .et-th {
-    &.is-fixed {
+    th {
+      position: -webkit-sticky;
+      position: sticky;
       top: 0;
+
+      &:first-child {
+        z-index: 3;
+      }
     }
   }
 
-  .et-tbody-container {
-    overflow-y: scroll;
-    flex: 1;
-    position: relative;
+  tbody {
+    box-sizing: border-box;
   }
 
-  .et-horizontal-scroll-wrapper {
-    position: absolute;
+  tfoot {
+    // tfoot respects position: sticky; in Safari, but td in a tfoot does not.
+    // td in a tfoot respects position: sticky; in Chrome, but tfoot does not.
+    // Thus, we put it on both with appropriate browser prefixes and wait for
+    // Chrome/Edge to fix their implementations.
+    position: -webkit-sticky;
     bottom: 0;
-    overflow-x: scroll;
-    overflow-y: hidden;
-    height: 20px;
-    opacity: 0.7;
-    border: none 0px;
-  }
+    z-index: 2;
+    box-sizing: border-box;
 
-  .et-horizontal-scroll {
-    height: 1px;
-  }
+    td {
+      position: sticky;
+      bottom: 0;
 
-  .et-header-resize-area {
-    width: 10px;
-    height: 100%;
-    top: 0px;
-    right: 0px;
-    position: absolute;
-    cursor: col-resize;
-  }
-
-  .et-header-ghost-element {
-    position: absolute;
-  }
-
-  .et-header-align-bar {
-    position: absolute;
-  }
-
-  .et-unselectable {
-    -webkit-touch-callout: none;
-    -webkit-user-select: none;
-    -khtml-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
+      &:first-child {
+        z-index: 3;
+      }
+    }
   }
 }

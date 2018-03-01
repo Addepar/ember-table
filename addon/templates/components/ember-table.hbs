@@ -1,6 +1,6 @@
-<div class="et-thead-container">
-  <thead class="et-thead">
-    <tr class="et-tr">
+<table>
+  <thead>
+    <tr>
       {{#each columns as |column columnIndex|}}
         {{ember-table-header
           column=column
@@ -18,7 +18,7 @@
     </tr>
 
     {{#if hasSubcolumns}}
-      <tr class="et-tr">
+      <tr>
         {{#each columns as |column columnIndex|}}
           {{#each column.subcolumns as |subcolumn subcolumnIndex|}}
             {{ember-table-header
@@ -38,10 +38,8 @@
       </tr>
     {{/if}}
   </thead>
-</div>
 
-<div class="et-tbody-container" data-test-body-container>
-  <tbody class="et-tbody">
+  <tbody>
     {{#component _bodyComponent
       api=api
       rows=rows
@@ -52,13 +50,11 @@
       {{yield row}}
     {{/component}}
   </tbody>
-</div>
 
-{{#if footerRows}}
-  <div class="et-tfoot-container">
-    <tfoot class="et-tfoot">
+  {{#if footerRows}}
+    <tfoot>
       {{#each footerRows as |footerRow footerRowIndex|}}
-        <tr class="et-tr">
+        <tr>
         {{#each bodyColumns as |column columnIndex|}}
           {{ember-table-footer
             column=column
@@ -72,10 +68,6 @@
         </tr>
       {{/each}}
     </tfoot>
-  </div>
-{{/if}}
-
-<div class="et-horizontal-scroll-wrapper" style={{horizontalScrollWrapperStyle}}>
-  <div class="et-horizontal-scroll" style={{horizontalScrollStyle}} />
-</div>
+  {{/if}}
+</table>
 
