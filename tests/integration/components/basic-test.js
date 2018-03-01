@@ -46,7 +46,7 @@ module('Integration | basic', function() {
       );
 
       // scroll all the way down
-      await scrollTo('[data-test-body-container]', 0, 10000);
+      await scrollTo('[data-test-ember-table]', 0, 10000);
 
       assert.notEqual(table.getCell(0, 0).text.trim(), '0A', 'first rendered row is not first data row');
       assert.equal(

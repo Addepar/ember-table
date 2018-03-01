@@ -3,7 +3,7 @@ import { assert } from '@ember/debug';
 
 import { action, computed } from '@ember-decorators/object';
 import { alias } from '@ember-decorators/object/computed';
-import { tagName, classNames } from '@ember-decorators/component';
+import { classNames } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -21,6 +21,8 @@ import { isNone } from '@ember/utils';
 import { A as emberA } from '@ember/array';
 import { scheduler, Token } from 'ember-raf-scheduler';
 
+import { IS_IE, setupStickyPolyfill, teardownStickyPolyfill } from '../utils/sticky-polyfill';
+
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
 const COLUMN_MODE_STANDARD = 'standard';
@@ -34,8 +36,7 @@ const TABLE_RESIZE_MODE_LAST_COLUMN = 'last_column';
 const SELECTION_MODE_SINGLE = 'single';
 const SELECTION_MODE_MULTIPLE = 'multiple';
 
-@tagName('table')
-@classNames('et-table')
+@classNames('ember-table')
 export default class EmberTable extends Component {
   layout = layout;
 
@@ -201,6 +202,10 @@ export default class EmberTable extends Component {
    */
   _tableResizeSensor = null;
 
+  _headerResizeSensor = null;
+  _bodyResizeSensor = null;
+  _footerResizeSensor = null;
+
   /**
    * Handlers used for synchronizing scroll positions across the scroll containers
    */
@@ -246,14 +251,20 @@ export default class EmberTable extends Component {
       this.get('selectionMode') === 'multiple' || !this.get('columns').some((c) => c.isCheckbox)
     );
 
-    this.setupScrollSync();
     this.setupColumnFillup();
+
+    if (IS_IE) {
+      setupStickyPolyfill(this);
+    }
   }
 
   willDestroyElement() {
     this.teardownColumnFillup();
-    this.teardownScrollSync();
     this.token.cancel();
+
+    if (IS_IE) {
+      teardownStickyPolyfill(this);
+    }
 
     super.willDestroyElement(...arguments);
   }
@@ -280,100 +291,10 @@ export default class EmberTable extends Component {
   }
 
   /**
-   * Syncs horizontal scrolling between table, header, body & footer.
-   */
-  setupScrollSync() {
-    let scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
-
-    let bodyScrollContainer = this.element.querySelector('tbody');
-    let headerScrollContainer = this.element.querySelector('thead');
-    let footerScrollContainer = this.element.querySelector('tfoot');
-
-    let scrollElements = [
-      bodyScrollContainer,
-      headerScrollContainer,
-      footerScrollContainer
-    ].filter((item) => {
-      return item;
-    });
-
-    let prevClientX, prevClientY;
-
-    this._wheelHandler = (event) => {
-      if (Math.abs(event.deltaX) < Math.abs(event.deltaY)) {
-        return;
-      }
-
-      event.preventDefault();
-
-      scrollBar.scrollLeft += event.deltaX;
-
-      for (let scrollElement of scrollElements) {
-        scrollElement.scrollLeft = scrollBar.scrollLeft;
-      }
-    };
-
-    this._scrollHandler = () => {
-      for (let scrollElement of scrollElements) {
-        scrollElement.scrollLeft = scrollBar.scrollLeft;
-      }
-    };
-
-    this._touchstartHandler = (event) => {
-      let [{ clientX, clientY }] = event.touches;
-
-      prevClientX = clientX;
-      prevClientY = clientY;
-    };
-
-    this._touchmoveHandler = (event) => {
-      let [{ clientX, clientY }] = event.touches;
-
-      let deltaX = clientX - prevClientX;
-      let deltaY = clientY - prevClientY;
-
-      if (Math.abs(deltaX) < Math.abs(deltaY)) {
-        return;
-      }
-
-      event.preventDefault();
-
-      scrollBar.scrollLeft -= deltaX;
-
-      for (let scrollElement of scrollElements) {
-        scrollElement.scrollLeft = scrollBar.scrollLeft;
-      }
-
-      prevClientX = clientX;
-      prevClientY = clientY;
-    };
-
-    this.element.addEventListener('wheel', this._wheelHandler);
-    scrollBar.addEventListener('scroll', this._scrollHandler);
-
-    bodyScrollContainer.addEventListener('touchstart', this._touchstartHandler);
-    bodyScrollContainer.addEventListener('touchmove', this._touchmoveHandler);
-  }
-
-  /**
    * Teardown the column fillup listeners
    */
   teardownColumnFillup() {
-    this.get('_tableResizeSensor').detach(this.element);
-  }
-
-  /**
-   * Teardown the scroll syncing
-   */
-  teardownScrollSync() {
-    let scrollBar = this.element.querySelector('.et-horizontal-scroll-wrapper');
-    let bodyScrollContainer = this.element.querySelector('tbody');
-
-    this.element.removeEventListener('wheel', this._wheelHandler);
-    scrollBar.removeEventListener('scroll', this._scrollHandler);
-
-    bodyScrollContainer.removeEventListener('touchstart', this._touchstartHandler);
-    bodyScrollContainer.removeEventListener('touchmove', this._touchmoveHandler);
+    this._tableResizeSensor.detach(this.element);
   }
 
   /**
