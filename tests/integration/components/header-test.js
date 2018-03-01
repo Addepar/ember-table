@@ -152,6 +152,16 @@ module('Integration | header', function() {
           'Other columns keep same width in first column resize mode.'
         );
       });
+
+      test('column resize action is sent up to controller', async function(assert) {
+        let expectedColumnIndex = 1;
+        this.on('onColumnResized', function(columnIndex) {
+          assert.equal(columnIndex, expectedColumnIndex, 'action is sent to controller after resizing');
+        });
+
+        await generateTable(this, { columnOptions });
+        await table.headers.eq(1).resize(30);
+      });
     });
 
     componentModule('reordering', function() {
@@ -179,6 +189,18 @@ module('Integration | header', function() {
         await table.headers.eq(1).moveByIndex(1);
         assert.equal(table.headers.eq(1).text.trim(), 'C', 'Second column is swapped');
         assert.equal(table.headers.eq(2).text.trim(), 'B', 'Third column is swapped');
+      });
+
+      test('column reorder action is sent up to controller', async function(assert) {
+        let expectedOldIndex = 1;
+        let expectedNewIndex = 2;
+        this.on('onColumnReordered', function(oldIndex, newIndex) {
+          assert.equal(oldIndex, expectedOldIndex, 'old column index is correct');
+          assert.equal(newIndex, expectedNewIndex, 'new column index is correct');
+        });
+
+        await generateTable(this, { columnOptions });
+        await table.headers.eq(1).moveByIndex(1);
       });
     });
 

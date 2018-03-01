@@ -155,6 +155,13 @@ export default class EmberTable extends Component {
   onColumnReordered = null;
 
   /**
+   * An action passed in the column resizing event
+   */
+  @argument
+  @type(optional(Action))
+  onColumnResized = null;
+
+  /**
    * A temporary element created when moving column. This element represents the current position
    * of the moving column. It has the same width and height with the moving column. Once moving
    * completes, this element vanishes.
@@ -204,7 +211,7 @@ export default class EmberTable extends Component {
   /**
    * The index of the last item that was selected, used for range selection
    */
-  lastSelectedIndex = 0;
+  _lastSelectedIndex = 0;
 
   @computed('numFixedColumns')
   get hasFixedColumn() {
@@ -564,10 +571,10 @@ export default class EmberTable extends Component {
       // Use a set to avoid item duplication
       let rowSet = new Set(this.get('selectedRows'));
 
-      let { lastSelectedIndex } = this;
+      let { _lastSelectedIndex } = this;
 
-      let minIndex = Math.min(lastSelectedIndex, rowIndex);
-      let maxIndex = Math.max(lastSelectedIndex, rowIndex);
+      let minIndex = Math.min(_lastSelectedIndex, rowIndex);
+      let maxIndex = Math.max(_lastSelectedIndex, rowIndex);
 
       for (let row of rows.slice(minIndex, maxIndex + 1)) {
         rowSet.add(row);
@@ -578,13 +585,13 @@ export default class EmberTable extends Component {
       selectedRows = [row];
     }
 
-    this.lastSelectedIndex = rowIndex;
+    this._lastSelectedIndex = rowIndex;
 
     this.sendAction('onSelect', selectedRows);
   };
 
   @action
-  onColumnResized(columnIndex, delta) {
+  onColumnResizing(columnIndex, delta) {
     if (this.get('hasSubcolumns')) {
       // Disable column reordering when table has subcolumn.
       return;
@@ -618,7 +625,7 @@ export default class EmberTable extends Component {
   }
 
   @action
-  onColumnResizeEnded() {
+  onColumnResizeEnded(columnIndex) {
     if (this.get('hasSubcolumns')) {
       // Disable column reordering when table has subcolumn.
       return;
@@ -626,6 +633,7 @@ export default class EmberTable extends Component {
 
     this.element.classList.remove('et-unselectable');
     this.fillupColumn();
+    this.sendAction('onColumnResized', columnIndex);
   }
 
   /**
@@ -651,7 +659,7 @@ export default class EmberTable extends Component {
   }
 
   @action
-  onColumnReorder(columnIndex, header, deltaX) {
+  onColumnReordering(columnIndex, header, deltaX) {
     if (this.get('hasSubcolumns')) {
       // Disable column reordering when table has subcolumn.
       return;
