@@ -20,6 +20,8 @@ const fullTable = hbs`
 
       onSelect="onSelect"
       onFooterEvent="onFooterEvent"
+      onColumnReordered="onColumnReordered"
+      onColumnResized="onColumnResized"
 
       as |row|
     }}
@@ -88,7 +90,11 @@ export function generateColumns(columnCount, {
 const defaultActions = {
   onSelect(newRows) {
     this.set('selectedRows', newRows);
-  }
+  },
+
+  onColumnReordered() {},
+
+  onColumnResized() {}
 };
 
 export default async function generateTable(testContext, {
