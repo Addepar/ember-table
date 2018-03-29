@@ -169,7 +169,7 @@ export default class TreeNode {
     nextIndex++;
 
     for (let child of this.children) {
-      child.initializeMetadata(depth, nextIndex);
+      child.initializeMetadata(depth + 1, nextIndex);
       nextIndex += child.nodeCount;
       this.nodeCount += child.nodeCount;
     }
