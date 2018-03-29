@@ -100,6 +100,10 @@ export default class TreeNode {
     }
   }
 
+  originalPrevious() {
+    return this.previousStack ? this.previousStack[0] : this.previous;
+  }
+
   /**
    * Push a new previous pointer for this node during a collapse operation.
    *
