@@ -20,8 +20,8 @@ const generateBasicRoot = (childCount = 10) => {
   let root = new TreeNode('Root');
   root.addChild(topRow);
 
-  root.updateNext(null);
-  root.updateNodeCountAndIndex(-1);
+  root.initializePointers(null);
+  root.initializeMetadata(-1, -1);
 
   return root;
 };

@@ -84,7 +84,7 @@ export default class TreeNode {
   }
 
   /**
-   * Add a child to this node. Only use this during initial tree construction.
+   * Add a child to this node. Will not update any pointers.
    */
   addChild(child) {
     child.parent = this;
