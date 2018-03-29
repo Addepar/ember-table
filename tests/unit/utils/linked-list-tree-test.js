@@ -29,7 +29,7 @@ test('Test expanding and collapsing rows', function(assert) {
   let tree = new LinkedListTree(generateBasicRoot());
 
   let node = tree.objectAt(24); // Group 2
-  tree.collapseNode(node);
+  tree.collapse(node);
 
   // Collapse a Group row
   assert.equal(tree.get('length'), 1101);
@@ -39,7 +39,7 @@ test('Test expanding and collapsing rows', function(assert) {
 
   // Collapse a Header row
   node = tree.objectAt(1); // Header 0
-  tree.collapseNode(node);
+  tree.collapse(node);
   assert.equal(node.value, 'Header 0');
   assert.equal(node.nodeCountDelta, -10);
   assert.equal(tree.get('length'), 1001);
@@ -61,10 +61,10 @@ test('Previous node is correct after several rows collapse & expansion.', functi
   let tree = new LinkedListTree(generateBasicRoot(3));
 
   // Collapse Top Row -> Header 0 -> Group 2
-  tree.collapseNode(tree.objectAt(10));
+  tree.collapse(tree.objectAt(10));
 
   // Collapse Top Row -> Header 0
-  tree.collapseNode(tree.objectAt(1));
+  tree.collapse(tree.objectAt(1));
 
   // Expand Top Row -> Header 0
   tree.expand(tree.objectAt(1));

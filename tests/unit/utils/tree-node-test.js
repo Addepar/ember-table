@@ -3,7 +3,6 @@ import { generateBasicRoot } from 'dummy/tests/helpers/tree-generator';
 
 module('Unit | Utility | tree node');
 
-// Replace this with your real tests.
 test('Test next and preivous nodes', function(assert) {
   let root = generateBasicRoot();
   let firstRow = root.next;
