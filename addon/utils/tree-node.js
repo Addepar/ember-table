@@ -1,29 +1,56 @@
-
+/**
+ * A node in a LinkedListTree. To traverse the tree, use the next and previous pointers.
+ *
+ * The other pointers (nextOnCollapse, originalNext, previousStack) are used to manipulate
+ * linked list pointers during collapse / expand operations.
+ */
 export default class TreeNode {
   parent = null;
   children = null;
   value = null;
 
   /**
-   * Current next node (apply for both case expand & collapse).
+   * Current next node in linked list.
    */
   next = null;
 
   /**
-   * The next node when this tree collapse. This next node is usually the next sibling in the tree
-   * or next sibling of one of its ancestor.
+   * The next node when this tree is collapsed. This next node is usually the next sibling
+   * in the tree or next sibling of one of its ancestor.
    */
   nextOnCollapse = null;
 
   /**
-   * Original next node when tree is fully expanded.
+   * Next node when tree is fully expanded.
    */
   originalNext = null;
 
   /**
-   * Current previous node (apply for both case expand & collapse).
+   * Current previous node in linked list.
    */
   previous = null;
+
+  /**
+   * A stack of previous nodes. Imagine a tree like this:
+   *
+   * A
+   * |-B
+   * | |-C
+   * |   |-D
+   * |-E
+   *
+   * When expanded, the previous of E is D.  If C collapses, then E's previous is
+   * now C. If B then collapses, then E's previous is now B. Tree now looks like this:
+   *
+   * A
+   * |-B*
+   * |-E
+   *
+   * When we expand B, we want to know E's previous without traversing the whole
+   * B subtree. Thus, we need to store the stack of previous nodes for E, and we can
+   * determine the new previous node for E by popping off of this stack. (it's C)
+   */
+  previousStack = null;
 
   /**
    * Total number of node in this subtree (including this node).
@@ -39,21 +66,20 @@ export default class TreeNode {
 
   collapse = false;
 
-  constructor(parent, value) {
+  /**
+   * Creates a new tree node. To set its parent, call `addChild` on the parent node.
+   */
+  constructor(value) {
     this.children = [];
-    this.parent = parent;
     this.value = value;
   }
 
   addChild(child) {
+    child.parent = this;
     this.children.push(child);
   }
 
-  setNext(node) {
-    this.next = node;
-  }
-
-  _setNextNode(node) {
+  _setOriginalNext(node) {
     this.next = node;
     this.originalNext = node;
 
@@ -62,13 +88,43 @@ export default class TreeNode {
     }
   }
 
+  /**
+   * Push a new previous pointer for this node during a collapse operation.
+   *
+   * NOT to be used for adding / removing nodes.
+   *
+   * See jsdoc for the `previousStack` attribute.
+   */
+  pushPrevious(newPrevious) {
+    if (this.previousStack === null) {
+      this.previousStack = [this.previous];
+    } else {
+      this.previousStack.push(this.previous);
+    }
+    this.previous = newPrevious;
+  }
+
+  /**
+   * Pop a previous pointer off the stack and set the previous to that.
+   *
+   * Used during an expand operation
+   *
+   * See jsdoc for the `previousStack` attribute.
+   */
+  popPrevious() {
+    this.previous = this.previousStack.pop();
+    if (this.previousStack.length === 0) {
+      this.previousStack = null;
+    }
+  }
+
   updateNext(nextNode) {
     let { children } = this;
 
     if (children.length > 0) {
-      this._setNextNode(children[0]);
+      this._setOriginalNext(children[0]);
     } else {
-      this._setNextNode(nextNode);
+      this._setOriginalNext(nextNode);
       return;
     }
 
@@ -108,9 +164,6 @@ export default class TreeNode {
   }
 
   nextWithDirection(direction) {
-    if (direction < 0) {
-      return this.previous;
-    }
-    return this.next;
+    return direction < 0 ? this.previous : this.next;
   }
 }

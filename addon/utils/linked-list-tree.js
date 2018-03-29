@@ -1,15 +1,18 @@
 import EmberObject, { set } from '@ember/object';
 
+/**
+ * A tree that supports traversing the tree in DFS order (either forward or backwards)
+ * efficiently. Additionally, this tree supports collapsing (hiding) and uncollapsing
+ * (unhiding) subtrees efficiently without affecting the speed of tree traversal (tree
+ * traversal efficiency for hidden subtrees and empty subtrees should be the same).
+ */
 export default class LinkedListTree extends EmberObject {
   pointerNode = null;
   pointerIndex = -1;
 
   /**
-   * When a node is collapsed, this map stores list of previous nodes for the node next to the
-   * collapsed node. This is used to retrieve correct previous node upon node expansion.
+   * Make sure that you only call this AFTER you've constructed the entire tree!
    */
-  _previousNodes = null;
-
   constructor(root) {
     super();
 
@@ -24,8 +27,6 @@ export default class LinkedListTree extends EmberObject {
     }
 
     this.set('length', root.nodeCount - 1);
-
-    this._previousNodes = new WeakMap();
   }
 
   objectAt(index) {
@@ -38,7 +39,7 @@ export default class LinkedListTree extends EmberObject {
     return this.pointerNode;
   }
 
-  updateParentNodeCount(node, delta) {
+  _updateParentNodeCount(node, delta) {
     node = node.parent;
     while (node !== null) {
       node.nodeCountDelta += delta;
@@ -52,7 +53,7 @@ export default class LinkedListTree extends EmberObject {
    * index of pointerNode and the row node. Note that these indexes are indexes of rows when the
    * tree is fully expanded and it always show the correct relative position between 2 rows.
    */
-  movePointerToRow(row) {
+  _movePointerToRow(row) {
     let direction = this.pointerNode.index < row.index ? 1 : -1;
     while (row.index !== this.pointerNode.index) {
       this.pointerNode = this.pointerNode.nextWithDirection(direction);
@@ -60,50 +61,35 @@ export default class LinkedListTree extends EmberObject {
     }
   }
 
-  collapseNode(row) {
+  collapse(row) {
     // Now update pointerNode to the selected node.
-    this.movePointerToRow(row);
+    this._movePointerToRow(row);
 
     // Update next & previous link.
     let newNextNode = row.nextOnCollapse;
     row.next = newNextNode;
     if (newNextNode !== null) {
-      // The newNextNode could have some previous nodes before. Push the collapsed row to the
-      // previous node list.
-      let previousNodes = this._previousNodes.get(newNextNode);
-      if (previousNodes === undefined) {
-        previousNodes = [];
-      }
-      previousNodes.push(newNextNode.previous);
-      this._previousNodes.set(newNextNode, previousNodes);
-
-      newNextNode.previous = row;
+      newNextNode.pushPrevious(row);
     }
 
     set(row, 'collapse', true);
-    this.updateParentNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
+    this._updateParentNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
     this.notifyPropertyChange('[]');
   }
 
   expand(row) {
     // Now update pointerNode to the selected node.
-    this.movePointerToRow(row);
+    this._movePointerToRow(row);
 
     // Update next & previous link.
     let newNextNode = row.next;
     if (newNextNode !== null) {
-      let previousNodes = this._previousNodes.get(newNextNode);
-      newNextNode.previous = previousNodes[previousNodes.length - 1];
-
-      previousNodes.pop();
-      if (previousNodes.length === 0) {
-        this._previousNodes.delete(newNextNode);
-      }
+      newNextNode.popPrevious();
     }
     row.next = row.originalNext;
 
     set(row, 'collapse', false);
-    this.updateParentNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
+    this._updateParentNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
     this.notifyPropertyChange('[]');
   }
 }

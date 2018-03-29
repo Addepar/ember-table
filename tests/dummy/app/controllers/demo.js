@@ -23,13 +23,13 @@ export default Controller.extend({
   },
 
   rows: computed(function() {
-    let topRow = new TreeNode(null, this.getRow('Top Row'));
+    let topRow = new TreeNode(this.getRow('Top Row'));
     for (let i = 0; i < 10; i++) {
-      let header = new TreeNode(topRow, this.getRow(`Header ${i}`));
+      let header = new TreeNode(this.getRow(`Header ${i}`));
       for (let j = 0; j < 10; j++) {
-        let group = new TreeNode(header, this.getRow(`Group ${j}`));
+        let group = new TreeNode(this.getRow(`Group ${j}`));
         for (let k = 0; k < 10; k++) {
-          group.addChild(new TreeNode(group, this.getRow(`Leaf ${k}`)));
+          group.addChild(new TreeNode(this.getRow(`Leaf ${k}`)));
         }
 
         header.addChild(group);
@@ -38,7 +38,7 @@ export default Controller.extend({
       topRow.addChild(header);
     }
 
-    let root = new TreeNode(null, null);
+    let root = new TreeNode(null);
     root.addChild(topRow);
 
     return new LinkedListTree(root);
