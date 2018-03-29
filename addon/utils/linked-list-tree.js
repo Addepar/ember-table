@@ -1,33 +1,38 @@
 import EmberObject, { set } from '@ember/object';
 import TreeNode from './tree-node';
-import { isEmpty } from '@ember/utils';
 
 /**
- * A tree that supports traversing the tree in DFS order (either forward or backwards)
- * efficiently. Additionally, this tree supports collapsing (hiding) and uncollapsing
- * (unhiding) subtrees efficiently without affecting the speed of tree traversal (tree
- * traversal efficiency for hidden subtrees and empty subtrees should be the same).
+ * A doubly linked list on top of a tree. The order of the list is in DFS order
+ * for the tree. The list supports collapsing (hiding) of subtrees, after which
+ * traversal of the linked list is the same as if the subtree had been removed.
  */
 export default class LinkedListTree extends EmberObject {
   pointerNode = null;
   pointerIndex = -1;
+  root = null;
 
   /**
-   * Make sure that you only call this AFTER you've constructed the entire tree!
+   * First construct your tree using `new TreeNod(val)` and
+   * `parent.addChild(childNode)`. Then, call constructor on the root node
+   * of your tree. The root node does NOT get displayed.
    */
   constructor(root) {
     super();
+    this.root = root;
+    this._init();
+  }
 
-    root.initializePointers(null);
-    root.initializeMetadata(-1, -1);
-
+  /**
+   * Moves the pointer back to the start of the list.
+   */
+  resetPointer() {
     this.pointerIndex = 0;
     // Root is a virtual node and will not be used for display
-    if (root.children.length > 0) {
-      this.pointerNode = root.children[0];
+    if (this.root.children.length > 0) {
+      this.pointerNode = this.root.children[0];
+    } else {
+      this.pointerNode = null;
     }
-
-    this.set('length', root.nodeCount - 1);
   }
 
   objectAt(index) {
@@ -36,10 +41,92 @@ export default class LinkedListTree extends EmberObject {
       this.pointerNode = this.pointerNode.nextWithDirection(direction);
       this.pointerIndex += direction;
     }
-
     return this.pointerNode;
   }
 
+  collapse(row) {
+    // an collapse may mess up the pointer index, so we reset it
+    this.resetPointer();
+    this._collapse(row);
+    this.notifyPropertyChange('[]');
+  }
+
+  expand(row) {
+    // an expansion may mess up the pointer index, so we reset it
+    this.resetPointer();
+    this._expand(row);
+    this.notifyPropertyChange('[]');
+  }
+
+  /**
+   * Remove a row from the tree, rebuild the linked list and notify dependents that
+   * the linked list has changed.
+   */
+  remove(row) {
+    let i = row.parent.indexOf(row);
+    row.parent.splice(i, 1);
+    this._init();
+  }
+
+  /**
+   * Create a new TreeNode with rowValue as its value and append it to the children of parent
+   */
+  add(rowValue, parent) {
+    parent.children.push(new TreeNode(rowValue));
+    this._init();
+  }
+
+  /**
+   * Rebuilds the linked list structure, fills in all the count and depth fields.
+   */
+  _init() {
+    this.root.initializePointers(null);
+    this.root.initializeMetadata(-1, -1);
+    this.resetPointer();
+    this._recollapse(this.root);
+    this.set('length', this.root.nodeCount - 1);
+    this.notifyPropertyChange('[]');
+  }
+
+  /**
+   * Expands the row; updates pointers and counts.
+   */
+  _expand(row) {
+    if (!row.collapse) {
+      return;
+    }
+    // Update next & previous link.
+    let newNextNode = row.next;
+    if (newNextNode !== null) {
+      newNextNode.popPrevious();
+    }
+    row.next = row.originalNext;
+
+    set(row, 'collapse', false);
+    this._updateAncestorNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
+  }
+
+  /**
+   * Collapse the row; updates pointers and counts.
+   */
+  _collapse(row) {
+    if (row.collapse) {
+      return;
+    }
+    // Update next & previous link.
+    let newNextNode = row.nextOnCollapse;
+    row.next = newNextNode;
+    if (newNextNode !== null) {
+      newNextNode.pushPrevious(row);
+    }
+
+    set(row, 'collapse', true);
+    this._updateAncestorNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
+  }
+
+  /**
+   * Traverse up the tree updating node counts and node delta counts.
+   */
   _updateAncestorNodeCount(node, delta) {
     node = node.parent;
     while (node !== null) {
@@ -50,144 +137,16 @@ export default class LinkedListTree extends EmberObject {
   }
 
   /**
-   * Moves pointer to a particular row. We know which direction to move to by comparing absolute
-   * index of pointerNode and the row node. Note that these indexes are indexes of rows when the
-   * tree is fully expanded and it always show the correct relative position between 2 rows.
+   * Go thru the tree, collapsing everything marked as collapsed.
    */
-  _movePointerToRow(row) {
-    let direction = this.pointerNode.index < row.index ? 1 : -1;
-    while (row.index !== this.pointerNode.index) {
-      this.pointerNode = this.pointerNode.nextWithDirection(direction);
-      this.pointerIndex += direction;
-    }
-  }
+  _recollapse(node) {
+    for (let child of node.children) {
+      // collapse child nodes before me.
+      this._recollapse(child);
 
-  collapse(row) {
-    // Now update pointerNode to the selected node.
-    this._movePointerToRow(row);
-
-    // Update next & previous link.
-    let newNextNode = row.nextOnCollapse;
-    row.next = newNextNode;
-    if (newNextNode !== null) {
-      newNextNode.pushPrevious(row);
-    }
-
-    set(row, 'collapse', true);
-    this._updateAncestorNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
-    this.notifyPropertyChange('[]');
-  }
-
-  expand(row) {
-    // Now update pointerNode to the selected node.
-    this._movePointerToRow(row);
-
-    // Update next & previous link.
-    let newNextNode = row.next;
-    if (newNextNode !== null) {
-      newNextNode.popPrevious();
-    }
-    row.next = row.originalNext;
-
-    set(row, 'collapse', false);
-    this._updateAncestorNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
-    this.notifyPropertyChange('[]');
-  }
-
-  /**
-   * Create a new TreeNode with rowValue as its value and append it to the children of parent
-   */
-  add(rowValue, parent) {
-    this._movePointerToRow(parent);
-    let node = new TreeNode(rowValue);
-
-    if (isEmpty(parent.children)) {
-      node.previous = parent;
-      // my parent's nextOnCollapse doesn't change if i add children.
-    } else {
-      node.previous = parent.children[parent.children.length - 1];
-      node.previous.nextOnCollapse = node;
-    }
-    let originalNext = node.previous.originalNext;
-    node.previous.originalNext = node;
-    // if my previous is a collapsed parent, then don't change the
-    // next on my previous
-    if (parent !== node.previous || !parent.collapse) {
-      node.previous.next = node;
-    }
-
-    // since i'm a leaf node, i can't be collapsed
-    node.originalNext = originalNext;
-    node.nextOnCollapse = originalNext;
-    node.next = originalNext;
-
-    parent.addChild(node);
-
-    node.depth = node.parent.depth + 1;
-
-    this._recountAfterUpdate(node.parent, 1);
-    this._resetIndices(node, node.originalNext.index);
-    this.notifyPropertyChange('[]');
-  }
-
-  /**
-   * Remove a leaf node from the tree.
-   */
-  remove(node) {
-    if (node.nodeCount > 1) {
-      throw Error('can only remove leaf nodes');
-    }
-
-    let parent = node.parent;
-    let previous = node.previous;
-    let next = node.next;
-    // i have no previous siblings
-    if (node.previous === parent) {
-      parent.originalNext = next;
-      if (!parent.collapse) {
-        parent.next = parent.originalNext;
+      if (child.collapse) {
+        this._collapse(child);
       }
-    // i have a previous sibling
-    } else {
-      previous.originalNext = node.originalNext;
-      previous.nextOnCollapse = node.nextOnCollapse;
-      previous.next = previous.collapse ? node.nextOnCollapse : node.originalNext;
-    }
-  }
-
-  /**
-   * Readjust all the indices starting from `node`. This will start
-   * by setting the index on `node` to `index`;
-   */
-  _resetIndices(node, index) {
-    while (node) {
-      node.index = index;
-      index++;
-      node = node.originalNext;
-    }
-  }
-
-  /**
-   * Recount after a leaf node was inserted or deleted. Goes up
-   * the ancestor tree, adjusting all the nodeCount and nodeCountDelta.
-   *
-   * @param startNode the node to start the updates
-   * @param direction either +1 if added or -1 if removed
-   */
-  _recountAfterUpdate(startNode, direction) {
-    let node = startNode;
-    let anyCollapsed = false;
-    while (node) {
-      node.nodeCount += direction;
-      if (node.nodeCountDelta < 0) {
-        node.nodeCountDelta -= direction;
-        anyCollapsed = true;
-      }
-      node = node.parent;
-    }
-    if (!anyCollapsed) {
-      // if i'm not in a collapsed part of the tree, i need to adjust length
-      this.set('length', this.get('length') + direction);
     }
   }
 }
