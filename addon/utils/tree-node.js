@@ -62,9 +62,18 @@ export default class TreeNode {
    */
   nodeCountDelta = 0;
 
+  /**
+   * Where in the linked list this node lives.
+   */
   index = null;
 
+  /**
+   * Whether this node has been collapsed (does not indicate whether or not an ancestor
+   * has been collapsed).
+   */
   collapse = false;
+
+  depth = 0;
 
   /**
    * Creates a new tree node. To set its parent, call `addChild` on the parent node.
@@ -74,6 +83,9 @@ export default class TreeNode {
     this.value = value;
   }
 
+  /**
+   * Add a child to this node. Only use this during initial tree construction.
+   */
   addChild(child) {
     child.parent = this;
     this.children.push(child);
@@ -105,9 +117,10 @@ export default class TreeNode {
   }
 
   /**
-   * Pop a previous pointer off the stack and set the previous to that.
+   * Pop a previous pointer off the stack and set the previous to that; using during
+   * an expand operation.
    *
-   * Used during an expand operation
+   * NOT to be used for adding / removing nodes.
    *
    * See jsdoc for the `previousStack` attribute.
    */
@@ -118,7 +131,10 @@ export default class TreeNode {
     }
   }
 
-  updateNext(nextNode) {
+  /**
+   * Recursively initialize the next/prev pointers
+   */
+  initializePointers(nextNode) {
     let { children } = this;
 
     if (children.length > 0) {
@@ -132,7 +148,7 @@ export default class TreeNode {
 
     // iterate from the last to first child of this node.
     for (let i = children.length - 1; i >= 0; i--) {
-      children[i].updateNext(nextNode);
+      children[i].initializePointers(nextNode);
       nextNode = children[i];
 
       if (i === children.length - 1) {
@@ -143,24 +159,20 @@ export default class TreeNode {
     }
   }
 
-  updateDepth(depth) {
+  /**
+   * initializes depth, node counts, and index
+   */
+  initializeMetadata(depth, nextIndex) {
     this.depth = depth;
-    for (let child of this.children) {
-      child.updateDepth(depth + 1);
-    }
-  }
-
-  updateNodeCountAndIndex(currentIndex) {
     this.nodeCount = 1;
-    this.index = currentIndex;
-    currentIndex += 1;
+    this.index = nextIndex;
+    nextIndex++;
 
-    for (let i = 0; i < this.children.length; i++) {
-      this.nodeCount += this.children[i].updateNodeCountAndIndex(currentIndex);
-      currentIndex += this.children[i].nodeCount;
+    for (let child of this.children) {
+      child.initializeMetadata(depth, nextIndex);
+      nextIndex += child.nodeCount;
+      this.nodeCount += child.nodeCount;
     }
-
-    return this.nodeCount;
   }
 
   nextWithDirection(direction) {

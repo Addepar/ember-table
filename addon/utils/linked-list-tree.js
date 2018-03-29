@@ -16,9 +16,8 @@ export default class LinkedListTree extends EmberObject {
   constructor(root) {
     super();
 
-    root.updateNext(null);
-    root.updateNodeCountAndIndex(-1);
-    root.updateDepth(-1);
+    root.initializePointers(null);
+    root.initializeMetadata(-1, -1);
 
     this.pointerIndex = 0;
     // Root is a virtual node and will not be used for display
@@ -39,7 +38,7 @@ export default class LinkedListTree extends EmberObject {
     return this.pointerNode;
   }
 
-  _updateParentNodeCount(node, delta) {
+  _updateAncestorNodeCount(node, delta) {
     node = node.parent;
     while (node !== null) {
       node.nodeCountDelta += delta;
@@ -73,7 +72,7 @@ export default class LinkedListTree extends EmberObject {
     }
 
     set(row, 'collapse', true);
-    this._updateParentNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
+    this._updateAncestorNodeCount(row, 1 - (row.nodeCount + row.nodeCountDelta));
     this.notifyPropertyChange('[]');
   }
 
@@ -89,7 +88,7 @@ export default class LinkedListTree extends EmberObject {
     row.next = row.originalNext;
 
     set(row, 'collapse', false);
-    this._updateParentNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
+    this._updateAncestorNodeCount(row, (row.nodeCount + row.nodeCountDelta) - 1);
     this.notifyPropertyChange('[]');
   }
 }
