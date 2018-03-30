@@ -91,6 +91,10 @@ export default class TreeNode {
     this.children.push(child);
   }
 
+  lastChild() {
+    return this.children.length ? this.children[this.children.length - 1] : null;
+  }
+
   _setOriginalNext(node) {
     this.next = node;
     this.originalNext = node;
@@ -102,6 +106,28 @@ export default class TreeNode {
 
   originalPrevious() {
     return this.previousStack ? this.previousStack[0] : this.previous;
+  }
+
+  /**
+   * Count of nodes minus hidden nodes.
+   * This is only accurate if neither me or my ancestors are collapsed.
+   */
+  visibleNodeCount() {
+    return this.nodeCount + this.nodeCountDelta;
+  }
+
+  /**
+   * @returns whether `candidate` is an ancestor of this.
+   */
+  hasAncestor(candidate) {
+    let ancestor = this.parent;
+    while (ancestor) {
+      if (ancestor === candidate) {
+        return true;
+      }
+      ancestor = ancestor.parent;
+    }
+    return false;
   }
 
   /**
@@ -149,6 +175,7 @@ export default class TreeNode {
     }
 
     let originalNextNode = nextNode;
+    this.previousStack = null;
 
     // iterate from the last to first child of this node.
     for (let i = children.length - 1; i >= 0; i--) {
@@ -169,6 +196,7 @@ export default class TreeNode {
   initializeMetadata(depth, nextIndex) {
     this.depth = depth;
     this.nodeCount = 1;
+    this.nodeCountDelta = 0;
     this.index = nextIndex;
     nextIndex++;
 
