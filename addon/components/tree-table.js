@@ -24,7 +24,7 @@ export default class TreeTable extends EmberTable {
     if (row.collapse) {
       tree.expand(row);
     } else {
-      tree.collapseNode(row);
+      tree.collapse(row);
     }
   }
 }

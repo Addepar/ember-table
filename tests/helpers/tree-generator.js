@@ -1,14 +1,18 @@
 import TreeNode from 'dummy/utils/tree-node';
 
-const generateBasicRoot = (childCount = 10) => {
-  let topRow = new TreeNode(null, 'Top Row');
+const generateBasicRoot = (childCount = 10, useGlobalId = false) => {
+  let topRow = new TreeNode('Top Row');
 
+  let id = 0;
   for (let i = 0; i < childCount; i++) {
-    let header = new TreeNode(topRow, `Header ${i}`);
+    id = useGlobalId ? ++id : i;
+    let header = new TreeNode(`Header ${id}`);
     for (let j = 0; j < childCount; j++) {
-      let group = new TreeNode(header, `Group ${j}`);
+      id = useGlobalId ? ++id : j;
+      let group = new TreeNode(`Group ${id}`);
       for (let k = 0; k < childCount; k++) {
-        group.addChild(new TreeNode(group, `Leaf ${k}`));
+        id = useGlobalId ? ++id : k;
+        group.addChild(new TreeNode(`Leaf ${id}`));
       }
 
       header.addChild(group);
@@ -17,11 +21,11 @@ const generateBasicRoot = (childCount = 10) => {
     topRow.addChild(header);
   }
 
-  let root = new TreeNode(null, 'Root');
+  let root = new TreeNode('Root');
   root.addChild(topRow);
 
-  root.updateNext(null);
-  root.updateNodeCountAndIndex(-1);
+  root.initializePointers(null);
+  root.initializeMetadata(-1, -1);
 
   return root;
 };
