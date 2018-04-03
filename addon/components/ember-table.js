@@ -2,6 +2,7 @@
 import { assert } from '@ember/debug';
 
 import { action, computed } from '@ember-decorators/object';
+import { alias } from '@ember-decorators/object/computed';
 import { tagName, classNames } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
@@ -160,6 +161,12 @@ export default class EmberTable extends Component {
   @argument
   @type(optional(Action))
   onColumnResized = null;
+
+  /**
+   * Component used for the body, customizable so that TreeTable can change the shape of the object
+   * passed down as the row API (e.g. to add depth)
+   */
+  _bodyComponent = 'ember-table-body';
 
   /**
    * A temporary element created when moving column. This element represents the current position
@@ -524,7 +531,7 @@ export default class EmberTable extends Component {
     'estimateRowHeight',
     'staticHeight'
   )
-  get api() {
+  get _baseApi() {
     let staticHeight = this.get('staticHeight');
     let staticRowHeight = null;
     if (staticHeight === true) {
@@ -544,6 +551,8 @@ export default class EmberTable extends Component {
       selectRow: this.selectRow
     };
   }
+
+  @alias('_baseApi') api;
 
   selectRow = (rowIndex, { toggle, range }) => {
     let rows = this.get('rows');

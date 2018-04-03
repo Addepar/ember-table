@@ -14,7 +14,6 @@ export default class CellProxy extends EmberObject {
   columnIndex = null;
 
   row = null;
-  targetTable = null;
 
   @readOnly('_rowComponent.rowValue') rowValue;
   @readOnly('_rowComponent.rowIndex') rowIndex;

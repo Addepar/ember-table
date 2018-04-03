@@ -15,9 +15,9 @@ export default class TreeTableGroupingCell extends Component {
   cell;
 
   @attribute
-  @computed('cell.row.value')
+  @computed('cell.row.depth')
   get style() {
-    let rowNode = this.get('cell.row.value');
-    return htmlSafe(`padding-left: ${rowNode.depth * 20}px;`);
+    let depth = this.get('cell.row.depth');
+    return htmlSafe(`padding-left: ${depth * 20}px;`);
   }
 }
