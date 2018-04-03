@@ -1,6 +1,4 @@
 import Controller from '@ember/controller';
-import TreeNode from '../utils/tree-node';
-import LinkedListTree from '../utils/linked-list-tree';
 import { computed } from '@ember/object';
 import EmberObject from '@ember/object';
 import { A as emberA } from '@ember/array';
@@ -8,40 +6,41 @@ import { A as emberA } from '@ember/array';
 const COLUMN_COUNT = 13;
 const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
+function generateRow(title) {
+  let row = EmberObject.create({
+    id: title,
+    children: []
+  });
+  for (let j = 0; j < COLUMN_COUNT; j++) {
+    row.set(ALPHABET[j], ALPHABET[j]);
+  }
+  return row;
+}
+
 export default Controller.extend({
   showTable: true,
   showPanel: false,
 
-  getRow(title) {
-    let row = EmberObject.create({
-      'id': title
-    });
-    for (let j = 0; j < COLUMN_COUNT; j++) {
-      row.set(ALPHABET[j], ALPHABET[j]);
-    }
-    return row;
-  },
+  tree: computed(function() {
+    let tree = generateRow('Top Row');
 
-  rows: computed(function() {
-    let topRow = new TreeNode(null, this.getRow('Top Row'));
     for (let i = 0; i < 10; i++) {
-      let header = new TreeNode(topRow, this.getRow(`Header ${i}`));
+      let header = generateRow(`Header ${i}`);
+
       for (let j = 0; j < 10; j++) {
-        let group = new TreeNode(header, this.getRow(`Group ${j}`));
+        let group = generateRow(`Group ${j}`);
+
         for (let k = 0; k < 10; k++) {
-          group.addChild(new TreeNode(group, this.getRow(`Leaf ${k}`)));
+          group.children.push(generateRow(`Leaf ${k}`));
         }
 
-        header.addChild(group);
+        header.children.push(group);
       }
 
-      topRow.addChild(header);
+      tree.children.push(header);
     }
 
-    let root = new TreeNode(null, null);
-    root.addChild(topRow);
-
-    return new LinkedListTree(root);
+    return tree;
   }),
 
   columns: computed(function() {
