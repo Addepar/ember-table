@@ -42,19 +42,15 @@
 
 <div class="et-tbody-container" data-test-body-container>
   <tbody class="et-tbody">
-    {{#vertical-collection rows
-      estimateHeight=estimateRowHeight
+    {{#component _bodyComponent
+      api=api
+      rows=rows
+      estimateRowHeight=estimateRowHeight
       staticHeight=staticHeight
-      containerSelector=".et-tbody-container"
 
-      as |rowValue rowIndex|
-    }}
-      {{yield (hash
-        value=rowValue
-        index=rowIndex
-        api=api)
-      }}
-    {{/vertical-collection}}
+      as |row|}}
+      {{yield row}}
+    {{/component}}
   </tbody>
 </div>
 

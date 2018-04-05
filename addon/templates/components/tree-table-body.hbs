@@ -1,0 +1,14 @@
+{{#vertical-collection rows
+  estimateHeight=estimateRowHeight
+  staticHeight=staticHeight
+  containerSelector=".et-tbody-container"
+
+  as |rowValue rowIndex|
+}}
+  {{yield (hash
+    value=rowValue.value
+    depth=rowValue.depth
+    index=rowIndex
+    api=api)
+  }}
+{{/vertical-collection}}
