@@ -363,7 +363,7 @@ export default class CollapseTree {
     @return {{ value: object, depth: number }}
   */
   objectAt(index) {
-    if (index >= this.get('length') || index < 0) {
+    if (index >= get(this, 'length') || index < 0) {
       return undefined;
     }
     if (this.rootIsArray) {
