@@ -1,5 +1,6 @@
 import EmberTableBaseCell from './ember-table-base-cell';
 
+import { alias } from '@ember-decorators/object/computed';
 import { className } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -11,7 +12,9 @@ import layout from '../templates/components/ember-table-cell';
 export default class EmberTableCell extends EmberTableBaseCell {
   layout = layout;
 
-  @className('', 'et-td') isFixed;
+  // Attempting to decorate the isFixed field on the super class directly
+  // overwrites the field entirely, thus the need for an alias
+  @className('', 'et-td') @alias('_isFixed') isFixed;
 
   /**
    * Whether or not the parent row is selected
