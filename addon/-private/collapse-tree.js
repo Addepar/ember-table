@@ -363,6 +363,9 @@ export default class CollapseTree {
     @return {{ value: object, depth: number }}
   */
   objectAt(index) {
+    if (index >= this.get('length') || index < 0) {
+      return undefined;
+    }
     if (this.rootIsArray) {
       // If the root was an array, we added a "fake" top level node. Skip this node
       // by adding one to the index, and "subtracting" one from the depth.
