@@ -71,7 +71,7 @@ export default class EmberTableCell extends Component {
   }
 
   @computed('columnIndex', 'numFixedColumns')
-  get isFixed() {
+  get _isFixed() {
     let numFixedColumns = this.get('numFixedColumns');
     return this.get('columnIndex') === 0
       && Number.isInteger(numFixedColumns)

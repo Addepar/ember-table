@@ -2,6 +2,7 @@
 import EmberTableBaseCell from './ember-table-base-cell';
 
 import { action, computed } from '@ember-decorators/object';
+import { alias } from '@ember-decorators/object/computed';
 import { attribute, tagName, className } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -22,7 +23,9 @@ const COLUMN_REORDERING = 2;
 export default class EmberTableHeader extends EmberTableBaseCell {
   layout = layout;
 
-  @className('', 'et-th') isFixed;
+  // Attempting to decorate the isFixed field on the super class directly
+  // overwrites the field entirely, thus the need for an alias
+  @className('', 'et-th') @alias('_isFixed') isFixed;
 
   @argument
   @required
