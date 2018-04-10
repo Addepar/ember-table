@@ -33,17 +33,28 @@ function generateTree(firstNode, values) {
 
 module('Unit | Private | CollapseTree', function() {
 
+  test('empty tree works', function(assert) {
+    let tree = new CollapseTree([]);
+    assert.equal(tree.objectAt(-1), undefined);
+    assert.equal(tree.objectAt(0), undefined);
+    assert.equal(tree.objectAt(1), undefined);
+  });
+
   test('basic tree works', function(assert) {
     let tree = new CollapseTree(generateTree(0, [1, [2, 3], 4, [5, 6]]));
 
     let expectedDepth = [0, 1, 2, 2, 1, 2, 2];
+    let length = get(tree, 'length');
 
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(length, 7);
 
     for (let i = 0; i < 7; i++) {
       assert.equal(tree.objectAt(i).value.value, i);
       assert.equal(tree.objectAt(i).depth, expectedDepth[i]);
     }
+
+    assert.equal(tree.objectAt(length + 1), undefined);
+    assert.equal(tree.objectAt(-1), undefined);
   });
 
   test('works with multiroot tree', function(assert) {
