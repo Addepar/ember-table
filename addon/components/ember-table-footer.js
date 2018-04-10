@@ -2,6 +2,7 @@ import EmberTableBaseCell from './ember-table-base-cell';
 import { get } from '@ember/object';
 
 import { action, computed } from '@ember-decorators/object';
+import { alias } from '@ember-decorators/object/computed';
 import { className } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { type } from '@ember-decorators/argument/type';
@@ -12,7 +13,9 @@ import layout from '../templates/components/ember-table-footer';
 export default class EmberTableFooter extends EmberTableBaseCell {
   layout = layout;
 
-  @className('', 'et-tf') isFixed;
+  // Attempting to decorate the isFixed field on the super class directly
+  // overwrites the field entirely, thus the need for an alias
+  @className('', 'et-tf') @alias('_isFixed') isFixed;
 
   @argument
   @type(Action)
