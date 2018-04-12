@@ -1,35 +1,15 @@
-{{#if isFixed}}
-  <div class="et-th is-fixed" style={{fixedCellStyle}}>
-    {{#if column.headerComponent}}
-      {{#component column.headerComponent
-        column=column
-        columnIndex=columnIndex
-        onHeaderEvent="sendHeaderEvent"
-      }}
-      {{/component}}
-    {{else}}
-      {{column.columnName}}
-    {{/if}}
-
-    {{#if column.isResizable}}
-      <div class="et-header-resize-area">
-      </div>
-    {{/if}}
-  </div>
+{{#if column.headerComponent}}
+  {{#component column.headerComponent
+    column=column
+    columnIndex=columnIndex
+    onHeaderEvent="sendHeaderEvent"
+  }}
+  {{/component}}
 {{else}}
-  {{#if column.headerComponent}}
-    {{#component column.headerComponent
-      column=column
-      columnIndex=columnIndex
-      onHeaderEvent="sendHeaderEvent"
-    }}
-    {{/component}}
-  {{else}}
-    {{column.columnName}}
-  {{/if}}
+  {{column.columnName}}
+{{/if}}
 
-  {{#if column.isResizable}}
-    <div class="et-header-resize-area">
-    </div>
-  {{/if}}
+{{#if column.isResizable}}
+  <div class="et-header-resize-area">
+  </div>
 {{/if}}

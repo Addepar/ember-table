@@ -5,7 +5,7 @@ import a11yAudit from 'ember-a11y-testing/test-support/audit';
 import generateTable, { generateColumns, generateRows } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
-import { find, scrollTo } from 'ember-native-dom-helpers';
+import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
@@ -46,12 +46,58 @@ module('Integration | basic', function() {
       );
 
       // scroll all the way down
-      await scrollTo('[data-test-body-container]', 0, 10000);
+      await scrollTo('[data-test-ember-table]', 0, 10000);
 
       assert.notEqual(table.getCell(0, 0).text.trim(), '0A', 'first rendered row is not first data row');
       assert.equal(
         table.getCell(table.rows.length - 1, 0).text.trim(), '99A', 'correct last row rendered'
       );
+    });
+
+    test('fixed cells work', async function(assert) {
+      function validateElements(container, elements, measurement) {
+        for (let element of elements) {
+          let rect = element.getBoundingClientRect();
+
+          // Travis reports pretty wide differences for some reason, possibly
+          // their Chrome version. It does validate that the elements are moving
+          // and that should be enough to know if we messed something up majorly.
+          //
+          // TODO(sticky): Try to lower the tolerance as sticky becomes more prevalent
+          assert.ok(container[measurement] - rect[measurement] < 10);
+        }
+      }
+
+      await generateTable(this, {
+        rowCount: 100,
+        columnCount: 30,
+        footerRowCount: 1,
+        numFixedColumns: 1
+      });
+
+      let tableContainerRect = find('.ember-table').getBoundingClientRect();
+
+      validateElements(tableContainerRect, findAll('thead th'), 'top');
+      validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
+
+      await scrollTo('[data-test-ember-table]', 10000, 0);
+
+      validateElements(tableContainerRect, findAll('thead th'), 'top');
+      validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
+
+      await scrollTo('[data-test-ember-table]', 10000, 10000);
+
+      validateElements(tableContainerRect, findAll('thead th'), 'top');
+      validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
+
+      await scrollTo('[data-test-ember-table]', 0, 10000);
+
+      validateElements(tableContainerRect, findAll('thead th'), 'top');
+      validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
     });
 
     test('Accessibility test', async function(assert) {

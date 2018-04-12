@@ -24,13 +24,13 @@ export default Controller.extend({
   tree: computed(function() {
     let tree = generateRow('Top Row');
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 3; i++) {
       let header = generateRow(`Header ${i}`);
 
-      for (let j = 0; j < 10; j++) {
+      for (let j = 0; j < 3; j++) {
         let group = generateRow(`Group ${j}`);
 
-        for (let k = 0; k < 10; k++) {
+        for (let k = 0; k < 3; k++) {
           group.children.push(generateRow(`Leaf ${k}`));
         }
 
