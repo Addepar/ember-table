@@ -2,7 +2,6 @@
 import { assert } from '@ember/debug';
 
 import { action, computed } from '@ember-decorators/object';
-import { alias } from '@ember-decorators/object/computed';
 import { classNames } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
@@ -20,6 +19,8 @@ import { get, set } from '@ember/object';
 import { isNone } from '@ember/utils';
 import { A as emberA } from '@ember/array';
 import { scheduler, Token } from 'ember-raf-scheduler';
+
+import CollapseTree from '../-private/collapse-tree';
 
 import { IS_IE, setupStickyPolyfill, teardownStickyPolyfill } from '../utils/sticky-polyfill';
 
@@ -107,9 +108,12 @@ export default class EmberTable extends Component {
    * The row items that the table should display
    */
   @argument
-  @required
-  @type('object')
+  @type(optional('object'))
   rows;
+
+  @argument
+  @type(optional('object'))
+  tree;
 
   /**
    * The column definitions for the table
@@ -224,12 +228,6 @@ export default class EmberTable extends Component {
    * The index of the last item that was selected, used for range selection
    */
   _lastSelectedIndex = 0;
-
-  @computed('numFixedColumns')
-  get hasFixedColumn() {
-    let numFixedColumns = this.get('numFixedColumns');
-    return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
-  }
 
   constructor() {
     super(...arguments);
@@ -350,6 +348,19 @@ export default class EmberTable extends Component {
     }
   }
 
+  @computed('rows')
+  get wrappedRows() {
+    let rows = this.get('rows') || this.get('tree');
+
+    return new CollapseTree(rows ? rows : []);
+  }
+
+  @computed('numFixedColumns')
+  get hasFixedColumn() {
+    let numFixedColumns = this.get('numFixedColumns');
+    return Number.isInteger(numFixedColumns) && numFixedColumns !== 0;
+  }
+
   @computed('hasFixedColumn', 'bodyColumns.firstObject.width')
   get fixedColumnWidth() {
     return this.get('hasFixedColumn') === true ? this.get('bodyColumns.firstObject.width') : 0;
@@ -452,7 +463,7 @@ export default class EmberTable extends Component {
     'estimateRowHeight',
     'staticHeight'
   )
-  get _baseApi() {
+  get api() {
     let staticHeight = this.get('staticHeight');
     let staticRowHeight = null;
     if (staticHeight === true) {
@@ -469,15 +480,14 @@ export default class EmberTable extends Component {
       selectedRows: this.get('selectedRows'),
       staticRowHeight,
 
-      selectRow: this.selectRow
+      selectRow: this.selectRow,
+      toggleRowCollapse: this.toggleRowCollapse
     };
   }
 
-  @alias('_baseApi') api;
-
   selectRow = (rowIndex, { toggle, range }) => {
-    let rows = this.get('rows');
-    let row = rows.objectAt(rowIndex);
+    let rows = this.get('wrappedRows');
+    let row = rows.objectAt(rowIndex).value;
     let selectionMode = this.get('selectionMode');
 
     if (selectionMode === SELECTION_MODE_SINGLE) {
@@ -506,8 +516,8 @@ export default class EmberTable extends Component {
       let minIndex = Math.min(_lastSelectedIndex, rowIndex);
       let maxIndex = Math.max(_lastSelectedIndex, rowIndex);
 
-      for (let row of rows.slice(minIndex, maxIndex + 1)) {
-        rowSet.add(row);
+      for (let i = minIndex; i <= maxIndex; i++) {
+        rowSet.add(rows.objectAt(i).value);
       }
 
       selectedRows = Array.from(rowSet);
@@ -688,4 +698,13 @@ export default class EmberTable extends Component {
   sendFooterEvent() {
     this.sendAction('onFooterEvent', ...arguments);
   }
+
+  toggleRowCollapse = (index) => {
+    let tree = this.get('wrappedRows');
+    let node = tree.objectAt(index);
+
+    if (node.toggleCollapse) {
+      node.toggleCollapse();
+    }
+  };
 }
