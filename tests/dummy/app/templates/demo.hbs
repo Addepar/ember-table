@@ -1,5 +1,5 @@
 <div class="demo-container">
-  {{#tree-table
+  {{#ember-table
     tree=tree
     columns=columns
     columnMode="fluid"
@@ -7,7 +7,7 @@
     footerRows=footerRows
     as |t|
   }}
-    {{#tree-table-row
+    {{#ember-table-row
       row=t
 
       as |cell|
@@ -20,6 +20,6 @@
           {{cell.value}}
         </div>
       {{/if}}
-    {{/tree-table-row}}
-  {{/tree-table}}
+    {{/ember-table-row}}
+  {{/ember-table}}
 </div>

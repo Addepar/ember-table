@@ -40,15 +40,20 @@
   </thead>
 
   <tbody>
-    {{#component _bodyComponent
-      api=api
-      rows=rows
-      estimateRowHeight=estimateRowHeight
+    {{#vertical-collection wrappedRows
+      estimateHeight=estimateRowHeight
       staticHeight=staticHeight
+      containerSelector=".ember-table"
 
-      as |row|}}
-      {{yield row}}
-    {{/component}}
+      as |rowValue rowIndex|
+    }}
+      {{yield (hash
+        value=rowValue.value
+        depth=rowValue.depth
+        index=rowIndex
+        api=api)
+      }}
+    {{/vertical-collection}}
   </tbody>
 
   {{#if footerRows}}
