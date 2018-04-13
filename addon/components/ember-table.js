@@ -2,6 +2,7 @@
 import { assert } from '@ember/debug';
 
 import { action, computed } from '@ember-decorators/object';
+import { service } from '@ember-decorators/service';
 import { classNames } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
@@ -22,7 +23,8 @@ import { scheduler, Token } from 'ember-raf-scheduler';
 
 import CollapseTree from '../-private/collapse-tree';
 
-import { IS_IE, setupStickyPolyfill, teardownStickyPolyfill } from '../utils/sticky-polyfill';
+import { setupLegacyStickyPolyfill, teardownLegacyStickyPolyfill } from '../-private/sticky/legacy-sticky-polyfill';
+import { setupTableStickyPolyfill, teardownTableStickyPolyfill } from '../-private/sticky/table-sticky-polyfill';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
@@ -229,6 +231,8 @@ export default class EmberTable extends Component {
    */
   _lastSelectedIndex = 0;
 
+  @service userAgent;
+
   constructor() {
     super(...arguments);
 
@@ -251,8 +255,20 @@ export default class EmberTable extends Component {
 
     this.setupColumnFillup();
 
-    if (IS_IE) {
-      setupStickyPolyfill(this);
+    let browser = this.get('userAgent.browser');
+
+    if (browser.isIE) {
+      setupLegacyStickyPolyfill(this.element);
+    } else if (browser.isChrome || browser.isChromeHeadless || browser.isEdge) {
+      let thead = this.element.querySelector('thead');
+      let tfoot = this.element.querySelector('tfoot');
+
+      if (thead) {
+        setupTableStickyPolyfill(thead);
+      }
+      if (tfoot) {
+        setupTableStickyPolyfill(tfoot);
+      }
     }
   }
 
@@ -260,8 +276,21 @@ export default class EmberTable extends Component {
     this.teardownColumnFillup();
     this.token.cancel();
 
-    if (IS_IE) {
-      teardownStickyPolyfill(this);
+    let browser = this.get('userAgent.browser');
+
+    if (browser.isIE) {
+      teardownLegacyStickyPolyfill(this.element);
+    } else if (browser.isChrome || browser.isChromeHeadless || browser.isEdge) {
+      let thead = this.element.querySelector('thead');
+      let tfoot = this.element.querySelector('tfoot');
+
+      if (thead) {
+        teardownTableStickyPolyfill(this.element.querySelector('thead'));
+      }
+
+      if (tfoot) {
+        teardownTableStickyPolyfill(this.element.querySelector('tfoot'));
+      }
     }
 
     super.willDestroyElement(...arguments);
@@ -400,6 +429,11 @@ export default class EmberTable extends Component {
       }
     });
     return bodyColumns;
+  }
+
+  @computed('allColumnWidths')
+  get tableStyle() {
+    return htmlSafe(`width: ${this.get('allColumnWidths')}px;`);
   }
 
   /**
