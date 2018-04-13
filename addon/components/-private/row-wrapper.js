@@ -9,20 +9,11 @@ import { tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 
 import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
 
 import { metaCacheFor } from '../../-private/meta-cache';
 import CellProxy from '../../utils/cell-proxy';
 
-class TableRowMeta extends EmberObject {
-  @readOnly('_parents.length') depth;
-
-  @computed('_value', '_selectedRows.[]', '_parents.[]')
-  get isSelected() {
-    let selectedRows = get(this, '_selectedRows');
-    return selectedRows.includes(this.get('_value')) || this.get('_parents').some((row) => selectedRows.includes(row));
-  }
-}
+class TableRowMeta extends EmberObject {}
 
 class TableRowProxy extends ObjectProxy {
   @computed('content')
@@ -45,6 +36,14 @@ export default class RowWrapper extends Component {
 
   @argument columns;
 
+  @argument selectRow;
+
+  @argument toggleRowCollapse;
+
+  @argument onSelect;
+
+  @argument selectMode;
+
   _cells = [];
   _proxy = TableRowProxy.create();
 
@@ -59,9 +58,11 @@ export default class RowWrapper extends Component {
 
     let meta = proxy.get('meta');
 
-    set(meta, '_selectedRows', this.get('selectedRows'));
-    set(meta, '_value', rowValue);
-    set(meta, '_parents', parents);
+    let selectedRows = this.get('selectedRows');
+    let isSelected = selectedRows.includes(rowValue) || parents.some((row) => selectedRows.includes(row));
+
+    set(meta, 'depth', parents.length);
+    set(meta, 'isSelected', isSelected);
 
     set(meta, 'index', rowIndex);
     set(meta, 'isCollapsed', isCollapsed);
@@ -74,6 +75,9 @@ export default class RowWrapper extends Component {
     let row = this.get('proxy');
     let columns = this.get('columns');
     let numColumns = get(columns, 'length');
+    let selectRow = this.get('selectRow');
+    let toggleRowCollapse = this.get('toggleRowCollapse');
+    let selectMode = this.get('onSelect') ? this.get('selectMode') : 'none';
 
     let { _cells } = this;
 
@@ -99,7 +103,10 @@ export default class RowWrapper extends Component {
           value: get(row, valuePath),
           cellValue: cell,
           columnValue: column,
-          rowValue: row
+          rowValue: row,
+          selectMode,
+          selectRow,
+          toggleRowCollapse
         };
       })
     );

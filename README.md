@@ -26,16 +26,16 @@ ember install ember-table
 To use `Ember Table`, you need to create `columns` and `rows` dataset.
 
 `columns` is an array of objects which has multiple fields to define behavior of column.
-Two required field in each object is `columnName` and `valuePath`.
+Two required field in each object is `name` and `valuePath`.
 
 ```javascript
   columns: [
     {
-      columnName: `Open time`,
+      name: `Open time`,
       valuePath: `open`
     },
     {
-      columnName: `Close time`,
+      name: `Close time`,
       valuePath: `close`
     }
   ]
@@ -69,36 +69,38 @@ by all `valuePath` in `columns` array.
 The following template renders a simple table.
 
 ```
-  {{#ember-table
-    rows=rows
-    columns=columns
-    as |row|
-  }}
-    {{#ember-table-row
-      row=row
-      as |cell|
-    }}
-      {{cell.value}}
-    {{/ember-table-row}}
+  {{#ember-table as |t|}}
+    {{ember-thead api=t columns=columns}}
+
+    {{ember-tbody api=t rows=rows}}
   {{/ember-table}}
 ```
 
-To have your own custom cell, pass in the cell component name in each element of `columns` array and
-specify it in the template.
+You can use the block form of the table to customize its template. The component
+structure matches that of actual HTML tables, and allows you to customize it at
+any level. At the cell level, you get access to these four values:
+
+* `value` - The value of the cell
+* `cell` - A unique cell cache. You can use this to track cell state without
+  dirtying the underlying model.
+* `column` - The column itself.
+* `row` - The row itself.
+
+You can use these values to customize cell in many ways. For instance, if you
+want to have every cell in a particular column use a component, you can add a
+`component` field to your column (or feel free to use any other property name
+you like):
 
 ```
-  {{#ember-table
-    rows=rows
-    columns=columns
-    as |row|
-  }}
-    {{#ember-table-row
-      row=row
-      as |cell|
-    }}
-      {{#component cell.column.cellComponent
-        cell=cell
-      }}
+  {{#ember-table as |t|}}
+    {{ember-thead api=t columns=columns}}
+
+    {{#ember-tbody api=t rows=rows as |b|}}
+      {{#ember-tr api=b as |r|}}
+        {{#ember-td api=r as |value cell column row|}}
+          {{component column.component value=value}}
+        {{/ember-td}}
+      {{/ember-tr}}
     {{/ember-table-row}}
   {{/ember-table}}
 ```
@@ -107,25 +109,21 @@ The rendered table is a plain table without any styling. You can define styling 
 If you want to use default table style, import the `ember-table/default` SASS file.
 
 ### Optional Footer
-To use footer for your table, pass `footerRows` param to ember table. Each element in `footerRows`
-represents a row in table footer. The footer row takes `valuePath` field in each column to render
-data for each footer cell, similar to table body.
 
-### Custom header and custom footer
-By default Ember table header renders text defined by `columnName` or `footerValue` inside each
-`column`. To customize table header or footer, you can pass in `headerComponent` and
-`footerComponent` fields in each column data. When the `headerComponent`(or `footerComponent`) is
-defined, the `columnName`(or `footerValue`) field is ignored.
+You can also use the `ember-tfoot` component, which has the same API as
+`ember-tbody`:
 
-#### Usage
+
 ```
-{
-  headerComponent: 'complex-header',
-  footerComponent: 'custom-footer',
-  valuePath: 'url',
-  width: 180
-}
+  {{#ember-table as |t|}}
+    {{ember-thead api=t columns=columns}}
+
+    {{ember-tbody api=t rows=rows}}
+
+    {{ember-tfoot api=t rows=footerRows}}
+  {{/ember-table}}
 ```
+
 
 ## Migrating from old Ember table
 To support smooth migration from old version of Ember table (support only till ember 1.11), we have

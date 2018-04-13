@@ -39,6 +39,11 @@ export default class SimpleCheckbox extends Component {
   @type(optional(Action))
   onChange = null;
 
+  @argument
+  @type('string')
+  @attribute('aria-label')
+  ariaLabel;
+
   click(event) {
     this.sendAction('onClick', event);
   }

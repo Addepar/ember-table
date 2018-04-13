@@ -1,7 +1,7 @@
 /* global Ember */
-import { get, set } from '@ember/object';
+import EmberObject, { get, set } from '@ember/object';
+import EmberArray, { isArray } from '@ember/array';
 import { assert } from '@ember/debug';
-import { isArray } from '@ember/array';
 
 import { computed } from '@ember-decorators/object';
 import { addObserver } from '@ember/object/observers';
@@ -339,8 +339,11 @@ class Node {
   no need - they are length 1 and have no children, so no custom. Our tree saves an
   order of magnitude of space and allocation costs this way.
 */
-export default class CollapseTree {
-  constructor(tree) {
+export default class CollapseTree extends EmberObject.extend(EmberArray) {
+  constructor() {
+    super(...arguments);
+
+    let tree = this.get('tree');
     // This allows the tree to handle a root of a single node, or a root of an array
     // of nodes. If the given root was an array of nodes it "hides" the first node
     // by wrapping it in a fake root, and then skipping the root in `objectAt` calls.
@@ -355,7 +358,10 @@ export default class CollapseTree {
     // Whenever the root node's length changes we need to propogate the change to
     // users of the tree, and since the tree is meant to work like an array we should
     // trigger a change on the `[]` key as well.
-    addObserver(this, 'length', () => Ember.propertyDidChange(this, '[]'));
+    addObserver(this, 'root.length', () => {
+      Ember.propertyDidChange(this, 'length');
+      Ember.propertyDidChange(this, '[]');
+    });
   }
 
   /**
@@ -379,12 +385,17 @@ export default class CollapseTree {
     return this.root.objectAt(index, []);
   }
 
+  forEach(fn) {
+    for (let i = 0; i < this.length; i++) {
+      fn(this.objectAt(i), i);
+    }
+  }
+
   /**
     Normalized length of the tree
 
     @type {number}
   */
-  @computed('root.length')
   get length() {
     // If the root was an array, remove its fake wrapper node from the length count
     return this.rootIsArray ? get(this, 'root.length') - 1 : get(this, 'root.length');

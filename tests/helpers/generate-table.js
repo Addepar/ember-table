@@ -5,37 +5,56 @@ import { toBase26 } from './base-26';
 
 const fullTable = hbs`
   <div style="height: 500px;">
-    {{#ember-table
-      columns=columns
-      tree=tree
-      rows=rows
-      footerRows=footerRows
-      selectedRows=selectedRows
+    {{#ember-table data-test-ember-table=true as |t|}}
+      {{ember-thead
+        api=t
 
-      columnMode=columnMode
-      selectionMode=selectionMode
-      estimateRowHeight=estimateRowHeight
-      numFixedColumns=numFixedColumns
-      staticHeight=staticHeight
-      tableResizeMode=tableResizeMode
+        columns=columns
+        resizeMode=resizeMode
+        fillMode=fillMode
+        hasFixedColumn=hasFixedColumn
 
-      onSelect="onSelect"
-      onFooterEvent="onFooterEvent"
-      onColumnReordered="onColumnReordered"
-      onColumnResized="onColumnResized"
-
-      data-test-ember-table=true
-
-      as |row|
-    }}
-
-      {{#component rowComponent
-        row=row
-
-        as |value|
+        onReorder="onReorder"
+        onResize="onResize"
       }}
-        {{value}}
-      {{/component}}
+
+      {{#ember-tbody
+        api=t
+
+        tree=tree
+        rows=rows
+        estimateRowHeight=estimateRowHeight
+        staticHeight=staticHeight
+
+        onSelect="onSelect"
+        selectMode=selectMode
+        selectedRows=selectedRows
+
+        as |b|
+      }}
+        {{#component rowComponent
+          api=b
+
+          as |r|
+        }}
+          {{#ember-td api=r as |value|}}
+            {{value}}
+          {{/ember-td}}
+        {{/component}}
+      {{/ember-tbody}}
+
+      {{#ember-tfoot
+        api=t
+        rows=footerRows
+
+        as |f|
+      }}
+        {{#ember-tr api=f as |r|}}
+          {{#ember-td api=r as |value|}}
+            {{value}}
+          {{/ember-td}}
+        {{/ember-tr}}
+      {{/ember-tfoot}}
     {{/ember-table}}
   </div>
 `;
@@ -66,7 +85,7 @@ export function generateColumns(columnCount, {
 
   for (let i = 0; i < columnCount; i++) {
     let columnDefinition = {
-      columnName: toBase26(i),
+      name: toBase26(i),
       valuePath: toBase26(columnOffset + i),
       width: 100,
       isResizable: true,
@@ -95,9 +114,9 @@ const defaultActions = {
     this.set('selectedRows', newRows);
   },
 
-  onColumnReordered() {},
+  onReorder() {},
 
-  onColumnResized() {}
+  onResize() {}
 };
 
 export default async function generateTable(testContext, {
@@ -111,7 +130,7 @@ export default async function generateTable(testContext, {
   hasCheckbox = false,
   useTree = false,
 
-  rowComponent = 'ember-table-row',
+  rowComponent = 'ember-tr',
 
   ...options
 } = {}) {

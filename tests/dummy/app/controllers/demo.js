@@ -48,7 +48,7 @@ export default Controller.extend({
     let columnWidth = 180;
 
     arr.pushObject({
-      columnName: 'Column id',
+      name: 'Column id',
       footerName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
@@ -57,7 +57,7 @@ export default Controller.extend({
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
       arr.pushObject({
-        columnName: `Col ${ALPHABET[j % 26]}`,
+        name: `Col ${ALPHABET[j % 26]}`,
         footerName: `Col ${ALPHABET[j % 26]}`,
         valuePath: ALPHABET[j % 26],
         width: columnWidth,

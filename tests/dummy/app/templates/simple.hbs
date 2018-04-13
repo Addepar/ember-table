@@ -1,17 +1,12 @@
 <div class="demo-container">
-  {{#ember-table
-    rows=rows
-    columns=columns
-    tableResizeMode="equal_column"
-    selectedRows=selectedRows
-    onSelect="onSelect"
-    as |t|
-  }}
-    {{#ember-table-row
-      row=t
-      as |value|
+  {{#ember-table as |t|}}
+    {{ember-thead api=t columns=columns fillMode="equal_column"}}
+
+    {{ember-tbody
+      api=t
+      rows=rows
+      selectedRows=selectedRows
+      onSelect="onSelect"
     }}
-      {{value}}
-    {{/ember-table-row}}
   {{/ember-table}}
 </div>

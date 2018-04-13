@@ -8,12 +8,17 @@
   table {
     border-spacing: 0;
     table-layout: fixed;
+    box-sizing: border-box;
   }
 
-  td.is-fixed, th.is-fixed {
-    position: -webkit-sticky;
-    position: sticky;
-    left: 0;
+  td, th {
+    box-sizing: border-box;
+
+    &.is-fixed {
+      position: -webkit-sticky;
+      position: sticky;
+      left: 0;
+    }
   }
 
   thead {

@@ -73,7 +73,7 @@ module('Integration | basic', function() {
         rowCount: 100,
         columnCount: 30,
         footerRowCount: 1,
-        numFixedColumns: 1
+        hasFixedColumn: true
       });
 
       let tableContainerRect = find('.ember-table').getBoundingClientRect();
@@ -102,7 +102,7 @@ module('Integration | basic', function() {
     });
 
     test('Accessibility test', async function(assert) {
-      await generateTable(this, { numFixedColumns: 1 });
+      await generateTable(this, { hasFixedColumn: true });
 
       await a11yAudit();
       assert.ok(true, 'No accessibility error found');
@@ -124,20 +124,10 @@ module('Integration | basic', function() {
       this.render(hbs`
         {{#if showComponent}}
           <div id="container" style="height: 500px;">
-            {{#ember-table
-              columns=columns
-              rows=rows
-              estimateRowHeight=13
-              as |r|
-            }}
+            {{#ember-table as |t|}}
+              {{ember-thead api=t columns=columns}}
 
-              {{#ember-table-row
-                row=r
-
-                as |cell|
-              }}
-                {{cell.value}}
-              {{/ember-table-row}}
+              {{ember-tbody api=t rows=rows estimateRowHeight=13}}
             {{/ember-table}}
           </div>
         {{/if}}
