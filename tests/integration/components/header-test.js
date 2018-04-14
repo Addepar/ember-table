@@ -96,7 +96,7 @@ module('Integration | header', function() {
         table.headers.forEach((header) => {
           assert.ok(
             Math.abs(header.width - columnWidth) <= 1,
-            'Table header keeps origial width in none resize mode.'
+            'Table header keeps original width in none resize mode.'
           );
         });
       });

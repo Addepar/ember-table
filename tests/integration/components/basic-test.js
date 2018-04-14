@@ -58,13 +58,14 @@ module('Integration | basic', function() {
       function validateElements(container, elements, measurement) {
         for (let element of elements) {
           let rect = element.getBoundingClientRect();
+          let diff = Math.abs(container[measurement] - rect[measurement]);
 
           // Travis reports pretty wide differences for some reason, possibly
           // their Chrome version. It does validate that the elements are moving
           // and that should be enough to know if we messed something up majorly.
           //
           // TODO(sticky): Try to lower the tolerance as sticky becomes more prevalent
-          assert.ok(container[measurement] - rect[measurement] < 10);
+          assert.ok(diff < 10, `${diff} is with tolerance`);
         }
       }
 

@@ -8,10 +8,6 @@
   table {
     border-spacing: 0;
     table-layout: fixed;
-
-    // Hack to get table to respect the widths of columns that
-    // have been set manually
-    width: 0;
   }
 
   td.is-fixed, th.is-fixed {
@@ -21,18 +17,15 @@
   }
 
   thead {
+    position: -webkit-sticky;
+    position: sticky;
+
     top: 0;
     z-index: 2;
     box-sizing: border-box;
 
-    th {
-      position: -webkit-sticky;
-      position: sticky;
-      top: 0;
-
-      &:first-child {
-        z-index: 3;
-      }
+    th:first-child {
+      z-index: 3;
     }
   }
 
@@ -41,22 +34,14 @@
   }
 
   tfoot {
-    // tfoot respects position: sticky; in Safari, but td in a tfoot does not.
-    // td in a tfoot respects position: sticky; in Chrome, but tfoot does not.
-    // Thus, we put it on both with appropriate browser prefixes and wait for
-    // Chrome/Edge to fix their implementations.
     position: -webkit-sticky;
+    position: sticky;
     bottom: 0;
     z-index: 2;
     box-sizing: border-box;
 
-    td {
-      position: sticky;
-      bottom: 0;
-
-      &:first-child {
-        z-index: 3;
-      }
+    td:first-child {
+      z-index: 3;
     }
   }
 }
