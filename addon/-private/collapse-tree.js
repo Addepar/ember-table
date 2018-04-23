@@ -1,6 +1,7 @@
 /* global Ember */
 import { get, set } from '@ember/object';
 import { assert } from '@ember/debug';
+import { isArray } from '@ember/util';
 
 import { computed } from '@ember-decorators/object';
 import { addObserver } from '@ember/object/observers';
@@ -13,7 +14,7 @@ import { addObserver } from '@ember/object/observers';
   @return {any}
 */
 function objectAt(arr, index) {
-  assert('arr must be an instance of a Javascript Array or implement `objectAt`', Array.isArray(arr) || typeof arr.objectAt === 'function');
+  assert('arr must be an instance of a Javascript Array or implement `objectAt`', isArray(arr) || typeof arr.objectAt === 'function');
 
   if (typeof arr.objectAt === 'function') {
     return arr.objectAt(index);
@@ -55,7 +56,7 @@ function closestLessThan(values, target) {
 */
 class Node {
   constructor(value, parent) {
-    assert('value must have an array of children', Array.isArray(get(value, 'children')));
+    assert('value must have an array of children', isArray(get(value, 'children')));
 
     set(this, 'value', value);
 
@@ -81,7 +82,7 @@ class Node {
     return !get(this, 'value.children').some((child) => {
       let children = get(child, 'children');
 
-      return Array.isArray(children) && get(children, 'length') > 0;
+      return isArray(children) && get(children, 'length') > 0;
     });
   }
 
@@ -125,7 +126,7 @@ class Node {
     valueChildren.forEach((child, index) => {
       let grandchildren = get(child, 'children');
 
-      if (Array.isArray(grandchildren) && get(grandchildren, 'length') > 0) {
+      if (isArray(grandchildren) && get(grandchildren, 'length') > 0) {
         if (sliceStart !== false) {
           children.push(valueChildren.slice(sliceStart, index));
           sliceStart = false;
@@ -265,7 +266,7 @@ class Node {
 
     let child = children[offsetIndex];
 
-    if (Array.isArray(child)) {
+    if (isArray(child)) {
       return { value: child[index], depth };
     }
 
@@ -343,7 +344,7 @@ export default class CollapseTree {
     // This allows the tree to handle a root of a single node, or a root of an array
     // of nodes. If the given root was an array of nodes it "hides" the first node
     // by wrapping it in a fake root, and then skipping the root in `objectAt` calls.
-    this.rootIsArray = Array.isArray(tree);
+    this.rootIsArray = isArray(tree);
 
     if (this.rootIsArray === true) {
       this.root = new Node({ children: tree });
