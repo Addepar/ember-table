@@ -1,7 +1,7 @@
 /* global Ember */
 import { get, set } from '@ember/object';
 import { assert } from '@ember/debug';
-import { isArray } from '@ember/util';
+import { isArray } from '@ember/array';
 
 import { computed } from '@ember-decorators/object';
 import { addObserver } from '@ember/object/observers';
