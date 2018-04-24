@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/Addepar/ember-table.svg?branch=master)](https://travis-ci.org/Addepar/ember-table)
+
 # Ember Table
 
 An addon to support large data set and a number of features around table. `Ember Table` can
