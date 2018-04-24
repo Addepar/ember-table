@@ -266,7 +266,7 @@ class Node {
 
     let child = children[offsetIndex];
 
-    if (isArray(child)) {
+    if (Array.isArray(child)) {
       return { value: child[index], depth };
     }
 
