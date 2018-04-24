@@ -31,9 +31,9 @@ const fullTable = hbs`
       {{#component rowComponent
         row=row
 
-        as |cell|
+        as |value|
       }}
-        {{cell.value}}
+        {{value}}
       {{/component}}
     {{/ember-table}}
   </div>

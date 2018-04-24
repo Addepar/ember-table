@@ -14,7 +14,6 @@ import layout from '../templates/components/ember-table';
 import { htmlSafe } from '@ember/string';
 import { run } from '@ember/runloop';
 import Component from '@ember/component';
-import CellProxy from '../utils/cell-proxy';
 import { move } from '../utils/array';
 import { get, set } from '@ember/object';
 import { isNone } from '@ember/utils';
@@ -25,6 +24,8 @@ import CollapseTree from '../-private/collapse-tree';
 
 import { setupLegacyStickyPolyfill, teardownLegacyStickyPolyfill } from '../-private/sticky/legacy-sticky-polyfill';
 import { setupTableStickyPolyfill, teardownTableStickyPolyfill } from '../-private/sticky/table-sticky-polyfill';
+
+import MetaProxy from '../-private/meta-cache';
 
 const HEAD_ALIGN_BAR_WIDTH = 5;
 
@@ -236,12 +237,6 @@ export default class EmberTable extends Component {
   constructor() {
     super(...arguments);
 
-    this.cellCache = new WeakMap();
-
-    // Create a unique CellProxy class for this table instance, that way transient data won't
-    // pollute the prototype of the main proxy class.
-    this.cellProxyClass = class extends CellProxy {};
-
     this.token = new Token();
   }
 
@@ -415,19 +410,26 @@ export default class EmberTable extends Component {
    */
   @computed('hasSubcolumns', 'columns.@each.subcolumns')
   get bodyColumns() {
-    if (this.get('hasSubcolumns') !== true) {
-      return this.get('columns');
-    }
-
     let bodyColumns = emberA();
     this.get('columns').forEach((column) => {
       let subcolumns = get(column, 'subcolumns');
       if (isNone(subcolumns) || get(subcolumns, 'length') === 0) {
-        bodyColumns.pushObject(column);
+        let proxy = MetaProxy.create({ content: column });
+
+        proxy.set('meta.index', bodyColumns.length);
+
+        bodyColumns.pushObject(proxy);
       } else {
-        subcolumns.forEach((subcolumn) => bodyColumns.pushObject(subcolumn));
+        subcolumns.forEach((subcolumn) => {
+          let proxy = MetaProxy.create({ content: subcolumn });
+
+          proxy.set('meta.index', bodyColumns.length);
+
+          bodyColumns.pushObject(proxy);
+        });
       }
     });
+
     return bodyColumns;
   }
 
@@ -488,7 +490,6 @@ export default class EmberTable extends Component {
   }
 
   @computed(
-    'cellCache',
     'cellProxyClass',
     'numFixedColumns',
     'targetObject',
@@ -506,11 +507,8 @@ export default class EmberTable extends Component {
 
     return {
       rowHeight: this.get('rowHeight'),
-      cellCache: this.get('cellCache'),
-      cellProxyClass: this.get('cellProxyClass'),
       numFixedColumns: this.get('numFixedColumns'),
       targetObject: this,
-      columns: this.get('bodyColumns'),
       selectedRows: this.get('selectedRows'),
       staticRowHeight,
 
@@ -706,7 +704,7 @@ export default class EmberTable extends Component {
     let oldIndex = columnIndex;
 
     if (this._currentColumnIndex !== columnIndex) {
-      move(this, 'bodyColumns', columnIndex, this._currentColumnIndex);
+      move(this, 'columns', columnIndex, this._currentColumnIndex);
     }
 
     this._currentColumnIndex = -1;

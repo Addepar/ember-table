@@ -80,8 +80,8 @@ export default Controller.extend({
   }),
 
   actions: {
-    onCellClicked(cell) {
-      if (cell.get('columnIndex') !== 0) {
+    onCellClicked(cell, columnIndex) {
+      if (columnIndex !== 0) {
         cell.set('wasClicked', true);
       }
     }

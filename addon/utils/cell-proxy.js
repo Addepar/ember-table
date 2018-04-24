@@ -1,83 +1,65 @@
-import EmberObject, {
-  computed as emberComputed,
-  get,
-  set
-} from '@ember/object';
+/* globals Ember */
+import EmberObject, { get } from '@ember/object';
+import { addObserver } from '@ember/object/observers';
 
-import { SUPPORTS_NEW_COMPUTED } from 'ember-compatibility-helpers';
-
-import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+const CELL_CACHE = new WeakMap();
 
 export default class CellProxy extends EmberObject {
-  column = null;
-  columnIndex = null;
+  constructor() {
+    super();
 
-  row = null;
+    this._watchedProperties = [];
 
-  @readOnly('_rowComponent.rowValue') rowValue;
-  @readOnly('_rowComponent.rowIndex') rowIndex;
+    this.row = null;
+    this.valuePath = null;
 
-  @computed('rowValue', 'column.valuePath')
-  get value() {
-    let rowValue = get(this, 'rowValue');
-    let valuePath = get(this, 'column.valuePath');
-
-    return get(rowValue, valuePath);
+    addObserver(this, 'row', this.notifyPropertyChanges);
+    addObserver(this, 'valuePath', this.notifyPropertyChanges);
   }
 
-  set value(value) {
-    let rowValue = get(this, 'rowValue');
-    let valuePath = get(this, 'column.valuePath');
+  notifyPropertyChanges = () => {
+    for (let property of this._watchedProperties) {
+      Ember.propertyDidChange(this, property);
+    }
+  };
 
-    set(rowValue, valuePath, value);
+  willWatchProperty(key) {
+    if (!(key in this)) {
+      this._watchedProperties.push(key);
+    }
+  }
+
+  didUnwatchProperty(key) {
+    let i = this._watchedProperties.indexOf(key);
+
+    if (i !== -1) {
+      this._watchedProperties.splice(i, 1);
+    }
   }
 
   unknownProperty(key) {
-    let prototype = Object.getPrototypeOf(this);
+    let row = get(this, 'row.content');
+    let valuePath = get(this, 'valuePath');
 
-    let setValueFunc = (context, k, value) => {
-      let cache = get(context, '_cache');
-      let rowValue = get(context, 'rowValue');
-      let valuePath = get(context, 'column.valuePath');
-
-      if (!cache.has(rowValue)) {
-        cache.set(rowValue, Object.create(null));
-      }
-
-      return cache.get(rowValue)[`${valuePath}:${k}`] = value;
-    };
-
-    let getValueFunc = (context, key) => {
-      let cache = get(context, '_cache');
-      let rowValue = get(context, 'rowValue');
-      let valuePath = get(context, 'column.valuePath');
-
-      if (cache.has(rowValue)) {
-        return cache.get(rowValue)[`${valuePath}:${key}`];
-      }
-
-      return undefined;
-    };
-
-    if (SUPPORTS_NEW_COMPUTED) {
-      prototype[key] = emberComputed('rowValue', 'column.valuePath', {
-        get(key) {
-          return getValueFunc(this, key);
-        },
-
-        set(key, value) {
-          return setValueFunc(this, key, value);
-        }
-      });
-    } else {
-      prototype[key] = emberComputed('rowValue', 'column.valuePath', function(key, value) {
-        if (arguments.length > 1) {
-          return setValueFunc(this, key, value);
-        }
-
-        return getValueFunc(this, key);
-      });
+    if (CELL_CACHE.has(row)) {
+      return CELL_CACHE.get(row)[`${valuePath}:${key}`];
     }
+
+    return undefined;
+  }
+
+  setUnknownProperty(key, value) {
+    let row = get(this, 'row.content');
+    let valuePath = get(this, 'valuePath');
+
+    if (!CELL_CACHE.has(row)) {
+      CELL_CACHE.set(row, Object.create(null));
+    }
+
+    CELL_CACHE.get(row)[`${valuePath}:${key}`] = value;
+
+    Ember.propertyDidChange(this, key);
+
+    return value;
   }
 }

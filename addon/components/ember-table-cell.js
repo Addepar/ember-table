@@ -28,9 +28,9 @@ export default class EmberTableCell extends EmberTableBaseCell {
   onChecked;
 
   click() {
-    let rowValue = this.get('cell.row.value');
-    let rowIndex = this.get('cell.row.index');
-    let api = this.get('cell.row.api');
+    let rowValue = this.get('rowValue');
+    let rowIndex = this.get('rowIndex');
+    let api = this.get('api');
 
     if (this.get('columnIndex') === 0 && Array.isArray(get(rowValue, 'children'))) {
       api.toggleRowCollapse(rowIndex);
