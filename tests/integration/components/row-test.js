@@ -25,11 +25,5 @@ module('Integration | row', function() {
 
       assert.ok(table.rows.eq(0).isCustomRow, 'Table has custom row');
     });
-
-    test('can set a custom row height', async function(assert) {
-      await generateTable(this, { staticHeight: true, estimateRowHeight: 100 });
-
-      assert.equal(table.rows.eq(0).height, 100, 'Row height is set to custom height.');
-    });
   });
 });

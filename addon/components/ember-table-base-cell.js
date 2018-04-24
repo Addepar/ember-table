@@ -18,6 +18,10 @@ export default class EmberTableCell extends Component {
   rowIndex;
 
   @argument
+  @type(optional('object'))
+  api;
+
+  @argument
   @type('object')
   column;
 

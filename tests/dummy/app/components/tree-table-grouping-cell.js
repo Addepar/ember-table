@@ -11,13 +11,17 @@ export default class TreeTableGroupingCell extends Component {
   layout = layout;
 
   @argument
+  @type(optional('any'))
+  value;
+
+  @argument
   @type(optional('object'))
-  cell;
+  row;
 
   @attribute
-  @computed('cell.row.depth')
+  @computed('row.depth')
   get style() {
-    let depth = this.get('cell.row.depth');
+    let depth = this.get('row.depth');
     return htmlSafe(`padding-left: ${depth * 20}px;`);
   }
 }

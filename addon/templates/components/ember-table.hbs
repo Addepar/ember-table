@@ -47,12 +47,19 @@
 
       as |rowValue rowIndex|
     }}
-      {{yield (hash
-        value=rowValue.value
-        depth=rowValue.depth
-        index=rowIndex
-        api=api)
-      }}
+      {{#-ember-table-private/row-wrapper
+        row=rowValue
+        rowIndex=rowIndex
+        selectedRows=selectedRows
+        columns=bodyColumns
+
+        as |wrappedRow cells|}}
+        {{yield (hash
+          rowValue=wrappedRow
+          cells=cells
+          api=api)
+        }}
+      {{/-ember-table-private/row-wrapper}}
     {{/vertical-collection}}
   </tbody>
 

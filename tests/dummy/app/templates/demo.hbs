@@ -10,14 +10,14 @@
     {{#ember-table-row
       row=t
 
-      as |cell|
+      as |value cell column row|
     }}
 
-      {{#if cell.column.cellComponent}}
-        {{component cell.column.cellComponent cell=cell}}
+      {{#if column.cellComponent}}
+        {{component column.cellComponent value=value row=row}}
       {{else}}
-        <div {{action "onCellClicked" cell}} class={{if cell.wasClicked "red-cell"}}>
-          {{cell.value}}
+        <div {{action "onCellClicked" cell column.meta.index}} class={{if cell.wasClicked "red-cell"}}>
+          {{value}}
         </div>
       {{/if}}
     {{/ember-table-row}}

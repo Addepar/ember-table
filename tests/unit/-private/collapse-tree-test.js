@@ -50,7 +50,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 7; i++) {
       assert.equal(tree.objectAt(i).value.value, i);
-      assert.equal(tree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(tree.objectAt(i).parents.length, expectedDepth[i]);
     }
 
     assert.equal(tree.objectAt(length + 1), undefined);
@@ -66,7 +66,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 10; i++) {
       assert.equal(tree.objectAt(i).value.value, i);
-      assert.equal(tree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(tree.objectAt(i).parents.length, expectedDepth[i]);
     }
   });
 
@@ -79,7 +79,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 9; i++) {
       assert.equal(tree.objectAt(i).value.value, i);
-      assert.equal(tree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(tree.objectAt(i).parents.length, expectedDepth[i]);
     }
   });
 
@@ -96,7 +96,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 5; i++) {
       assert.equal(collapseTree.objectAt(i).value.value, expectedValue[i]);
-      assert.equal(collapseTree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
 
     set(tree.children[0], 'collapsed', false);
@@ -108,7 +108,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 5; i++) {
       assert.equal(collapseTree.objectAt(i).value.value, expectedValue[i]);
-      assert.equal(collapseTree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
 
   });
@@ -128,7 +128,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 5; i++) {
       assert.equal(collapseTree.objectAt(i).value.value, expectedValue[i]);
-      assert.equal(collapseTree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
 
     collapseTree.objectAt(1).toggleCollapse();
@@ -142,7 +142,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 5; i++) {
       assert.equal(collapseTree.objectAt(i).value.value, expectedValue[i]);
-      assert.equal(collapseTree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
   });
 
@@ -160,7 +160,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 8; i++) {
       assert.equal(collapseTree.objectAt(i).value.value, i);
-      assert.equal(collapseTree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
   });
 
@@ -178,7 +178,7 @@ module('Unit | Private | CollapseTree', function() {
 
     for (let i = 0; i < 7; i++) {
       assert.equal(collapseTree.objectAt(i).value.value, i);
-      assert.equal(collapseTree.objectAt(i).depth, expectedDepth[i]);
+      assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
   });
 });
