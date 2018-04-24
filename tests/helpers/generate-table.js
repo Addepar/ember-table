@@ -7,6 +7,7 @@ const fullTable = hbs`
   <div style="height: 500px;">
     {{#ember-table
       columns=columns
+      tree=tree
       rows=rows
       footerRows=footerRows
       selectedRows=selectedRows
@@ -108,6 +109,7 @@ export default async function generateTable(testContext, {
   columnCount = 10,
   columnOptions,
   hasCheckbox = false,
+  useTree = false,
 
   rowComponent = 'ember-table-row',
 
@@ -133,7 +135,7 @@ export default async function generateTable(testContext, {
   columns[0].hasCheckbox = hasCheckbox;
 
   testContext.set('columns', columns);
-  testContext.set('rows', rows);
+  testContext.set(useTree ? 'tree' : 'rows', rows);
   testContext.set('footerRows', footerRows);
 
   for (let action in defaultActions) {
