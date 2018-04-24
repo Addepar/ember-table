@@ -377,7 +377,7 @@ export default class EmberTable extends Component {
     }
   }
 
-  @computed('rows')
+  @computed('rows', 'tree')
   get wrappedRows() {
     let rows = this.get('rows') || this.get('tree');
 
