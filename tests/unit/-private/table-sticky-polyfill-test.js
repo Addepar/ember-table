@@ -62,14 +62,13 @@ function constructMatrix(n, m) {
 }
 
 function verifyHeader(assert) {
-  let containerRect = find('.ember-table').getBoundingClientRect();
-
   findAll('thead > tr').forEach((row, i) => {
     // account for the scale
     let expectedOffset = i * 25;
 
     for (let cell of row.children) {
       let cellRect = cell.getBoundingClientRect();
+      let containerRect = find('.ember-table').getBoundingClientRect();
 
       assert.ok(
         Math.abs(cellRect.top - containerRect.top - expectedOffset) < 10
@@ -80,14 +79,13 @@ function verifyHeader(assert) {
 }
 
 function verifyFooter(assert) {
-  let containerRect = find('.ember-table').getBoundingClientRect();
-
   findAll('tfoot > tr').reverse().forEach((row, i) => {
     // account for the scale
     let expectedOffset = i * 25;
 
     for (let cell of row.children) {
       let cellRect = cell.getBoundingClientRect();
+      let containerRect = find('.ember-table').getBoundingClientRect();
 
       assert.ok(
         Math.abs(containerRect.bottom - cellRect.bottom - expectedOffset) < 10
