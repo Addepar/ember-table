@@ -1,14 +1,15 @@
 {{#each cells as |cell columnIndex|}}
   {{#component _outerCellComponent
-    rowValue=rowValue
-    rowIndex=rowIndex
-    column=cell.column
-    columnIndex=columnIndex
+    rowValue=cell.rowValue
+    rowIndex=cell.rowValue.meta.index
+    column=cell.columnValue
+    columnIndex=cell.columnValue.meta.index
+    api=api
     numFixedColumns=numFixedColumns
     rowSelected=isSelected
     onChecked="toggleRowSelection"
-    cell=cell
+    cell=cell.cellValue
   }}
-    {{yield cell rowValue rowIndex}}
+    {{yield cell.value cell.cellValue cell.columnValue cell.rowValue}}
   {{/component}}
 {{/each}}

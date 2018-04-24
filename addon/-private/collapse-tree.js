@@ -232,10 +232,10 @@ class Node {
     every `objectAt` call.
 
     @param {number} index - the index to find
-    @param {number} depth - the depth of the current node in iteration
-    @return {{ value: object, depth: number }}
+    @param {Array<object>} parents - the parents of the current node in the traversal
+    @return {{ value: object, parents: Array<object> }}
   */
-  objectAt(index, depth) {
+  objectAt(index, parents) {
     assert(
       'index must be gte than 0 and less than the length of the node',
       index >= 0 && index < get(this, 'length')
@@ -245,17 +245,17 @@ class Node {
     if (index === 0) {
       let value = get(this, 'value');
 
-      return { value, depth, toggleCollapse: this.toggleCollapse };
+      return { value, parents, isCollapsed: get(this, 'collapsed'), toggleCollapse: this.toggleCollapse };
     }
 
     // Passed this node, remove it from the index and go one level deeper
     index = index - 1;
-    depth = depth + 1;
+    parents.push(this);
 
     if (get(this, 'isLeaf')) {
       let value = objectAt(get(this, 'value.children'), index);
 
-      return { value, depth };
+      return { value, parents, isCollapsed: false };
     }
 
     let children = get(this, 'children');
@@ -267,10 +267,10 @@ class Node {
     let child = children[offsetIndex];
 
     if (Array.isArray(child)) {
-      return { value: child[index], depth };
+      return { value: child[index], parents };
     }
 
-    return child.objectAt(index, depth);
+    return child.objectAt(index, parents);
   }
 
   toggleCollapse = () => {
@@ -361,7 +361,7 @@ export default class CollapseTree {
   /**
 
     @param {number} index - the index to find
-    @return {{ value: object, depth: number }}
+    @return {{ value: object, parents: Array<object> }}
   */
   objectAt(index) {
     if (index >= get(this, 'length') || index < 0) {
@@ -369,11 +369,14 @@ export default class CollapseTree {
     }
     if (this.rootIsArray) {
       // If the root was an array, we added a "fake" top level node. Skip this node
-      // by adding one to the index, and "subtracting" one from the depth.
-      return this.root.objectAt(index + 1, -1);
+      // by adding one to the index, and shifting the first parent off the parent list.
+      let result = this.root.objectAt(index + 1, []);
+      result.parents.shift();
+
+      return result;
     }
 
-    return this.root.objectAt(index, 0);
+    return this.root.objectAt(index, []);
   }
 
   /**
