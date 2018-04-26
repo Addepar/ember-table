@@ -5,8 +5,14 @@ import { computed } from '@ember-decorators/object';
 import { classNames } from '@ember-decorators/component';
 import { service } from '@ember-decorators/service';
 
-import { setupLegacyStickyPolyfill, teardownLegacyStickyPolyfill } from '../../-private/sticky/legacy-sticky-polyfill';
-import { setupTableStickyPolyfill, teardownTableStickyPolyfill } from '../../-private/sticky/table-sticky-polyfill';
+import {
+  setupLegacyStickyPolyfill,
+  teardownLegacyStickyPolyfill,
+} from '../../-private/sticky/legacy-sticky-polyfill';
+import {
+  setupTableStickyPolyfill,
+  teardownTableStickyPolyfill,
+} from '../../-private/sticky/table-sticky-polyfill';
 
 import layout from './template';
 
@@ -66,11 +72,11 @@ export default class EmberTable extends Component {
   get api() {
     return {
       columns: null,
-      registerColumns: this.registerColumns
+      registerColumns: this.registerColumns,
     };
   }
 
-  registerColumns = (columns) => {
+  registerColumns = columns => {
     this.set('api.columns', columns);
   };
 }

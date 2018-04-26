@@ -14,7 +14,10 @@ import { addObserver } from '@ember/object/observers';
   @return {any}
 */
 function objectAt(arr, index) {
-  assert('arr must be an instance of a Javascript Array or implement `objectAt`', isArray(arr) || typeof arr.objectAt === 'function');
+  assert(
+    'arr must be an instance of a Javascript Array or implement `objectAt`',
+    isArray(arr) || typeof arr.objectAt === 'function'
+  );
 
   if (typeof arr.objectAt === 'function') {
     return arr.objectAt(index);
@@ -79,7 +82,7 @@ class Node {
   */
   @computed('value.children.@each.children.[]')
   get isLeaf() {
-    return !get(this, 'value.children').some((child) => {
+    return !get(this, 'value.children').some(child => {
       let children = get(child, 'children');
 
       return isArray(children) && get(children, 'length') > 0;
@@ -156,7 +159,7 @@ class Node {
         length of its value-children.
     3. Otherwise, the length is the sum of the lengths of its children.
   */
-  @computed('value.collapsed', 'collapsed', 'value.children.[]', 'isLeaf')
+  @computed('collapsed', 'value.{collapsed,children.[]}', 'isLeaf')
   get length() {
     if (get(this, 'value.collapsed') === true || get(this, 'collapsed') === true) {
       return 1;
@@ -245,7 +248,12 @@ class Node {
     if (index === 0) {
       let value = get(this, 'value');
 
-      return { value, parents, isCollapsed: get(this, 'collapsed'), toggleCollapse: this.toggleCollapse };
+      return {
+        value,
+        parents,
+        isCollapsed: get(this, 'collapsed'),
+        toggleCollapse: this.toggleCollapse,
+      };
     }
 
     // Passed this node, remove it from the index and go one level deeper

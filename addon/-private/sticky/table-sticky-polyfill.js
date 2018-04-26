@@ -41,7 +41,7 @@ class TableStickyPolyfill {
   setupRowMutationObservers = () => {
     let rows = Array.from(this.element.children);
 
-    this.rowMutationObservers = rows.map((row) => {
+    this.rowMutationObservers = rows.map(row => {
       let observer = new MutationObserver(this.repositionStickyElements);
 
       observer.observe(row, { childList: true });
@@ -51,14 +51,14 @@ class TableStickyPolyfill {
   };
 
   teardownRowMutationObservers = () => {
-    this.rowMutationObservers.forEach((observer) => observer.disconnect());
+    this.rowMutationObservers.forEach(observer => observer.disconnect());
   };
 
   setupResizeSensors = () => {
     let rows = Array.from(this.element.children);
-    let firstCells = rows.map((r) => r.firstElementChild);
+    let firstCells = rows.map(r => r.firstElementChild);
 
-    this.resizeSensors = firstCells.map((cell) => {
+    this.resizeSensors = firstCells.map(cell => {
       let sensor = new ResizeSensor(cell, this.repositionStickyElements);
 
       return [cell, sensor];
@@ -78,7 +78,7 @@ class TableStickyPolyfill {
 
     let offset = 0;
 
-    let heights = orderedRows.map((r) => r.getBoundingClientRect().height * scale);
+    let heights = orderedRows.map(r => r.getBoundingClientRect().height * scale);
 
     for (let i = 0; i < orderedRows.length; i++) {
       let row = orderedRows[i];
@@ -93,7 +93,6 @@ class TableStickyPolyfill {
     }
   };
 }
-
 
 export function setupTableStickyPolyfill(element) {
   TABLE_POLYFILL_MAP.set(element, new TableStickyPolyfill(element));

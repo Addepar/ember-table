@@ -27,7 +27,7 @@ class TableColumnProxy extends ObjectProxy {
   @computed('content.subcolumns.[]')
   get subcolumns() {
     return emberA(
-      (this.get('content.subcolumns') || []).map((s) => TableColumnProxy.create({ content: s }))
+      (this.get('content.subcolumns') || []).map(s => TableColumnProxy.create({ content: s }))
     );
   }
 
@@ -41,14 +41,14 @@ const HEAD_ALIGN_BAR_WIDTH = 5;
 
 const RESIZE_MODE = {
   STANDARD: 'standard',
-  FLUID: 'fluid'
+  FLUID: 'fluid',
 };
 
 const FILL_MODE = {
   NONE: 'none',
   EQUAL_COLUMN: 'equal_column',
   FIRST_COLUMN: 'first_column',
-  LAST_COLUMN: 'last_column'
+  LAST_COLUMN: 'last_column',
 };
 
 /**
@@ -74,7 +74,6 @@ function fillupColumns(columns, totalWidth, fillMode, hasSubcolumns) {
       let [column] = columns;
 
       setColumnWidth(column, get(column, 'width') + delta);
-
     } else if (fillMode === FILL_MODE.EQUAL_COLUMN) {
       // Split delta by their proportion.
       let columnDelta = delta / columns.length;
@@ -83,7 +82,6 @@ function fillupColumns(columns, totalWidth, fillMode, hasSubcolumns) {
         let column = columns[i];
         setColumnWidth(column, get(column, 'width') + columnDelta);
       }
-
     } else if (fillMode === FILL_MODE.LAST_COLUMN) {
       // Add all delta to last column
       let lastColumn = columns[columns.length - 1];
@@ -93,12 +91,12 @@ function fillupColumns(columns, totalWidth, fillMode, hasSubcolumns) {
   }
 
   if (hasSubcolumns) {
-    columns.forEach((groupColumn) => {
+    columns.forEach(groupColumn => {
       let subcolumns = get(groupColumn, 'subcolumns');
       if (subcolumns) {
         // Each subcolumn has equal width.
         let subcolumnWidth = get(groupColumn, 'width') / get(subcolumns, 'length');
-        subcolumns.forEach((subcolumn) => {
+        subcolumns.forEach(subcolumn => {
           set(subcolumn, 'width', subcolumnWidth);
         });
       }
@@ -215,7 +213,9 @@ export default class EmberTHead extends Component {
 
   @computed('columns.[]')
   get wrappedColumns() {
-    let wrappedColumns = this.get('columns').map((column) => TableColumnProxy.create({ content: column }));
+    let wrappedColumns = this.get('columns').map(column =>
+      TableColumnProxy.create({ content: column })
+    );
 
     wrappedColumns[0].set('meta.isFixed', this.get('hasFixedColumn'));
 
@@ -231,7 +231,7 @@ export default class EmberTHead extends Component {
   get leafColumns() {
     let leafColumns = emberA();
 
-    this.get('wrappedColumns').forEach((column) => {
+    this.get('wrappedColumns').forEach(column => {
       let subcolumns = get(column, 'subcolumns');
 
       if (isNone(subcolumns) || get(subcolumns, 'length') === 0) {
@@ -301,7 +301,12 @@ export default class EmberTHead extends Component {
 
   fillupHandler = () => {
     if (!this.get('isDestroying')) {
-      fillupColumns(this.get('columns'), this._container.offsetWidth, this.get('fillMode'), this.get('hasSubcolumns'));
+      fillupColumns(
+        this.get('columns'),
+        this._container.offsetWidth,
+        this.get('fillMode'),
+        this.get('hasSubcolumns')
+      );
     }
   };
 
@@ -321,8 +326,9 @@ export default class EmberTHead extends Component {
 
     let resizeMode = this.get('resizeMode');
     if (
-      resizeMode === RESIZE_MODE.FLUID && columnIndex < columns.length - 1
-      && get(columns[columnIndex + 1], 'width') - delta < get(columns[columnIndex + 1], 'minWidth')
+      resizeMode === RESIZE_MODE.FLUID &&
+      columnIndex < columns.length - 1 &&
+      get(columns[columnIndex + 1], 'width') - delta < get(columns[columnIndex + 1], 'minWidth')
     ) {
       // Resizing this column makes the next column smaller than its min width.
       return;
@@ -425,13 +431,18 @@ export default class EmberTHead extends Component {
         this._currentColumnX -= get(columns[this._currentColumnIndex], 'width');
         this._headerAlignBar.style.left = `${this._currentColumnX}px`;
       }
-    } else if (ghostCenterX >= this._currentColumnX + get(columns[this._currentColumnIndex], 'width')) {
+    } else if (
+      ghostCenterX >=
+      this._currentColumnX + get(columns[this._currentColumnIndex], 'width')
+    ) {
       if (this._currentColumnIndex < columns.length - 1) {
         // Current column is now the next column
-        this._currentColumnX = this._currentColumnX + get(columns[this._currentColumnIndex], 'width');
+        this._currentColumnX =
+          this._currentColumnX + get(columns[this._currentColumnIndex], 'width');
         this._currentColumnIndex++;
-        this._headerAlignBar.style.left
-          =  `${this._currentColumnX + get(columns[this._currentColumnIndex], 'width') - HEAD_ALIGN_BAR_WIDTH}px`;
+        this._headerAlignBar.style.left = `${this._currentColumnX +
+          get(columns[this._currentColumnIndex], 'width') -
+          HEAD_ALIGN_BAR_WIDTH}px`;
       }
     }
   }

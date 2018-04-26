@@ -9,7 +9,7 @@ const ALPHABET = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 function generateRow(title) {
   let row = EmberObject.create({
     id: title,
-    children: []
+    children: [],
   });
   for (let j = 0; j < COLUMN_COUNT; j++) {
     row.set(ALPHABET[j], ALPHABET[j]);
@@ -52,7 +52,7 @@ export default Controller.extend({
       footerName: 'Column id',
       valuePath: 'id',
       width: columnWidth,
-      cellComponent: 'tree-table-grouping-cell'
+      cellComponent: 'tree-table-grouping-cell',
     });
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
@@ -62,7 +62,7 @@ export default Controller.extend({
         valuePath: ALPHABET[j % 26],
         width: columnWidth,
         isResizable: true,
-        isReorderable: true
+        isReorderable: true,
       });
     }
 
@@ -84,6 +84,6 @@ export default Controller.extend({
       if (columnIndex !== 0) {
         cell.set('wasClicked', true);
       }
-    }
-  }
+    },
+  },
 });

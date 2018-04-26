@@ -6,9 +6,10 @@ $table-border-color: #dcdcdc;
 $table-hover-color: #e5edf8;
 
 .ember-table {
-  border: solid 1px #ddd;
+  border: solid 1px #dddddd;
 
-  th, td {
+  th,
+  td {
     white-space: nowrap;
     text-overflow: ellipsis;
     font-size: 20px;
@@ -17,17 +18,17 @@ $table-hover-color: #e5edf8;
 
   tbody {
     td {
-      border-top: 0;
-      border-left: 0;
+      border-top: none;
+      border-left: none;
       border-bottom: $table-border-color 1px dotted;
       border-right: $table-border-color 1px solid;
-      background-color: white;
+      background-color: #ffffff;
     }
   }
 
-
-  th, tfoot td {
-    padding: 5px 0px 3px 0px;
+  th,
+  tfoot td {
+    padding: 5px 0 3px;
     background-color: $table-header-background-color;
     font-family: 'Univers LT W01 65 Bold';
     line-height: 1.4;
@@ -48,28 +49,30 @@ $table-hover-color: #e5edf8;
   }
 
   tr:hover {
-    td, th {
+    td,
+    th {
       cursor: pointer;
       background-color: $table-hover-color;
     }
   }
 
   tr.is-selected {
-    td, th {
+    td,
+    th {
       background-color: #227ecb;
     }
   }
 
   .et-header-ghost-element {
     position: absolute;
-    background: #CCC;
+    background: #cccccc;
     opacity: 0.8;
     cursor: move;
   }
 
   .et-header-align-bar {
     position: absolute;
-    background: #444;
+    background: #444444;
     opacity: 0.6;
   }
 }

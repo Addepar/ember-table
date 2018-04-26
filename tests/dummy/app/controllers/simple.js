@@ -32,7 +32,7 @@ export default class SimpleController extends Controller {
         width: columnWidth,
         isResizable: true,
         isReorderable: true,
-        hasCheckbox: j === 0
+        hasCheckbox: j === 0,
       });
     }
 

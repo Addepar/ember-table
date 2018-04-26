@@ -10,7 +10,7 @@ export function generateAlphabetColumns(columnCount) {
       valuePath: ALPHABET[j % 26],
       width: columnWidth,
       isResizable: true,
-      isReorderable: true
+      isReorderable: true,
     });
   }
 

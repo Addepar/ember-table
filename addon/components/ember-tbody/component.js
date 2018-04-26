@@ -15,7 +15,7 @@ import layout from './template';
 
 const SELECT_MODE = {
   SINGLE: 'single',
-  MULTIPLE: 'multiple'
+  MULTIPLE: 'multiple',
 };
 
 @tagName('tbody')
@@ -139,7 +139,7 @@ export default class EmberTBody extends Component {
     this.sendAction('onSelect', selectedRows);
   };
 
-  toggleRowCollapse = (index) => {
+  toggleRowCollapse = index => {
     let tree = this.get('wrappedRows');
     let node = tree.objectAt(index);
 

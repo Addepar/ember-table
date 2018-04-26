@@ -13,15 +13,13 @@ import { collection, hasClass } from 'ember-classy-page-object';
 let table = TablePage.extend({
   body: {
     rows: collection({
-      isCustomRow: hasClass('custom-row')
-    })
-  }
+      isCustomRow: hasClass('custom-row'),
+    }),
+  },
 }).create();
 
 module('Integration | basic', function() {
-
   componentModule('rendering', function() {
-
     test('it renders', async function(assert) {
       let rowCount = 10;
       let columnCount = 10;
@@ -42,15 +40,23 @@ module('Integration | basic', function() {
       assert.ok(table.rows.length < rowCount, 'not all rows have been rendered');
       assert.equal(table.getCell(0, 0).text.trim(), '0A', 'correct first row rendered');
       assert.notEqual(
-        table.getCell(table.rows.length - 1, 0).text.trim(), '99A', 'last rendered row is not last data row'
+        table.getCell(table.rows.length - 1, 0).text.trim(),
+        '99A',
+        'last rendered row is not last data row'
       );
 
       // scroll all the way down
       await scrollTo('[data-test-ember-table]', 0, 10000);
 
-      assert.notEqual(table.getCell(0, 0).text.trim(), '0A', 'first rendered row is not first data row');
+      assert.notEqual(
+        table.getCell(0, 0).text.trim(),
+        '0A',
+        'first rendered row is not first data row'
+      );
       assert.equal(
-        table.getCell(table.rows.length - 1, 0).text.trim(), '99A', 'correct last row rendered'
+        table.getCell(table.rows.length - 1, 0).text.trim(),
+        '99A',
+        'correct last row rendered'
       );
     });
 
@@ -73,7 +79,7 @@ module('Integration | basic', function() {
         rowCount: 100,
         columnCount: 30,
         footerRowCount: 1,
-        hasFixedColumn: true
+        hasFixedColumn: true,
       });
 
       let tableContainerRect = find('.ember-table').getBoundingClientRect();
@@ -107,11 +113,9 @@ module('Integration | basic', function() {
       await a11yAudit();
       assert.ok(true, 'No accessibility error found');
     });
-
   });
 
   componentModule('lifecycle', function() {
-
     test('Destroying table ignores resize event and does not trigger error', async function(assert) {
       assert.expect(0);
 

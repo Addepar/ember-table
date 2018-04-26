@@ -70,32 +70,28 @@ function verifyHeader(assert) {
       let cellRect = cell.getBoundingClientRect();
       let containerRect = find('.ember-table').getBoundingClientRect();
 
-      assert.ok(
-        Math.abs(cellRect.top - containerRect.top - expectedOffset) < 10
-      );
+      assert.ok(Math.abs(cellRect.top - containerRect.top - expectedOffset) < 10);
     }
   });
-
 }
 
 function verifyFooter(assert) {
-  findAll('tfoot > tr').reverse().forEach((row, i) => {
-    // account for the scale
-    let expectedOffset = i * 25;
+  findAll('tfoot > tr')
+    .reverse()
+    .forEach((row, i) => {
+      // account for the scale
+      let expectedOffset = i * 25;
 
-    for (let cell of row.children) {
-      let cellRect = cell.getBoundingClientRect();
-      let containerRect = find('.ember-table').getBoundingClientRect();
+      for (let cell of row.children) {
+        let cellRect = cell.getBoundingClientRect();
+        let containerRect = find('.ember-table').getBoundingClientRect();
 
-      assert.ok(
-        Math.abs(containerRect.bottom - cellRect.bottom - expectedOffset) < 10
-      );
-    }
-  });
+        assert.ok(Math.abs(containerRect.bottom - cellRect.bottom - expectedOffset) < 10);
+      }
+    });
 }
 
 componentModule('Unit | Private | TableStickyPolyfill', function() {
-
   test('it works', async function(assert) {
     this.set('headerRows', constructMatrix(3, 3));
     this.set('bodyRows', constructMatrix(20, 3));

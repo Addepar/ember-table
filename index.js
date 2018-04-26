@@ -8,11 +8,11 @@ module.exports = {
     nodeAssets: {
       'css-element-queries': {
         srcDir: 'src',
-        import: ['ResizeSensor.js']
+        import: ['ResizeSensor.js'],
       },
-      'hammerjs': {
-        import: ['hammer.js']
-      }
-    }
-  }
+      hammerjs: {
+        import: ['hammer.js'],
+      },
+    },
+  },
 };

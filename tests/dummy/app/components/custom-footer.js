@@ -24,7 +24,7 @@ export default class CustomFooter extends Component {
   click() {
     this.sendAction('onCustomFooterEvent', {
       eventName: 'click',
-      column: this.get('column')
+      column: this.get('column'),
     });
   }
 }

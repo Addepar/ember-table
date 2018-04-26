@@ -59,7 +59,8 @@ export default class RowWrapper extends Component {
     let meta = proxy.get('meta');
 
     let selectedRows = this.get('selectedRows');
-    let isSelected = selectedRows.includes(rowValue) || parents.some((row) => selectedRows.includes(row));
+    let isSelected =
+      selectedRows.includes(rowValue) || parents.some(row => selectedRows.includes(row));
 
     set(meta, 'depth', parents.length);
     set(meta, 'isSelected', isSelected);
@@ -106,7 +107,7 @@ export default class RowWrapper extends Component {
           rowValue: row,
           selectMode,
           selectRow,
-          toggleRowCollapse
+          toggleRowCollapse,
         };
       })
     );

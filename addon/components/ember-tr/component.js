@@ -33,7 +33,7 @@ export default class EmberTableRow extends Component {
     if (api && api.selectRow) {
       api.selectRow(rowIndex, {
         toggle: event.ctrlKey || event.metaKey,
-        range: event.shiftKey
+        range: event.shiftKey,
       });
     }
 

@@ -9,9 +9,7 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 const table = TablePage.create();
 
 module('Integration | header', function() {
-
   componentModule('resizing', function() {
-
     test('basic', async function(assert) {
       await generateTable(this);
 
@@ -35,7 +33,11 @@ module('Integration | header', function() {
       await table.headers.eq(1).resize(30);
 
       assert.equal(table.headers.eq(1).width - originalWidth, 30, 'Column size is updated');
-      assert.equal(table.headers.eq(2).width - originalWidth, -30, 'Next column shrinks in fluid mode');
+      assert.equal(
+        table.headers.eq(2).width - originalWidth,
+        -30,
+        'Next column shrinks in fluid mode'
+      );
     });
 
     test('equal column mode', async function(assert) {
@@ -43,7 +45,7 @@ module('Integration | header', function() {
 
       let expectedWidth = table.width / table.headers.length;
 
-      table.headers.forEach((header) => {
+      table.headers.forEach(header => {
         assert.ok(
           Math.abs(header.width - expectedWidth) <= 1,
           'Table header have same width in equal resize mode.'
@@ -57,11 +59,11 @@ module('Integration | header', function() {
       await generateTable(this, {
         fillMode: 'none',
         columnOptions: {
-          width: columnWidth
-        }
+          width: columnWidth,
+        },
       });
 
-      table.headers.forEach((header) => {
+      table.headers.forEach(header => {
         assert.ok(
           Math.abs(header.width - columnWidth) <= 1,
           'Table header keeps original width in none resize mode.'
@@ -76,8 +78,8 @@ module('Integration | header', function() {
         fillMode: 'first_column',
         columnCount: 2,
         columnOptions: {
-          width: columnWidth
-        }
+          width: columnWidth,
+        },
       });
 
       let tableWidth = table.width;
@@ -101,8 +103,8 @@ module('Integration | header', function() {
         fillMode: 'last_column',
         columnCount: 2,
         columnOptions: {
-          width: columnWidth
-        }
+          width: columnWidth,
+        },
       });
 
       let tableWidth = table.width;
@@ -122,7 +124,11 @@ module('Integration | header', function() {
     test('column resize action is sent up to controller', async function(assert) {
       let expectedColumnIndex = 1;
       this.on('onResize', function(columnIndex) {
-        assert.equal(columnIndex, expectedColumnIndex, 'action is sent to controller after resizing');
+        assert.equal(
+          columnIndex,
+          expectedColumnIndex,
+          'action is sent to controller after resizing'
+        );
       });
 
       await generateTable(this);
@@ -131,7 +137,6 @@ module('Integration | header', function() {
   });
 
   componentModule('reordering', function() {
-
     test('standard columns', async function(assert) {
       await generateTable(this);
 
@@ -171,12 +176,11 @@ module('Integration | header', function() {
   });
 
   componentModule('subcolumns', function() {
-
     test('they work', async function(assert) {
       await generateTable(this, {
         columnOptions: {
-          subcolumnCount: 2
-        }
+          subcolumnCount: 2,
+        },
       });
 
       assert.equal(table.header.rows.length, 2, 'There are 2 rows in the header.');

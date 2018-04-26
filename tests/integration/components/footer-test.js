@@ -8,9 +8,7 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 const table = TablePage.create();
 
 module('Integration | footer', function() {
-
   componentModule('basic', function() {
-
     test('renders if footerRows are set', async function(assert) {
       await generateTable(this, { footerRowCount: 3 });
 
@@ -19,6 +17,3 @@ module('Integration | footer', function() {
     });
   });
 });
-
-
-

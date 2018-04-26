@@ -97,7 +97,7 @@ export default class EmberTableHeader extends Component {
     return this.get('column.isResizable');
   }
 
-  @computed('column.isReorderable', 'column.meta.isFixed')
+  @computed('column.{isReorderable,meta.isFixed}')
   get enableColumnReorder() {
     return this.get('column.isReorderable') && !this.get('column.meta.isFixed');
   }
@@ -143,7 +143,7 @@ export default class EmberTableHeader extends Component {
 
     hammer.add(new Hammer.Press({ time: 0 }));
 
-    hammer.on('press', (ev) => {
+    hammer.on('press', ev => {
       let box = this.element.getBoundingClientRect();
       if (this.get('enableColumnResize')) {
         if (box.right - ev.pointers[0].clientX < PRESS_OFFSET_THRESHOLD) {
@@ -159,17 +159,13 @@ export default class EmberTableHeader extends Component {
       this._columnState = COLUMN_STATIC;
     });
 
-    hammer.on('panmove', (ev) => {
+    hammer.on('panmove', ev => {
       let columnIndex = this.get('columnIndex');
       let enableColumnResize = this.get('enableColumnResize');
       let enableColumnReorder = this.get('enableColumnReorder');
       let fixedColumnWidth = this.get('fixedColumnWidth');
 
-      let {
-        _columnState,
-        _firstTouchX,
-        _touchX
-      } = this;
+      let { _columnState, _firstTouchX, _touchX } = this;
 
       let [{ clientX }] = ev.pointers;
       if (enableColumnResize && _columnState === COLUMN_RESIZE) {
@@ -192,14 +188,10 @@ export default class EmberTableHeader extends Component {
       }
     });
 
-    hammer.on('panend', (ev) => {
+    hammer.on('panend', ev => {
       let columnIndex = this.get('columnIndex');
 
-      let {
-        _columnState,
-        _firstTouchX,
-        _touchX
-      } = this;
+      let { _columnState, _firstTouchX, _touchX } = this;
 
       let [{ clientX }] = ev.pointers;
 

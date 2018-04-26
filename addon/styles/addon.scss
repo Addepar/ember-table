@@ -11,10 +11,12 @@
     box-sizing: border-box;
   }
 
-  td, th {
+  td,
+  th {
     box-sizing: border-box;
 
     &.is-fixed {
+      // sass-lint:disable-block no-duplicate-properties
       position: -webkit-sticky;
       position: sticky;
       left: 0;
@@ -22,6 +24,7 @@
   }
 
   thead {
+    // sass-lint:disable-block no-duplicate-properties
     position: -webkit-sticky;
     position: sticky;
 
@@ -39,6 +42,7 @@
   }
 
   tfoot {
+    // sass-lint:disable-block no-duplicate-properties
     position: -webkit-sticky;
     position: sticky;
     bottom: 0;

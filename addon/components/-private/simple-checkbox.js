@@ -8,8 +8,7 @@ import { Action } from '@ember-decorators/argument/types';
 export default class SimpleCheckbox extends Component {
   value = null;
 
-  @attribute
-  type = 'checkbox';
+  @attribute type = 'checkbox';
 
   @argument({ defaultIfUndefined: true })
   @type('boolean')

@@ -4,7 +4,6 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import generateTable from '../../helpers/generate-table';
 
-
 let table = TablePage.extend({
   validateSelected(...selectedIndexes) {
     let valid = true;
@@ -18,9 +17,8 @@ let table = TablePage.extend({
     });
 
     return valid;
-  }
+  },
 }).create();
-
 
 module('Integration | selection', () => {
   moduleForComponent('ember-table', 'multiple', { integration: true });
@@ -176,7 +174,6 @@ module('Integration | selection', () => {
     assert.ok(table.validateSelected(3, 4, 5), 'all rows are selected');
   });
 
-
   moduleForComponent('ember-table', 'single', { integration: true });
 
   test('Can select a row by clicking on it', async function(assert) {
@@ -233,7 +230,6 @@ module('Integration | selection', () => {
 
     assert.ok(table.validateSelected(3), 'last row only is selected');
   });
-
 
   moduleForComponent('ember-table', 'none', { integration: true });
 

@@ -26,6 +26,4 @@ const generateBasicRoot = (childCount = 10) => {
   return root;
 };
 
-export {
-  generateBasicRoot
-};
+export { generateBasicRoot };

@@ -7,7 +7,7 @@ import CollapseTree from 'ember-table/-private/collapse-tree';
 function generateNode(seq) {
   let children = emberA();
 
-  seq.forEach((item) => {
+  seq.forEach(item => {
     if (Array.isArray(item)) {
       let lastNode = children[children.length - 1];
 
@@ -27,12 +27,11 @@ function generateTree(firstNode, values) {
 
   return {
     value: firstNode,
-    children: generateNode(values)
+    children: generateNode(values),
   };
 }
 
 module('Unit | Private | CollapseTree', function() {
-
   test('empty tree works', function(assert) {
     let tree = CollapseTree.create({ tree: [] });
     assert.equal(tree.objectAt(-1), undefined);
@@ -110,7 +109,6 @@ module('Unit | Private | CollapseTree', function() {
       assert.equal(collapseTree.objectAt(i).value.value, expectedValue[i]);
       assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
-
   });
 
   test('can collapse nodes without modifying underlying data structure', function(assert) {
