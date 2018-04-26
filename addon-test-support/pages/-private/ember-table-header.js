@@ -1,11 +1,7 @@
 import { collection } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 
-import {
-  pressElement,
-  moveMouse,
-  releasePress
-} from './drag-helper';
+import { pressElement, moveMouse, releasePress } from './drag-helper';
 
 export default {
   scope: 'thead',
@@ -76,14 +72,14 @@ export default {
       await moveMouse(header, startX + deltaX / 2, header.clientHeight / 2);
       await moveMouse(header, startX + deltaX, header.clientHeight / 2);
       await releasePress(header, startX + deltaX, header.clientHeight / 2);
-    }
+    },
   }),
 
   subcolumns: collection({
-    scope: 'tr:eq(1) th'
+    scope: 'tr:eq(1) th',
   }),
 
   rows: collection({
-    scope: 'tr'
-  })
+    scope: 'tr',
+  }),
 };

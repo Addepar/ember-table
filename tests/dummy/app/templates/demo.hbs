@@ -1,25 +1,21 @@
 <div class="demo-container">
-  {{#ember-table
-    tree=tree
-    columns=columns
-    columnMode="fluid"
-    numFixedColumns=1
-    footerRows=footerRows
-    as |t|
-  }}
-    {{#ember-table-row
-      row=t
+  {{#ember-table as |t|}}
+    {{ember-thead columns=columns resizeMode=fluid hasFixedColumn=true api=t}}
 
-      as |value cell column row|
-    }}
+    {{#ember-tbody api=t tree=tree as |b|}}
+      {{#ember-tr api=b as |r|}}
+        {{#ember-td api=r as |value cell column row|}}
+          {{#if column.cellComponent}}
+            {{component column.cellComponent value=value row=row}}
+          {{else}}
+            <div {{action "onCellClicked" cell column.meta.index}} class={{if cell.wasClicked "red-cell"}}>
+              {{value}}
+            </div>
+          {{/if}}
+        {{/ember-td}}
+      {{/ember-tr}}
+    {{/ember-tbody}}
 
-      {{#if column.cellComponent}}
-        {{component column.cellComponent value=value row=row}}
-      {{else}}
-        <div {{action "onCellClicked" cell column.meta.index}} class={{if cell.wasClicked "red-cell"}}>
-          {{value}}
-        </div>
-      {{/if}}
-    {{/ember-table-row}}
+    {{ember-tfoot api=t rows=footerRows}}
   {{/ember-table}}
 </div>

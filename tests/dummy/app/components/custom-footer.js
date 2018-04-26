@@ -11,7 +11,7 @@ export default class CustomFooter extends Component {
   @argument columnIndex;
   @argument rowValue;
   @argument rowIndex;
-  @argument onFooterEvent;
+  @argument onCustomFooterEvent;
 
   @computed('column.valuePath', 'rowValue')
   get footerValue() {
@@ -22,9 +22,9 @@ export default class CustomFooter extends Component {
   }
 
   click() {
-    this.sendAction('onFooterEvent', {
+    this.sendAction('onCustomFooterEvent', {
       eventName: 'click',
-      column: this.get('column')
+      column: this.get('column'),
     });
   }
 }

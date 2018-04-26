@@ -1,0 +1,10 @@
+{{#if hasBlock}}
+  {{yield column}}
+{{else}}
+  {{column.name}}
+{{/if}}
+
+{{#if column.isResizable}}
+  <div class="et-header-resize-area">
+  </div>
+{{/if}}

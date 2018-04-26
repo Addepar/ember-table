@@ -3,16 +3,16 @@
 To use `Ember Table`, you need to create `columns` and `rows` dataset.
 
 `columns` is an array of objects which has multiple fields to define behavior of column.
-Two required field in each object is `columnName` and `valuePath`.
+Two required field in each object is `name` and `valuePath`.
 
 ```javascript
   columns: [
     {
-      columnName: `Open time`,
+      name: `Open time`,
       valuePath: `open`
     },
     {
-      columnName: `Close time`,
+      name: `Close time`,
       valuePath: `close`
     }
   ]
@@ -46,16 +46,15 @@ by all `valuePath` in `columns` array.
 The following template renders a simple table.
 
 ```
-  {{#ember-table
-    rows=rows
-    columns=columns
-    as |row|
-  }}
-    {{#ember-table-row
-      row=row
-      as |cell|
-    }}
-      {{cell.value}}
+  {{#ember-table as |t|}}
+    {{ember-thead api=t columns=columns}}
+
+    {{#ember-tbody api=t rows=rows as |b|}}
+      {{#ember-tr api=b as |r|}}
+        {{#ember-td api=r as |value cell column row|}}
+          {{component column.component value=value}}
+        {{/ember-td}}
+      {{/ember-tr}}
     {{/ember-table-row}}
   {{/ember-table}}
 ```
@@ -71,7 +70,7 @@ represents a row in table footer. The footer row takes `valuePath` field in each
 data for each footer cell, similar to table body.
 
 ### Custom header and custom footer
-By default Ember table header renders text defined by `columnName` or `footerValue` inside each
+By default Ember table header renders text defined by `name` or `footerValue` inside each
 `column`. To customize table header or footer, you can pass in `headerComponent` and
 `footerComponent` fields in each column data. When the `headerComponent`(or `footerComponent`) is
-defined, the `columnName`(or `footerValue`) field is ignored.
+defined, the `name`(or `footerValue`) field is ignored.

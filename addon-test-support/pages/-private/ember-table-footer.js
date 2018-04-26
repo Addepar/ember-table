@@ -7,7 +7,7 @@ export default {
     scope: 'tr',
 
     cells: collection({
-      scope: 'td'
-    })
-  })
+      scope: 'td',
+    }),
+  }),
 };

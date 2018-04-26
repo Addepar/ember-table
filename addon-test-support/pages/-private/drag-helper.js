@@ -1,5 +1,3 @@
-import { run } from '@ember/runloop';
-import wait from 'ember-test-helpers/wait';
 import { triggerEvent } from 'ember-native-dom-helpers';
 
 export async function pressElement(target, x, y) {

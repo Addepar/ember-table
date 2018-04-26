@@ -6,11 +6,11 @@ export function generateAlphabetColumns(columnCount) {
 
   for (let j = 0; j < columnCount; j++) {
     columns.push({
-      columnName: `Col ${ALPHABET[j % 26]}`,
+      name: `Col ${ALPHABET[j % 26]}`,
       valuePath: ALPHABET[j % 26],
       width: columnWidth,
       isResizable: true,
-      isReorderable: true
+      isReorderable: true,
     });
   }
 

@@ -4,7 +4,6 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import generateTable from '../../helpers/generate-table';
 
-
 let table = TablePage.extend({
   validateSelected(...selectedIndexes) {
     let valid = true;
@@ -18,9 +17,8 @@ let table = TablePage.extend({
     });
 
     return valid;
-  }
+  },
 }).create();
-
 
 module('Integration | selection', () => {
   moduleForComponent('ember-table', 'multiple', { integration: true });
@@ -176,11 +174,10 @@ module('Integration | selection', () => {
     assert.ok(table.validateSelected(3, 4, 5), 'all rows are selected');
   });
 
-
   moduleForComponent('ember-table', 'single', { integration: true });
 
   test('Can select a row by clicking on it', async function(assert) {
-    await generateTable(this, { selectionMode: 'single' });
+    await generateTable(this, { selectMode: 'single' });
 
     assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
 
@@ -190,7 +187,7 @@ module('Integration | selection', () => {
   });
 
   test('Cannot toggle a row with meta and control', async function(assert) {
-    await generateTable(this, { selectionMode: 'single' });
+    await generateTable(this, { selectMode: 'single' });
 
     await table.selectRow(0);
 
@@ -206,7 +203,7 @@ module('Integration | selection', () => {
   });
 
   test('Cannot toggle multiple rows with meta and control', async function(assert) {
-    await generateTable(this, { selectionMode: 'single' });
+    await generateTable(this, { selectMode: 'single' });
 
     assert.ok(table.validateSelected(), 'no rows are selected');
 
@@ -225,7 +222,7 @@ module('Integration | selection', () => {
   });
 
   test('Cannot select a range with shift', async function(assert) {
-    await generateTable(this, { selectionMode: 'single' });
+    await generateTable(this, { selectMode: 'single' });
 
     assert.ok(table.validateSelected(), 'no rows are not selected');
 
@@ -233,7 +230,6 @@ module('Integration | selection', () => {
 
     assert.ok(table.validateSelected(3), 'last row only is selected');
   });
-
 
   moduleForComponent('ember-table', 'none', { integration: true });
 

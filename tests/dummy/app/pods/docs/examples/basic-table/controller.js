@@ -27,12 +27,12 @@ export default class SimpleController extends Controller {
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
       columns.pushObject({
-        columnName: `Col ${ALPHABET[j % 26]}`,
+        name: `Col ${ALPHABET[j % 26]}`,
         valuePath: ALPHABET[j % 26],
         width: columnWidth,
         isResizable: true,
         isReorderable: true,
-        hasCheckbox: j === 0
+        hasCheckbox: j === 0,
       });
     }
 

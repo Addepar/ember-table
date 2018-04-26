@@ -6,7 +6,6 @@ import { htmlSafe } from '@ember/string';
 import Component from '@ember/component';
 import layout from '../templates/components/tree-table-grouping-cell';
 
-
 export default class TreeTableGroupingCell extends Component {
   layout = layout;
 

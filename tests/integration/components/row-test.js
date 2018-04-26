@@ -9,18 +9,16 @@ import { collection, hasClass } from 'ember-classy-page-object';
 let table = TablePage.extend({
   body: {
     rows: collection({
-      isCustomRow: hasClass('custom-row')
-    })
-  }
+      isCustomRow: hasClass('custom-row'),
+    }),
+  },
 }).create();
 
 module('Integration | row', function() {
-
   componentModule('row customization', function() {
-
     test('can use a custom row component', async function(assert) {
       await generateTable(this, {
-        rowComponent: 'custom-row'
+        rowComponent: 'custom-row',
       });
 
       assert.ok(table.rows.eq(0).isCustomRow, 'Table has custom row');

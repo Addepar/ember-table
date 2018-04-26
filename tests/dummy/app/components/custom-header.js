@@ -11,7 +11,7 @@ export default class CustomHeader extends Component {
   click() {
     this.sendAction('onHeaderEvent', {
       eventName: 'click',
-      column: this.get('column')
+      column: this.get('column'),
     });
   }
 }

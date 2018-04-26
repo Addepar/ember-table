@@ -20,7 +20,7 @@ export function toBase26(int) {
   int += 1;
 
   while (int > 0) {
-    let index = (int % BASE) || BASE;
+    let index = int % BASE || BASE;
     result = ALPHA[index - 1] + result;
     int = Math.floor((int - 1) / BASE);
   }

@@ -1,7 +1,5 @@
-/* eslint-env node */
-
 module.exports = function(environment) {
-  var ENV = {
+  let ENV = {
     modulePrefix: 'dummy',
     podModulePrefix: 'dummy/pods',
     environment,
@@ -9,7 +7,7 @@ module.exports = function(environment) {
     locationType: 'router-scroll',
     historySupportMiddleware: true,
     routerScroll: {
-      scrollElement: '#docs-viewer__scroll-body'
+      scrollElement: '#docs-viewer__scroll-body',
     },
     EmberENV: {
       FEATURES: {
@@ -18,14 +16,14 @@ module.exports = function(environment) {
       },
       EXTEND_PROTOTYPES: {
         // Prevent Ember Data from overriding Date.parse.
-        Date: false
-      }
+        Date: false,
+      },
     },
 
     APP: {
       // Here you can pass flags/options to your application instance
       // when it is created
-    }
+    },
   };
 
   if (environment === 'development') {

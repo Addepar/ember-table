@@ -1,0 +1,25 @@
+{{#each wrappedRows as |rowValue rowIndex|}}
+  {{#-ember-table-private/row-wrapper
+    row=rowValue
+    rowIndex=rowIndex
+    selectedRows=selectedRows
+    columns=columns
+    selectRow=selectRow
+    toggleRowCollapse=toggleRowCollapse
+
+    as |wrappedRow cells|
+  }}
+    {{#if hasBlock}}
+      {{yield (hash
+        rowValue=wrappedRow
+        cells=cells)
+      }}
+    {{else}}
+      {{ember-tr
+        api=(hash
+          rowValue=wrappedRow
+          cells=cells)
+      }}
+    {{/if}}
+  {{/-ember-table-private/row-wrapper}}
+{{/each}}

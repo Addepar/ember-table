@@ -5,37 +5,56 @@ import { toBase26 } from './base-26';
 
 const fullTable = hbs`
   <div style="height: 500px;">
-    {{#ember-table
-      columns=columns
-      tree=tree
-      rows=rows
-      footerRows=footerRows
-      selectedRows=selectedRows
+    {{#ember-table data-test-ember-table=true as |t|}}
+      {{ember-thead
+        api=t
 
-      columnMode=columnMode
-      selectionMode=selectionMode
-      estimateRowHeight=estimateRowHeight
-      numFixedColumns=numFixedColumns
-      staticHeight=staticHeight
-      tableResizeMode=tableResizeMode
+        columns=columns
+        resizeMode=resizeMode
+        fillMode=fillMode
+        hasFixedColumn=hasFixedColumn
 
-      onSelect="onSelect"
-      onFooterEvent="onFooterEvent"
-      onColumnReordered="onColumnReordered"
-      onColumnResized="onColumnResized"
-
-      data-test-ember-table=true
-
-      as |row|
-    }}
-
-      {{#component rowComponent
-        row=row
-
-        as |value|
+        onReorder="onReorder"
+        onResize="onResize"
       }}
-        {{value}}
-      {{/component}}
+
+      {{#ember-tbody
+        api=t
+
+        tree=tree
+        rows=rows
+        estimateRowHeight=estimateRowHeight
+        staticHeight=staticHeight
+
+        onSelect="onSelect"
+        selectMode=selectMode
+        selectedRows=selectedRows
+
+        as |b|
+      }}
+        {{#component rowComponent
+          api=b
+
+          as |r|
+        }}
+          {{#ember-td api=r as |value|}}
+            {{value}}
+          {{/ember-td}}
+        {{/component}}
+      {{/ember-tbody}}
+
+      {{#ember-tfoot
+        api=t
+        rows=footerRows
+
+        as |f|
+      }}
+        {{#ember-tr api=f as |r|}}
+          {{#ember-td api=r as |value|}}
+            {{value}}
+          {{/ember-td}}
+        {{/ember-tr}}
+      {{/ember-tfoot}}
     {{/ember-table}}
   </div>
 `;
@@ -44,7 +63,7 @@ export function generateRows(rowCount, columnCount, prefix = '') {
   let arr = [];
 
   for (let i = 0; i < rowCount; i++) {
-    let row = { 'id': `Row ${i}` };
+    let row = { id: `Row ${i}` };
 
     for (let j = 0; j < columnCount; j++) {
       row[toBase26(j)] = `${prefix}${i}${toBase26(j)}`;
@@ -56,21 +75,24 @@ export function generateRows(rowCount, columnCount, prefix = '') {
   return emberA(arr);
 }
 
-export function generateColumns(columnCount, {
-  subcolumnCount = 0,
-  columnOffset = 0,
+export function generateColumns(
+  columnCount,
+  {
+    subcolumnCount = 0,
+    columnOffset = 0,
 
-  ...columnOptions
-} = {}) {
+    ...columnOptions
+  } = {}
+) {
   let arr = [];
 
   for (let i = 0; i < columnCount; i++) {
     let columnDefinition = {
-      columnName: toBase26(i),
+      name: toBase26(i),
       valuePath: toBase26(columnOffset + i),
       width: 100,
       isResizable: true,
-      isReorderable: true
+      isReorderable: true,
     };
 
     for (let property in columnOptions) {
@@ -80,7 +102,7 @@ export function generateColumns(columnCount, {
     if (subcolumnCount) {
       columnDefinition.subcolumns = generateColumns(subcolumnCount, {
         columnOffset: i,
-        ...columnOptions
+        ...columnOptions,
       });
     }
 
@@ -95,26 +117,29 @@ const defaultActions = {
     this.set('selectedRows', newRows);
   },
 
-  onColumnReordered() {},
+  onReorder() {},
 
-  onColumnResized() {}
+  onResize() {},
 };
 
-export default async function generateTable(testContext, {
-  rows,
-  footerRows,
-  columns,
-  rowCount = 10,
-  footerRowCount = 0,
-  columnCount = 10,
-  columnOptions,
-  hasCheckbox = false,
-  useTree = false,
+export default async function generateTable(
+  testContext,
+  {
+    rows,
+    footerRows,
+    columns,
+    rowCount = 10,
+    footerRowCount = 0,
+    columnCount = 10,
+    columnOptions,
+    hasCheckbox = false,
+    useTree = false,
 
-  rowComponent = 'ember-table-row',
+    rowComponent = 'ember-tr',
 
-  ...options
-} = {}) {
+    ...options
+  } = {}
+) {
   for (let property in options) {
     testContext.set(property, options[property]);
   }
@@ -124,9 +149,11 @@ export default async function generateTable(testContext, {
   columns = columns || generateColumns(columnCount, columnOptions);
 
   // Total column length is columns + subcolumns
-  let totalColumns = columns.length + columns.reduce((v, c) => {
-    return c.subcolumns ? v + c.subcolumns.length : v;
-  }, 0);
+  let totalColumns =
+    columns.length +
+    columns.reduce((v, c) => {
+      return c.subcolumns ? v + c.subcolumns.length : v;
+    }, 0);
 
   rows = rows || generateRows(rowCount, totalColumns);
   footerRows = footerRows || generateRows(footerRowCount, totalColumns);
