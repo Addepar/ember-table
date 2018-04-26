@@ -1,0 +1,36 @@
+{{#vertical-collection wrappedRows
+  estimateHeight=estimateRowHeight
+  staticHeight=staticHeight
+  containerSelector=".ember-table"
+
+  as |rowValue rowIndex|
+}}
+  {{#-ember-table-private/row-wrapper
+    row=rowValue
+    rowIndex=rowIndex
+    selectedRows=selectedRows
+    columns=columns
+
+    onSelect=onSelect
+    selectMode=selectMode
+    selectRow=selectRow
+    toggleRowCollapse=toggleRowCollapse
+
+    as |proxy cells|
+  }}
+    {{#if hasBlock}}
+      {{yield (hash
+        selectRow=selectRow
+        rowValue=proxy
+        cells=cells)
+      }}
+    {{else}}
+      {{ember-tr
+        api=(hash
+          selectRow=selectRow
+          rowValue=proxy
+          cells=cells)
+      }}
+    {{/if}}
+  {{/-ember-table-private/row-wrapper}}
+{{/vertical-collection}}

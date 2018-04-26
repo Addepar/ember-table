@@ -4,7 +4,7 @@ export default class ColumnDefinition extends EmberObject {
   /**
    * Name of the column.
    */
-  columnName = '';
+  name = '';
 
   /**
    * Path of the content for this cell. If the row object is a hash of keys and values to specify
@@ -13,27 +13,12 @@ export default class ColumnDefinition extends EmberObject {
   valuePath = '';
 
   /**
-   * Custom header component passed in by user.
-   */
-  headerComponent = null;
-
-  /**
-   * Custom cell component passed in by user.
-   */
-  cellComponent = null;
-
-  /**
    * Indicates if this column can be resized or not. It's false by default.
    */
   isResizable = false;
 
   /**
-   * Indicates if this column can be reordered or not. It's false by default.
-   */
-  isReorderable = false;
-
-  /**
-   * Current width of the table.
+   * Current width of the column.
    */
   width = 150;
 

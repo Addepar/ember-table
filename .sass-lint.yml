@@ -1,0 +1,2 @@
+options:
+  config-file: node_modules/@addepar/sass-lint-config/config.yml

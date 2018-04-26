@@ -1,0 +1,14 @@
+{{#if hasCheckbox}}
+  {{-ember-table-private/simple-checkbox
+    checked=row.meta.isSelected
+    onClick="onCheckboxClicked"
+    onChange="onCheckboxToggled"
+    ariaLabel="Row Select"
+  }}
+{{/if}}
+
+{{#if hasBlock}}
+  {{yield value cell column row}}
+{{else}}
+  {{value}}
+{{/if}}

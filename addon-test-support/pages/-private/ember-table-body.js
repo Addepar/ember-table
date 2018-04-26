@@ -17,7 +17,7 @@ export default {
      * List of all cells for the selected row.
      */
     cells: collection({
-      scope: 'td'
+      scope: 'td',
     }),
 
     /**
@@ -29,7 +29,7 @@ export default {
 
     checkbox: {
       scope: 'input[type="checkbox"]',
-      isChecked: property('checked')
+      isChecked: property('checked'),
     },
 
     toggle: alias('checkbox.click'),
@@ -43,7 +43,7 @@ export default {
      */
     async clickWith(options) {
       await click(findElement(this), options);
-    }
+    },
   }),
 
   /**
@@ -51,5 +51,5 @@ export default {
    */
   getCell(rowIndex, columnIndex) {
     return this.rows.eq(rowIndex).cells.eq(columnIndex);
-  }
+  },
 };

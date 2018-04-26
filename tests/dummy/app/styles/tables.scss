@@ -10,13 +10,14 @@
 }
 
 .et-table {
-  td, th {
-    background: white;
+  td,
+  th {
+    background: #ffffff;
   }
 }
 
 .red-cell {
-  background: red;
+  background: #ff0000;
 }
 
 /* Custom component classes */
@@ -32,9 +33,9 @@
 }
 
 .custom-row {
-  background: green;
+  background: #00ff00;
 }
 
 .custom-footer {
-  background-color: green;
+  background-color: #00ff00;
 }

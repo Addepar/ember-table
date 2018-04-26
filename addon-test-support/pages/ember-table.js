@@ -65,5 +65,5 @@ export default PageObject.extend({
   async selectRange(beginIndex, endIndex) {
     await this.body.rows.eq(beginIndex).click();
     await this.body.rows.eq(endIndex).clickWith({ shiftKey: true });
-  }
+  },
 });

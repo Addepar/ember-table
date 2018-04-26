@@ -8,15 +8,23 @@
   table {
     border-spacing: 0;
     table-layout: fixed;
+    box-sizing: border-box;
   }
 
-  td.is-fixed, th.is-fixed {
-    position: -webkit-sticky;
-    position: sticky;
-    left: 0;
+  td,
+  th {
+    box-sizing: border-box;
+
+    &.is-fixed {
+      // sass-lint:disable-block no-duplicate-properties
+      position: -webkit-sticky;
+      position: sticky;
+      left: 0;
+    }
   }
 
   thead {
+    // sass-lint:disable-block no-duplicate-properties
     position: -webkit-sticky;
     position: sticky;
 
@@ -34,6 +42,7 @@
   }
 
   tfoot {
+    // sass-lint:disable-block no-duplicate-properties
     position: -webkit-sticky;
     position: sticky;
     bottom: 0;

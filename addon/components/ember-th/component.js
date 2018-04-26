@@ -1,8 +1,10 @@
 /* global Hammer */
-import EmberTableBaseCell from './ember-table-base-cell';
+import Component from '@ember/component';
+import { htmlSafe } from '@ember/string';
 
-import { action, computed } from '@ember-decorators/object';
-import { attribute, tagName } from '@ember-decorators/component';
+import { computed } from '@ember-decorators/object';
+import { readOnly } from '@ember-decorators/object/computed';
+import { attribute, className, tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
 import { type } from '@ember-decorators/argument/type';
@@ -11,7 +13,7 @@ import { Action } from '@ember-decorators/argument/types';
 import { isNone } from '@ember/utils';
 import { get } from '@ember/object';
 
-import layout from '../templates/components/ember-table-header';
+import layout from './template';
 
 const PRESS_OFFSET_THRESHOLD = 10;
 const COLUMN_STATIC = 0;
@@ -19,7 +21,7 @@ const COLUMN_RESIZE = 1;
 const COLUMN_REORDERING = 2;
 
 @tagName('th')
-export default class EmberTableHeader extends EmberTableBaseCell {
+export default class EmberTableHeader extends Component {
   layout = layout;
 
   @argument
@@ -61,10 +63,6 @@ export default class EmberTableHeader extends EmberTableBaseCell {
   @type(Action)
   onColumnReorderEnded;
 
-  @argument
-  @type(Action)
-  onHeaderEvent;
-
   /**
    * X position where user first touches on the header.
    */
@@ -87,6 +85,10 @@ export default class EmberTableHeader extends EmberTableBaseCell {
    */
   _hammer = null;
 
+  @className
+  @readOnly('column.meta.isFixed')
+  isFixed;
+
   /**
    * Indicates if this column can be reordered or not. It's false by default.
    */
@@ -95,9 +97,17 @@ export default class EmberTableHeader extends EmberTableBaseCell {
     return this.get('column.isResizable');
   }
 
-  @computed('column.isReorderable', 'isFixed')
+  @computed('column.{isReorderable,meta.isFixed}')
   get enableColumnReorder() {
-    return this.get('column.isReorderable') && !this.get('isFixed');
+    return this.get('column.isReorderable') && !this.get('column.meta.isFixed');
+  }
+
+  @attribute
+  @computed('column.width')
+  get style() {
+    let width = this.get('column.width');
+
+    return htmlSafe(`width: ${width}px; min-width: ${width}px; max-width: ${width}px;`);
   }
 
   @attribute
@@ -133,7 +143,7 @@ export default class EmberTableHeader extends EmberTableBaseCell {
 
     hammer.add(new Hammer.Press({ time: 0 }));
 
-    hammer.on('press', (ev) => {
+    hammer.on('press', ev => {
       let box = this.element.getBoundingClientRect();
       if (this.get('enableColumnResize')) {
         if (box.right - ev.pointers[0].clientX < PRESS_OFFSET_THRESHOLD) {
@@ -149,17 +159,13 @@ export default class EmberTableHeader extends EmberTableBaseCell {
       this._columnState = COLUMN_STATIC;
     });
 
-    hammer.on('panmove', (ev) => {
+    hammer.on('panmove', ev => {
       let columnIndex = this.get('columnIndex');
       let enableColumnResize = this.get('enableColumnResize');
       let enableColumnReorder = this.get('enableColumnReorder');
       let fixedColumnWidth = this.get('fixedColumnWidth');
 
-      let {
-        _columnState,
-        _firstTouchX,
-        _touchX
-      } = this;
+      let { _columnState, _firstTouchX, _touchX } = this;
 
       let [{ clientX }] = ev.pointers;
       if (enableColumnResize && _columnState === COLUMN_RESIZE) {
@@ -182,14 +188,10 @@ export default class EmberTableHeader extends EmberTableBaseCell {
       }
     });
 
-    hammer.on('panend', (ev) => {
+    hammer.on('panend', ev => {
       let columnIndex = this.get('columnIndex');
 
-      let {
-        _columnState,
-        _firstTouchX,
-        _touchX
-      } = this;
+      let { _columnState, _firstTouchX, _touchX } = this;
 
       let [{ clientX }] = ev.pointers;
 
@@ -217,10 +219,5 @@ export default class EmberTableHeader extends EmberTableBaseCell {
     hammer.off('panend');
 
     super.willDestroyElement(...arguments);
-  }
-
-  @action
-  sendHeaderEvent() {
-    this.sendAction('onHeaderEvent', ...arguments);
   }
 }

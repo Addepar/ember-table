@@ -16,20 +16,14 @@ class LegacyStickyPolyfill {
 
     element.addEventListener('scroll', this.positionStickyElements);
 
-    this.mainResizeSensor = new ResizeSensor(
-      this.element,
-      this.positionStickyElements
-    );
+    this.mainResizeSensor = new ResizeSensor(this.element, this.positionStickyElements);
 
     if (this.header) {
       this.fakeHeader = document.createElement('thead');
       this.fakeHeaderRow = document.createElement('tr');
       this.fakeHeader.insertBefore(this.fakeHeaderRow, null);
 
-      this.headerResizeSensor = new ResizeSensor(
-        this.header,
-        this.positionStickyElements
-      );
+      this.headerResizeSensor = new ResizeSensor(this.header, this.positionStickyElements);
 
       this.table.insertBefore(this.fakeHeader, this.table.firstChild);
     }
@@ -39,10 +33,7 @@ class LegacyStickyPolyfill {
       this.fakeFooterRow = document.createElement('tr');
       this.fakeFooter.insertBefore(this.fakeFooterRow, null);
 
-      this.footerResizeSensor = new ResizeSensor(
-        this.footer,
-        this.positionStickyElements
-      );
+      this.footerResizeSensor = new ResizeSensor(this.footer, this.positionStickyElements);
 
       this.table.insertBefore(this.fakeFooter, null);
     }
