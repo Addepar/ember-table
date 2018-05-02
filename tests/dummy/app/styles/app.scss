@@ -1,1 +1,44 @@
 @import './tables';
+
+$navy: #001f3f;
+$blue: #0074D9;
+$aqua: #7FDBFF;
+$teal: #39CCCC;
+$olive: #3D9970;
+$green: #2ECC40;
+$lime: #01FF70;
+$yellow: #FFDC00;
+$orange: #FF851B;
+$red: #FF4136;
+$maroon: #85144b;
+$fuchsia: #F012BE;
+$purple: #B10DC9;
+$black: #111111;
+$grey: #AAAAAA;
+$silver: #DDDDDD;
+
+.text-navy { color: $navy; }
+.text-blue { color: $blue; }
+.text-aqua { color: $aqua; }
+.text-teal { color: $teal; }
+.text-olive { color: $olive; }
+.text-green { color: $green; }
+.text-lime { color: $lime; }
+.text-yellow { color: $yellow; }
+.text-orange { color: $orange; }
+.text-red { color: $red; }
+.text-maroon { color: $maroon; }
+.text-fuchsia { color: $fuchsia; }
+.text-purple { color: $purple; }
+.text-black { color: $black; }
+.text-grey { color: $grey; }
+.text-silver { color: $silver; }
+
+.resize-container {
+  resize: both;
+  overflow: scroll;
+  border: solid 1px #dae1e7;
+  width: 400px;
+  height: 200px;
+  padding: 10px;
+}

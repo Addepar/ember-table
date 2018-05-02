@@ -10,10 +10,19 @@ Router.map(function() {
   this.route('simple');
   this.route('demo');
   this.route('docs', function() {
-    this.route('installation');
+    this.route('introduction');
     this.route('quickstart');
+
     this.route('examples', function() {
       this.route('basic-table');
+
+      this.route('header', function() {
+        this.route('columns');
+        this.route('subcolumns');
+        this.route('fixed-columns');
+        this.route('size-constraints');
+        this.route('actions');
+      });
     });
 
     this.route('api', function() {

@@ -2,6 +2,7 @@
   estimateHeight=estimateRowHeight
   staticHeight=staticHeight
   containerSelector=".ember-table"
+  bufferSize=20
 
   as |rowValue rowIndex|
 }}
@@ -15,6 +16,8 @@
     selectMode=selectMode
     selectRow=selectRow
     toggleRowCollapse=toggleRowCollapse
+
+    metaCache=_rowMetaCache
 
     as |proxy cells|
   }}

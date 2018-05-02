@@ -1,33 +1,13 @@
-<tr>
-  {{#each wrappedColumns as |column columnIndex|}}
-    {{ember-th
-      column=column
-      tableHasSubcolumns=hasSubcolumns
-      columnIndex=columnIndex
-      onColumnResizing="onColumnResizing"
-      onColumnResizeEnded="onColumnResizeEnded"
-      onColumnReordering="onColumnReordering"
-      onColumnReorderEnded="onColumnReorderEnded"
-      width=column.width
-    }}
-  {{/each}}
-</tr>
-
-{{#if hasSubcolumns}}
-  <tr>
-    {{#each wrappedColumns as |column columnIndex|}}
-      {{#each column.subcolumns as |subcolumn subcolumnIndex|}}
-        {{ember-th
-          column=subcolumn
-          tableHasSubcolumns=false
-          columnIndex=columnIndex
-          onColumnResizing="onColumnResizing"
-          onColumnResizeEnded="onColumnResizeEnded"
-          onColumnReordering="onColumnReordering"
-          onColumnReorderEnded="onColumnReorderEnded"
-          width=column.width
-        }}
-      {{/each}}
-    {{/each}}
-  </tr>
-{{/if}}
+{{#each wrappedRows as |row index|}}
+  {{#if hasBlock}}
+    {{yield (hash
+      cells=row
+      _isHeader=true
+    )}}
+  {{else}}
+    {{ember-tr api=(hash
+      cells=row
+      _isHeader=true
+    )}}
+  {{/if}}
+{{/each}}

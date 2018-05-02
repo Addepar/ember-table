@@ -72,11 +72,11 @@ export default class EmberTable extends Component {
   get api() {
     return {
       columns: null,
-      registerColumns: this.registerColumns,
+      registerColumnTree: this.registerColumnTree,
     };
   }
 
-  registerColumns = columns => {
-    this.set('api.columns', columns);
+  registerColumnTree = columnTree => {
+    this.set('api.columnTree', columnTree);
   };
 }

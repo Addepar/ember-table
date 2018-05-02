@@ -57,7 +57,7 @@ function closestLessThan(values, target) {
 /**
   Single node of a CollapseTree
 */
-class Node {
+class CollapseTreeNode {
   constructor(value, parent) {
     assert('value must have an array of children', isArray(get(value, 'children')));
 
@@ -135,7 +135,7 @@ class Node {
           sliceStart = false;
         }
 
-        children.push(new Node(child, this));
+        children.push(new CollapseTreeNode(child, this));
       } else if (sliceStart === false) {
         sliceStart = index;
       }
@@ -358,9 +358,9 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     this.rootIsArray = isArray(tree);
 
     if (this.rootIsArray === true) {
-      this.root = new Node({ children: tree });
+      this.root = new CollapseTreeNode({ children: tree });
     } else {
-      this.root = new Node(tree);
+      this.root = new CollapseTreeNode(tree);
     }
 
     // Whenever the root node's length changes we need to propogate the change to

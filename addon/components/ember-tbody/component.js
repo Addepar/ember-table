@@ -27,7 +27,7 @@ export default class EmberTBody extends Component {
   @type('object')
   api;
 
-  @readOnly('api.columns') columns;
+  @readOnly('api.columnTree.leaves') columns;
 
   /**
     Sets which row selection behavior to follow. Possible values are 'none' (clicking on a row
@@ -88,6 +88,8 @@ export default class EmberTBody extends Component {
 
     return CollapseTree.create({ tree: rows ? rows : [] });
   }
+
+  _rowMetaCache = new WeakMap();
 
   /**
     The index of the last item that was selected, used for range selection
