@@ -1,7 +1,9 @@
 import hbs from 'htmlbars-inline-precompile';
-import { A as emberA } from '@ember/array';
 import wait from 'ember-test-helpers/wait';
-import { toBase26 } from './base-26';
+import { generateColumns, generateRows } from 'dummy/utils/generators';
+
+// reexport for use in tests
+export { generateColumns, generateRows };
 
 const fullTable = hbs`
   <div style="height: 500px;">
@@ -12,7 +14,9 @@ const fullTable = hbs`
         columns=columns
         resizeMode=resizeMode
         fillMode=fillMode
-        hasFixedColumn=hasFixedColumn
+        enableResize=enableResize
+        enableReorder=enableReorder
+        widthConstraint=widthConstraint
 
         onReorder="onReorder"
         onResize="onResize"
@@ -59,59 +63,6 @@ const fullTable = hbs`
   </div>
 `;
 
-export function generateRows(rowCount, columnCount, prefix = '') {
-  let arr = [];
-
-  for (let i = 0; i < rowCount; i++) {
-    let row = { id: `Row ${i}` };
-
-    for (let j = 0; j < columnCount; j++) {
-      row[toBase26(j)] = `${prefix}${i}${toBase26(j)}`;
-    }
-
-    arr.push(row);
-  }
-
-  return emberA(arr);
-}
-
-export function generateColumns(
-  columnCount,
-  {
-    subcolumnCount = 0,
-    columnOffset = 0,
-
-    ...columnOptions
-  } = {}
-) {
-  let arr = [];
-
-  for (let i = 0; i < columnCount; i++) {
-    let columnDefinition = {
-      name: toBase26(i),
-      valuePath: toBase26(columnOffset + i),
-      width: 100,
-      isResizable: true,
-      isReorderable: true,
-    };
-
-    for (let property in columnOptions) {
-      columnDefinition[property] = columnOptions[property];
-    }
-
-    if (subcolumnCount) {
-      columnDefinition.subcolumns = generateColumns(subcolumnCount, {
-        columnOffset: i,
-        ...columnOptions,
-      });
-    }
-
-    arr.push(columnDefinition);
-  }
-
-  return emberA(arr);
-}
-
 const defaultActions = {
   onSelect(newRows) {
     this.set('selectedRows', newRows);
@@ -132,7 +83,6 @@ export default async function generateTable(
     footerRowCount = 0,
     columnCount = 10,
     columnOptions,
-    hasCheckbox = false,
     useTree = false,
 
     rowComponent = 'ember-tr',
@@ -148,18 +98,8 @@ export default async function generateTable(
 
   columns = columns || generateColumns(columnCount, columnOptions);
 
-  // Total column length is columns + subcolumns
-  let totalColumns =
-    columns.length +
-    columns.reduce((v, c) => {
-      return c.subcolumns ? v + c.subcolumns.length : v;
-    }, 0);
-
-  rows = rows || generateRows(rowCount, totalColumns);
-  footerRows = footerRows || generateRows(footerRowCount, totalColumns);
-
-  // Set the checkbox value if it exists
-  columns[0].hasCheckbox = hasCheckbox;
+  rows = rows || generateRows(rowCount, (row, key) => `${row.id}${key}`);
+  footerRows = footerRows || generateRows(footerRowCount, (row, key) => `${row.id}${key}`);
 
   testContext.set('columns', columns);
   testContext.set(useTree ? 'tree' : 'rows', rows);

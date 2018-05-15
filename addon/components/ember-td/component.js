@@ -3,7 +3,7 @@ import { htmlSafe } from '@ember/string';
 import { get } from '@ember/object';
 
 import { action, computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { readOnly, equal } from '@ember-decorators/object/computed';
 import { tagName, attribute, className } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { type } from '@ember-decorators/argument/type';
@@ -24,15 +24,33 @@ export default class EmberTd extends Component {
   @readOnly('api.rowValue') row;
 
   @className
-  @readOnly('column.meta.isFixed')
-  isFixed;
+  @equal('column.meta.isFixed', 'left')
+  isFixedLeft;
+
+  @className
+  @equal('column.meta.isFixed', 'right')
+  isFixedRight;
 
   @attribute
-  @computed('column.width')
+  @computed('column.meta.{width,offsetLeft,offsetRight}', 'isFixed')
   get style() {
-    let width = this.get('column.width');
+    let width = this.get('column.meta.width');
 
-    return htmlSafe(`width: ${width}px; min-width: ${width}px; max-width: ${width}px;`);
+    let style = `width: ${width}px; min-width: ${width}px; max-width: ${width}px;`;
+
+    if (this.get('isFixedLeft')) {
+      style += `left: ${Math.round(this.get('column.meta.offsetLeft'))}px;`;
+    } else if (this.get('isFixedRight')) {
+      style += `right: ${Math.round(this.get('column.meta.offsetRight'))}px;`;
+    }
+
+    if (this.element) {
+      // Keep any styling added by the Sticky polyfill
+      style += `position: ${this.element.style.position};`;
+      style += `top: ${this.element.style.top};`;
+    }
+
+    return htmlSafe(style);
   }
 
   @computed('column.meta.index', '')

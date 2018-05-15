@@ -2,11 +2,12 @@
 
 .demo-container {
   position: relative;
-  width: 800px;
-  height: 500px;
-  margin-top: 50px;
-  margin-left: 50px;
-  margin-right: 100px;
+  width: 100%;
+  height: 400px;
+
+  &.small {
+    height: 200px;
+  }
 }
 
 .et-table {

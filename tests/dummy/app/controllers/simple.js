@@ -12,7 +12,9 @@ export default class SimpleController extends Controller {
     for (let i = 0; i < 1000; i++) {
       let obj = {};
       for (let j = 0; j < COLUMN_COUNT; j++) {
-        obj[ALPHABET[j % 26]] = ALPHABET[j % 26];
+        for (let k = 0; k < 3; k++) {
+          obj[`${ALPHABET[j % 26]}${ALPHABET[k % 26]}`] = `${ALPHABET[j % 26]}${ALPHABET[k % 26]}`;
+        }
       }
       rows.pushObject(obj);
     }
@@ -23,18 +25,32 @@ export default class SimpleController extends Controller {
   @computed
   get columns() {
     let columns = emberA();
-    let columnWidth = 180;
+    let columnWidth = 100;
 
     for (let j = 0; j < COLUMN_COUNT; j++) {
-      columns.pushObject({
+      let column = {
         name: `Col ${ALPHABET[j % 26]}`,
         valuePath: ALPHABET[j % 26],
-        width: columnWidth,
         isResizable: true,
         isReorderable: true,
-        hasCheckbox: j === 0,
-      });
+        subcolumns: [],
+      };
+
+      for (let i = 0; i < 3; i++) {
+        column.subcolumns.push({
+          name: `Col ${ALPHABET[j % 26]}${ALPHABET[i % 26]}`,
+          valuePath: `${ALPHABET[j % 26]}${ALPHABET[i % 26]}`,
+          width: columnWidth,
+          isResizable: true,
+          isReorderable: true,
+        });
+      }
+
+      columns.pushObject(column);
     }
+
+    // columns.objectAt(2).isFixed = 'right';
+    // columns.objectAt(3).isFixed = 'right';
 
     return columns;
   }

@@ -1,6 +1,6 @@
 <div class="demo-container">
   {{#ember-table as |t|}}
-    {{ember-thead api=t columns=columns fillMode="equal_column"}}
+    {{ember-thead api=t columns=columns fillMode="equal-column" widthConstraint="gte-container"}}
 
     {{ember-tbody
       api=t
