@@ -65,9 +65,11 @@ export default class EmberTableHeader extends Component {
       style += `right: ${this.get('column.meta.offsetRight')}px;`;
     }
 
-    // Keep any styling added by the Sticky polyfill
-    style += `position: ${this.element.style.position};`;
-    style += `top: ${this.element.style.top};`;
+    if (this.element) {
+      // Keep any styling added by the Sticky polyfill
+      style += `position: ${this.element.style.position};`;
+      style += `top: ${this.element.style.top};`;
+    }
 
     return htmlSafe(style);
   }

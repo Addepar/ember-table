@@ -44,9 +44,11 @@ export default class EmberTd extends Component {
       style += `right: ${Math.round(this.get('column.meta.offsetRight'))}px;`;
     }
 
-    // Keep any styling added by the Sticky polyfill
-    style += `position: ${this.element.style.position};`;
-    style += `bottom: ${this.element.style.bottom};`;
+    if (this.element) {
+      // Keep any styling added by the Sticky polyfill
+      style += `position: ${this.element.style.position};`;
+      style += `top: ${this.element.style.top};`;
+    }
 
     return htmlSafe(style);
   }
