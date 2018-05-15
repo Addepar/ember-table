@@ -23,6 +23,14 @@ $table-hover-color: #e5edf8;
       border-bottom: $table-border-color 1px dotted;
       border-right: $table-border-color 1px solid;
       background-color: #ffffff;
+
+      &:last-child {
+        border-right: 0;
+      }
+
+      &.is-fixed-right {
+        border-left: solid 1px $table-border-color;
+      }
     }
   }
 
@@ -40,18 +48,50 @@ $table-hover-color: #e5edf8;
   tfoot td {
     border-top: 1px solid $table-border-color;
     border-right: solid 1px $table-border-color;
+
+    &:last-child {
+      border-right: 0;
+    }
   }
 
   thead th {
     border-bottom: 1px solid $table-border-color;
     border-right: solid 1px $table-border-color;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+
+    &:last-child {
+      border-right: 0;
+    }
+
+    .et-header-resize-area {
+      cursor: col-resize;
+      width: 10px;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      right: 0;
+
+      user-drag: none;
+      user-select: none;
+    }
+
+    &.is-fixed-right {
+      border-left: solid 1px $table-border-color;
+
+      .et-header-resize-area {
+        left: 0;
+      }
+    }
   }
 
   tr:hover {
-    td,
     th {
       cursor: pointer;
+    }
+
+    td {
       background-color: $table-hover-color;
     }
   }
@@ -63,16 +103,18 @@ $table-hover-color: #e5edf8;
     }
   }
 
-  .et-header-ghost-element {
+  .et-reorder-main-indicator {
     position: absolute;
     background: #cccccc;
     opacity: 0.8;
     cursor: move;
+    z-index: 10;
   }
 
-  .et-header-align-bar {
+  .et-reorder-drop-indicator {
     position: absolute;
     background: #444444;
     opacity: 0.6;
+    z-index: 10;
   }
 }

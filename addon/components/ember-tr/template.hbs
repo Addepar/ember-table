@@ -1,7 +1,7 @@
 {{#each cells as |cell|}}
   {{#if hasBlock}}
     {{yield cell}}
-  {{else if api._isHeader}}
+  {{else if api.isHeader}}
     {{ember-th api=cell}}
   {{else}}
     {{ember-td api=cell}}

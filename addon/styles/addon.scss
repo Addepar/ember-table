@@ -15,12 +15,23 @@
   th {
     box-sizing: border-box;
 
-    &.is-fixed {
+    &.is-fixed-left,
+    &.is-fixed-right {
       // sass-lint:disable-block no-duplicate-properties
       position: -webkit-sticky;
       position: sticky;
       left: 0;
     }
+  }
+
+  td.is-fixed-left,
+  td.is-fixed-right {
+    z-index: 3;
+  }
+
+  th.is-fixed-left,
+  th.is-fixed-right {
+    z-index: 4;
   }
 
   thead {
@@ -31,10 +42,6 @@
     top: 0;
     z-index: 2;
     box-sizing: border-box;
-
-    th:first-child {
-      z-index: 3;
-    }
   }
 
   tbody {
@@ -48,9 +55,9 @@
     bottom: 0;
     z-index: 2;
     box-sizing: border-box;
+  }
 
-    td:first-child {
-      z-index: 3;
-    }
+  &.et-unselectable {
+    user-select: none;
   }
 }

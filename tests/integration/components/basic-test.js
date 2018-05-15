@@ -79,31 +79,38 @@ module('Integration | basic', function() {
         rowCount: 100,
         columnCount: 30,
         footerRowCount: 1,
-        hasFixedColumn: true,
+        columnOptions: {
+          fixedLeftCount: 1,
+          fixedRightCount: 1,
+        },
       });
 
       let tableContainerRect = find('.ember-table').getBoundingClientRect();
 
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
 
       await scrollTo('[data-test-ember-table]', 10000, 0);
 
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
 
       await scrollTo('[data-test-ember-table]', 10000, 10000);
 
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
 
       await scrollTo('[data-test-ember-table]', 0, 10000);
 
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
+      validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
     });
 
@@ -122,7 +129,7 @@ module('Integration | basic', function() {
       let rowCount = 20;
       let columnCount = 15;
       this.set('columns', generateColumns(columnCount));
-      this.set('rows', generateRows(rowCount, columnCount));
+      this.set('rows', generateRows(rowCount));
       this.set('showComponent', true);
 
       this.render(hbs`

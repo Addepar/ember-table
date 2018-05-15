@@ -1,13 +1,25 @@
-{{!-- BEGIN-SNIPPET docs-viewer.hbs --}}
 {{#docs-viewer as |viewer|}}
   {{#viewer.nav as |nav|}}
-    {{nav.item 'Introduction' 'docs.index'}}
-    {{nav.item 'Installation' 'docs.installation'}}
+    {{nav.section 'Introduction' 'docs.examples' style='large'}}
+
+    <li class="mt-8"></li>
+
+    {{nav.item 'What is Ember Table?' 'docs.index'}}
     {{nav.item 'Quickstart' 'docs.quickstart'}}
-    {{nav.item 'Examples' 'docs.examples'}}
-    {{#nav.subnav as |nav|}}
-      {{nav.item 'Basic Table' 'docs.examples.basic-table'}}
-    {{/nav.subnav}}
+
+    {{nav.section 'Examples' 'docs.examples' style='large'}}
+
+    <li class="mt-8"></li>
+
+    {{nav.item 'A Basic Table' 'docs.examples.basic-table'}}
+
+    {{nav.section 'Header'}}
+
+    {{nav.item 'Columns' 'docs.examples.header.columns'}}
+    {{nav.item 'Subcolumns' 'docs.examples.header.subcolumns'}}
+    {{nav.item 'Fixed Columns' 'docs.examples.header.fixed-columns'}}
+    {{nav.item 'Size Constraints' 'docs.examples.header.size-constraints'}}
+    {{nav.item 'Actions' 'docs.examples.header.actions'}}
   {{/viewer.nav}}
 
   {{#viewer.main}}
@@ -15,4 +27,3 @@
   {{/viewer.main}}
 
 {{/docs-viewer}}
-{{!-- END-SNIPPET --}}

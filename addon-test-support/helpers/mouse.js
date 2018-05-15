@@ -1,6 +1,6 @@
 import { triggerEvent } from 'ember-native-dom-helpers';
 
-export async function pressElement(target, x, y) {
+export async function mouseDown(target, x, y) {
   await triggerEvent(target, 'pointerdown', {
     clientX: x,
     clientY: y,
@@ -8,7 +8,7 @@ export async function pressElement(target, x, y) {
   });
 }
 
-export async function moveMouse(target, x, y) {
+export async function mouseMove(target, x, y) {
   await triggerEvent(target, 'pointermove', {
     clientX: x,
     clientY: y,
@@ -16,7 +16,7 @@ export async function moveMouse(target, x, y) {
   });
 }
 
-export async function releasePress(target, x, y) {
+export async function mouseUp(target, x, y) {
   await triggerEvent(target, 'pointerup', {
     clientX: x,
     clientY: y,

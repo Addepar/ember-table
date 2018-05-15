@@ -10,7 +10,7 @@ import { argument } from '@ember-decorators/argument';
 
 import { computed } from '@ember-decorators/object';
 
-import { metaCacheFor } from '../../-private/meta-cache';
+import { getOrCreate } from '../../-private/meta-cache';
 import CellProxy from '../../utils/cell-proxy';
 
 class TableRowMeta extends EmberObject {}
@@ -18,7 +18,7 @@ class TableRowMeta extends EmberObject {}
 class TableRowProxy extends ObjectProxy {
   @computed('content')
   get meta() {
-    return metaCacheFor(this.get('content'), TableRowMeta);
+    return getOrCreate(this.get('content'), this.get('_cache'), TableRowMeta);
   }
 }
 
@@ -44,8 +44,10 @@ export default class RowWrapper extends Component {
 
   @argument selectMode;
 
+  @argument metaCache;
+
   _cells = [];
-  _proxy = TableRowProxy.create();
+  _proxy = TableRowProxy.create({ _cache: this.get('metaCache') });
 
   @computed('row', 'selectedRows.[]')
   get proxy() {

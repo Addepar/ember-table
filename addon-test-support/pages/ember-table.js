@@ -28,13 +28,19 @@ export default PageObject.extend({
   rows: alias('body.rows'),
   getCell: alias('body.getCell'),
 
-  headers: alias('header.columns'),
-  subheaders: alias('header.subcolumns'),
+  headers: alias('header.headers'),
 
   /**
    * Returns the table width.
    */
   get width() {
+    return findElement(this, 'table').offsetWidth;
+  },
+
+  /**
+   * Returns the table container width.
+   */
+  get containerWidth() {
     return findElement(this).offsetWidth;
   },
 

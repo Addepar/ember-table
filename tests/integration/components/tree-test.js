@@ -18,7 +18,7 @@ module('Integration | Tree', () => {
 
     // regenerate all the rows
     let newRowCount = rowCount + 2;
-    let newRows = generateRows(newRowCount, 10);
+    let newRows = generateRows(newRowCount);
     this.set('tree', newRows);
 
     await wait();
