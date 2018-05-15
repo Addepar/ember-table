@@ -2,12 +2,12 @@
   {{#if hasBlock}}
     {{yield (hash
       cells=row
-      _isHeader=true
+      isHeader=true
     )}}
   {{else}}
     {{ember-tr api=(hash
       cells=row
-      _isHeader=true
+      isHeader=true
     )}}
   {{/if}}
 {{/each}}

@@ -89,7 +89,7 @@ export default class EmberTBody extends Component {
     return CollapseTree.create({ tree: rows ? rows : [] });
   }
 
-  _rowMetaCache = new WeakMap();
+  rowMetaCache = new WeakMap();
 
   /**
     The index of the last item that was selected, used for range selection

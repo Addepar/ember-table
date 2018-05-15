@@ -1,6 +1,7 @@
 /* global ResizeSensor */
 import Component from '@ember/component';
 import { bind } from '@ember/runloop';
+import { A as emberA } from '@ember/array';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -91,7 +92,7 @@ export default class EmberTHead extends Component {
    */
   _tableResizeSensor = null;
 
-  _columnMetaCache = new WeakMap();
+  columnMetaCache = new WeakMap();
 
   @computed('columnTree.rows.[]', 'enableReorder', 'enableResize', 'fillMode')
   get wrappedRows() {
@@ -99,21 +100,25 @@ export default class EmberTHead extends Component {
     let enableReorder = this.get('enableReorder');
     let enableResize = this.get('enableResize');
 
-    return rows.map(row => {
-      return row.map(column => {
-        return {
-          columnValue: column,
-          enableReorder,
-          enableResize,
-        };
-      });
-    });
+    return emberA(
+      rows.map(row =>
+        emberA(
+          row.map(column => {
+            return {
+              columnValue: column,
+              enableReorder,
+              enableResize,
+            };
+          })
+        )
+      )
+    );
   }
 
   constructor() {
     super(...arguments);
 
-    this.columnTree = ColumnTree.create({ component: this, metaCache: this._columnMetaCache });
+    this.columnTree = ColumnTree.create({ component: this, metaCache: this.columnMetaCache });
     this.get('api').registerColumnTree(this.columnTree);
   }
 
@@ -136,7 +141,7 @@ export default class EmberTHead extends Component {
   }
 
   fillupHandler = () => {
-    if (this.get('isDestroying')) {
+    if (this.isDestroying) {
       return;
     }
 

@@ -70,15 +70,15 @@ class ColumnTreeNode {
       let meta = get(this, 'column.meta');
 
       set(meta, '_node', this);
-      meta.registerElement = this.registerElement.bind(this);
+      meta.registerElement = (...args) => this.registerElement(...args);
 
-      meta.startResize = tree.startResize.bind(tree, this);
-      meta.updateResize = tree.updateResize.bind(tree, this);
-      meta.endResize = tree.endResize.bind(tree, this);
+      meta.startResize = (...args) => tree.startResize(this, ...args);
+      meta.updateResize = (...args) => tree.updateResize(this, ...args);
+      meta.endResize = (...args) => tree.endResize(this, ...args);
 
-      meta.startReorder = tree.startReorder.bind(tree, this);
-      meta.updateReorder = tree.updateReorder.bind(tree, this);
-      meta.endReorder = tree.endReorder.bind(tree, this);
+      meta.startReorder = (...args) => tree.startReorder(this, ...args);
+      meta.updateReorder = (...args) => tree.updateReorder(this, ...args);
+      meta.endReorder = (...args) => tree.endReorder(this, ...args);
 
       // Changes to the value directly should properly update all computeds on this
       // node, but we need to manually propogate changes upwards to notify any other
@@ -337,6 +337,7 @@ export default class ColumnTree extends EmberObject {
   }
 
   destroy() {
+    super.destroy();
     this.token.cancel();
     get(this, 'root').destroy();
     removeObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed);
