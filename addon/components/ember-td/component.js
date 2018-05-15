@@ -6,7 +6,8 @@ import { action, computed } from '@ember-decorators/object';
 import { readOnly, equal } from '@ember-decorators/object/computed';
 import { tagName, attribute, className } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
-import { type } from '@ember-decorators/argument/type';
+import { type, optional } from '@ember-decorators/argument/type';
+import { Action } from '@ember-decorators/argument/types';
 
 import layout from './template';
 
@@ -18,30 +19,42 @@ export default class EmberTd extends Component {
   @type('object')
   api;
 
-  @readOnly('api.value') value;
-  @readOnly('api.cellValue') cell;
-  @readOnly('api.columnValue') column;
-  @readOnly('api.rowValue') row;
+  @argument
+  @type(optional(Action))
+  onClick;
+
+  @argument
+  @type(optional(Action))
+  onDoubleClick;
+
+  @readOnly('api.cellValue') cellValue;
+  @readOnly('api.cellMeta') cellMeta;
+
+  @readOnly('api.columnValue') columnValue;
+  @readOnly('api.columnMeta') columnMeta;
+
+  @readOnly('api.rowValue') rowValue;
+  @readOnly('api.rowMeta') rowMeta;
 
   @className
-  @equal('column.meta.isFixed', 'left')
+  @equal('columnMeta.isFixed', 'left')
   isFixedLeft;
 
   @className
-  @equal('column.meta.isFixed', 'right')
+  @equal('columnMeta.isFixed', 'right')
   isFixedRight;
 
   @attribute
-  @computed('column.meta.{width,offsetLeft,offsetRight}', 'isFixed')
+  @computed('columnMeta.{width,offsetLeft,offsetRight}', 'isFixed')
   get style() {
-    let width = this.get('column.meta.width');
+    let width = this.get('columnMeta.width');
 
     let style = `width: ${width}px; min-width: ${width}px; max-width: ${width}px;`;
 
     if (this.get('isFixedLeft')) {
-      style += `left: ${Math.round(this.get('column.meta.offsetLeft'))}px;`;
+      style += `left: ${Math.round(this.get('columnMeta.offsetLeft'))}px;`;
     } else if (this.get('isFixedRight')) {
-      style += `right: ${Math.round(this.get('column.meta.offsetRight'))}px;`;
+      style += `right: ${Math.round(this.get('columnMeta.offsetRight'))}px;`;
     }
 
     if (this.element) {
@@ -53,15 +66,15 @@ export default class EmberTd extends Component {
     return htmlSafe(style);
   }
 
-  @computed('column.meta.index', '')
+  @computed('columnMeta.index', '')
   get hasCheckbox() {
-    return this.get('column.meta.index') === 0 && this.get('api.selectMode') === 'multiple';
+    return this.get('columnMeta.index') === 0 && this.get('api.selectMode') === 'multiple';
   }
 
   @action
   onCheckboxToggled() {
     let api = this.get('api');
-    let rowIndex = this.get('row.meta.index');
+    let rowIndex = this.get('rowMeta.index');
 
     api.selectRow(rowIndex, { toggle: true });
 
@@ -75,13 +88,47 @@ export default class EmberTd extends Component {
     event.stopPropagation();
   }
 
-  click() {
-    let rowValue = this.get('row');
-    let rowIndex = this.get('row.meta.index');
+  click(event) {
+    let rowValue = this.get('rowValue');
+    let rowIndex = this.get('rowMeta.index');
     let api = this.get('api');
 
-    if (this.get('column.meta.index') === 0 && Array.isArray(get(rowValue, 'children'))) {
+    if (this.get('columnMeta.index') === 0 && Array.isArray(get(rowValue, 'children'))) {
       api.toggleRowCollapse(rowIndex);
     }
+
+    this.sendEventAction('onClick', event);
+  }
+
+  doubleClick(event) {
+    this.sendEventAction('onDoubleClick', event);
+  }
+
+  sendEventAction(action, event) {
+    if (!this.get(action)) {
+      return;
+    }
+
+    let cellValue = this.get('cellValue');
+    let cellMeta = this.get('cellMeta');
+
+    let columnValue = this.get('columnValue');
+    let columnMeta = this.get('columnMeta');
+
+    let rowValue = this.get('rowValue');
+    let rowMeta = this.get('rowMeta');
+
+    this.sendAction(action, {
+      event,
+
+      cellValue,
+      cellMeta,
+
+      columnValue,
+      columnMeta,
+
+      rowValue,
+      rowMeta,
+    });
   }
 }

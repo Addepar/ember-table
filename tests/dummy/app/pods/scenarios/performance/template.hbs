@@ -1,6 +1,9 @@
-<div class="demo-container">
+<div class="demo-container fixed-width">
   {{#ember-table as |t|}}
-    {{ember-thead api=t columns=columns fillMode="equal-column" widthConstraint="gte-container"}}
+    {{ember-thead
+      api=t
+      columns=columns
+    }}
 
     {{ember-tbody
       api=t

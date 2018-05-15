@@ -38,7 +38,7 @@ export default class CellProxy extends EmberObject {
   }
 
   unknownProperty(key) {
-    let row = get(this, 'row.content');
+    let row = get(this, 'row');
     let valuePath = get(this, 'valuePath');
 
     if (CELL_CACHE.has(row)) {
@@ -49,7 +49,7 @@ export default class CellProxy extends EmberObject {
   }
 
   setUnknownProperty(key, value) {
-    let row = get(this, 'row.content');
+    let row = get(this, 'row');
     let valuePath = get(this, 'valuePath');
 
     if (!CELL_CACHE.has(row)) {

@@ -72,6 +72,7 @@ module.exports = {
           'ember-data': '~2.0',
           'ember-source': null,
           fastboot: null,
+          'ember-cli-addon-docs': null,
         },
       },
     },
@@ -88,6 +89,7 @@ module.exports = {
       npm: {
         devDependencies: {
           'ember-source': null,
+          'ember-cli-addon-docs': null,
         },
       },
     },

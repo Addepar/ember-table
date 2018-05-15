@@ -4,7 +4,8 @@ import { className, classNames, tagName } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
-import { type } from '@ember-decorators/argument/type';
+import { type, optional } from '@ember-decorators/argument/type';
+import { Action } from '@ember-decorators/argument/types';
 
 import layout from './template';
 
@@ -18,17 +19,25 @@ export default class EmberTableRow extends Component {
   @type('object')
   api;
 
-  @readOnly('api.rowValue') row;
+  @argument
+  @type(optional(Action))
+  onClick;
+
+  @argument
+  @type(optional(Action))
+  onDoubleClick;
+
+  @readOnly('api.rowValue') rowValue;
+  @readOnly('api.rowMeta') rowMeta;
   @readOnly('api.cells') cells;
 
   @className
-  @readOnly('row.meta.isSelected')
+  @readOnly('rowMeta.isSelected')
   isSelected;
 
   click(event) {
     let api = this.get('api');
-    let row = this.get('row');
-    let rowIndex = this.get('row.meta.index');
+    let rowIndex = this.get('rowMeta.index');
 
     if (api && api.selectRow) {
       api.selectRow(rowIndex, {
@@ -37,10 +46,22 @@ export default class EmberTableRow extends Component {
       });
     }
 
-    this.sendAction('onClick', event, rowIndex, row);
+    this.sendEventAction('onClick', event);
   }
 
   doubleClick(event) {
-    this.sendAction('onDoubleClick', event, this.get('rowIndex'), this.get('rowValue'));
+    this.sendEventAction('onDoubleClick', event);
+  }
+
+  sendEventAction(action, event) {
+    let rowValue = this.get('rowValue');
+    let rowMeta = this.get('rowMeta');
+
+    this.sendAction(action, {
+      event,
+
+      rowValue,
+      rowMeta,
+    });
   }
 }

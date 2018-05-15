@@ -29,6 +29,7 @@ export default PageObject.extend({
   getCell: alias('body.getCell'),
 
   headers: alias('header.headers'),
+  footers: alias('footer.footers'),
 
   /**
    * Returns the table width.

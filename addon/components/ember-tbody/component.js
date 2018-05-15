@@ -28,6 +28,7 @@ export default class EmberTBody extends Component {
   api;
 
   @readOnly('api.columnTree.leaves') columns;
+  @readOnly('api.columnTree.columnMetaCache') columnMetaCache;
 
   /**
     Sets which row selection behavior to follow. Possible values are 'none' (clicking on a row
