@@ -677,10 +677,6 @@ export default class ColumnTree extends EmberObject {
     }
 
     this._updateResize(node, delta);
-
-    if (!get(node, 'isFixed')) {
-      this.updateScroll(node, true, false, this._updateResize.bind(this));
-    }
   }
 
   _updateResize(node, delta) {
@@ -751,13 +747,13 @@ export default class ColumnTree extends EmberObject {
         let { scrollLeft, scrollWidth } = this.container;
         let { containerLeft, containerRight } = get(this, 'scrollBounds');
 
-        let containerWidth = getInnerClientRect(this.container).width * this.scale;
+        let containerWidth = getOuterClientRect(this.container).width * this.scale;
 
         let distanceToLeft = Math.max(clientX - containerLeft, 2);
         let distanceToRight = Math.max(containerRight - clientX, 2);
 
         let canScrollLeft = !stopAtLeft || scrollLeft !== 0;
-        let canScrollRight = !stopAtRight || scrollLeft !== scrollWidth - containerWidth;
+        let canScrollRight = !stopAtRight || scrollLeft < scrollWidth - containerWidth;
 
         if (
           (distanceToLeft <= SCROLL_THRESHOLD && canScrollLeft) ||

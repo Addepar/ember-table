@@ -4,12 +4,45 @@ import generateTable from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
-import { reorderToLeftEdge, reorderToRightEdge } from './-helpers';
+import { mouseDown, mouseMove, mouseUp } from 'ember-table/test-support/helpers/mouse';
+import { getScale } from 'ember-table/test-support/helpers/element';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { toBase26 } from 'dummy/utils/base-26';
 
 const table = TablePage.create();
+
+export async function scrollToEdge(targetElement, edgeOffset, direction) {
+  let targetElementRight = targetElement.getBoundingClientRect().right;
+  let container = find('.ember-table');
+  let scale = getScale(container);
+  let edge;
+
+  if (direction === 'right') {
+    await mouseDown(targetElement, targetElementRight - 30, 0);
+    await mouseMove(targetElement, targetElementRight - 20, 0);
+    await mouseMove(targetElement, targetElementRight - 10, 0);
+
+    edge = container.getBoundingClientRect().right - edgeOffset / scale;
+  } else {
+    await mouseDown(targetElement, targetElementRight - 10, 0);
+    await mouseMove(targetElement, targetElementRight - 20, 0);
+    await mouseMove(targetElement, targetElementRight - 30, 0);
+
+    edge = container.getBoundingClientRect().left + edgeOffset / scale;
+  }
+
+  await mouseMove(targetElement, edge, 0);
+  await mouseUp(targetElement);
+}
+
+async function reorderToLeftEdge(column, edgeOffset = 0) {
+  await scrollToEdge(column, edgeOffset, 'left', true);
+}
+
+async function reorderToRightEdge(column, edgeOffset = 0) {
+  await scrollToEdge(column, edgeOffset, 'right', true);
+}
 
 module('Integration | headers | reorder', function() {
   componentModule('reordering', function() {

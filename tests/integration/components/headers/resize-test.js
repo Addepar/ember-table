@@ -3,9 +3,6 @@ import { module, test } from 'ember-qunit';
 import generateTable from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
 
-import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
-import { resizeToLeftEdge, resizeToRightEdge } from './-helpers';
-
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 const table = TablePage.create();
@@ -36,35 +33,6 @@ module('Integration | header | resize', function() {
 
       await table.headers.eq(1).resize(200);
       assert.equal(table.headers.eq(1).width, 100, 'Column size is updated');
-    });
-
-    test('scroll container gets larger when resizing right', async function(assert) {
-      let columnCount = 10;
-      await generateTable(this, { columnCount });
-
-      let tableContainer = find('.ember-table');
-      let header = findAll('th')[columnCount - 1];
-
-      await resizeToRightEdge(header);
-
-      assert.ok(table.width > table.containerWidth, 'table width is larger');
-      assert.ok(tableContainer.scrollLeft > 0, 'table scrolled');
-    });
-
-    test('scroll container scrolls at left edge', async function(assert) {
-      let columnCount = 20;
-      await generateTable(this, { columnCount, rightFixedCount: 1 });
-
-      let tableContainer = find('.ember-table');
-      let header = findAll('th')[columnCount - 1];
-
-      let originalWidth = table.headers.eq(0).width;
-
-      await scrollTo(tableContainer, 10000, 0);
-      await resizeToLeftEdge(header);
-
-      assert.ok(table.headers.eq(columnCount - 1).width < originalWidth, 'column shrunk');
-      assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
     });
 
     test('fluid mode', async function(assert) {
@@ -113,51 +81,6 @@ module('Integration | header | resize', function() {
       let originalWidth = lastHeader.width;
       await lastHeader.resize(130);
       assert.equal(lastHeader.width, originalWidth + 30, 'Fixed column size is updated');
-    });
-
-    test('scroll container gets larger when resizing right with fixed column', async function(assert) {
-      let columnCount = 10;
-      let columnWidth = 100;
-
-      await generateTable(this, {
-        columnCount,
-        columnOptions: {
-          fixedRightCount: 1,
-          width: columnWidth,
-        },
-      });
-
-      let tableContainer = find('.ember-table');
-      let header = findAll('th')[columnCount - 2];
-
-      await resizeToRightEdge(header, columnWidth);
-
-      assert.ok(table.width > table.containerWidth, 'table width is larger');
-      assert.ok(tableContainer.scrollLeft > 0, 'table scrolled');
-    });
-
-    test('scroll container at scrolls left fixed colummn', async function(assert) {
-      let columnCount = 20;
-      let columnWidth = 100;
-
-      await generateTable(this, {
-        columnCount,
-        columnOptions: {
-          fixedLeftCount: 1,
-          width: columnWidth,
-        },
-      });
-
-      let tableContainer = find('.ember-table');
-      let header = findAll('th')[1];
-
-      let originalWidth = table.headers.eq(1).width;
-
-      await scrollTo(tableContainer, 10000, 0);
-      await resizeToLeftEdge(header, columnWidth);
-
-      assert.ok(table.headers.eq(1).width < originalWidth, 'column shrunk');
-      assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
     });
   });
 
