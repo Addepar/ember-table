@@ -8,7 +8,6 @@ const Router = EmberRouter.extend({
 
 Router.map(function() {
   this.route('simple');
-  this.route('demo');
   this.route('docs', function() {
     this.route('introduction');
     this.route('quickstart');
