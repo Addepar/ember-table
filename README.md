@@ -97,7 +97,7 @@ you like):
 
     {{#ember-tbody api=t rows=rows as |b|}}
       {{#ember-tr api=b as |r|}}
-        {{#ember-td api=r as |value cell column row|}}
+        {{#ember-td api=r as |value column row|}}
           {{component column.component value=value}}
         {{/ember-td}}
       {{/ember-tr}}
