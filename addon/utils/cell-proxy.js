@@ -2,16 +2,15 @@
 import EmberObject, { get } from '@ember/object';
 import { addObserver } from '@ember/object/observers';
 
-const CELL_CACHE = new WeakMap();
-
 export default class CellProxy extends EmberObject {
   constructor() {
-    super();
+    super(...arguments);
 
     this._watchedProperties = [];
 
     this.row = null;
     this.valuePath = null;
+    this.cellMetaCache = null;
 
     addObserver(this, 'row', this.notifyPropertyChanges);
     addObserver(this, 'valuePath', this.notifyPropertyChanges);
@@ -40,9 +39,10 @@ export default class CellProxy extends EmberObject {
   unknownProperty(key) {
     let row = get(this, 'row');
     let valuePath = get(this, 'valuePath');
+    let cellMetaCache = get(this, 'cellMetaCache');
 
-    if (CELL_CACHE.has(row)) {
-      return CELL_CACHE.get(row)[`${valuePath}:${key}`];
+    if (cellMetaCache.has(row)) {
+      return cellMetaCache.get(row)[`${valuePath}:${key}`];
     }
 
     return undefined;
@@ -51,12 +51,13 @@ export default class CellProxy extends EmberObject {
   setUnknownProperty(key, value) {
     let row = get(this, 'row');
     let valuePath = get(this, 'valuePath');
+    let cellMetaCache = get(this, 'cellMetaCache');
 
-    if (!CELL_CACHE.has(row)) {
-      CELL_CACHE.set(row, Object.create(null));
+    if (!cellMetaCache.has(row)) {
+      cellMetaCache.set(row, Object.create(null));
     }
 
-    CELL_CACHE.get(row)[`${valuePath}:${key}`] = value;
+    cellMetaCache.get(row)[`${valuePath}:${key}`] = value;
 
     Ember.propertyDidChange(this, key);
 
