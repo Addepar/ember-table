@@ -31,6 +31,7 @@ Router.map(function() {
   this.route('scenarios', function() {
     this.route('simple');
     this.route('performance');
+    this.route('blank');
   });
 
   this.route('not-found', { path: '/*path' });
