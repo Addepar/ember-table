@@ -31,9 +31,11 @@ class CellWrapper extends EmberObject {
     let { _cellMeta } = this;
     let row = get(this, 'rowValue');
     let valuePath = get(this, 'columnValue.valuePath');
+    let cellMetaCache = get(this, 'cellMetaCache');
 
     set(_cellMeta, 'row', row);
     set(_cellMeta, 'valuePath', valuePath);
+    set(_cellMeta, 'cellMetaCache', cellMetaCache);
 
     return _cellMeta;
   }
@@ -58,8 +60,9 @@ export default class RowWrapper extends Component {
   @argument selectRow;
   @argument toggleRowCollapse;
 
-  @argument rowMetaCache;
+  @argument cellMetaCache;
   @argument columnMetaCache;
+  @argument rowMetaCache;
 
   _cells = emberA([]);
 
@@ -89,6 +92,7 @@ export default class RowWrapper extends Component {
 
   @computed('rowValue', 'rowMeta', 'columns.[]')
   get cells() {
+    let cellMetaCache = this.get('cellMetaCache');
     let selectRow = this.get('selectRow');
     let toggleRowCollapse = this.get('toggleRowCollapse');
     let selectMode = this.get('onSelect') ? this.get('selectMode') : 'none';
@@ -104,6 +108,7 @@ export default class RowWrapper extends Component {
     if (numColumns !== _cells.length) {
       while (_cells.length < numColumns) {
         let cell = CellWrapper.create({
+          cellMetaCache,
           selectMode,
           selectRow,
           toggleRowCollapse,

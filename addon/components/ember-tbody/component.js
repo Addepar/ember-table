@@ -90,6 +90,7 @@ export default class EmberTBody extends Component {
     return CollapseTree.create({ tree: rows ? rows : [] });
   }
 
+  cellMetaCache = new WeakMap();
   rowMetaCache = new WeakMap();
 
   /**
