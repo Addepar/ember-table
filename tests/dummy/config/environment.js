@@ -4,7 +4,7 @@ module.exports = function(environment) {
     podModulePrefix: 'dummy/pods',
     environment,
     rootURL: '/',
-    locationType: 'router-scroll',
+    locationType: 'history',
     historySupportMiddleware: true,
     routerScroll: {
       scrollElement: '#docs-viewer__scroll-body',
@@ -48,6 +48,7 @@ module.exports = function(environment) {
 
   if (environment === 'production') {
     ENV.rootURL = '/ember-cli-addon-docs';
+    ENV.locationType = 'router-scroll';
   }
 
   return ENV;

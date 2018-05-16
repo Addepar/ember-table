@@ -97,15 +97,19 @@ export default class EmberTHead extends Component {
   @computed('columnTree.rows.[]', 'enableReorder', 'enableResize', 'fillMode')
   get wrappedRows() {
     let rows = this.get('columnTree.rows');
+    let columnMetaCache = this.get('columnMetaCache');
     let enableReorder = this.get('enableReorder');
     let enableResize = this.get('enableResize');
 
     return emberA(
       rows.map(row =>
         emberA(
-          row.map(column => {
+          row.map(columnValue => {
+            let columnMeta = columnMetaCache.get(columnValue);
+
             return {
-              columnValue: column,
+              columnValue,
+              columnMeta,
               enableReorder,
               enableResize,
             };
@@ -118,7 +122,7 @@ export default class EmberTHead extends Component {
   constructor() {
     super(...arguments);
 
-    this.columnTree = ColumnTree.create({ component: this, metaCache: this.columnMetaCache });
+    this.columnTree = ColumnTree.create({ component: this, columnMetaCache: this.columnMetaCache });
     this.get('api').registerColumnTree(this.columnTree);
   }
 

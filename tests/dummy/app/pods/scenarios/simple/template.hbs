@@ -1,0 +1,13 @@
+<div class="demo-container fixed-width">
+  {{#ember-table as |t|}}
+    {{ember-thead
+      api=t
+      columns=columns
+    }}
+
+    {{ember-tbody
+      api=t
+      rows=rows
+    }}
+  {{/ember-table}}
+</div>

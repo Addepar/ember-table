@@ -1,6 +1,6 @@
 import { module, test } from 'ember-qunit';
 
-import generateTable from '../../../helpers/generate-table';
+import { generateTable } from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
 import { toBase26 } from 'dummy/utils/base-26';
 

@@ -1,6 +1,6 @@
 import { module, test } from 'ember-qunit';
 
-import generateTable from '../../../helpers/generate-table';
+import { generateTable } from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';

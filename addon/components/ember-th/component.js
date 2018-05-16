@@ -15,7 +15,7 @@ const COLUMN_RESIZE = 0;
 const COLUMN_REORDERING = 1;
 
 @tagName('th')
-export default class EmberTableHeader extends Component {
+export default class EmberTh extends Component {
   layout = layout;
 
   @argument
@@ -23,7 +23,8 @@ export default class EmberTableHeader extends Component {
   @type(Object)
   api;
 
-  @readOnly('api.columnValue') column;
+  @readOnly('api.columnValue') columnValue;
+  @readOnly('api.columnMeta') columnMeta;
 
   /**
    * A variable used for column resizing & ordering. When user press mouse at a point that's close
@@ -38,11 +39,11 @@ export default class EmberTableHeader extends Component {
   _hammer = null;
 
   @className
-  @equal('column.meta.isFixed', 'left')
+  @equal('columnMeta.isFixed', 'left')
   isFixedLeft;
 
   @className
-  @equal('column.meta.isFixed', 'right')
+  @equal('columnMeta.isFixed', 'right')
   isFixedRight;
 
   /**
@@ -53,16 +54,16 @@ export default class EmberTableHeader extends Component {
   @readOnly('api.enableReorder') reorderEnabled;
 
   @attribute
-  @computed('column.meta.{width,offsetLeft,offsetRight}', 'isFixed')
+  @computed('columnMeta.{width,offsetLeft,offsetRight}', 'isFixed')
   get style() {
-    let width = this.get('column.meta.width');
+    let width = this.get('columnMeta.width');
 
     let style = `width: ${width}px; min-width: ${width}px; max-width: ${width}px;`;
 
     if (this.get('isFixedLeft')) {
-      style += `left: ${this.get('column.meta.offsetLeft')}px;`;
+      style += `left: ${this.get('columnMeta.offsetLeft')}px;`;
     } else if (this.get('isFixedRight')) {
-      style += `right: ${this.get('column.meta.offsetRight')}px;`;
+      style += `right: ${this.get('columnMeta.offsetRight')}px;`;
     }
 
     if (this.element) {
@@ -75,17 +76,17 @@ export default class EmberTableHeader extends Component {
   }
 
   @attribute('colspan')
-  @readOnly('column.meta.columnSpan')
+  @readOnly('columnMeta.columnSpan')
   columnSpan;
 
   @attribute('rowspan')
-  @readOnly('column.meta.rowSpan')
+  @readOnly('columnMeta.rowSpan')
   rowSpan;
 
   didInsertElement() {
     super.didInsertElement(...arguments);
 
-    this.get('column.meta').registerElement(this.element);
+    this.get('columnMeta').registerElement(this.element);
 
     let hammer = new Hammer(this.element);
 
@@ -118,7 +119,7 @@ export default class EmberTableHeader extends Component {
 
     if (resizeEnabled && target.classList.contains('et-header-resize-area')) {
       this._columnState = COLUMN_RESIZE;
-      this.get('column.meta').startResize(clientX);
+      this.get('columnMeta').startResize(clientX);
     } else if (reorderEnabled) {
       this._columnState = COLUMN_REORDERING;
     }
@@ -128,7 +129,7 @@ export default class EmberTableHeader extends Component {
     let [{ clientX }] = ev.pointers;
 
     if (this._columnState === COLUMN_REORDERING) {
-      this.get('column.meta').startReorder(clientX);
+      this.get('columnMeta').startReorder(clientX);
     }
   };
 
@@ -136,19 +137,19 @@ export default class EmberTableHeader extends Component {
     let [{ clientX }] = ev.pointers;
 
     if (this._columnState === COLUMN_RESIZE) {
-      this.get('column.meta').updateResize(clientX);
+      this.get('columnMeta').updateResize(clientX);
       this._prevClientX = clientX;
     } else if (this._columnState === COLUMN_REORDERING) {
-      this.get('column.meta').updateReorder(clientX);
+      this.get('columnMeta').updateReorder(clientX);
       this._columnState = COLUMN_REORDERING;
     }
   };
 
   panEndHandler = () => {
     if (this._columnState === COLUMN_RESIZE) {
-      this.get('column.meta').endResize();
+      this.get('columnMeta').endResize();
     } else if (this._columnState === COLUMN_REORDERING) {
-      this.get('column.meta').endReorder();
+      this.get('columnMeta').endReorder();
     }
   };
 }

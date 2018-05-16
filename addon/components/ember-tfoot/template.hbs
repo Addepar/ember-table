@@ -1,6 +1,9 @@
-{{#each wrappedRows as |rowValue rowIndex|}}
+{{#each wrappedRows as |row rowIndex|}}
   {{#-ember-table-private/row-wrapper
-    row=rowValue
+    rowValue=row.value
+    rowParents=row.parents
+    rowIsCollapsed=row.isCollapsed
+
     rowIndex=rowIndex
     selectedRows=selectedRows
     columns=columns
@@ -10,19 +13,24 @@
     selectRow=selectRow
     toggleRowCollapse=toggleRowCollapse
 
-    metaCache=rowMetaCache
+    rowMetaCache=rowMetaCache
+    columnMetaCache=columnMetaCache
 
-    as |wrappedRow cells|
+    as |rowValue rowMeta cells|
   }}
     {{#if hasBlock}}
       {{yield (hash
-        rowValue=wrappedRow
+        selectRow=selectRow
+        rowValue=rowValue
+        rowMeta=rowMeta
         cells=cells)
       }}
     {{else}}
       {{ember-tr
         api=(hash
-          rowValue=wrappedRow
+          selectRow=selectRow
+          rowValue=rowValue
+          rowMeta=rowMeta
           cells=cells)
       }}
     {{/if}}

@@ -2,7 +2,7 @@ import { module, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import a11yAudit from 'ember-a11y-testing/test-support/audit';
 
-import generateTable, { generateColumns, generateRows } from '../../helpers/generate-table';
+import { generateTable, generateColumns, generateRows } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
