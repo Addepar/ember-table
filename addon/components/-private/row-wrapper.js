@@ -10,7 +10,7 @@ import { argument } from '@ember-decorators/argument';
 import { computed } from '@ember-decorators/object';
 
 import { getOrCreate } from '../../-private/meta-cache';
-import CellProxy from '../../utils/cell-proxy';
+import CellProxy from '../../-private/cell-proxy';
 import { objectAt } from '../../-private/utils/array';
 
 class TableRowMeta extends EmberObject {}
