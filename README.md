@@ -21,6 +21,10 @@ ember install ember-table
 - Single, multiple row selection.
 - Table grouping.
 
+## Documentation
+
+For more detailed documentation, clone the repo, run `yarn && yarn start` and then navigate to `http://localhost:4200/docs`
+
 ## Usage.
 
 To use `Ember Table`, you need to create `columns` and `rows` dataset.
