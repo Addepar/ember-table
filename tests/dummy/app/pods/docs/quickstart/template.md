@@ -51,7 +51,7 @@ The following template renders a simple table.
 
     {{#ember-tbody api=t rows=rows as |b|}}
       {{#ember-tr api=b as |r|}}
-        {{#ember-td api=r as |value cell column row|}}
+        {{#ember-td api=r as |value column|}}
           {{component column.component value=value}}
         {{/ember-td}}
       {{/ember-tr}}

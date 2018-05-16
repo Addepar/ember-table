@@ -33,7 +33,7 @@
     "ember-cli-htmlbars-inline-precompile": "^1.0.2",
     "ember-cli-node-assets": "^0.2.2",
     "ember-cli-sass": "^7.0.0",
-    "ember-compatibility-helpers": "^0.1.2",
+    "ember-compatibility-helpers": "^1.0.0",
     "ember-decorators": "^2.0.0-beta.1",
     "ember-getowner-polyfill": "^2.2.0",
     "ember-legacy-class-shim": "^1.0.0",

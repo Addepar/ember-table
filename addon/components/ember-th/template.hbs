@@ -1,7 +1,7 @@
 {{#if hasBlock}}
-  {{yield column}}
+  {{yield columnValue columnMeta}}
 {{else}}
-  {{column.name}}
+  {{columnValue.name}}
 {{/if}}
 
 {{#if resizeEnabled}}

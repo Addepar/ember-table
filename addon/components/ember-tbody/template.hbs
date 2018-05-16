@@ -4,10 +4,13 @@
   containerSelector=".ember-table"
   bufferSize=20
 
-  as |rowValue rowIndex|
+  as |row rowIndex|
 }}
   {{#-ember-table-private/row-wrapper
-    row=rowValue
+    rowValue=row.value
+    rowParents=row.parents
+    rowIsCollapsed=row.isCollapsed
+
     rowIndex=rowIndex
     selectedRows=selectedRows
     columns=columns
@@ -17,21 +20,24 @@
     selectRow=selectRow
     toggleRowCollapse=toggleRowCollapse
 
-    metaCache=rowMetaCache
+    rowMetaCache=rowMetaCache
+    columnMetaCache=columnMetaCache
 
-    as |proxy cells|
+    as |rowValue rowMeta cells|
   }}
     {{#if hasBlock}}
       {{yield (hash
         selectRow=selectRow
-        rowValue=proxy
+        rowValue=rowValue
+        rowMeta=rowMeta
         cells=cells)
       }}
     {{else}}
       {{ember-tr
         api=(hash
           selectRow=selectRow
-          rowValue=proxy
+          rowValue=rowValue
+          rowMeta=rowMeta
           cells=cells)
       }}
     {{/if}}

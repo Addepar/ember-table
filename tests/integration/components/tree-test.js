@@ -2,7 +2,7 @@ import { module, moduleForComponent, test } from 'ember-qunit';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-import generateTable, { generateRows } from '../../helpers/generate-table';
+import { generateTable, generateRows } from '../../helpers/generate-table';
 import wait from 'ember-test-helpers/wait';
 
 let table = TablePage.create();

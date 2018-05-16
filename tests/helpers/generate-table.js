@@ -39,9 +39,19 @@ const fullTable = hbs`
         {{#component rowComponent
           api=b
 
+          onClick="onRowClick"
+          onDoubleClick="onRowDoubleClick"
+
           as |r|
         }}
-          {{#ember-td api=r as |value|}}
+          {{#ember-td
+            api=r
+
+            onClick="onCellClick"
+            onDoubleClick="onCellDoubleClick"
+
+            as |value|
+          }}
             {{value}}
           {{/ember-td}}
         {{/component}}
@@ -69,17 +79,23 @@ const defaultActions = {
   },
 
   onReorder() {},
-
   onResize() {},
+
+  onCellClick() {},
+  onCellDoubleClick() {},
+
+  onRowClick() {},
+  onRowDoubleClick() {},
 };
 
-export default async function generateTable(
+export function generateTableValues(
   testContext,
   {
     rows,
     footerRows,
     columns,
     rowCount = 10,
+    rowDepth = 1,
     footerRowCount = 0,
     columnCount = 10,
     columnOptions,
@@ -98,7 +114,7 @@ export default async function generateTable(
 
   columns = columns || generateColumns(columnCount, columnOptions);
 
-  rows = rows || generateRows(rowCount, (row, key) => `${row.id}${key}`);
+  rows = rows || generateRows(rowCount, rowDepth, (row, key) => `${row.id}${key}`);
   footerRows = footerRows || generateRows(footerRowCount, (row, key) => `${row.id}${key}`);
 
   testContext.set('columns', columns);
@@ -112,6 +128,10 @@ export default async function generateTable(
       testContext.on(action, defaultActions[action].bind(testContext));
     }
   }
+}
+
+export async function generateTable(testContext, ...args) {
+  generateTableValues(testContext, ...args);
 
   testContext.render(fullTable);
 

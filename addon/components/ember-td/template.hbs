@@ -1,6 +1,6 @@
 {{#if hasCheckbox}}
   {{-ember-table-private/simple-checkbox
-    checked=row.meta.isSelected
+    checked=rowMeta.isSelected
     onClick="onCheckboxClicked"
     onChange="onCheckboxToggled"
     ariaLabel="Row Select"
@@ -8,7 +8,7 @@
 {{/if}}
 
 {{#if hasBlock}}
-  {{yield value cell column row}}
+  {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta}}
 {{else}}
-  {{value}}
+  {{cellValue}}
 {{/if}}

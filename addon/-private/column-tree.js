@@ -1,6 +1,5 @@
 /* global Ember */
 import EmberObject, { get, set } from '@ember/object';
-import ObjectProxy from '@ember/object/proxy';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { A as emberA } from '@ember/array';
 
@@ -44,12 +43,33 @@ class TableColumnMeta extends EmberObject {
   @readOnly('_node.width') width;
   @readOnly('_node.offsetLeft') offsetLeft;
   @readOnly('_node.offsetRight') offsetRight;
-}
 
-class TableColumnProxy extends ObjectProxy {
-  @computed('content')
-  get meta() {
-    return getOrCreate(get(this, 'content'), get(this, '_cache'), TableColumnMeta);
+  @computed('isLeaf', '_node.{depth,tree.root.maxChildDepth}')
+  get rowSpan() {
+    if (!this.get('isLeaf')) {
+      return 1;
+    }
+
+    let maxDepth = this.get('_node.tree.root.maxChildDepth');
+    let depth = this.get('_node.depth');
+
+    return maxDepth - (depth - 1);
+  }
+
+  @computed('isLeaf', '_node.leaves.length')
+  get columnSpan() {
+    if (this.get('isLeaf')) {
+      return 1;
+    }
+
+    return this.get('_node.leaves.length');
+  }
+
+  @computed('isLeaf', '_node.offsetIndex')
+  get index() {
+    if (this.get('isLeaf')) {
+      return this.get('_node.offsetIndex');
+    }
   }
 }
 
@@ -59,15 +79,14 @@ class TableColumnProxy extends ObjectProxy {
 class ColumnTreeNode {
   constructor(column, tree, parent) {
     this.tree = tree;
+    this.column = column;
 
     if (!parent) {
-      this.column = column;
       this.isRoot = true;
     } else {
       this.parent = parent;
-      this.column = TableColumnProxy.create({ content: column, _cache: get(tree, 'metaCache') });
 
-      let meta = get(this, 'column.meta');
+      let meta = getOrCreate(this.column, get(tree, 'columnMetaCache'), TableColumnMeta);
 
       set(meta, '_node', this);
       meta.registerElement = (...args) => this.registerElement(...args);
@@ -272,6 +291,28 @@ class ColumnTreeNode {
     }
   }
 
+  @computed('parent.{offsetIndex,subcolumnNodes.[]}')
+  get offsetIndex() {
+    let parent = get(this, 'parent');
+
+    if (!parent) {
+      return 0;
+    }
+
+    let subcolumns = get(parent, 'subcolumnNodes');
+    let offsetIndex = get(parent, 'offsetIndex');
+
+    for (let column of subcolumns) {
+      if (column === this) {
+        break;
+      }
+
+      offsetIndex += 1;
+    }
+
+    return offsetIndex;
+  }
+
   @computed('parent.{offsetLeft,subcolumnNodes.@each.width}')
   get offsetLeft() {
     let parent = get(this, 'parent');
@@ -373,25 +414,7 @@ export default class ColumnTree extends EmberObject {
         return children;
       }, []);
 
-      let columns = currentLevel.map(node => {
-        let column = get(node, 'column');
-        let isLeaf = get(node, 'isLeaf');
-        let meta = get(column, 'meta');
-
-        if (isLeaf) {
-          let depth = get(node, 'depth');
-
-          set(meta, 'rowSpan', maxDepth - depth + 1);
-          set(meta, 'columnSpan', 1);
-        } else {
-          let numLeaves = get(node, 'leaves.length');
-
-          set(meta, 'rowSpan', 1);
-          set(meta, 'columnSpan', numLeaves);
-        }
-
-        return column;
-      });
+      let columns = currentLevel.map(node => get(node, 'column'));
 
       rows.pushObject(emberA(columns));
 
@@ -401,15 +424,9 @@ export default class ColumnTree extends EmberObject {
     return rows;
   }
 
-  @computed('root.leaves.[]')
+  @computed('root.leaves')
   get leaves() {
-    return get(this, 'root.leaves.[]').map((n, i) => {
-      let column = get(n, 'column');
-
-      set(column, 'meta.index', i);
-
-      return column;
-    });
+    return emberA(get(this, 'root.leaves').map(n => n.column));
   }
 
   @computed('root.subcolumnNodes.@each.isFixed')
@@ -457,7 +474,18 @@ export default class ColumnTree extends EmberObject {
       return aValue - bValue;
     });
 
-    splice(columns, 0, sorted.length, ...sorted);
+    let alreadySorted = true;
+
+    for (let i = 0; i < columns.length; i++) {
+      if (sorted[i] !== columns[i]) {
+        alreadySorted = false;
+        break;
+      }
+    }
+
+    if (!alreadySorted) {
+      splice(columns, 0, sorted.length, ...sorted);
+    }
 
     this._isSorting = false;
   };
@@ -581,8 +609,8 @@ export default class ColumnTree extends EmberObject {
     }
 
     let subcolumns = get(parent, 'column.subcolumns');
-    let afterColumn = get(after, 'column.content');
-    let insertColumn = get(insert, 'column.content');
+    let afterColumn = get(after, 'column');
+    let insertColumn = get(insert, 'column');
 
     let afterIndex = subcolumns.indexOf(afterColumn);
     let insertIndex = subcolumns.indexOf(insertColumn);
@@ -650,11 +678,7 @@ export default class ColumnTree extends EmberObject {
 
     this.container.classList.remove('et-unselectable');
 
-    this.component.sendAction(
-      'onReorder',
-      get(node, 'column.content'),
-      get(closestColumn, 'column.content')
-    );
+    this.component.sendAction('onReorder', get(node, 'column'), get(closestColumn, 'column'));
   }
 
   startResize(node, clientX) {
@@ -728,7 +752,7 @@ export default class ColumnTree extends EmberObject {
 
     this.container.classList.remove('et-unselectable');
 
-    this.component.sendAction('onResize', get(node, 'column.content'));
+    this.component.sendAction('onResize', get(node, 'column'));
   }
 
   updateScroll(node, stopAtLeft, stopAtRight, callback) {

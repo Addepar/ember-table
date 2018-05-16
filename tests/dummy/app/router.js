@@ -7,7 +7,6 @@ const Router = EmberRouter.extend({
 });
 
 Router.map(function() {
-  this.route('simple');
   this.route('docs', function() {
     this.route('introduction');
     this.route('quickstart');
@@ -27,6 +26,11 @@ Router.map(function() {
     this.route('api', function() {
       this.route('class', { path: '/:class_id' });
     });
+  });
+
+  this.route('scenarios', function() {
+    this.route('simple');
+    this.route('performance');
   });
 
   this.route('not-found', { path: '/*path' });

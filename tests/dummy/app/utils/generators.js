@@ -20,11 +20,18 @@ export function generateRow(id, format) {
   return new DummyRow(id, format);
 }
 
-export function generateRows(rowCount, format) {
+export function generateRows(rowCount, depth, format, idPrefix = '') {
   let arr = [];
 
   for (let i = 0; i < rowCount; i++) {
-    arr.push(generateRow(i, format));
+    let id = idPrefix + i;
+    let row = generateRow(id, format);
+
+    if (depth > 1) {
+      row.children = generateRows(rowCount, depth - 1, format, id);
+    }
+
+    arr.push(row);
   }
 
   return emberA(arr);

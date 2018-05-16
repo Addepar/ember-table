@@ -244,10 +244,10 @@ class CollapseTreeNode {
       index >= 0 && index < get(this, 'length')
     );
 
+    let value = get(this, 'value');
+
     // The first index in a node is the node itself, since nodes are addressable
     if (index === 0) {
-      let value = get(this, 'value');
-
       return {
         value,
         parents,
@@ -258,7 +258,7 @@ class CollapseTreeNode {
 
     // Passed this node, remove it from the index and go one level deeper
     index = index - 1;
-    parents.push(this);
+    parents.push(value);
 
     if (get(this, 'isLeaf')) {
       let value = objectAt(get(this, 'value.children'), index);
