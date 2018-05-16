@@ -51,7 +51,7 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=rows as |f|}}
+            {{#ember-tfoot api=t rows=footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -117,7 +117,7 @@ module('Integration | meta', function() {
         set(rowMeta, 'wasClicked', true);
       });
 
-      generateTableValues(this, { rowCount: 10, footerRowCount: 1 });
+      generateTableValues(this, { rowCount: 100, footerRowCount: 1 });
 
       this.render(hbs`
         <div style="height: 500px;">
@@ -147,7 +147,7 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=rows as |f|}}
+            {{#ember-tfoot api=t rows=footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -185,7 +185,7 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=rows as |f|}}
+            {{#ember-tfoot api=t rows=footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -199,6 +199,12 @@ module('Integration | meta', function() {
 
       await wait();
       await table.getCell(0, 0).click();
+
+      // ensure we trigger property updates by scrolling around a bit
+      await scrollTo('[data-test-other-table]', 0, 10000);
+      await scrollTo('[data-test-other-table]', 0, 1000);
+      await scrollTo('[data-test-other-table]', 0, 100);
+      await scrollTo('[data-test-other-table]', 0, 0);
 
       // Main table was affected
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta property set correctly');
