@@ -66,6 +66,12 @@ export default class RowWrapper extends Component {
 
   _cells = emberA([]);
 
+  destroy() {
+    super.destroy(...arguments);
+
+    this._cells.forEach(cell => cell.destroy());
+  }
+
   @computed('rowValue', 'rowParents', 'rowIsCollapsed', 'selectedRows.[]')
   get rowMeta() {
     let rowValue = this.get('rowValue');

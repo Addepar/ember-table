@@ -5,27 +5,8 @@ import { assert } from '@ember/debug';
 import { computed } from '@ember-decorators/object';
 import { addObserver } from '@ember/object/observers';
 
+import { objectAt } from './utils/array';
 import { notifyPropertyChange } from './utils/ember';
-
-/**
-  Genericizes `objectAt` so it can be run against a normal array or an Ember array
-
-  @param {object|Array} arr
-  @param {number} index
-  @return {any}
-*/
-function objectAt(arr, index) {
-  assert(
-    'arr must be an instance of a Javascript Array or implement `objectAt`',
-    isArray(arr) || typeof arr.objectAt === 'function'
-  );
-
-  if (typeof arr.objectAt === 'function') {
-    return arr.objectAt(index);
-  }
-
-  return arr[index];
-}
 
 /**
   Given a list of ordered values and a target value, finds the index of
@@ -58,17 +39,40 @@ function closestLessThan(values, target) {
 /**
   Single node of a CollapseTree
 */
-class CollapseTreeNode {
-  constructor(value, parent) {
-    assert('value must have an array of children', isArray(get(value, 'children')));
+class CollapseTreeNode extends EmberObject {
+  _children = null;
 
-    set(this, 'value', value);
+  constructor() {
+    super(...arguments);
+
+    let value = get(this, 'value');
+    let parent = get(this, 'parent');
+
+    assert('value must have an array of children', isArray(get(value, 'children')));
 
     if (parent) {
       // Changes to the value directly should properly update all computeds on this
       // node, but we need to manually propogate changes upwards to notify any other
       // watchers
       addObserver(this, 'length', () => notifyPropertyChange(parent, 'length'));
+    }
+  }
+
+  destroy() {
+    super.destroy(...arguments);
+
+    this.cleanChildren();
+  }
+
+  /**
+    Fully destroys the child nodes in the event that they change or that this
+    node is destroyed. If children are not destroyed, they will leak memory due
+    to dangling references in Ember Meta.
+  */
+  cleanChildren() {
+    if (this._children) {
+      this._children.forEach(n => n.destroy());
+      this._children = null;
     }
   }
 
@@ -81,13 +85,9 @@ class CollapseTreeNode {
 
     @type boolean
   */
-  @computed('value.children.@each.children.[]')
+  @computed('value.children.@each.children')
   get isLeaf() {
-    return !get(this, 'value.children').some(child => {
-      let children = get(child, 'children');
-
-      return isArray(children) && get(children, 'length') > 0;
-    });
+    return !get(this, 'value.children').some(child => isArray(get(child, 'children')));
   }
 
   /**
@@ -119,6 +119,8 @@ class CollapseTreeNode {
   */
   @computed('value.children.[]', 'isLeaf')
   get children() {
+    this.cleanChildren();
+
     if (get(this, 'isLeaf')) {
       return null;
     }
@@ -136,7 +138,7 @@ class CollapseTreeNode {
           sliceStart = false;
         }
 
-        children.push(new CollapseTreeNode(child, this));
+        children.push(CollapseTreeNode.create({ value: child, parent: this }));
       } else if (sliceStart === false) {
         sliceStart = index;
       }
@@ -145,6 +147,8 @@ class CollapseTreeNode {
     if (sliceStart !== false) {
       children.push(valueChildren.slice(sliceStart));
     }
+
+    this._children = children;
 
     return children;
   }
@@ -352,25 +356,47 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
   constructor() {
     super(...arguments);
 
-    let tree = this.get('tree');
-    // This allows the tree to handle a root of a single node, or a root of an array
-    // of nodes. If the given root was an array of nodes it "hides" the first node
-    // by wrapping it in a fake root, and then skipping the root in `objectAt` calls.
-    this.rootIsArray = isArray(tree);
-
-    if (this.rootIsArray === true) {
-      this.root = new CollapseTreeNode({ children: tree });
-    } else {
-      this.root = new CollapseTreeNode(tree);
-    }
-
     // Whenever the root node's length changes we need to propogate the change to
     // users of the tree, and since the tree is meant to work like an array we should
     // trigger a change on the `[]` key as well.
     addObserver(this, 'root.length', () => {
-      notifyPropertyChange(this, 'length');
       notifyPropertyChange(this, '[]');
     });
+  }
+
+  destroy() {
+    super.destroy(...arguments);
+
+    this._root.destroy();
+  }
+
+  /*
+    Whether or not the root is an array. This allows the tree to handle a root
+    of a single node, or a root of an array of nodes. If the given root was an
+    array of nodes it "hides" the first node by wrapping it in a fake root, and
+    then skipping the root in `objectAt` calls.
+  */
+  @computed('tree')
+  get rootIsArray() {
+    return isArray(get(this, 'tree'));
+  }
+
+  /*
+    The root node of the tree. Either wraps a true root, or a fake one created
+    if the root is an array.
+  */
+  @computed('tree')
+  get root() {
+    if (this._root) {
+      this._root.destroy();
+    }
+
+    let tree = get(this, 'tree');
+    let props = get(this, 'rootIsArray') ? { value: { children: tree } } : { value: tree };
+
+    this._root = CollapseTreeNode.create(props);
+
+    return this._root;
   }
 
   /**
@@ -382,20 +408,22 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     if (index >= get(this, 'length') || index < 0) {
       return undefined;
     }
-    if (this.rootIsArray) {
+    if (get(this, 'rootIsArray')) {
       // If the root was an array, we added a "fake" top level node. Skip this node
       // by adding one to the index, and shifting the first parent off the parent list.
-      let result = this.root.objectAt(index + 1, []);
+      let result = get(this, 'root').objectAt(index + 1, []);
       result.parents.shift();
 
       return result;
     }
 
-    return this.root.objectAt(index, []);
+    return get(this, 'root').objectAt(index, []);
   }
 
   forEach(fn) {
-    for (let i = 0; i < this.length; i++) {
+    let length = get(this, 'length');
+
+    for (let i = 0; i < length; i++) {
       fn(this.objectAt(i), i);
     }
   }
@@ -405,8 +433,9 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
 
     @type {number}
   */
+  @computed('root.length')
   get length() {
     // If the root was an array, remove its fake wrapper node from the length count
-    return this.rootIsArray ? get(this, 'root.length') - 1 : get(this, 'root.length');
+    return get(this, 'rootIsArray') ? get(this, 'root.length') - 1 : get(this, 'root.length');
   }
 }

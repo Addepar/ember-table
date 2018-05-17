@@ -94,6 +94,32 @@ export default class EmberTHead extends Component {
 
   columnMetaCache = new WeakMap();
 
+  columnTree = ColumnTree.create({ component: this, columnMetaCache: this.columnMetaCache });
+
+  constructor() {
+    super(...arguments);
+
+    this.get('api').registerColumnTree(this.columnTree);
+  }
+
+  didInsertElement() {
+    super.didInsertElement(...arguments);
+
+    this._container = this.element.closest('.ember-table');
+
+    this.columnTree.registerContainer(this._container);
+
+    this._tableResizeSensor = new ResizeSensor(this._container, bind(this.fillupHandler));
+  }
+
+  willDestroyElement() {
+    this._tableResizeSensor.detach(this._container);
+
+    this.columnTree.destroy();
+
+    super.willDestroyElement(...arguments);
+  }
+
   @computed('columnTree.rows.[]', 'enableReorder', 'enableResize', 'fillMode')
   get wrappedRows() {
     let rows = this.get('columnTree.rows');
@@ -117,31 +143,6 @@ export default class EmberTHead extends Component {
         )
       )
     );
-  }
-
-  constructor() {
-    super(...arguments);
-
-    this.columnTree = ColumnTree.create({ component: this, columnMetaCache: this.columnMetaCache });
-    this.get('api').registerColumnTree(this.columnTree);
-  }
-
-  didInsertElement() {
-    super.didInsertElement(...arguments);
-
-    this._container = this.element.closest('.ember-table');
-
-    this.columnTree.registerContainer(this._container);
-
-    this._tableResizeSensor = new ResizeSensor(this._container, bind(this.fillupHandler));
-  }
-
-  willDestroyElement() {
-    this._tableResizeSensor.detach(this._container);
-
-    this.columnTree.destroy();
-
-    super.willDestroyElement(...arguments);
   }
 
   fillupHandler = () => {
