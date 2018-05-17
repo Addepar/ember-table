@@ -1,6 +1,6 @@
-/* globals Ember */
 import EmberObject, { get } from '@ember/object';
 import { addObserver } from '@ember/object/observers';
+import { notifyPropertyChange } from './utils/ember';
 
 export default class CellProxy extends EmberObject {
   constructor() {
@@ -18,7 +18,7 @@ export default class CellProxy extends EmberObject {
 
   notifyPropertyChanges = () => {
     for (let property of this._watchedProperties) {
-      Ember.propertyDidChange(this, property);
+      notifyPropertyChange(this, property);
     }
   };
 
@@ -59,7 +59,7 @@ export default class CellProxy extends EmberObject {
 
     cellMetaCache.get(row)[`${valuePath}:${key}`] = value;
 
-    Ember.propertyDidChange(this, key);
+    notifyPropertyChange(this, key);
 
     return value;
   }
