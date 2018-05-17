@@ -1,12 +1,228 @@
 import EmberObject, { get, set } from '@ember/object';
-import EmberArray, { isArray } from '@ember/array';
+import EmberArray, { A as emberA, isArray } from '@ember/array';
 import { assert } from '@ember/debug';
 
 import { computed } from '@ember-decorators/object';
+import { readOnly } from '@ember-decorators/object/computed';
 import { addObserver } from '@ember/object/observers';
 
 import { objectAt } from './utils/array';
 import { notifyPropertyChange } from './utils/ember';
+import { getOrCreate } from './meta-cache';
+
+export const SELECT_MODE = {
+  SINGLE: 'single',
+  MULTIPLE: 'multiple',
+  GROUPING: 'grouping',
+};
+
+class TableRowMeta extends EmberObject {
+  _rowValue = null;
+  _isCollapsed = false;
+
+  @computed('_rowValue.isCollapsed')
+  get isCollapsed() {
+    let rowValue = get(this, '_rowValue');
+
+    if (rowValue.hasOwnProperty('isCollapsed')) {
+      return get(rowValue, 'isCollapsed');
+    } else {
+      return this._isCollapsed;
+    }
+  }
+
+  set isCollapsed(isCollapsed) {
+    let rowValue = get(this, '_rowValue');
+
+    if (rowValue.hasOwnProperty('isCollapsed')) {
+      set(rowValue, 'isCollapsed', isCollapsed);
+    } else {
+      this._isCollapsed = isCollapsed;
+    }
+
+    return isCollapsed;
+  }
+
+  @readOnly('_tree.selectMode') selectMode;
+
+  @computed('selectMode')
+  get canMultiSelect() {
+    let selectMode = this.get('selectMode');
+
+    return selectMode === SELECT_MODE.MULTIPLE || selectMode === SELECT_MODE.GROUPING;
+  }
+
+  @computed('selectMode', '_tree.selectedRows.[]', '_parentMeta.isSelected')
+  get isSelected() {
+    let rowValue = get(this, '_rowValue');
+    let selectMode = get(this, '_tree.selectMode');
+    let selectedRows = get(this, '_tree.selectedRows');
+
+    if (!selectedRows) {
+      return false;
+    }
+
+    if (selectMode === SELECT_MODE.SINGLE) {
+      return objectAt(selectedRows, 0) === rowValue;
+    }
+
+    return selectedRows.includes(rowValue) || get(this, '_parentMeta.isSelected');
+  }
+
+  @computed('_tree.{enableTree,enableCollapse}', 'value.children.[]')
+  get canCollapse() {
+    if (!get(this, '_tree.enableTree') || !get(this, '_tree.enableCollapse')) {
+      return false;
+    }
+
+    let children = get(this, '_rowValue.children');
+
+    return isArray(children) && get(children, 'length') > 0;
+  }
+
+  @computed('_parentMeta')
+  get depth() {
+    let parentMeta = get(this, '_parentMeta');
+
+    return parentMeta ? get(parentMeta, 'depth') + 1 : 0;
+  }
+
+  toggleCollapse() {
+    let canCollapse = get(this, 'canCollapse');
+
+    if (canCollapse) {
+      set(this, 'isCollapsed', !get(this, 'isCollapsed'));
+    }
+  }
+
+  select({ toggle, range }) {
+    let tree = get(this, '_tree');
+    let rowValue = get(this, '_rowValue');
+    let rowIndex = get(this, 'index');
+    let isSelected = get(this, 'isSelected');
+    let selectMode = get(this, 'selectMode');
+
+    let rowMetaCache = get(tree, 'rowMetaCache');
+
+    if (selectMode === SELECT_MODE.SINGLE) {
+      tree.component.sendAction('onSelect', [rowValue]);
+      return;
+    }
+
+    let selectedRows = new Set(get(tree, 'selectedRows'));
+
+    if (toggle) {
+      if (isSelected) {
+        let meta = this;
+        let currentValue = rowValue;
+
+        while (get(meta, '_parentMeta.isSelected')) {
+          meta = get(meta, '_parentMeta');
+
+          for (let child of get(meta, '_rowValue.children')) {
+            if (child !== currentValue) {
+              selectedRows.add(child);
+            }
+          }
+
+          selectedRows.delete(currentValue);
+          currentValue = get(meta, '_rowValue');
+        }
+
+        selectedRows.delete(currentValue);
+      } else {
+        selectedRows.add(rowValue);
+      }
+    } else if (range) {
+      // Use a set to avoid item duplication
+      let { _lastSelectedIndex } = tree;
+
+      let minIndex = Math.min(_lastSelectedIndex, rowIndex);
+      let maxIndex = Math.max(_lastSelectedIndex, rowIndex);
+
+      for (let i = minIndex; i <= maxIndex; i++) {
+        selectedRows.add(tree.objectAt(i));
+      }
+    } else {
+      selectedRows.clear();
+      selectedRows.add(rowValue);
+    }
+
+    let rowMetas = Array.from(selectedRows).map(r => rowMetaCache.get(r));
+
+    if (selectMode === SELECT_MODE.GROUPING) {
+      let groupingCounts = new Map();
+
+      for (let rowMeta of rowMetas) {
+        let parentRow = get(rowMeta, '_parentMeta._rowValue');
+
+        if (parentRow) {
+          let count = groupingCounts.has(parentRow) ? groupingCounts.get(parentRow) : 0;
+          groupingCounts.set(parentRow, count + 1);
+        }
+      }
+
+      reduceSelectedRows(selectedRows, groupingCounts, rowMetaCache);
+    }
+
+    for (let rowMeta of rowMetas) {
+      let rowValue = get(rowMeta, '_rowValue');
+      let parentMeta = get(rowMeta, '_parentMeta');
+
+      while (parentMeta) {
+        if (selectedRows.has(get(parentMeta, '_rowValue'))) {
+          selectedRows.delete(rowValue);
+          break;
+        }
+
+        parentMeta = get(parentMeta, '_parentMeta');
+      }
+    }
+
+    selectedRows = emberA(Array.from(selectedRows));
+
+    tree.component.sendAction('onSelect', selectedRows);
+
+    tree._lastSelectedIndex = rowIndex;
+  }
+}
+
+function reduceSelectedRows(selectedRows, groupingCounts, rowMetaCache) {
+  let reducedGroupingCounts = new Map();
+
+  for (let [group, count] of groupingCounts.entries()) {
+    if (get(group, 'children.length') === count) {
+      selectedRows.add(group);
+
+      let parentRow = rowMetaCache.get(group).get('_parentMeta._rowValue');
+
+      if (parentRow) {
+        let currentCount =
+          reducedGroupingCounts.get(parentRow) || groupingCounts.get(parentRow) || 0;
+
+        reducedGroupingCounts.set(parentRow, currentCount + 1);
+      }
+    }
+  }
+
+  if (reducedGroupingCounts.size > 0) {
+    reduceSelectedRows(selectedRows, reducedGroupingCounts, rowMetaCache);
+  }
+}
+
+function setupRowMeta(tree, row, parentRow, node) {
+  let rowMetaCache = get(tree, 'rowMetaCache');
+  let rowMeta = getOrCreate(row, rowMetaCache, TableRowMeta);
+  let parentRowMeta = parentRow ? rowMetaCache.get(parentRow) : null;
+
+  set(rowMeta, '_tree', tree);
+  set(rowMeta, '_rowValue', row);
+  set(rowMeta, '_parentMeta', parentRowMeta);
+
+  if (node) {
+    set(node, 'rowMeta', rowMeta);
+  }
+}
 
 /**
   Given a list of ordered values and a target value, finds the index of
@@ -46,7 +262,16 @@ class CollapseTreeNode extends EmberObject {
     super(...arguments);
 
     let value = get(this, 'value');
+    let parentValue = get(this, 'parent.value');
+
     let parent = get(this, 'parent');
+    let tree = get(this, 'tree');
+
+    if (!parent) {
+      set(this, 'isRoot', true);
+    } else {
+      setupRowMeta(tree, value, parentValue, this);
+    }
 
     assert('value must have an array of children', isArray(get(value, 'children')));
 
@@ -54,7 +279,9 @@ class CollapseTreeNode extends EmberObject {
       // Changes to the value directly should properly update all computeds on this
       // node, but we need to manually propogate changes upwards to notify any other
       // watchers
-      addObserver(this, 'length', () => notifyPropertyChange(parent, 'length'));
+      addObserver(this, 'length', () => {
+        notifyPropertyChange(parent, 'length');
+      });
     }
   }
 
@@ -89,8 +316,12 @@ class CollapseTreeNode extends EmberObject {
 
     @type boolean
   */
-  @computed('value.children.@each.children')
+  @computed('value.children.@each.children', 'isRoot', 'tree.enableTree')
   get isLeaf() {
+    if (get(this, 'isRoot') && !get(this, 'tree.enableTree')) {
+      return true;
+    }
+
     return !get(this, 'value.children').some(child => isArray(get(child, 'children')));
   }
 
@@ -130,6 +361,7 @@ class CollapseTreeNode extends EmberObject {
     }
 
     let valueChildren = get(this, 'value.children');
+    let tree = get(this, 'tree');
     let children = [];
     let sliceStart = false;
 
@@ -142,7 +374,7 @@ class CollapseTreeNode extends EmberObject {
           sliceStart = false;
         }
 
-        children.push(CollapseTreeNode.create({ value: child, parent: this }));
+        children.push(CollapseTreeNode.create({ value: child, parent: this, tree }));
       } else if (sliceStart === false) {
         sliceStart = index;
       }
@@ -168,9 +400,9 @@ class CollapseTreeNode extends EmberObject {
         length of its value-children.
     3. Otherwise, the length is the sum of the lengths of its children.
   */
-  @computed('collapsed', 'value.{collapsed,children.[]}', 'isLeaf')
+  @computed('rowMeta.isCollapsed', 'value.children.[]', 'tree.enableTree', 'isLeaf')
   get length() {
-    if (get(this, 'value.collapsed') === true || get(this, 'collapsed') === true) {
+    if (get(this, 'rowMeta.isCollapsed') === true) {
       return 1;
     } else if (get(this, 'isLeaf')) {
       return 1 + get(this, 'value.children.length');
@@ -247,58 +479,45 @@ class CollapseTreeNode extends EmberObject {
     @param {Array<object>} parents - the parents of the current node in the traversal
     @return {{ value: object, parents: Array<object> }}
   */
-  objectAt(index, parents) {
+  objectAt(index) {
     assert(
       'index must be gte than 0 and less than the length of the node',
       index >= 0 && index < get(this, 'length')
     );
 
-    let value = get(this, 'value');
-
     // The first index in a node is the node itself, since nodes are addressable
     if (index === 0) {
-      return {
-        value,
-        parents,
-        isCollapsed: get(this, 'collapsed'),
-        toggleCollapse: this.toggleCollapse,
-      };
+      return get(this, 'value');
     }
 
     // Passed this node, remove it from the index and go one level deeper
-    index = index - 1;
-    parents.push(value);
+    let normalizedIndex = index - 1;
+    let tree = get(this, 'tree');
 
     if (get(this, 'isLeaf')) {
-      let value = objectAt(get(this, 'value.children'), index);
+      let value = objectAt(get(this, 'value.children'), normalizedIndex);
+      setupRowMeta(tree, value, get(this, 'value'));
 
-      return { value, parents, isCollapsed: false };
+      return value;
     }
 
     let children = get(this, 'children');
     let offsetList = get(this, 'offsetList');
-    let offsetIndex = closestLessThan(offsetList, index);
+    let offsetIndex = closestLessThan(offsetList, normalizedIndex);
 
-    index = index - offsetList[offsetIndex];
+    normalizedIndex = normalizedIndex - offsetList[offsetIndex];
 
     let child = children[offsetIndex];
 
     if (Array.isArray(child)) {
-      return { value: child[index], parents };
+      let value = child[normalizedIndex];
+      setupRowMeta(tree, value, get(this, 'value'));
+
+      return value;
     }
 
-    return child.objectAt(index, parents);
+    return child.objectAt(normalizedIndex);
   }
-
-  toggleCollapse = () => {
-    let value = get(this, 'value');
-
-    if (value.hasOwnProperty('collapsed')) {
-      set(value, 'collapsed', !get(value, 'collapsed'));
-    } else {
-      set(this, 'collapsed', !get(this, 'collapsed'));
-    }
-  };
 }
 
 /**
@@ -308,7 +527,7 @@ class CollapseTreeNode extends EmberObject {
       of the tree
   2. Can "hide" or "collapse" nodes, so that their children are not walked
 
-  So given a tree like this, where the (c) annotation means "collapsed":
+  So given a tree like this, where the (c) annotation means "isCollapsed":
 
   ```
   A
@@ -333,9 +552,9 @@ class CollapseTreeNode extends EmberObject {
 
   ```json
   {
-    collapsed: false,
+    isCollapsed: false,
     children: [{
-      collapsed: true,
+      isCollapsed: true,
       children: []
     }]
   }
@@ -368,6 +587,16 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     });
   }
 
+  @readOnly('component.enableCollapse') enableCollapse;
+  @readOnly('component.enableTree') enableTree;
+  @readOnly('component.selectedRows') selectedRows;
+
+  @computed('component.{selectMode,onSelect}')
+  get selectMode() {
+    let onSelect = this.get('component.onSelect');
+    return onSelect ? this.get('component.selectMode') : 'none';
+  }
+
   destroy() {
     super.destroy(...arguments);
 
@@ -377,30 +606,18 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
   }
 
   /*
-    Whether or not the root is an array. This allows the tree to handle a root
-    of a single node, or a root of an array of nodes. If the given root was an
-    array of nodes it "hides" the first node by wrapping it in a fake root, and
-    then skipping the root in `objectAt` calls.
-  */
-  @computed('tree')
-  get rootIsArray() {
-    return isArray(get(this, 'tree'));
-  }
-
-  /*
     The root node of the tree. Either wraps a true root, or a fake one created
     if the root is an array.
   */
-  @computed('tree')
+  @computed('rows')
   get root() {
     if (this._root) {
       this._root.destroy();
     }
 
-    let tree = get(this, 'tree');
-    let props = get(this, 'rootIsArray') ? { value: { children: tree } } : { value: tree };
+    let rows = get(this, 'rows');
 
-    this._root = CollapseTreeNode.create(props);
+    this._root = CollapseTreeNode.create({ value: { children: rows }, tree: this });
 
     return this._root;
   }
@@ -414,16 +631,17 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     if (index >= get(this, 'length') || index < 0) {
       return undefined;
     }
-    if (get(this, 'rootIsArray')) {
-      // If the root was an array, we added a "fake" top level node. Skip this node
-      // by adding one to the index, and shifting the first parent off the parent list.
-      let result = get(this, 'root').objectAt(index + 1, []);
-      result.parents.shift();
 
-      return result;
-    }
+    // We add a "fake" top level node to account for the root node
+    let normalizedIndex = index + 1;
+    let result = get(this, 'root').objectAt(normalizedIndex);
+    let meta = this.get('rowMetaCache').get(result);
 
-    return get(this, 'root').objectAt(index, []);
+    // Set the perceived index on the meta. It should be safe to do this here, since
+    // the row will always be retrieved via `objectAt` before being used.
+    set(meta, 'index', index);
+
+    return result;
   }
 
   forEach(fn) {
@@ -441,7 +659,7 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
   */
   @computed('root.length')
   get length() {
-    // If the root was an array, remove its fake wrapper node from the length count
-    return get(this, 'rootIsArray') ? get(this, 'root.length') - 1 : get(this, 'root.length');
+    // Remove the root level node from the length count
+    return get(this, 'root.length') - 1;
   }
 }

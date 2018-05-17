@@ -92,7 +92,13 @@ export default class EmberTHead extends Component {
    */
   _tableResizeSensor = null;
 
-  columnMetaCache = new WeakMap();
+  /**
+    The map that contains column meta information for this table. Is meant to be
+    unique to this table, which is why it is created here. In order to prevent
+    memory leaks, we need to be able to clean the cache manually when the table
+    is destroyed or updated, which is why we use a Map instead of WeakMap
+  */
+  columnMetaCache = new Map();
 
   columnTree = ColumnTree.create({ component: this, columnMetaCache: this.columnMetaCache });
 
@@ -116,6 +122,12 @@ export default class EmberTHead extends Component {
     this._tableResizeSensor.detach(this._container);
 
     this.columnTree.destroy();
+
+    // Clean the column meta cache
+    for (let [column, meta] of this.columnMetaCache.entries()) {
+      meta.destroy();
+      this.columnMetaCache.delete(column);
+    }
 
     super.willDestroyElement(...arguments);
   }

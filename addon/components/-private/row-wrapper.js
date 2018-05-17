@@ -9,11 +9,8 @@ import { argument } from '@ember-decorators/argument';
 
 import { computed } from '@ember-decorators/object';
 
-import { getOrCreate } from '../../-private/meta-cache';
 import CellProxy from '../../-private/cell-proxy';
 import { objectAt } from '../../-private/utils/array';
-
-class TableRowMeta extends EmberObject {}
 
 class CellWrapper extends EmberObject {
   _cellMeta = CellProxy.create();
@@ -39,6 +36,12 @@ class CellWrapper extends EmberObject {
 
     return _cellMeta;
   }
+
+  destroy() {
+    super.destroy(...arguments);
+
+    this._cellMeta.destroy();
+  }
 }
 
 @tagName('')
@@ -48,17 +51,7 @@ export default class RowWrapper extends Component {
   `;
 
   @argument rowValue;
-  @argument rowParents;
-  @argument rowIsCollapsed;
-  @argument rowIndex;
-
   @argument columns;
-
-  @argument selectedRows;
-  @argument selectMode;
-  @argument onSelect;
-  @argument selectRow;
-  @argument toggleRowCollapse;
 
   @argument cellMetaCache;
   @argument columnMetaCache;
@@ -72,36 +65,17 @@ export default class RowWrapper extends Component {
     this._cells.forEach(cell => cell.destroy());
   }
 
-  @computed('rowValue', 'rowParents', 'rowIsCollapsed', 'selectedRows.[]')
+  @computed('rowValue')
   get rowMeta() {
     let rowValue = this.get('rowValue');
-    let rowParents = this.get('rowParents');
-    let rowIsCollapsed = this.get('rowIsCollapsed');
-
     let rowMetaCache = this.get('rowMetaCache');
-    let rowMeta = getOrCreate(rowValue, rowMetaCache, TableRowMeta);
 
-    let rowIndex = this.get('rowIndex');
-
-    let selectedRows = this.get('selectedRows');
-    let isSelected =
-      selectedRows.includes(rowValue) || rowParents.some(row => selectedRows.includes(row));
-
-    set(rowMeta, 'depth', rowParents.length);
-    set(rowMeta, 'isSelected', isSelected);
-
-    set(rowMeta, 'index', rowIndex);
-    set(rowMeta, 'isCollapsed', rowIsCollapsed);
-
-    return rowMeta;
+    return rowMetaCache.get(rowValue);
   }
 
   @computed('rowValue', 'rowMeta', 'columns.[]')
   get cells() {
     let cellMetaCache = this.get('cellMetaCache');
-    let selectRow = this.get('selectRow');
-    let toggleRowCollapse = this.get('toggleRowCollapse');
-    let selectMode = this.get('onSelect') ? this.get('selectMode') : 'none';
 
     let columns = this.get('columns');
     let numColumns = get(columns, 'length');
@@ -115,16 +89,14 @@ export default class RowWrapper extends Component {
       while (_cells.length < numColumns) {
         let cell = CellWrapper.create({
           cellMetaCache,
-          selectMode,
-          selectRow,
-          toggleRowCollapse,
         });
 
         _cells.pushObject(cell);
       }
 
       while (_cells.length > numColumns) {
-        _cells.popObject();
+        let cell = _cells.popObject();
+        cell.destroy();
       }
     }
 

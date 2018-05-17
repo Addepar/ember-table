@@ -25,10 +25,11 @@ const fullTable = hbs`
       {{#ember-tbody
         api=t
 
-        tree=tree
         rows=rows
         estimateRowHeight=estimateRowHeight
         staticHeight=staticHeight
+        enableCollapse=enableCollapse
+        enableTree=enableTree
 
         onSelect="onSelect"
         selectMode=selectMode
@@ -99,7 +100,6 @@ export function generateTableValues(
     footerRowCount = 0,
     columnCount = 10,
     columnOptions,
-    useTree = false,
 
     rowComponent = 'ember-tr',
 
@@ -118,7 +118,7 @@ export function generateTableValues(
   footerRows = footerRows || generateRows(footerRowCount, (row, key) => `${row.id}${key}`);
 
   testContext.set('columns', columns);
-  testContext.set(useTree ? 'tree' : 'rows', rows);
+  testContext.set('rows', rows);
   testContext.set('footerRows', footerRows);
 
   for (let action in defaultActions) {
