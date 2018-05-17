@@ -1,10 +1,11 @@
-/* global Ember */
 import EmberObject, { get, set } from '@ember/object';
 import EmberArray, { isArray } from '@ember/array';
 import { assert } from '@ember/debug';
 
 import { computed } from '@ember-decorators/object';
 import { addObserver } from '@ember/object/observers';
+
+import { notifyPropertyChange } from './utils/ember';
 
 /**
   Genericizes `objectAt` so it can be run against a normal array or an Ember array
@@ -67,7 +68,7 @@ class CollapseTreeNode {
       // Changes to the value directly should properly update all computeds on this
       // node, but we need to manually propogate changes upwards to notify any other
       // watchers
-      addObserver(this, 'length', () => Ember.propertyDidChange(parent, 'length'));
+      addObserver(this, 'length', () => notifyPropertyChange(parent, 'length'));
     }
   }
 
@@ -367,8 +368,8 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     // users of the tree, and since the tree is meant to work like an array we should
     // trigger a change on the `[]` key as well.
     addObserver(this, 'root.length', () => {
-      Ember.propertyDidChange(this, 'length');
-      Ember.propertyDidChange(this, '[]');
+      notifyPropertyChange(this, 'length');
+      notifyPropertyChange(this, '[]');
     });
   }
 

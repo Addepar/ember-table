@@ -25,7 +25,7 @@ $table-hover-color: #e5edf8;
       background-color: #ffffff;
 
       &:last-child {
-        border-right: 0;
+        border-right: none;
       }
 
       &.is-fixed-right {
@@ -50,7 +50,7 @@ $table-hover-color: #e5edf8;
     border-right: solid 1px $table-border-color;
 
     &:last-child {
-      border-right: 0;
+      border-right: none;
     }
   }
 
@@ -62,7 +62,7 @@ $table-hover-color: #e5edf8;
     overflow: hidden;
 
     &:last-child {
-      border-right: 0;
+      border-right: none;
     }
 
     .et-header-resize-area {
@@ -73,7 +73,6 @@ $table-hover-color: #e5edf8;
       top: 0;
       right: 0;
 
-      user-drag: none;
       user-select: none;
     }
 

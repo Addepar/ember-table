@@ -1,4 +1,3 @@
-/* global Ember */
 import EmberObject, { get, set } from '@ember/object';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { A as emberA } from '@ember/array';
@@ -12,6 +11,7 @@ import { getOrCreate } from './meta-cache';
 import { move, splice, mergeSort } from './utils/array';
 import { getScale, getOuterClientRect, getInnerClientRect } from './utils/element';
 import { MainIndicator, DropIndicator } from './utils/reorder-indicators';
+import { notifyPropertyChange } from './utils/ember';
 
 const SCROLL_THRESHOLD = 50;
 
@@ -102,8 +102,8 @@ class ColumnTreeNode {
       // Changes to the value directly should properly update all computeds on this
       // node, but we need to manually propogate changes upwards to notify any other
       // watchers
-      this._notifyMaxChildDepth = () => Ember.propertyDidChange(parent, 'maxChildDepth');
-      this._notifyLeaves = () => Ember.propertyDidChange(parent, 'leaves');
+      this._notifyMaxChildDepth = () => notifyPropertyChange(parent, 'maxChildDepth');
+      this._notifyLeaves = () => notifyPropertyChange(parent, 'leaves');
       addObserver(this, 'maxChildDepth', this._notifyMaxChildDepth);
       addObserver(this, 'leaves.[]', this._notifyLeaves);
     }
@@ -617,7 +617,7 @@ export default class ColumnTree extends EmberObject {
 
     move(subcolumns, insertIndex, afterIndex);
 
-    Ember.propertyDidChange(parent, 'column.subcolumns.[]');
+    notifyPropertyChange(parent, 'column.subcolumns.[]');
   }
 
   startReorder(node, clientX) {

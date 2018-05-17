@@ -47,7 +47,7 @@ module.exports = function(environment) {
   }
 
   if (environment === 'production') {
-    ENV.rootURL = '/ember-cli-addon-docs';
+    ENV.rootURL = '/ember-table';
     ENV.locationType = 'router-scroll';
   }
 
