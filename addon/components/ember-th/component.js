@@ -108,6 +108,8 @@ export default class EmberTh extends Component {
     hammer.off('panmove');
     hammer.off('panend');
 
+    hammer.destroy();
+
     super.willDestroyElement(...arguments);
   }
 

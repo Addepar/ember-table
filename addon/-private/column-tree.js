@@ -76,17 +76,20 @@ class TableColumnMeta extends EmberObject {
 /**
   Single node of a ColumnTree
 */
-class ColumnTreeNode {
-  constructor(column, tree, parent) {
-    this.tree = tree;
-    this.column = column;
+class ColumnTreeNode extends EmberObject {
+  _subcolumnNodes = null;
+
+  constructor() {
+    super(...arguments);
+
+    let tree = get(this, 'tree');
+    let parent = get(this, 'parent');
+    let column = get(this, 'column');
 
     if (!parent) {
       this.isRoot = true;
     } else {
-      this.parent = parent;
-
-      let meta = getOrCreate(this.column, get(tree, 'columnMetaCache'), TableColumnMeta);
+      let meta = getOrCreate(column, get(tree, 'columnMetaCache'), TableColumnMeta);
 
       set(meta, '_node', this);
       meta.registerElement = (...args) => this.registerElement(...args);
@@ -104,29 +107,47 @@ class ColumnTreeNode {
       // watchers
       this._notifyMaxChildDepth = () => notifyPropertyChange(parent, 'maxChildDepth');
       this._notifyLeaves = () => notifyPropertyChange(parent, 'leaves');
+      this._notifyCollection = () => notifyPropertyChange(parent, '[]');
+
       addObserver(this, 'maxChildDepth', this._notifyMaxChildDepth);
       addObserver(this, 'leaves.[]', this._notifyLeaves);
     }
   }
 
   destroy() {
-    removeObserver(this, 'maxChildDepth', this._notifyMaxChildDepth);
-    removeObserver(this, 'maxChildDepth', this._notifyLeaves);
+    super.destroy(...arguments);
 
-    if (!get(this, 'isLeaf')) {
-      get(this, 'subcolumnNodes').forEach(n => n.destroy());
+    this.cleanSubcolumnNodes();
+  }
+
+  /**
+    Fully destroys the child nodes in the event that they change or that this
+    node is destroyed. If children are not destroyed, they will leak memory due
+    to dangling references in Ember Meta.
+  */
+  cleanSubcolumnNodes() {
+    if (this._subcolumnNodes !== null) {
+      this._subcolumnNodes.forEach(n => n.destroy());
+      this._subcolumnNodes = null;
     }
   }
 
   @computed('column.subcolumns.[]')
   get subcolumnNodes() {
+    this.cleanSubcolumnNodes();
+
     if (get(this, 'isLeaf')) {
       return;
     }
 
-    return emberA(
-      get(this, 'column.subcolumns').map(s => new ColumnTreeNode(s, get(this, 'tree'), this))
+    let tree = get(this, 'tree');
+    let parent = this;
+
+    this._subcolumnNodes = emberA(
+      get(this, 'column.subcolumns').map(column => ColumnTreeNode.create({ column, tree, parent }))
     );
+
+    return this._subcolumnNodes;
   }
 
   @computed('column.subcolumns.[]')
@@ -381,6 +402,8 @@ export default class ColumnTree extends EmberObject {
     super.destroy();
     this.token.cancel();
     get(this, 'root').destroy();
+    set(this, 'component', null);
+
     removeObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed);
     removeObserver(this, 'widthConstraint', this.ensureWidthConstraint);
   }
@@ -394,7 +417,7 @@ export default class ColumnTree extends EmberObject {
   get root() {
     let columns = get(this, 'columns');
 
-    return new ColumnTreeNode({ subcolumns: columns }, this);
+    return ColumnTreeNode.create({ column: { subcolumns: columns }, tree: this });
   }
 
   @computed('root.{maxChildDepth,leaves.[]}')
@@ -424,7 +447,7 @@ export default class ColumnTree extends EmberObject {
     return rows;
   }
 
-  @computed('root.leaves')
+  @computed('root.leaves.[]')
   get leaves() {
     return emberA(get(this, 'root.leaves').map(n => n.column));
   }

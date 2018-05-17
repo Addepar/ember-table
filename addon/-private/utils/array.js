@@ -1,11 +1,25 @@
 import { compare } from '@ember/utils';
+import { isArray } from '@ember/array';
+import { assert } from '@ember/debug';
 
-export function objectAt(items, index) {
-  if (typeof items.objectAt === 'function') {
-    return items.objectAt(index);
+/**
+  Genericizes `objectAt` so it can be run against a normal array or an Ember array
+
+  @param {object|Array} arr
+  @param {number} index
+  @return {any}
+*/
+export function objectAt(arr, index) {
+  assert(
+    'arr must be an instance of a Javascript Array or implement `objectAt`',
+    isArray(arr) || typeof arr.objectAt === 'function'
+  );
+
+  if (typeof arr.objectAt === 'function') {
+    return arr.objectAt(index);
   }
 
-  return items[index];
+  return arr[index];
 }
 
 export function splice(items, start, count, ...add) {

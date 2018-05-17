@@ -83,12 +83,7 @@ export default class EmberTBody extends Component {
   @type(optional('object'))
   tree;
 
-  @computed('rows', 'tree')
-  get wrappedRows() {
-    let rows = this.get('rows') || this.get('tree');
-
-    return CollapseTree.create({ tree: rows ? rows : [] });
-  }
+  collapseTree = CollapseTree.create();
 
   cellMetaCache = new WeakMap();
   rowMetaCache = new WeakMap();
@@ -97,6 +92,19 @@ export default class EmberTBody extends Component {
     The index of the last item that was selected, used for range selection
   */
   _lastSelectedIndex = 0;
+
+  willDestroy() {
+    this.collapseTree.destroy();
+  }
+
+  @computed('rows', 'tree')
+  get wrappedRows() {
+    let rows = this.get('rows') || this.get('tree');
+
+    this.collapseTree.set('tree', rows ? rows : []);
+
+    return this.collapseTree;
+  }
 
   selectRow = (rowIndex, { toggle, range }) => {
     let rows = this.get('wrappedRows');
