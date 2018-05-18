@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import { A as emberA } from '@ember/array';
 import { get, set } from '@ember/object';
+import { run } from '@ember/runloop';
 
 import CollapseTree from 'ember-table/-private/collapse-tree';
 
@@ -178,5 +179,15 @@ module('Unit | Private | CollapseTree', function() {
       assert.equal(collapseTree.objectAt(i).value.value, i);
       assert.equal(collapseTree.objectAt(i).parents.length, expectedDepth[i]);
     }
+  });
+
+  test('works with single level tree', function(assert) {
+    let rows = [{ label: 'A', children: [] }, { label: 'B', children: [] }];
+    let tree = CollapseTree.create({ tree: rows });
+    run(() => {
+      tree.get('length');
+      tree.destroy();
+      assert.ok(true, 'exception not thrown');
+    });
   });
 });

@@ -71,7 +71,11 @@ class CollapseTreeNode extends EmberObject {
   */
   cleanChildren() {
     if (this._children) {
-      this._children.forEach(n => n.destroy());
+      for (let child of this._children) {
+        if (child instanceof CollapseTreeNode) {
+          child.destroy();
+        }
+      }
       this._children = null;
     }
   }
@@ -367,7 +371,9 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
   destroy() {
     super.destroy(...arguments);
 
-    this._root.destroy();
+    if (this._root) {
+      this._root.destroy();
+    }
   }
 
   /*
