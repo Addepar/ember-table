@@ -371,7 +371,9 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
   destroy() {
     super.destroy(...arguments);
 
-    this._root.destroy();
+    if (this._root) {
+      this._root.destroy();
+    }
   }
 
   /*
