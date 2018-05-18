@@ -180,3 +180,12 @@ module('Unit | Private | CollapseTree', function() {
     }
   });
 });
+
+test('can handle single level tree', function(assert) {
+  let rows = [
+    { label: 'A', children: [] },
+    { label: 'B', children: [] },
+  ];
+  let tree = CollapseTree.create( { tree: rows } );
+  tree.destroy();
+});
