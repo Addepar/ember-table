@@ -19,6 +19,8 @@ const DEFAULT_COLUMN_WIDTH = 100;
 const DEFAULT_MIN_WIDTH = 50;
 const DEFAULT_MAX_WIDTH = Infinity;
 
+const LOOP_COUNT_GUARD = 500;
+
 export const RESIZE_MODE = {
   STANDARD: 'standard',
   FLUID: 'fluid',
@@ -36,6 +38,27 @@ export const WIDTH_CONSTRAINT = {
   GTE_CONTAINER: 'gte-container',
   LTE_CONTAINER: 'lte-container',
 };
+
+/**
+ * Divides x into y pieces where all y pieces are rounded
+ * and sum to x. Assumes x is already rounded.
+ * Returns a list of the pieces.
+ *
+ * For example:
+ * 10 / 3 => [4, 3, 3]
+ * -11 / 2 => [-6, -5]
+ */
+function divideRounded(x, n) {
+  let neg = x < 0 === n < 0 ? 1 : -1;
+  n = Math.abs(n);
+  x = Math.abs(x);
+  let z = Math.floor(x / n);
+  let err = x - n * z;
+  let result = Array(n);
+  result.fill(neg * (z + 1), 0, err);
+  result.fill(neg * z, err);
+  return result;
+}
 
 class TableColumnMeta extends EmberObject {
   @readOnly('_node.isLeaf') isLeaf;
@@ -283,15 +306,13 @@ class ColumnTreeNode extends EmberObject {
       // smallest width to the column with the largest width.
       let sortedSubcolumns = subcolumns.sortBy('width').reverse();
 
+      let loopCount = 0;
+      delta = delta > 0 ? Math.floor(delta) : Math.ceil(delta);
       while (delta !== 0) {
-        let deltaChunk = delta / get(subcolumns, 'length');
-        deltaChunk = delta > 0 ? Math.floor(deltaChunk) : Math.ceil(deltaChunk);
-
-        if (deltaChunk === 0) {
-          deltaChunk = delta > 0 ? 1 : -1;
-        }
-
-        for (let subcolumn of sortedSubcolumns) {
+        let deltaChunks = divideRounded(delta, get(subcolumns, 'length'));
+        for (let i = 0; i < deltaChunks.length; i++) {
+          let subcolumn = sortedSubcolumns[i];
+          let deltaChunk = deltaChunks[i];
           let oldWidth = get(subcolumn, 'width');
           let targetWidth = oldWidth + deltaChunk;
 
@@ -305,6 +326,11 @@ class ColumnTreeNode extends EmberObject {
           if (delta === 0) {
             break;
           }
+        }
+        delta = delta > 0 ? Math.floor(delta) : Math.ceil(delta);
+        loopCount++;
+        if (loopCount > LOOP_COUNT_GUARD) {
+          throw new Error('loop count exceeded guard while distributing width');
         }
       }
 
