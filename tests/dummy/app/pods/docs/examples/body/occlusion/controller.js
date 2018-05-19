@@ -2,7 +2,7 @@ import Controller from '@ember/controller';
 import { computed } from '@ember-decorators/object';
 
 export default class SimpleController extends Controller {
-  // BEGIN-SNIPPET docs-example-basic-table.js
+  // BEGIN-SNIPPET docs-example-occlusion.js
   @computed
   get columns() {
     return [

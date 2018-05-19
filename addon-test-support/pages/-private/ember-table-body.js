@@ -30,11 +30,18 @@ export default {
     },
 
     checkbox: {
-      scope: 'input[type="checkbox"]',
+      scope: '[data-test-select-row]',
       isChecked: property('checked'),
     },
 
-    toggle: alias('checkbox.click'),
+    toggleSelect: alias('checkbox.click'),
+
+    collapse: {
+      scope: '[data-test-collapse-row]',
+      isCollapsed: property('checked'),
+    },
+
+    toggleCollapse: alias('collapse.click'),
 
     isSelected: hasClass('is-selected'),
 

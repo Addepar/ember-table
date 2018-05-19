@@ -1,10 +1,23 @@
-{{#if hasCheckbox}}
-  {{-ember-table-private/simple-checkbox
-    checked=rowMeta.isSelected
-    onClick="onCheckboxClicked"
-    onChange="onCheckboxToggled"
-    ariaLabel="Row Select"
-  }}
+{{#if isFirstColumn}}
+  {{#if canMultiSelect}}
+    {{-ember-table-private/simple-checkbox
+      data-test-select-row=true
+      checked=rowMeta.isSelected
+      onClick="onCheckboxClicked"
+      onChange="onSelectionToggled"
+      ariaLabel="Select row"
+    }}
+  {{/if}}
+
+  {{#if canCollapse}}
+    {{-ember-table-private/simple-checkbox
+      data-test-collapse-row=true
+      checked=rowMeta.isCollapsed
+      onClick="onCheckboxClicked"
+      onChange="onCollapseToggled"
+      ariaLabel="Collapse row"
+    }}
+  {{/if}}
 {{/if}}
 
 {{#if hasBlock}}

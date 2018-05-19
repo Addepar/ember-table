@@ -21,6 +21,12 @@ Router.map(function() {
         this.route('size-constraints');
         this.route('actions');
       });
+
+      this.route('body', function() {
+        this.route('rows-and-trees');
+        this.route('row-selection');
+        this.route('occlusion');
+      });
     });
 
     this.route('api', function() {

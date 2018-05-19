@@ -1,4 +1,4 @@
-import { module, test, skip } from 'ember-qunit';
+import { module, test } from 'ember-qunit';
 import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -22,160 +22,230 @@ let table = TablePage.extend({
 }).create();
 
 module('Integration | selection', () => {
-  componentModule('multiple', function() {
-    test('Can select a row by clicking on it', async function(assert) {
-      await generateTable(this);
+  for (let scenario of ['grouping', 'multiple']) {
+    let selectMode = scenario;
 
-      assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
+    componentModule(scenario, function() {
+      test('Can select a row by clicking on it', async function(assert) {
+        await generateTable(this, { selectMode });
 
-      await table.selectRow(0);
+        assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
 
-      assert.ok(table.validateSelected(0), 'the row is selected after being clicked');
-    });
+        await table.selectRow(0);
 
-    test('Can toggle a row with meta and control', async function(assert) {
-      await generateTable(this);
+        assert.ok(table.validateSelected(0), 'the row is selected after being clicked');
+      });
 
-      let row = table.body.rows.eq(0);
+      test('Can toggle a row with meta and control', async function(assert) {
+        await generateTable(this, { selectMode });
 
-      for (let key of ['ctrlKey', 'metaKey']) {
+        let row = table.body.rows.eq(0);
+
+        for (let key of ['ctrlKey', 'metaKey']) {
+          assert.ok(table.validateSelected(), 'the row is not toggled on');
+
+          await row.clickWith({ [key]: true });
+
+          assert.ok(table.validateSelected(0), 'the row is toggled on');
+
+          await row.clickWith({ [key]: true });
+
+          assert.ok(table.validateSelected(), 'the row is toggled back off');
+        }
+      });
+
+      test('Can toggle a row with checkbox', async function(assert) {
+        await generateTable(this, { selectMode });
+
+        let row = table.body.rows.eq(0);
+
         assert.ok(table.validateSelected(), 'the row is not toggled on');
 
-        await row.clickWith({ [key]: true });
+        await row.checkbox.click();
 
         assert.ok(table.validateSelected(0), 'the row is toggled on');
 
-        await row.clickWith({ [key]: true });
+        await row.checkbox.click();
 
         assert.ok(table.validateSelected(), 'the row is toggled back off');
-      }
-    });
+      });
 
-    test('Can toggle a row with checkbox', async function(assert) {
-      await generateTable(this, { hasCheckbox: true });
+      test('Checkbox state matches selection state', async function(assert) {
+        await generateTable(this, { selectMode });
 
-      let row = table.body.rows.eq(0);
+        let row = table.body.rows.eq(0);
 
-      assert.ok(table.validateSelected(), 'the row is not toggled on');
+        assert.ok(!row.isSelected, 'the row is not selected');
+        assert.ok(!row.checkbox.isChecked, 'the row checkbox is not checked');
 
-      await row.checkbox.click();
+        await row.click();
 
-      assert.ok(table.validateSelected(0), 'the row is toggled on');
+        assert.ok(row.isSelected, 'the row is selected');
+        assert.ok(row.checkbox.isChecked, 'the row checkbox is checked');
+      });
 
-      await row.checkbox.click();
+      test('Can toggle multiple rows with meta and control', async function(assert) {
+        await generateTable(this, { selectMode });
 
-      assert.ok(table.validateSelected(), 'the row is toggled back off');
-    });
+        let rowOne = table.rows.eq(0);
+        let rowTwo = table.rows.eq(1);
 
-    test('Checkbox state matches selection state', async function(assert) {
-      await generateTable(this, { hasCheckbox: true });
+        for (let key of ['ctrlKey', 'metaKey']) {
+          assert.ok(table.validateSelected(), 'the rows are not selected');
 
-      let row = table.body.rows.eq(0);
+          await rowOne.clickWith({ [key]: true });
+          await rowTwo.clickWith({ [key]: true });
 
-      assert.ok(!row.isSelected, 'the row is not selected');
-      assert.ok(!row.checkbox.isChecked, 'the row checkbox is not checked');
+          assert.ok(table.validateSelected(0, 1), 'the rows are selected');
 
-      await row.click();
+          await rowOne.clickWith({ [key]: true });
+          await rowTwo.clickWith({ [key]: true });
 
-      assert.ok(row.isSelected, 'the row is selected');
-      assert.ok(row.checkbox.isChecked, 'the row checkbox is checked');
-    });
+          assert.ok(table.validateSelected(), 'the rows are toggled back off');
+        }
+      });
 
-    test('Can toggle multiple rows with meta and control', async function(assert) {
-      await generateTable(this);
+      test('Can toggle multiple rows with checkbox', async function(assert) {
+        await generateTable(this, { selectMode });
 
-      let rowOne = table.rows.eq(0);
-      let rowTwo = table.rows.eq(1);
+        let rowOne = table.rows.eq(0);
+        let rowTwo = table.rows.eq(1);
 
-      for (let key of ['ctrlKey', 'metaKey']) {
         assert.ok(table.validateSelected(), 'the rows are not selected');
 
-        await rowOne.clickWith({ [key]: true });
-        await rowTwo.clickWith({ [key]: true });
+        await rowOne.checkbox.click();
+        await rowTwo.checkbox.click();
 
         assert.ok(table.validateSelected(0, 1), 'the rows are selected');
 
-        await rowOne.clickWith({ [key]: true });
-        await rowTwo.clickWith({ [key]: true });
+        await rowOne.checkbox.click();
+        await rowTwo.checkbox.click();
 
         assert.ok(table.validateSelected(), 'the rows are toggled back off');
+      });
+
+      test('Can toggle multiple rows with checkbox and keys', async function(assert) {
+        await generateTable(this, { selectMode });
+
+        let rowOne = table.rows.eq(0);
+        let rowTwo = table.rows.eq(1);
+
+        assert.ok(table.validateSelected(), 'the rows are not selected');
+
+        await rowOne.checkbox.click();
+        await rowTwo.clickWith({ metaKey: true });
+
+        assert.ok(table.validateSelected(0, 1), 'the rows are selected');
+
+        await rowOne.clickWith({ metaKey: true });
+        await rowTwo.checkbox.click();
+
+        assert.ok(table.validateSelected(), 'the rows are toggled back off');
+      });
+
+      test('Can select a range with shift', async function(assert) {
+        await generateTable(this, { selectMode });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        await table.selectRange(0, 2);
+
+        assert.ok(table.validateSelected(0, 1, 2), 'rows are selected');
+      });
+
+      test('Selecting a range selects based on last selection', async function(assert) {
+        await generateTable(this, { selectMode });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        await table.selectRange(3, 5);
+
+        assert.ok(table.validateSelected(3, 4, 5), 'rows are selected');
+      });
+
+      test('Selecting a range does not deselect previously selected rows', async function(assert) {
+        await generateTable(this, { selectMode });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        await table.selectRow(4);
+
+        assert.ok(table.validateSelected(4), 'middle row selected');
+
+        await table.selectRange(3, 5);
+
+        assert.ok(table.validateSelected(3, 4, 5), 'all rows are selected');
+      });
+
+      test('selecting a parent selects its children', async function(assert) {
+        await generateTable(this, { selectMode, rowCount: 3, rowDepth: 2 });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        await table.selectRow(0);
+
+        assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
+      });
+
+      test('deselecting a child deselects its parents', async function(assert) {
+        await generateTable(this, { selectMode, rowCount: 3, rowDepth: 2 });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        await table.selectRow(0);
+
+        assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
+
+        await table.rows.eq(1).checkbox.click();
+
+        assert.ok(table.validateSelected(2, 3), 'parent and child deselected');
+      });
+
+      test('selecting a child and then a parent dedupes selected rows correctly', async function(assert) {
+        this.on('onSelect', selectedRows => {
+          assert.equal(selectedRows.length, 1, 'correct number of rows selected');
+
+          this.set('selectedRows', selectedRows);
+        });
+
+        await generateTable(this, { selectMode, rowCount: 3, rowDepth: 2 });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        await table.selectRow(1);
+
+        assert.ok(table.validateSelected(1), 'child selected');
+
+        await table.selectRow(0);
+
+        assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
+      });
+
+      if (scenario === 'grouping') {
+        test('selecting all children selects the parent', async function(assert) {
+          await generateTable(this, { selectMode, rowCount: 3, rowDepth: 2 });
+
+          assert.ok(table.validateSelected(), 'rows are not selected');
+
+          await table.selectRange(1, 3);
+
+          assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
+        });
+      } else {
+        test('selecting all children does not select the parent', async function(assert) {
+          await generateTable(this, { selectMode, rowCount: 3, rowDepth: 2 });
+
+          assert.ok(table.validateSelected(), 'rows are not selected');
+
+          await table.selectRange(1, 3);
+
+          assert.ok(table.validateSelected(1, 2, 3), 'only children are selected');
+        });
       }
     });
+  }
 
-    test('Can toggle multiple rows with checkbox', async function(assert) {
-      await generateTable(this, { hasCheckbox: true });
-
-      let rowOne = table.rows.eq(0);
-      let rowTwo = table.rows.eq(1);
-
-      assert.ok(table.validateSelected(), 'the rows are not selected');
-
-      await rowOne.checkbox.click();
-      await rowTwo.checkbox.click();
-
-      assert.ok(table.validateSelected(0, 1), 'the rows are selected');
-
-      await rowOne.checkbox.click();
-      await rowTwo.checkbox.click();
-
-      assert.ok(table.validateSelected(), 'the rows are toggled back off');
-    });
-
-    test('Can toggle multiple rows with checkbox and keys', async function(assert) {
-      await generateTable(this, { hasCheckbox: true });
-
-      let rowOne = table.rows.eq(0);
-      let rowTwo = table.rows.eq(1);
-
-      assert.ok(table.validateSelected(), 'the rows are not selected');
-
-      await rowOne.checkbox.click();
-      await rowTwo.clickWith({ metaKey: true });
-
-      assert.ok(table.validateSelected(0, 1), 'the rows are selected');
-
-      await rowOne.clickWith({ metaKey: true });
-      await rowTwo.checkbox.click();
-
-      assert.ok(table.validateSelected(), 'the rows are toggled back off');
-    });
-
-    test('Can select a range with shift', async function(assert) {
-      await generateTable(this);
-
-      assert.ok(table.validateSelected(), 'rows are not selected');
-
-      await table.selectRange(0, 2);
-
-      assert.ok(table.validateSelected(0, 1, 2), 'rows are selected');
-    });
-
-    test('Selecting a range selects based on last selection', async function(assert) {
-      await generateTable(this);
-
-      assert.ok(table.validateSelected(), 'rows are not selected');
-
-      await table.selectRange(3, 5);
-
-      assert.ok(table.validateSelected(3, 4, 5), 'rows are selected');
-    });
-
-    test('Selecting a range does not deselect previously selected rows', async function(assert) {
-      await generateTable(this);
-
-      assert.ok(table.validateSelected(), 'rows are not selected');
-
-      await table.selectRow(4);
-
-      assert.ok(table.validateSelected(4), 'middle row selected');
-
-      await table.selectRange(3, 5);
-
-      assert.ok(table.validateSelected(3, 4, 5), 'all rows are selected');
-    });
-  });
-
-  componentModule('multiple', function() {
+  componentModule('single', function() {
     test('Can select a row by clicking on it', async function(assert) {
       await generateTable(this, { selectMode: 'single' });
 
@@ -230,6 +300,16 @@ module('Integration | selection', () => {
 
       assert.ok(table.validateSelected(3), 'last row only is selected');
     });
+
+    test('selecting a parent only selects the parent', async function(assert) {
+      await generateTable(this, { selectMode: 'single', rowCount: 3, rowDepth: 2 });
+
+      assert.ok(table.validateSelected(), 'rows are not selected');
+
+      await table.selectRow(0);
+
+      assert.ok(table.validateSelected(0), 'row and its children are selected');
+    });
   });
 
   componentModule('none', function() {
@@ -247,28 +327,6 @@ module('Integration | selection', () => {
       await table.selectRow(0);
 
       assert.ok(table.validateSelected(), 'rows are not selected');
-    });
-  });
-
-  componentModule('tree', function() {
-    test('selecting a parent selects its children', async function(assert) {
-      await generateTable(this, { rowCount: 3, rowDepth: 2 });
-
-      assert.ok(table.validateSelected(), 'rows are not selected');
-
-      await table.selectRow(0);
-
-      assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
-    });
-
-    skip('selecting all children selects the parent', async function(assert) {
-      await generateTable(this, { rowCount: 3, rowDepth: 2 });
-
-      assert.ok(table.validateSelected(), 'rows are not selected');
-
-      await table.selectRange(1, 3);
-
-      assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
     });
   });
 });

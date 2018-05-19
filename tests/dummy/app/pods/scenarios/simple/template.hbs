@@ -8,6 +8,8 @@
     {{ember-tbody
       api=t
       rows=rows
+      onSelect=(action (mut selectedRows))
+      selectedRows=selectedRows
     }}
   {{/ember-table}}
 </div>

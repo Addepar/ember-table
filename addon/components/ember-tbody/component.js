@@ -9,14 +9,10 @@ import { required } from '@ember-decorators/argument/validation';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 
-import CollapseTree from '../../-private/collapse-tree';
+import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 
 import layout from './template';
-
-const SELECT_MODE = {
-  SINGLE: 'single',
-  MULTIPLE: 'multiple',
-};
+import { assert } from '@ember/debug';
 
 @tagName('tbody')
 export default class EmberTBody extends Component {
@@ -61,7 +57,7 @@ export default class EmberTBody extends Component {
   */
   @argument({ defaultIfUndefined: true })
   @type('number')
-  estimateRowHeight = 20;
+  estimateRowHeight = 30;
 
   /**
     A flag that controls if all rows have same static height or not. By default it is set to false
@@ -72,91 +68,68 @@ export default class EmberTBody extends Component {
   @type('boolean')
   staticHeight = false;
 
+  @argument({ defaultIfUndefined: true })
+  @type('boolean')
+  enableTree = true;
+
+  @argument({ defaultIfUndefined: true })
+  @type('boolean')
+  enableCollapse = true;
+
   /**
    * The row items that the table should display
    */
-  @argument
-  @type(optional('object'))
-  rows;
-
-  @argument
-  @type(optional('object'))
-  tree;
-
-  collapseTree = CollapseTree.create();
-
-  cellMetaCache = new WeakMap();
-  rowMetaCache = new WeakMap();
+  @argument({ defaultIfUndefined: true })
+  @type('object')
+  rows = [];
 
   /**
-    The index of the last item that was selected, used for range selection
+    The map that contains cell meta information for this table. Is meant to be
+    unique to this table, which is why it is created here. In order to prevent
+    memory leaks, we need to be able to clean the cache manually when the table
+    is destroyed or updated, which is why we use a Map instead of WeakMap
   */
-  _lastSelectedIndex = 0;
+  cellMetaCache = new Map();
+
+  /**
+    The map that contains row meta information for this table.
+  */
+  rowMetaCache = new Map();
+
+  collapseTree = CollapseTree.create({ component: this, rowMetaCache: this.rowMetaCache });
+
+  constructor() {
+    super(...arguments);
+
+    assert(
+      'You must create an {{ember-thead}} with columns before creating an {{ember-tbody}}',
+      !!this.get('api.columnTree')
+    );
+  }
 
   willDestroy() {
+    this._cleanCaches();
+
     this.collapseTree.destroy();
   }
 
-  @computed('rows', 'tree')
+  @computed('rows')
   get wrappedRows() {
-    let rows = this.get('rows') || this.get('tree');
+    this._cleanCaches();
 
-    this.collapseTree.set('tree', rows ? rows : []);
+    let rows = this.get('rows');
+
+    this.collapseTree.set('rows', rows);
 
     return this.collapseTree;
   }
 
-  selectRow = (rowIndex, { toggle, range }) => {
-    let rows = this.get('wrappedRows');
-    let row = rows.objectAt(rowIndex).value;
-    let selectMode = this.get('selectMode');
+  _cleanCaches() {
+    this.cellMetaCache.clear();
 
-    if (selectMode === SELECT_MODE.SINGLE) {
-      this.sendAction('onSelect', [row]);
-      return;
+    for (let [row, meta] of this.rowMetaCache.entries()) {
+      meta.destroy();
+      this.rowMetaCache.delete(row);
     }
-
-    let selectedRows;
-
-    if (toggle) {
-      // Create a new array to ensure we trigger property changes
-      selectedRows = this.get('selectedRows').slice();
-      let index = selectedRows.indexOf(row);
-
-      if (index > -1) {
-        selectedRows.splice(index, 1);
-      } else {
-        selectedRows.push(row);
-      }
-    } else if (range) {
-      // Use a set to avoid item duplication
-      let rowSet = new Set(this.get('selectedRows'));
-
-      let { _lastSelectedIndex } = this;
-
-      let minIndex = Math.min(_lastSelectedIndex, rowIndex);
-      let maxIndex = Math.max(_lastSelectedIndex, rowIndex);
-
-      for (let i = minIndex; i <= maxIndex; i++) {
-        rowSet.add(rows.objectAt(i).value);
-      }
-
-      selectedRows = Array.from(rowSet);
-    } else {
-      selectedRows = [row];
-    }
-
-    this._lastSelectedIndex = rowIndex;
-
-    this.sendAction('onSelect', selectedRows);
-  };
-
-  toggleRowCollapse = index => {
-    let tree = this.get('wrappedRows');
-    let node = tree.objectAt(index);
-
-    if (node.toggleCollapse) {
-      node.toggleCollapse();
-    }
-  };
+  }
 }

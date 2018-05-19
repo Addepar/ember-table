@@ -1,20 +1,11 @@
-{{#each wrappedRows as |row rowIndex|}}
+{{#each wrappedRows as |rowValue|}}
   {{#-ember-table-private/row-wrapper
-    rowValue=row.value
-    rowParents=row.parents
-    rowIsCollapsed=row.isCollapsed
-
-    rowIndex=rowIndex
-    selectedRows=selectedRows
+    rowValue=rowValue
     columns=columns
 
-    onSelect=onSelect
-    selectMode=selectMode
-    selectRow=selectRow
-    toggleRowCollapse=toggleRowCollapse
-
-    rowMetaCache=rowMetaCache
+    cellMetaCache=cellMetaCache
     columnMetaCache=columnMetaCache
+    rowMetaCache=rowMetaCache
 
     as |rowValue rowMeta cells|
   }}
