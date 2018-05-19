@@ -94,6 +94,25 @@ module('Integration | headers | reorder', function() {
       assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
       assert.equal(table.headers.eq(0).text, toBase26(columnCount - 1), 'table scrolled');
     });
+
+    test('reordering does not reset widths', async function(assert) {
+      await generateTable(this, { columnCount: 2 });
+
+      let firstHeader = table.headers.eq(0);
+      let secondHeader = table.headers.eq(1);
+
+      let originalHeaderWidth = firstHeader.width;
+
+      await firstHeader.resize(originalHeaderWidth + 30);
+
+      assert.equal(firstHeader.width, originalHeaderWidth + 30, 'header can be resized larger');
+
+      await table.headers.eq(0).reorderBy(1);
+      assert.equal(table.headers.eq(0).text.trim(), 'B', 'First column is swapped forward');
+      assert.equal(table.headers.eq(1).text.trim(), 'A', 'Second column is swapped backward');
+
+      assert.equal(secondHeader.width, originalHeaderWidth + 30, 'width was not reset');
+    });
   });
 
   componentModule('fixed columns', function() {

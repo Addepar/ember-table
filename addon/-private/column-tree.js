@@ -61,6 +61,10 @@ function divideRounded(x, n) {
 }
 
 class TableColumnMeta extends EmberObject {
+  // If no width is set on the column itself, we cache a temporary width on the
+  // meta object. This is set to the default width.
+  _width = DEFAULT_COLUMN_WIDTH;
+
   @readOnly('_node.isLeaf') isLeaf;
   @readOnly('_node.isFixed') isFixed;
   @readOnly('_node.width') width;
@@ -253,15 +257,14 @@ class ColumnTreeNode extends EmberObject {
   @computed('isLeaf', 'subcolumnNodes.@each.width', 'column.width')
   get width() {
     if (get(this, 'isLeaf')) {
-      let columnWidth = get(this, 'column.width');
-      let tempWidth = get(this, '_tempWidth');
+      let column = get(this, 'column');
+      let columnWidth = get(column, 'width');
 
       if (typeof columnWidth === 'number') {
         return columnWidth;
-      } else if (typeof tempWidth === 'number') {
-        return tempWidth;
       } else {
-        return DEFAULT_COLUMN_WIDTH;
+        let meta = get(this, 'tree.columnMetaCache').get(column);
+        return get(meta, '_width');
       }
     }
 
@@ -286,12 +289,14 @@ class ColumnTreeNode extends EmberObject {
     }
 
     if (get(this, 'isLeaf')) {
-      let columnWidth = get(this, 'column.width');
+      let column = get(this, 'column');
+      let columnWidth = get(column, 'width');
 
       if (typeof columnWidth === 'number') {
-        return set(this, 'column.width', oldWidth + delta);
+        return set(column, 'width', oldWidth + delta);
       } else {
-        return set(this, '_tempWidth', oldWidth + delta);
+        let meta = get(this, 'tree.columnMetaCache').get(column);
+        return set(meta, '_width', oldWidth + delta);
       }
     } else {
       let subcolumns = get(this, 'subcolumnNodes');
@@ -416,8 +421,6 @@ export default class ColumnTree extends EmberObject {
     super(...arguments);
 
     this.token = new Token();
-
-    scheduler.schedule('sync', this.ensureWidthConstraint, this.token);
 
     this.sortColumnsByFixed();
     addObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed);
@@ -608,6 +611,8 @@ export default class ColumnTree extends EmberObject {
     this.scale = getScale(container);
 
     get(this, 'root').registerElement(container);
+
+    scheduler.schedule('sync', this.ensureWidthConstraint, this.token);
   }
 
   getClosestColumn(column, left, isFixed) {
