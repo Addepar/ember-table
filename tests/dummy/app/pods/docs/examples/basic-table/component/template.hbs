@@ -1,9 +1,0 @@
-{{! BEGIN-SNIPPET docs-examples-basic-table.hbs }}
-<div class="demo-container">
-  {{#ember-table as |t|}}
-    {{ember-thead api=t columns=columns fillMode="equal-column"}}
-
-    {{ember-tbody api=t rows=rows selectedRows=selectedRows onSelect="onSelect"}}
-  {{/ember-table}}
-</div>
-{{! END-SNIPPET }}

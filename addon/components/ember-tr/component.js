@@ -36,14 +36,13 @@ export default class EmberTableRow extends Component {
   isSelected;
 
   click(event) {
-    let api = this.get('api');
-    let rowIndex = this.get('rowMeta.index');
+    let rowMeta = this.get('rowMeta');
 
-    if (api && api.selectRow) {
-      api.selectRow(rowIndex, {
-        toggle: event.ctrlKey || event.metaKey,
-        range: event.shiftKey,
-      });
+    if (rowMeta) {
+      let toggle = event.ctrlKey || event.metaKey;
+      let range = event.shiftKey;
+
+      rowMeta.select({ toggle, range });
     }
 
     this.sendEventAction('onClick', event);

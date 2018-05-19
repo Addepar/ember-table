@@ -1,6 +1,5 @@
 import Component from '@ember/component';
 import { htmlSafe } from '@ember/string';
-import { get } from '@ember/object';
 
 import { action, computed } from '@ember-decorators/object';
 import { readOnly, equal } from '@ember-decorators/object/computed';
@@ -19,14 +18,6 @@ export default class EmberTd extends Component {
   @type('object')
   api;
 
-  @argument
-  @type(optional(Action))
-  onClick;
-
-  @argument
-  @type(optional(Action))
-  onDoubleClick;
-
   @readOnly('api.cellValue') cellValue;
   @readOnly('api.cellMeta') cellMeta;
 
@@ -35,6 +26,20 @@ export default class EmberTd extends Component {
 
   @readOnly('api.rowValue') rowValue;
   @readOnly('api.rowMeta') rowMeta;
+
+  @equal('columnMeta.index', 0)
+  isFirstColumn;
+
+  @readOnly('rowMeta.canMultiSelect') canMultiSelect;
+  @readOnly('rowMeta.canCollapse') canCollapse;
+
+  @argument
+  @type(optional(Action))
+  onClick;
+
+  @argument
+  @type(optional(Action))
+  onDoubleClick;
 
   @className
   @equal('columnMeta.isFixed', 'left')
@@ -66,19 +71,22 @@ export default class EmberTd extends Component {
     return htmlSafe(style);
   }
 
-  @computed('columnMeta.index', '')
-  get hasCheckbox() {
-    return this.get('columnMeta.index') === 0 && this.get('api.selectMode') === 'multiple';
+  @action
+  onSelectionToggled() {
+    let rowMeta = this.get('rowMeta');
+
+    rowMeta.select({ toggle: true });
+
+    this.sendFullAction('onSelect');
   }
 
   @action
-  onCheckboxToggled() {
-    let api = this.get('api');
-    let rowIndex = this.get('rowMeta.index');
+  onCollapseToggled() {
+    let rowMeta = this.get('rowMeta');
 
-    api.selectRow(rowIndex, { toggle: true });
+    rowMeta.toggleCollapse();
 
-    this.sendAction('onChecked');
+    this.sendFullAction('onCollapse');
   }
 
   @action
@@ -89,22 +97,15 @@ export default class EmberTd extends Component {
   }
 
   click(event) {
-    let rowValue = this.get('rowValue');
-    let rowIndex = this.get('rowMeta.index');
-    let api = this.get('api');
-
-    if (this.get('columnMeta.index') === 0 && Array.isArray(get(rowValue, 'children'))) {
-      api.toggleRowCollapse(rowIndex);
-    }
-
-    this.sendEventAction('onClick', event);
+    this.sendFullAction('onClick', { event });
   }
 
   doubleClick(event) {
-    this.sendEventAction('onDoubleClick', event);
+    this.sendFullAction('onDoubleClick', { event });
   }
 
-  sendEventAction(action, event) {
+  sendFullAction(action, values = {}) {
+    // If the action doesn't exist, it's not being used. Do nothing
     if (!this.get(action)) {
       return;
     }
@@ -118,9 +119,7 @@ export default class EmberTd extends Component {
     let rowValue = this.get('rowValue');
     let rowMeta = this.get('rowMeta');
 
-    this.sendAction(action, {
-      event,
-
+    Object.assign(values, {
       cellValue,
       cellMeta,
 
@@ -130,5 +129,7 @@ export default class EmberTd extends Component {
       rowValue,
       rowMeta,
     });
+
+    this.sendAction(action, values);
   }
 }

@@ -4,21 +4,11 @@
   containerSelector=".ember-table"
   bufferSize=20
 
-  as |row rowIndex|
+  as |rowValue|
 }}
   {{#-ember-table-private/row-wrapper
-    rowValue=row.value
-    rowParents=row.parents
-    rowIsCollapsed=row.isCollapsed
-
-    rowIndex=rowIndex
-    selectedRows=selectedRows
+    rowValue=rowValue
     columns=columns
-
-    onSelect=onSelect
-    selectMode=selectMode
-    selectRow=selectRow
-    toggleRowCollapse=toggleRowCollapse
 
     cellMetaCache=cellMetaCache
     columnMetaCache=columnMetaCache
