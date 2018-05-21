@@ -100,12 +100,29 @@ export default class EmberTHead extends Component {
   */
   columnMetaCache = new Map();
 
-  columnTree = ColumnTree.create({ component: this, columnMetaCache: this.columnMetaCache });
+  columnTree = ColumnTree.create({
+    sendAction: this.sendAction.bind(this),
+    columnMetaCache: this.columnMetaCache,
+  });
 
   constructor() {
     super(...arguments);
 
+    this._updateColumnTree();
+
+    this.addObserver('columns', this._updateColumnTree);
+    this.addObserver('fillMode', this._updateColumnTree);
+    this.addObserver('resizeMode', this._updateColumnTree);
+    this.addObserver('widthConstraint', this._updateColumnTree);
+
     this.get('api').registerColumnTree(this.columnTree);
+  }
+
+  _updateColumnTree() {
+    this.columnTree.set('columns', this.get('columns'));
+    this.columnTree.set('fillMode', this.get('fillMode'));
+    this.columnTree.set('resizeMode', this.get('resizeMode'));
+    this.columnTree.set('widthConstraint', this.get('widthConstraint'));
   }
 
   didInsertElement() {

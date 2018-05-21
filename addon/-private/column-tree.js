@@ -422,7 +422,6 @@ export default class ColumnTree extends EmberObject {
 
     this.token = new Token();
 
-    this.sortColumnsByFixed();
     addObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed);
     addObserver(this, 'widthConstraint', this.ensureWidthConstraint);
   }
@@ -431,16 +430,10 @@ export default class ColumnTree extends EmberObject {
     super.destroy();
     this.token.cancel();
     get(this, 'root').destroy();
-    set(this, 'component', null);
 
     removeObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed);
     removeObserver(this, 'widthConstraint', this.ensureWidthConstraint);
   }
-
-  @readOnly('component.columns') columns;
-  @readOnly('component.fillMode') fillMode;
-  @readOnly('component.resizeMode') resizeMode;
-  @readOnly('component.widthConstraint') widthConstraint;
 
   @computed('columns')
   get root() {
@@ -543,6 +536,10 @@ export default class ColumnTree extends EmberObject {
   };
 
   ensureWidthConstraint = () => {
+    if (!this.container) {
+      return;
+    }
+
     let containerWidth = getInnerClientRect(this.container).width * this.scale;
     let treeWidth = get(this, 'root.width');
     let columns = get(this, 'root.subcolumnNodes');
@@ -732,7 +729,7 @@ export default class ColumnTree extends EmberObject {
 
     this.container.classList.remove('et-unselectable');
 
-    this.component.sendAction('onReorder', get(node, 'column'), get(closestColumn, 'column'));
+    this.sendAction('onReorder', get(node, 'column'), get(closestColumn, 'column'));
   }
 
   startResize(node, clientX) {
@@ -806,7 +803,7 @@ export default class ColumnTree extends EmberObject {
 
     this.container.classList.remove('et-unselectable');
 
-    this.component.sendAction('onResize', get(node, 'column'));
+    this.sendAction('onResize', get(node, 'column'));
   }
 
   updateScroll(node, stopAtLeft, stopAtRight, callback) {

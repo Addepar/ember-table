@@ -55,7 +55,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
   test('basic tree works', function(assert) {
     tree = CollapseTree.create({
       rows: generateTree([0, [1, [2, 3], 4, [5, 6]]]),
-      component: { enableTree: true },
+      enableTree: true,
       rowMetaCache,
     });
 
@@ -76,7 +76,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
   test('can disable tree', function(assert) {
     tree = CollapseTree.create({
       rows: generateTree([0, [1, 2]]),
-      component: { enableTree: false },
+      enableTree: false,
       rowMetaCache,
     });
 
@@ -89,7 +89,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
       assert.equal(metaFor(tree.objectAt(i)).get('depth'), expectedDepth[i]);
     }
 
-    tree.set('component.enableTree', true);
+    tree.set('enableTree', true);
 
     expectedDepth = [0, 1, 1];
 
@@ -104,7 +104,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
   test('works with multiroot tree', function(assert) {
     tree = CollapseTree.create({
       rows: generateTree([0, [1, [2, 3], 4, [5, 6]], 7, [8, 9]]),
-      component: { enableTree: true },
+      enableTree: true,
       rowMetaCache,
     });
 
@@ -121,7 +121,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
   test('intermediate leaf nodes work', function(assert) {
     tree = CollapseTree.create({
       rows: generateTree([0, [1, 2, [3, 4], 5, 6, [7, 8]]]),
-      component: { enableTree: true },
+      enableTree: true,
       rowMetaCache,
     });
 
@@ -140,7 +140,8 @@ module('Unit | Private | CollapseTree', function(hooks) {
     tree = CollapseTree.create({
       rows,
       rowMetaCache,
-      component: { enableTree: true, enableCollapse: true },
+      enableTree: true,
+      enableCollapse: true,
     });
 
     set(rows[0].children[0], 'isCollapsed', true);
@@ -173,7 +174,8 @@ module('Unit | Private | CollapseTree', function(hooks) {
     tree = CollapseTree.create({
       rows,
       rowMetaCache,
-      component: { enableTree: true, enableCollapse: true },
+      enableTree: true,
+      enableCollapse: true,
     });
 
     metaFor(tree.objectAt(1)).toggleCollapse();
@@ -207,7 +209,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
   test('can disable collapse', function(assert) {
     let rows = generateTree([0, [1, [2, 3], 4, [5, 6]]]);
-    tree = CollapseTree.create({ rows, rowMetaCache, component: { enableTree: true } });
+    tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
 
     assert.equal(metaFor(tree.objectAt(1)).get('canCollapse'), false, 'collapse is disabled');
 
@@ -223,7 +225,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
       assert.equal(metaFor(tree.objectAt(i)).get('depth'), expectedDepth[i]);
     }
 
-    tree.set('component.enableCollapse', true);
+    tree.set('enableCollapse', true);
     metaFor(tree.objectAt(1)).toggleCollapse();
 
     expectedValue = [0, 1, 4, 5, 6];
@@ -235,7 +237,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
   test('can update nodes', function(assert) {
     let rows = generateTree([0, [1, [2, 3], 6, [7, 8]]]);
     let subrows = generateTree([4, 5]);
-    tree = CollapseTree.create({ rows, rowMetaCache, component: { enableTree: true } });
+    tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
 
     rows[0].children[0].children.pushObjects(subrows);
     rows[0].children[1].children.popObject();
@@ -253,7 +255,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
   test('can add and remove children', function(assert) {
     let rows = generateTree([0, [1, [2, 3], 6, [7, 8]]]);
     let subrows = generateTree([4, 5]);
-    tree = CollapseTree.create({ rows, rowMetaCache, component: { enableTree: true } });
+    tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
 
     set(rows[0].children[0].children[1], 'children', subrows);
     set(rows[0].children[1], 'children', null);
