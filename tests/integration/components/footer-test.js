@@ -14,6 +14,11 @@ module('Integration | footer', function() {
 
       assert.ok(table.footer.isPresent, 'Footer is present in the table');
       assert.equal(table.footer.rows.length, 3, 'correct number of footer rows rendered');
+
+      this.set('footerRows', []);
+
+      assert.ok(table.footer.isPresent, 'Footer is present in the table');
+      assert.equal(table.footer.rows.length, 0, 'Footer rows are removed');
     });
   });
 });
