@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 
-import { computed } from '@ember-decorators/object';
+import { action, computed } from '@ember-decorators/object';
 import { generateRows } from '../../../../../utils/generators';
 
 export default class SimpleController extends Controller {
@@ -22,6 +22,29 @@ export default class SimpleController extends Controller {
     ];
   }
 
-  resizeCount = 0;
-  reorderCount = 0;
+  dropdownActions = [
+    {
+      name: 'foo',
+      text: 'Foo',
+    },
+    {
+      isDivider: true,
+    },
+    {
+      name: 'bar',
+      text: 'Bar',
+      subActions: [
+        {
+          name: 'baz',
+          text: 'Baz',
+        },
+      ],
+    },
+  ];
+
+  @action
+  logActionName(name) {
+    // eslint-disable-next-line
+    console.log(name);
+  }
 }

@@ -8,19 +8,31 @@ export { generateColumns, generateRows };
 const fullTable = hbs`
   <div style="height: 500px;">
     {{#ember-table data-test-ember-table=true as |t|}}
-      {{ember-thead
+      {{#ember-thead
         api=t
 
         columns=columns
+        sorts=sorts
         resizeMode=resizeMode
         fillMode=fillMode
         enableResize=enableResize
         enableReorder=enableReorder
         widthConstraint=widthConstraint
 
+        onUpdateSorts="onUpdateSorts"
         onReorder="onReorder"
         onResize="onResize"
+
+        as |h|
       }}
+        {{#ember-tr api=h as |r|}}
+          {{ember-th
+            api=r
+            dropdownActions=dropdownActions
+            onDropdownAction="onDropdownAction"
+          }}
+        {{/ember-tr}}
+      {{/ember-thead}}
 
       {{#ember-tbody
         api=t
@@ -79,6 +91,12 @@ const defaultActions = {
     this.set('selectedRows', newRows);
   },
 
+  onUpdateSorts(sorts) {
+    this.set('sorts', sorts);
+  },
+
+  onDropdownAction() {},
+  onColumnHeaderAction() {},
   onReorder() {},
   onResize() {},
 

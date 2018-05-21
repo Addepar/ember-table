@@ -1,7 +1,26 @@
 {{#if hasBlock}}
   {{yield columnValue columnMeta}}
 {{else}}
-  {{columnValue.name}}
+
+  <button data-test-sort-toggle onclick={{toggleSorting}}>
+    {{columnValue.name}}
+
+    {{#if isSorted}}
+      <div data-test-sort-indicator class="sort-indicator {{if isSortedAsc 'ascending' 'descending'}}">
+        {{#if isMultiSorted}}
+          {{sortIndex}}
+        {{/if}}
+      </div>
+    {{/if}}
+  </button>
+
+  {{#if dropdownActions.length}}
+    {{ember-th-action-dropdown
+      dropdownActions=dropdownActions
+      onDropdownAction="sendDropdownAction"
+      data-test-action-dropdown=true
+    }}
+  {{/if}}
 {{/if}}
 
 {{#if resizeEnabled}}

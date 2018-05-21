@@ -10,6 +10,8 @@ import { Action } from '@ember-decorators/argument/types';
 import { computed } from '@ember-decorators/object';
 import { tagName } from '@ember-decorators/component';
 
+import { sortMultiple, compareValues } from '../../-private/utils/sort';
+
 import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
 
 import layout from './template';
@@ -34,10 +36,37 @@ export default class EmberTHead extends Component {
   @type(Array)
   columns;
 
+  /**
+    An ordered array of the sorts applied to the table
+  */
+  @argument({ defaultIfUndefined: true })
+  @type(Array)
+  sorts = [];
+
+  /**
+    An optional sort
+  */
+  @argument({ defaultIfUndefined: true })
+  @type(Function)
+  sortFunction = sortMultiple;
+
+  /**
+    An ordered array of the sorts applied to the table
+  */
+  @argument({ defaultIfUndefined: true })
+  @type(Function)
+  compareFunction = compareValues;
+
+  /**
+    Flag that toggles reordering in the table
+  */
   @argument({ defaultIfUndefined: true })
   @type('boolean')
   enableReorder = true;
 
+  /**
+    Flag that toggles resizing in the table
+  */
   @argument({ defaultIfUndefined: true })
   @type('boolean')
   enableResize = true;
@@ -72,14 +101,28 @@ export default class EmberTHead extends Component {
   widthConstraint = WIDTH_CONSTRAINT.NONE;
 
   /**
-    An action passed in the column reordering event
+    An action that is sent when sorts is updated
+  */
+  @argument
+  @type(optional(Action))
+  onHeaderAction = null;
+
+  /**
+    An action that is sent when sorts is updated
+  */
+  @argument
+  @type(optional(Action))
+  onUpdateSorts = null;
+
+  /**
+    An action that is sent when columns are reordered
   */
   @argument
   @type(optional(Action))
   onReorder = null;
 
   /**
-    An action passed in the column resizing event
+    An action that is sent when columns are resized
   */
   @argument
   @type(optional(Action))
@@ -108,14 +151,24 @@ export default class EmberTHead extends Component {
   constructor() {
     super(...arguments);
 
+    this._updateApi();
     this._updateColumnTree();
+
+    this.addObserver('sorts', this._updateApi);
+    this.addObserver('sortFunction', this._updateApi);
+    this.addObserver('reorderFunction', this._updateApi);
 
     this.addObserver('columns', this._updateColumnTree);
     this.addObserver('fillMode', this._updateColumnTree);
     this.addObserver('resizeMode', this._updateColumnTree);
     this.addObserver('widthConstraint', this._updateColumnTree);
+  }
 
-    this.get('api').registerColumnTree(this.columnTree);
+  _updateApi() {
+    this.set('api.columnTree', this.columnTree);
+    this.set('api.sorts', this.get('sorts'));
+    this.set('api.sortFunction', this.get('sortFunction'));
+    this.set('api.compareFunction', this.get('compareFunction'));
   }
 
   _updateColumnTree() {
@@ -149,9 +202,17 @@ export default class EmberTHead extends Component {
     super.willDestroyElement(...arguments);
   }
 
-  @computed('columnTree.rows.[]', 'enableReorder', 'enableResize', 'fillMode')
+  @computed(
+    'columnTree.rows.[]',
+    'sorts.[]',
+    'headerActions.[]',
+    'enableReorder',
+    'enableResize',
+    'fillMode'
+  )
   get wrappedRows() {
     let rows = this.get('columnTree.rows');
+    let sorts = this.get('sorts');
     let columnMetaCache = this.get('columnMetaCache');
     let enableReorder = this.get('enableReorder');
     let enableResize = this.get('enableResize');
@@ -167,12 +228,18 @@ export default class EmberTHead extends Component {
               columnMeta,
               enableReorder,
               enableResize,
+              sorts,
+              sendUpdateSort: this.sendUpdateSort,
             };
           })
         )
       )
     );
   }
+
+  sendUpdateSort = newSorts => {
+    this.sendAction('onUpdateSorts', newSorts);
+  };
 
   fillupHandler = () => {
     if (this.isDestroying) {
