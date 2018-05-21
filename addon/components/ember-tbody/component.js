@@ -96,15 +96,35 @@ export default class EmberTBody extends Component {
   */
   rowMetaCache = new Map();
 
-  collapseTree = CollapseTree.create({ component: this, rowMetaCache: this.rowMetaCache });
+  collapseTree = CollapseTree.create({
+    sendAction: this.sendAction.bind(this),
+    rowMetaCache: this.rowMetaCache,
+  });
 
   constructor() {
     super(...arguments);
+
+    this._updateCollapseTree();
+
+    this.addObserver('enableCollapse', this._updateCollapseTree);
+    this.addObserver('enableTree', this._updateCollapseTree);
+    this.addObserver('selectedRows', this._updateCollapseTree);
+    this.addObserver('selectMode', this._updateCollapseTree);
+    this.addObserver('onSelect', this._updateCollapseTree);
 
     assert(
       'You must create an {{ember-thead}} with columns before creating an {{ember-tbody}}',
       !!this.get('api.columnTree')
     );
+  }
+
+  _updateCollapseTree() {
+    let onSelect = this.get('onSelect');
+
+    this.collapseTree.set('enableCollapse', this.get('enableCollapse'));
+    this.collapseTree.set('enableTree', this.get('enableTree'));
+    this.collapseTree.set('selectedRows', this.get('selectedRows'));
+    this.collapseTree.set('selectMode', onSelect ? this.get('selectMode') : 'none');
   }
 
   willDestroy() {

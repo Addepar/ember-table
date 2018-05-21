@@ -105,7 +105,7 @@ class TableRowMeta extends EmberObject {
     let rowMetaCache = get(tree, 'rowMetaCache');
 
     if (selectMode === SELECT_MODE.SINGLE) {
-      tree.component.sendAction('onSelect', [rowValue]);
+      tree.sendAction('onSelect', [rowValue]);
       return;
     }
 
@@ -181,7 +181,7 @@ class TableRowMeta extends EmberObject {
 
     selectedRows = emberA(Array.from(selectedRows));
 
-    tree.component.sendAction('onSelect', selectedRows);
+    tree.sendAction('onSelect', selectedRows);
 
     tree._lastSelectedIndex = rowIndex;
   }
@@ -582,19 +582,7 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     // Whenever the root node's length changes we need to propogate the change to
     // users of the tree, and since the tree is meant to work like an array we should
     // trigger a change on the `[]` key as well.
-    addObserver(this, 'root.length', () => {
-      notifyPropertyChange(this, '[]');
-    });
-  }
-
-  @readOnly('component.enableCollapse') enableCollapse;
-  @readOnly('component.enableTree') enableTree;
-  @readOnly('component.selectedRows') selectedRows;
-
-  @computed('component.{selectMode,onSelect}')
-  get selectMode() {
-    let onSelect = this.get('component.onSelect');
-    return onSelect ? this.get('component.selectMode') : 'none';
+    addObserver(this, 'root.length', () => notifyPropertyChange(this, '[]'));
   }
 
   destroy() {
