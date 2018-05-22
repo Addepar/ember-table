@@ -96,6 +96,9 @@ class TableRowMeta extends EmberObject {
   }
 
   select({ toggle, range }) {
+    if (get(this, 'isDestroying') || get(this, 'isDestroyed')) {
+      return;
+    }
     let tree = get(this, '_tree');
     let rowValue = get(this, '_rowValue');
     let rowIndex = get(this, 'index');
