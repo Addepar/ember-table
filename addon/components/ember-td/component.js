@@ -89,13 +89,6 @@ export default class EmberTd extends Component {
     this.sendFullAction('onCollapse');
   }
 
-  @action
-  onCheckboxClicked(event) {
-    // Prevent the row from triggering any click events since this means that
-    // the checkbox was clicked and we want to toggle via that
-    event.stopPropagation();
-  }
-
   click(event) {
     this.sendFullAction('onClick', { event });
   }
