@@ -8,7 +8,8 @@ import { readOnly } from '@ember-decorators/object/computed';
 import { scheduler, Token } from 'ember-raf-scheduler';
 
 import { getOrCreate } from './meta-cache';
-import { move, splice, mergeSort } from './utils/array';
+import { move, splice } from './utils/array';
+import { mergeSort } from './utils/sort';
 import { getScale, getOuterClientRect, getInnerClientRect } from './utils/element';
 import { MainIndicator, DropIndicator } from './utils/reorder-indicators';
 import { notifyPropertyChange } from './utils/ember';

@@ -59,4 +59,7 @@ export default class ColumnsController extends Controller {
   reorderEnabled = false;
   resizeModeFluid = false;
   // END-SNIPPET
+
+  resizeCount = 0;
+  reorderCount = 0;
 }

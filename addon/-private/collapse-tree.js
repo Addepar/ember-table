@@ -9,6 +9,7 @@ import { addObserver } from '@ember/object/observers';
 import { objectAt } from './utils/array';
 import { notifyPropertyChange } from './utils/ember';
 import { getOrCreate } from './meta-cache';
+import { mergeSort } from './utils/sort';
 
 export const SELECT_MODE = {
   SINGLE: 'single',
@@ -69,7 +70,7 @@ class TableRowMeta extends EmberObject {
     return selectedRows.includes(rowValue) || get(this, '_parentMeta.isSelected');
   }
 
-  @computed('_tree.{enableTree,enableCollapse}', 'value.children.[]')
+  @computed('_tree.{enableTree,enableCollapse}', '_rowValue.children.[]')
   get canCollapse() {
     if (!get(this, '_tree.enableTree') || !get(this, '_tree.enableCollapse')) {
       return false;
@@ -259,7 +260,7 @@ function closestLessThan(values, target) {
   Single node of a CollapseTree
 */
 class CollapseTreeNode extends EmberObject {
-  _children = null;
+  _childNodes = null;
 
   constructor() {
     super(...arguments);
@@ -291,7 +292,7 @@ class CollapseTreeNode extends EmberObject {
   destroy() {
     super.destroy(...arguments);
 
-    this.cleanChildren();
+    this.cleanChildNodes();
   }
 
   /**
@@ -299,14 +300,14 @@ class CollapseTreeNode extends EmberObject {
     node is destroyed. If children are not destroyed, they will leak memory due
     to dangling references in Ember Meta.
   */
-  cleanChildren() {
-    if (this._children) {
-      for (let child of this._children) {
+  cleanChildNodes() {
+    if (this._childNodes) {
+      for (let child of this._childNodes) {
         if (child instanceof CollapseTreeNode) {
           child.destroy();
         }
       }
-      this._children = null;
+      this._childNodes = null;
     }
   }
 
@@ -326,6 +327,23 @@ class CollapseTreeNode extends EmberObject {
     }
 
     return !get(this, 'value.children').some(child => isArray(get(child, 'children')));
+  }
+
+  @computed('value.children.[]', 'tree.{sorts.[],sortFunction,compareFunction}')
+  get sortedChildren() {
+    let valueChildren = get(this, 'value.children');
+
+    let sorts = get(this, 'tree.sorts');
+    let sortFunction = get(this, 'tree.sortFunction');
+    let compareFunction = get(this, 'tree.compareFunction');
+
+    if (sortFunction && compareFunction && sorts && get(sorts, 'length') > 0) {
+      valueChildren = mergeSort(valueChildren, (itemA, itemB) => {
+        return sortFunction(itemA, itemB, sorts, compareFunction);
+      });
+    }
+
+    return valueChildren;
   }
 
   /**
@@ -355,25 +373,25 @@ class CollapseTreeNode extends EmberObject {
 
     @type Array<Node|Array<object>>
   */
-  @computed('value.children.[]', 'isLeaf')
-  get children() {
-    this.cleanChildren();
+  @computed('sortedChildren.[]', 'isLeaf')
+  get childNodes() {
+    this.cleanChildNodes();
 
     if (get(this, 'isLeaf')) {
       return null;
     }
 
-    let valueChildren = get(this, 'value.children');
+    let sortedChildren = get(this, 'sortedChildren');
     let tree = get(this, 'tree');
     let children = [];
     let sliceStart = false;
 
-    valueChildren.forEach((child, index) => {
+    sortedChildren.forEach((child, index) => {
       let grandchildren = get(child, 'children');
 
       if (isArray(grandchildren) && get(grandchildren, 'length') > 0) {
         if (sliceStart !== false) {
-          children.push(valueChildren.slice(sliceStart, index));
+          children.push(sortedChildren.slice(sliceStart, index));
           sliceStart = false;
         }
 
@@ -384,10 +402,10 @@ class CollapseTreeNode extends EmberObject {
     });
 
     if (sliceStart !== false) {
-      children.push(valueChildren.slice(sliceStart));
+      children.push(sortedChildren.slice(sliceStart));
     }
 
-    this._children = children;
+    this._childNodes = children;
 
     return children;
   }
@@ -403,14 +421,20 @@ class CollapseTreeNode extends EmberObject {
         length of its value-children.
     3. Otherwise, the length is the sum of the lengths of its children.
   */
-  @computed('rowMeta.isCollapsed', 'value.children.[]', 'tree.enableTree', 'isLeaf')
+  @computed(
+    'childNodes.[]',
+    'sortedChildren.[]',
+    'isLeaf',
+    'rowMeta.isCollapsed',
+    'tree.enableTree'
+  )
   get length() {
     if (get(this, 'rowMeta.isCollapsed') === true) {
       return 1;
     } else if (get(this, 'isLeaf')) {
-      return 1 + get(this, 'value.children.length');
+      return 1 + get(this, 'sortedChildren.length');
     } else {
-      return 1 + get(this, 'children').reduce((sum, child) => sum + get(child, 'length'), 0);
+      return 1 + get(this, 'childNodes').reduce((sum, child) => sum + get(child, 'length'), 0);
     }
   }
 
@@ -455,7 +479,7 @@ class CollapseTreeNode extends EmberObject {
     let offset = 0;
     let offsetList = [];
 
-    for (let child of get(this, 'children')) {
+    for (let child of get(this, 'childNodes')) {
       offsetList.push(offset);
       offset += get(child, 'length');
     }
@@ -498,19 +522,19 @@ class CollapseTreeNode extends EmberObject {
     let tree = get(this, 'tree');
 
     if (get(this, 'isLeaf')) {
-      let value = objectAt(get(this, 'value.children'), normalizedIndex);
+      let value = objectAt(get(this, 'sortedChildren'), normalizedIndex);
       setupRowMeta(tree, value, get(this, 'value'));
 
       return value;
     }
 
-    let children = get(this, 'children');
+    let childNodes = get(this, 'childNodes');
     let offsetList = get(this, 'offsetList');
     let offsetIndex = closestLessThan(offsetList, normalizedIndex);
 
     normalizedIndex = normalizedIndex - offsetList[offsetIndex];
 
-    let child = children[offsetIndex];
+    let child = childNodes[offsetIndex];
 
     if (Array.isArray(child)) {
       let value = child[normalizedIndex];

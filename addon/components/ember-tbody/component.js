@@ -106,6 +106,10 @@ export default class EmberTBody extends Component {
 
     this._updateCollapseTree();
 
+    this.addObserver('api.sorts', this._updateCollapseTree);
+    this.addObserver('api.sortFunction', this._updateCollapseTree);
+    this.addObserver('api.compareFunction', this._updateCollapseTree);
+
     this.addObserver('enableCollapse', this._updateCollapseTree);
     this.addObserver('enableTree', this._updateCollapseTree);
     this.addObserver('selectedRows', this._updateCollapseTree);
@@ -120,6 +124,10 @@ export default class EmberTBody extends Component {
 
   _updateCollapseTree() {
     let onSelect = this.get('onSelect');
+
+    this.collapseTree.set('sorts', this.get('api.sorts'));
+    this.collapseTree.set('sortFunction', this.get('api.sortFunction'));
+    this.collapseTree.set('compareFunction', this.get('api.compareFunction'));
 
     this.collapseTree.set('enableCollapse', this.get('enableCollapse'));
     this.collapseTree.set('enableTree', this.get('enableTree'));

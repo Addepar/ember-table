@@ -1,22 +1,29 @@
 # Header Actions
 
-Headers send the `onResize` and `onReorder` actions whenever a resize or a
-reorder has occured.
+It's a common use case in tables to have dropdown menus in their headers. You
+can pass a `dropdownActions` array to the header cells directly to get a
+dropdown that contains actions.
 
 {{#docs-demo as |demo|}}
   {{#demo.example}}
     {{! BEGIN-SNIPPET docs-example-header-action.hbs }}
-    <p>Resized {{resizeCount}} times</p>
-    <p>Reorder {{reorderCount}} times</p>
-
     <div class="demo-container small">
       {{#ember-table as |t|}}
-        {{ember-thead
+        {{#ember-thead
           api=t
           columns=columns
-          onResize=(action (mut resizeCount) (add resizeCount 1))
-          onReorder=(action (mut reorderCount) (add reorderCount 1))
+
+          as |h|
         }}
+          {{#ember-tr api=h as |r|}}
+            {{ember-th
+              api=r
+
+              onDropdownAction=(action logActionName)
+              dropdownActions=dropdownActions
+            }}
+          {{/ember-tr}}
+        {{/ember-thead}}
 
         {{ember-tbody api=t rows=rows}}
       {{/ember-table}}
