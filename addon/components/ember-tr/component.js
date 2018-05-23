@@ -7,6 +7,8 @@ import { required } from '@ember-decorators/argument/validation';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 
+import { closest } from '../../-private/utils/element';
+
 import layout from './template';
 
 @tagName('tr')
@@ -36,13 +38,17 @@ export default class EmberTableRow extends Component {
   isSelected;
 
   click(event) {
-    let rowMeta = this.get('rowMeta');
+    let inputParent = closest(event.target, 'input, button, label, a, select');
 
-    if (rowMeta) {
-      let toggle = event.ctrlKey || event.metaKey;
-      let range = event.shiftKey;
+    if (!inputParent) {
+      let rowMeta = this.get('rowMeta');
 
-      rowMeta.select({ toggle, range });
+      if (rowMeta) {
+        let toggle = event.ctrlKey || event.metaKey;
+        let range = event.shiftKey;
+
+        rowMeta.select({ toggle, range });
+      }
     }
 
     this.sendEventAction('onClick', event);
