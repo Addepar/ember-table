@@ -19,6 +19,7 @@ Router.map(function() {
         this.route('subcolumns');
         this.route('fixed-columns');
         this.route('size-constraints');
+        this.route('sorting');
         this.route('actions');
       });
 

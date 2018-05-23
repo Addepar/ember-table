@@ -14,8 +14,50 @@ export default class BasicController extends Controller {
     return generateColumns(20);
   }
 
+  @computed
+  get headerActions() {
+    return [
+      {
+        name: 'foo',
+        text: 'Foo',
+      },
+      {
+        name: 'bar',
+        text: 'Bar',
+      },
+      {
+        isDivider: true,
+      },
+      {
+        name: 'baz',
+        text: 'Baz',
+        subActions: [
+          {
+            name: 'sub foo',
+            text: 'Sub Foo',
+          },
+          {
+            name: 'sub bar',
+            text: 'Sub Bar',
+          },
+        ],
+      },
+    ];
+  }
+
   @action
   onSelect(selectedRows) {
     this.set('selectedRows', selectedRows);
+  }
+
+  @action
+  onUpdateSorts(sorts) {
+    this.set('sorts', sorts);
+  }
+
+  @action
+  onHeaderAction(action, args) {
+    // eslint-disable-next-line
+    console.log(action, args);
   }
 }
