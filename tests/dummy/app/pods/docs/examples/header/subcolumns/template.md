@@ -11,9 +11,9 @@ lowest level of subcolumns (the leaves of the column tree). This means that
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-subcolumns.hbs }}
         {{#ember-table as |t|}}
-          {{ember-thead api=t columns=simpleColumns}}
+          {{t.head columns=simpleColumns}}
 
-          {{ember-tbody api=t rows=rows}}
+          {{t.body rows=rows}}
         {{/ember-table}}
       {{! END-SNIPPET }}
     </div>
@@ -36,9 +36,9 @@ randomly, demonstrating the flexibility of subcolumns.
 
 <div class="demo-container">
   {{#ember-table as |t|}}
-    {{ember-thead api=t columns=complexColumns}}
+    {{t.head columns=complexColumns}}
 
-    {{ember-tbody api=t rows=rows}}
+    {{t.body rows=rows}}
 
   {{/ember-table}}
 

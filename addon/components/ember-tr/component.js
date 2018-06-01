@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { computed } from '@ember-decorators/object';
 import { readOnly } from '@ember-decorators/object/computed';
 import { className, classNames, tagName } from '@ember-decorators/component';
 
@@ -29,9 +30,14 @@ export default class EmberTableRow extends Component {
   @type(optional(Action))
   onDoubleClick;
 
-  @readOnly('api.rowValue') rowValue;
-  @readOnly('api.rowMeta') rowMeta;
-  @readOnly('api.cells') cells;
+  @computed('api.api')
+  get unwrappedApi() {
+    return this.get('api.api') || this.get('api');
+  }
+
+  @readOnly('unwrappedApi.rowValue') rowValue;
+  @readOnly('unwrappedApi.rowMeta') rowMeta;
+  @readOnly('unwrappedApi.cells') cells;
 
   @className
   @readOnly('rowMeta.isSelected')

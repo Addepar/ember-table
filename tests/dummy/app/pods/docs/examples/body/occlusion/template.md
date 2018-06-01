@@ -38,11 +38,9 @@ settings. The current options are:
     {{! BEGIN-SNIPPET docs-example-occlusion.hbs }}
     <div class="demo-container">
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody
-          api=t
-
+        {{t.body
           rows=rows
           staticHeight=true
           estimateRowHeight=41

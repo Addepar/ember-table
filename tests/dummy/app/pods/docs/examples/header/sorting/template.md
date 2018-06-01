@@ -11,8 +11,7 @@ or `ctrl`:
     {{! BEGIN-SNIPPET docs-example-sortings.hbs }}
     <div class="demo-container">
       {{#ember-table as |t|}}
-        {{ember-thead
-          api=t
+        {{t.head
           columns=columns
           sorts=sorts
 
@@ -22,7 +21,7 @@ or `ctrl`:
           fillMode='first-column'
         }}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}

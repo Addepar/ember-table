@@ -1,6 +1,18 @@
 {{#each cells as |cell|}}
   {{#if hasBlock}}
-    {{yield cell}}
+    {{#if api.isHeader}}
+      {{yield (hash
+        api=cell
+
+        cell=(component "ember-th" api=cell)
+      )}}
+    {{else}}
+      {{yield (hash
+        api=cell
+
+        cell=(component "ember-td" api=cell)
+      )}}
+    {{/if}}
   {{else if api.isHeader}}
     {{ember-th api=cell}}
   {{else}}

@@ -15,9 +15,9 @@ header and a body, with columns and rows passed to it.
     {{! BEGIN-SNIPPET docs-example-basic-table.hbs }}
     <div class="demo-container">
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}
@@ -40,21 +40,21 @@ This example demonstrates the same table as above, but with each level yielded.
     {{! BEGIN-SNIPPET docs-example-basic-expanded-table.hbs }}
     <div class="demo-container">
       {{#ember-table as |t|}}
-        {{#ember-thead api=t columns=columns as |h|}}
-          {{#ember-tr api=h as |r|}}
-            {{#ember-th api=r as |column|}}
+        {{#t.head columns=columns as |h|}}
+          {{#h.row as |r|}}
+            {{#r.cell as |column|}}
               {{column.name}}
-            {{/ember-th}}
-          {{/ember-tr}}
-        {{/ember-thead}}
+            {{/r.cell}}
+          {{/h.row}}
+        {{/t.head}}
 
-        {{#ember-tbody api=t rows=rows as |b|}}
-          {{#ember-tr api=b as |r|}}
-            {{#ember-td api=r as |value|}}
+        {{#t.body rows=rows as |b|}}
+          {{#b.row as |r|}}
+            {{#r.cell as |value|}}
               {{value}}
-            {{/ember-td}}
-          {{/ember-tr}}
-        {{/ember-tbody}}
+            {{/r.cell}}
+          {{/b.row}}
+        {{/t.body}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}

@@ -9,9 +9,9 @@ objects themselves - they can be anything.
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-rows.hbs }}
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
       {{! END-SNIPPET }}
     </div>
@@ -58,10 +58,9 @@ the table body.
     </div>
     <div class="demo-container small">
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody
-          api=t
+        {{t.body
           rows=rowsWithChildren
           enableTree=treeEnabled
         }}
@@ -95,10 +94,9 @@ table body.
     </div>
     <div class="demo-container small">
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody
-          api=t
+        {{t.body
           rows=rowsWithCollapse
           enableCollapse=collapseEnabled
         }}

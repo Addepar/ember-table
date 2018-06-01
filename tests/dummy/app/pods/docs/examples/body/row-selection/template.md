@@ -9,10 +9,9 @@ control the selection using DDAU:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-row-selection.hbs }}
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody
-          api=t
+        {{t.body
           rows=rows
           onSelect=(action (mut selectedRows))
           selectedRows=selectedRows
@@ -39,10 +38,9 @@ its children _must_ be selected:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-selected-rows.hbs }}
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody
-          api=t
+        {{t.body
           rows=rowWithChildren
           onSelect=(action (mut preselectedRows))
           selectedRows=preselectedRows
@@ -101,10 +99,9 @@ You can pass one of these into the table body as the `selectMode` argument.
 
     <div class="demo-container small">
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody
-          api=t
+        {{t.body
           rows=rowsWithChildren
           selectMode=selectMode
           onSelect=(action (mut selectedRows))

@@ -23,8 +23,13 @@ export default class EmberTBody extends Component {
   @type('object')
   api;
 
-  @readOnly('api.columnTree.leaves') columns;
-  @readOnly('api.columnTree.columnMetaCache') columnMetaCache;
+  @computed('api.api')
+  get unwrappedApi() {
+    return this.get('api.api') || this.get('api');
+  }
+
+  @readOnly('unwrappedApi.columnTree.leaves') columns;
+  @readOnly('unwrappedApi.columnTree.columnMetaCache') columnMetaCache;
 
   /**
     Sets which row selection behavior to follow. Possible values are 'none' (clicking on a row
@@ -106,9 +111,9 @@ export default class EmberTBody extends Component {
 
     this._updateCollapseTree();
 
-    this.addObserver('api.sorts', this._updateCollapseTree);
-    this.addObserver('api.sortFunction', this._updateCollapseTree);
-    this.addObserver('api.compareFunction', this._updateCollapseTree);
+    this.addObserver('unwrappedApi.sorts', this._updateCollapseTree);
+    this.addObserver('unwrappedApi.sortFunction', this._updateCollapseTree);
+    this.addObserver('unwrappedApi.compareFunction', this._updateCollapseTree);
 
     this.addObserver('enableCollapse', this._updateCollapseTree);
     this.addObserver('enableTree', this._updateCollapseTree);
@@ -118,16 +123,16 @@ export default class EmberTBody extends Component {
 
     assert(
       'You must create an {{ember-thead}} with columns before creating an {{ember-tbody}}',
-      !!this.get('api.columnTree')
+      !!this.get('unwrappedApi.columnTree')
     );
   }
 
   _updateCollapseTree() {
     let onSelect = this.get('onSelect');
 
-    this.collapseTree.set('sorts', this.get('api.sorts'));
-    this.collapseTree.set('sortFunction', this.get('api.sortFunction'));
-    this.collapseTree.set('compareFunction', this.get('api.compareFunction'));
+    this.collapseTree.set('sorts', this.get('unwrappedApi.sorts'));
+    this.collapseTree.set('sortFunction', this.get('unwrappedApi.sortFunction'));
+    this.collapseTree.set('compareFunction', this.get('unwrappedApi.compareFunction'));
 
     this.collapseTree.set('enableCollapse', this.get('enableCollapse'));
     this.collapseTree.set('enableTree', this.get('enableTree'));
