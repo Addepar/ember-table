@@ -1,14 +1,18 @@
-import PageObject, { alias, collection, hasClass } from 'ember-classy-page-object';
+import PageObject, { collection, hasClass } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 import { click } from 'ember-native-dom-helpers';
-
-import AddeDropdownPage from '@addepar/pop-menu/test-support/pages/adde-dropdown';
-import AddeSubDropdownPage from '@addepar/pop-menu/test-support/pages/adde-sub-dropdown';
 
 import { mouseDown, mouseMove, mouseUp } from '../../helpers/mouse';
 import { getScale } from '../../helpers/element';
 
 const Header = PageObject.extend({
+  get text() {
+    return findElement(this)
+      .textContent.replace('Toggle Sort', '')
+      .replace(/\s+/g, ' ')
+      .trim();
+  },
+
   /**
    * Retrieves selected header cell width.
    */
@@ -67,53 +71,21 @@ const Header = PageObject.extend({
     await mouseUp(header, startX + deltaX, header.clientHeight / 2);
   },
 
-  sortToggle: {
-    scope: '[data-test-sort-toggle]',
+  /**
+    Helper function to click with options like the meta key and ctrl key set
 
-    /**
-      Helper function to click with options like the meta key and ctrl key set
-
-      @param {Object} options - click event options
-    */
-    async clickWith(options) {
-      await click(findElement(this), options);
-    },
+    @param {Object} options - click event options
+  */
+  async clickWith(options) {
+    await click(findElement(this), options);
   },
+
+  isSortable: hasClass('is-sortable'),
 
   sortIndicator: {
     scope: '[data-test-sort-indicator]',
-    isAscending: hasClass('ascending'),
-    isDescending: hasClass('descending'),
-  },
-
-  actionDropdown: {
-    scope: '[data-test-action-dropdown]',
-
-    dropdown: AddeDropdownPage.extend({
-      scope: '[data-test-action-dropdown-menu]',
-
-      content: {
-        items: collection({
-          scope: 'li > button',
-
-          subDropdown: AddeSubDropdownPage.extend({
-            scope: '[data-test-action-sub-dropdown-menu]',
-
-            content: {
-              items: collection({
-                scope: 'li > button',
-              }),
-            },
-          }),
-
-          subActions: alias('subDropdown.content.items'),
-        }),
-      },
-    }),
-
-    open: alias('dropdown.open'),
-    close: alias('dropdown.close'),
-    items: alias('dropdown.content.items'),
+    isAscending: hasClass('is-ascending'),
+    isDescending: hasClass('is-descending'),
   },
 });
 

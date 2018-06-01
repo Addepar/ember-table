@@ -34,6 +34,10 @@
     z-index: 4;
   }
 
+  th.is-sortable {
+    cursor: pointer;
+  }
+
   thead {
     // sass-lint:disable-block no-duplicate-properties
     position: -webkit-sticky;
@@ -59,5 +63,15 @@
 
   &.et-unselectable {
     user-select: none;
+  }
+
+  .et-sort-toggle {
+    display: none;
+  }
+
+  @media speech {
+    .et-sort-toggle {
+      display: block;
+    }
   }
 }

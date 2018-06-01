@@ -33,15 +33,16 @@ module('Integration | sort', function() {
 
       let firstHeader = table.headers.eq(0);
 
+      assert.ok(firstHeader.isSortable, 'sort class applied correctly');
       assert.ok(checkRowOrder(table, ['Zoe', 'Alex', 'Liz']));
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(checkRowOrder(table, ['Zoe', 'Liz', 'Alex']));
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(checkRowOrder(table, ['Alex', 'Liz', 'Zoe']));
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(checkRowOrder(table, ['Zoe', 'Alex', 'Liz']));
     });
 
@@ -66,10 +67,10 @@ module('Integration | sort', function() {
 
       assert.ok(checkRowOrder(table, ['Zoe 34', 'Alex 43', 'Liz 25']));
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(checkRowOrder(table, ['Zoe 34', 'Liz 25', 'Alex 43']));
 
-      await secondHeader.sortToggle.click();
+      await secondHeader.click();
       assert.ok(checkRowOrder(table, ['Alex 43', 'Zoe 34', 'Liz 25']));
     });
 
@@ -93,7 +94,7 @@ module('Integration | sort', function() {
 
       let firstHeader = table.headers.eq(0);
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
     });
 
     test('sort indicator works', async function(assert) {
@@ -103,17 +104,17 @@ module('Integration | sort', function() {
 
       assert.ok(!firstHeader.sortIndicator.isPresent);
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
 
       assert.ok(firstHeader.sortIndicator.isPresent);
       assert.ok(firstHeader.sortIndicator.isDescending);
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
 
       assert.ok(firstHeader.sortIndicator.isPresent);
       assert.ok(firstHeader.sortIndicator.isAscending);
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
 
       assert.ok(!firstHeader.sortIndicator.isPresent);
     });
@@ -127,12 +128,12 @@ module('Integration | sort', function() {
       assert.ok(!firstHeader.sortIndicator.isPresent);
       assert.ok(!secondHeader.sortIndicator.isPresent);
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
 
       assert.ok(firstHeader.sortIndicator.isPresent);
       assert.ok(firstHeader.sortIndicator.isDescending);
 
-      await secondHeader.sortToggle.click();
+      await secondHeader.click();
 
       assert.ok(!firstHeader.sortIndicator.isPresent);
       assert.ok(secondHeader.sortIndicator.isPresent);
@@ -168,7 +169,7 @@ module('Integration | sort', function() {
         'initial order is correct'
       );
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(
         checkRowOrder(table, ['Zoe 34', 'Zoe 25', 'Zoe 27', 'Alex 34']),
         'sorting by one column is correct'
@@ -179,7 +180,7 @@ module('Integration | sort', function() {
         'sort indicators do not show number well sorted by a single column'
       );
 
-      await secondHeader.sortToggle.clickWith({ metaKey: true });
+      await secondHeader.clickWith({ metaKey: true });
       assert.ok(
         checkRowOrder(table, ['Zoe 34', 'Zoe 27', 'Zoe 25', 'Alex 34']),
         'sorting by second column is correct'
@@ -189,7 +190,7 @@ module('Integration | sort', function() {
       assert.ok(firstHeader.sortIndicator.isDescending, 'sort indicators show correct direction');
       assert.ok(secondHeader.sortIndicator.isDescending, 'sort indicators show correct direction');
 
-      await secondHeader.sortToggle.clickWith({ metaKey: true });
+      await secondHeader.clickWith({ metaKey: true });
       assert.ok(
         checkRowOrder(table, ['Zoe 25', 'Zoe 27', 'Zoe 34', 'Alex 34']),
         'can reverse the order of a secondary column'
@@ -199,7 +200,7 @@ module('Integration | sort', function() {
       assert.ok(firstHeader.sortIndicator.isDescending, 'sort indicators show correct direction');
       assert.ok(secondHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
 
-      await firstHeader.sortToggle.clickWith({ metaKey: true });
+      await firstHeader.clickWith({ metaKey: true });
       assert.ok(
         checkRowOrder(table, ['Zoe 25', 'Zoe 27', 'Alex 34', 'Zoe 34']),
         'can reverse the order of the inital column and push it onto the end of sorts'
@@ -209,7 +210,7 @@ module('Integration | sort', function() {
       assert.ok(firstHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
       assert.ok(secondHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
 
-      await secondHeader.sortToggle.clickWith({ metaKey: true });
+      await secondHeader.clickWith({ metaKey: true });
       assert.ok(
         checkRowOrder(table, ['Alex 34', 'Zoe 34', 'Zoe 25', 'Zoe 27']),
         'can disable a column withot removing all sorts'
@@ -263,7 +264,7 @@ module('Integration | sort', function() {
         ])
       );
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(
         checkRowOrder(table, [
           'Zoe',
@@ -281,7 +282,7 @@ module('Integration | sort', function() {
         ])
       );
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(
         checkRowOrder(table, [
           'Alex',
@@ -299,7 +300,7 @@ module('Integration | sort', function() {
         ])
       );
 
-      await firstHeader.sortToggle.click();
+      await firstHeader.click();
       assert.ok(
         checkRowOrder(table, [
           'Zoe',

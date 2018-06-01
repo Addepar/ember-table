@@ -28,8 +28,6 @@ const fullTable = hbs`
         {{#ember-tr api=h as |r|}}
           {{ember-th
             api=r
-            dropdownActions=dropdownActions
-            onDropdownAction="onDropdownAction"
           }}
         {{/ember-tr}}
       {{/ember-thead}}

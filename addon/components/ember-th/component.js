@@ -3,16 +3,16 @@ import Component from '@ember/component';
 import { htmlSafe } from '@ember/string';
 
 import { action, computed } from '@ember-decorators/object';
-import { readOnly, equal, gt } from '@ember-decorators/object/computed';
+import { readOnly, equal, and } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
-import { type, optional } from '@ember-decorators/argument/type';
-import { Action } from '@ember-decorators/argument/types';
+import { type } from '@ember-decorators/argument/type';
+
+import { closest } from '../../-private/utils/element';
 
 import layout from './template';
 import { get } from '@ember/object';
-import { objectAt } from '../../-private/utils/array';
 
 const COLUMN_RESIZE = 0;
 const COLUMN_REORDERING = 1;
@@ -25,17 +25,6 @@ export default class EmberTh extends Component {
   @required
   @type(Object)
   api;
-
-  /**
-    An array of header action items
-  */
-  @argument({ defaultIfUndefined: true })
-  @type(Array)
-  dropdownActions = [];
-
-  @argument
-  @type(optional(Action))
-  onDropdownAction;
 
   @readOnly('api.columnValue') columnValue;
   @readOnly('api.columnMeta') columnMeta;
@@ -55,38 +44,18 @@ export default class EmberTh extends Component {
   */
   @readOnly('api.sorts') sorts;
 
-  @computed('sorts.[]', 'columnValue.valuePath')
-  get sortIndex() {
-    let valuePath = this.get('columnValue.valuePath');
-    let sorts = this.get('sorts');
+  /**
+    Whether or not the column is sortable. Is true IFF the column is a leaf node
+    onUpdateSorts is set on the thead.
+  */
+  @className
+  @and('api.isSortable', 'columnMeta.isLeaf')
+  isSortable;
 
-    let sortIndex = 0;
-
-    for (let i = 0; i < get(sorts, 'length'); i++) {
-      let sorting = objectAt(sorts, i);
-
-      if (get(sorting, 'valuePath') === valuePath) {
-        sortIndex = i + 1;
-        break;
-      }
-    }
-
-    return sortIndex;
-  }
-
-  @gt('sortIndex', 0)
-  isSorted;
-
-  @gt('sorts.length', 1)
-  isMultiSorted;
-
-  @computed('sorts.[]', 'sortIndex')
-  get isSortedAsc() {
-    let sortIndex = this.get('sortIndex');
-    let sorts = this.get('sorts');
-
-    return get(objectAt(sorts, sortIndex - 1), 'isAscending');
-  }
+  @readOnly('columnMeta.sortIndex') sortIndex;
+  @readOnly('columnMeta.isSorted') isSorted;
+  @readOnly('columnMeta.isMultiSorted') isMultiSorted;
+  @readOnly('columnMeta.isSortedAsc') isSortedAsc;
 
   @equal('columnMeta.index', 0)
   isFirstColumn;
@@ -176,9 +145,27 @@ export default class EmberTh extends Component {
     this.sendAction('onDropdownAction', ...args);
   }
 
-  toggleSorting = event => {
-    let toggle = event.ctrlKey || event.metaKey;
+  click(event) {
+    let isSortable = this.get('isSortable');
+    let inputParent = closest(event.target, 'button:not(.et-sort-toggle), input, label, a, select');
 
+    if (!inputParent && isSortable) {
+      let toggle = event.ctrlKey || event.metaKey;
+
+      this.updateSort({ toggle });
+    }
+  }
+
+  keyUp(event) {
+    let isSortable = this.get('isSortable');
+    let inputParent = closest(event.target, 'button:not(.et-sort-toggle), input, label, a, select');
+
+    if (!inputParent && event.key === 'Enter' && isSortable) {
+      this.updateSort();
+    }
+  }
+
+  updateSort({ toggle }) {
     let valuePath = this.get('columnValue.valuePath');
     let sorts = this.get('sorts');
 
@@ -192,7 +179,7 @@ export default class EmberTh extends Component {
     }
 
     this.get('api').sendUpdateSort(newSortings);
-  };
+  }
 
   pressHandler = event => {
     let resizeEnabled = this.get('resizeEnabled');
