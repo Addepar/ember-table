@@ -3,12 +3,12 @@ import { addObserver, removeObserver } from '@ember/object/observers';
 import { A as emberA } from '@ember/array';
 
 import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { readOnly, gt } from '@ember-decorators/object/computed';
 
 import { scheduler, Token } from 'ember-raf-scheduler';
 
 import { getOrCreate } from './meta-cache';
-import { move, splice } from './utils/array';
+import { objectAt, move, splice } from './utils/array';
 import { mergeSort } from './utils/sort';
 import { getScale, getOuterClientRect, getInnerClientRect } from './utils/element';
 import { MainIndicator, DropIndicator } from './utils/reorder-indicators';
@@ -99,6 +99,39 @@ class TableColumnMeta extends EmberObject {
       return this.get('_node.offsetIndex');
     }
   }
+
+  @computed('_node.{tree.sorts.[],column.valuePath}')
+  get sortIndex() {
+    let valuePath = this.get('_node.column.valuePath');
+    let sorts = this.get('_node.tree.sorts');
+
+    let sortIndex = 0;
+
+    for (let i = 0; i < get(sorts, 'length'); i++) {
+      let sorting = objectAt(sorts, i);
+
+      if (get(sorting, 'valuePath') === valuePath) {
+        sortIndex = i + 1;
+        break;
+      }
+    }
+
+    return sortIndex;
+  }
+
+  @gt('sortIndex', 0)
+  isSorted;
+
+  @gt('_node.tree.sorts.length', 1)
+  isMultiSorted;
+
+  @computed('_node.tree.sorts.[]', 'sortIndex')
+  get isSortedAsc() {
+    let sortIndex = this.get('sortIndex');
+    let sorts = this.get('_node.tree.sorts');
+
+    return get(objectAt(sorts, sortIndex - 1), 'isAscending');
+  }
 }
 
 /**
@@ -143,9 +176,9 @@ class ColumnTreeNode extends EmberObject {
   }
 
   destroy() {
-    super.destroy(...arguments);
-
     this.cleanSubcolumnNodes();
+
+    super.destroy(...arguments);
   }
 
   /**
@@ -366,7 +399,7 @@ class ColumnTreeNode extends EmberObject {
     return offsetIndex;
   }
 
-  @computed('parent.{offsetLeft,subcolumnNodes.@each.width}')
+  @computed('parent.{offsetLeft,width}')
   get offsetLeft() {
     let parent = get(this, 'parent');
 
@@ -388,7 +421,7 @@ class ColumnTreeNode extends EmberObject {
     return offsetLeft;
   }
 
-  @computed('parent.{offsetRight,subcolumnNodes.@each.width}')
+  @computed('parent.{offsetRight,width}')
   get offsetRight() {
     let parent = get(this, 'parent');
 
@@ -428,12 +461,13 @@ export default class ColumnTree extends EmberObject {
   }
 
   destroy() {
-    super.destroy();
     this.token.cancel();
     get(this, 'root').destroy();
 
     removeObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed);
     removeObserver(this, 'widthConstraint', this.ensureWidthConstraint);
+
+    super.destroy(...arguments);
   }
 
   @computed('columns')
