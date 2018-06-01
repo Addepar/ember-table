@@ -43,6 +43,10 @@ export default class EmberTableRow extends Component {
   @readOnly('rowMeta.isSelected')
   isSelected;
 
+  @className
+  @readOnly('rowMeta.canSelect')
+  isSelectable;
+
   click(event) {
     let inputParent = closest(event.target, 'input, button, label, a, select');
 

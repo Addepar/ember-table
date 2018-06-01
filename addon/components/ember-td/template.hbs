@@ -1,25 +1,44 @@
 {{#if isFirstColumn}}
-  {{#if canMultiSelect}}
-    {{-ember-table-private/simple-checkbox
-      data-test-select-row=true
-      checked=rowMeta.isSelected
-      onChange="onSelectionToggled"
-      ariaLabel="Select row"
-    }}
-  {{/if}}
+  <div class="et-cell-container">
+    {{#if canMultiSelect}}
+      <span class="et-toggle-select">
+        {{-ember-table-private/simple-checkbox
+          data-test-select-row=true
+          checked=rowMeta.isSelected
+          onChange="onSelectionToggled"
+          ariaLabel="Select row"
+        }}
+        <span></span>
+      </span>
+    {{/if}}
 
-  {{#if canCollapse}}
-    {{-ember-table-private/simple-checkbox
-      data-test-collapse-row=true
-      checked=rowMeta.isCollapsed
-      onChange="onCollapseToggled"
-      ariaLabel="Collapse row"
-    }}
-  {{/if}}
-{{/if}}
+    {{#if canCollapse}}
+      <span class="et-toggle-collapse et-depth-indent {{depthClass}}">
+        {{-ember-table-private/simple-checkbox
+          data-test-collapse-row=true
+          checked=rowMeta.isCollapsed
+          onChange="onCollapseToggled"
+          ariaLabel="Collapse row"
+        }}
+        <span></span>
+      </span>
+    {{else}}
+      <div class="et-depth-indent et-depth-placeholder {{depthClass}}"></div>
+    {{/if}}
 
-{{#if hasBlock}}
-  {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta}}
+    <div class="et-cell-content">
+      {{#if hasBlock}}
+        {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta}}
+      {{else}}
+        {{cellValue}}
+      {{/if}}
+    </div>
+  </div>
 {{else}}
-  {{cellValue}}
+  {{#if hasBlock}}
+    {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta}}
+  {{else}}
+    {{cellValue}}
+  {{/if}}
 {{/if}}
+
