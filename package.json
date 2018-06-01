@@ -24,7 +24,6 @@
   },
   "dependencies": {
     "@addepar/ember-toolbox": "^0.3.2",
-    "@addepar/pop-menu": "^0.3.2",
     "@ember-decorators/argument": "^0.8.15",
     "@ember-decorators/babel-transforms": "^0.1.1",
     "@html-next/vertical-collection": "1.0.0-beta.10",

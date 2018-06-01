@@ -38,9 +38,9 @@ class CellWrapper extends EmberObject {
   }
 
   destroy() {
-    super.destroy(...arguments);
-
     this._cellMeta.destroy();
+
+    super.destroy(...arguments);
   }
 }
 
@@ -60,9 +60,9 @@ export default class RowWrapper extends Component {
   _cells = emberA([]);
 
   destroy() {
-    super.destroy(...arguments);
-
     this._cells.forEach(cell => cell.destroy());
+
+    super.destroy(...arguments);
   }
 
   @computed('rowValue')

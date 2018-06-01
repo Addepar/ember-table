@@ -290,9 +290,9 @@ class CollapseTreeNode extends EmberObject {
   }
 
   destroy() {
-    super.destroy(...arguments);
-
     this.cleanChildNodes();
+
+    super.destroy(...arguments);
   }
 
   /**
@@ -613,11 +613,11 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
   }
 
   destroy() {
-    super.destroy(...arguments);
-
     if (this._root) {
       this._root.destroy();
     }
+
+    super.destroy(...arguments);
   }
 
   /*

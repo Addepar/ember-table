@@ -8,6 +8,7 @@ import { required } from '@ember-decorators/argument/validation';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 import { computed } from '@ember-decorators/object';
+import { notEmpty } from '@ember-decorators/object/computed';
 import { tagName } from '@ember-decorators/component';
 
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
@@ -158,6 +159,7 @@ export default class EmberTHead extends Component {
     this.addObserver('sortFunction', this._updateApi);
     this.addObserver('reorderFunction', this._updateApi);
 
+    this.addObserver('sorts', this._updateColumnTree);
     this.addObserver('columns', this._updateColumnTree);
     this.addObserver('fillMode', this._updateColumnTree);
     this.addObserver('resizeMode', this._updateColumnTree);
@@ -166,12 +168,14 @@ export default class EmberTHead extends Component {
 
   _updateApi() {
     this.set('api.columnTree', this.columnTree);
+    this.set('api.isSortable', this.get('isSortable'));
     this.set('api.sorts', this.get('sorts'));
     this.set('api.sortFunction', this.get('sortFunction'));
     this.set('api.compareFunction', this.get('compareFunction'));
   }
 
   _updateColumnTree() {
+    this.columnTree.set('sorts', this.get('sorts'));
     this.columnTree.set('columns', this.get('columns'));
     this.columnTree.set('fillMode', this.get('fillMode'));
     this.columnTree.set('resizeMode', this.get('resizeMode'));
@@ -202,6 +206,8 @@ export default class EmberTHead extends Component {
     super.willDestroyElement(...arguments);
   }
 
+  @notEmpty('onUpdateSorts') isSortable;
+
   @computed(
     'columnTree.rows.[]',
     'sorts.[]',
@@ -213,6 +219,7 @@ export default class EmberTHead extends Component {
   get wrappedRows() {
     let rows = this.get('columnTree.rows');
     let sorts = this.get('sorts');
+    let isSortable = this.get('isSortable');
     let columnMetaCache = this.get('columnMetaCache');
     let enableReorder = this.get('enableReorder');
     let enableResize = this.get('enableResize');
@@ -229,6 +236,7 @@ export default class EmberTHead extends Component {
               enableReorder,
               enableResize,
               sorts,
+              isSortable,
               sendUpdateSort: this.sendUpdateSort,
             };
           })
