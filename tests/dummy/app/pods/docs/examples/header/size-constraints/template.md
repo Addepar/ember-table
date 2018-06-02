@@ -47,14 +47,13 @@ override the min/max widths provided by columns.
 
     <div class="resize-container">
       {{#ember-table as |t|}}
-        {{ember-thead
-          api=t
+        {{t.head
           columns=columns
           widthConstraint=widthConstraint
           resizeMode=(if (eq widthConstraint 'eq-container') 'fluid' 'standard')
         }}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}
@@ -95,15 +94,14 @@ constraint. The options are:
 
     <div class="resize-container">
       {{#ember-table as |t|}}
-        {{ember-thead
-          api=t
+        {{t.head
           columns=columns
           widthConstraint='eq-container'
           resizeMode='fluid'
           fillMode=fillMode
         }}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}

@@ -74,9 +74,9 @@ The following template renders a simple table.
 
 ```
   {{#ember-table as |t|}}
-    {{ember-thead api=t columns=columns}}
+    {{t.head columns=columns}}
 
-    {{ember-tbody api=t rows=rows}}
+    {{t.body rows=rows}}
   {{/ember-table}}
 ```
 
@@ -97,15 +97,15 @@ you like):
 
 ```
   {{#ember-table as |t|}}
-    {{ember-thead api=t columns=columns}}
+    {{t.head columns=columns}}
 
-    {{#ember-tbody api=t rows=rows as |b|}}
-      {{#ember-tr api=b as |r|}}
-        {{#ember-td api=r as |value column row|}}
+    {{#t.body rows=rows as |b|}}
+      {{#b.row as |r|}}
+        {{#r.cell as |value column row|}}
           {{component column.component value=value}}
-        {{/ember-td}}
-      {{/ember-tr}}
-    {{/ember-table-row}}
+        {{/r.cell}}
+      {{/b.row}}
+    {{/t.body}}
   {{/ember-table}}
 ```
 
@@ -120,11 +120,11 @@ You can also use the `ember-tfoot` component, which has the same API as
 
 ```
   {{#ember-table as |t|}}
-    {{ember-thead api=t columns=columns}}
+    {{t.head columns=columns}}
 
-    {{ember-tbody api=t rows=rows}}
+    {{t.body rows=rows}}
 
-    {{ember-tfoot api=t rows=footerRows}}
+    {{t.foot rows=footerRows}}
   {{/ember-table}}
 ```
 

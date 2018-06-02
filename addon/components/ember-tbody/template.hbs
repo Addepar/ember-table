@@ -14,23 +14,17 @@
     columnMetaCache=columnMetaCache
     rowMetaCache=rowMetaCache
 
-    as |rowValue rowMeta cells|
+    selectRow=selectRow
+
+    as |api|
   }}
     {{#if hasBlock}}
-      {{yield (hash
-        selectRow=selectRow
-        rowValue=rowValue
-        rowMeta=rowMeta
-        cells=cells)
-      }}
+      {{yield (hash api=api
+
+        row=(component "ember-tr" api=api)
+      )}}
     {{else}}
-      {{ember-tr
-        api=(hash
-          selectRow=selectRow
-          rowValue=rowValue
-          rowMeta=rowMeta
-          cells=cells)
-      }}
+      {{ember-tr api=api}}
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
 {{/vertical-collection}}

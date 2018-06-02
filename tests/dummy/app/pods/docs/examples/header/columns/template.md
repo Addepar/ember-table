@@ -11,9 +11,9 @@ column. If you only want to use the default template, you can also specify a
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-columns.hbs }}
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columns}}
+        {{t.head columns=columns}}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
       {{! END-SNIPPET }}
     </div>
@@ -35,17 +35,17 @@ header components by passing the name of the component through this way.
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-columns-with-components.hbs }}
       {{#ember-table as |t|}}
-        {{#ember-thead api=t columns=columnsWithComponents as |h|}}
-          {{#ember-tr api=h as |r|}}
-            {{#ember-th api=r as |column|}}
+        {{#t.head columns=columnsWithComponents as |h|}}
+          {{#h.row as |r|}}
+            {{#r.cell as |column|}}
               {{#component column.component color=column.color}}
                 {{column.heading}}
               {{/component}}
-            {{/ember-th}}
-          {{/ember-tr}}
-        {{/ember-thead}}
+            {{/r.cell}}
+          {{/h.row}}
+        {{/t.head}}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
       {{! END-SNIPPET }}
     </div>
@@ -76,17 +76,17 @@ definitions, so their widths are tied together.
     {{! BEGIN-SNIPPET docs-example-columns-with-widths.hbs }}
     <div class="demo-container small">
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columnsWithWidths}}
+        {{t.head columns=columnsWithWidths}}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
 
     <div class="demo-container small mt-4">
       {{#ember-table as |t|}}
-        {{ember-thead api=t columns=columnsWithWidths}}
+        {{t.head columns=columnsWithWidths}}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}
@@ -126,15 +126,14 @@ using the `enableResize` and `enableReorder` flags. You can also change the
 
     <div class="demo-container small">
       {{#ember-table as |t|}}
-        {{ember-thead
-          api=t
+        {{t.head
           columns=columns
           enableResize=resizeEnabled
           enableReorder=reorderEnabled
           resizeMode=(if resizeModeFluid 'fluid' 'standard')
         }}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}
@@ -156,14 +155,13 @@ reorder has occured.
 
     <div class="demo-container small">
       {{#ember-table as |t|}}
-        {{ember-thead
-          api=t
+        {{t.head
           columns=columns
           onResize=(action (mut resizeCount) (add resizeCount 1))
           onReorder=(action (mut reorderCount) (add reorderCount 1))
         }}
 
-        {{ember-tbody api=t rows=rows}}
+        {{t.body rows=rows}}
       {{/ember-table}}
     </div>
     {{! END-SNIPPET }}
