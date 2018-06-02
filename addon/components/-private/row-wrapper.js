@@ -47,7 +47,7 @@ class CellWrapper extends EmberObject {
 @tagName('')
 export default class RowWrapper extends Component {
   layout = hbs`
-    {{yield rowValue rowMeta cells}}
+    {{yield api}}
   `;
 
   @argument rowValue;
@@ -57,12 +57,24 @@ export default class RowWrapper extends Component {
   @argument columnMetaCache;
   @argument rowMetaCache;
 
+  @argument selectRow;
+
   _cells = emberA([]);
 
   destroy() {
     this._cells.forEach(cell => cell.destroy());
 
     super.destroy(...arguments);
+  }
+
+  @computed('rowValue', 'rowMeta', 'cells', 'selectRow')
+  get api() {
+    let rowValue = this.get('rowValue');
+    let rowMeta = this.get('rowMeta');
+    let cells = this.get('cells');
+    let selectRow = this.get('selectRow');
+
+    return { rowValue, rowMeta, cells, selectRow };
   }
 
   @computed('rowValue')

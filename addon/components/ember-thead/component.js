@@ -149,6 +149,11 @@ export default class EmberTHead extends Component {
     columnMetaCache: this.columnMetaCache,
   });
 
+  @computed('api.api')
+  get unwrappedApi() {
+    return this.get('api.api') || this.get('api');
+  }
+
   constructor() {
     super(...arguments);
 
@@ -167,11 +172,11 @@ export default class EmberTHead extends Component {
   }
 
   _updateApi() {
-    this.set('api.columnTree', this.columnTree);
-    this.set('api.isSortable', this.get('isSortable'));
-    this.set('api.sorts', this.get('sorts'));
-    this.set('api.sortFunction', this.get('sortFunction'));
-    this.set('api.compareFunction', this.get('compareFunction'));
+    this.set('unwrappedApi.columnTree', this.columnTree);
+    this.set('unwrappedApi.isSortable', this.get('isSortable'));
+    this.set('unwrappedApi.sorts', this.get('sorts'));
+    this.set('unwrappedApi.sortFunction', this.get('sortFunction'));
+    this.set('unwrappedApi.compareFunction', this.get('compareFunction'));
   }
 
   _updateColumnTree() {
@@ -225,8 +230,8 @@ export default class EmberTHead extends Component {
     let enableResize = this.get('enableResize');
 
     return emberA(
-      rows.map(row =>
-        emberA(
+      rows.map(row => {
+        let cells = emberA(
           row.map(columnValue => {
             let columnMeta = columnMetaCache.get(columnValue);
 
@@ -240,8 +245,10 @@ export default class EmberTHead extends Component {
               sendUpdateSort: this.sendUpdateSort,
             };
           })
-        )
-      )
+        );
+
+        return { cells, isHeader: true };
+      })
     );
   }
 

@@ -18,14 +18,19 @@ export default class EmberTd extends Component {
   @type('object')
   api;
 
-  @readOnly('api.cellValue') cellValue;
-  @readOnly('api.cellMeta') cellMeta;
+  @computed('api.api')
+  get unwrappedApi() {
+    return this.get('api.api') || this.get('api');
+  }
 
-  @readOnly('api.columnValue') columnValue;
-  @readOnly('api.columnMeta') columnMeta;
+  @readOnly('unwrappedApi.cellValue') cellValue;
+  @readOnly('unwrappedApi.cellMeta') cellMeta;
 
-  @readOnly('api.rowValue') rowValue;
-  @readOnly('api.rowMeta') rowMeta;
+  @readOnly('unwrappedApi.columnValue') columnValue;
+  @readOnly('unwrappedApi.columnMeta') columnMeta;
+
+  @readOnly('unwrappedApi.rowValue') rowValue;
+  @readOnly('unwrappedApi.rowMeta') rowMeta;
 
   @equal('columnMeta.index', 0)
   isFirstColumn;

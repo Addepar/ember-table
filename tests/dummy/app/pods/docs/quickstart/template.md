@@ -47,15 +47,15 @@ The following template renders a simple table.
 
 ```
   {{#ember-table as |t|}}
-    {{ember-thead api=t columns=columns}}
+    {{t.head columns=columns}}
 
-    {{#ember-tbody api=t rows=rows as |b|}}
-      {{#ember-tr api=b as |r|}}
-        {{#ember-td api=r as |value column|}}
+    {{#t.body rows=rows as |b|}}
+      {{#b.row as |r|}}
+        {{#r.cell as |value column|}}
           {{component column.component value=value}}
-        {{/ember-td}}
-      {{/ember-tr}}
-    {{/ember-table-row}}
+        {{/r.cell}}
+      {{/b.row}}
+    {{/t.body}}
   {{/ember-table}}
 ```
 

@@ -23,33 +23,38 @@ export default class EmberTh extends Component {
 
   @argument
   @required
-  @type(Object)
+  @type('object')
   api;
 
-  @readOnly('api.columnValue') columnValue;
-  @readOnly('api.columnMeta') columnMeta;
+  @computed('api.api')
+  get unwrappedApi() {
+    return this.get('api.api') || this.get('api');
+  }
+
+  @readOnly('unwrappedApi.columnValue') columnValue;
+  @readOnly('unwrappedApi.columnMeta') columnMeta;
 
   /**
     Indicates if this column can be resized.
   */
-  @readOnly('api.enableResize') resizeEnabled;
+  @readOnly('unwrappedApi.enableResize') resizeEnabled;
 
   /**
     Indicates if this column can be reordered.
   */
-  @readOnly('api.enableReorder') reorderEnabled;
+  @readOnly('unwrappedApi.enableReorder') reorderEnabled;
 
   /**
     Any sorts applied to the table.
   */
-  @readOnly('api.sorts') sorts;
+  @readOnly('unwrappedApi.sorts') sorts;
 
   /**
     Whether or not the column is sortable. Is true IFF the column is a leaf node
     onUpdateSorts is set on the thead.
   */
   @className
-  @and('api.isSortable', 'columnMeta.isLeaf')
+  @and('unwrappedApi.isSortable', 'columnMeta.isLeaf')
   isSortable;
 
   @readOnly('columnMeta.sortIndex') sortIndex;
@@ -178,7 +183,7 @@ export default class EmberTh extends Component {
       newSortings.push({ valuePath, isAscending: true });
     }
 
-    this.get('api').sendUpdateSort(newSortings);
+    this.get('unwrappedApi').sendUpdateSort(newSortings);
   }
 
   pressHandler = event => {

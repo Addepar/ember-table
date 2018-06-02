@@ -10,9 +10,9 @@ parent's value instead.
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-fixed-columns.hbs }}
         {{#ember-table as |t|}}
-          {{ember-thead api=t columns=columns}}
+          {{t.head columns=columns}}
 
-          {{ember-tbody api=t rows=rows}}
+          {{t.body rows=rows}}
         {{/ember-table}}
       {{! END-SNIPPET }}
     </div>
@@ -34,9 +34,9 @@ array directly to fix the ordering.
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-out-of-order-fixed-columns.hbs }}
         {{#ember-table as |t|}}
-          {{ember-thead api=t columns=outOfOrderFixedColumns}}
+          {{t.head columns=outOfOrderFixedColumns}}
 
-          {{ember-tbody api=t rows=rows}}
+          {{t.body rows=rows}}
         {{/ember-table}}
       {{! END-SNIPPET }}
     </div>

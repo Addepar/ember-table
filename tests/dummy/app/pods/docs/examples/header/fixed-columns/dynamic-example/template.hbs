@@ -1,17 +1,17 @@
 <div class="demo-container small">
   {{! BEGIN-SNIPPET docs-example-dynamic-fixed-columns.hbs }}
   {{#ember-table as |t|}}
-    {{#ember-thead api=t columns=columns as |h|}}
-      {{#ember-tr api=h as |r|}}
-        {{#ember-th api=r as |column|}}
+    {{#t.head columns=columns as |h|}}
+      {{#h.row as |r|}}
+        {{#r.cell as |column|}}
           <input type="checkbox" checked={{eq column.isFixed 'left'}} onclick={{action toggleFixed column}} />
 
           {{column.name}}
-        {{/ember-th}}
-      {{/ember-tr}}
-    {{/ember-thead}}
+        {{/r.cell}}
+      {{/h.row}}
+    {{/t.head}}
 
-    {{ember-tbody api=t rows=rows}}
+    {{t.body rows=rows}}
   {{/ember-table}}
   {{! END-SNIPPET }}
 </div>
