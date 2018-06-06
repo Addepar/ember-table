@@ -6,7 +6,11 @@ import { generateRows, generateColumns } from '../../../utils/generators';
 export default class BasicController extends Controller {
   @computed
   get rows() {
-    return generateRows(10, 3, (row, key) => `${row.id}${key}`);
+    let rows = generateRows(10, 3, (row, key) => `${row.id}${key}`);
+
+    rows[0].children[0].children[0].children = generateRows(10, 1, (row, key) => `${row.id}${key}`);
+
+    return rows;
   }
 
   @computed

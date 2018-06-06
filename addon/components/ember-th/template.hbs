@@ -4,11 +4,11 @@
   {{columnValue.name}}
 
   {{#if isSorted}}
-    <div data-test-sort-indicator class="et-sort-indicator {{if isSortedAsc 'is-ascending' 'is-descending'}}">
+    <span data-test-sort-indicator class="et-sort-indicator {{if isSortedAsc 'is-ascending' 'is-descending'}}">
       {{#if isMultiSorted}}
         {{sortIndex}}
       {{/if}}
-    </div>
+    </span>
   {{/if}}
 {{/if}}
 

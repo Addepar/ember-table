@@ -1,7 +1,5 @@
 import { getScale, getOuterClientRect, getInnerClientRect } from './element';
 
-const DROP_INDICATOR_WIDTH = 5;
-
 function createElement(mainClass, dimensions) {
   let element = document.createElement('div');
 
@@ -15,32 +13,31 @@ function createElement(mainClass, dimensions) {
 }
 
 class ReorderIndicator {
-  constructor(container, element, bounds, mainClass, width) {
+  constructor(container, element, bounds, mainClass, child) {
     this.container = container;
     this.element = element;
     this.bounds = bounds;
-    this.width = width;
+    this.child = child;
     this.scale = getScale(container);
 
     let scrollTop = this.container.scrollTop;
     let scrollLeft = this.container.scrollLeft;
 
-    let { height: containerHeight, top: containerTop, left: containerLeft } = getInnerClientRect(
-      this.container
-    );
+    let { top: containerTop, left: containerLeft } = getInnerClientRect(this.container);
 
-    let { top: elementTop, left: elementLeft } = getOuterClientRect(this.element);
+    let { top: elementTop, left: elementLeft, width: elementWidth } = getOuterClientRect(
+      this.element
+    );
 
     let top = (elementTop - containerTop) * this.scale + scrollTop;
     let left = (elementLeft - containerLeft) * this.scale + scrollLeft;
-    let height = (containerHeight - (containerTop - elementTop)) * this.scale;
+    let width = elementWidth * this.scale;
 
-    this.indicatorElement = createElement(mainClass, {
-      width,
-      height,
-      top,
-      left,
-    });
+    this.indicatorElement = createElement(mainClass, { top, left, width });
+
+    if (child) {
+      this.indicatorElement.appendChild(child);
+    }
 
     this.container.appendChild(this.indicatorElement);
     this._left = left;
@@ -57,10 +54,12 @@ class ReorderIndicator {
   set left(newLeft) {
     let { leftBound, rightBound } = this.bounds;
 
+    let width = this.indicatorElement.offsetWidth;
+
     if (newLeft < leftBound) {
       newLeft = leftBound;
-    } else if (newLeft + this.width > rightBound) {
-      newLeft = rightBound - this.width;
+    } else if (newLeft + width > rightBound) {
+      newLeft = rightBound - width;
     }
 
     this.indicatorElement.style.left = `${newLeft}px`;
@@ -70,14 +69,15 @@ class ReorderIndicator {
 
 export class MainIndicator extends ReorderIndicator {
   constructor(container, element, bounds) {
-    let width = getOuterClientRect(element).width * getScale(element);
+    // let width = getOuterClientRect(element).width * getScale(element);
+    let child = element.cloneNode(true);
 
-    super(container, element, bounds, 'et-reorder-main-indicator', width);
+    super(container, element, bounds, 'et-reorder-main-indicator', child);
   }
 }
 
 export class DropIndicator extends ReorderIndicator {
   constructor(container, element, bounds) {
-    super(container, element, bounds, 'et-reorder-drop-indicator', DROP_INDICATOR_WIDTH);
+    super(container, element, bounds, 'et-reorder-drop-indicator');
   }
 }

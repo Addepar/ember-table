@@ -1,20 +1,34 @@
 <div class="demo-container fixed-width">
   {{#ember-table as |t|}}
-    {{ember-thead
+    {{#ember-thead
       api=t
       columns=columns
       sorts=sorts
-      headerActions=headerActions
       onUpdateSorts="onUpdateSorts"
-      onHeaderAction="onHeaderAction"
-    }}
 
-    {{ember-tbody
+      as |h|
+    }}
+      {{#ember-tr api=h as |r|}}
+        {{ember-th api=r}}
+      {{/ember-tr}}
+    {{/ember-thead}}
+
+    {{#ember-tbody
       api=t
       rows=rows
       selectedRows=selectedRows
       onSelect="onSelect"
       selectMode="grouping"
+
+      as |b|
     }}
+      {{#ember-tr api=b as |r|}}
+        {{#ember-td api=r as |value column row cellMeta columnMeta|}}
+          {{value}}
+
+          {{#if (eq columnMeta.index 0)}}lorem ipsum dolor{{/if}}
+        {{/ember-td}}
+      {{/ember-tr}}
+    {{/ember-tbody}}
   {{/ember-table}}
 </div>

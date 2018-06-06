@@ -11,6 +11,7 @@ import { computed } from '@ember-decorators/object';
 import { notEmpty } from '@ember-decorators/object/computed';
 import { tagName } from '@ember-decorators/component';
 
+import { closest } from '../../-private/utils/element';
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
 
 import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
@@ -190,7 +191,7 @@ export default class EmberTHead extends Component {
   didInsertElement() {
     super.didInsertElement(...arguments);
 
-    this._container = this.element.closest('.ember-table');
+    this._container = closest(this.element, '.ember-table');
 
     this.columnTree.registerContainer(this._container);
 

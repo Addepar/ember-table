@@ -37,12 +37,16 @@ export default class EmberTh extends Component {
   /**
     Indicates if this column can be resized.
   */
-  @readOnly('unwrappedApi.enableResize') resizeEnabled;
+  @className('is-resizable')
+  @readOnly('unwrappedApi.enableResize')
+  resizeEnabled;
 
   /**
     Indicates if this column can be reordered.
   */
-  @readOnly('unwrappedApi.enableReorder') reorderEnabled;
+  @className('is-reorderable')
+  @readOnly('unwrappedApi.enableReorder')
+  reorderEnabled;
 
   /**
     Any sorts applied to the table.

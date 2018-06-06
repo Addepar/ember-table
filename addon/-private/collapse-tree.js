@@ -47,6 +47,17 @@ class TableRowMeta extends EmberObject {
   @readOnly('_tree.selectMode') selectMode;
 
   @computed('selectMode')
+  get canSelect() {
+    let selectMode = this.get('selectMode');
+
+    return (
+      selectMode === SELECT_MODE.MULTIPLE ||
+      selectMode === SELECT_MODE.GROUPING ||
+      selectMode === SELECT_MODE.SINGLE
+    );
+  }
+
+  @computed('selectMode')
   get canMultiSelect() {
     let selectMode = this.get('selectMode');
 
@@ -81,7 +92,7 @@ class TableRowMeta extends EmberObject {
     return isArray(children) && get(children, 'length') > 0;
   }
 
-  @computed('_parentMeta')
+  @computed('_parentMeta.depth')
   get depth() {
     let parentMeta = get(this, '_parentMeta');
 
