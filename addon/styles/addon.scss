@@ -24,6 +24,22 @@
     }
   }
 
+  th {
+    z-index: 2;
+
+    &:not(.is-fixed-right) {
+      .et-header-resize-area {
+        right: 0;
+      }
+    }
+
+    &.is-fixed-right {
+      .et-header-resize-area {
+        left: 0;
+      }
+    }
+  }
+
   td.is-fixed-left,
   td.is-fixed-right {
     z-index: 3;
@@ -67,6 +83,16 @@
 
   .et-sort-toggle {
     display: none;
+  }
+
+  .et-header-resize-area {
+    cursor: col-resize;
+
+    width: 10px;
+    height: 100%;
+
+    position: absolute;
+    top: 0;
   }
 
   @media speech {

@@ -12,6 +12,7 @@ $table-hover-color: #e5edf8;
   td {
     white-space: nowrap;
     text-overflow: ellipsis;
+    overflow: hidden;
     font-size: 20px;
     padding: 4px 10px;
   }
@@ -65,17 +66,6 @@ $table-hover-color: #e5edf8;
       border-right: none;
     }
 
-    .et-header-resize-area {
-      cursor: col-resize;
-      width: 10px;
-      height: 100%;
-      position: absolute;
-      top: 0;
-      right: 0;
-
-      user-select: none;
-    }
-
     &.is-fixed-right {
       border-left: solid 1px $table-border-color;
 
@@ -100,20 +90,5 @@ $table-hover-color: #e5edf8;
     th {
       background-color: #227ecb;
     }
-  }
-
-  .et-reorder-main-indicator {
-    position: absolute;
-    background: #cccccc;
-    opacity: 0.8;
-    cursor: move;
-    z-index: 10;
-  }
-
-  .et-reorder-drop-indicator {
-    position: absolute;
-    background: #444444;
-    opacity: 0.6;
-    z-index: 10;
   }
 }

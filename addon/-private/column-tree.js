@@ -714,7 +714,7 @@ export default class ColumnTree extends EmberObject {
     this._reorderMainIndicator = new MainIndicator(this.container, node.element, bounds);
     this._reorderDropIndicator = new DropIndicator(this.container, node.element, bounds);
 
-    this.container.classList.add('et-unselectable');
+    this.container.classList.add('is-reordering');
   }
 
   updateReorder(node, clientX) {
@@ -762,7 +762,7 @@ export default class ColumnTree extends EmberObject {
       this._nextUpdateScroll = null;
     }
 
-    this.container.classList.remove('et-unselectable');
+    this.container.classList.remove('is-reordering');
 
     this.sendAction('onReorder', get(node, 'column'), get(closestColumn, 'column'));
   }
@@ -770,7 +770,7 @@ export default class ColumnTree extends EmberObject {
   startResize(node, clientX) {
     this.clientX = clientX;
 
-    this.container.classList.add('et-unselectable');
+    this.container.classList.add('is-resizing');
   }
 
   updateResize(node, clientX) {
@@ -836,7 +836,7 @@ export default class ColumnTree extends EmberObject {
       this._nextUpdateScroll = null;
     }
 
-    this.container.classList.remove('et-unselectable');
+    this.container.classList.remove('is-resizing');
 
     this.sendAction('onResize', get(node, 'column'));
   }

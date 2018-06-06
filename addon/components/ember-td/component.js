@@ -32,6 +32,7 @@ export default class EmberTd extends Component {
   @readOnly('unwrappedApi.rowValue') rowValue;
   @readOnly('unwrappedApi.rowMeta') rowMeta;
 
+  @className
   @equal('columnMeta.index', 0)
   isFirstColumn;
 
@@ -53,6 +54,11 @@ export default class EmberTd extends Component {
   @className
   @equal('columnMeta.isFixed', 'right')
   isFixedRight;
+
+  @computed('rowMeta.depth')
+  get depthClass() {
+    return `depth-${this.get('rowMeta.depth')}`;
+  }
 
   @attribute
   @computed('columnMeta.{width,offsetLeft,offsetRight}', 'isFixed')
