@@ -37,7 +37,7 @@ export default class SimpleController extends Controller {
 
     let [rowWithChildren] = this.get('rowWithChildren');
 
-    this.preselectedRows = [rowWithChildren];
+    this.preselection = [rowWithChildren];
   }
 
   @computed
@@ -60,6 +60,10 @@ export default class SimpleController extends Controller {
   // END-SNIPPET
 
   // BEGIN-SNIPPET docs-example-selection-modes.js
+  rowSelectionMode = 'multiple';
+  checkboxSelectionMode = 'multiple';
+  selectingChildrenSelectsParent = true;
+
   @computed
   get rowsWithChildren() {
     return [

@@ -32,6 +32,16 @@ export default {
     checkbox: {
       scope: '[data-test-select-row]',
       isChecked: property('checked'),
+
+      async clickWith(options) {
+        await click(findElement(this), options);
+      },
+    },
+
+    checkboxContainer: {
+      scope: '[data-test-select-row-container]',
+
+      isHidden: hasClass('et-speech-only'),
     },
 
     toggleSelect: alias('checkbox.click'),
