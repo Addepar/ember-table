@@ -85,6 +85,7 @@ class TableStickyPolyfill {
       let height = heights[i];
 
       for (let child of row.children) {
+        child.style.position = '-webkit-sticky';
         child.style.position = 'sticky';
         child.style[this.side] = `${offset}px`;
       }
