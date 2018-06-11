@@ -29,7 +29,7 @@ export default class EmberTable extends Component {
 
     if (browser.isIE) {
       setupLegacyStickyPolyfill(this.element);
-    } else if (browser.isChrome || browser.isChromeHeadless || browser.isEdge) {
+    } else {
       let thead = this.element.querySelector('thead');
       let tfoot = this.element.querySelector('tfoot');
 
@@ -47,7 +47,7 @@ export default class EmberTable extends Component {
 
     if (browser.isIE) {
       teardownLegacyStickyPolyfill(this.element);
-    } else if (browser.isChrome || browser.isChromeHeadless || browser.isEdge) {
+    } else {
       let thead = this.element.querySelector('thead');
       let tfoot = this.element.querySelector('tfoot');
 
