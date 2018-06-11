@@ -129,6 +129,7 @@ export default class EmberTh extends Component {
     hammer.add(new Hammer.Press({ time: 0 }));
 
     hammer.on('press', this.pressHandler);
+    hammer.on('pressup', this.pressUpHandler);
     hammer.on('panstart', this.panStartHandler);
     hammer.on('panmove', this.panMoveHandler);
     hammer.on('panend', this.panEndHandler);
@@ -140,6 +141,7 @@ export default class EmberTh extends Component {
     let hammer = this._hammer;
 
     hammer.off('press');
+    hammer.off('pressup');
     hammer.off('panstart');
     hammer.off('panmove');
     hammer.off('panend');
@@ -201,6 +203,12 @@ export default class EmberTh extends Component {
       this.get('columnMeta').startResize(clientX);
     } else if (reorderEnabled) {
       this._columnState = COLUMN_REORDERING;
+    }
+  };
+
+  pressUpHandler = () => {
+    if (this._columnState === COLUMN_RESIZE) {
+      this.get('columnMeta').endResize();
     }
   };
 

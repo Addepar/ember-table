@@ -1,8 +1,8 @@
 # Row Selection
 
 Tables provide row selection out of the box. Adding an `onSelect` action to the
-table body will activate selection, and you can pass in `selectedRows` to
-control the selection using DDAU:
+table body will activate selection, and you can pass in the `selection` property
+to control the selection using DDAU:
 
 {{#docs-demo as |demo|}}
   {{#demo.example}}
@@ -13,8 +13,8 @@ control the selection using DDAU:
 
         {{t.body
           rows=rows
-          onSelect=(action (mut selectedRows))
-          selectedRows=selectedRows
+          onSelect=(action (mut selection))
+          selection=selection
         }}
       {{/ember-table}}
       {{! END-SNIPPET }}
@@ -27,11 +27,13 @@ control the selection using DDAU:
 
 # Selected Rows
 
-`selectedRows` is meant to be an array with the rows that are selected in it.
-In order to keep the selection state as minimal as possible, `selectedRows` will
-also deduplicate selections by removing all children when a parent node is
-selected. Ember Table can infer that because the parent node is selected, all of
-its children _must_ be selected:
+`selection` can either be a single row, or a group of rows. Selecting a row also
+marks all of its children as selected.
+
+In order to keep the selection state as minimal as possible, when `selection` is
+a group it will also deduplicate selections by removing all children when a
+parent node is selected. Ember Table can infer that because the parent node is
+selected, all of its children _must_ be selected:
 
 {{#docs-demo as |demo|}}
   {{#demo.example name="selected-rows"}}
@@ -42,8 +44,8 @@ its children _must_ be selected:
 
         {{t.body
           rows=rowWithChildren
-          onSelect=(action (mut preselectedRows))
-          selectedRows=preselectedRows
+          onSelect=(action (mut preselection))
+          selection=preselection
         }}
       {{/ember-table}}
       {{! END-SNIPPET }}
@@ -56,58 +58,105 @@ its children _must_ be selected:
 
 This can make some tasks more difficult - performing an action on all rows that
 are logically selected may mean that you have to traverse through the `children`
-in the list of `selectedRows`. It makes other tasks much easier though, like
-finding all of the groups that are selected, and selecting a group manually,
-external to the table.
+in the `selection` group. It makes other tasks much easier though, like finding
+all of the groups that are selected, and selecting a group manually, external to
+the table.
 
 # Selection Modes
 
-There are three selection modes available:
+There are three different properties you can use to control the behavior of
+row selection:
 
-1. `multiple`: The default mode, allows users to select multiple rows. `ctrl`
-  and `meta` can be used to add or toggle rows in the selection, and `shift` can
-  be used to select ranges of rows. Selecting a parent row will select all of
-  its children. However, selecting all of the children will _not_ select the
-  parent.
+1. `checkboxSelectionMode`: This controls the behavior of the checkbox which
+appears in the first cell of a row. It can be either `multiple`, `single`, or
+`none`. Checkbox selection is always a group selection - it will always pass an
+array to `onSelect`. In `multiple` mode it allows more than one checkbox to be
+checked at a time, and in the `single` mode it only allows one checkbox to be
+checked.
 
-2. `grouping`: This mode is the same as multiple, except that parent's are
-  considered groups. This means that when you select all of the children of a
-  node, the node will also be selected.
+2. `rowSelectionMode`: This controls the behavior of clicking the row itself.
+It can be either `multiple`, `single`, or `none`. If it is either `multiple` or
+`single`, then the `is-selectable` class will be applied to the row. When using
+`single` mode, clicking on a row will pass the row directly to `onSelect`. This
+marks the row as selected, but is not considered a group selection, so the
+checkbox will _not_ be checked.
 
-3. `single`: This mode only allows you to select one row at a time, and uses the
-  first item of the `selectedRows` array only. It disables the checkbox as well.
-
-You can pass one of these into the table body as the `selectMode` argument.
+3. `selectingChildrenSelectsParent`: This is a boolean flag which tells toggles
+whether or not selecting all of the children of a given row also selects the row
+itself.
 
 {{#docs-demo as |demo|}}
   {{#demo.example name='selection-modes'}}
     {{! BEGIN-SNIPPET docs-example-selection-modes.hbs }}
-    <label class="pr-4">
-      multiple
-      {{radio-button name='select-mode' value='multiple' groupValue=selectMode}}
-    </label>
-
-    <label class="pr-4">
-      grouping
-      {{radio-button name='select-mode' value='grouping' groupValue=selectMode}}
-    </label>
-
-    <label>
-      single
-      {{radio-button name='select-mode' value='single' groupValue=selectMode}}
-    </label>
-
     <div class="demo-container small">
       {{#ember-table as |t|}}
         {{t.head columns=columns}}
 
         {{t.body
           rows=rowsWithChildren
-          selectMode=selectMode
-          onSelect=(action (mut selectedRows))
-          selectedRows=selectedRows
+
+          rowSelectionMode=rowSelectionMode
+          checkboxSelectionMode=checkboxSelectionMode
+          selectingChildrenSelectsParent=selectingChildrenSelectsParent
+
+          onSelect=(action (mut selection))
+          selection=selection
         }}
       {{/ember-table}}
+    </div>
+
+    <div class="options-container">
+      <h4 class="label">rowSelectionMode</h4>
+
+      <div class="options">
+        <label class="pr-4">
+          multiple
+          {{radio-button name='row-selection-mode' value='multiple' groupValue=rowSelectionMode}}
+        </label>
+
+        <label class="pr-4">
+          single
+          {{radio-button name='row-selection-mode' value='single' groupValue=rowSelectionMode}}
+        </label>
+
+        <label>
+          none
+          {{radio-button name='row-selection-mode' value='none' groupValue=rowSelectionMode}}
+        </label>
+      </div>
+
+      <h4 class="label">checkboxSelectionMode</h4>
+
+      <div class="options">
+        <label class="pr-4">
+          multiple
+          {{radio-button name='checkbox-selection-mode' value='multiple' groupValue=checkboxSelectionMode}}
+        </label>
+
+        <label class="pr-4">
+          single
+          {{radio-button name='checkbox-selection-mode' value='single' groupValue=checkboxSelectionMode}}
+        </label>
+
+        <label>
+          none
+          {{radio-button name='checkbox-selection-mode' value='none' groupValue=checkboxSelectionMode}}
+        </label>
+      </div>
+
+      <h4 class="label">selectingChildrenSelectsParent</h4>
+
+      <div class="options">
+        <label class="pr-4">
+          true
+          {{radio-button name='selecting-children-selects-parent' value=true groupValue=selectingChildrenSelectsParent}}
+        </label>
+
+        <label class="pr-4">
+          false
+          {{radio-button name='selecting-children-selects-parent' value=false groupValue=selectingChildrenSelectsParent}}
+        </label>
+      </div>
     </div>
     {{! END-SNIPPET }}
   {{/demo.example}}

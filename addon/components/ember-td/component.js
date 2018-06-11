@@ -9,6 +9,7 @@ import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 
 import layout from './template';
+import { SELECT_MODE } from '../../-private/collapse-tree';
 
 @tagName('td')
 export default class EmberTd extends Component {
@@ -17,6 +18,14 @@ export default class EmberTd extends Component {
   @argument
   @type('object')
   api;
+
+  @argument
+  @type(optional(Action))
+  onClick;
+
+  @argument
+  @type(optional(Action))
+  onDoubleClick;
 
   @computed('api.api')
   get unwrappedApi() {
@@ -32,20 +41,12 @@ export default class EmberTd extends Component {
   @readOnly('unwrappedApi.rowValue') rowValue;
   @readOnly('unwrappedApi.rowMeta') rowMeta;
 
+  @readOnly('unwrappedApi.rowSelectionMode') rowSelectionMode;
+  @readOnly('unwrappedApi.checkboxSelectionMode') checkboxSelectionMode;
+
   @className
   @equal('columnMeta.index', 0)
   isFirstColumn;
-
-  @readOnly('rowMeta.canMultiSelect') canMultiSelect;
-  @readOnly('rowMeta.canCollapse') canCollapse;
-
-  @argument
-  @type(optional(Action))
-  onClick;
-
-  @argument
-  @type(optional(Action))
-  onDoubleClick;
 
   @className
   @equal('columnMeta.isFixed', 'left')
@@ -55,9 +56,32 @@ export default class EmberTd extends Component {
   @equal('columnMeta.isFixed', 'right')
   isFixedRight;
 
+  @readOnly('rowMeta.canCollapse') canCollapse;
+
   @computed('rowMeta.depth')
   get depthClass() {
     return `depth-${this.get('rowMeta.depth')}`;
+  }
+
+  @computed('shouldShowCheckbox', 'rowSelectionMode')
+  get canSelect() {
+    let rowSelectionMode = this.get('rowSelectionMode');
+    let shouldShowCheckbox = this.get('shouldShowCheckbox');
+
+    return (
+      shouldShowCheckbox ||
+      rowSelectionMode === SELECT_MODE.MULTIPLE ||
+      rowSelectionMode === SELECT_MODE.SINGLE
+    );
+  }
+
+  @computed('checkboxSelectionMode')
+  get shouldShowCheckbox() {
+    let checkboxSelectionMode = this.get('checkboxSelectionMode');
+
+    return (
+      checkboxSelectionMode === SELECT_MODE.MULTIPLE || checkboxSelectionMode === SELECT_MODE.SINGLE
+    );
   }
 
   @attribute
@@ -83,10 +107,18 @@ export default class EmberTd extends Component {
   }
 
   @action
-  onSelectionToggled() {
+  onSelectionToggled(event) {
     let rowMeta = this.get('rowMeta');
+    let checkboxSelectionMode = this.get('checkboxSelectionMode') || this.get('rowSelectionMode');
 
-    rowMeta.select({ toggle: true });
+    if (rowMeta && checkboxSelectionMode === SELECT_MODE.MULTIPLE) {
+      let toggle = true;
+      let range = event.shiftKey;
+
+      rowMeta.select({ toggle, range });
+    } else if (rowMeta && checkboxSelectionMode === SELECT_MODE.SINGLE) {
+      rowMeta.select();
+    }
 
     this.sendFullAction('onSelect');
   }

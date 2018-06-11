@@ -662,9 +662,8 @@ export default class ColumnTree extends EmberObject {
 
     for (let column of subcolumns) {
       let offset = get(column, 'offsetLeft');
-      let width = get(column, 'width');
 
-      if (left < offset + width / 2) {
+      if (left < offset + get(column, 'width')) {
         return column;
       }
     }
@@ -718,36 +717,48 @@ export default class ColumnTree extends EmberObject {
   }
 
   updateReorder(node, clientX) {
-    let delta = Math.floor((clientX - this.clientX) * this.scale);
-
     this.clientX = clientX;
 
-    if (Math.abs(delta) < 1) {
-      return;
-    }
-
-    this._updateReorder(node, delta);
+    this._updateReorder(node);
 
     if (!get(node, 'isFixed')) {
       this.updateScroll(node, true, true, this._updateReorder.bind(this));
     }
   }
 
-  _updateReorder(node, delta) {
-    this._reorderMainIndicator.left += delta;
+  _updateReorder(node) {
+    let { scrollLeft } = this.container;
+    let realContainerLeft = getInnerClientRect(this.container).left * this.scale;
+    let offset = this.clientX * this.scale - realContainerLeft + scrollLeft;
+
+    let width = get(node, 'width');
+    let newLeft = offset - width / 2;
+
+    this._reorderMainIndicator.left = newLeft;
+
     this._reorderDropIndicator.left = this.getClosestColumnOffset(
       node,
-      this._reorderMainIndicator.left,
+      offset,
       get(node, 'isFixed')
+    );
+
+    this._reorderDropIndicator.width = get(
+      this.getClosestColumn(node, this._reorderDropIndicator.left, get(node, 'isFixed')),
+      'width'
     );
   }
 
   endReorder(node) {
-    let closestColumn = this.getClosestColumn(
-      node,
-      this._reorderMainIndicator.left,
-      get(node, 'isFixed')
-    );
+    let { scrollLeft } = this.container;
+    let realContainerLeft = getInnerClientRect(this.container).left * this.scale;
+    let offset = this.clientX * this.scale - realContainerLeft + scrollLeft;
+
+    let { leftBound, rightBound } = this.getReorderBounds(node);
+
+    offset = Math.max(leftBound, offset);
+    offset = Math.min(rightBound - 1, offset);
+
+    let closestColumn = this.getClosestColumn(node, offset, get(node, 'isFixed'));
 
     this.insertAfterColumn(node.parent, closestColumn, node);
 
@@ -769,8 +780,6 @@ export default class ColumnTree extends EmberObject {
 
   startResize(node, clientX) {
     this.clientX = clientX;
-
-    this.container.classList.add('is-resizing');
   }
 
   updateResize(node, clientX) {
@@ -785,6 +794,9 @@ export default class ColumnTree extends EmberObject {
     if (Math.abs(delta) < 1) {
       return;
     }
+
+    // Add the class after at least one update has occured
+    this.container.classList.add('is-resizing');
 
     this._updateResize(node, delta);
   }

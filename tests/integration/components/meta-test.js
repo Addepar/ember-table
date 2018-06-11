@@ -76,7 +76,7 @@ module('Integration | meta', function() {
         assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.includes('column'), 'header meta correct');
+      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
 
       await scrollTo('[data-test-ember-table]', 0, 100000);
@@ -91,7 +91,7 @@ module('Integration | meta', function() {
         assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.includes('column'), 'header meta correct');
+      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
 
       await scrollTo('[data-test-ember-table]', 0, 0);
@@ -106,7 +106,7 @@ module('Integration | meta', function() {
         assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.includes('column'), 'header meta correct');
+      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
     });
 
@@ -217,7 +217,7 @@ module('Integration | meta', function() {
         assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.includes('column'), 'header meta correct');
+      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
 
       // Other table was not affected

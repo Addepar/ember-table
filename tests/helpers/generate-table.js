@@ -42,8 +42,10 @@ const fullTable = hbs`
         enableTree=enableTree
 
         onSelect="onSelect"
-        selectMode=selectMode
-        selectedRows=selectedRows
+        selectingChildrenSelectsParent=selectingChildrenSelectsParent
+        checkboxSelectionMode=checkboxSelectionMode
+        rowSelectionMode=rowSelectionMode
+        selection=selection
 
         as |b|
       }}
@@ -86,7 +88,7 @@ const fullTable = hbs`
 
 const defaultActions = {
   onSelect(newRows) {
-    this.set('selectedRows', newRows);
+    this.set('selection', newRows);
   },
 
   onUpdateSorts(sorts) {

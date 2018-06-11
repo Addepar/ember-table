@@ -81,10 +81,6 @@
     user-select: none;
   }
 
-  .et-sort-toggle {
-    display: none;
-  }
-
   .et-header-resize-area {
     cursor: col-resize;
 
@@ -95,9 +91,13 @@
     top: 0;
   }
 
+  .et-speech-only {
+    display: none !important;
+  }
+
   @media speech {
-    .et-sort-toggle {
-      display: block;
+    .et-speech-only {
+      display: block !important;
     }
   }
 }

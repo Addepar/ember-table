@@ -2,7 +2,7 @@ import Component from '@ember/component';
 
 import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { bool, readOnly } from '@ember-decorators/object/computed';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -38,23 +38,40 @@ export default class EmberTBody extends Component {
   */
   @argument({ defaultIfUndefined: true })
   @type('string')
-  selectMode = SELECT_MODE.MULTIPLE;
+  checkboxSelectionMode = SELECT_MODE.MULTIPLE;
+
+  /**
+
+  */
+  @argument({ defaultIfUndefined: true })
+  @type('string')
+  rowSelectionMode = SELECT_MODE.MULTIPLE;
+
+  /**
+    When true, this option causes selecting all of a node's children to also
+    select the node itself.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type('boolean')
+  selectingChildrenSelectsParent = true;
 
   /**
     The currently list of currently selected rows
   */
   @argument({ defaultIfUndefined: true })
-  @type(Array)
-  selectedRows = [];
+  @type(optional('object'))
+  selection = null;
 
   /**
     An action that triggers when the row selection of the table changes
 
-    @param {Array} selectedRows - The new set of selected rows
+    @param {Array} selection - The new set of selected rows
   */
   @argument
   @type(optional(Action))
   onSelect = null;
+
+  @bool('onSelect') canSelect;
 
   /**
     Estimated height for each row. This number is used to decide how many rows will be rendered at
@@ -117,8 +134,8 @@ export default class EmberTBody extends Component {
 
     this.addObserver('enableCollapse', this._updateCollapseTree);
     this.addObserver('enableTree', this._updateCollapseTree);
-    this.addObserver('selectedRows', this._updateCollapseTree);
-    this.addObserver('selectMode', this._updateCollapseTree);
+    this.addObserver('selection', this._updateCollapseTree);
+    this.addObserver('selectingChildrenSelectsParent', this._updateCollapseTree);
     this.addObserver('onSelect', this._updateCollapseTree);
 
     assert(
@@ -128,16 +145,17 @@ export default class EmberTBody extends Component {
   }
 
   _updateCollapseTree() {
-    let onSelect = this.get('onSelect');
-
     this.collapseTree.set('sorts', this.get('unwrappedApi.sorts'));
     this.collapseTree.set('sortFunction', this.get('unwrappedApi.sortFunction'));
     this.collapseTree.set('compareFunction', this.get('unwrappedApi.compareFunction'));
 
     this.collapseTree.set('enableCollapse', this.get('enableCollapse'));
     this.collapseTree.set('enableTree', this.get('enableTree'));
-    this.collapseTree.set('selectedRows', this.get('selectedRows'));
-    this.collapseTree.set('selectMode', onSelect ? this.get('selectMode') : 'none');
+    this.collapseTree.set('selection', this.get('selection'));
+    this.collapseTree.set(
+      'selectingChildrenSelectsParent',
+      this.get('selectingChildrenSelectsParent')
+    );
   }
 
   willDestroy() {

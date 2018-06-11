@@ -11,6 +11,7 @@ import { Action } from '@ember-decorators/argument/types';
 import { closest } from '../../-private/utils/element';
 
 import layout from './template';
+import { SELECT_MODE } from '../../-private/collapse-tree';
 
 @tagName('tr')
 @classNames('et-tr')
@@ -38,26 +39,38 @@ export default class EmberTableRow extends Component {
   @readOnly('unwrappedApi.rowValue') rowValue;
   @readOnly('unwrappedApi.rowMeta') rowMeta;
   @readOnly('unwrappedApi.cells') cells;
+  @readOnly('unwrappedApi.rowSelectionMode') rowSelectionMode;
 
   @className
   @readOnly('rowMeta.isSelected')
   isSelected;
 
   @className
-  @readOnly('rowMeta.canSelect')
-  isSelectable;
+  @readOnly('rowMeta.isGroupSelected')
+  isGroupSelected;
+
+  @className
+  @computed('rowSelectionMode')
+  get isSelectable() {
+    let rowSelectionMode = this.get('rowSelectionMode');
+
+    return rowSelectionMode === SELECT_MODE.MULTIPLE || rowSelectionMode === SELECT_MODE.SINGLE;
+  }
 
   click(event) {
+    let rowSelectionMode = this.get('rowSelectionMode');
     let inputParent = closest(event.target, 'input, button, label, a, select');
 
     if (!inputParent) {
       let rowMeta = this.get('rowMeta');
 
-      if (rowMeta) {
+      if (rowMeta && rowSelectionMode === SELECT_MODE.MULTIPLE) {
         let toggle = event.ctrlKey || event.metaKey;
         let range = event.shiftKey;
 
         rowMeta.select({ toggle, range });
+      } else if (rowMeta && rowSelectionMode === SELECT_MODE.SINGLE) {
+        rowMeta.select({ single: true });
       }
     }
 
