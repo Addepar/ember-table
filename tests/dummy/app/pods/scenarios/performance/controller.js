@@ -15,12 +15,16 @@ export default class BasicController extends Controller {
 
   @computed
   get columns() {
-    return generateColumns(20);
+    let columns = generateColumns(20);
+
+    columns[0].width = 300;
+
+    return columns;
   }
 
   @action
-  onSelect(selectedRows) {
-    this.set('selectedRows', selectedRows);
+  onSelect(selection) {
+    this.set('selection', selection);
   }
 
   @action

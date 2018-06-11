@@ -8,8 +8,7 @@ import { getScale } from '../../helpers/element';
 const Header = PageObject.extend({
   get text() {
     return findElement(this)
-      .textContent.replace('Toggle Sort', '')
-      .replace(/\s+/g, ' ')
+      .innerText.replace(/\s+/g, ' ')
       .trim();
   },
 
@@ -61,9 +60,26 @@ const Header = PageObject.extend({
    */
   async reorderBy(deltaPosition) {
     let header = findElement(this);
-    let box = header.getBoundingClientRect();
-    let deltaX = deltaPosition * box.width;
-    let startX = (box.right + box.left) / 2;
+    let targetElement = header;
+
+    while (deltaPosition !== 0) {
+      if (deltaPosition < 0) {
+        deltaPosition++;
+        targetElement = targetElement.previousElementSibling
+          ? targetElement.previousElementSibling
+          : targetElement;
+      } else {
+        deltaPosition--;
+        targetElement = targetElement.nextElementSibling
+          ? targetElement.nextElementSibling
+          : targetElement;
+      }
+    }
+
+    let headerBox = header.getBoundingClientRect();
+    let targetBox = targetElement.getBoundingClientRect();
+    let deltaX = targetBox.left - headerBox.left;
+    let startX = (headerBox.right + headerBox.left) / 2;
 
     await mouseDown(header, startX - 20, header.clientHeight / 2);
     await mouseMove(header, startX, header.clientHeight / 2);

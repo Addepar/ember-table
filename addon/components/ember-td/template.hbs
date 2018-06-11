@@ -1,11 +1,14 @@
 {{#if isFirstColumn}}
   <div class="et-cell-container">
-    {{#if canMultiSelect}}
-      <span class="et-toggle-select">
+    {{#if canSelect}}
+      <span
+        class="et-toggle-select {{unless shouldShowCheckbox 'et-speech-only'}}"
+        data-test-select-row-container
+      >
         {{-ember-table-private/simple-checkbox
           data-test-select-row=true
-          checked=rowMeta.isSelected
-          onChange="onSelectionToggled"
+          checked=rowMeta.isGroupSelected
+          onClick="onSelectionToggled"
           ariaLabel="Select row"
         }}
         <span></span>

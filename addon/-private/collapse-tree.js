@@ -3,7 +3,6 @@ import EmberArray, { A as emberA, isArray } from '@ember/array';
 import { assert } from '@ember/debug';
 
 import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
 import { addObserver } from '@ember/object/observers';
 
 import { objectAt } from './utils/array';
@@ -12,9 +11,9 @@ import { getOrCreate } from './meta-cache';
 import { mergeSort } from './utils/sort';
 
 export const SELECT_MODE = {
+  NONE: 'none',
   SINGLE: 'single',
   MULTIPLE: 'multiple',
-  GROUPING: 'grouping',
 };
 
 class TableRowMeta extends EmberObject {
@@ -44,41 +43,28 @@ class TableRowMeta extends EmberObject {
     return isCollapsed;
   }
 
-  @readOnly('_tree.selectMode') selectMode;
-
-  @computed('selectMode')
-  get canSelect() {
-    let selectMode = this.get('selectMode');
-
-    return (
-      selectMode === SELECT_MODE.MULTIPLE ||
-      selectMode === SELECT_MODE.GROUPING ||
-      selectMode === SELECT_MODE.SINGLE
-    );
-  }
-
-  @computed('selectMode')
-  get canMultiSelect() {
-    let selectMode = this.get('selectMode');
-
-    return selectMode === SELECT_MODE.MULTIPLE || selectMode === SELECT_MODE.GROUPING;
-  }
-
-  @computed('selectMode', '_tree.selectedRows.[]', '_parentMeta.isSelected')
+  @computed('_tree.selection', '_parentMeta.isSelected')
   get isSelected() {
     let rowValue = get(this, '_rowValue');
-    let selectMode = get(this, '_tree.selectMode');
-    let selectedRows = get(this, '_tree.selectedRows');
+    let selection = get(this, '_tree.selection');
 
-    if (!selectedRows) {
+    if (isArray(selection)) {
+      return this.get('isGroupSelected');
+    }
+
+    return selection === rowValue || get(this, '_parentMeta.isSelected');
+  }
+
+  @computed('_tree.selection.[]', '_parentMeta.isSelected')
+  get isGroupSelected() {
+    let rowValue = get(this, '_rowValue');
+    let selection = get(this, '_tree.selection');
+
+    if (!selection || !isArray(selection)) {
       return false;
     }
 
-    if (selectMode === SELECT_MODE.SINGLE) {
-      return objectAt(selectedRows, 0) === rowValue;
-    }
-
-    return selectedRows.includes(rowValue) || get(this, '_parentMeta.isSelected');
+    return selection.includes(rowValue) || get(this, '_parentMeta.isGroupSelected');
   }
 
   @computed('_tree.{enableTree,enableCollapse}', '_rowValue.children.[]')
@@ -107,27 +93,42 @@ class TableRowMeta extends EmberObject {
     }
   }
 
-  select({ toggle, range }) {
+  select({ single, toggle, range } = {}) {
     if (get(this, 'isDestroying') || get(this, 'isDestroyed')) {
       return;
     }
     let tree = get(this, '_tree');
     let rowValue = get(this, '_rowValue');
     let rowIndex = get(this, 'index');
-    let isSelected = get(this, 'isSelected');
-    let selectMode = get(this, 'selectMode');
+    let isGroupSelected = get(this, 'isGroupSelected');
+    let selectingChildrenSelectsParent = get(tree, 'selectingChildrenSelectsParent');
 
     let rowMetaCache = get(tree, 'rowMetaCache');
 
-    if (selectMode === SELECT_MODE.SINGLE) {
-      tree.sendAction('onSelect', [rowValue]);
+    if (single) {
+      tree._lastSelectedIndex = null;
+      tree.sendAction('onSelect', rowValue);
       return;
     }
 
-    let selectedRows = new Set(get(tree, 'selectedRows'));
+    let oldSelection = get(tree, 'selection');
 
-    if (toggle) {
-      if (isSelected) {
+    // If the old selection is an array, then we add to it. If not, we restart
+    // the selection as a group.
+    let selection = isArray(oldSelection) ? new Set(oldSelection) : new Set();
+
+    if (range) {
+      // Use a set to avoid item duplication
+      let { _lastSelectedIndex } = tree;
+
+      let minIndex = Math.min(_lastSelectedIndex, rowIndex);
+      let maxIndex = Math.max(_lastSelectedIndex, rowIndex);
+
+      for (let i = minIndex; i <= maxIndex; i++) {
+        selection.add(tree.objectAt(i));
+      }
+    } else if (toggle) {
+      if (isGroupSelected) {
         let meta = this;
         let currentValue = rowValue;
 
@@ -136,36 +137,26 @@ class TableRowMeta extends EmberObject {
 
           for (let child of get(meta, '_rowValue.children')) {
             if (child !== currentValue) {
-              selectedRows.add(child);
+              selection.add(child);
             }
           }
 
-          selectedRows.delete(currentValue);
+          selection.delete(currentValue);
           currentValue = get(meta, '_rowValue');
         }
 
-        selectedRows.delete(currentValue);
+        selection.delete(currentValue);
       } else {
-        selectedRows.add(rowValue);
-      }
-    } else if (range) {
-      // Use a set to avoid item duplication
-      let { _lastSelectedIndex } = tree;
-
-      let minIndex = Math.min(_lastSelectedIndex, rowIndex);
-      let maxIndex = Math.max(_lastSelectedIndex, rowIndex);
-
-      for (let i = minIndex; i <= maxIndex; i++) {
-        selectedRows.add(tree.objectAt(i));
+        selection.add(rowValue);
       }
     } else {
-      selectedRows.clear();
-      selectedRows.add(rowValue);
+      selection.clear();
+      selection.add(rowValue);
     }
 
-    let rowMetas = Array.from(selectedRows).map(r => rowMetaCache.get(r));
+    let rowMetas = Array.from(selection).map(r => rowMetaCache.get(r));
 
-    if (selectMode === SELECT_MODE.GROUPING) {
+    if (selectingChildrenSelectsParent) {
       let groupingCounts = new Map();
 
       for (let rowMeta of rowMetas) {
@@ -177,7 +168,7 @@ class TableRowMeta extends EmberObject {
         }
       }
 
-      reduceSelectedRows(selectedRows, groupingCounts, rowMetaCache);
+      reduceSelectedRows(selection, groupingCounts, rowMetaCache);
     }
 
     for (let rowMeta of rowMetas) {
@@ -185,8 +176,8 @@ class TableRowMeta extends EmberObject {
       let parentMeta = get(rowMeta, '_parentMeta');
 
       while (parentMeta) {
-        if (selectedRows.has(get(parentMeta, '_rowValue'))) {
-          selectedRows.delete(rowValue);
+        if (selection.has(get(parentMeta, '_rowValue'))) {
+          selection.delete(rowValue);
           break;
         }
 
@@ -194,20 +185,20 @@ class TableRowMeta extends EmberObject {
       }
     }
 
-    selectedRows = emberA(Array.from(selectedRows));
+    selection = emberA(Array.from(selection));
 
-    tree.sendAction('onSelect', selectedRows);
+    tree.sendAction('onSelect', selection);
 
     tree._lastSelectedIndex = rowIndex;
   }
 }
 
-function reduceSelectedRows(selectedRows, groupingCounts, rowMetaCache) {
+function reduceSelectedRows(selection, groupingCounts, rowMetaCache) {
   let reducedGroupingCounts = new Map();
 
   for (let [group, count] of groupingCounts.entries()) {
     if (get(group, 'children.length') === count) {
-      selectedRows.add(group);
+      selection.add(group);
 
       let parentRow = rowMetaCache.get(group).get('_parentMeta._rowValue');
 
@@ -221,7 +212,7 @@ function reduceSelectedRows(selectedRows, groupingCounts, rowMetaCache) {
   }
 
   if (reducedGroupingCounts.size > 0) {
-    reduceSelectedRows(selectedRows, reducedGroupingCounts, rowMetaCache);
+    reduceSelectedRows(selection, reducedGroupingCounts, rowMetaCache);
   }
 }
 

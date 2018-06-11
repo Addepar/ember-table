@@ -57,7 +57,9 @@ export default class RowWrapper extends Component {
   @argument columnMetaCache;
   @argument rowMetaCache;
 
-  @argument selectRow;
+  @argument canSelect;
+  @argument rowSelectionMode;
+  @argument checkboxSelectionMode;
 
   _cells = emberA([]);
 
@@ -67,14 +69,15 @@ export default class RowWrapper extends Component {
     super.destroy(...arguments);
   }
 
-  @computed('rowValue', 'rowMeta', 'cells', 'selectRow')
+  @computed('rowValue', 'rowMeta', 'cells', 'canSelect', 'rowSelectionMode')
   get api() {
     let rowValue = this.get('rowValue');
     let rowMeta = this.get('rowMeta');
     let cells = this.get('cells');
-    let selectRow = this.get('selectRow');
+    let canSelect = this.get('canSelect');
+    let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
 
-    return { rowValue, rowMeta, cells, selectRow };
+    return { rowValue, rowMeta, cells, rowSelectionMode };
   }
 
   @computed('rowValue')
@@ -85,7 +88,14 @@ export default class RowWrapper extends Component {
     return rowMetaCache.get(rowValue);
   }
 
-  @computed('rowValue', 'rowMeta', 'columns.[]')
+  @computed(
+    'rowValue',
+    'rowMeta',
+    'columns.[]',
+    'canSelect',
+    'checkboxSelectionMode',
+    'rowSelectionMode'
+  )
   get cells() {
     let cellMetaCache = this.get('cellMetaCache');
 
@@ -94,6 +104,9 @@ export default class RowWrapper extends Component {
 
     let rowValue = this.get('rowValue');
     let rowMeta = this.get('rowMeta');
+    let canSelect = this.get('canSelect');
+    let checkboxSelectionMode = canSelect ? this.get('checkboxSelectionMode') : 'none';
+    let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
 
     let { _cells } = this;
 
@@ -115,6 +128,9 @@ export default class RowWrapper extends Component {
     _cells.forEach((cell, i) => {
       let columnValue = objectAt(columns, i);
       let columnMeta = this.get('columnMetaCache').get(columnValue);
+
+      set(cell, 'checkboxSelectionMode', checkboxSelectionMode);
+      set(cell, 'rowSelectionMode', rowSelectionMode);
 
       set(cell, 'columnValue', columnValue);
       set(cell, 'columnMeta', columnMeta);

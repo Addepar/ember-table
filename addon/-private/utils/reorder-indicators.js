@@ -47,6 +47,10 @@ class ReorderIndicator {
     this.container.removeChild(this.indicatorElement);
   }
 
+  set width(newWidth) {
+    this.indicatorElement.style.width = `${newWidth}px`;
+  }
+
   get left() {
     return this._left;
   }
