@@ -32,16 +32,20 @@ export default class EmberTBody extends Component {
   @readOnly('unwrappedApi.columnTree.columnMetaCache') columnMetaCache;
 
   /**
-    Sets which row selection behavior to follow. Possible values are 'none' (clicking on a row
-    does nothing), 'single' (clicking on a row selects it and deselects other rows), and 'multiple'
-    (multiple rows can be selected through ctrl/cmd-click or shift-click).
+    Sets which row selection behavior to follow. Possible values are 'none'
+    (clicking on a row does nothing), 'single' (clicking on a row selects it and
+    deselects other rows), and 'multiple' (multiple rows can be selected through
+    ctrl/cmd-click or shift-click).
   */
   @argument({ defaultIfUndefined: true })
   @type('string')
   checkboxSelectionMode = SELECT_MODE.MULTIPLE;
 
   /**
-
+    Sets which checkbox selection behavior to follow. Possible values are 'none'
+    (clicking on a row does nothing), 'single' (clicking on a row selects it and
+    deselects other rows), and 'multiple' (multiple rows can be selected through
+    ctrl/cmd-click or shift-click).
   */
   @argument({ defaultIfUndefined: true })
   @type('string')
@@ -56,51 +60,98 @@ export default class EmberTBody extends Component {
   selectingChildrenSelectsParent = true;
 
   /**
-    The currently list of currently selected rows
+    The currently selected rows. Can either be an array or and individual row.
   */
   @argument({ defaultIfUndefined: true })
   @type(optional('object'))
   selection = null;
 
   /**
-    An action that triggers when the row selection of the table changes
+    An action that triggers when the row selection of the table changes.
 
-    @param {Array} selection - The new set of selected rows
+    @param {object} selection - The new selection
   */
   @argument
   @type(optional(Action))
   onSelect = null;
 
-  @bool('onSelect') canSelect;
-
   /**
-    Estimated height for each row. This number is used to decide how many rows will be rendered at
-    initial rendering.
+    Estimated height for each row. This number is used to decide how many rows
+    will be rendered at initial rendering.
   */
   @argument({ defaultIfUndefined: true })
   @type('number')
   estimateRowHeight = 30;
 
   /**
-    A flag that controls if all rows have same static height or not. By default it is set to false
-    and row height is dependent on its internal content. If it is set to true, all rows have the
-    same height equivalent to estimateRowHeight.
+    A flag that controls if all rows have same static height or not. By default
+    it is set to false and row height is dependent on its internal content. If
+    it is set to true, all rows have the same height equivalent to
+    estimateRowHeight.
   */
   @argument({ defaultIfUndefined: true })
   @type('boolean')
   staticHeight = false;
 
+  /**
+    The number of extra rows to render on either side of the table's viewport
+  */
+  @argument({ defaultIfUndefined: true })
+  @type('number')
+  bufferSize = 20;
+
+  /**
+    A flag that tells the table to render all of its rows at once.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type('boolean')
+  renderAll = false;
+
+  /**
+    An action that is triggered when the table reaches the first row.
+  */
+  @argument
+  @type(optional(Action))
+  firstReached = null;
+
+  /**
+    An action that is triggered when the table reaches the last row.
+  */
+  @argument
+  @type(optional(Action))
+  lastReached = null;
+
+  /**
+    An action that is triggered when the first visible row of the table changes.
+  */
+  @argument
+  @type(optional(Action))
+  firstVisibleChanged = null;
+
+  /**
+    An action that is triggered when the last visible row of the table changes.
+  */
+  @argument
+  @type(optional(Action))
+  lastVisibleChanged = null;
+
+  /**
+    Boolean flag that enables tree behavior if items have a `children` property
+  */
   @argument({ defaultIfUndefined: true })
   @type('boolean')
   enableTree = true;
 
+  /**
+    Boolean flag that enables collapsing tree nodes
+  */
   @argument({ defaultIfUndefined: true })
   @type('boolean')
   enableCollapse = true;
 
   /**
-   * The row items that the table should display
-   */
+    The row items that the table should display
+  */
   @argument({ defaultIfUndefined: true })
   @type('object')
   rows = [];
@@ -118,10 +169,21 @@ export default class EmberTBody extends Component {
   */
   rowMetaCache = new Map();
 
+  /**
+    A data structure that the table uses wrapping the `rows` object. It flattens
+    the tree structure of the nodes and allows us to treat it as a flat list of
+    items. This is much more convenient for most table operations in general.
+  */
   collapseTree = CollapseTree.create({
     sendAction: this.sendAction.bind(this),
     rowMetaCache: this.rowMetaCache,
   });
+
+  /**
+    Whether or not the table can select, is true if an `onSelect` action was
+    passed to the table.
+  */
+  @bool('onSelect') canSelect;
 
   constructor() {
     super(...arguments);
@@ -164,6 +226,11 @@ export default class EmberTBody extends Component {
     this.collapseTree.destroy();
   }
 
+  /**
+    Computed property which updates the CollapseTree and erases caches. This is
+    a computed for 1.11 compatibility, otherwise it would make sense to use
+    lifecycle hooks instead.
+  */
   @computed('rows')
   get wrappedRows() {
     this._cleanCaches();
@@ -175,6 +242,10 @@ export default class EmberTBody extends Component {
     return this.collapseTree;
   }
 
+  /**
+    Helper method that is used to clear the row and cell caches whenever the
+    underlying data has changed.
+  */
   _cleanCaches() {
     this.cellMetaCache.clear();
 
