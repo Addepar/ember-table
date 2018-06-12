@@ -1,8 +1,15 @@
 {{#vertical-collection wrappedRows
+  containerSelector=".ember-table"
+
   estimateHeight=estimateRowHeight
   staticHeight=staticHeight
-  containerSelector=".ember-table"
-  bufferSize=20
+  bufferSize=bufferSize
+  renderAll=renderAll
+
+  firstReached=firstReached
+  lastReached=lastReached
+  firstVisibleChanged=firstVisibleChanged
+  lastVisibleChanged=lastVisibleChanged
 
   as |rowValue|
 }}
