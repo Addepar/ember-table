@@ -6,7 +6,7 @@ import { toBase26 } from 'dummy/utils/base-26';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-const table = TablePage.create();
+const table = new TablePage();
 
 module('Integration | header | main', function() {
   componentModule('widthConstraint', function() {
@@ -110,7 +110,7 @@ module('Integration | header | main', function() {
       });
 
       let tableWidth = table.width;
-      let firstColumnWidth = table.headers.eq(0).width;
+      let firstColumnWidth = table.headers.objectAt(0).width;
 
       assert.ok(
         Math.abs(tableWidth - firstColumnWidth - columnWidth) <= 1,
@@ -118,7 +118,7 @@ module('Integration | header | main', function() {
       );
 
       assert.ok(
-        Math.abs(table.headers.eq(1).width - columnWidth) <= 0,
+        Math.abs(table.headers.objectAt(1).width - columnWidth) <= 0,
         'Other columns keep same width in first column resize mode.'
       );
     });
@@ -136,7 +136,7 @@ module('Integration | header | main', function() {
       });
 
       let tableWidth = table.width;
-      let lastColumnWidth = table.headers.eq(1).width;
+      let lastColumnWidth = table.headers.objectAt(1).width;
 
       assert.ok(
         Math.abs(tableWidth - lastColumnWidth - columnWidth) <= 1,
@@ -144,7 +144,7 @@ module('Integration | header | main', function() {
       );
 
       assert.ok(
-        Math.abs(table.headers.eq(0).width - columnWidth) <= 0,
+        Math.abs(table.headers.objectAt(0).width - columnWidth) <= 0,
         'Other columns keep same width in first column resize mode.'
       );
     });

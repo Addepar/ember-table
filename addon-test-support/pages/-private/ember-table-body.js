@@ -8,7 +8,7 @@ export default {
 
   /**
     List of rows in table body. Each of property/function in this collections is the property/func
-    of a single row selected by using calling rows.eq(index).
+    of a single row selected by using calling rows.objectAt(index).
   */
   rows: collection({
     scope: 'tr',
@@ -71,6 +71,6 @@ export default {
     A shortcut to return cell page object specified by row & column indexes.
   */
   getCell(rowIndex, columnIndex) {
-    return this.rows.eq(rowIndex).cells.eq(columnIndex);
+    return this.rows.objectAt(rowIndex).cells.objectAt(columnIndex);
   },
 };

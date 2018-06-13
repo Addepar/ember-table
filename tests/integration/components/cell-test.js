@@ -5,7 +5,7 @@ import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-let table = TablePage.create();
+let table = new TablePage();
 
 module('Integration | cell', function() {
   componentModule('basic', function() {

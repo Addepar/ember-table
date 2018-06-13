@@ -5,7 +5,7 @@ import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-let table = TablePage.create();
+let table = new TablePage();
 
 function checkRowOrder(table, expectedRowOrder) {
   let rowOrderCorrect = true;
@@ -31,7 +31,7 @@ module('Integration | sort', function() {
 
       await generateTable(this, { columns, rows });
 
-      let firstHeader = table.headers.eq(0);
+      let firstHeader = table.headers.objectAt(0);
 
       assert.ok(firstHeader.isSortable, 'sort class applied correctly');
       assert.ok(checkRowOrder(table, ['Zoe', 'Alex', 'Liz']));
@@ -62,8 +62,8 @@ module('Integration | sort', function() {
 
       await generateTable(this, { columns, rows });
 
-      let firstHeader = table.headers.eq(0);
-      let secondHeader = table.headers.eq(1);
+      let firstHeader = table.headers.objectAt(0);
+      let secondHeader = table.headers.objectAt(1);
 
       assert.ok(checkRowOrder(table, ['Zoe 34', 'Alex 43', 'Liz 25']));
 
@@ -92,7 +92,7 @@ module('Integration | sort', function() {
 
       await generateTable(this, { columns, rows });
 
-      let firstHeader = table.headers.eq(0);
+      let firstHeader = table.headers.objectAt(0);
 
       await firstHeader.click();
     });
@@ -100,7 +100,7 @@ module('Integration | sort', function() {
     test('sort indicator works', async function(assert) {
       await generateTable(this);
 
-      let firstHeader = table.headers.eq(0);
+      let firstHeader = table.headers.objectAt(0);
 
       assert.ok(!firstHeader.sortIndicator.isPresent);
 
@@ -122,8 +122,8 @@ module('Integration | sort', function() {
     test('sort indicator works on second column', async function(assert) {
       await generateTable(this);
 
-      let firstHeader = table.headers.eq(0);
-      let secondHeader = table.headers.eq(1);
+      let firstHeader = table.headers.objectAt(0);
+      let secondHeader = table.headers.objectAt(1);
 
       assert.ok(!firstHeader.sortIndicator.isPresent);
       assert.ok(!secondHeader.sortIndicator.isPresent);
@@ -161,8 +161,8 @@ module('Integration | sort', function() {
 
       await generateTable(this, { columns, rows });
 
-      let firstHeader = table.headers.eq(0);
-      let secondHeader = table.headers.eq(1);
+      let firstHeader = table.headers.objectAt(0);
+      let secondHeader = table.headers.objectAt(1);
 
       assert.ok(
         checkRowOrder(table, ['Zoe 34', 'Alex 34', 'Zoe 25', 'Zoe 27']),
@@ -245,7 +245,7 @@ module('Integration | sort', function() {
 
       await generateTable(this, { columns, rows });
 
-      let firstHeader = table.headers.eq(0);
+      let firstHeader = table.headers.objectAt(0);
 
       assert.ok(
         checkRowOrder(table, [

@@ -10,13 +10,13 @@ import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
 
-let table = TablePage.extend({
+let table = new TablePage({
   body: {
     rows: collection({
       isCustomRow: hasClass('custom-row'),
     }),
   },
-}).create();
+});
 
 module('Integration | basic', function() {
   componentModule('rendering', function() {
