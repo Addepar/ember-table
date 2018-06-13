@@ -5,7 +5,7 @@ import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-const table = TablePage.create();
+const table = new TablePage();
 
 module('Integration | footer', function() {
   componentModule('basic', function() {

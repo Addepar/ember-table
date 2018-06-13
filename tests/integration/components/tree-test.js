@@ -6,7 +6,7 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 import { generateTable, generateRows } from '../../helpers/generate-table';
 import wait from 'ember-test-helpers/wait';
 
-let table = TablePage.create();
+let table = new TablePage();
 
 module('Integration | Tree', () => {
   componentModule('basic', function() {
@@ -30,7 +30,7 @@ module('Integration | Tree', () => {
       assert.equal(table.getCell(1, 0).text, '1A', 'correct cell rendered');
 
       assert.equal(table.rows.length, 2, 'renders root rows only');
-      assert.ok(!table.rows.eq(0).collapse.isPresent, 'collapse toggle is not present');
+      assert.ok(!table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is not present');
 
       // can be reenabled
       this.set('enableTree', true);
@@ -40,7 +40,7 @@ module('Integration | Tree', () => {
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
 
       assert.equal(table.rows.length, 6, 'renders all rows');
-      assert.ok(table.rows.eq(0).collapse.isPresent, 'collapse toggle is back');
+      assert.ok(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is back');
     });
 
     test('trees can be collapsed', async function(assert) {
@@ -51,13 +51,13 @@ module('Integration | Tree', () => {
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
 
       // toggle a row
-      await table.rows.eq(0).toggleCollapse();
+      await table.rows.objectAt(0).toggleCollapse();
       assert.equal(table.rows.length, 4, 'rows were removed');
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '1A', 'correct cell rendered');
 
       // uncollapse
-      await table.rows.eq(0).toggleCollapse();
+      await table.rows.objectAt(0).toggleCollapse();
       assert.equal(table.rows.length, 6, 'rows were removed');
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
@@ -70,13 +70,13 @@ module('Integration | Tree', () => {
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
 
-      assert.ok(!table.rows.eq(0).collapse.isPresent, 'collapse toggle is not present');
+      assert.ok(!table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is not present');
 
       // can be reenabled
       this.set('enableCollapse', true);
       await wait();
 
-      assert.ok(table.rows.eq(0).collapse.isPresent, 'collapse toggle is back');
+      assert.ok(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is back');
     });
   });
 });

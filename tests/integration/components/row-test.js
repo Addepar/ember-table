@@ -6,13 +6,13 @@ import { componentModule } from '../../helpers/module';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
 
-let table = TablePage.extend({
+let table = new TablePage({
   body: {
     rows: collection({
       isCustomRow: hasClass('custom-row'),
     }),
   },
-}).create();
+});
 
 module('Integration | row', function() {
   componentModule('basic', function() {
@@ -21,7 +21,7 @@ module('Integration | row', function() {
         rowComponent: 'custom-row',
       });
 
-      assert.ok(table.rows.eq(0).isCustomRow, 'Table has custom row');
+      assert.ok(table.rows.objectAt(0).isCustomRow, 'Table has custom row');
     });
 
     test('sends onClick action', async function(assert) {
@@ -32,7 +32,7 @@ module('Integration | row', function() {
       });
 
       await generateTable(this);
-      await table.rows.eq(0).click();
+      await table.rows.objectAt(0).click();
     });
 
     test('sends onDoubleClick action', async function(assert) {
@@ -43,7 +43,7 @@ module('Integration | row', function() {
       });
 
       await generateTable(this);
-      await table.rows.eq(0).doubleClick();
+      await table.rows.objectAt(0).doubleClick();
     });
   });
 });

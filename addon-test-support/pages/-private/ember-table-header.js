@@ -111,7 +111,7 @@ export default {
   /**
    * List of columns in the header.
    */
-  headers: collection(Header.scope('th')),
+  headers: collection('th', Header),
 
   rows: collection({
     scope: 'tr',

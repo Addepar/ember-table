@@ -9,8 +9,8 @@ import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-let table = TablePage.scope('[data-test-ember-table]').create();
-let otherTable = TablePage.scope('[data-test-other-table]').create();
+let table = new TablePage('[data-test-ember-table]');
+let otherTable = new TablePage('[data-test-other-table]');
 
 module('Integration | meta', function() {
   componentModule('basic', function() {
@@ -68,46 +68,46 @@ module('Integration | meta', function() {
 
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta property set correctly');
 
-      table.rows.eq(0).cells.forEach(cell => {
+      table.rows.objectAt(0).cells.forEach(cell => {
         assert.ok(cell.text.includes('row'), 'row meta correct');
       });
 
       table.rows.forEach(row => {
-        assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
+        assert.ok(row.cells.objectAt(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
-      assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
+      assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
+      assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
 
       await scrollTo('[data-test-ember-table]', 0, 100000);
 
       assert.notOk(table.getCell(0, 0).text.includes('cell'), 'meta updated on scroll');
 
-      table.rows.eq(0).cells.forEach(cell => {
+      table.rows.objectAt(0).cells.forEach(cell => {
         assert.notOk(cell.text.includes('row'), 'row meta correct');
       });
 
       table.rows.forEach(row => {
-        assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
+        assert.ok(row.cells.objectAt(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
-      assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
+      assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
+      assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
 
       await scrollTo('[data-test-ember-table]', 0, 0);
 
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta updated when scrolling back');
 
-      table.rows.eq(0).cells.forEach(cell => {
+      table.rows.objectAt(0).cells.forEach(cell => {
         assert.ok(cell.text.includes('row'), 'row meta correct');
       });
 
       table.rows.forEach(row => {
-        assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
+        assert.ok(row.cells.objectAt(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
-      assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
+      assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
+      assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
     });
 
     test('meta caches are unique per table instance', async function(assert) {
@@ -209,30 +209,30 @@ module('Integration | meta', function() {
       // Main table was affected
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta property set correctly');
 
-      table.rows.eq(0).cells.forEach(cell => {
+      table.rows.objectAt(0).cells.forEach(cell => {
         assert.ok(cell.text.includes('row'), 'row meta correct');
       });
 
       table.rows.forEach(row => {
-        assert.ok(row.cells.eq(0).text.includes('column'), 'column meta correct');
+        assert.ok(row.cells.objectAt(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.ok(table.headers.eq(0).text.match(/column/i), 'header meta correct');
-      assert.ok(table.footers.eq(0).text.includes('column'), 'footer meta correct');
+      assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
+      assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
 
       // Other table was not affected
       assert.notOk(otherTable.getCell(0, 0).text.includes('cell'), 'meta property set correctly');
 
-      otherTable.rows.eq(0).cells.forEach(cell => {
+      otherTable.rows.objectAt(0).cells.forEach(cell => {
         assert.notOk(cell.text.includes('row'), 'row meta correct');
       });
 
       otherTable.rows.forEach(row => {
-        assert.notOk(row.cells.eq(0).text.includes('column'), 'column meta correct');
+        assert.notOk(row.cells.objectAt(0).text.includes('column'), 'column meta correct');
       });
 
-      assert.notOk(otherTable.headers.eq(0).text.includes('column'), 'header meta correct');
-      assert.notOk(otherTable.footers.eq(0).text.includes('column'), 'footer meta correct');
+      assert.notOk(otherTable.headers.objectAt(0).text.includes('column'), 'header meta correct');
+      assert.notOk(otherTable.footers.objectAt(0).text.includes('column'), 'footer meta correct');
     });
   });
 });

@@ -5,22 +5,28 @@ const replace = require('broccoli-string-replace');
 module.exports = {
   name: 'ember-table',
 
-  options: {
-    nodeAssets: {
-      'css-element-queries': {
-        srcDir: 'src',
-        import: ['ResizeSensor.js'],
-      },
-      hammerjs: {
-        import: ['hammer.js'],
-      },
-    },
-  },
-
   included() {
     this._super.included.apply(this, arguments);
 
     this.checker = new VersionChecker(this.project).forEmber();
+
+    let importOptions;
+
+    // If `ember-cli-fastboot` is being used in the root project, use the
+    // fastboot transform when importing
+    if (this.project.findAddonByName('ember-cli-fastboot')) {
+      importOptions = {
+        using: [
+          {
+            transformation: 'fastbootShim',
+          },
+        ],
+      };
+    }
+
+    this.import('node_modules/css-element-queries/src/ResizeSensor.js', importOptions);
+
+    this.import('node_modules/hammerjs/hammer.js', importOptions);
   },
 
   isDevelopingAddon() {

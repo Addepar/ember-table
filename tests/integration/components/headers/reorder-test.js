@@ -10,7 +10,7 @@ import { getScale } from 'ember-table/test-support/helpers/element';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { toBase26 } from 'dummy/utils/base-26';
 
-const table = TablePage.create();
+const table = new TablePage();
 
 export async function scrollToEdge(targetElement, edgeOffset, direction) {
   let targetElementRight = targetElement.getBoundingClientRect().right;
@@ -49,13 +49,13 @@ module('Integration | headers | reorder', function() {
     test('standard columns', async function(assert) {
       await generateTable(this);
 
-      await table.headers.eq(0).reorderBy(1);
-      assert.equal(table.headers.eq(0).text.trim(), 'B', 'First column is swapped forward');
-      assert.equal(table.headers.eq(1).text.trim(), 'A', 'Second column is swapped backward');
+      await table.headers.objectAt(0).reorderBy(1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'B', 'First column is swapped forward');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'A', 'Second column is swapped backward');
 
-      await table.headers.eq(1).reorderBy(-1);
-      assert.equal(table.headers.eq(1).text.trim(), 'B', 'Second column is swapped backward');
-      assert.equal(table.headers.eq(0).text.trim(), 'A', 'First column is swapped forward');
+      await table.headers.objectAt(1).reorderBy(-1);
+      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column is swapped backward');
+      assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column is swapped forward');
     });
 
     test('column reorder action is sent up to controller', async function(assert) {
@@ -65,7 +65,7 @@ module('Integration | headers | reorder', function() {
       });
 
       await generateTable(this);
-      await table.headers.eq(0).reorderBy(1);
+      await table.headers.objectAt(0).reorderBy(1);
     });
 
     test('scroll container scrolls reordering at right edge', async function(assert) {
@@ -78,7 +78,7 @@ module('Integration | headers | reorder', function() {
       await reorderToRightEdge(header);
 
       assert.ok(tableContainer.scrollLeft > 0, 'table scrolled');
-      assert.equal(table.headers.eq(columnCount - 1).text, toBase26(0), 'table scrolled');
+      assert.equal(table.headers.objectAt(columnCount - 1).text, toBase26(0), 'table scrolled');
     });
 
     test('scroll container scrolls reordering at left edge', async function(assert) {
@@ -92,14 +92,14 @@ module('Integration | headers | reorder', function() {
       await reorderToLeftEdge(header);
 
       assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
-      assert.equal(table.headers.eq(0).text, toBase26(columnCount - 1), 'table scrolled');
+      assert.equal(table.headers.objectAt(0).text, toBase26(columnCount - 1), 'table scrolled');
     });
 
     test('reordering does not reset widths', async function(assert) {
       await generateTable(this, { columnCount: 2 });
 
-      let firstHeader = table.headers.eq(0);
-      let secondHeader = table.headers.eq(1);
+      let firstHeader = table.headers.objectAt(0);
+      let secondHeader = table.headers.objectAt(1);
 
       let originalHeaderWidth = firstHeader.width;
 
@@ -107,9 +107,9 @@ module('Integration | headers | reorder', function() {
 
       assert.equal(firstHeader.width, originalHeaderWidth + 30, 'header can be resized larger');
 
-      await table.headers.eq(0).reorderBy(1);
-      assert.equal(table.headers.eq(0).text.trim(), 'B', 'First column is swapped forward');
-      assert.equal(table.headers.eq(1).text.trim(), 'A', 'Second column is swapped backward');
+      await table.headers.objectAt(0).reorderBy(1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'B', 'First column is swapped forward');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'A', 'Second column is swapped backward');
 
       assert.equal(secondHeader.width, originalHeaderWidth + 30, 'width was not reset');
     });
@@ -119,31 +119,31 @@ module('Integration | headers | reorder', function() {
     test('left fixed column can be reordered with other left fixed columns', async function(assert) {
       await generateTable(this, { columnOptions: { fixedLeftCount: 2 } });
 
-      await table.headers.eq(0).reorderBy(1);
-      assert.equal(table.headers.eq(0).text.trim(), 'B', 'First column is swapped forward');
-      assert.equal(table.headers.eq(1).text.trim(), 'A', 'Second column is swapped backward');
+      await table.headers.objectAt(0).reorderBy(1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'B', 'First column is swapped forward');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'A', 'Second column is swapped backward');
     });
 
     test('left fixed column cannot be reordered with normal columns', async function(assert) {
       await generateTable(this, { columnOptions: { fixedLeftCount: 1 } });
 
-      await table.headers.eq(0).reorderBy(1);
-      assert.equal(table.headers.eq(0).text.trim(), 'A', 'First column is not swapped');
-      assert.equal(table.headers.eq(1).text.trim(), 'B', 'Second column is not swapped');
+      await table.headers.objectAt(0).reorderBy(1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column is not swapped');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column is not swapped');
     });
 
     test('right fixed column can be reordered with other right fixed columns', async function(assert) {
       let columnCount = 10;
       await generateTable(this, { columnCount: 10, columnOptions: { fixedRightCount: 2 } });
 
-      await table.headers.eq(columnCount - 2).reorderBy(1);
+      await table.headers.objectAt(columnCount - 2).reorderBy(1);
       assert.equal(
-        table.headers.eq(columnCount - 1).text.trim(),
+        table.headers.objectAt(columnCount - 1).text.trim(),
         'I',
         'First column is swapped forward'
       );
       assert.equal(
-        table.headers.eq(columnCount - 2).text.trim(),
+        table.headers.objectAt(columnCount - 2).text.trim(),
         'J',
         'Second column is swapped backward'
       );
@@ -153,14 +153,14 @@ module('Integration | headers | reorder', function() {
       let columnCount = 10;
       await generateTable(this, { columnCount: 10, columnOptions: { fixedRightCount: 1 } });
 
-      await table.headers.eq(columnCount - 2).reorderBy(1);
+      await table.headers.objectAt(columnCount - 2).reorderBy(1);
       assert.equal(
-        table.headers.eq(columnCount - 1).text.trim(),
+        table.headers.objectAt(columnCount - 1).text.trim(),
         'J',
         'First column is not swapped'
       );
       assert.equal(
-        table.headers.eq(columnCount - 2).text.trim(),
+        table.headers.objectAt(columnCount - 2).text.trim(),
         'I',
         'Second column is not swapped'
       );
@@ -171,13 +171,13 @@ module('Integration | headers | reorder', function() {
         columnOptions: { columnCount: 2, fixedLeftCount: 1, fixedRightCount: 1 },
       });
 
-      await table.headers.eq(0).reorderBy(1);
-      assert.equal(table.headers.eq(0).text.trim(), 'A', 'First column is not swapped');
-      assert.equal(table.headers.eq(1).text.trim(), 'B', 'Second column is not swapped');
+      await table.headers.objectAt(0).reorderBy(1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column is not swapped');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column is not swapped');
 
-      await table.headers.eq(1).reorderBy(-1);
-      assert.equal(table.headers.eq(0).text.trim(), 'A', 'First column is not swapped');
-      assert.equal(table.headers.eq(1).text.trim(), 'B', 'Second column is not swapped');
+      await table.headers.objectAt(1).reorderBy(-1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column is not swapped');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column is not swapped');
     });
 
     test('scroll container scrolls reordering at right edge', async function(assert) {
@@ -198,7 +198,7 @@ module('Integration | headers | reorder', function() {
       await reorderToRightEdge(header, columnWidth);
 
       assert.ok(tableContainer.scrollLeft > 0, 'table scrolled');
-      assert.equal(table.headers.eq(columnCount - 2).text, toBase26(0), 'table scrolled');
+      assert.equal(table.headers.objectAt(columnCount - 2).text, toBase26(0), 'table scrolled');
     });
 
     test('scroll container scrolls reordering at left edge', async function(assert) {
@@ -220,7 +220,7 @@ module('Integration | headers | reorder', function() {
       await reorderToLeftEdge(header, columnWidth);
 
       assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
-      assert.equal(table.headers.eq(1).text, toBase26(columnCount - 1), 'table scrolled');
+      assert.equal(table.headers.objectAt(1).text, toBase26(columnCount - 1), 'table scrolled');
     });
   });
 

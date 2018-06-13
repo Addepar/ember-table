@@ -5,6 +5,7 @@ import { htmlSafe } from '@ember/string';
 import { action, computed } from '@ember-decorators/object';
 import { readOnly, equal, and } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
+import { service } from '@ember-decorators/service';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
 import { type } from '@ember-decorators/argument/type';
@@ -20,6 +21,8 @@ const COLUMN_REORDERING = 1;
 @tagName('th')
 export default class EmberTh extends Component {
   layout = layout;
+
+  @service fastboot;
 
   @argument
   @required
@@ -90,7 +93,7 @@ export default class EmberTh extends Component {
       style += `right: ${this.get('columnMeta.offsetRight')}px;`;
     }
 
-    if (this.element) {
+    if (!this.get('fastboot.isFastBoot') && this.element) {
       // Keep any styling added by the Sticky polyfill
       style += `position: ${this.element.style.position};`;
       style += `top: ${this.element.style.top};`;

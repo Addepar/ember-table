@@ -5,45 +5,45 @@ import { componentModule } from '../../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-const table = TablePage.create();
+const table = new TablePage();
 
 module('Integration | header | resize', function() {
   componentModule('basic', function() {
     test('basic', async function(assert) {
       await generateTable(this);
 
-      let originalWidth = table.headers.eq(1).width;
+      let originalWidth = table.headers.objectAt(1).width;
 
-      await table.headers.eq(1).resize(originalWidth + 30);
-      assert.equal(table.headers.eq(1).width, originalWidth + 30, 'Can be resized larger');
+      await table.headers.objectAt(1).resize(originalWidth + 30);
+      assert.equal(table.headers.objectAt(1).width, originalWidth + 30, 'Can be resized larger');
 
-      await table.headers.eq(1).resize(originalWidth - 30);
-      assert.equal(table.headers.eq(1).width, originalWidth - 30, 'Can be resized smaller');
+      await table.headers.objectAt(1).resize(originalWidth - 30);
+      assert.equal(table.headers.objectAt(1).width, originalWidth - 30, 'Can be resized smaller');
     });
 
     test('respects minWidth', async function(assert) {
       await generateTable(this, { columnOptions: { minWidth: 100, width: 100 } });
 
-      await table.headers.eq(1).resize(30);
-      assert.equal(table.headers.eq(1).width, 100, 'Column size is updated');
+      await table.headers.objectAt(1).resize(30);
+      assert.equal(table.headers.objectAt(1).width, 100, 'Column size is updated');
     });
 
     test('respects maxWidth', async function(assert) {
       await generateTable(this, { columnOptions: { maxWidth: 100, width: 100 } });
 
-      await table.headers.eq(1).resize(200);
-      assert.equal(table.headers.eq(1).width, 100, 'Column size is updated');
+      await table.headers.objectAt(1).resize(200);
+      assert.equal(table.headers.objectAt(1).width, 100, 'Column size is updated');
     });
 
     test('fluid mode', async function(assert) {
       await generateTable(this, { resizeMode: 'fluid' });
 
-      let originalWidth = table.headers.eq(1).width;
-      await table.headers.eq(1).resize(originalWidth + 30);
+      let originalWidth = table.headers.objectAt(1).width;
+      await table.headers.objectAt(1).resize(originalWidth + 30);
 
-      assert.equal(table.headers.eq(1).width, originalWidth + 30, 'Column size is updated');
+      assert.equal(table.headers.objectAt(1).width, originalWidth + 30, 'Column size is updated');
       assert.equal(
-        table.headers.eq(2).width - originalWidth,
+        table.headers.objectAt(2).width - originalWidth,
         -30,
         'Next column shrinks in fluid mode'
       );
@@ -56,8 +56,8 @@ module('Integration | header | resize', function() {
 
       await generateTable(this, { widthConstraint: 'eq-container' });
 
-      let originalWidth = table.headers.eq(1).width;
-      await table.headers.eq(1).resize(originalWidth + 20);
+      let originalWidth = table.headers.objectAt(1).width;
+      await table.headers.objectAt(1).resize(originalWidth + 20);
     });
   });
 
@@ -65,7 +65,7 @@ module('Integration | header | resize', function() {
     test('fixed left column', async function(assert) {
       await generateTable(this, { columnOptions: { fixedLeftCount: 1 } });
 
-      let firstHeader = table.headers.eq(0);
+      let firstHeader = table.headers.objectAt(0);
 
       let originalWidth = firstHeader.width;
       await firstHeader.resize(originalWidth + 30);
@@ -76,7 +76,7 @@ module('Integration | header | resize', function() {
       let columnCount = 20;
       await generateTable(this, { columnCount, columnOptions: { fixedRightCount: 1 } });
 
-      let lastHeader = table.headers.eq(columnCount - 1);
+      let lastHeader = table.headers.objectAt(columnCount - 1);
 
       let originalWidth = lastHeader.width;
       await lastHeader.resize(130);
