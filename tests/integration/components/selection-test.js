@@ -5,7 +5,7 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import { generateTable } from '../../helpers/generate-table';
 
-let table = TablePage.extend({
+let table = new TablePage({
   validateSelected(...selectedIndexes) {
     let valid = true;
 
@@ -19,7 +19,7 @@ let table = TablePage.extend({
 
     return valid;
   },
-}).create();
+});
 
 module('Integration | selection', () => {
   module('rowSelectionMode', function() {
@@ -37,7 +37,7 @@ module('Integration | selection', () => {
       test('Can toggle a row with meta and control', async function(assert) {
         await generateTable(this);
 
-        let row = table.body.rows.eq(0);
+        let row = table.body.rows.objectAt(0);
 
         for (let key of ['ctrlKey', 'metaKey']) {
           assert.ok(table.validateSelected(), 'the row is not toggled on');
@@ -55,8 +55,8 @@ module('Integration | selection', () => {
       test('Can toggle multiple rows with meta and control', async function(assert) {
         await generateTable(this);
 
-        let rowOne = table.rows.eq(0);
-        let rowTwo = table.rows.eq(1);
+        let rowOne = table.rows.objectAt(0);
+        let rowTwo = table.rows.objectAt(1);
 
         for (let key of ['ctrlKey', 'metaKey']) {
           assert.ok(table.validateSelected(), 'the rows are not selected');
@@ -76,8 +76,8 @@ module('Integration | selection', () => {
       test('Can toggle multiple rows with checkbox and keys', async function(assert) {
         await generateTable(this);
 
-        let rowOne = table.rows.eq(0);
-        let rowTwo = table.rows.eq(1);
+        let rowOne = table.rows.objectAt(0);
+        let rowTwo = table.rows.objectAt(1);
 
         assert.ok(table.validateSelected(), 'the rows are not selected');
 
@@ -145,7 +145,7 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
 
-        await table.rows.eq(1).checkbox.click();
+        await table.rows.objectAt(1).checkbox.click();
 
         assert.ok(table.validateSelected(2, 3), 'parent and child deselected');
       });
@@ -189,7 +189,7 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(0), 'the row is toggled on');
 
-        let row = table.rows.eq(0);
+        let row = table.rows.objectAt(0);
 
         for (let key of ['ctrlKey', 'metaKey']) {
           await row.clickWith({ [key]: true });
@@ -203,8 +203,8 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'no rows are selected');
 
-        let rowOne = table.rows.eq(0);
-        let rowTwo = table.rows.eq(1);
+        let rowOne = table.rows.objectAt(0);
+        let rowTwo = table.rows.objectAt(1);
 
         for (let key of ['ctrlKey', 'metaKey']) {
           await rowOne.clickWith({ [key]: true });
@@ -250,7 +250,7 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'rows are not selected');
 
-        await table.body.rows.eq(0).checkbox.click();
+        await table.body.rows.objectAt(0).checkbox.click();
 
         assert.ok(table.validateSelected(0), 'rows are selected');
       });
@@ -262,8 +262,8 @@ module('Integration | selection', () => {
       test('Can toggle multiple rows with checkbox', async function(assert) {
         await generateTable(this);
 
-        let rowOne = table.rows.eq(0);
-        let rowTwo = table.rows.eq(1);
+        let rowOne = table.rows.objectAt(0);
+        let rowTwo = table.rows.objectAt(1);
 
         assert.ok(table.validateSelected(), 'the rows are not selected');
 
@@ -283,8 +283,8 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'rows are not selected');
 
-        await table.rows.eq(3).checkbox.click();
-        await table.rows.eq(5).checkbox.clickWith({ shiftKey: true });
+        await table.rows.objectAt(3).checkbox.click();
+        await table.rows.objectAt(5).checkbox.clickWith({ shiftKey: true });
 
         assert.ok(table.validateSelected(3, 4, 5), 'rows are selected');
       });
@@ -292,7 +292,7 @@ module('Integration | selection', () => {
       test('Checkbox state matches selection state (rowSelectionMode multiple)', async function(assert) {
         await generateTable(this);
 
-        let row = table.body.rows.eq(0);
+        let row = table.body.rows.objectAt(0);
 
         assert.ok(!row.isSelected, 'the row is not selected');
         assert.ok(!row.checkbox.isChecked, 'the row checkbox is not checked');
@@ -306,7 +306,7 @@ module('Integration | selection', () => {
       test('Checkbox state does not match selection state (rowSelectionMode single)', async function(assert) {
         await generateTable(this, { rowSelectionMode: 'single' });
 
-        let row = table.body.rows.eq(0);
+        let row = table.body.rows.objectAt(0);
 
         assert.ok(!row.isSelected, 'the row is not selected');
         assert.ok(!row.checkbox.isChecked, 'the row checkbox is not checked');
@@ -324,7 +324,7 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
 
-        await table.rows.eq(0).checkbox.click();
+        await table.rows.objectAt(0).checkbox.click();
 
         assert.ok(table.validateSelected(0), 'the row is selected after being clicked');
       });
@@ -334,11 +334,11 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'no rows are selected');
 
-        await table.rows.eq(0).checkbox.click();
+        await table.rows.objectAt(0).checkbox.click();
 
         assert.ok(table.validateSelected(0), 'the first row is selected');
 
-        await table.rows.eq(1).checkbox.click();
+        await table.rows.objectAt(1).checkbox.click();
 
         assert.ok(table.validateSelected(1), 'the second row is selected');
       });
@@ -348,8 +348,8 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'no rows are not selected');
 
-        await table.rows.eq(0).checkbox.click();
-        await table.rows.eq(3).checkbox.clickWith({ shiftKey: true });
+        await table.rows.objectAt(0).checkbox.click();
+        await table.rows.objectAt(3).checkbox.clickWith({ shiftKey: true });
 
         assert.ok(table.validateSelected(3), 'last row only is selected');
       });
@@ -376,7 +376,7 @@ module('Integration | selection', () => {
         await table.selectRow(0);
 
         assert.ok(table.validateSelected(0), 'rows are selected');
-        assert.ok(table.body.rows.eq(0).checkboxContainer.isHidden, 'checkbox is hidden');
+        assert.ok(table.body.rows.objectAt(0).checkboxContainer.isHidden, 'checkbox is hidden');
       });
     });
   });

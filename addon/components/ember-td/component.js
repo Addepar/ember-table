@@ -4,6 +4,7 @@ import { htmlSafe } from '@ember/string';
 import { action, computed } from '@ember-decorators/object';
 import { readOnly, equal } from '@ember-decorators/object/computed';
 import { tagName, attribute, className } from '@ember-decorators/component';
+import { service } from '@ember-decorators/service';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
@@ -14,6 +15,8 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
 @tagName('td')
 export default class EmberTd extends Component {
   layout = layout;
+
+  @service fastboot;
 
   @argument
   @type('object')
@@ -97,7 +100,7 @@ export default class EmberTd extends Component {
       style += `right: ${Math.round(this.get('columnMeta.offsetRight'))}px;`;
     }
 
-    if (this.element) {
+    if (!this.get('fastboot.isFastBoot') && this.element) {
       // Keep any styling added by the Sticky polyfill
       style += `position: ${this.element.style.position};`;
       style += `top: ${this.element.style.top};`;

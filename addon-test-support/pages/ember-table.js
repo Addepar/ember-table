@@ -10,6 +10,8 @@ import EmberTableHeaderPage from './-private/ember-table-header';
  * data and manipulate table in test.
  */
 export default PageObject.extend({
+  scope: '[data-test-ember-table]',
+
   /**
    * Page object for table header.
    */
@@ -51,7 +53,7 @@ export default PageObject.extend({
    * @param {number} index
    */
   async selectRow(index) {
-    await this.body.rows.eq(index).click();
+    await this.body.rows.objectAt(index).click();
   },
 
   /**
@@ -60,7 +62,7 @@ export default PageObject.extend({
    * @param {number} index
    */
   async toggleRow(index) {
-    await this.body.rows.eq(index).clickWith({ metaKey: true });
+    await this.body.rows.objectAt(index).clickWith({ metaKey: true });
   },
 
   /**
@@ -70,7 +72,7 @@ export default PageObject.extend({
    * @param {number} endIndex
    */
   async selectRange(beginIndex, endIndex) {
-    await this.body.rows.eq(beginIndex).click();
-    await this.body.rows.eq(endIndex).clickWith({ shiftKey: true });
+    await this.body.rows.objectAt(beginIndex).click();
+    await this.body.rows.objectAt(endIndex).clickWith({ shiftKey: true });
   },
 });

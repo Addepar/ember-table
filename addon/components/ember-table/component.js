@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { htmlSafe } from '@ember/string';
 
 import { computed } from '@ember-decorators/object';
-import { classNames } from '@ember-decorators/component';
+import { attribute, classNames } from '@ember-decorators/component';
 import { service } from '@ember-decorators/service';
 
 import {
@@ -21,6 +21,8 @@ export default class EmberTable extends Component {
   layout = layout;
 
   @service userAgent;
+
+  @attribute dataTestEmberTable = true;
 
   didInsertElement() {
     super.didInsertElement(...arguments);
