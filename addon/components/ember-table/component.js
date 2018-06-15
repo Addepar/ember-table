@@ -41,7 +41,7 @@ export default class EmberTable extends Component {
 
   @service userAgent;
 
-  @attribute dataTestEmberTable = true;
+  @attribute('data-test-ember-table') dataTestEmberTable = true;
 
   didInsertElement() {
     super.didInsertElement(...arguments);
