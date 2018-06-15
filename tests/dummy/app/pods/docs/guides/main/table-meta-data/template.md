@@ -38,7 +38,7 @@ state to be tracked. This state is generally unique to the table, and oftentimes
 related to a particular cell, column, or row. A good example of this is cell
 selection, like in Excel.
 
-When you click a cell in excel, the row, column, and cell are all marked as
+When you click a cell in Excel, the row, column, and cell are all marked as
 active to show the user where they are in the table. Ember Table does _not_ have
 this functionality out of the box - let's see how we would implement it with
 meta objects:

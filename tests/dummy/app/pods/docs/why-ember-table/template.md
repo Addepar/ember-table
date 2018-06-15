@@ -10,9 +10,9 @@ in some application somewhere.
 
 Building that functionality into your Single Page App is a long, tiresome
 process, and as the datasets scale it just gets harder. There are a lot of
-different off the shelf tables out there, like ag-grid and HandsOnTable, but
-customizing them is difficult and time consuming, and if they don't implement
-the feature you need there's no easy way to add it.
+different off the shelf tables out there, but customizing them is difficult and
+time consuming, and if they don't implement the feature you need there's no easy
+way to add it.
 
 ## What makes Ember Table different?
 
@@ -120,6 +120,7 @@ provide escape hatches where possible.
 
 Ember Table is also a relatively lightweight table solution, currently weighing
 in at `22kb` (minified and gzipped) with plenty of extra weight to shed. Compare
-that to ag-grid (`152kb`) or HandsOnTable (`196kb`) and you can see how a table
-solution that integrates with the framework directly can save quite a few bytes.
+that to standalone table solutions like ag-grid (`152kb`) or HandsOnTable
+(`196kb`) and you can see how a table solution that integrates with the
+framework directly can save quite a few bytes.
 

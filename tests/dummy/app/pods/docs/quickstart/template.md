@@ -29,8 +29,8 @@ class DemoComponent extends Component {
 
   rows = [
     {
-      firstName: 'Cyril',
-      lastName: 'Fluck',
+      firstName: 'Tony',
+      lastName: 'Stark',
     },
     {
       firstName: 'Tom',
