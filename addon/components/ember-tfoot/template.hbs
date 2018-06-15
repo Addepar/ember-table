@@ -15,7 +15,10 @@
   }}
     {{#if hasBlock}}
       {{yield (hash
-        api=api
+        rowValue=api.rowValue
+        rowMeta=api.rowMeta
+        cells=api.cells
+        rowSelectionMode=api.rowSelectionMode
 
         row=(component "ember-tr" api=api)
       )}}

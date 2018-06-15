@@ -4,7 +4,6 @@ import { htmlSafe } from '@ember/string';
 import { action, computed } from '@ember-decorators/object';
 import { readOnly, equal } from '@ember-decorators/object/computed';
 import { tagName, attribute, className } from '@ember-decorators/component';
-import { service } from '@ember-decorators/service';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
@@ -12,40 +11,69 @@ import { Action } from '@ember-decorators/argument/types';
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
+/**
+  The table cell component. This component manages cell level concerns, yields
+  the cell value, column value, row value, and all of their associated meta
+  objects.
+
+  ```hbs
+  <EmberTable as |t|>
+    <t.head @columns={{columns}} />
+
+    <t.body @rows={{rows}} as |b|>
+      <b.row as |r|>
+        <r.cell as |cellValue columnValue rowValue cellMeta columnMeta rowMeta|>
+
+        </r.cell>
+      </b.row>
+    </t.body>
+  </EmberTable>
+  ```
+
+  @yield {any} cellValue - The value of the cell
+  @yield {object} columnValue - The column definition
+  @yield {object} rowValue - The row definition
+
+  @yield {object} cellMeta - The meta object associated with the cell
+  @yield {object} columnMeta - The meta object associated with the column
+  @yield {object} rowMeta - The meta object associated with the row
+*/
 @tagName('td')
 export default class EmberTd extends Component {
   layout = layout;
 
-  @service fastboot;
-
+  /**
+    The API object passed in by the table row
+  */
   @argument
   @type('object')
   api;
 
+  /**
+    Action sent when the user clicks this element
+  */
   @argument
   @type(optional(Action))
   onClick;
 
+  /**
+    Action sent when the user double clicks this element
+  */
   @argument
   @type(optional(Action))
   onDoubleClick;
 
-  @computed('api.api')
-  get unwrappedApi() {
-    return this.get('api.api') || this.get('api');
-  }
+  @readOnly('api.cellValue') cellValue;
+  @readOnly('api.cellMeta') cellMeta;
 
-  @readOnly('unwrappedApi.cellValue') cellValue;
-  @readOnly('unwrappedApi.cellMeta') cellMeta;
+  @readOnly('api.columnValue') columnValue;
+  @readOnly('api.columnMeta') columnMeta;
 
-  @readOnly('unwrappedApi.columnValue') columnValue;
-  @readOnly('unwrappedApi.columnMeta') columnMeta;
+  @readOnly('api.rowValue') rowValue;
+  @readOnly('api.rowMeta') rowMeta;
 
-  @readOnly('unwrappedApi.rowValue') rowValue;
-  @readOnly('unwrappedApi.rowMeta') rowMeta;
-
-  @readOnly('unwrappedApi.rowSelectionMode') rowSelectionMode;
-  @readOnly('unwrappedApi.checkboxSelectionMode') checkboxSelectionMode;
+  @readOnly('api.rowSelectionMode') rowSelectionMode;
+  @readOnly('api.checkboxSelectionMode') checkboxSelectionMode;
 
   @className
   @equal('columnMeta.index', 0)
@@ -100,7 +128,7 @@ export default class EmberTd extends Component {
       style += `right: ${Math.round(this.get('columnMeta.offsetRight'))}px;`;
     }
 
-    if (!this.get('fastboot.isFastBoot') && this.element) {
+    if (typeof FastBoot === 'undefined' && this.element) {
       // Keep any styling added by the Sticky polyfill
       style += `position: ${this.element.style.position};`;
       style += `top: ${this.element.style.top};`;

@@ -13,33 +13,72 @@ import { closest } from '../../-private/utils/element';
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
+/**
+  The table row component. This component manages row level concerns, and yields
+  an API object that contains the cell component, the cell/column/row values,
+  and the cell/column/row meta objects. It is used in both the header and the
+  body, mirroring the structure of native HTML tables.
+
+  ```hbs
+  <EmberTable as |t|>
+    <t.head @columns={{columns}} as |h|>
+      <h.row as |r|>
+        <r.cell>
+      </h.row>
+    </t.head>
+
+    <t.body @rows={{rows}} as |b|>
+      <b.row as |r|>
+        <r.cell>
+      </b.row>
+    </t.body>
+  </EmberTable>
+  ```
+
+  @yield {object} r - the API object yielded by the table row
+  @yield {Component} r.cell - The table cell contextual component
+
+  @yield {any} r.cellValue - The value for the currently yielded cell
+  @yield {object} r.cellMeta - The meta for the currently yielded cell
+
+  @yield {object} r.columnValue - The value for the currently yielded column
+  @yield {object} r.columnMeta - The meta for the currently yielded column
+
+  @yield {object} r.rowValue - The value for the currently yielded row
+  @yield {object} r.rowMeta - The meta for the currently yielded row
+*/
 @tagName('tr')
 @classNames('et-tr')
-export default class EmberTableRow extends Component {
+export default class EmberTr extends Component {
   layout = layout;
 
+  /**
+    The API object passed in by the table body, header, or footer
+  */
   @argument
   @required
   @type('object')
   api;
 
+  /**
+    Action sent when the user clicks this element
+  */
   @argument
   @type(optional(Action))
   onClick;
 
+  /**
+    Action sent when the user double clicks this element
+  */
   @argument
   @type(optional(Action))
   onDoubleClick;
 
-  @computed('api.api')
-  get unwrappedApi() {
-    return this.get('api.api') || this.get('api');
-  }
-
-  @readOnly('unwrappedApi.rowValue') rowValue;
-  @readOnly('unwrappedApi.rowMeta') rowMeta;
-  @readOnly('unwrappedApi.cells') cells;
-  @readOnly('unwrappedApi.rowSelectionMode') rowSelectionMode;
+  @readOnly('api.rowValue') rowValue;
+  @readOnly('api.rowMeta') rowMeta;
+  @readOnly('api.cells') cells;
+  @readOnly('api.rowSelectionMode') rowSelectionMode;
+  @readOnly('api.isHeader') isHeader;
 
   @className
   @readOnly('rowMeta.isSelected')

@@ -14,10 +14,35 @@ import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 import layout from './template';
 import { assert } from '@ember/debug';
 
+/**
+  The table body component. This component manages the main bulk of the rows of
+  the table, provided occlusion for them and managing their behavior. It yields
+  a template for each row, and an API that contains a row component, the row
+  value, and the meta object for the row.
+
+  ```hbs
+  <EmberTable as |t|>
+    <t.head @columns={{columns}} />
+
+    <t.body @rows={{rows}} as |b|>
+      <b.row>
+    </t.body>
+  </EmberTable>
+  ```
+
+  @yield {object} b - the API object yielded by the table body
+  @yield {Component} b.row - The table row component
+
+  @yield {object} b.rowValue - The value for the currently yielded row
+  @yield {object} b.rowMeta - The meta for the currently yielded row
+*/
 @tagName('tbody')
 export default class EmberTBody extends Component {
   layout = layout;
 
+  /**
+    The API object passed in by the table
+  */
   @argument
   @required
   @type('object')

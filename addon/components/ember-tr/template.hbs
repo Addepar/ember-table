@@ -1,21 +1,39 @@
-{{#each cells as |cell|}}
+{{#each cells as |api|}}
   {{#if hasBlock}}
-    {{#if api.isHeader}}
+    {{#if isHeader}}
       {{yield (hash
-        api=cell
+        columnValue=api.columnValue
+        columnMeta=api.columnMeta
 
-        cell=(component "ember-th" api=cell)
+        enableResize=api.enableResize
+        enableReorder=api.enableReorder
+
+        sorts=api.sorts
+        isSortable=api.isSortable
+        sendUpdateSort=api.sendUpdateSort
+
+        cell=(component "ember-th" api=api)
       )}}
     {{else}}
       {{yield (hash
-        api=cell
+        cellValue=api.cellValue
+        cellMeta=api.cellMeta
 
-        cell=(component "ember-td" api=cell)
+        columnValue=api.columnValue
+        columnMeta=api.columnMeta
+
+        rowValue=api.rowValue
+        rowMeta=api.rowMeta
+
+        rowSelectionMode=api.rowSelectionMode
+        checkboxSelectionMode=api.checkboxSelectionMode
+
+        cell=(component "ember-td" api=api)
       )}}
     {{/if}}
-  {{else if api.isHeader}}
-    {{ember-th api=cell}}
+  {{else if isHeader}}
+    {{ember-th api=api}}
   {{else}}
-    {{ember-td api=cell}}
+    {{ember-td api=api}}
   {{/if}}
 {{/each}}

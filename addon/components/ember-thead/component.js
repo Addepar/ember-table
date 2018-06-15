@@ -18,6 +18,24 @@ import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-pri
 
 import layout from './template';
 
+/**
+  The table header component. This component manages and receives the column
+  definitions for the table, and yields for each row of headers that exists
+  (in the case of subcolumns).
+
+  ```hbs
+  <EmberTable as |t|>
+    <t.head @columns={{columns}} as |h|>
+
+    </t.head>
+
+    <t.body @rows={{rows}} />
+  </EmberTable>
+  ```
+
+  @yield {object} h - the API object yielded by the table header
+  @yield {Component} h.row - The table row component
+*/
 @tagName('thead')
 export default class EmberTHead extends Component {
   layout = layout;
