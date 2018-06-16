@@ -11,7 +11,7 @@
     "doc": "doc",
     "test": "tests"
   },
-  "repository": "",
+  "repository": "https://github.com/Addepar/ember-table",
   "scripts": {
     "build": "ember build",
     "lint:js": "ember adde-lint --javascript",
