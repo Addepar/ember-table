@@ -4,5 +4,11 @@
     "name": "v2.0.0-beta.1",
     "sha": "2eec4cbe0054c5faa645fdcdefb0084be0b4b90f",
     "tag": null
+  },
+  "latest": {
+    "path": "latest",
+    "name": "latest",
+    "sha": "2eec4cbe0054c5faa645fdcdefb0084be0b4b90f",
+    "tag": null
   }
 }
