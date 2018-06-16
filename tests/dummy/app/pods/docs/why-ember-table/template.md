@@ -73,7 +73,7 @@ and actions:
   </t.head>
 
   <t.body @rows={{rows}} as |b|>
-    <b.row>
+    <b.row as |r|>
       <r.cell>
         Cell
       </r.cell>
