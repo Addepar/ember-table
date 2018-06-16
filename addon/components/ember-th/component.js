@@ -15,9 +15,9 @@ import { closest } from '../../-private/utils/element';
 import layout from './template';
 import { get } from '@ember/object';
 
-const COLUMN_RESIZE = 0;
-const COLUMN_REORDERING = 1;
-const COLUMN_INACTIVE = 2;
+const COLUMN_INACTIVE = 0;
+const COLUMN_RESIZING = 1;
+const COLUMN_REORDERING = 2;
 
 /**
   The table header cell component. This component manages header cell level
@@ -149,7 +149,6 @@ export default class EmberTh extends Component {
     hammer.add(new Hammer.Press({ time: 0 }));
 
     hammer.on('press', this.pressHandler);
-    hammer.on('pressup', this.pressUpHandler);
     hammer.on('panstart', this.panStartHandler);
     hammer.on('panmove', this.panMoveHandler);
     hammer.on('panend', this.panEndHandler);
@@ -161,7 +160,6 @@ export default class EmberTh extends Component {
     let hammer = this._hammer;
 
     hammer.off('press');
-    hammer.off('pressup');
     hammer.off('panstart');
     hammer.off('panmove');
     hammer.off('panend');
@@ -218,33 +216,25 @@ export default class EmberTh extends Component {
   }
 
   pressHandler = event => {
-    let resizeEnabled = this.get('resizeEnabled');
-    let reorderEnabled = this.get('reorderEnabled');
-
     let [{ clientX, target }] = event.pointers;
 
-    if (resizeEnabled && target.classList.contains('et-header-resize-area')) {
-      this._columnState = COLUMN_RESIZE;
-      this.get('columnMeta').startResize(clientX);
-    } else if (reorderEnabled) {
-      this._columnState = COLUMN_REORDERING;
-    }
-  };
-
-  pressUpHandler = () => {
-    if (this._columnState === COLUMN_RESIZE) {
-      this.get('columnMeta').endResize();
-    }
-
-    next(() => {
-      this._columnState = COLUMN_INACTIVE;
-    });
+    this._originalClientX = clientX;
+    this._originalTargetWasResize = target.classList.contains('et-header-resize-area');
   };
 
   panStartHandler = event => {
+    let resizeEnabled = this.get('resizeEnabled');
+    let reorderEnabled = this.get('reorderEnabled');
+
     let [{ clientX }] = event.pointers;
 
-    if (this._columnState === COLUMN_REORDERING) {
+    if (resizeEnabled && this._originalTargetWasResize) {
+      this._columnState = COLUMN_RESIZING;
+
+      this.get('columnMeta').startResize(this._originalClientX);
+    } else if (reorderEnabled) {
+      this._columnState = COLUMN_REORDERING;
+
       this.get('columnMeta').startReorder(clientX);
     }
   };
@@ -252,7 +242,7 @@ export default class EmberTh extends Component {
   panMoveHandler = event => {
     let [{ clientX }] = event.pointers;
 
-    if (this._columnState === COLUMN_RESIZE) {
+    if (this._columnState === COLUMN_RESIZING) {
       this.get('columnMeta').updateResize(clientX);
       this._prevClientX = clientX;
     } else if (this._columnState === COLUMN_REORDERING) {
@@ -262,14 +252,12 @@ export default class EmberTh extends Component {
   };
 
   panEndHandler = () => {
-    if (this._columnState === COLUMN_RESIZE) {
+    if (this._columnState === COLUMN_RESIZING) {
       this.get('columnMeta').endResize();
     } else if (this._columnState === COLUMN_REORDERING) {
       this.get('columnMeta').endReorder();
     }
 
-    next(() => {
-      this._columnState = COLUMN_INACTIVE;
-    });
+    next(() => (this._columnState = COLUMN_INACTIVE));
   };
 }
