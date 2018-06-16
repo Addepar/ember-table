@@ -1,31 +1,35 @@
 {{#docs-viewer as |viewer|}}
   {{#viewer.nav as |nav|}}
-    {{nav.section 'Introduction' 'docs.examples' style='large'}}
+    {{nav.section 'Introduction' style='large'}}
 
     <li class="mt-8"></li>
 
-    {{nav.item 'What is Ember Table?' 'docs.index'}}
     {{nav.item 'Quickstart' 'docs.quickstart'}}
+    {{nav.item 'Why Ember Table?' 'docs.why-ember-table'}}
 
-    {{nav.section 'Examples' 'docs.examples' style='large'}}
+    {{nav.section 'Guides' style='large'}}
 
     <li class="mt-8"></li>
 
-    {{nav.item 'A Basic Table' 'docs.examples.basic-table'}}
+    {{nav.item 'A Basic Table' 'docs.guides.main.basic-table'}}
+    {{nav.item 'Table Customization' 'docs.guides.main.table-customization'}}
+    {{nav.item 'Table Meta Data' 'docs.guides.main.table-meta-data'}}
+    {{nav.item 'Styling the Table' 'docs.guides.main.styling-the-table'}}
+    {{nav.item 'Legacy Usage' 'docs.guides.main.legacy-usage'}}
 
     {{nav.section 'Header'}}
 
-    {{nav.item 'Columns' 'docs.examples.header.columns'}}
-    {{nav.item 'Subcolumns' 'docs.examples.header.subcolumns'}}
-    {{nav.item 'Fixed Columns' 'docs.examples.header.fixed-columns'}}
-    {{nav.item 'Size Constraints' 'docs.examples.header.size-constraints'}}
-    {{nav.item 'Sorting' 'docs.examples.header.sorting'}}
+    {{nav.item 'Columns' 'docs.guides.header.columns'}}
+    {{nav.item 'Subcolumns' 'docs.guides.header.subcolumns'}}
+    {{nav.item 'Fixed Columns' 'docs.guides.header.fixed-columns'}}
+    {{nav.item 'Size Constraints' 'docs.guides.header.size-constraints'}}
+    {{nav.item 'Sorting' 'docs.guides.header.sorting'}}
 
     {{nav.section 'Body'}}
 
-    {{nav.item 'Rows and Trees' 'docs.examples.body.rows-and-trees'}}
-    {{nav.item 'Row Selection' 'docs.examples.body.row-selection'}}
-    {{nav.item 'Occlusion' 'docs.examples.body.occlusion'}}
+    {{nav.item 'Rows and Trees' 'docs.guides.body.rows-and-trees'}}
+    {{nav.item 'Row Selection' 'docs.guides.body.row-selection'}}
+    {{nav.item 'Occlusion' 'docs.guides.body.occlusion'}}
   {{/viewer.nav}}
 
   {{#viewer.main}}

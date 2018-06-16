@@ -101,3 +101,58 @@ $silver: #dddddd;
   height: 200px;
   padding: 10px;
 }
+
+.docs-hero {
+  > div {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  h1 {
+    display: flex;
+    justify-content: center;
+    line-height: 1.5;
+
+    > div {
+      margin: 0;
+
+      > span {
+        height: 4rem;
+      }
+    }
+  }
+
+  p {
+    margin-top: 0;
+  }
+}
+
+tr {
+  &.has-children {
+    td {
+      background-color: #f7f7f7;
+    }
+  }
+
+  &.is-row-selected {
+    td {
+      background-color: #e5f5ff;
+    }
+  }
+
+  td.is-column-selected,
+  th.is-column-selected {
+    background-color: #e5f5ff;
+    border-bottom-color: #d2e2ec;
+  }
+
+  td.is-cell-selected {
+    background-color: #b8ddf5;
+  }
+}
+
+.cell-content {
+  margin: -4px;
+  padding: 4px;
+  height: 30px;
+}

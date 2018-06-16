@@ -1,13 +1,28 @@
-# Ember Table
+<div class="docs-hero">
+  {{docs-hero
+    logo='ember'
+    slimHeading='table'
+    byline='the power table for power users'
+  }}
+</div>
 
-An addon to support large data set and a number of features around table. Ember Table can handle over 100,000 rows without and rendering or performance issue. This version of Ember Table supports Ember 1.11 to latest version of Ember.
+Ember Table is a power table made for users who need a full-fledged,
+fully-customizable table component for their apps. It is built to be flexible,
+scalable, and ergonomic for day-to-day use.
 
+Unlike other table components, Ember Table seeks to provide as many common table
+features as it can _without_ sacrificing flexibility or composeability. You can
+still use standard component idioms to customize, extend, and build on top of
+Ember Table at every level, ensuring that it never gets in your way or prevents
+you from doing what you want.
 
 ## Features
-- Column resizing, column reordering.
-- Table resizing.
-- Fixed first column.
-- Custom row and custom header.
-- Handles transient state at cell level.
-- Single, multiple row selection.
-- Table grouping.
+
+- Fixed headers and footers
+- Fixed columns
+- Row selection
+- Row sorting
+- Tree tables (with group collapsing)
+- Column resizing and reordering
+- Nested subcolumns (e.g. to create pivot tables)
+- Scalability - Can render thousands of rows performantly

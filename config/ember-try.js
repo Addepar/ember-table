@@ -30,6 +30,7 @@ module.exports = function() {
               'ember-data': '~1.13.0',
               'ember-source': null,
               'ember-cli-addon-docs': null,
+              'ember-angle-bracket-invocation-polyfill': null,
             },
           },
         },
@@ -54,6 +55,7 @@ module.exports = function() {
               'ember-data': '~1.13.0',
               'ember-source': null,
               'ember-cli-addon-docs': null,
+              'ember-angle-bracket-invocation-polyfill': null,
             },
           },
         },
@@ -78,6 +80,7 @@ module.exports = function() {
               'ember-data': '~2.0',
               'ember-source': null,
               'ember-cli-addon-docs': null,
+              'ember-angle-bracket-invocation-polyfill': null,
             },
           },
         },
@@ -95,6 +98,7 @@ module.exports = function() {
             devDependencies: {
               'ember-source': null,
               'ember-cli-addon-docs': null,
+              'ember-angle-bracket-invocation-polyfill': null,
             },
           },
         },
@@ -111,6 +115,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': null,
+              'ember-angle-bracket-invocation-polyfill': null,
             },
           },
         },

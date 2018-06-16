@@ -1,11 +1,11 @@
 /* global Hammer */
 import Component from '@ember/component';
 import { htmlSafe } from '@ember/string';
+import { next } from '@ember/runloop';
 
 import { action, computed } from '@ember-decorators/object';
 import { readOnly, equal, and } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
-import { service } from '@ember-decorators/service';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
 import { type } from '@ember-decorators/argument/type';
@@ -17,51 +17,68 @@ import { get } from '@ember/object';
 
 const COLUMN_RESIZE = 0;
 const COLUMN_REORDERING = 1;
+const COLUMN_INACTIVE = 2;
 
+/**
+  The table header cell component. This component manages header cell level
+  concerns, and yields the column value and column meta data objects.
+
+  ```hbs
+  <EmberTable as |t|>
+    <t.head @columns={{columns}} as |h|>
+      <h.row as |r|>
+        <r.cell as |columnValue columnMeta|>
+
+        </r.cell>
+      </h.row>
+    </t.head>
+
+    <t.body @rows={{rows}} />
+  </EmberTable>
+  ```
+  @yield {object} columnValue - The column definition
+  @yield {object} columnMeta - The meta object associated with this column
+*/
 @tagName('th')
 export default class EmberTh extends Component {
   layout = layout;
 
-  @service fastboot;
-
+  /**
+    The API object passed in by the table row
+  */
   @argument
   @required
   @type('object')
   api;
 
-  @computed('api.api')
-  get unwrappedApi() {
-    return this.get('api.api') || this.get('api');
-  }
-
-  @readOnly('unwrappedApi.columnValue') columnValue;
-  @readOnly('unwrappedApi.columnMeta') columnMeta;
+  @readOnly('api.columnValue') columnValue;
+  @readOnly('api.columnMeta') columnMeta;
 
   /**
     Indicates if this column can be resized.
   */
   @className('is-resizable')
-  @readOnly('unwrappedApi.enableResize')
+  @readOnly('api.enableResize')
   resizeEnabled;
 
   /**
     Indicates if this column can be reordered.
   */
   @className('is-reorderable')
-  @readOnly('unwrappedApi.enableReorder')
+  @readOnly('api.enableReorder')
   reorderEnabled;
 
   /**
     Any sorts applied to the table.
   */
-  @readOnly('unwrappedApi.sorts') sorts;
+  @readOnly('api.sorts') sorts;
 
   /**
     Whether or not the column is sortable. Is true IFF the column is a leaf node
     onUpdateSorts is set on the thead.
   */
   @className
-  @and('unwrappedApi.isSortable', 'columnMeta.isLeaf')
+  @and('api.isSortable', 'columnMeta.isLeaf')
   isSortable;
 
   @readOnly('columnMeta.sortIndex') sortIndex;
@@ -93,7 +110,7 @@ export default class EmberTh extends Component {
       style += `right: ${this.get('columnMeta.offsetRight')}px;`;
     }
 
-    if (!this.get('fastboot.isFastBoot') && this.element) {
+    if (typeof FastBoot === 'undefined' && this.element) {
       // Keep any styling added by the Sticky polyfill
       style += `position: ${this.element.style.position};`;
       style += `top: ${this.element.style.top};`;
@@ -115,7 +132,7 @@ export default class EmberTh extends Component {
     to column boundary (using some threshold), this variable set whether it's the left or right
     column.
   */
-  _columnState = null;
+  _columnState = COLUMN_INACTIVE;
 
   /**
     An object that listens to touch/ press/ drag events.
@@ -163,7 +180,7 @@ export default class EmberTh extends Component {
     let isSortable = this.get('isSortable');
     let inputParent = closest(event.target, 'button:not(.et-sort-toggle), input, label, a, select');
 
-    if (!inputParent && isSortable) {
+    if (this._columnState === COLUMN_INACTIVE && !inputParent && isSortable) {
       let toggle = event.ctrlKey || event.metaKey;
 
       this.updateSort({ toggle });
@@ -174,7 +191,12 @@ export default class EmberTh extends Component {
     let isSortable = this.get('isSortable');
     let inputParent = closest(event.target, 'button:not(.et-sort-toggle), input, label, a, select');
 
-    if (!inputParent && event.key === 'Enter' && isSortable) {
+    if (
+      this._columnState === COLUMN_INACTIVE &&
+      !inputParent &&
+      event.key === 'Enter' &&
+      isSortable
+    ) {
       this.updateSort();
     }
   }
@@ -192,7 +214,7 @@ export default class EmberTh extends Component {
       newSortings.push({ valuePath, isAscending: true });
     }
 
-    this.get('unwrappedApi').sendUpdateSort(newSortings);
+    this.get('api').sendUpdateSort(newSortings);
   }
 
   pressHandler = event => {
@@ -213,6 +235,10 @@ export default class EmberTh extends Component {
     if (this._columnState === COLUMN_RESIZE) {
       this.get('columnMeta').endResize();
     }
+
+    next(() => {
+      this._columnState = COLUMN_INACTIVE;
+    });
   };
 
   panStartHandler = event => {
@@ -241,5 +267,9 @@ export default class EmberTh extends Component {
     } else if (this._columnState === COLUMN_REORDERING) {
       this.get('columnMeta').endReorder();
     }
+
+    next(() => {
+      this._columnState = COLUMN_INACTIVE;
+    });
   };
 }

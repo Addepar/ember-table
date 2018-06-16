@@ -9,7 +9,7 @@ import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-let table = new TablePage('[data-test-ember-table]');
+let table = new TablePage('[data-test-main-table]');
 let otherTable = new TablePage('[data-test-other-table]');
 
 module('Integration | meta', function() {
@@ -25,7 +25,7 @@ module('Integration | meta', function() {
 
       this.render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-ember-table=true as |t|}}
+          {{#ember-table data-test-main-table=true as |t|}}
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
@@ -121,7 +121,7 @@ module('Integration | meta', function() {
 
       this.render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-ember-table=true as |t|}}
+          {{#ember-table data-test-main-table=true as |t|}}
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}

@@ -9,12 +9,11 @@ import { argument } from '@ember-decorators/argument';
 
 import { computed } from '@ember-decorators/object';
 
-import CellProxy from '../../-private/cell-proxy';
 import { objectAt } from '../../-private/utils/array';
 
-class CellWrapper extends EmberObject {
-  _cellMeta = CellProxy.create();
+import { guidFor } from '@ember/object/internals';
 
+class CellWrapper extends EmberObject {
   @computed('rowValue', 'columnValue.valuePath')
   get cellValue() {
     let row = get(this, 'rowValue');
@@ -25,22 +24,18 @@ class CellWrapper extends EmberObject {
 
   @computed('rowValue', 'columnValue.valuePath')
   get cellMeta() {
-    let { _cellMeta } = this;
     let row = get(this, 'rowValue');
+    let rowId = guidFor(row);
     let valuePath = get(this, 'columnValue.valuePath');
     let cellMetaCache = get(this, 'cellMetaCache');
 
-    set(_cellMeta, 'row', row);
-    set(_cellMeta, 'valuePath', valuePath);
-    set(_cellMeta, 'cellMetaCache', cellMetaCache);
+    let cellId = `${rowId}:${valuePath}`;
 
-    return _cellMeta;
-  }
+    if (!cellMetaCache.has(cellId)) {
+      cellMetaCache.set(cellId, EmberObject.create());
+    }
 
-  destroy() {
-    this._cellMeta.destroy();
-
-    super.destroy(...arguments);
+    return cellMetaCache.get(cellId);
   }
 }
 
