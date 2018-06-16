@@ -1,18 +1,24 @@
-import EmberRouter from '@ember/routing/router';
+import AddonDocsRouter, { docsRoute } from 'ember-cli-addon-docs/router';
 import config from './config/environment';
 
-const Router = EmberRouter.extend({
+const Router = AddonDocsRouter.extend({
   location: config.locationType,
   rootURL: config.rootURL,
 });
 
 Router.map(function() {
-  this.route('docs', function() {
-    this.route('introduction');
+  docsRoute(this, function() {
     this.route('quickstart');
+    this.route('why-ember-table');
 
-    this.route('examples', function() {
-      this.route('basic-table');
+    this.route('guides', function() {
+      this.route('main', function() {
+        this.route('basic-table');
+        this.route('table-customization');
+        this.route('table-meta-data');
+        this.route('styling-the-table');
+        this.route('legacy-usage');
+      });
 
       this.route('header', function() {
         this.route('columns');

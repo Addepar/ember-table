@@ -1,7 +1,8 @@
 {{#each wrappedRows as |api|}}
   {{#if hasBlock}}
     {{yield (hash
-      api=api
+      cells=api.cells
+      isHeader=api.isHeader
 
       row=(component "ember-tr" api=api)
     )}}

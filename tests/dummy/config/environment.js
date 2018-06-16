@@ -9,6 +9,9 @@ module.exports = function(environment) {
     routerScroll: {
       scrollElement: '#docs-viewer__scroll-body',
     },
+    fastboot: {
+      hostWhitelist: [/^localhost:\d+$/],
+    },
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build

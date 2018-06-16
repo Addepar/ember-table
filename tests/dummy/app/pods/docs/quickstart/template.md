@@ -1,76 +1,56 @@
-## Quickstart.
+# Quickstart.
 
-To use `Ember Table`, you need to create `columns` and `rows` dataset.
+## Installation
 
-`columns` is an array of objects which has multiple fields to define behavior of column.
-Two required field in each object is `name` and `valuePath`.
+```sh
+ember install ember-table
+```
+
+## Basic Usage
+
+To use `Ember Table`, you'll need to create column definitions, and you'll need
+to pass in an array of rows. Here is a component definition with some basic
+column definitions and a rows array:
 
 ```javascript
-  columns: [
+import Component from '@ember/component';
+
+class DemoComponent extends Component {
+  columns = [
     {
-      name: `Open time`,
-      valuePath: `open`
+      name: `First Name`,
+      valuePath: `firstName`
     },
     {
-      name: `Close time`,
-      valuePath: `close`
+      name: `Last Name`,
+      valuePath: `lastName`
     }
-  ]
+  ];
+
+  rows = [
+    {
+      firstName: 'Tony',
+      lastName: 'Stark',
+    },
+    {
+      firstName: 'Tom',
+      lastName: 'Dale',
+    }
+  ];
+}
 ```
 
-`rows` could be a javascript array, ember array or any data structure that implements `length` and
-`objectAt(index)`. This flexibity gives application to avoid having all data at front but loads more
-data as user scrolls. Each object in the `rows` data structure should contains all fields defined
-by all `valuePath` in `columns` array.
+Note how each item in the rows array has `firstName` and `lastName` properties,
+which matches up with the `valuePath` properties from the column definitions.
+This is how the table will get the values for each column.
 
-```javascript
-  rows: computed(function() {
-    const rows = emberA();
+Now let's setup the template for this component:
 
-    rows.pushObject({
-      open: '8AM',
-      close: '8PM'
-    });
-
-    rows.pushObject({
-      open: '11AM',
-      close: '9PM'
-    });
-
-    return rows;
-  })
+```hbs
+  <EmberTable as |t|>
+    <t.head @columns={{columns}} />
+    <t.body @rows={{rows}} />
+  </EmberTable>
 ```
 
-### Template
-
-The following template renders a simple table.
-
-```
-  {{#ember-table as |t|}}
-    {{t.head columns=columns}}
-
-    {{#t.body rows=rows as |b|}}
-      {{#b.row as |r|}}
-        {{#r.cell as |value column|}}
-          {{component column.component value=value}}
-        {{/r.cell}}
-      {{/b.row}}
-    {{/t.body}}
-  {{/ember-table}}
-```
-
-### Styling
-
-The rendered table is a plain table without any styling. You can define styling for your own table.
-If you want to use default table style, import the `ember-table/default` SASS file.
-
-### Optional Footer
-To use footer for your table, pass `footerRows` param to ember table. Each element in `footerRows`
-represents a row in table footer. The footer row takes `valuePath` field in each column to render
-data for each footer cell, similar to table body.
-
-### Custom header and custom footer
-By default Ember table header renders text defined by `name` or `footerValue` inside each
-`column`. To customize table header or footer, you can pass in `headerComponent` and
-`footerComponent` fields in each column data. When the `headerComponent`(or `footerComponent`) is
-defined, the `name`(or `footerValue`) field is ignored.
+And viola! You should have a basic table up and running!
