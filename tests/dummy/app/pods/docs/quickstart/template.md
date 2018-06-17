@@ -53,4 +53,4 @@ Now let's setup the template for this component:
   </EmberTable>
 ```
 
-And viola! You should have a basic table up and running!
+And voila! You should have a basic table up and running!
