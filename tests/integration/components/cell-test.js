@@ -3,12 +3,13 @@ import hbs from 'htmlbars-inline-precompile';
 
 import { generateTable, generateColumns } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
-import { set } from '@ember/object';
+import { set, get } from '@ember/object';
 
 import { fillIn } from 'ember-native-dom-helpers';
 import wait from 'ember-test-helpers/wait';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
+import { run } from '@ember/runloop';
 
 let table = new TablePage();
 
@@ -72,8 +73,10 @@ module('Integration | cell', function() {
       assert.equal(table.getCell(0, 0).text, 'A', 'renders correct initial value');
       assert.equal(table.getCell(0, 1).text, 'B', 'renders correct initial value');
 
-      set(rows[0], 'A', 'Y');
-      set(rows[0], 'B', 'Z');
+      run(() => {
+        set(rows[0], 'A', 'Y');
+        set(rows[0], 'B', 'Z');
+      });
 
       await wait();
 
@@ -112,7 +115,7 @@ module('Integration | cell', function() {
 
       fillIn('input', 'Z');
 
-      assert.equal(rows[0].A, 'Z', 'value updated successfully');
+      assert.equal(get(rows[0], 'A'), 'Z', 'value updated successfully');
     });
   });
 });

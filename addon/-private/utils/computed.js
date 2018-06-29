@@ -69,10 +69,10 @@ const ClassBasedComputedProperty = EmberObject.extend({
 
   _set(key, value) {
     this._isUpdating = true;
-    let newValue = this.set('_content', value);
+    this.set('_content', value);
     this._isUpdating = false;
 
-    return newValue;
+    return this._get();
   },
 });
 
