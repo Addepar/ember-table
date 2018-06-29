@@ -10,17 +10,13 @@ import { argument } from '@ember-decorators/argument';
 import { computed } from '@ember-decorators/object';
 
 import { objectAt } from '../../-private/utils/array';
+import { dynamicAlias } from '../../-private/utils/computed';
 
 import { guidFor } from '@ember/object/internals';
 
 class CellWrapper extends EmberObject {
-  @computed('rowValue', 'columnValue.valuePath')
-  get cellValue() {
-    let row = get(this, 'rowValue');
-    let valuePath = get(this, 'columnValue.valuePath');
-
-    return get(row, valuePath);
-  }
+  @dynamicAlias('rowValue', 'columnValue.valuePath')
+  cellValue;
 
   @computed('rowValue', 'columnValue.valuePath')
   get cellMeta() {
