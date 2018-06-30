@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { htmlSafe } from '@ember/string';
 
 import { action, computed } from '@ember-decorators/object';
-import { readOnly, equal } from '@ember-decorators/object/computed';
+import { alias, readOnly, equal } from '@ember-decorators/object/computed';
 import { tagName, attribute, className } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
@@ -63,17 +63,22 @@ export default class EmberTd extends Component {
   @type(optional(Action))
   onDoubleClick;
 
-  @readOnly('api.cellValue') cellValue;
-  @readOnly('api.cellMeta') cellMeta;
+  @computed('api.api')
+  get unwrappedApi() {
+    return this.get('api.api') || this.get('api');
+  }
 
-  @readOnly('api.columnValue') columnValue;
-  @readOnly('api.columnMeta') columnMeta;
+  @alias('unwrappedApi.cellValue') cellValue;
+  @readOnly('unwrappedApi.cellMeta') cellMeta;
 
-  @readOnly('api.rowValue') rowValue;
-  @readOnly('api.rowMeta') rowMeta;
+  @readOnly('unwrappedApi.columnValue') columnValue;
+  @readOnly('unwrappedApi.columnMeta') columnMeta;
 
-  @readOnly('api.rowSelectionMode') rowSelectionMode;
-  @readOnly('api.checkboxSelectionMode') checkboxSelectionMode;
+  @readOnly('unwrappedApi.rowValue') rowValue;
+  @readOnly('unwrappedApi.rowMeta') rowMeta;
+
+  @readOnly('unwrappedApi.rowSelectionMode') rowSelectionMode;
+  @readOnly('unwrappedApi.checkboxSelectionMode') checkboxSelectionMode;
 
   @className
   @equal('columnMeta.index', 0)

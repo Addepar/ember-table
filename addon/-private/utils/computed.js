@@ -1,0 +1,119 @@
+import EmberObject, { defineProperty, computed, observer } from '@ember/object';
+import { addListener } from '@ember/object/events';
+import { alias } from '@ember/object/computed';
+import { macro } from '@ember-decorators/object/computed';
+
+const PROPERTIES = new WeakMap();
+
+function findOrCreatePropertyInstance(propertyClass, context, key) {
+  if (!PROPERTIES.has(context)) {
+    PROPERTIES.set(context, {});
+  }
+
+  let propertiesForContext = PROPERTIES.get(context);
+
+  let property = propertiesForContext[key];
+  if (property) {
+    return property;
+  }
+
+  property = propertyClass.create({
+    _key: key,
+    _context: context,
+  });
+
+  addListener(
+    context,
+    'willDestroy',
+    () => {
+      property.destroy();
+    },
+    true
+  );
+
+  propertiesForContext[key] = property;
+  return property;
+}
+
+const ClassBasedComputedProperty = EmberObject.extend({
+  _context: null,
+  _key: null,
+  _computedFunction: null,
+  _dependencies: null,
+
+  init() {
+    this._redefineProperty();
+  },
+
+  // eslint-disable-next-line
+  _contentDidChange: observer('_content', function() {
+    if (!this._isUpdating) {
+      this._context.notifyPropertyChange(this._key);
+    }
+  }),
+
+  _redefineProperty() {
+    let dependencies = this.get('_dependencies');
+    let isDynamicList = this.get('_isDynamicList');
+
+    let computed = this._computedFunction(
+      ...dependencies.map((d, i) => (isDynamicList[i] ? this.get(d) : d))
+    );
+
+    defineProperty(this, '_content', computed);
+  },
+
+  _get() {
+    return this.get('_content');
+  },
+
+  _set(key, value) {
+    this._isUpdating = true;
+    this.set('_content', value);
+    this._isUpdating = false;
+
+    return this._get();
+  },
+});
+
+function classComputedProperty(isDynamicList, computedFunction) {
+  return function(...dependencies) {
+    let extension = {
+      _computedFunction: computedFunction,
+      _isDynamicList: isDynamicList,
+      _dependencies: dependencies,
+    };
+
+    dependencies.forEach((dep, index) => {
+      extension[dep] = alias(`_context.${dep}`);
+
+      if (isDynamicList[index] === true) {
+        // eslint-disable-next-line
+        extension[`${dep}DidChange`] = observer(`_context.${dep}`, function() {
+          this._redefineProperty();
+        });
+      }
+    });
+
+    let klass = ClassBasedComputedProperty.extend(extension);
+
+    return computed(...dependencies, {
+      get(key) {
+        let property = findOrCreatePropertyInstance(klass, this, key);
+
+        return property._get();
+      },
+      set(key, value) {
+        let property = findOrCreatePropertyInstance(klass, this, key);
+
+        return property._set(key, value);
+      },
+    });
+  };
+}
+
+export const dynamicAlias = macro(
+  classComputedProperty([false, true], function(...segments) {
+    return alias(segments.join('.'));
+  })
+);
