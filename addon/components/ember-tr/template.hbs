@@ -16,6 +16,8 @@
       )}}
     {{else}}
       {{yield (hash
+        api=api
+
         cellValue=api.cellValue
         cellMeta=api.cellMeta
 
@@ -24,9 +26,6 @@
 
         rowValue=api.rowValue
         rowMeta=api.rowMeta
-
-        rowSelectionMode=api.rowSelectionMode
-        checkboxSelectionMode=api.checkboxSelectionMode
 
         cell=(component "ember-td" api=api)
       )}}
