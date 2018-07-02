@@ -12,9 +12,11 @@
   {{/if}}
 {{/if}}
 
-<button class="et-sort-toggle et-speech-only">Toggle Sort</button>
+{{#if isSortable}}
+  <button class="et-sort-toggle et-speech-only">Toggle Sort</button>
+{{/if}}
 
-{{#if resizeEnabled}}
+{{#if isResizable}}
   <div class="et-header-resize-area">
   </div>
 {{/if}}

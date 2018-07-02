@@ -1,6 +1,7 @@
 import EmberObject, { get, set } from '@ember/object';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { A as emberA } from '@ember/array';
+import { DEBUG } from '@glimmer/env';
 
 import { computed } from '@ember-decorators/object';
 import { readOnly, gt } from '@ember-decorators/object/computed';
@@ -13,6 +14,7 @@ import { mergeSort } from './utils/sort';
 import { getScale, getOuterClientRect, getInnerClientRect } from './utils/element';
 import { MainIndicator, DropIndicator } from './utils/reorder-indicators';
 import { notifyPropertyChange } from './utils/ember';
+import { assert } from '@ember/debug';
 
 const SCROLL_THRESHOLD = 50;
 
@@ -68,6 +70,11 @@ class TableColumnMeta extends EmberObject {
 
   @readOnly('_node.isLeaf') isLeaf;
   @readOnly('_node.isFixed') isFixed;
+
+  @readOnly('_node.isSortable') isSortable;
+  @readOnly('_node.isResizable') isResizable;
+  @readOnly('_node.isReorderable') isReorderable;
+
   @readOnly('_node.width') width;
   @readOnly('_node.offsetLeft') offsetLeft;
   @readOnly('_node.offsetRight') offsetRight;
@@ -218,6 +225,39 @@ class ColumnTreeNode extends EmberObject {
     return !subcolumns || get(subcolumns, 'length') === 0;
   }
 
+  @computed('column.isSortable', 'tree.enableSort')
+  get isSortable() {
+    let enableSort = get(this, 'tree.enableSort');
+    let isSortable = get(this, 'column.isSortable');
+    let isLeaf = get(this, 'isLeaf');
+
+    return isLeaf === true && enableSort !== false && isSortable !== false;
+  }
+
+  @computed('column.isReorderable', 'tree.enableReorder')
+  get isReorderable() {
+    let enableReorder = get(this, 'tree.enableReorder');
+    let isReorderable = get(this, 'column.isReorderable');
+
+    return enableReorder !== false && isReorderable !== false;
+  }
+
+  @computed('column.isResizable', 'tree.enableResize')
+  get isResizable() {
+    let isLeaf = get(this, 'isLeaf');
+
+    if (isLeaf) {
+      let enableResize = get(this, 'tree.enableResize');
+      let isResizable = get(this, 'column.isResizable');
+
+      return enableResize !== false && isResizable !== false;
+    } else {
+      let subcolumns = get(this, 'subcolumnNodes');
+
+      return subcolumns.some(s => get(s, 'isResizable'));
+    }
+  }
+
   @computed('parent.{isFixed,isRoot}', 'column.isFixed')
   get isFixed() {
     if (get(this, 'parent.isRoot')) {
@@ -311,6 +351,12 @@ class ColumnTreeNode extends EmberObject {
 
   set width(newWidth) {
     let oldWidth = get(this, 'width');
+    let isResizable = get(this, 'isResizable');
+
+    if (!isResizable) {
+      return oldWidth;
+    }
+
     let delta = newWidth - oldWidth;
 
     let minWidth = get(this, 'minWidth');
@@ -343,12 +389,16 @@ class ColumnTreeNode extends EmberObject {
 
       // We distribute chunks to the columns starting from the column with the
       // smallest width to the column with the largest width.
-      let sortedSubcolumns = subcolumns.sortBy('width').reverse();
+      let sortedSubcolumns = subcolumns
+        .sortBy('width')
+        .filter(n => get(n, 'isResizable'))
+        .reverse();
 
       let loopCount = 0;
+      let prevDelta = 0;
       delta = delta > 0 ? Math.floor(delta) : Math.ceil(delta);
       while (delta !== 0) {
-        let deltaChunks = divideRounded(delta, get(subcolumns, 'length'));
+        let deltaChunks = divideRounded(delta, sortedSubcolumns.length);
         for (let i = 0; i < deltaChunks.length; i++) {
           let subcolumn = sortedSubcolumns[i];
           let deltaChunk = deltaChunks[i];
@@ -367,6 +417,16 @@ class ColumnTreeNode extends EmberObject {
           }
         }
         delta = delta > 0 ? Math.floor(delta) : Math.ceil(delta);
+
+        // If we weren't able to change the delta at all, then we hit a hard
+        // barrier. This can happen when a table has too many columns to size
+        // down, for instance.
+        if (prevDelta === delta) {
+          break;
+        }
+
+        prevDelta = delta;
+
         loopCount++;
         if (loopCount > LOOP_COUNT_GUARD) {
           throw new Error('loop count exceeded guard while distributing width');
@@ -609,11 +669,10 @@ export default class ColumnTree extends EmberObject {
     let { scrollLeft } = this.container;
     let { left: containerLeft } = getInnerClientRect(this.container);
 
-    let leftBound, rightBound;
+    let leftBound, rightBound, nodes;
 
     if (get(parent, 'isRoot')) {
       let isFixed = get(node, 'isFixed');
-      let nodes;
 
       if (isFixed === 'left') {
         nodes = get(this, 'leftFixedNodes');
@@ -622,18 +681,35 @@ export default class ColumnTree extends EmberObject {
       } else {
         nodes = get(this, 'unfixedNodes');
       }
-
-      let left = getOuterClientRect(nodes[0].element).left;
-      let right = getOuterClientRect(nodes[nodes.length - 1].element).right;
-
-      leftBound = (left - containerLeft) * scale + scrollLeft;
-      rightBound = (right - containerLeft) * scale + scrollLeft;
     } else {
-      let { left, right } = getOuterClientRect(parent.element);
-
-      leftBound = (left - containerLeft) * scale + scrollLeft;
-      rightBound = (right - containerLeft) * scale + scrollLeft;
+      nodes = get(node, 'parent.subcolumnNodes');
     }
+
+    if (DEBUG) {
+      let firstReorderableFound = false;
+      let lastReorderableFound = false;
+
+      for (let node of nodes) {
+        if (lastReorderableFound && get(node, 'isReorderable')) {
+          assert(
+            'Non-reorderable columns may only be contiguous segments at the beginning or end of their section (i.e. node middle columns in a list).',
+            false
+          );
+        } else if (!firstReorderableFound && get(node, 'isReorderable')) {
+          firstReorderableFound = true;
+        } else if (firstReorderableFound && !lastReorderableFound && !get(node, 'isReorderable')) {
+          lastReorderableFound = true;
+        }
+      }
+    }
+
+    let reorderableNodes = nodes.filter(n => get(n, 'isReorderable'));
+
+    let left = getOuterClientRect(reorderableNodes[0].element).left;
+    let right = getOuterClientRect(reorderableNodes[reorderableNodes.length - 1].element).right;
+
+    leftBound = (left - containerLeft) * scale + scrollLeft;
+    rightBound = (right - containerLeft) * scale + scrollLeft;
 
     return { leftBound, rightBound };
   }

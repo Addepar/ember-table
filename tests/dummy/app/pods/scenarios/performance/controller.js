@@ -18,6 +18,13 @@ export default class BasicController extends Controller {
     let columns = generateColumns(20);
 
     columns[0].width = 300;
+    columns[0].isResizable = false;
+    columns[0].isReorderable = false;
+
+    columns[1].subcolumns = generateColumns(3);
+    columns[1].subcolumns[0].isReorderable = false;
+    columns[1].subcolumns[1].isResizable = false;
+    columns[1].subcolumns[2].isSortable = false;
 
     return columns;
   }
