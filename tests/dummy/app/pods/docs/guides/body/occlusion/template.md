@@ -33,6 +33,10 @@ settings. The current options are:
   pass `staticHeight=true`. You are responsible for ensuring that your rows are
   styled to always be the same as `estimateRowHeight`.
 
+* `key`: This key is the property used by the vertical-collection to determine
+  whether an array mutation is an append, prepend, or complete replacement. It
+  defaults to the object identity `"@identity"`.
+
 {{#docs-demo as |demo|}}
   {{#demo.example}}
     {{! BEGIN-SNIPPET docs-example-occlusion.hbs }}
@@ -44,6 +48,7 @@ settings. The current options are:
           @rows={{rows}}
           @staticHeight={{true}}
           @estimateRowHeight={{41}}
+          @key="A"
         />
       </EmberTable>
     </div>
