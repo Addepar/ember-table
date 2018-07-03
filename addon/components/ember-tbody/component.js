@@ -182,6 +182,17 @@ export default class EmberTBody extends Component {
   rows = [];
 
   /**
+    This key is the property used by the collection to determine whether an
+    array mutation is an append, prepend, or complete replacement. It is also
+    the key that is passed to the actions, and can be used to restore scroll
+    position with `idForFirstItem`. This is passed through to the
+    vertical-collection.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type('string')
+  key = '@identity';
+
+  /**
     The map that contains cell meta information for this table. Is meant to be
     unique to this table, which is why it is created here. In order to prevent
     memory leaks, we need to be able to clean the cache manually when the table
