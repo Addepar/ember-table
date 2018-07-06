@@ -1,6 +1,6 @@
-import { module, test } from 'ember-qunit';
+import { module, test, skip } from 'ember-qunit';
 
-import { generateTable } from '../../../helpers/generate-table';
+import { generateTable, generateColumns } from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
@@ -112,6 +112,72 @@ module('Integration | headers | reorder', function() {
       assert.equal(table.headers.objectAt(1).text.trim(), 'A', 'Second column is swapped backward');
 
       assert.equal(secondHeader.width, originalHeaderWidth + 30, 'width was not reset');
+    });
+
+    test('reordering can be disabled per column', async function(assert) {
+      let columns = generateColumns(4);
+
+      columns[0].isReorderable = false;
+      columns[3].isReorderable = false;
+
+      await generateTable(this, { columns });
+
+      assert.equal(
+        findAll('.is-reorderable').length,
+        2,
+        'only two columns are marked as reorderable'
+      );
+
+      await table.headers.objectAt(0).reorderBy(1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column not swapped');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column not swapped');
+
+      await table.headers.objectAt(3).reorderBy(-1);
+      assert.equal(table.headers.objectAt(2).text.trim(), 'C', 'Third column not swapped');
+      assert.equal(table.headers.objectAt(3).text.trim(), 'D', 'Fourth column not swapped');
+
+      await table.headers.objectAt(2).reorderBy(-1);
+      assert.equal(table.headers.objectAt(1).text.trim(), 'C', 'Second column swapped');
+      assert.equal(table.headers.objectAt(2).text.trim(), 'B', 'Third column swapped');
+    });
+
+    test('multiple columns can be disabled on either edge', async function(assert) {
+      let columns = generateColumns(6);
+
+      columns[0].isReorderable = false;
+      columns[1].isReorderable = false;
+      columns[4].isReorderable = false;
+      columns[5].isReorderable = false;
+
+      await generateTable(this, { columns });
+
+      await table.headers.objectAt(0).reorderBy(1);
+      assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column not swapped');
+      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column not swapped');
+
+      await table.headers.objectAt(1).reorderBy(1);
+      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column not swapped');
+      assert.equal(table.headers.objectAt(2).text.trim(), 'C', 'Third column not swapped');
+
+      await table.headers.objectAt(4).reorderBy(-1);
+      assert.equal(table.headers.objectAt(3).text.trim(), 'D', 'Fourth column not swapped');
+      assert.equal(table.headers.objectAt(4).text.trim(), 'E', 'Fifth column not swapped');
+
+      await table.headers.objectAt(5).reorderBy(-1);
+      assert.equal(table.headers.objectAt(4).text.trim(), 'E', 'Fifth column not swapped');
+      assert.equal(table.headers.objectAt(5).text.trim(), 'F', 'Sixth column not swapped');
+    });
+
+    skip('disabling reordering in columns that are not edge columns throws an error', async function(assert) {
+      let columns = generateColumns(6);
+
+      columns[3].isReorderable = false;
+
+      await generateTable(this, { columns });
+
+      await assert.throws(async () => {
+        await table.headers.objectAt(0).reorderBy(1);
+      });
     });
   });
 

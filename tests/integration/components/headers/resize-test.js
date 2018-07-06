@@ -1,6 +1,6 @@
 import { module, test } from 'ember-qunit';
 
-import { generateTable } from '../../../helpers/generate-table';
+import { generateTable, generateColumns } from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -58,6 +58,30 @@ module('Integration | header | resize', function() {
 
       let originalWidth = table.headers.objectAt(1).width;
       await table.headers.objectAt(1).resize(originalWidth + 20);
+    });
+
+    test('can disable resize per column', async function(assert) {
+      let columns = generateColumns(2);
+
+      columns[0].isResizable = false;
+
+      await generateTable(this, { columns });
+
+      let originalWidth = table.headers.objectAt(0).width;
+
+      await table.headers.objectAt(0).resize(originalWidth + 30);
+      assert.equal(
+        table.headers.objectAt(0).width,
+        originalWidth,
+        'disabled column is not resized'
+      );
+
+      await table.headers.objectAt(1).resize(originalWidth + 30);
+      assert.equal(
+        table.headers.objectAt(1).width,
+        originalWidth + 30,
+        'not disabled column can be resized'
+      );
     });
   });
 

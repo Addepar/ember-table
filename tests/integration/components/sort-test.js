@@ -318,5 +318,34 @@ module('Integration | sort', function() {
         ])
       );
     });
+
+    test('can disable sorting per column', async function(assert) {
+      let columns = [
+        {
+          name: 'Name',
+          valuePath: 'name',
+          isSortable: false,
+        },
+        {
+          name: 'Age',
+          valuePath: 'age',
+        },
+      ];
+
+      let rows = [{ name: 'Zoe', age: 34 }, { name: 'Alex', age: 43 }, { name: 'Liz', age: 25 }];
+
+      await generateTable(this, { columns, rows });
+
+      let firstHeader = table.headers.objectAt(0);
+      let secondHeader = table.headers.objectAt(1);
+
+      assert.ok(checkRowOrder(table, ['Zoe 34', 'Alex 43', 'Liz 25']));
+
+      await firstHeader.click();
+      assert.ok(checkRowOrder(table, ['Zoe 34', 'Alex 43', 'Liz 25']));
+
+      await secondHeader.click();
+      assert.ok(checkRowOrder(table, ['Alex 43', 'Zoe 34', 'Liz 25']));
+    });
   });
 });
