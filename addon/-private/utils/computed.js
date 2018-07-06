@@ -114,6 +114,10 @@ function classComputedProperty(isDynamicList, computedFunction) {
 
 export const dynamicAlias = macro(
   classComputedProperty([false, true], function(...segments) {
-    return alias(segments.join('.'));
+    if (segments.every(s => typeof s === 'string')) {
+      return alias(segments.join('.'));
+    } else {
+      return null;
+    }
   })
 );

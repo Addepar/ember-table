@@ -1,10 +1,10 @@
 # Columns
 
 Table headers must receive an array of columns objects. The objects can be
-simple POJOs, and the only hard requirement is that each column has a
-`valuePath`. This path will be used to get the value from each row for that
-column. If you only want to use the default template, you can also specify a
-`name` on the column which will be rendered in the template.
+simple POJOs, and there are no hard requirements about their shape. They _may_
+have a `valuePath`, and if they do this path will be used to get the value from
+each row for that column. If you only want to use the default template, you can
+also specify a `name` on the column which will be rendered in the template.
 
 {{#docs-demo as |demo|}}
   {{#demo.example}}
@@ -12,7 +12,6 @@ column. If you only want to use the default template, you can also specify a
       {{! BEGIN-SNIPPET docs-example-columns.hbs }}
       <EmberTable as |t|>
         <t.head @columns={{columns}} />
-
         <t.body @rows={{rows}} />
       </EmberTable>
       {{! END-SNIPPET }}
