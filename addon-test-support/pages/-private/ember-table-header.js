@@ -38,6 +38,11 @@ const Header = PageObject.extend({
    */
   async resize(targetSize) {
     let resizeHandle = findElement(this, '.et-header-resize-area');
+
+    if (!resizeHandle) {
+      return;
+    }
+
     let box = resizeHandle.getBoundingClientRect();
     let startX = (box.right + box.left) / 2;
     let deltaX = (targetSize - this.width) / getScale(resizeHandle);

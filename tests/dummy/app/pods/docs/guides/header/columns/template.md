@@ -144,6 +144,22 @@ using the `enableResize` and `enableReorder` flags. You can also change the
   {{demo.snippet name='docs-example-column-resize-reorder.js' label='component.js'}}
 {{/docs-demo}}
 
+Resizing and reordering can also be disabled on a per column basis by setting
+`isResizable` and `isReorderable` to false. Note that only columns that are on
+the edge of a table can be marked as non-reorderable. This is because allowing
+columns on either side of a unmovable column effectively makes the column
+movable, and that UX is generally not desired.
+
+```js
+let columns = [
+  {
+    valuePath: 'name',
+    isResizable: false,
+    isReorderable: false,
+  }
+];
+```
+
 Headers send the `onResize` and `onReorder` actions whenever a resize or a
 reorder has occured.
 

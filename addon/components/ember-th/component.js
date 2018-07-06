@@ -4,7 +4,7 @@ import { htmlSafe } from '@ember/string';
 import { next } from '@ember/runloop';
 
 import { action, computed } from '@ember-decorators/object';
-import { readOnly, equal, and } from '@ember-decorators/object/computed';
+import { readOnly, equal } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -55,20 +55,6 @@ export default class EmberTh extends Component {
   @readOnly('api.columnMeta') columnMeta;
 
   /**
-    Indicates if this column can be resized.
-  */
-  @className('is-resizable')
-  @readOnly('api.enableResize')
-  resizeEnabled;
-
-  /**
-    Indicates if this column can be reordered.
-  */
-  @className('is-reorderable')
-  @readOnly('api.enableReorder')
-  reorderEnabled;
-
-  /**
     Any sorts applied to the table.
   */
   @readOnly('api.sorts') sorts;
@@ -78,8 +64,22 @@ export default class EmberTh extends Component {
     onUpdateSorts is set on the thead.
   */
   @className
-  @and('api.isSortable', 'columnMeta.isLeaf')
+  @readOnly('columnMeta.isSortable')
   isSortable;
+
+  /**
+    Indicates if this column can be resized.
+  */
+  @className
+  @readOnly('columnMeta.isResizable')
+  isResizable;
+
+  /**
+   Indicates if this column can be reordered.
+  */
+  @className
+  @readOnly('columnMeta.isReorderable')
+  isReorderable;
 
   @readOnly('columnMeta.sortIndex') sortIndex;
   @readOnly('columnMeta.isSorted') isSorted;
@@ -223,16 +223,16 @@ export default class EmberTh extends Component {
   };
 
   panStartHandler = event => {
-    let resizeEnabled = this.get('resizeEnabled');
-    let reorderEnabled = this.get('reorderEnabled');
+    let isResizable = this.get('isResizable');
+    let isReorderable = this.get('isReorderable');
 
     let [{ clientX }] = event.pointers;
 
-    if (resizeEnabled && this._originalTargetWasResize) {
+    if (isResizable && this._originalTargetWasResize) {
       this._columnState = COLUMN_RESIZING;
 
       this.get('columnMeta').startResize(this._originalClientX);
-    } else if (reorderEnabled) {
+    } else if (isReorderable) {
       this._columnState = COLUMN_REORDERING;
 
       this.get('columnMeta').startReorder(clientX);

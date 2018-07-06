@@ -188,11 +188,14 @@ export default class EmberTHead extends Component {
     this.addObserver('fillMode', this._updateColumnTree);
     this.addObserver('resizeMode', this._updateColumnTree);
     this.addObserver('widthConstraint', this._updateColumnTree);
+
+    this.addObserver('enableSort', this._updateColumnTree);
+    this.addObserver('enableResize', this._updateColumnTree);
+    this.addObserver('enableReorder', this._updateColumnTree);
   }
 
   _updateApi() {
     this.set('unwrappedApi.columnTree', this.columnTree);
-    this.set('unwrappedApi.isSortable', this.get('isSortable'));
     this.set('unwrappedApi.sorts', this.get('sorts'));
     this.set('unwrappedApi.sortFunction', this.get('sortFunction'));
     this.set('unwrappedApi.compareFunction', this.get('compareFunction'));
@@ -204,6 +207,10 @@ export default class EmberTHead extends Component {
     this.columnTree.set('fillMode', this.get('fillMode'));
     this.columnTree.set('resizeMode', this.get('resizeMode'));
     this.columnTree.set('widthConstraint', this.get('widthConstraint'));
+
+    this.columnTree.set('enableSort', this.get('enableSort'));
+    this.columnTree.set('enableResize', this.get('enableResize'));
+    this.columnTree.set('enableReorder', this.get('enableReorder'));
   }
 
   didInsertElement() {
@@ -230,23 +237,13 @@ export default class EmberTHead extends Component {
     super.willDestroyElement(...arguments);
   }
 
-  @notEmpty('onUpdateSorts') isSortable;
+  @notEmpty('onUpdateSorts') enableSort;
 
-  @computed(
-    'columnTree.rows.[]',
-    'sorts.[]',
-    'headerActions.[]',
-    'enableReorder',
-    'enableResize',
-    'fillMode'
-  )
+  @computed('columnTree.rows.[]', 'sorts.[]', 'headerActions.[]', 'fillMode')
   get wrappedRows() {
     let rows = this.get('columnTree.rows');
     let sorts = this.get('sorts');
-    let isSortable = this.get('isSortable');
     let columnMetaCache = this.get('columnMetaCache');
-    let enableReorder = this.get('enableReorder');
-    let enableResize = this.get('enableResize');
 
     return emberA(
       rows.map(row => {
@@ -257,10 +254,7 @@ export default class EmberTHead extends Component {
             return {
               columnValue,
               columnMeta,
-              enableReorder,
-              enableResize,
               sorts,
-              isSortable,
               sendUpdateSort: this.sendUpdateSort,
             };
           })
