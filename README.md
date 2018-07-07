@@ -29,8 +29,11 @@ For more detailed documentation, clone the repo, run `yarn && yarn start` and th
 
 To use `Ember Table`, you need to create `columns` and `rows` dataset.
 
-`columns` is an array of objects which has multiple fields to define behavior of column.
-Two required field in each object is `name` and `valuePath`.
+`columns` is an array of objects which has multiple fields to define behavior of the column.
+The objects can be simple POJOs, and there are no hard requirements about their shape.
+They _may_ have a `valuePath`, and if they do this path will be used to get the value from
+each row for that column. If you only want to use the default template, you can also
+specify a `name` on the column which will be rendered in the template.
 
 ```javascript
   columns: [
