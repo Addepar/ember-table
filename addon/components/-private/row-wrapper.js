@@ -18,14 +18,14 @@ class CellWrapper extends EmberObject {
   @dynamicAlias('rowValue', 'columnValue.valuePath')
   cellValue;
 
-  @computed('rowValue', 'columnValue.valuePath')
+  @computed('rowValue', 'columnValue')
   get cellMeta() {
     let row = get(this, 'rowValue');
     let rowId = guidFor(row);
-    let valuePath = get(this, 'columnValue.valuePath');
+    let columnId = guidFor(get(this, 'columnValue'));
     let cellMetaCache = get(this, 'cellMetaCache');
 
-    let cellId = `${rowId}:${valuePath}`;
+    let cellId = `${rowId}:${columnId}`;
 
     if (!cellMetaCache.has(cellId)) {
       cellMetaCache.set(cellId, EmberObject.create());

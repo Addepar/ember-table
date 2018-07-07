@@ -3,6 +3,8 @@ import { module, test } from 'ember-qunit';
 import { generateTable } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
+import { findAll } from 'ember-native-dom-helpers';
+
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 let table = new TablePage();
@@ -346,6 +348,24 @@ module('Integration | sort', function() {
 
       await secondHeader.click();
       assert.ok(checkRowOrder(table, ['Alex 43', 'Zoe 34', 'Liz 25']));
+    });
+
+    test('can disable sorting per column by leaving out value path', async function(assert) {
+      let columns = [
+        {
+          name: 'Empty',
+        },
+        {
+          name: 'Name',
+          valuePath: 'name',
+        },
+      ];
+
+      let rows = [{ name: 'Zoe' }, { name: 'Alex' }, { name: 'Liz' }];
+
+      await generateTable(this, { columns, rows });
+
+      assert.equal(findAll('.is-sortable').length, 1, 'only one column is sortable');
     });
   });
 });

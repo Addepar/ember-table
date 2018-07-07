@@ -228,10 +228,16 @@ class ColumnTreeNode extends EmberObject {
   @computed('column.isSortable', 'tree.enableSort')
   get isSortable() {
     let enableSort = get(this, 'tree.enableSort');
+    let valuePath = get(this, 'column.valuePath');
     let isSortable = get(this, 'column.isSortable');
     let isLeaf = get(this, 'isLeaf');
 
-    return isLeaf === true && enableSort !== false && isSortable !== false;
+    return (
+      isLeaf === true &&
+      enableSort !== false &&
+      isSortable !== false &&
+      typeof valuePath === 'string'
+    );
   }
 
   @computed('column.isReorderable', 'tree.enableReorder')
