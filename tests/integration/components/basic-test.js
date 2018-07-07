@@ -31,6 +31,16 @@ module('Integration | basic', function() {
       assert.equal(table.rows.length, rowCount, 'renders the correct number of rows');
     });
 
+    test('it renders without any valuePaths', async function(assert) {
+      let columns = [{}];
+      let rows = [{}, {}, {}];
+
+      await generateTable(this, { columns, rows });
+
+      assert.equal(table.headers.length, columns.length, 'renders the correct number of columns');
+      assert.equal(table.rows.length, rows.length, 'renders the correct number of rows');
+    });
+
     test('occlusion works', async function(assert) {
       let rowCount = 100;
       let columnCount = 10;
