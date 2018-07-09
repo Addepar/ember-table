@@ -3,7 +3,7 @@ import { computed } from '@ember-decorators/object';
 import faker from 'faker';
 
 function getRandomInt(max, min) {
-  return Math.floor(Math.max(Math.random() * Math.floor(max), min));
+  return faker.random.number({ min, max });
 }
 
 export default class SimpleController extends Controller {
