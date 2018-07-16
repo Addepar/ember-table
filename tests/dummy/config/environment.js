@@ -6,9 +6,6 @@ module.exports = function(environment) {
     rootURL: '/',
     locationType: 'history',
     historySupportMiddleware: true,
-    routerScroll: {
-      scrollElement: '#docs-viewer__scroll-body',
-    },
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/],
     },
