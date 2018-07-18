@@ -375,7 +375,7 @@ class CollapseTreeNode extends EmberObject {
 
     @type Array<Node|Array<object>>
   */
-  @computed('sortedChildren.[]', 'isLeaf')
+  @computed('sortedChildren.{[],@each.children}', 'isLeaf')
   get childNodes() {
     this.cleanChildNodes();
 

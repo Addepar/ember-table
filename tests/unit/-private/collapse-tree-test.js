@@ -280,4 +280,15 @@ module('Unit | Private | CollapseTree', function(hooks) {
       assert.ok(true, 'exception not thrown');
     });
   });
+
+  test('can add child to leaf node', function(assert) {
+    let rows = [{ label: 'A', children: [] }, { label: 'B', children: [] }];
+    tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
+
+    run(() => {
+      assert.equal(tree.get('length'), 2, 'tree starts out with length 2');
+      rows[0].children.push({ label: 'C', children: [] });
+      assert.equal(tree.get('length'), 3, 'adding a child to a leaf node increases length');
+    });
+  });
 });
