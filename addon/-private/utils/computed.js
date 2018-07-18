@@ -1,5 +1,4 @@
 import EmberObject, { defineProperty, computed, observer } from '@ember/object';
-import { addListener } from '@ember/object/events';
 import { alias } from '@ember/object/computed';
 import { macro } from '@ember-decorators/object/computed';
 
@@ -22,14 +21,13 @@ function findOrCreatePropertyInstance(propertyClass, context, key) {
     _context: context,
   });
 
-  addListener(
-    context,
-    'willDestroy',
-    () => {
-      property.destroy();
-    },
-    true
-  );
+  let originalWillDestroy = context.willDestroy;
+
+  // HACK: wrap around the original willDestroy to destroy our property as well
+  context.willDestroy = () => {
+    property.destroy();
+    originalWillDestroy.apply(context, arguments);
+  };
 
   propertiesForContext[key] = property;
   return property;
