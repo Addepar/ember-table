@@ -375,7 +375,7 @@ class CollapseTreeNode extends EmberObject {
 
     @type Array<Node|Array<object>>
   */
-  @computed('sortedChildren.{[],@each.children}', 'isLeaf')
+  @computed('sortedChildren.[]', 'isLeaf')
   get childNodes() {
     this.cleanChildNodes();
 
@@ -391,7 +391,7 @@ class CollapseTreeNode extends EmberObject {
     sortedChildren.forEach((child, index) => {
       let grandchildren = get(child, 'children');
 
-      if (isArray(grandchildren) && get(grandchildren, 'length') > 0) {
+      if (isArray(grandchildren)) {
         if (sliceStart !== false) {
           children.push(sortedChildren.slice(sliceStart, index));
           sliceStart = false;
