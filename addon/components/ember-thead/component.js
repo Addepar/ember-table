@@ -74,7 +74,7 @@ export default class EmberTHead extends Component {
     An ordered array of the sorts applied to the table
   */
   @argument({ defaultIfUndefined: true })
-  @type(Function)
+  @type(optional(Function))
   compareFunction = compareValues;
 
   /**
