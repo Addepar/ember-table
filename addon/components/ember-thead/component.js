@@ -67,7 +67,7 @@ export default class EmberTHead extends Component {
     An optional sort
   */
   @argument({ defaultIfUndefined: true })
-  @type(Function)
+  @type(optional(Function))
   sortFunction = sortMultiple;
 
   /**
