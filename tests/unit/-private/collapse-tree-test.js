@@ -73,6 +73,106 @@ module('Unit | Private | CollapseTree', function(hooks) {
     assert.equal(tree.objectAt(-1), undefined);
   });
 
+  test('rowMeta next works', function(assert) {
+    tree = CollapseTree.create({
+      rows: generateTree([0, [1, [2, 3], 4, [5, 6]]]),
+      enableTree: true,
+      rowMetaCache,
+    });
+
+    let expectedNext = [
+      {
+        children: [{ value: 2 }, { value: 3 }],
+        value: 1,
+      },
+      { value: 2 },
+      { value: 3 },
+      {
+        children: [{ value: 5 }, { value: 6 }],
+        value: 4,
+      },
+      { value: 5 },
+      { value: 6 },
+      null,
+    ];
+
+    assert.equal(get(tree, 'length'), 7);
+
+    for (let i = 0; i < 7; i++) {
+      assert.deepEqual(metaFor(tree.objectAt(i)).get('next'), expectedNext[i]);
+    }
+  });
+
+  test('rowMeta prev works', function(assert) {
+    tree = CollapseTree.create({
+      rows: generateTree([0, [1, [2, 3], 4, [5, 6]]]),
+      enableTree: true,
+      rowMetaCache,
+    });
+
+    let expectedPrev = [
+      null,
+      {
+        children: [
+          {
+            children: [{ value: 2 }, { value: 3 }],
+            value: 1,
+          },
+          {
+            children: [{ value: 5 }, { value: 6 }],
+            value: 4,
+          },
+        ],
+        value: 0,
+      },
+      {
+        children: [{ value: 2 }, { value: 3 }],
+        value: 1,
+      },
+      { value: 2 },
+      { value: 3 },
+      {
+        children: [{ value: 5 }, { value: 6 }],
+        value: 4,
+      },
+      { value: 5 },
+    ];
+
+    assert.equal(get(tree, 'length'), 7);
+
+    for (let i = 0; i < 7; i++) {
+      assert.deepEqual(metaFor(tree.objectAt(i)).get('prev'), expectedPrev[i]);
+    }
+  });
+
+  test('rowMeta first works with at least 1 row', function(assert) {
+    tree = CollapseTree.create({
+      rows: generateTree([0, 1]),
+      enableTree: true,
+      rowMetaCache,
+    });
+
+    let expectedFirst = { value: 0 };
+
+    for (let i = 0; i < 2; i++) {
+      assert.deepEqual(metaFor(tree.objectAt(i)).get('first'), expectedFirst);
+    }
+  });
+
+  test('rowMeta last works with at least 1 row', function(assert) {
+    tree = CollapseTree.create({
+      rows: generateTree([0, 1, [2, 3]]),
+      enableTree: true,
+      rowMetaCache,
+    });
+
+    let expectedLast = { value: 3 };
+
+    for (let i = 0; i < 4; i++) {
+      assert.deepEqual(metaFor(tree.objectAt(i)).get('last'), expectedLast);
+    }
+  });
+
   test('can disable tree', function(assert) {
     tree = CollapseTree.create({
       rows: generateTree([0, [1, 2]]),
