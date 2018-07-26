@@ -12,26 +12,20 @@ import { computed } from '@ember-decorators/object';
 import { objectAt } from '../../-private/utils/array';
 import { dynamicAlias } from '../../-private/utils/computed';
 
-import { guidFor } from '@ember/object/internals';
-
 class CellWrapper extends EmberObject {
   @dynamicAlias('rowValue', 'columnValue.valuePath')
   cellValue;
 
-  @computed('rowValue', 'columnValue')
+  @computed('rowMeta', 'columnValue')
   get cellMeta() {
-    let row = get(this, 'rowValue');
-    let rowId = guidFor(row);
-    let columnId = guidFor(get(this, 'columnValue'));
-    let cellMetaCache = get(this, 'cellMetaCache');
+    let rowMeta = get(this, 'rowMeta');
+    let columnValue = get(this, 'columnValue');
 
-    let cellId = `${rowId}:${columnId}`;
-
-    if (!cellMetaCache.has(cellId)) {
-      cellMetaCache.set(cellId, EmberObject.create());
+    if (!rowMeta._cellMetaCache.has(columnValue)) {
+      rowMeta._cellMetaCache.set(columnValue, EmberObject.create());
     }
 
-    return cellMetaCache.get(cellId);
+    return rowMeta._cellMetaCache.get(columnValue);
   }
 }
 
@@ -44,7 +38,6 @@ export default class RowWrapper extends Component {
   @argument rowValue;
   @argument columns;
 
-  @argument cellMetaCache;
   @argument columnMetaCache;
   @argument rowMetaCache;
 
@@ -88,8 +81,6 @@ export default class RowWrapper extends Component {
     'rowSelectionMode'
   )
   get cells() {
-    let cellMetaCache = this.get('cellMetaCache');
-
     let columns = this.get('columns');
     let numColumns = get(columns, 'length');
 
@@ -103,16 +94,11 @@ export default class RowWrapper extends Component {
 
     if (numColumns !== _cells.length) {
       while (_cells.length < numColumns) {
-        let cell = CellWrapper.create({
-          cellMetaCache,
-        });
-
-        _cells.pushObject(cell);
+        _cells.pushObject(CellWrapper.create());
       }
 
       while (_cells.length > numColumns) {
-        let cell = _cells.popObject();
-        cell.destroy();
+        _cells.popObject().destroy();
       }
     }
 

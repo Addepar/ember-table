@@ -16,8 +16,16 @@ export const SELECT_MODE = {
   MULTIPLE: 'multiple',
 };
 
-class TableRowMeta extends EmberObject {
+export class TableRowMeta extends EmberObject {
   _rowValue = null;
+
+  /**
+    The map that contains cell meta information for this row. Is meant to be
+    unique to this row, which is why it is created here. In order to prevent
+    memory leaks, we need to be able to clean the cache manually when the row
+    is destroyed or updated, which is why we use a Map instead of WeakMap
+  */
+  _cellMetaCache = new Map();
   _isCollapsed = false;
 
   @computed('_rowValue.isCollapsed')
@@ -221,6 +229,12 @@ class TableRowMeta extends EmberObject {
     tree.sendAction('onSelect', selection);
 
     tree._lastSelectedIndex = rowIndex;
+  }
+
+  destroy() {
+    super.destroy();
+
+    this._cellMetaCache.clear();
   }
 }
 

@@ -169,6 +169,36 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
       });
+
+      test('selection continues to work after rows are updated', async function(assert) {
+        let columns = [
+          {
+            name: 'Name',
+            valuePath: 'name',
+          },
+          {
+            name: 'Age',
+            valuePath: 'age',
+          },
+        ];
+
+        let rows = [{ name: 'Zoe', age: 34 }, { name: 'Alex', age: 43 }, { name: 'Liz', age: 25 }];
+
+        await generateTable(this, { columns, rows });
+
+        assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
+
+        await table.selectRow(0);
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after being clicked');
+
+        this.set('rows', rows.slice());
+
+        assert.ok(table.validateSelected(0), 'Zoe is still selected rows update');
+
+        await table.selectRow(1);
+        assert.ok(table.validateSelected(1), 'Liz is selected after being clicked');
+      });
     });
 
     componentModule('single', function() {
