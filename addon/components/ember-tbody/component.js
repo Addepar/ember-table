@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { isArray } from '@ember/array';
 
 import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
@@ -193,14 +194,6 @@ export default class EmberTBody extends Component {
   key = '@identity';
 
   /**
-    The map that contains cell meta information for this table. Is meant to be
-    unique to this table, which is why it is created here. In order to prevent
-    memory leaks, we need to be able to clean the cache manually when the table
-    is destroyed or updated, which is why we use a Map instead of WeakMap
-  */
-  cellMetaCache = new Map();
-
-  /**
     The map that contains row meta information for this table.
   */
   rowMetaCache = new Map();
@@ -212,7 +205,6 @@ export default class EmberTBody extends Component {
   */
   collapseTree = CollapseTree.create({
     sendAction: this.sendAction.bind(this),
-    rowMetaCache: this.rowMetaCache,
   });
 
   /**
@@ -269,10 +261,11 @@ export default class EmberTBody extends Component {
   */
   @computed('rows')
   get wrappedRows() {
-    this._cleanCaches();
-
     let rows = this.get('rows');
 
+    this._cleanCaches(rows);
+
+    this.collapseTree.set('rowMetaCache', this.rowMetaCache);
     this.collapseTree.set('rows', rows);
 
     return this.collapseTree;
@@ -282,12 +275,24 @@ export default class EmberTBody extends Component {
     Helper method that is used to clear the row and cell caches whenever the
     underlying data has changed.
   */
-  _cleanCaches() {
-    this.cellMetaCache.clear();
+  _cleanCaches(newRows) {
+    let newRowMetaCache = new Map();
+    let meta;
+
+    if (isArray(newRows)) {
+      newRows.forEach(row => {
+        if ((meta = this.rowMetaCache.get(row))) {
+          newRowMetaCache.set(row, meta);
+          this.rowMetaCache.delete(row);
+        }
+      });
+    }
 
     for (let [row, meta] of this.rowMetaCache.entries()) {
       meta.destroy();
       this.rowMetaCache.delete(row);
     }
+
+    this.set('rowMetaCache', newRowMetaCache);
   }
 }
