@@ -2,14 +2,14 @@
   {{yield columnValue columnMeta}}
 {{else}}
   {{columnValue.name}}
+{{/if}}
 
-  {{#if isSorted}}
-    <span data-test-sort-indicator class="et-sort-indicator {{if isSortedAsc 'is-ascending' 'is-descending'}}">
-      {{#if isMultiSorted}}
-        {{sortIndex}}
-      {{/if}}
-    </span>
-  {{/if}}
+{{#if isSorted}}
+  <span data-test-sort-indicator class="et-sort-indicator {{if isSortedAsc 'is-ascending' 'is-descending'}}">
+    {{#if isMultiSorted}}
+      {{sortIndex}}
+    {{/if}}
+  </span>
 {{/if}}
 
 {{#if isSortable}}
