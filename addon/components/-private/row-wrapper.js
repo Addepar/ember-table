@@ -29,11 +29,11 @@ class CellWrapper extends EmberObject {
   }
 }
 
+const layout = hbs`{{yield api}}`;
+
 @tagName('')
 export default class RowWrapper extends Component {
-  layout = hbs`
-    {{yield api}}
-  `;
+  layout = layout;
 
   @argument rowValue;
   @argument columns;
