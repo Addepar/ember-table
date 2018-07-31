@@ -237,7 +237,8 @@ export default class EmberTHead extends Component {
     super.willDestroyElement(...arguments);
   }
 
-  @notEmpty('onUpdateSorts') enableSort;
+  @notEmpty('onUpdateSorts')
+  enableSort;
 
   @computed('columnTree.rows.[]', 'sorts.[]', 'headerActions.[]', 'fillMode')
   get wrappedRows() {

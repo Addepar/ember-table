@@ -67,19 +67,32 @@ export default class EmberTd extends BaseTableCell {
     return this.get('api.api') || this.get('api');
   }
 
-  @alias('unwrappedApi.cellValue') cellValue;
-  @readOnly('unwrappedApi.cellMeta') cellMeta;
+  @alias('unwrappedApi.cellValue')
+  cellValue;
 
-  @readOnly('unwrappedApi.columnValue') columnValue;
-  @readOnly('unwrappedApi.columnMeta') columnMeta;
+  @readOnly('unwrappedApi.cellMeta')
+  cellMeta;
 
-  @readOnly('unwrappedApi.rowValue') rowValue;
-  @readOnly('unwrappedApi.rowMeta') rowMeta;
+  @readOnly('unwrappedApi.columnValue')
+  columnValue;
 
-  @readOnly('unwrappedApi.rowSelectionMode') rowSelectionMode;
-  @readOnly('unwrappedApi.checkboxSelectionMode') checkboxSelectionMode;
+  @readOnly('unwrappedApi.columnMeta')
+  columnMeta;
 
-  @readOnly('rowMeta.canCollapse') canCollapse;
+  @readOnly('unwrappedApi.rowValue')
+  rowValue;
+
+  @readOnly('unwrappedApi.rowMeta')
+  rowMeta;
+
+  @readOnly('unwrappedApi.rowSelectionMode')
+  rowSelectionMode;
+
+  @readOnly('unwrappedApi.checkboxSelectionMode')
+  checkboxSelectionMode;
+
+  @readOnly('rowMeta.canCollapse')
+  canCollapse;
 
   @computed('rowMeta.depth')
   get depthClass() {

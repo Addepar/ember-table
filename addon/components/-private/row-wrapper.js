@@ -35,15 +35,26 @@ const layout = hbs`{{yield api}}`;
 export default class RowWrapper extends Component {
   layout = layout;
 
-  @argument rowValue;
-  @argument columns;
+  @argument
+  rowValue;
 
-  @argument columnMetaCache;
-  @argument rowMetaCache;
+  @argument
+  columns;
 
-  @argument canSelect;
-  @argument rowSelectionMode;
-  @argument checkboxSelectionMode;
+  @argument
+  columnMetaCache;
+
+  @argument
+  rowMetaCache;
+
+  @argument
+  canSelect;
+
+  @argument
+  rowSelectionMode;
+
+  @argument
+  checkboxSelectionMode;
 
   _cells = emberA([]);
 

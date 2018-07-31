@@ -39,9 +39,11 @@ import layout from './template';
 export default class EmberTable extends Component {
   layout = layout;
 
-  @service userAgent;
+  @service
+  userAgent;
 
-  @attribute('data-test-ember-table') dataTestEmberTable = true;
+  @attribute('data-test-ember-table')
+  dataTestEmberTable = true;
 
   didInsertElement() {
     super.didInsertElement(...arguments);

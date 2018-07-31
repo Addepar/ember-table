@@ -54,8 +54,11 @@ export default class EmberTBody extends Component {
     return this.get('api.api') || this.get('api');
   }
 
-  @readOnly('unwrappedApi.columnTree.leaves') columns;
-  @readOnly('unwrappedApi.columnTree.columnMetaCache') columnMetaCache;
+  @readOnly('unwrappedApi.columnTree.leaves')
+  columns;
+
+  @readOnly('unwrappedApi.columnTree.columnMetaCache')
+  columnMetaCache;
 
   /**
     Sets which row selection behavior to follow. Possible values are 'none'
@@ -211,7 +214,8 @@ export default class EmberTBody extends Component {
     Whether or not the table can select, is true if an `onSelect` action was
     passed to the table.
   */
-  @bool('onSelect') canSelect;
+  @bool('onSelect')
+  canSelect;
 
   constructor() {
     super(...arguments);

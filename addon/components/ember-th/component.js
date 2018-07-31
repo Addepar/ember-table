@@ -50,13 +50,17 @@ export default class EmberTh extends BaseTableCell {
   @type('object')
   api;
 
-  @readOnly('api.columnValue') columnValue;
-  @readOnly('api.columnMeta') columnMeta;
+  @readOnly('api.columnValue')
+  columnValue;
+
+  @readOnly('api.columnMeta')
+  columnMeta;
 
   /**
     Any sorts applied to the table.
   */
-  @readOnly('api.sorts') sorts;
+  @readOnly('api.sorts')
+  sorts;
 
   /**
     Whether or not the column is sortable. Is true IFF the column is a leaf node
@@ -80,10 +84,17 @@ export default class EmberTh extends BaseTableCell {
   @readOnly('columnMeta.isReorderable')
   isReorderable;
 
-  @readOnly('columnMeta.sortIndex') sortIndex;
-  @readOnly('columnMeta.isSorted') isSorted;
-  @readOnly('columnMeta.isMultiSorted') isMultiSorted;
-  @readOnly('columnMeta.isSortedAsc') isSortedAsc;
+  @readOnly('columnMeta.sortIndex')
+  sortIndex;
+
+  @readOnly('columnMeta.isSorted')
+  isSorted;
+
+  @readOnly('columnMeta.isMultiSorted')
+  isMultiSorted;
+
+  @readOnly('columnMeta.isSortedAsc')
+  isSortedAsc;
 
   @attribute('colspan')
   @readOnly('columnMeta.columnSpan')
