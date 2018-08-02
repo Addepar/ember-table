@@ -62,7 +62,7 @@ export default class EmberTd extends BaseTableCell {
   @type(optional(Action))
   onDoubleClick;
 
-  @computed('api.api')
+  @computed('api') // only watch `api` due to a bug in Ember
   get unwrappedApi() {
     return this.get('api.api') || this.get('api');
   }
