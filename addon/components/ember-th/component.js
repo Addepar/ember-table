@@ -1,10 +1,9 @@
 /* global Hammer */
-import Component from '@ember/component';
-import { htmlSafe } from '@ember/string';
+import BaseTableCell from '../-private/base-table-cell';
 import { next } from '@ember/runloop';
 
-import { action, computed } from '@ember-decorators/object';
-import { readOnly, equal } from '@ember-decorators/object/computed';
+import { action } from '@ember-decorators/object';
+import { readOnly } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -40,7 +39,7 @@ const COLUMN_REORDERING = 2;
   @yield {object} columnMeta - The meta object associated with this column
 */
 @tagName('th')
-export default class EmberTh extends Component {
+export default class EmberTh extends BaseTableCell {
   layout = layout;
 
   /**
@@ -51,13 +50,17 @@ export default class EmberTh extends Component {
   @type('object')
   api;
 
-  @readOnly('api.columnValue') columnValue;
-  @readOnly('api.columnMeta') columnMeta;
+  @readOnly('api.columnValue')
+  columnValue;
+
+  @readOnly('api.columnMeta')
+  columnMeta;
 
   /**
     Any sorts applied to the table.
   */
-  @readOnly('api.sorts') sorts;
+  @readOnly('api.sorts')
+  sorts;
 
   /**
     Whether or not the column is sortable. Is true IFF the column is a leaf node
@@ -81,43 +84,17 @@ export default class EmberTh extends Component {
   @readOnly('columnMeta.isReorderable')
   isReorderable;
 
-  @readOnly('columnMeta.sortIndex') sortIndex;
-  @readOnly('columnMeta.isSorted') isSorted;
-  @readOnly('columnMeta.isMultiSorted') isMultiSorted;
-  @readOnly('columnMeta.isSortedAsc') isSortedAsc;
+  @readOnly('columnMeta.sortIndex')
+  sortIndex;
 
-  @equal('columnMeta.index', 0)
-  isFirstColumn;
+  @readOnly('columnMeta.isSorted')
+  isSorted;
 
-  @className
-  @equal('columnMeta.isFixed', 'left')
-  isFixedLeft;
+  @readOnly('columnMeta.isMultiSorted')
+  isMultiSorted;
 
-  @className
-  @equal('columnMeta.isFixed', 'right')
-  isFixedRight;
-
-  @attribute
-  @computed('columnMeta.{width,offsetLeft,offsetRight}', 'isFixed')
-  get style() {
-    let width = this.get('columnMeta.width');
-
-    let style = `width: ${width}px; min-width: ${width}px; max-width: ${width}px;`;
-
-    if (this.get('isFixedLeft')) {
-      style += `left: ${this.get('columnMeta.offsetLeft')}px;`;
-    } else if (this.get('isFixedRight')) {
-      style += `right: ${this.get('columnMeta.offsetRight')}px;`;
-    }
-
-    if (typeof FastBoot === 'undefined' && this.element) {
-      // Keep any styling added by the Sticky polyfill
-      style += `position: ${this.element.style.position};`;
-      style += `top: ${this.element.style.top};`;
-    }
-
-    return htmlSafe(style);
-  }
+  @readOnly('columnMeta.isSortedAsc')
+  isSortedAsc;
 
   @attribute('colspan')
   @readOnly('columnMeta.columnSpan')

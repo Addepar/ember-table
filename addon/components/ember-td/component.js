@@ -1,9 +1,8 @@
-import Component from '@ember/component';
-import { htmlSafe } from '@ember/string';
+import BaseTableCell from '../-private/base-table-cell';
 
 import { action, computed } from '@ember-decorators/object';
-import { alias, readOnly, equal } from '@ember-decorators/object/computed';
-import { tagName, attribute, className } from '@ember-decorators/component';
+import { alias, readOnly } from '@ember-decorators/object/computed';
+import { tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
@@ -39,7 +38,7 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
   @yield {object} rowMeta - The meta object associated with the row
 */
 @tagName('td')
-export default class EmberTd extends Component {
+export default class EmberTd extends BaseTableCell {
   layout = layout;
 
   /**
@@ -63,36 +62,37 @@ export default class EmberTd extends Component {
   @type(optional(Action))
   onDoubleClick;
 
-  @computed('api.api')
+  @computed('api') // only watch `api` due to a bug in Ember
   get unwrappedApi() {
     return this.get('api.api') || this.get('api');
   }
 
-  @alias('unwrappedApi.cellValue') cellValue;
-  @readOnly('unwrappedApi.cellMeta') cellMeta;
+  @alias('unwrappedApi.cellValue')
+  cellValue;
 
-  @readOnly('unwrappedApi.columnValue') columnValue;
-  @readOnly('unwrappedApi.columnMeta') columnMeta;
+  @readOnly('unwrappedApi.cellMeta')
+  cellMeta;
 
-  @readOnly('unwrappedApi.rowValue') rowValue;
-  @readOnly('unwrappedApi.rowMeta') rowMeta;
+  @readOnly('unwrappedApi.columnValue')
+  columnValue;
 
-  @readOnly('unwrappedApi.rowSelectionMode') rowSelectionMode;
-  @readOnly('unwrappedApi.checkboxSelectionMode') checkboxSelectionMode;
+  @readOnly('unwrappedApi.columnMeta')
+  columnMeta;
 
-  @className
-  @equal('columnMeta.index', 0)
-  isFirstColumn;
+  @readOnly('unwrappedApi.rowValue')
+  rowValue;
 
-  @className
-  @equal('columnMeta.isFixed', 'left')
-  isFixedLeft;
+  @readOnly('unwrappedApi.rowMeta')
+  rowMeta;
 
-  @className
-  @equal('columnMeta.isFixed', 'right')
-  isFixedRight;
+  @readOnly('unwrappedApi.rowSelectionMode')
+  rowSelectionMode;
 
-  @readOnly('rowMeta.canCollapse') canCollapse;
+  @readOnly('unwrappedApi.checkboxSelectionMode')
+  checkboxSelectionMode;
+
+  @readOnly('rowMeta.canCollapse')
+  canCollapse;
 
   @computed('rowMeta.depth')
   get depthClass() {
@@ -118,28 +118,6 @@ export default class EmberTd extends Component {
     return (
       checkboxSelectionMode === SELECT_MODE.MULTIPLE || checkboxSelectionMode === SELECT_MODE.SINGLE
     );
-  }
-
-  @attribute
-  @computed('columnMeta.{width,offsetLeft,offsetRight}', 'isFixed')
-  get style() {
-    let width = this.get('columnMeta.width');
-
-    let style = `width: ${width}px; min-width: ${width}px; max-width: ${width}px;`;
-
-    if (this.get('isFixedLeft')) {
-      style += `left: ${Math.round(this.get('columnMeta.offsetLeft'))}px;`;
-    } else if (this.get('isFixedRight')) {
-      style += `right: ${Math.round(this.get('columnMeta.offsetRight'))}px;`;
-    }
-
-    if (typeof FastBoot === 'undefined' && this.element) {
-      // Keep any styling added by the Sticky polyfill
-      style += `position: ${this.element.style.position};`;
-      style += `top: ${this.element.style.top};`;
-    }
-
-    return htmlSafe(style);
   }
 
   @action

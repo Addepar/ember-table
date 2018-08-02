@@ -74,11 +74,20 @@ export default class EmberTr extends Component {
   @type(optional(Action))
   onDoubleClick;
 
-  @readOnly('api.rowValue') rowValue;
-  @readOnly('api.rowMeta') rowMeta;
-  @readOnly('api.cells') cells;
-  @readOnly('api.rowSelectionMode') rowSelectionMode;
-  @readOnly('api.isHeader') isHeader;
+  @readOnly('api.rowValue')
+  rowValue;
+
+  @readOnly('api.rowMeta')
+  rowMeta;
+
+  @readOnly('api.cells')
+  cells;
+
+  @readOnly('api.rowSelectionMode')
+  rowSelectionMode;
+
+  @readOnly('api.isHeader')
+  isHeader;
 
   @className
   @readOnly('rowMeta.isSelected')

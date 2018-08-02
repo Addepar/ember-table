@@ -8,7 +8,7 @@ import { required } from '@ember-decorators/argument/validation';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 import { computed } from '@ember-decorators/object';
-import { notEmpty } from '@ember-decorators/object/computed';
+import { notEmpty, or } from '@ember-decorators/object/computed';
 import { tagName } from '@ember-decorators/component';
 
 import { closest } from '../../-private/utils/element';
@@ -47,6 +47,9 @@ export default class EmberTHead extends Component {
   @required
   @type('object')
   api;
+
+  @or('api.api', 'api')
+  unwrappedApi;
 
   /**
     The column definitions for the table
@@ -168,11 +171,6 @@ export default class EmberTHead extends Component {
     columnMetaCache: this.columnMetaCache,
   });
 
-  @computed('api.api')
-  get unwrappedApi() {
-    return this.get('api.api') || this.get('api');
-  }
-
   constructor() {
     super(...arguments);
 
@@ -237,7 +235,8 @@ export default class EmberTHead extends Component {
     super.willDestroyElement(...arguments);
   }
 
-  @notEmpty('onUpdateSorts') enableSort;
+  @notEmpty('onUpdateSorts')
+  enableSort;
 
   @computed('columnTree.rows.[]', 'sorts.[]', 'headerActions.[]', 'fillMode')
   get wrappedRows() {

@@ -68,16 +68,29 @@ class TableColumnMeta extends EmberObject {
   // meta object. This is set to the default width.
   _width = DEFAULT_COLUMN_WIDTH;
 
-  @readOnly('_node.isLeaf') isLeaf;
-  @readOnly('_node.isFixed') isFixed;
+  @readOnly('_node.isLeaf')
+  isLeaf;
 
-  @readOnly('_node.isSortable') isSortable;
-  @readOnly('_node.isResizable') isResizable;
-  @readOnly('_node.isReorderable') isReorderable;
+  @readOnly('_node.isFixed')
+  isFixed;
 
-  @readOnly('_node.width') width;
-  @readOnly('_node.offsetLeft') offsetLeft;
-  @readOnly('_node.offsetRight') offsetRight;
+  @readOnly('_node.isSortable')
+  isSortable;
+
+  @readOnly('_node.isResizable')
+  isResizable;
+
+  @readOnly('_node.isReorderable')
+  isReorderable;
+
+  @readOnly('_node.width')
+  width;
+
+  @readOnly('_node.offsetLeft')
+  offsetLeft;
+
+  @readOnly('_node.offsetRight')
+  offsetRight;
 
   @computed('isLeaf', '_node.{depth,tree.root.maxChildDepth}')
   get rowSpan() {

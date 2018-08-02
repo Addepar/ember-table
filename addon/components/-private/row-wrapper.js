@@ -29,21 +29,32 @@ class CellWrapper extends EmberObject {
   }
 }
 
+const layout = hbs`{{yield api}}`;
+
 @tagName('')
 export default class RowWrapper extends Component {
-  layout = hbs`
-    {{yield api}}
-  `;
+  layout = layout;
 
-  @argument rowValue;
-  @argument columns;
+  @argument
+  rowValue;
 
-  @argument columnMetaCache;
-  @argument rowMetaCache;
+  @argument
+  columns;
 
-  @argument canSelect;
-  @argument rowSelectionMode;
-  @argument checkboxSelectionMode;
+  @argument
+  columnMetaCache;
+
+  @argument
+  rowMetaCache;
+
+  @argument
+  canSelect;
+
+  @argument
+  rowSelectionMode;
+
+  @argument
+  checkboxSelectionMode;
 
   _cells = emberA([]);
 
