@@ -3,7 +3,7 @@ import { isArray } from '@ember/array';
 
 import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
-import { bool, readOnly } from '@ember-decorators/object/computed';
+import { bool, readOnly, or } from '@ember-decorators/object/computed';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -49,13 +49,14 @@ export default class EmberTBody extends Component {
   @type('object')
   api;
 
-  @computed('api.api')
-  get unwrappedApi() {
-    return this.get('api.api') || this.get('api');
-  }
+  @or('api.api', 'api')
+  unwrappedApi;
 
-  @readOnly('unwrappedApi.columnTree.leaves') columns;
-  @readOnly('unwrappedApi.columnTree.columnMetaCache') columnMetaCache;
+  @readOnly('unwrappedApi.columnTree.leaves')
+  columns;
+
+  @readOnly('unwrappedApi.columnTree.columnMetaCache')
+  columnMetaCache;
 
   /**
     Sets which row selection behavior to follow. Possible values are 'none'
@@ -211,7 +212,8 @@ export default class EmberTBody extends Component {
     Whether or not the table can select, is true if an `onSelect` action was
     passed to the table.
   */
-  @bool('onSelect') canSelect;
+  @bool('onSelect')
+  canSelect;
 
   constructor() {
     super(...arguments);
