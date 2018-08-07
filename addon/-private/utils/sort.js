@@ -1,6 +1,10 @@
 import { compare, isNone } from '@ember/utils';
 import { get } from '@ember/object';
 
+function isHTMLSafe(str) {
+  return str !== null && typeof str === 'object' && typeof str.toHTML === 'function';
+}
+
 function merge(left, right, comparator) {
   let mergedArray = [];
   let leftIndex = 0;
@@ -97,6 +101,14 @@ function orderEmptyValues(itemA, itemB) {
 }
 
 export function compareValues(itemA, itemB) {
+  if (isHTMLSafe(itemA)) {
+    itemA = itemA.toString();
+  }
+
+  if (isHTMLSafe(itemB)) {
+    itemB = itemB.toString();
+  }
+
   if (isEmpty(itemA) || isEmpty(itemB)) {
     return orderEmptyValues(itemA, itemB);
   }

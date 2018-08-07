@@ -1,4 +1,5 @@
 import { module, test } from 'ember-qunit';
+import { htmlSafe } from '@ember/string';
 
 import { generateTable } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
@@ -366,6 +367,113 @@ module('Integration | sort', function() {
       await generateTable(this, { columns, rows });
 
       assert.equal(findAll('.is-sortable').length, 1, 'only one column is sortable');
+    });
+
+    test('can sort a single column with htmlSafe value', async function(assert) {
+      let columns = [
+        {
+          name: 'Name',
+          valuePath: 'name',
+        },
+      ];
+
+      let rows = [{ name: htmlSafe('Zoe') }, { name: htmlSafe('Alex') }, { name: htmlSafe('Liz') }];
+
+      await generateTable(this, { columns, rows });
+
+      let firstHeader = table.headers.objectAt(0);
+
+      assert.ok(firstHeader.isSortable, 'sort class applied correctly');
+      assert.ok(checkRowOrder(table, ['Zoe', 'Alex', 'Liz']));
+
+      await firstHeader.click();
+      assert.ok(checkRowOrder(table, ['Zoe', 'Liz', 'Alex']));
+
+      await firstHeader.click();
+      assert.ok(checkRowOrder(table, ['Alex', 'Liz', 'Zoe']));
+
+      await firstHeader.click();
+      assert.ok(checkRowOrder(table, ['Zoe', 'Alex', 'Liz']));
+    });
+
+    test('can sort multiple columns with htmlSafe', async function(assert) {
+      let columns = [
+        {
+          name: 'Name',
+          valuePath: 'name',
+        },
+        {
+          name: 'Age',
+          valuePath: 'age',
+        },
+      ];
+
+      let rows = [
+        { name: htmlSafe('Zoe'), age: htmlSafe(34) },
+        { name: htmlSafe('Alex'), age: htmlSafe(34) },
+        { name: htmlSafe('Zoe'), age: htmlSafe(25) },
+        { name: htmlSafe('Zoe'), age: htmlSafe(27) },
+      ];
+
+      await generateTable(this, { columns, rows });
+
+      let firstHeader = table.headers.objectAt(0);
+      let secondHeader = table.headers.objectAt(1);
+
+      assert.ok(
+        checkRowOrder(table, ['Zoe 34', 'Alex 34', 'Zoe 25', 'Zoe 27']),
+        'initial order is correct'
+      );
+
+      await firstHeader.click();
+      assert.ok(
+        checkRowOrder(table, ['Zoe 34', 'Zoe 25', 'Zoe 27', 'Alex 34']),
+        'sorting by one column is correct'
+      );
+      assert.equal(
+        firstHeader.sortIndicator.text,
+        '',
+        'sort indicators do not show number well sorted by a single column'
+      );
+
+      await secondHeader.clickWith({ metaKey: true });
+      assert.ok(
+        checkRowOrder(table, ['Zoe 34', 'Zoe 27', 'Zoe 25', 'Alex 34']),
+        'sorting by second column is correct'
+      );
+      assert.equal(firstHeader.sortIndicator.text, '1', 'sort indicators show correct number');
+      assert.equal(secondHeader.sortIndicator.text, '2', 'sort indicators show correct number');
+      assert.ok(firstHeader.sortIndicator.isDescending, 'sort indicators show correct direction');
+      assert.ok(secondHeader.sortIndicator.isDescending, 'sort indicators show correct direction');
+
+      await secondHeader.clickWith({ metaKey: true });
+      assert.ok(
+        checkRowOrder(table, ['Zoe 25', 'Zoe 27', 'Zoe 34', 'Alex 34']),
+        'can reverse the order of a secondary column'
+      );
+      assert.equal(firstHeader.sortIndicator.text, '1', 'sort indicators show correct number');
+      assert.equal(secondHeader.sortIndicator.text, '2', 'sort indicators show correct number');
+      assert.ok(firstHeader.sortIndicator.isDescending, 'sort indicators show correct direction');
+      assert.ok(secondHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
+
+      await firstHeader.clickWith({ metaKey: true });
+      assert.ok(
+        checkRowOrder(table, ['Zoe 25', 'Zoe 27', 'Alex 34', 'Zoe 34']),
+        'can reverse the order of the inital column and push it onto the end of sorts'
+      );
+      assert.equal(firstHeader.sortIndicator.text, '2', 'sort indicators show correct number');
+      assert.equal(secondHeader.sortIndicator.text, '1', 'sort indicators show correct number');
+      assert.ok(firstHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
+      assert.ok(secondHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
+
+      await secondHeader.clickWith({ metaKey: true });
+      assert.ok(
+        checkRowOrder(table, ['Alex 34', 'Zoe 34', 'Zoe 25', 'Zoe 27']),
+        'can disable a column withot removing all sorts'
+      );
+      assert.equal(firstHeader.sortIndicator.text, '', 'no sort number shown');
+      assert.ok(!secondHeader.sortIndicator.isPresent, 'second sort indicator is gone');
+      assert.ok(firstHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
     });
   });
 });
