@@ -168,6 +168,28 @@ module('Integration | basic', function() {
       await wait();
       assert.equal(table.rows.length, itemsCount, 'renders the correct number of rows');
     });
+
+    test('it yields to inverse when tbody rows are empty', async function(assert) {
+      this.set('columns', generateColumns(4));
+      this.set('rows', []);
+      this.render(hbs`
+        <div style="height: 500px;">
+          {{#ember-table as |t|}}
+            {{ember-thead api=t columns=columns}}
+
+            {{#ember-tbody api=t rows=rows as |b|}}
+            {{else}}
+              <div data-test-inverse-yield>inverse yield</div>
+            {{/ember-tbody}}
+          {{/ember-table}}
+        </div>
+      `);
+      await wait();
+      assert.ok(
+        find('[data-test-inverse-yield]'),
+        'expected the inverse yield content to be displayed'
+      );
+    });
   });
 
   componentModule('lifecycle', function() {
