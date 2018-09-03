@@ -195,6 +195,16 @@ export default class EmberTBody extends Component {
   key = '@identity';
 
   /**
+    The property is passed through to the vertical-collection. If set, upon initialization
+    the scroll position will be set such that the item
+    with the provided id is at the top left on screen.
+    If the item with id cannot be found, scrollTop is set to 0.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type('string')
+  idForFirstItem = null;
+
+  /**
     The map that contains row meta information for this table.
   */
   rowMetaCache = new Map();
