@@ -194,6 +194,16 @@ export default class EmberTBody extends Component {
   key = '@identity';
 
   /**
+    The property is passed through to the vertical-collection. If set, upon initialization
+    the scroll position will be set such that the item
+    with the provided id is at the top left on screen.
+    If the item with id cannot be found, scrollTop is set to 0.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type(optional('string'))
+  idForFirstItem = null;
+
+  /**
     A selector string that will select the element from
     which to calculate the viewable height.
   */
