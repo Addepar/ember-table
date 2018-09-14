@@ -95,6 +95,18 @@ export class TableRowMeta extends EmberObject {
     return parentMeta ? get(parentMeta, 'depth') + 1 : 0;
   }
 
+  @computed('_lastKnownIndex', '_prevSiblingMeta.index')
+  get index() {
+    let prevSiblingIndex = get(this, '_prevSiblingMeta.index');
+    let lastKnownIndex = get(this, '_lastKnownIndex');
+
+    if (lastKnownIndex === prevSiblingIndex) {
+      return lastKnownIndex + 1;
+    }
+
+    return lastKnownIndex;
+  }
+
   @computed('_tree.length')
   get first() {
     if (get(this, '_tree.length') === 0) {
@@ -692,18 +704,28 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     @return {{ value: object, parents: Array<object> }}
   */
   objectAt(index) {
-    if (index >= get(this, 'length') || index < 0) {
+    let length = get(this, 'length');
+    if (index >= length || index < 0) {
       return undefined;
     }
 
+    let root = get(this, 'root');
+    let rowMetaCache = this.get('rowMetaCache');
+
     // We add a "fake" top level node to account for the root node
     let normalizedIndex = index + 1;
-    let result = get(this, 'root').objectAt(normalizedIndex);
-    let meta = this.get('rowMetaCache').get(result);
+    let result = root.objectAt(normalizedIndex);
+    let meta = rowMetaCache.get(result);
 
-    // Set the perceived index on the meta. It should be safe to do this here, since
-    // the row will always be retrieved via `objectAt` before being used.
-    set(meta, 'index', index);
+    // Set the last known index on the meta and link the next siblings meta
+    // so that its index can recompute in case it conflicts from shifting
+    set(meta, '_lastKnownIndex', index);
+
+    if (index < length - 1) {
+      let nextSibling = root.objectAt(normalizedIndex + 1);
+      let nextMeta = rowMetaCache.get(nextSibling);
+      set(nextMeta, '_prevSiblingMeta', meta);
+    }
 
     return result;
   }
