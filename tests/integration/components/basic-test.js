@@ -9,6 +9,7 @@ import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
+import wait from 'ember-test-helpers/wait';
 
 let table = new TablePage({
   body: {
@@ -129,6 +130,43 @@ module('Integration | basic', function() {
 
       await a11yAudit();
       assert.ok(true, 'No accessibility error found');
+    });
+
+    test('custom container selector', async function(assert) {
+      let rowCount = 100;
+      let columnCount = 15;
+      let rowHeight = 20;
+      let containerHeight = 200;
+      let itemsCount = Math.ceil(containerHeight / rowHeight);
+      this.set('columns', generateColumns(columnCount));
+      this.set('rows', generateRows(rowCount));
+      this.set('estimateRowHeight', rowHeight);
+      this.set('containerHeight', containerHeight);
+
+      await this.render(hbs`
+        <style>
+          .ember-table {
+            max-height: initial;
+          }
+        </style>
+        <div id="container" style="height: {{containerHeight}}px; overflow: auto;">
+          {{#ember-table as |t|}}
+            {{ember-thead api=t columns=columns}}
+
+            {{ember-tbody
+              api=t
+              containerSelector="#container"
+              rows=rows
+              estimateRowHeight=estimateRowHeight
+              renderAll=false
+              bufferSize=0
+            }}
+          {{/ember-table}}
+        </div>
+      `);
+
+      await wait();
+      assert.equal(table.rows.length, itemsCount, 'renders the correct number of rows');
     });
   });
 

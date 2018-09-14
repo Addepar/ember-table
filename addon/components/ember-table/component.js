@@ -96,6 +96,7 @@ export default class EmberTable extends Component {
     return {
       columns: null,
       registerColumnTree: this.registerColumnTree,
+      tableId: this.elementId,
     };
   }
 
