@@ -195,6 +195,14 @@ export default class EmberTBody extends Component {
   key = '@identity';
 
   /**
+    A selector string that will select the element from
+    which to calculate the viewable height.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type('string')
+  containerSelector = '';
+
+  /**
     The map that contains row meta information for this table.
   */
   rowMetaCache = new Map();
@@ -271,6 +279,16 @@ export default class EmberTBody extends Component {
     this.collapseTree.set('rows', rows);
 
     return this.collapseTree;
+  }
+
+  /**
+    Computed property which calculates container selector for vertical collection.
+    It can be a custom selector provided directly to {{ember-tbody}}.
+    If not, it will be equal to parent {{ember-table}} `id`.
+  */
+  @computed('containerSelector', 'unwrappedApi.tableId')
+  get _containerSelector() {
+    return this.get('containerSelector') || `#${this.get('unwrappedApi.tableId')}`;
   }
 
   /**
