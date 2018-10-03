@@ -193,7 +193,17 @@ export class TableRowMeta extends EmberObject {
       selection.add(rowValue);
     }
 
-    let rowMetas = Array.from(selection).map(r => rowMetaCache.get(r));
+    let rowMetas = Array.from(selection).map(r => {
+
+      // Because of how vertical-collection works, the TableRowMetaCache
+      // is only populated for a given rowValue if inserted into the DOM
+      // So for we need to setup non-existent meta cache from selected rows
+      if(!rowMetaCache.has(r) && get(tree, 'rows').indexOf(r) > -1) {
+        setupRowMeta(tree, r, get(this, '_parentMeta._rowValue'));
+      }
+
+      return rowMetaCache.get(r);
+    });
 
     if (selectingChildrenSelectsParent) {
       let groupingCounts = new Map();
