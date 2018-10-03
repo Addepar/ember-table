@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { isArray } from '@ember/array';
 
 import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
