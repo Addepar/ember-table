@@ -1,5 +1,4 @@
 import Component from '@ember/component';
-import { isArray } from '@ember/array';
 
 import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
@@ -259,7 +258,10 @@ export default class EmberTBody extends Component {
   }
 
   willDestroy() {
-    this._cleanCaches();
+    for (let [row, meta] of this.rowMetaCache.entries()) {
+      meta.destroy();
+      this.rowMetaCache.delete(row);
+    }
 
     this.collapseTree.destroy();
   }
@@ -272,8 +274,6 @@ export default class EmberTBody extends Component {
   @computed('rows')
   get wrappedRows() {
     let rows = this.get('rows');
-
-    this._cleanCaches(rows);
 
     this.collapseTree.set('rowMetaCache', this.rowMetaCache);
     this.collapseTree.set('rows', rows);
@@ -289,30 +289,5 @@ export default class EmberTBody extends Component {
   @computed('containerSelector', 'unwrappedApi.tableId')
   get _containerSelector() {
     return this.get('containerSelector') || `#${this.get('unwrappedApi.tableId')}`;
-  }
-
-  /**
-    Helper method that is used to clear the row and cell caches whenever the
-    underlying data has changed.
-  */
-  _cleanCaches(newRows) {
-    let newRowMetaCache = new Map();
-    let meta;
-
-    if (isArray(newRows)) {
-      newRows.forEach(row => {
-        if ((meta = this.rowMetaCache.get(row))) {
-          newRowMetaCache.set(row, meta);
-          this.rowMetaCache.delete(row);
-        }
-      });
-    }
-
-    for (let [row, meta] of this.rowMetaCache.entries()) {
-      meta.destroy();
-      this.rowMetaCache.delete(row);
-    }
-
-    this.set('rowMetaCache', newRowMetaCache);
   }
 }
