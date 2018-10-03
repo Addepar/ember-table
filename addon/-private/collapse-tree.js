@@ -194,11 +194,11 @@ export class TableRowMeta extends EmberObject {
     }
 
     let rowMetas = Array.from(selection).map(r => {
-
       // Because of how vertical-collection works, the TableRowMetaCache
       // is only populated for a given rowValue if inserted into the DOM
-      // So for we need to setup non-existent meta cache from selected rows
-      if(!rowMetaCache.has(r) && get(tree, 'rows').indexOf(r) > -1) {
+      // when vertical-collection invokes `objectAt(index)` function of tree node
+      // We thus need to setup non-existent meta cache from selected rows.
+      if (!rowMetaCache.has(r) && get(tree, 'rows').indexOf(r) > -1) {
         setupRowMeta(tree, r, get(this, '_parentMeta._rowValue'));
       }
 
