@@ -75,7 +75,7 @@ export class TableRowMeta extends EmberObject {
     return selection.includes(rowValue) || get(this, '_parentMeta.isGroupSelected');
   }
 
-  @computed('_tree.{enableTree,enableCollapse}', '_rowValue.children.[]')
+  @computed('_tree.{enableTree,enableCollapse}', '_rowValue.children.[]', '_rowValue.disableCollapse')
   get canCollapse() {
     if (!get(this, '_tree.enableTree') || !get(this, '_tree.enableCollapse')) {
       return false;
@@ -83,7 +83,7 @@ export class TableRowMeta extends EmberObject {
 
     let children = get(this, '_rowValue.children');
 
-    return isArray(children) && get(children, 'length') > 0;
+    return !get(this, '_rowValue.disableCollapse') && isArray(children) && get(children, 'length') > 0;
   }
 
   @computed('_parentMeta.depth')
