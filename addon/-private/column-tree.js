@@ -19,8 +19,6 @@ import { assert } from '@ember/debug';
 const SCROLL_THRESHOLD = 50;
 
 const DEFAULT_COLUMN_WIDTH = 100;
-const DEFAULT_MIN_WIDTH = 50;
-const DEFAULT_MAX_WIDTH = Infinity;
 
 const LOOP_COUNT_GUARD = 500;
 
@@ -66,7 +64,7 @@ function divideRounded(x, n) {
 class TableColumnMeta extends EmberObject {
   // If no width is set on the column itself, we cache a temporary width on the
   // meta object. This is set to the default width.
-  _width = DEFAULT_COLUMN_WIDTH;
+  _width = null;
 
   @readOnly('_node.isLeaf')
   isLeaf;
@@ -85,6 +83,12 @@ class TableColumnMeta extends EmberObject {
 
   @readOnly('_node.width')
   width;
+
+  @readOnly('_node.minWidth')
+  minWidth;
+
+  @readOnly('_node.maxWidth')
+  maxWidth;
 
   @readOnly('_node.offsetLeft')
   offsetLeft;
@@ -322,7 +326,7 @@ class ColumnTreeNode extends EmberObject {
     if (get(this, 'isLeaf')) {
       let columnMinWidth = get(this, 'column.minWidth');
 
-      return typeof columnMinWidth === 'number' ? columnMinWidth : DEFAULT_MIN_WIDTH;
+      return typeof columnMinWidth === 'number' ? columnMinWidth : null;
     }
 
     return get(this, 'subcolumnNodes').reduce((sum, subcolumn) => {
@@ -332,12 +336,12 @@ class ColumnTreeNode extends EmberObject {
     }, 0);
   }
 
-  @computed('column.minWidth')
+  @computed('column.maxWidth')
   get maxWidth() {
     if (get(this, 'isLeaf')) {
       let columnMaxWidth = get(this, 'column.maxWidth');
 
-      return typeof columnMaxWidth === 'number' ? columnMaxWidth : DEFAULT_MAX_WIDTH;
+      return typeof columnMaxWidth === 'number' ? columnMaxWidth : null;
     }
 
     return get(this, 'subcolumnNodes').reduce((sum, subcolumn) => {
@@ -357,7 +361,8 @@ class ColumnTreeNode extends EmberObject {
         return columnWidth;
       } else {
         let meta = get(this, 'tree.columnMetaCache').get(column);
-        return get(meta, '_width');
+        let metaWidth = get(meta, '_width');
+        return typeof metaWidth === 'number' ? metaWidth : null;
       }
     }
 
