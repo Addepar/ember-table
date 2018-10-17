@@ -320,7 +320,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
     assert.equal(get(tree, 'length'), 7);
 
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 7; i++) {
       assert.equal(tree.objectAt(i).value, expectedValue[i]);
       assert.equal(metaFor(tree.objectAt(i)).get('depth'), expectedDepth[i]);
     }
@@ -332,6 +332,43 @@ module('Unit | Private | CollapseTree', function(hooks) {
     expectedDepth = [0, 1, 1, 2, 2];
 
     assert.equal(get(tree, 'length'), 5);
+
+    for (let i = 0; i < 5; i++) {
+      assert.equal(tree.objectAt(i).value, expectedValue[i]);
+      assert.equal(metaFor(tree.objectAt(i)).get('depth'), expectedDepth[i]);
+    }
+  });
+
+  test('can disable collapse at a row level', function(assert) {
+    let rows = generateTree([0, [1, [2, 3], 4, [5, 6]]]);
+    tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
+    let row4Meta = metaFor(tree.objectAt(4));
+    assert.equal(
+      row4Meta.get('_rowValue.disableCollapse') === true,
+      false,
+      'collapse is not yet disabled'
+    );
+
+    let expectedValue = [0, 1, 2, 3, 4, 5, 6];
+    let expectedDepth = [0, 1, 2, 2, 1, 2, 2];
+
+    assert.equal(get(tree, 'length'), 7);
+
+    for (let i = 0; i < 7; i++) {
+      assert.equal(tree.objectAt(i).value, expectedValue[i]);
+      assert.equal(metaFor(tree.objectAt(i)).get('depth'), expectedDepth[i]);
+    }
+
+    row4Meta.set('_rowValue.disableCollapse', true);
+
+    // we can no longer collapse the tree at this row
+    assert.equal(get(row4Meta, 'canCollapse'), false);
+    // but the tree remains unchanged other than the ability to collapse
+    assert.equal(get(tree, 'length'), 7);
+    for (let i = 0; i < 7; i++) {
+      assert.equal(tree.objectAt(i).value, expectedValue[i]);
+      assert.equal(metaFor(tree.objectAt(i)).get('depth'), expectedDepth[i]);
+    }
   });
 
   test('can update nodes', function(assert) {
