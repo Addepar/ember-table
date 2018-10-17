@@ -40,7 +40,6 @@ module('Integration | Tree', () => {
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
 
       assert.equal(table.rows.length, 6, 'renders all rows');
-      debugger;
       assert.ok(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is back');
     });
 
