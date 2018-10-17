@@ -18,8 +18,6 @@ import { assert } from '@ember/debug';
 
 const SCROLL_THRESHOLD = 50;
 
-const DEFAULT_COLUMN_WIDTH = 100;
-
 const LOOP_COUNT_GUARD = 500;
 
 export const RESIZE_MODE = {
