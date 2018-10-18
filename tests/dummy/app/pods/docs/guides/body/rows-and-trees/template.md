@@ -82,6 +82,9 @@ uncollapses a row. Otherwise, it will keep the state internally only.
 If you want to disable collapsing, you can pass `enableCollapse=false` to the
 table body.
 
+If you want to disable collapsing at a row level, you can pass
+`disableCollapse=true` to the row.
+
 {{#docs-demo as |demo|}}
   {{#demo.example name="collapse"}}
     {{! BEGIN-SNIPPET docs-example-rows-with-collapse.hbs }}
