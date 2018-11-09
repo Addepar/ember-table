@@ -41,6 +41,6 @@
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
 
-{{else}}
+{{else if shouldYieldToInverse}}
   {{yield to='inverse'}}
 {{/vertical-collection}}
