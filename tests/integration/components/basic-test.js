@@ -71,6 +71,27 @@ module('Integration | basic', function() {
       );
     });
 
+    test('idForFirstItem works, so scroll position can be restored', async function(assert) {
+      let rowCount = 100;
+      let columnCount = 10;
+
+      await generateTable(this, {
+        columnCount,
+        rowCount,
+        key: 'id',
+        idForFirstItem: '60',
+        bufferSize: 0,
+      });
+
+      assert.ok(table.rows.length < rowCount, 'not all rows have been rendered');
+      assert.equal(table.getCell(0, 0).text.trim(), '60A', 'correct first row rendered');
+      assert.notEqual(
+        table.getCell(table.rows.length - 1, 0).text.trim(),
+        '99A',
+        'last rendered row is not last data row'
+      );
+    });
+
     test('fixed cells work', async function(assert) {
       function validateElements(container, elements, measurement) {
         for (let element of elements) {
