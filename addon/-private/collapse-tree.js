@@ -124,18 +124,18 @@ export class TableRowMeta extends EmberObject {
   @computed('_tree.length')
   get next() {
     let tree = get(this, '_tree');
-    if (get(this, 'index') + 1 >= get(tree, 'length')) {
+    if (get(this, '_lastKnownIndex') + 1 >= get(tree, 'length')) {
       return null;
     }
-    return tree.objectAt(get(this, 'index') + 1);
+    return tree.objectAt(get(this, '_lastKnownIndex') + 1);
   }
 
   @computed('_tree.length')
   get prev() {
-    if (get(this, 'index') === 0) {
+    if (get(this, '_lastKnownIndex') === 0) {
       return null;
     }
-    return get(this, '_tree').objectAt(get(this, 'index') - 1);
+    return get(this, '_tree').objectAt(get(this, '_lastKnownIndex') - 1);
   }
 
   toggleCollapse() {
