@@ -160,8 +160,8 @@ class TableColumnMeta extends EmberObject {
 class ColumnTreeNode extends EmberObject {
   _subcolumnNodes = null;
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
 
     let tree = get(this, 'tree');
     let parent = get(this, 'parent');
@@ -530,8 +530,8 @@ class ColumnTreeNode extends EmberObject {
 }
 
 export default class ColumnTree extends EmberObject {
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
 
     this.token = new Token();
 

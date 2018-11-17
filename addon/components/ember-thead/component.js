@@ -171,8 +171,8 @@ export default class EmberTHead extends Component {
     columnMetaCache: this.columnMetaCache,
   });
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
 
     this._updateApi();
     this._updateColumnTree();

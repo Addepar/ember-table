@@ -311,8 +311,8 @@ function closestLessThan(values, target) {
 class CollapseTreeNode extends EmberObject {
   _childNodes = null;
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
 
     let value = get(this, 'value');
     let parentValue = get(this, 'parent.value');
@@ -652,8 +652,8 @@ class CollapseTreeNode extends EmberObject {
   order of magnitude of space and allocation costs this way.
 */
 export default class CollapseTree extends EmberObject.extend(EmberArray) {
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
 
     // Whenever the root node's length changes we need to propogate the change to
     // users of the tree, and since the tree is meant to work like an array we should

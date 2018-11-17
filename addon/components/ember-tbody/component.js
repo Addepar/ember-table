@@ -232,8 +232,8 @@ export default class EmberTBody extends Component {
   @bool('onSelect')
   canSelect;
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
 
     this._updateCollapseTree();
 
