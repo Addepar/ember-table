@@ -38,8 +38,6 @@ import layout from './template';
 */
 @tagName('thead')
 export default class EmberTHead extends Component {
-  layout = layout;
-
   /**
     The API object passed in by the table
   */
@@ -151,28 +149,30 @@ export default class EmberTHead extends Component {
   @type(optional(Action))
   onResize = null;
 
-  /**
-   * A sensor object that sends events to this table component when table size changes. When table
-   * is resized, table width & height are updated and other computed properties depending on them
-   * also get updated.
-   */
-  _tableResizeSensor = null;
+  init() {
+    super.init(...arguments);
 
-  /**
-    The map that contains column meta information for this table. Is meant to be
-    unique to this table, which is why it is created here. In order to prevent
-    memory leaks, we need to be able to clean the cache manually when the table
-    is destroyed or updated, which is why we use a Map instead of WeakMap
-  */
-  columnMetaCache = new Map();
+    this.layout = layout;
 
-  columnTree = ColumnTree.create({
-    sendAction: this.sendAction.bind(this),
-    columnMetaCache: this.columnMetaCache,
-  });
+    /**
+     * A sensor object that sends events to this table component when table size changes. When table
+     * is resized, table width & height are updated and other computed properties depending on them
+     * also get updated.
+     */
+    this._tableResizeSensor = null;
 
-  constructor() {
-    super(...arguments);
+    /**
+      The map that contains column meta information for this table. Is meant to be
+      unique to this table, which is why it is created here. In order to prevent
+      memory leaks, we need to be able to clean the cache manually when the table
+      is destroyed or updated, which is why we use a Map instead of WeakMap
+    */
+    this.columnMetaCache = new Map();
+
+    this.columnTree = ColumnTree.create({
+      sendAction: this.sendAction.bind(this),
+      columnMetaCache: this.columnMetaCache,
+    });
 
     this._updateApi();
     this._updateColumnTree();

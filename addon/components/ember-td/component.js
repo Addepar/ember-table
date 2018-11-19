@@ -39,8 +39,6 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
 */
 @tagName('td')
 export default class EmberTd extends BaseTableCell {
-  layout = layout;
-
   /**
     The API object passed in by the table row
   */
@@ -93,6 +91,12 @@ export default class EmberTd extends BaseTableCell {
 
   @readOnly('rowMeta.canCollapse')
   canCollapse;
+
+  init() {
+    super.init(...arguments);
+
+    this.layout = layout;
+  }
 
   @computed('rowMeta.depth')
   get depthClass() {

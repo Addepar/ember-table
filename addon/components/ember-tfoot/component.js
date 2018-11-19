@@ -31,7 +31,11 @@ import layout from './template';
 */
 @tagName('tfoot')
 export default class EmberTFoot extends EmberTBody {
-  layout = layout;
+  init() {
+    super.init(...arguments);
+
+    this.layout = layout;
+  }
 
   @computed('wrappedRows.[]')
   get wrappedRowArray() {

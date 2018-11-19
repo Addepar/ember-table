@@ -38,8 +38,6 @@ import { assert } from '@ember/debug';
 */
 @tagName('tbody')
 export default class EmberTBody extends Component {
-  layout = layout;
-
   /**
     The API object passed in by the table
   */
@@ -212,28 +210,30 @@ export default class EmberTBody extends Component {
   containerSelector = '';
 
   /**
-    The map that contains row meta information for this table.
-  */
-  rowMetaCache = new Map();
-
-  /**
-    A data structure that the table uses wrapping the `rows` object. It flattens
-    the tree structure of the nodes and allows us to treat it as a flat list of
-    items. This is much more convenient for most table operations in general.
-  */
-  collapseTree = CollapseTree.create({
-    sendAction: this.sendAction.bind(this),
-  });
-
-  /**
     Whether or not the table can select, is true if an `onSelect` action was
     passed to the table.
   */
   @bool('onSelect')
   canSelect;
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
+
+    this.layout = layout;
+
+    /**
+      The map that contains row meta information for this table.
+    */
+    this.rowMetaCache = new Map();
+
+    /**
+      A data structure that the table uses wrapping the `rows` object. It flattens
+      the tree structure of the nodes and allows us to treat it as a flat list of
+      items. This is much more convenient for most table operations in general.
+    */
+    this.collapseTree = CollapseTree.create({
+      sendAction: this.sendAction.bind(this),
+    });
 
     this._updateCollapseTree();
 
