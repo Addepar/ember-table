@@ -20,6 +20,8 @@ const fullTable = hbs`
         enableResize=enableResize
         enableReorder=enableReorder
         widthConstraint=widthConstraint
+        fillColumnIndex=fillColumnIndex
+
 
         onUpdateSorts="onUpdateSorts"
         onReorder="onReorder"

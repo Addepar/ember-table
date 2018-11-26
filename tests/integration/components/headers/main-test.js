@@ -158,12 +158,44 @@ module('Integration | header | main', function() {
 
       assert.ok(
         Math.abs(tableWidth - lastColumnWidth - columnWidth) <= 1,
-        'First column takes extra space in first column resize mode.'
+        'Last column takes extra space in last column resize mode.'
       );
 
       assert.ok(
         Math.abs(table.headers.objectAt(0).width - columnWidth) <= 0,
-        'Other columns keep same width in first column resize mode.'
+        'Other columns keep same width in last column resize mode.'
+      );
+    });
+
+    test('nth column mode', async function(assert) {
+      let columnWidth = 30;
+
+      await generateTable(this, {
+        fillMode: 'nth-column',
+        fillColumnIndex: '1',
+        widthConstraint: 'eq-container',
+        columnCount: 3,
+        columnOptions: {
+          width: columnWidth,
+        },
+      });
+
+      let tableWidth = table.width;
+      let middleColumnWidth = table.headers.objectAt(1).width;
+
+      assert.ok(
+        Math.abs(table.headers.objectAt(0).width - columnWidth) <= 0,
+        'First column keeps same width in nth column resize mode.'
+      );
+
+      assert.ok(
+        Math.abs(table.headers.objectAt(2).width - columnWidth) <= 0,
+        'Last column keeps same width in nth column resize mode.'
+      );
+
+      assert.ok(
+        Math.abs(tableWidth - middleColumnWidth - 2 * columnWidth) <= 1,
+        'nth column takes extra space in nth column resize mode.'
       );
     });
   });
