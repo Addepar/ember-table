@@ -173,7 +173,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     }
   });
 
-  test('rowMeta index works', function(assert) {
+  test('rowMeta index is recomputed when row is added or removed', function(assert) {
     let rows = generateTree([1, [2, 3, [4, 5], 6], 7]);
     tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
 
