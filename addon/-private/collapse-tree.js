@@ -27,6 +27,7 @@ export class TableRowMeta extends EmberObject {
   */
   _cellMetaCache = new Map();
   _isCollapsed = false;
+  _lastKnownIndex = null;
 
   @computed('_rowValue.isCollapsed')
   get isCollapsed() {
