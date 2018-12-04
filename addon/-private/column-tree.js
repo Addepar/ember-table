@@ -654,7 +654,9 @@ export default class ColumnTree extends EmberObject {
       return;
     }
 
-    let containerWidth = getInnerClientRect(this.container).width * this.scale;
+    let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
+    let containerWidth =
+      getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
     let treeWidth = get(this, 'root.width');
     let columns = get(this, 'root.subcolumnNodes');
 

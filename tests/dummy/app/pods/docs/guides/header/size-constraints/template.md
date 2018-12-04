@@ -19,7 +19,12 @@ override the min/max widths provided by columns.
 <aside>
   `eq-container` mode should generally be paired with `resizeMode='fluid'` to
   get a more natural resize effect. This is useful for tables that must fit
-  a constrained space, like tables in a powerpoint
+  a constrained space, like tables in a powerpoint.
+  <br><br>
+  If you need to make a small adjustment to the container width (such as to
+  account for a customized scrollbar that would cover some portion of the
+  container width), set `containerWidthAdjustment` to a numerical value equal to
+  the amount you need the measured container width to be adjusted.
 </aside>
 
 {{#docs-demo as |demo|}}

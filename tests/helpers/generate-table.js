@@ -12,6 +12,7 @@ const fullTable = hbs`
         api=t
 
         columns=columns
+        containerWidthAdjustment=containerWidthAdjustment
         sorts=sorts
         resizeMode=resizeMode
         fillMode=fillMode
