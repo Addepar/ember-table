@@ -122,6 +122,13 @@ export default class EmberTHead extends Component {
   widthConstraint = WIDTH_CONSTRAINT.NONE;
 
   /**
+    A numeric adjustment to be applied to the constraint on the table's size.
+  */
+  @argument
+  @type(optional('number'))
+  containerWidthAdjustment = null;
+
+  /**
     An action that is sent when sorts is updated
   */
   @argument
@@ -172,6 +179,7 @@ export default class EmberTHead extends Component {
     this.columnTree = ColumnTree.create({
       sendAction: this.sendAction.bind(this),
       columnMetaCache: this.columnMetaCache,
+      containerWidthAdjustment: this.containerWidthAdjustment,
     });
 
     this._updateApi();
