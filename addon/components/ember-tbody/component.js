@@ -9,6 +9,8 @@ import { required } from '@ember-decorators/argument/validation';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 
+import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
+
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 
 import layout from './template';
@@ -299,5 +301,13 @@ export default class EmberTBody extends Component {
   @computed('containerSelector', 'unwrappedApi.tableId')
   get _containerSelector() {
     return this.get('containerSelector') || `#${this.get('unwrappedApi.tableId')}`;
+  }
+
+  /**
+   * Determines if the component can yield-to-inverse based on
+   * the version compatability.
+   */
+  get shouldYieldToInverse() {
+    return SUPPORTS_INVERSE_BLOCK;
   }
 }
