@@ -4,6 +4,8 @@ import { componentModule } from '../../helpers/module';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import { generateTable } from '../../helpers/generate-table';
+import { A as emberA } from '@ember/array';
+import { run } from '@ember/runloop';
 
 let table = new TablePage({
   validateSelected(...selectedIndexes) {
@@ -198,6 +200,19 @@ module('Integration | selection', () => {
 
         await table.selectRow(1);
         assert.ok(table.validateSelected(1), 'Liz is selected after being clicked');
+      });
+
+      test('Rows are selected when selection is changed externally', async function(assert) {
+        let selection = emberA();
+        let rows = [{ name: 'Zoe', age: 34 }, { name: 'Alex', age: 43 }, { name: 'Liz', age: 25 }];
+
+        await generateTable(this, { rows, selection });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        run(() => selection.pushObject(rows[0]));
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
       });
     });
 
