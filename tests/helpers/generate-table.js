@@ -12,6 +12,7 @@ const fullTable = hbs`
         api=t
 
         columns=columns
+        containerWidthAdjustment=containerWidthAdjustment
         sorts=sorts
         resizeMode=resizeMode
         fillMode=fillMode
@@ -40,6 +41,10 @@ const fullTable = hbs`
         staticHeight=staticHeight
         enableCollapse=enableCollapse
         enableTree=enableTree
+        key=key
+        bufferSize=bufferSize
+        idForFirstItem=idForFirstItem
+
 
         onSelect="onSelect"
         selectingChildrenSelectsParent=selectingChildrenSelectsParent

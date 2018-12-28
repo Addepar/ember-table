@@ -33,8 +33,6 @@ const layout = hbs`{{yield api}}`;
 
 @tagName('')
 export default class RowWrapper extends Component {
-  layout = layout;
-
   @argument
   rowValue;
 
@@ -56,7 +54,12 @@ export default class RowWrapper extends Component {
   @argument
   checkboxSelectionMode;
 
-  _cells = emberA([]);
+  init() {
+    super.init(...arguments);
+
+    this.layout = layout;
+    this._cells = emberA([]);
+  }
 
   destroy() {
     this._cells.forEach(cell => cell.destroy());

@@ -9,6 +9,8 @@ import { required } from '@ember-decorators/argument/validation';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 
+import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
+
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 
 import layout from './template';
@@ -38,8 +40,6 @@ import { assert } from '@ember/debug';
 */
 @tagName('tbody')
 export default class EmberTBody extends Component {
-  layout = layout;
-
   /**
     The API object passed in by the table
   */
@@ -194,6 +194,16 @@ export default class EmberTBody extends Component {
   key = '@identity';
 
   /**
+    The property is passed through to the vertical-collection. If set, upon initialization
+    the scroll position will be set such that the item
+    with the provided id is at the top left on screen.
+    If the item with id cannot be found, scrollTop is set to 0.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type(optional('string'))
+  idForFirstItem = null;
+
+  /**
     A selector string that will select the element from
     which to calculate the viewable height.
   */
@@ -202,28 +212,30 @@ export default class EmberTBody extends Component {
   containerSelector = '';
 
   /**
-    The map that contains row meta information for this table.
-  */
-  rowMetaCache = new Map();
-
-  /**
-    A data structure that the table uses wrapping the `rows` object. It flattens
-    the tree structure of the nodes and allows us to treat it as a flat list of
-    items. This is much more convenient for most table operations in general.
-  */
-  collapseTree = CollapseTree.create({
-    sendAction: this.sendAction.bind(this),
-  });
-
-  /**
     Whether or not the table can select, is true if an `onSelect` action was
     passed to the table.
   */
   @bool('onSelect')
   canSelect;
 
-  constructor() {
-    super(...arguments);
+  init() {
+    super.init(...arguments);
+
+    this.layout = layout;
+
+    /**
+      The map that contains row meta information for this table.
+    */
+    this.rowMetaCache = new Map();
+
+    /**
+      A data structure that the table uses wrapping the `rows` object. It flattens
+      the tree structure of the nodes and allows us to treat it as a flat list of
+      items. This is much more convenient for most table operations in general.
+    */
+    this.collapseTree = CollapseTree.create({
+      sendAction: this.sendAction.bind(this),
+    });
 
     this._updateCollapseTree();
 
@@ -289,5 +301,13 @@ export default class EmberTBody extends Component {
   @computed('containerSelector', 'unwrappedApi.tableId')
   get _containerSelector() {
     return this.get('containerSelector') || `#${this.get('unwrappedApi.tableId')}`;
+  }
+
+  /**
+   * Determines if the component can yield-to-inverse based on
+   * the version compatability.
+   */
+  get shouldYieldToInverse() {
+    return SUPPORTS_INVERSE_BLOCK;
   }
 }

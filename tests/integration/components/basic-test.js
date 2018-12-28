@@ -7,6 +7,8 @@ import { componentModule } from '../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
 
+import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
+
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
 import wait from 'ember-test-helpers/wait';
@@ -68,6 +70,27 @@ module('Integration | basic', function() {
         table.getCell(table.rows.length - 1, 0).text.trim(),
         '99A',
         'correct last row rendered'
+      );
+    });
+
+    test('idForFirstItem works, so scroll position can be restored', async function(assert) {
+      let rowCount = 100;
+      let columnCount = 10;
+
+      await generateTable(this, {
+        columnCount,
+        rowCount,
+        key: 'id',
+        idForFirstItem: '60',
+        bufferSize: 0,
+      });
+
+      assert.ok(table.rows.length < rowCount, 'not all rows have been rendered');
+      assert.equal(table.getCell(0, 0).text.trim(), '60A', 'correct first row rendered');
+      assert.notEqual(
+        table.getCell(table.rows.length - 1, 0).text.trim(),
+        '99A',
+        'last rendered row is not last data row'
       );
     });
 
@@ -167,6 +190,33 @@ module('Integration | basic', function() {
 
       await wait();
       assert.equal(table.rows.length, itemsCount, 'renders the correct number of rows');
+    });
+
+    test('it yields to inverse when tbody rows are empty', async function(assert) {
+      if (!SUPPORTS_INVERSE_BLOCK) {
+        assert.ok(true, 'Does not support yield-to-inverse');
+      } else {
+        this.set('columns', generateColumns(4));
+        this.set('rows', []);
+        this.render(hbs`
+          <div style="height: 500px;">
+            {{#ember-table as |t|}}
+              {{ember-thead api=t columns=columns}}
+
+              {{#ember-tbody api=t rows=rows as |b|}}
+              {{else}}
+                <div data-test-inverse-yield>inverse yield</div>
+              {{/ember-tbody}}
+            {{/ember-table}}
+          </div>
+        `);
+
+        await wait();
+        assert.ok(
+          find('[data-test-inverse-yield]'),
+          'expected the inverse yield content to be displayed'
+        );
+      }
     });
   });
 

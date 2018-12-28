@@ -11,6 +11,7 @@
   lastReached=lastReached
   firstVisibleChanged=firstVisibleChanged
   lastVisibleChanged=lastVisibleChanged
+  idForFirstItem=idForFirstItem
 
   as |rowValue|
 }}
@@ -40,4 +41,7 @@
       {{ember-tr api=api}}
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
+
+{{else if shouldYieldToInverse}}
+  {{yield to='inverse'}}
 {{/vertical-collection}}

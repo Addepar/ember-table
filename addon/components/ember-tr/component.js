@@ -50,8 +50,6 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
 @tagName('tr')
 @classNames('et-tr')
 export default class EmberTr extends Component {
-  layout = layout;
-
   /**
     The API object passed in by the table body, header, or footer
   */
@@ -96,6 +94,12 @@ export default class EmberTr extends Component {
   @className
   @readOnly('rowMeta.isGroupSelected')
   isGroupSelected;
+
+  init() {
+    super.init(...arguments);
+
+    this.layout = layout;
+  }
 
   @className
   @computed('rowSelectionMode')

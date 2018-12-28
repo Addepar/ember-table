@@ -11,8 +11,14 @@ export class DummyRow {
     this.format = format;
   }
 
+  // this provides values for rows; but by convention in our tests, we don't use a key longer than 1
+  // so we exclude this turn off this behavior in other cases
   unknownProperty(key) {
-    return this.format(this, key);
+    if (key.length === 1) {
+      return this.format(this, key);
+    } else {
+      return undefined;
+    }
   }
 }
 

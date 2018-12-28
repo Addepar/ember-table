@@ -46,6 +46,24 @@ module('Integration | header | main', function() {
       );
     });
 
+    test('eq-container with containerWidthAdjustment', async function(assert) {
+      let adjustmentValue = -10;
+      await generateTable(this, {
+        widthConstraint: 'eq-container',
+        containerWidthAdjustment: adjustmentValue,
+        columnCount: 2,
+      });
+
+      let containerWidth = table.containerWidth;
+      let tableWidth = table.width;
+
+      assert.equal(
+        tableWidth - containerWidth,
+        adjustmentValue,
+        'Table width is adjusted from container width by the specified amount.'
+      );
+    });
+
     test('gte-container', async function(assert) {
       await generateTable(this, {
         widthConstraint: 'gte-container',
