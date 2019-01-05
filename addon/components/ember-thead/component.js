@@ -4,8 +4,7 @@ import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
 
 import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type, optional } from '@ember-decorators/argument/type';
+import { arrayOf, optional } from '@ember-decorators/argument/types';
 import { Action } from '@ember-decorators/argument/types';
 import { computed } from '@ember-decorators/object';
 import { notEmpty, or } from '@ember-decorators/object/computed';
@@ -41,9 +40,7 @@ export default class EmberTHead extends Component {
   /**
     The API object passed in by the table
   */
-  @argument
-  @required
-  @type('object')
+  @argument('object')
   api;
 
   @or('api.api', 'api')
@@ -52,44 +49,37 @@ export default class EmberTHead extends Component {
   /**
     The column definitions for the table
   */
-  @argument
-  @required
-  @type(Array)
+  @argument(arrayOf('object'))
   columns;
 
   /**
     An ordered array of the sorts applied to the table
   */
-  @argument({ defaultIfUndefined: true })
-  @type(Array)
+  @argument(optional(arrayOf('string')))
   sorts = [];
 
   /**
     An optional sort
   */
-  @argument({ defaultIfUndefined: true })
-  @type(optional(Function))
+  @argument(optional(Function))
   sortFunction = sortMultiple;
 
   /**
     An ordered array of the sorts applied to the table
   */
-  @argument({ defaultIfUndefined: true })
-  @type(optional(Function))
+  @argument(optional(Function))
   compareFunction = compareValues;
 
   /**
     Flag that toggles reordering in the table
   */
-  @argument({ defaultIfUndefined: true })
-  @type('boolean')
+  @argument(optional('boolean'))
   enableReorder = true;
 
   /**
     Flag that toggles resizing in the table
   */
-  @argument({ defaultIfUndefined: true })
-  @type('boolean')
+  @argument(optional('boolean'))
   enableResize = true;
 
   /**
@@ -97,8 +87,7 @@ export default class EmberTHead extends Component {
     (resizing a column pushes or pulls all other columns) and `fluid` (resizing a
     column subtracts width from neighboring columns).
   */
-  @argument({ defaultIfUndefined: true })
-  @type('string')
+  @argument(optional('string'))
   resizeMode = RESIZE_MODE.STANDARD;
 
   /**
@@ -109,51 +98,44 @@ export default class EmberTHead extends Component {
     * "first-column": extra space is added into the first column.
     * "last-column": extra space is added into the last column.
   */
-  @argument({ defaultIfUndefined: true })
-  @type('string')
+  @argument(optional('string'))
   fillMode = FILL_MODE.EQUAL_COLUMN;
 
   /**
     Sets a constraint on the table's size, such that it must be greater than, less
     than, or equal to the size of the containing element.
   */
-  @argument({ defaultIfUndefined: true })
-  @type('string')
+  @argument(optional('string'))
   widthConstraint = WIDTH_CONSTRAINT.NONE;
 
   /**
     A numeric adjustment to be applied to the constraint on the table's size.
   */
-  @argument
-  @type(optional('number'))
+  @argument(optional('string'))
   containerWidthAdjustment = null;
 
   /**
     An action that is sent when sorts is updated
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onHeaderAction = null;
 
   /**
     An action that is sent when sorts is updated
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onUpdateSorts = null;
 
   /**
     An action that is sent when columns are reordered
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onReorder = null;
 
   /**
     An action that is sent when columns are resized
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onResize = null;
 
   init() {

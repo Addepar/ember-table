@@ -4,7 +4,7 @@ import { action, computed } from '@ember-decorators/object';
 import { alias, reads } from '@ember-decorators/object/computed';
 import { tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
-import { type, optional } from '@ember-decorators/argument/type';
+import { optional } from '@ember-decorators/argument/types';
 import { Action } from '@ember-decorators/argument/types';
 
 import layout from './template';
@@ -42,22 +42,19 @@ export default class EmberTd extends BaseTableCell {
   /**
     The API object passed in by the table row
   */
-  @argument
-  @type('object')
+  @argument('object')
   api;
 
   /**
     Action sent when the user clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onClick;
 
   /**
     Action sent when the user double clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onDoubleClick;
 
   @computed('api') // only watch `api` due to a bug in Ember

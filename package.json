@@ -23,7 +23,7 @@
     "lint:files": "ember adde-lint --file-names"
   },
   "dependencies": {
-    "@ember-decorators/argument": "^0.8.16",
+    "@ember-decorators/argument": "^1.0.0-beta.1",
     "@ember-decorators/babel-transforms": "^4.0.0",
     "@html-next/vertical-collection": "1.0.0-beta.12",
     "broccoli-string-replace": "^0.1.2",

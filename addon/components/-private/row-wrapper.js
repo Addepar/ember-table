@@ -33,25 +33,25 @@ const layout = hbs`{{yield api}}`;
 
 @tagName('')
 export default class RowWrapper extends Component {
-  @argument
+  @argument('any')
   rowValue;
 
-  @argument
+  @argument('any')
   columns;
 
-  @argument
+  @argument('any')
   columnMetaCache;
 
-  @argument
+  @argument('any')
   rowMetaCache;
 
-  @argument
+  @argument('any')
   canSelect;
 
-  @argument
+  @argument('any')
   rowSelectionMode;
 
-  @argument
+  @argument('any')
   checkboxSelectionMode;
 
   init() {

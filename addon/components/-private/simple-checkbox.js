@@ -1,8 +1,7 @@
 import Component from '@ember/component';
 import { tagName, attribute } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
-import { type, optional } from '@ember-decorators/argument/type';
-import { Action } from '@ember-decorators/argument/types';
+import { optional, Action } from '@ember-decorators/argument/types';
 
 @tagName('input')
 export default class SimpleCheckbox extends Component {
@@ -11,36 +10,29 @@ export default class SimpleCheckbox extends Component {
   @attribute
   type = 'checkbox';
 
-  @argument({ defaultIfUndefined: true })
-  @type('boolean')
+  @argument(optional('boolean'))
   @attribute
   checked = false;
 
-  @argument({ defaultIfUndefined: true })
-  @type('boolean')
+  @argument(optional('boolean'))
   @attribute
   disabled = false;
 
-  @argument({ defaultIfUndefined: true })
-  @type('boolean')
+  @argument(optional('boolean'))
   @attribute
   indeterminate = false;
 
-  @argument
-  @type('any')
+  @argument('any')
   @attribute
   value = null;
 
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onClick = null;
 
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onChange = null;
 
-  @argument
-  @type('string')
+  @argument('string')
   @attribute('aria-label')
   ariaLabel;
 

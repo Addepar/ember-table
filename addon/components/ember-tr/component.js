@@ -4,8 +4,7 @@ import { reads } from '@ember-decorators/object/computed';
 import { className, classNames, tagName } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type, optional } from '@ember-decorators/argument/type';
+import { optional } from '@ember-decorators/argument/types';
 import { Action } from '@ember-decorators/argument/types';
 
 import { closest } from '../../-private/utils/element';
@@ -53,23 +52,19 @@ export default class EmberTr extends Component {
   /**
     The API object passed in by the table body, header, or footer
   */
-  @argument
-  @required
-  @type('object')
+  @argument('object')
   api;
 
   /**
     Action sent when the user clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onClick;
 
   /**
     Action sent when the user double clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @argument(optional(Action))
   onDoubleClick;
 
   @reads('api.rowValue')

@@ -6,8 +6,6 @@ import { action } from '@ember-decorators/object';
 import { reads } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type } from '@ember-decorators/argument/type';
 
 import { closest } from '../../-private/utils/element';
 
@@ -45,9 +43,7 @@ export default class EmberTh extends BaseTableCell {
   /**
     The API object passed in by the table row
   */
-  @argument
-  @required
-  @type('object')
+  @argument('object')
   api;
 
   @reads('api.columnValue')
