@@ -26,7 +26,7 @@ module.exports = function(defaults) {
       includePolyfill: true,
     },
     babel: {
-      plugins: ['transform-object-rest-spread'],
+      plugins: ['@babel/plugin-proposal-object-rest-spread'],
     },
     'ember-cli-addon-docs': {
       projects: {
