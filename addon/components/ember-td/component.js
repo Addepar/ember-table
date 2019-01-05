@@ -1,7 +1,7 @@
 import BaseTableCell from '../-private/base-table-cell';
 
 import { action, computed } from '@ember-decorators/object';
-import { alias, readOnly } from '@ember-decorators/object/computed';
+import { alias, reads } from '@ember-decorators/object/computed';
 import { tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { type, optional } from '@ember-decorators/argument/type';
@@ -68,28 +68,28 @@ export default class EmberTd extends BaseTableCell {
   @alias('unwrappedApi.cellValue')
   cellValue;
 
-  @readOnly('unwrappedApi.cellMeta')
+  @reads('unwrappedApi.cellMeta')
   cellMeta;
 
-  @readOnly('unwrappedApi.columnValue')
+  @reads('unwrappedApi.columnValue')
   columnValue;
 
-  @readOnly('unwrappedApi.columnMeta')
+  @reads('unwrappedApi.columnMeta')
   columnMeta;
 
-  @readOnly('unwrappedApi.rowValue')
+  @reads('unwrappedApi.rowValue')
   rowValue;
 
-  @readOnly('unwrappedApi.rowMeta')
+  @reads('unwrappedApi.rowMeta')
   rowMeta;
 
-  @readOnly('unwrappedApi.rowSelectionMode')
+  @reads('unwrappedApi.rowSelectionMode')
   rowSelectionMode;
 
-  @readOnly('unwrappedApi.checkboxSelectionMode')
+  @reads('unwrappedApi.checkboxSelectionMode')
   checkboxSelectionMode;
 
-  @readOnly('rowMeta.canCollapse')
+  @reads('rowMeta.canCollapse')
   canCollapse;
 
   init() {

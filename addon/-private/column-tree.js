@@ -4,7 +4,7 @@ import { A as emberA } from '@ember/array';
 import { DEBUG } from '@glimmer/env';
 
 import { computed } from '@ember-decorators/object';
-import { readOnly, gt } from '@ember-decorators/object/computed';
+import { reads, gt } from '@ember-decorators/object/computed';
 
 import { scheduler, Token } from 'ember-raf-scheduler';
 
@@ -68,28 +68,28 @@ class TableColumnMeta extends EmberObject {
   // meta object. This is set to the default width.
   _width = DEFAULT_COLUMN_WIDTH;
 
-  @readOnly('_node.isLeaf')
+  @reads('_node.isLeaf')
   isLeaf;
 
-  @readOnly('_node.isFixed')
+  @reads('_node.isFixed')
   isFixed;
 
-  @readOnly('_node.isSortable')
+  @reads('_node.isSortable')
   isSortable;
 
-  @readOnly('_node.isResizable')
+  @reads('_node.isResizable')
   isResizable;
 
-  @readOnly('_node.isReorderable')
+  @reads('_node.isReorderable')
   isReorderable;
 
-  @readOnly('_node.width')
+  @reads('_node.width')
   width;
 
-  @readOnly('_node.offsetLeft')
+  @reads('_node.offsetLeft')
   offsetLeft;
 
-  @readOnly('_node.offsetRight')
+  @reads('_node.offsetRight')
   offsetRight;
 
   @computed('isLeaf', '_node.{depth,tree.root.maxChildDepth}')

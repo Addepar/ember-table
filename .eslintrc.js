@@ -11,5 +11,12 @@ module.exports = {
     'ember/avoid-leaking-state-in-ember-objects': 'off',
 
     'ember-best-practices/require-dependent-keys': 'off',
-  }
+  },
+
+  parserOptions: {
+    ecmaFeatures: {
+      // To disable errors about decorators before export
+      legacyDecorators: true,
+    },
+  },
 };
