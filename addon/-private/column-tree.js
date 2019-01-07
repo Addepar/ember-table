@@ -490,7 +490,7 @@ class ColumnTreeNode extends EmberObject {
     }
 
     let subcolumns = get(parent, 'subcolumnNodes');
-    let offsetLeft = get(parent, 'offsetLeft');
+    let offsetLeft = get(parent, 'element.offsetLeft');
 
     for (let column of subcolumns) {
       if (column === this) {
@@ -759,9 +759,9 @@ export default class ColumnTree extends EmberObject {
     let subcolumns = get(column.parent, 'subcolumnNodes');
 
     for (let column of subcolumns) {
-      let offset = get(column, 'offsetLeft');
+      let offset = get(column, 'element.offsetLeft');
 
-      if (left < offset + get(column, 'width')) {
+      if (left < offset + get(column, 'element.offsetWidth')) {
         return column;
       }
     }
@@ -771,7 +771,7 @@ export default class ColumnTree extends EmberObject {
 
   getClosestColumnOffset(column, left, isFixed) {
     let closestColumn = this.getClosestColumn(column, left, isFixed);
-    let offsetLeft = get(closestColumn, 'offsetLeft');
+    let offsetLeft = get(closestColumn, 'element.offsetLeft');
 
     // If the column is fixed, readjust the offset so that it's correct within
     // the container
@@ -842,7 +842,7 @@ export default class ColumnTree extends EmberObject {
 
     this._reorderDropIndicator.width = get(
       this.getClosestColumn(node, this._reorderDropIndicator.left, get(node, 'isFixed')),
-      'width'
+      'element.offsetWidth'
     );
   }
 
