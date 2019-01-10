@@ -45,7 +45,7 @@ const ClassBasedComputedProperty = EmberObject.extend({
 
   // eslint-disable-next-line
   _contentDidChange: observer('_content', function() {
-    if (!this._isUpdating) {
+    if (!this._isUpdating && !this._context.isDestroyed && !this._context.isDestroying) {
       this._context.notifyPropertyChange(this._key);
     }
   }),
