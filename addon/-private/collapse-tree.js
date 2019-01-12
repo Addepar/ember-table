@@ -52,7 +52,7 @@ export class TableRowMeta extends EmberObject {
     return isCollapsed;
   }
 
-  @computed('_tree.selection', '_parentMeta.isSelected')
+  @computed('_tree.selection.[]', '_parentMeta.isSelected')
   get isSelected() {
     let rowValue = get(this, '_rowValue');
     let selection = get(this, '_tree.selection');
