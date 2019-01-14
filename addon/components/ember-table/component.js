@@ -61,10 +61,10 @@ export default class EmberTable extends Component {
       let tfoot = this.element.querySelector('tfoot');
 
       if (thead) {
-        setupTableStickyPolyfill(thead);
+        // setupTableStickyPolyfill(thead);
       }
       if (tfoot) {
-        setupTableStickyPolyfill(tfoot);
+        // setupTableStickyPolyfill(tfoot);
       }
     }
   }

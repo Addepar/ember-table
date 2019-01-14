@@ -1,17 +1,13 @@
 import Component from '@ember/component';
 import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { reads } from '@ember-decorators/object/computed';
 import { className, classNames, tagName } from '@ember-decorators/component';
-
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type, optional } from '@ember-decorators/argument/type';
-import { Action } from '@ember-decorators/argument/types';
 
 import { closest } from '../../-private/utils/element';
 
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
+import { defaultTo } from '../../-private/default-to';
 
 /**
   The table row component. This component manages row level concerns, and yields
@@ -53,46 +49,42 @@ export default class EmberTr extends Component {
   /**
     The API object passed in by the table body, header, or footer
   */
-  @argument
-  @required
-  @type('object')
+  @defaultTo
   api;
 
   /**
     Action sent when the user clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @defaultTo
   onClick;
 
   /**
     Action sent when the user double clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @defaultTo
   onDoubleClick;
 
-  @readOnly('api.rowValue')
+  @reads('api.rowValue')
   rowValue;
 
-  @readOnly('api.rowMeta')
+  @reads('api.rowMeta')
   rowMeta;
 
-  @readOnly('api.cells')
+  @reads('api.cells')
   cells;
 
-  @readOnly('api.rowSelectionMode')
+  @reads('api.rowSelectionMode')
   rowSelectionMode;
 
-  @readOnly('api.isHeader')
+  @reads('api.isHeader')
   isHeader;
 
   @className
-  @readOnly('rowMeta.isSelected')
+  @reads('rowMeta.isSelected')
   isSelected;
 
   @className
-  @readOnly('rowMeta.isGroupSelected')
+  @reads('rowMeta.isGroupSelected')
   isGroupSelected;
 
   init() {

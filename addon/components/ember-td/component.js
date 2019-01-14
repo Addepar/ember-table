@@ -1,13 +1,11 @@
 import BaseTableCell from '../-private/base-table-cell';
 
 import { action, computed } from '@ember-decorators/object';
-import { alias, readOnly } from '@ember-decorators/object/computed';
+import { alias, reads } from '@ember-decorators/object/computed';
 import { tagName } from '@ember-decorators/component';
-import { argument } from '@ember-decorators/argument';
-import { type, optional } from '@ember-decorators/argument/type';
-import { Action } from '@ember-decorators/argument/types';
 
 import layout from './template';
+import { defaultTo } from '../../-private/default-to';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
 /**
@@ -42,22 +40,19 @@ export default class EmberTd extends BaseTableCell {
   /**
     The API object passed in by the table row
   */
-  @argument
-  @type('object')
+  @defaultTo
   api;
 
   /**
     Action sent when the user clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @defaultTo
   onClick;
 
   /**
     Action sent when the user double clicks this element
   */
-  @argument
-  @type(optional(Action))
+  @defaultTo
   onDoubleClick;
 
   @computed('api') // only watch `api` due to a bug in Ember
@@ -68,28 +63,28 @@ export default class EmberTd extends BaseTableCell {
   @alias('unwrappedApi.cellValue')
   cellValue;
 
-  @readOnly('unwrappedApi.cellMeta')
+  @reads('unwrappedApi.cellMeta')
   cellMeta;
 
-  @readOnly('unwrappedApi.columnValue')
+  @reads('unwrappedApi.columnValue')
   columnValue;
 
-  @readOnly('unwrappedApi.columnMeta')
+  @reads('unwrappedApi.columnMeta')
   columnMeta;
 
-  @readOnly('unwrappedApi.rowValue')
+  @reads('unwrappedApi.rowValue')
   rowValue;
 
-  @readOnly('unwrappedApi.rowMeta')
+  @reads('unwrappedApi.rowMeta')
   rowMeta;
 
-  @readOnly('unwrappedApi.rowSelectionMode')
+  @reads('unwrappedApi.rowSelectionMode')
   rowSelectionMode;
 
-  @readOnly('unwrappedApi.checkboxSelectionMode')
+  @reads('unwrappedApi.checkboxSelectionMode')
   checkboxSelectionMode;
 
-  @readOnly('rowMeta.canCollapse')
+  @reads('rowMeta.canCollapse')
   canCollapse;
 
   init() {

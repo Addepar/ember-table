@@ -5,7 +5,7 @@ import EmberObject, { get, set } from '@ember/object';
 import { A as emberA } from '@ember/array';
 
 import { tagName } from '@ember-decorators/component';
-import { argument } from '@ember-decorators/argument';
+import { defaultTo } from '../../-private/default-to';
 
 import { computed } from '@ember-decorators/object';
 
@@ -33,25 +33,25 @@ const layout = hbs`{{yield api}}`;
 
 @tagName('')
 export default class RowWrapper extends Component {
-  @argument
+  @defaultTo
   rowValue;
 
-  @argument
+  @defaultTo
   columns;
 
-  @argument
+  @defaultTo
   columnMetaCache;
 
-  @argument
+  @defaultTo
   rowMetaCache;
 
-  @argument
+  @defaultTo
   canSelect;
 
-  @argument
+  @defaultTo
   rowSelectionMode;
 
-  @argument
+  @defaultTo
   checkboxSelectionMode;
 
   init() {
