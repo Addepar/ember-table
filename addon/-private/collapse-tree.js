@@ -27,7 +27,6 @@ export class TableRowMeta extends EmberObject {
   */
   _cellMetaCache = new Map();
   _isCollapsed = false;
-  _lastKnownIndex = null;
 
   @computed('_rowValue.isCollapsed')
   get isCollapsed() {
@@ -96,18 +95,6 @@ export class TableRowMeta extends EmberObject {
     return parentMeta ? get(parentMeta, 'depth') + 1 : 0;
   }
 
-  @computed('_lastKnownIndex', '_prevSiblingMeta.index')
-  get index() {
-    let prevSiblingIndex = get(this, '_prevSiblingMeta.index');
-    let lastKnownIndex = get(this, '_lastKnownIndex');
-
-    if (lastKnownIndex === prevSiblingIndex) {
-      return lastKnownIndex + 1;
-    }
-
-    return lastKnownIndex;
-  }
-
   @computed('_tree.length')
   get first() {
     if (get(this, '_tree.length') === 0) {
@@ -125,18 +112,18 @@ export class TableRowMeta extends EmberObject {
   @computed('_tree.length')
   get next() {
     let tree = get(this, '_tree');
-    if (get(this, '_lastKnownIndex') + 1 >= get(tree, 'length')) {
+    if (get(this, 'index') + 1 >= get(tree, 'length')) {
       return null;
     }
-    return tree.objectAt(get(this, '_lastKnownIndex') + 1);
+    return tree.objectAt(get(this, 'index') + 1);
   }
 
   @computed('_tree.length')
   get prev() {
-    if (get(this, '_lastKnownIndex') === 0) {
+    if (get(this, 'index') === 0) {
       return null;
     }
-    return get(this, '_tree').objectAt(get(this, '_lastKnownIndex') - 1);
+    return get(this, '_tree').objectAt(get(this, 'index') - 1);
   }
 
   toggleCollapse() {
@@ -705,28 +692,18 @@ export default class CollapseTree extends EmberObject.extend(EmberArray) {
     @return {{ value: object, parents: Array<object> }}
   */
   objectAt(index) {
-    let length = get(this, 'length');
-    if (index >= length || index < 0) {
+    if (index >= get(this, 'length') || index < 0) {
       return undefined;
     }
 
-    let root = get(this, 'root');
-    let rowMetaCache = this.get('rowMetaCache');
-
     // We add a "fake" top level node to account for the root node
     let normalizedIndex = index + 1;
-    let result = root.objectAt(normalizedIndex);
-    let meta = rowMetaCache.get(result);
+    let result = get(this, 'root').objectAt(normalizedIndex);
+    let meta = this.get('rowMetaCache').get(result);
 
-    // Set the last known index on the meta and link the next siblings meta
-    // so that its index can recompute in case it conflicts from shifting
-    set(meta, '_lastKnownIndex', index);
-
-    if (index < length - 1) {
-      let nextSibling = root.objectAt(normalizedIndex + 1);
-      let nextMeta = rowMetaCache.get(nextSibling);
-      set(nextMeta, '_prevSiblingMeta', meta);
-    }
+    // Set the perceived index on the meta. It should be safe to do this here, since
+    // the row will always be retrieved via `objectAt` before being used.
+    set(meta, 'index', index);
 
     return result;
   }

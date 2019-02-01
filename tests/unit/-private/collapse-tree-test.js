@@ -173,25 +173,6 @@ module('Unit | Private | CollapseTree', function(hooks) {
     }
   });
 
-  test('rowMeta index is recomputed when row is added or removed', function(assert) {
-    let rows = generateTree([1, [2, 3, [4, 5], 6], 7]);
-    tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
-
-    let nodes = tree.toArray();
-    nodes.forEach((node, i) => assert.equal(metaFor(node).get('index'), i));
-
-    rows.unshiftObject({ value: 0 });
-
-    let firstNode = run(() => tree.objectAt(0));
-    nodes = [firstNode].concat(nodes);
-    nodes.forEach((node, i) => assert.equal(metaFor(node).get('index'), i));
-
-    rows.pushObject({ value: 8 });
-
-    let lastNode = run(() => tree.objectAt(8));
-    nodes.concat(lastNode).forEach((node, i) => assert.equal(metaFor(node).get('index'), i));
-  });
-
   test('can disable tree', function(assert) {
     tree = CollapseTree.create({
       rows: generateTree([0, [1, 2]]),
