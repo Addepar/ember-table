@@ -72,6 +72,10 @@ export default class EmberTr extends Component {
   @type(optional(Action))
   onDoubleClick;
 
+  @argument
+  @type(optional(Action))
+  onContextMenu;
+
   @readOnly('api.rowValue')
   rowValue;
 
@@ -131,6 +135,10 @@ export default class EmberTr extends Component {
 
   doubleClick(event) {
     this.sendEventAction('onDoubleClick', event);
+  }
+
+  contextMenu(event) {
+    this.sendEventAction('onContextMenu', event);
   }
 
   sendEventAction(action, event) {
