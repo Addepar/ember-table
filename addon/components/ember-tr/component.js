@@ -72,6 +72,13 @@ export default class EmberTr extends Component {
   @type(optional(Action))
   onDoubleClick;
 
+  /**
+    Action sent when the user mouseEnter this element
+  */
+  @argument
+  @type(optional(Action))
+  onMouseEnter;
+
   @readOnly('api.rowValue')
   rowValue;
 
@@ -131,6 +138,10 @@ export default class EmberTr extends Component {
 
   doubleClick(event) {
     this.sendEventAction('onDoubleClick', event);
+  }
+
+  mouseEnter(event) {
+    this.sendEventAction('onMouseEnter', event);
   }
 
   sendEventAction(action, event) {
