@@ -12,7 +12,7 @@ addons:
   chrome: stable
 
 cache:
-  yarn: true
+  yarn: false
 
 global:
   # See https://git.io/vdao3 for details.
