@@ -82,7 +82,7 @@
     "ember-load-initializers": "^1.0.0",
     "ember-math-helpers": "^2.10.0",
     "ember-maybe-import-regenerator": "^0.1.6",
-    "ember-native-dom-helpers": "0.6.1",
+    "ember-native-dom-helpers": "0.6.2",
     "ember-radio-button": "^1.2.3",
     "ember-resolver": "^4.0.0",
     "ember-source": "~3.1.0",
