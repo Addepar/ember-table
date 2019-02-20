@@ -25,7 +25,7 @@
   "dependencies": {
     "@ember-decorators/argument": "^0.8.16",
     "@ember-decorators/babel-transforms": "^0.1.1",
-    "@html-next/vertical-collection": "1.0.0-beta.12",
+    "@html-next/vertical-collection": "1.0.0-beta.13",
     "broccoli-string-replace": "^0.1.2",
     "css-element-queries": "^0.4.0",
     "ember-assign-polyfill": "^2.2.0",
