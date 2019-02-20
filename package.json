@@ -35,7 +35,7 @@
     "ember-cli-node-assets": "^0.2.2",
     "ember-cli-sass": "^10.0.0",
     "ember-cli-version-checker": "^3.0.1",
-    "ember-compatibility-helpers": "^1.0.0",
+    "ember-compatibility-helpers": "^1.2.0",
     "ember-decorators": "^2.2.0",
     "ember-getowner-polyfill": "^2.2.0",
     "ember-legacy-class-shim": "^1.0.0",
