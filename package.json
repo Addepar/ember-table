@@ -80,7 +80,7 @@
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "^5.0.0",
     "ember-load-initializers": "^1.0.0",
-    "ember-math-helpers": "^2.4.1",
+    "ember-math-helpers": "^2.10.0",
     "ember-maybe-import-regenerator": "^0.1.6",
     "ember-native-dom-helpers": "0.6.1",
     "ember-radio-button": "^1.2.3",
