@@ -1,4 +1,5 @@
 /* global ResizeSensor */
+/* eslint-disable ember/no-observers */
 
 const TABLE_POLYFILL_MAP = new WeakMap();
 

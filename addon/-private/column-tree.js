@@ -1,3 +1,4 @@
+/* eslint-disable getter-return */
 import EmberObject, { get, set } from '@ember/object';
 import { addObserver, removeObserver } from '@ember/object/observers';
 import { A as emberA } from '@ember/array';
