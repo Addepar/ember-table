@@ -33,7 +33,7 @@
     "ember-cli-htmlbars": "^3.0.1",
     "ember-cli-htmlbars-inline-precompile": "^2.1.0",
     "ember-cli-node-assets": "^0.2.2",
-    "ember-cli-sass": "^10.0.0",
+    "ember-cli-sass": "^7.0.0",
     "ember-cli-version-checker": "^3.0.1",
     "ember-compatibility-helpers": "^1.2.0",
     "ember-decorators": "^2.2.0",
@@ -94,8 +94,7 @@
     "eslint-plugin-prettier": "2.6.0",
     "faker": "^4.1.0",
     "husky": "^1.3.1",
-    "loader.js": "^4.2.3",
-    "sass": "^1.17.1"
+    "loader.js": "^4.2.3"
   },
   "engines": {
     "node": "6.* || >= 7.*"
