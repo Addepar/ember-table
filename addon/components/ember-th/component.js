@@ -4,12 +4,12 @@ import { next } from '@ember/runloop';
 
 import { action } from '@ember-decorators/object';
 import { reads } from '@ember-decorators/object/computed';
-import { attribute, className, tagName } from '@ember-decorators/component';
+import { attribute, className, tagName, layout } from '@ember-decorators/component';
 
 import { closest } from '../../-private/utils/element';
 import { defaultTo } from '../../-private/default-to';
 
-import layout from './template';
+import layoutTemp from './template';
 import { get } from '@ember/object';
 
 const COLUMN_INACTIVE = 0;
@@ -37,14 +37,15 @@ const COLUMN_REORDERING = 2;
   @yield {object} columnMeta - The meta object associated with this column
 */
 @tagName('th')
+@layout(layoutTemp)
 export default class EmberTh extends BaseTableCell {
-  layout = layout;
+  // layout = layout;
 
   /**
     The API object passed in by the table row
   */
-  @defaultTo
-  api;
+  // @defaultTo
+  // api;
 
   @reads('api.columnValue')
   columnValue;

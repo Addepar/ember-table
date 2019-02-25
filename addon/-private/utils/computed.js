@@ -1,5 +1,6 @@
-import EmberObject, { defineProperty, computed, observer } from '@ember/object';
-import { alias } from '@ember/object/computed';
+import EmberObject, { defineProperty, observer } from '@ember/object';
+import { observes, computed } from "@ember-decorators/object";
+import { alias } from "@ember-decorators/object/computed";
 import { macro } from '@ember-decorators/object/computed';
 
 const PROPERTIES = new WeakMap();
@@ -33,22 +34,23 @@ function findOrCreatePropertyInstance(propertyClass, context, key) {
   return property;
 }
 
-const ClassBasedComputedProperty = EmberObject.extend({
-  _context: null,
-  _key: null,
-  _computedFunction: null,
-  _dependencies: null,
+class ClassBasedComputedProperty extends EmberObject {
+  _context = null;
+  _key = null;
+  _computedFunction = null;
+  _dependencies = null;
 
   init() {
     this._redefineProperty();
-  },
+  }
 
   // eslint-disable-next-line
-  _contentDidChange: observer('_content', function() {
+  @observes('_content')
+  _contentDidChange() {
     if (!this._isUpdating) {
       this._context.notifyPropertyChange(this._key);
     }
-  }),
+  }
 
   _redefineProperty() {
     let dependencies = this.get('_dependencies');
@@ -59,11 +61,11 @@ const ClassBasedComputedProperty = EmberObject.extend({
     );
 
     defineProperty(this, '_content', computed);
-  },
+  }
 
   _get() {
     return this.get('_content');
-  },
+  }
 
   _set(key, value) {
     this._isUpdating = true;
@@ -71,8 +73,8 @@ const ClassBasedComputedProperty = EmberObject.extend({
     this._isUpdating = false;
 
     return this._get();
-  },
-});
+  }
+}
 
 function classComputedProperty(isDynamicList, computedFunction) {
   return function(...dependencies) {
@@ -93,7 +95,7 @@ function classComputedProperty(isDynamicList, computedFunction) {
       }
     });
 
-    let klass = ClassBasedComputedProperty.extend(extension);
+    class Klass extends ClassBasedComputedProperty.extend(extension) {}
 
     return computed(...dependencies, {
       get(key) {

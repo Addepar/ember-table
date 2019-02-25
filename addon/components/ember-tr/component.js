@@ -1,11 +1,11 @@
 import Component from '@ember/component';
 import { computed } from '@ember-decorators/object';
 import { reads } from '@ember-decorators/object/computed';
-import { className, classNames, tagName } from '@ember-decorators/component';
+import { className, classNames, tagName, layout } from '@ember-decorators/component';
 
 import { closest } from '../../-private/utils/element';
 
-import layout from './template';
+import layoutTemp from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 import { defaultTo } from '../../-private/default-to';
 
@@ -45,24 +45,25 @@ import { defaultTo } from '../../-private/default-to';
 */
 @tagName('tr')
 @classNames('et-tr')
+@layout(layoutTemp)
 export default class EmberTr extends Component {
   /**
     The API object passed in by the table body, header, or footer
   */
-  @defaultTo
-  api;
+  // @defaultTo
+  // api;
 
   /**
     Action sent when the user clicks this element
   */
-  @defaultTo
-  onClick;
+  // @defaultTo
+  // onClick;
 
   /**
     Action sent when the user double clicks this element
   */
-  @defaultTo
-  onDoubleClick;
+  // @defaultTo
+  // onDoubleClick;
 
   @reads('api.rowValue')
   rowValue;
@@ -90,7 +91,7 @@ export default class EmberTr extends Component {
   init() {
     super.init(...arguments);
 
-    this.layout = layout;
+    // this.layout = layout;
   }
 
   @className

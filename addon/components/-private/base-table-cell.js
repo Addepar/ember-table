@@ -1,28 +1,30 @@
+import { className } from "@ember-decorators/component";
 import Component from '@ember/component';
-import { equal } from '@ember/object/computed';
-import { observer } from '@ember/object';
+import { equal } from "@ember-decorators/object/computed";
+import { observes } from "@ember-decorators/object";
 import { scheduleOnce } from '@ember/runloop';
 
-export default Component.extend({
+export default class BaseTableCell extends Component {
   // Provided by subclasses
-  columnMeta: null,
+  columnMeta = null;
 
-  classNameBindings: ['isFirstColumn', 'isFixedLeft', 'isFixedRight'],
+  @equal('columnMeta.index', 0)
+  @className
+  isFirstColumn;
 
-  isFirstColumn: equal('columnMeta.index', 0),
-  isFixedLeft: equal('columnMeta.isFixed', 'left'),
-  isFixedRight: equal('columnMeta.isFixed', 'right'),
+  @equal('columnMeta.isFixed', 'left')
+  @className
+  isFixedLeft;
+
+  @equal('columnMeta.isFixed', 'right')
+  @className
+  isFixedRight;
 
   // eslint-disable-next-line
-  scheduleUpdateStyles: observer(
-    'columnMeta.{width,offsetLeft,offsetRight}',
-    'isFixedLeft',
-    'isFixedRight',
-
-    function() {
-      scheduleOnce('actions', this, 'updateStyles');
-    }
-  ),
+  @observes('columnMeta.{width,offsetLeft,offsetRight}', 'isFixedLeft', 'isFixedRight')
+  scheduleUpdateStyles() {
+    scheduleOnce('actions', this, 'updateStyles');
+  }
 
   updateStyles() {
     if (typeof FastBoot === 'undefined' && this.element) {
@@ -38,10 +40,10 @@ export default Component.extend({
         this.element.style.right = `${Math.round(this.get('columnMeta.offsetRight'))}px`;
       }
     }
-  },
+  }
 
   didInsertElement() {
-    this._super(...arguments);
+    super.didInsertElement(...arguments);
     this.updateStyles();
-  },
-});
+  }
+}

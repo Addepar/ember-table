@@ -9,29 +9,29 @@ export default class SimpleCheckbox extends Component {
   @attribute
   type = 'checkbox';
 
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   @attribute
   checked = false;
 
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   @attribute
   disabled = false;
 
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   @attribute
   indeterminate = false;
 
-  @defaultTo
-  @attribute
+  // @defaultTo
+  // @attribute
   value = null;
 
-  @defaultTo
+  // @defaultTo
   onClick = null;
 
-  @defaultTo
+  // @defaultTo
   onChange = null;
 
-  @defaultTo
+  // @defaultTo
   @attribute('aria-label')
   ariaLabel;
 

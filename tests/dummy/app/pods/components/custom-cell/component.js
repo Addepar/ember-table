@@ -4,6 +4,6 @@ import Component from '@ember/component';
 
 @tagName('')
 export default class CustomCell extends Component {
-  @defaultTo
+  // @defaultTo
   color;
 }

@@ -40,19 +40,19 @@ export default class EmberTd extends BaseTableCell {
   /**
     The API object passed in by the table row
   */
-  @defaultTo
+  // @defaultTo
   api;
 
   /**
     Action sent when the user clicks this element
   */
-  @defaultTo
+  // @defaultTo
   onClick;
 
   /**
     Action sent when the user double clicks this element
   */
-  @defaultTo
+  // @defaultTo
   onDoubleClick;
 
   @computed('api') // only watch `api` due to a bug in Ember

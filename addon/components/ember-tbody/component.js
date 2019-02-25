@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 
-import { tagName } from '@ember-decorators/component';
+import { tagName, layout } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
 import { bool, reads, or } from '@ember-decorators/object/computed';
 
@@ -10,7 +10,7 @@ import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
 
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 
-import layout from './template';
+import layoutTemp from './template';
 import { assert } from '@ember/debug';
 
 /**
@@ -36,12 +36,13 @@ import { assert } from '@ember/debug';
   @yield {object} b.rowMeta - The meta for the currently yielded row
 */
 @tagName('tbody')
+@layout(layoutTemp)
 export default class EmberTBody extends Component {
   /**
     The API object passed in by the table
   */
-  @defaultTo
-  api;
+//   @defaultTo
+//   api;
 
   @or('api.api', 'api')
   unwrappedApi;
@@ -58,7 +59,7 @@ export default class EmberTBody extends Component {
     deselects other rows), and 'multiple' (multiple rows can be selected through
     ctrl/cmd-click or shift-click).
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   checkboxSelectionMode = SELECT_MODE.MULTIPLE;
 
   /**
@@ -67,20 +68,20 @@ export default class EmberTBody extends Component {
     deselects other rows), and 'multiple' (multiple rows can be selected through
     ctrl/cmd-click or shift-click).
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   rowSelectionMode = SELECT_MODE.MULTIPLE;
 
   /**
     When true, this option causes selecting all of a node's children to also
     select the node itself.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   selectingChildrenSelectsParent = true;
 
   /**
     The currently selected rows. Can either be an array or and individual row.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   selection = null;
 
   /**
@@ -88,15 +89,15 @@ export default class EmberTBody extends Component {
 
     @param {object} selection - The new selection
   */
-  @defaultTo
-  // @type(optional(Action))
-  onSelect = null;
+//   @defaultTo
+//   // @type(optional(Action))
+   onSelect = null;
 
   /**
     Estimated height for each row. This number is used to decide how many rows
     will be rendered at initial rendering.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   estimateRowHeight = 30;
 
   /**
@@ -105,62 +106,62 @@ export default class EmberTBody extends Component {
     it is set to true, all rows have the same height equivalent to
     estimateRowHeight.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   staticHeight = false;
 
   /**
     The number of extra rows to render on either side of the table's viewport
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   bufferSize = 20;
 
   /**
     A flag that tells the table to render all of its rows at once.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   renderAll = false;
 
   /**
     An action that is triggered when the table reaches the first row.
   */
-  @defaultTo
+  // @defaultTo
   firstReached = null;
 
   /**
     An action that is triggered when the table reaches the last row.
   */
-  @defaultTo
+  // @defaultTo
   lastReached = null;
 
   /**
     An action that is triggered when the first visible row of the table changes.
   */
-  @defaultTo
+  // @defaultTo
   firstVisibleChanged = null;
 
   /**
     An action that is triggered when the last visible row of the table changes.
   */
-  @defaultTo
+  // @defaultTo
   lastVisibleChanged = null;
 
   /**
     Boolean flag that enables tree behavior if items have a `children` property
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   enableTree = true;
 
   /**
     Boolean flag that enables collapsing tree nodes
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   enableCollapse = true;
 
   /**
     The row items that the table should display
   */
-  @defaultTo({ defaultIfUndefined: true })
-  rows = [];
+//   @defaultTo({ defaultIfUndefined: true })
+//   rows = [];
 
   /**
     This key is the property used by the collection to determine whether an
@@ -169,7 +170,7 @@ export default class EmberTBody extends Component {
     position with `idForFirstItem`. This is passed through to the
     vertical-collection.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   key = '@identity';
 
   /**
@@ -178,14 +179,14 @@ export default class EmberTBody extends Component {
     with the provided id is at the top left on screen.
     If the item with id cannot be found, scrollTop is set to 0.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   idForFirstItem = null;
 
   /**
     A selector string that will select the element from
     which to calculate the viewable height.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   containerSelector = '';
 
   /**
@@ -197,7 +198,6 @@ export default class EmberTBody extends Component {
 
   init() {
     super.init(...arguments);
-    this.layout = layout;
 
     /**
       The map that contains row meta information for this table.
@@ -262,7 +262,7 @@ export default class EmberTBody extends Component {
   @computed('rows')
   get wrappedRows() {
     let rows = this.get('rows');
-
+	console.log(rows)
     this.collapseTree.set('rowMetaCache', this.rowMetaCache);
     this.collapseTree.set('rows', rows);
 

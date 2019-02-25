@@ -39,8 +39,8 @@ export default class EmberTHead extends Component {
   /**
     The API object passed in by the table
   */
-  @defaultTo
-  api;
+//   @defaultTo
+//   api;
 
   @or('api.api', 'api')
   unwrappedApi;
@@ -48,37 +48,37 @@ export default class EmberTHead extends Component {
   /**
     The column definitions for the table
   */
-  @defaultTo
-  columns;
+//   // @defaultTo
+//   columns;
 
   /**
     An ordered array of the sorts applied to the table
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   sorts = [];
 
   /**
     An optional sort
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   sortFunction = sortMultiple;
 
   /**
     An ordered array of the sorts applied to the table
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   compareFunction = compareValues;
 
   /**
     Flag that toggles reordering in the table
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   enableReorder = true;
 
   /**
     Flag that toggles resizing in the table
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   enableResize = true;
 
   /**
@@ -86,7 +86,7 @@ export default class EmberTHead extends Component {
     (resizing a column pushes or pulls all other columns) and `fluid` (resizing a
     column subtracts width from neighboring columns).
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   resizeMode = RESIZE_MODE.STANDARD;
 
   /**
@@ -97,48 +97,49 @@ export default class EmberTHead extends Component {
     * "first-column": extra space is added into the first column.
     * "last-column": extra space is added into the last column.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   fillMode = FILL_MODE.EQUAL_COLUMN;
 
   /**
     Sets a constraint on the table's size, such that it must be greater than, less
     than, or equal to the size of the containing element.
   */
-  @defaultTo({ defaultIfUndefined: true })
+  // @defaultTo({ defaultIfUndefined: true })
   widthConstraint = WIDTH_CONSTRAINT.NONE;
 
   /**
     A numeric adjustment to be applied to the constraint on the table's size.
   */
-  @defaultTo
+  // @defaultTo
   containerWidthAdjustment = null;
 
   /**
     An action that is sent when sorts is updated
   */
-  @defaultTo
+  // @defaultTo
   onHeaderAction = null;
 
   /**
     An action that is sent when sorts is updated
   */
-  @defaultTo
+  // @defaultTo
   onUpdateSorts = null;
 
   /**
     An action that is sent when columns are reordered
   */
-  @defaultTo
+  // @defaultTo
   onReorder = null;
 
   /**
     An action that is sent when columns are resized
   */
-  @defaultTo
+  // @defaultTo
   onResize = null;
 
   init() {
-    super.init(...arguments);
+	super.init(...arguments);
+	console.log(this);
 
     this.layout = layout;
 

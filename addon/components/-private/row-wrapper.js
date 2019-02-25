@@ -33,29 +33,30 @@ const layout = hbs`{{yield api}}`;
 
 @tagName('')
 export default class RowWrapper extends Component {
-  @defaultTo
-  rowValue;
+//   @defaultTo
+//   rowValue;
 
-  @defaultTo
-  columns;
+//   @defaultTo
+//   columns;
 
-  @defaultTo
-  columnMetaCache;
+//   @defaultTo
+//   columnMetaCache;
 
-  @defaultTo
-  rowMetaCache;
+//   @defaultTo
+//   rowMetaCache;
 
-  @defaultTo
-  canSelect;
+//   @defaultTo
+//   canSelect;
 
-  @defaultTo
-  rowSelectionMode;
+//   @defaultTo
+//   rowSelectionMode;
 
-  @defaultTo
-  checkboxSelectionMode;
+//   @defaultTo
+//   checkboxSelectionMode;
 
   init() {
-    super.init(...arguments);
+	super.init(...arguments);
+	console.log(layout)
 
     this.layout = layout;
     this._cells = emberA([]);
