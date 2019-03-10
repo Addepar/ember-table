@@ -29,6 +29,8 @@ const fullTable = hbs`
         {{#ember-tr api=h as |r|}}
           {{ember-th
             api=r
+
+            onContextMenu="onHeaderCellContextMenu"
           }}
         {{/ember-tr}}
       {{/ember-thead}}
