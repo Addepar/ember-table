@@ -149,6 +149,9 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[0],
             },
+            resolutions: {
+              'ember-data': 'emberjs/data#release',
+            },
           },
         },
         {
@@ -157,6 +160,9 @@ module.exports = function() {
             devDependencies: {
               'ember-source': urls[1],
             },
+            resolutions: {
+              'ember-data': 'emberjs/data#beta',
+            },
           },
         },
         {
@@ -164,6 +170,9 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': urls[2],
+            },
+            resolutions: {
+              'ember-data': 'emberjs/data#master',
             },
           },
         },
