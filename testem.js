@@ -18,10 +18,7 @@ module.exports = {
     },
     Firefox: {
       mode: 'ci',
-      args: [
-        '--headless',
-        '--window-size=1440,900',
-      ],
-    }
+      args: ['--headless', '--window-size=1440,900'],
+    },
   },
 };
