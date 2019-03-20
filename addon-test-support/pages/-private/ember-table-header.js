@@ -1,4 +1,4 @@
-import PageObject, { collection, hasClass } from 'ember-classy-page-object';
+import PageObject, { collection, hasClass, triggerable } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 import { click } from 'ember-native-dom-helpers';
 
@@ -32,6 +32,8 @@ const Header = PageObject.extend({
 
   isFixedLeft: hasClass('is-fixed-left'),
   isFixedRight: hasClass('is-fixed-right'),
+
+  contextMenu: triggerable('contextmenu'),
 
   /**
    * Resizes this column by dragging right border several pixels.

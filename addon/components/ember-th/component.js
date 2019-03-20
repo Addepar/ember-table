@@ -7,7 +7,8 @@ import { readOnly } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
-import { type } from '@ember-decorators/argument/type';
+import { type, optional } from '@ember-decorators/argument/type';
+import { Action } from '@ember-decorators/argument/types';
 
 import { closest } from '../../-private/utils/element';
 
@@ -49,6 +50,13 @@ export default class EmberTh extends BaseTableCell {
   @required
   @type('object')
   api;
+
+  /**
+    Action sent when the user clicks right this element
+  */
+  @argument
+  @type(optional(Action))
+  onContextMenu;
 
   @readOnly('api.columnValue')
   columnValue;
@@ -160,6 +168,11 @@ export default class EmberTh extends BaseTableCell {
 
       this.updateSort({ toggle });
     }
+  }
+
+  contextMenu(event) {
+    this.sendAction('onContextMenu', event);
+    return false;
   }
 
   keyUp(event) {
