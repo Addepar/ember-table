@@ -2,21 +2,8 @@
   {{yield columnValue columnMeta}}
 {{else}}
   {{columnValue.name}}
-{{/if}}
 
-{{#if isSorted}}
-  <span data-test-sort-indicator class="et-sort-indicator {{if isSortedAsc 'is-ascending' 'is-descending'}}">
-    {{#if isMultiSorted}}
-      {{sortIndex}}
-    {{/if}}
-  </span>
-{{/if}}
+  {{ember-th/sort-indicator columnMeta=columnMeta}}
 
-{{#if isSortable}}
-  <button class="et-sort-toggle et-speech-only">Toggle Sort</button>
-{{/if}}
-
-{{#if isResizable}}
-  <div class="et-header-resize-area">
-  </div>
+  {{ember-th/resize-handle columnMeta=columnMeta}}
 {{/if}}

@@ -1,9 +1,24 @@
-import PageObject, { collection, hasClass, triggerable } from 'ember-classy-page-object';
+import PageObject, { alias, collection, hasClass, triggerable } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 import { click } from 'ember-native-dom-helpers';
 
 import { mouseDown, mouseMove, mouseUp } from '../../helpers/mouse';
 import { getScale } from '../../helpers/element';
+
+export const SortPage = PageObject.extend({
+  indicator: {
+    scope: '[data-test-sort-indicator]',
+    isAscending: hasClass('is-ascending'),
+    isDescending: hasClass('is-descending'),
+  },
+  toggle: {
+    scope: '[data-test-sort-toggle]',
+  },
+});
+
+export const ResizePage = PageObject.extend({
+  scope: '[data-test-resize-handle]',
+});
 
 const Header = PageObject.extend({
   get text() {
@@ -105,11 +120,11 @@ const Header = PageObject.extend({
 
   isSortable: hasClass('is-sortable'),
 
-  sortIndicator: {
-    scope: '[data-test-sort-indicator]',
-    isAscending: hasClass('is-ascending'),
-    isDescending: hasClass('is-descending'),
-  },
+  sort: SortPage,
+  sortIndicator: alias('sort.indicator'),
+  sortToggle: alias('sort.toggle'),
+
+  resizeHandle: ResizePage,
 });
 
 export default {
