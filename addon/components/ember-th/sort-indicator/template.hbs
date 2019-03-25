@@ -1,0 +1,15 @@
+{{#if isSorted}}
+  <span data-test-sort-indicator class="et-sort-indicator {{if isSortedAsc 'is-ascending' 'is-descending'}}">
+    {{#if hasBlock}}
+      {{yield columnMeta}}
+    {{else}}
+      {{#if isMultiSorted}}
+        {{sortIndex}}
+      {{/if}}
+    {{/if}}
+  </span>
+{{/if}}
+
+{{#if isSortable}}
+  <button data-test-sort-toggle class="et-sort-toggle et-speech-only">Toggle Sort</button>
+{{/if}}

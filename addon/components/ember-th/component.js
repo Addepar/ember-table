@@ -92,18 +92,6 @@ export default class EmberTh extends BaseTableCell {
   @readOnly('columnMeta.isReorderable')
   isReorderable;
 
-  @readOnly('columnMeta.sortIndex')
-  sortIndex;
-
-  @readOnly('columnMeta.isSorted')
-  isSorted;
-
-  @readOnly('columnMeta.isMultiSorted')
-  isMultiSorted;
-
-  @readOnly('columnMeta.isSortedAsc')
-  isSortedAsc;
-
   @attribute('colspan')
   @readOnly('columnMeta.columnSpan')
   columnSpan;

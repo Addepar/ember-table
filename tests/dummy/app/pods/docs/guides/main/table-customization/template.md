@@ -42,6 +42,45 @@ lookup paths:
   {{demo.snippet name='table-customization-custom-cell-template.js' label='component.js'}}
 {{/docs-demo}}
 
+If you want to customize a header cell but still want to include the elements to sort and
+to resize a column, use the `ember-th/sort-indicator` and `ember-th/resize-handle`
+components:
+
+{{#docs-demo as |demo|}}
+  {{#demo.example}}
+    {{! BEGIN-SNIPPET docs-example-sortings.hbs }}
+    <div class="demo-container">
+      <EmberTable as |t|>
+        <t.head
+          @columns={{columns}}
+          @sorts={{sorts}}
+
+          @onUpdateSorts={{action (mut sorts)}}
+
+          @widthConstraint='gte-container'
+          @fillMode='first-column'
+        
+          as |h|
+        >
+          <h.row as |r|>
+            <r.cell as |columnValue columnMeta|>
+              <EmberTh::SortIndicator @columnMeta={{columnMeta}} />
+              Custom Header {{columnValue.name}}
+              <EmberTh::Resizehandle @columnMeta={{columnMeta}} />
+            </r.cell>
+          </h.row>
+        </t.head>
+
+        <t.body @rows={{rows}} />
+      </EmberTable>
+    </div>
+    {{! END-SNIPPET }}
+  {{/demo.example}}
+
+  {{demo.snippet name='docs-example-sortings.hbs'}}
+  {{demo.snippet label='component.js' name='docs-example-sortings.js'}}
+{{/docs-demo}}
+
 Oftentimes you'll want to provide custom components for use in table headers,
 cells, and footers. It's also pretty common to want different types of
 components used in each column. Ember Table solves this by passing the
