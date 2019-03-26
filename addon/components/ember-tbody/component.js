@@ -2,7 +2,7 @@ import Component from '@ember/component';
 
 import { tagName } from '@ember-decorators/component';
 import { computed } from '@ember-decorators/object';
-import { bool, readOnly, or } from '@ember-decorators/object/computed';
+import { bool, reads, or } from '@ember-decorators/object/computed';
 
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -51,10 +51,10 @@ export default class EmberTBody extends Component {
   @or('api.api', 'api')
   unwrappedApi;
 
-  @readOnly('unwrappedApi.columnTree.leaves')
+  @reads('unwrappedApi.columnTree.leaves')
   columns;
 
-  @readOnly('unwrappedApi.columnTree.columnMetaCache')
+  @reads('unwrappedApi.columnTree.columnMetaCache')
   columnMetaCache;
 
   /**

@@ -1,6 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { reads } from '@ember-decorators/object/computed';
 import { className, classNames, tagName } from '@ember-decorators/component';
 
 import { argument } from '@ember-decorators/argument';
@@ -72,27 +72,27 @@ export default class EmberTr extends Component {
   @type(optional(Action))
   onDoubleClick;
 
-  @readOnly('api.rowValue')
+  @reads('api.rowValue')
   rowValue;
 
-  @readOnly('api.rowMeta')
+  @reads('api.rowMeta')
   rowMeta;
 
-  @readOnly('api.cells')
+  @reads('api.cells')
   cells;
 
-  @readOnly('api.rowSelectionMode')
+  @reads('api.rowSelectionMode')
   rowSelectionMode;
 
-  @readOnly('api.isHeader')
+  @reads('api.isHeader')
   isHeader;
 
   @className
-  @readOnly('rowMeta.isSelected')
+  @reads('rowMeta.isSelected')
   isSelected;
 
   @className
-  @readOnly('rowMeta.isGroupSelected')
+  @reads('rowMeta.isGroupSelected')
   isGroupSelected;
 
   init() {

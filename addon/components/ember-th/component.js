@@ -3,7 +3,7 @@ import BaseTableCell from '../-private/base-table-cell';
 import { next } from '@ember/runloop';
 
 import { action } from '@ember-decorators/object';
-import { readOnly } from '@ember-decorators/object/computed';
+import { reads } from '@ember-decorators/object/computed';
 import { attribute, className, tagName } from '@ember-decorators/component';
 import { argument } from '@ember-decorators/argument';
 import { required } from '@ember-decorators/argument/validation';
@@ -58,16 +58,16 @@ export default class EmberTh extends BaseTableCell {
   @type(optional(Action))
   onContextMenu;
 
-  @readOnly('api.columnValue')
+  @reads('api.columnValue')
   columnValue;
 
-  @readOnly('api.columnMeta')
+  @reads('api.columnMeta')
   columnMeta;
 
   /**
     Any sorts applied to the table.
   */
-  @readOnly('api.sorts')
+  @reads('api.sorts')
   sorts;
 
   /**
@@ -75,41 +75,41 @@ export default class EmberTh extends BaseTableCell {
     onUpdateSorts is set on the thead.
   */
   @className
-  @readOnly('columnMeta.isSortable')
+  @reads('columnMeta.isSortable')
   isSortable;
 
   /**
     Indicates if this column can be resized.
   */
   @className
-  @readOnly('columnMeta.isResizable')
+  @reads('columnMeta.isResizable')
   isResizable;
 
   /**
    Indicates if this column can be reordered.
   */
   @className
-  @readOnly('columnMeta.isReorderable')
+  @reads('columnMeta.isReorderable')
   isReorderable;
 
-  @readOnly('columnMeta.sortIndex')
+  @reads('columnMeta.sortIndex')
   sortIndex;
 
-  @readOnly('columnMeta.isSorted')
+  @reads('columnMeta.isSorted')
   isSorted;
 
-  @readOnly('columnMeta.isMultiSorted')
+  @reads('columnMeta.isMultiSorted')
   isMultiSorted;
 
-  @readOnly('columnMeta.isSortedAsc')
+  @reads('columnMeta.isSortedAsc')
   isSortedAsc;
 
   @attribute('colspan')
-  @readOnly('columnMeta.columnSpan')
+  @reads('columnMeta.columnSpan')
   columnSpan;
 
   @attribute('rowspan')
-  @readOnly('columnMeta.rowSpan')
+  @reads('columnMeta.rowSpan')
   rowSpan;
 
   /**
