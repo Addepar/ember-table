@@ -97,7 +97,7 @@
     "loader.js": "^4.2.3"
   },
   "engines": {
-    "node": "6.* || >= 7.*"
+    "node": "8.* || >= 10.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
