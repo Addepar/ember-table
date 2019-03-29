@@ -102,5 +102,8 @@
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
-  "homepage": "https://Addepar.github.io/ember-table"
+  "homepage": "https://Addepar.github.io/ember-table",
+  "resolutions": {
+    "jsdom": "^11.11.0"
+  }
 }
