@@ -79,6 +79,13 @@ export default class EmberTHead extends Component {
   compareFunction = compareValues;
 
   /**
+    Flag that allows to sort empty values after non empty ones
+  */
+  @argument({ defaultIfUndefined: false })
+  @type(optional('boolean'))
+  sortEmptyLast = false;
+
+  /**
     Flag that toggles reordering in the table
   */
   @argument({ defaultIfUndefined: true })
@@ -205,6 +212,7 @@ export default class EmberTHead extends Component {
     this.set('unwrappedApi.sorts', this.get('sorts'));
     this.set('unwrappedApi.sortFunction', this.get('sortFunction'));
     this.set('unwrappedApi.compareFunction', this.get('compareFunction'));
+    this.set('unwrappedApi.sortEmptyLast', this.get('sortEmptyLast'));
   }
 
   _updateColumnTree() {

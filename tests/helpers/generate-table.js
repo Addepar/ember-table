@@ -14,6 +14,7 @@ const fullTable = hbs`
         columns=columns
         containerWidthAdjustment=containerWidthAdjustment
         sorts=sorts
+        sortEmptyLast=sortEmptyLast
         resizeMode=resizeMode
         fillMode=fillMode
         enableResize=enableResize

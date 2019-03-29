@@ -1,0 +1,25 @@
+{{#docs-demo as |demo|}}
+  {{#demo.example name='sorting-empty-values'}}
+    {{! BEGIN-SNIPPET docs-example-sorting-empty-values.hbs }}
+    <div class="demo-container">
+      <EmberTable as |t|>
+        <t.head
+          @columns={{columns}}
+          @sorts={{sorts}}
+          @sortEmptyLast={{sortEmptyLast}}
+
+          @onUpdateSorts={{action (mut sorts)}}
+
+          @widthConstraint='gte-container'
+          @fillMode='first-column'
+        />
+
+        <t.body @rows={{rows}} />
+      </EmberTable>
+    </div>
+    {{! END-SNIPPET }}
+  {{/demo.example}}
+
+  {{demo.snippet name='docs-example-sorting-empty-values.hbs'}}
+  {{demo.snippet label='component.js' name='docs-example-sorting-empty-values.js'}}
+{{/docs-demo}}

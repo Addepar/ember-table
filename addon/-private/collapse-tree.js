@@ -378,17 +378,18 @@ class CollapseTreeNode extends EmberObject {
     return !get(this, 'value.children').some(child => isArray(get(child, 'children')));
   }
 
-  @computed('value.children.[]', 'tree.{sorts.[],sortFunction,compareFunction}')
+  @computed('value.children.[]', 'tree.{sorts.[],sortFunction,compareFunction,sortEmptyLast}')
   get sortedChildren() {
     let valueChildren = get(this, 'value.children');
 
     let sorts = get(this, 'tree.sorts');
     let sortFunction = get(this, 'tree.sortFunction');
     let compareFunction = get(this, 'tree.compareFunction');
+    let sortEmptyLast = get(this, 'tree.sortEmptyLast');
 
     if (sortFunction && compareFunction && sorts && get(sorts, 'length') > 0) {
       valueChildren = mergeSort(valueChildren, (itemA, itemB) => {
-        return sortFunction(itemA, itemB, sorts, compareFunction);
+        return sortFunction(itemA, itemB, sorts, compareFunction, sortEmptyLast);
       });
     }
 

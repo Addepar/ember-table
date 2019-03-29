@@ -242,6 +242,7 @@ export default class EmberTBody extends Component {
     this.addObserver('unwrappedApi.sorts', this._updateCollapseTree);
     this.addObserver('unwrappedApi.sortFunction', this._updateCollapseTree);
     this.addObserver('unwrappedApi.compareFunction', this._updateCollapseTree);
+    this.addObserver('unwrappedApi.sortEmptyLast', this._updateCollapseTree);
 
     this.addObserver('enableCollapse', this._updateCollapseTree);
     this.addObserver('enableTree', this._updateCollapseTree);
@@ -259,6 +260,7 @@ export default class EmberTBody extends Component {
     this.collapseTree.set('sorts', this.get('unwrappedApi.sorts'));
     this.collapseTree.set('sortFunction', this.get('unwrappedApi.sortFunction'));
     this.collapseTree.set('compareFunction', this.get('unwrappedApi.compareFunction'));
+    this.collapseTree.set('sortEmptyLast', this.get('unwrappedApi.sortEmptyLast'));
 
     this.collapseTree.set('enableCollapse', this.get('enableCollapse'));
     this.collapseTree.set('enableTree', this.get('enableTree'));

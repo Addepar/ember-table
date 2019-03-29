@@ -83,3 +83,9 @@ let columns = [
   }
 ];
 ```
+
+## Sorting empty values
+
+Empty values can be treated differently depending on the needs by using the `sortEmptyLast` option.
+
+{{docs/guides/header/sorting/empty-values}}
