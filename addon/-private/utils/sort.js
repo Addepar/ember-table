@@ -54,14 +54,16 @@ export function mergeSort(array, comparator = compare) {
   return merge(leftArray, rightArray, comparator);
 }
 
-export function sortMultiple(itemA, itemB, sorts, compare) {
+export function sortMultiple(itemA, itemB, sorts, compare, sortEmptyLast) {
   let compareValue;
 
   for (let { valuePath, isAscending } of sorts) {
     let valueA = get(itemA, valuePath);
     let valueB = get(itemB, valuePath);
 
-    compareValue = isAscending ? compare(valueA, valueB) : -compare(valueA, valueB);
+    compareValue = isAscending
+      ? compare(valueA, valueB, sortEmptyLast)
+      : -compare(valueA, valueB, !sortEmptyLast);
 
     if (compareValue !== 0) {
       break;
@@ -75,30 +77,41 @@ function isExactlyNaN(value) {
   return typeof value === 'number' && isNaN(value);
 }
 
-function isEmpty(value) {
-  return isNone(value) || isExactlyNaN(value);
+function isEmptyString(value) {
+  return typeof value === 'string' && value === '';
 }
 
-function orderEmptyValues(itemA, itemB) {
+function isEmpty(value) {
+  return isNone(value) || isExactlyNaN(value) || isEmptyString(value);
+}
+
+function orderEmptyValues(itemA, itemB, sortEmptyLast) {
   let aIsEmpty = isEmpty(itemA);
   let bIsEmpty = isEmpty(itemB);
+  let less = -1;
+  let more = 1;
+
+  if (sortEmptyLast) {
+    less = 1;
+    more = -1;
+  }
 
   if (aIsEmpty && !bIsEmpty) {
-    return -1;
+    return less;
   } else if (bIsEmpty && !aIsEmpty) {
-    return 1;
+    return more;
   } else if (isNone(itemA) && isExactlyNaN(itemB)) {
-    return -1;
+    return less;
   } else if (isExactlyNaN(itemA) && isNone(itemB)) {
-    return 1;
+    return more;
   } else {
     return 0;
   }
 }
 
-export function compareValues(itemA, itemB) {
+export function compareValues(itemA, itemB, sortEmptyLast) {
   if (isEmpty(itemA) || isEmpty(itemB)) {
-    return orderEmptyValues(itemA, itemB);
+    return orderEmptyValues(itemA, itemB, sortEmptyLast);
   }
 
   return compare(itemA, itemB);
