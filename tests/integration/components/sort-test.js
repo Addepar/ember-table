@@ -76,6 +76,33 @@ module('Integration | sort', function() {
       assert.ok(checkRowOrder(table, ['Alex 43', 'Zoe 34', 'Liz 25']));
     });
 
+    test('can sort empty values', async function(assert) {
+      let columns = [
+        {
+          name: 'Name',
+          valuePath: 'name',
+        },
+      ];
+
+      let rows = [{ name: 'Zoe' }, { name: '' }, { name: 'Alex' }];
+
+      await generateTable(this, { columns, rows });
+
+      let firstHeader = table.headers.objectAt(0);
+
+      assert.ok(firstHeader.isSortable, 'sort class applied correctly');
+      assert.ok(checkRowOrder(table, ['Zoe', '', 'Alex']), 'initial render is ok');
+
+      await firstHeader.click();
+      assert.ok(checkRowOrder(table, ['Zoe', 'Alex', '']), 'descending sort works');
+
+      await firstHeader.click();
+      assert.ok(checkRowOrder(table, ['', 'Alex', 'Zoe']), 'ascending sort works');
+
+      await firstHeader.click();
+      assert.ok(checkRowOrder(table, ['Zoe', '', 'Alex']), '3rd state / initial state works');
+    });
+
     test('can sort empty values last', async function(assert) {
       let columns = [
         {
