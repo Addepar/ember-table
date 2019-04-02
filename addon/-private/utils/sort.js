@@ -61,9 +61,14 @@ export function sortMultiple(itemA, itemB, sorts, compare, sortEmptyLast) {
     let valueA = get(itemA, valuePath);
     let valueB = get(itemB, valuePath);
 
+    // The option only influences the outcome of an ascending sort.
+    if (sortEmptyLast) {
+      sortEmptyLast = isAscending;
+    }
+
     compareValue = isAscending
       ? compare(valueA, valueB, sortEmptyLast)
-      : -compare(valueA, valueB, !sortEmptyLast);
+      : -compare(valueA, valueB, sortEmptyLast);
 
     if (compareValue !== 0) {
       break;
