@@ -52,11 +52,13 @@ module('Integration | header | main', function() {
         widthConstraint: 'eq-container',
         containerWidthAdjustment: adjustmentValue,
         columnCount: 2,
+        rowCount: 100,
       });
 
       let containerWidth = table.containerWidth;
       let tableWidth = table.width;
 
+      assert.ok(table.hasScrollBar, 'The vertical scrollbar is visible');
       assert.equal(
         tableWidth - containerWidth,
         adjustmentValue,
