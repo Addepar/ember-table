@@ -104,7 +104,6 @@
   },
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
-    "ember-cli-page-object": "1.15.1",
-    "jsdom": "^11.11.0"
+    "ember-cli-page-object": "1.15.1"
   }
 }
