@@ -8,13 +8,13 @@ import { required } from '@ember-decorators/argument/validation';
 import { type, optional } from '@ember-decorators/argument/type';
 import { Action } from '@ember-decorators/argument/types';
 import { computed } from '@ember-decorators/object';
-import { notEmpty, or } from '@ember-decorators/object/computed';
+import { alias, notEmpty, or } from '@ember-decorators/object/computed';
 import { tagName } from '@ember-decorators/component';
 
 import { closest } from '../../-private/utils/element';
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
 
-import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
+import ColumnTree, { RESIZE_MODE, FILL_MODE } from '../../-private/column-tree';
 
 import layout from './template';
 
@@ -124,9 +124,8 @@ export default class EmberTHead extends Component {
     Sets a constraint on the table's size, such that it must be greater than, less
     than, or equal to the size of the containing element.
   */
-  @argument({ defaultIfUndefined: true })
-  @type('string')
-  widthConstraint = WIDTH_CONSTRAINT.NONE;
+  @alias('unwrappedApi.widthConstraint')
+  widthConstraint;
 
   /**
     A numeric adjustment to be applied to the constraint on the table's size.

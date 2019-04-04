@@ -7,7 +7,9 @@ export { generateColumns, generateRows };
 
 const fullTable = hbs`
   <div style="height: 500px;">
-    {{#ember-table data-test-ember-table=true as |t|}}
+    {{#ember-table data-test-ember-table=true
+      widthConstraint=widthConstraint
+      as |t|}}
       {{#ember-thead
         api=t
 
@@ -19,7 +21,6 @@ const fullTable = hbs`
         fillMode=fillMode
         enableResize=enableResize
         enableReorder=enableReorder
-        widthConstraint=widthConstraint
 
         onUpdateSorts="onUpdateSorts"
         onReorder="onReorder"

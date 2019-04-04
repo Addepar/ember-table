@@ -1,10 +1,13 @@
 import Component from '@ember/component';
 import { htmlSafe } from '@ember/string';
 
+import { argument } from '@ember-decorators/argument';
+import { type, optional } from '@ember-decorators/argument/type';
 import { computed } from '@ember-decorators/object';
-import { attribute, classNames } from '@ember-decorators/component';
+import { attribute, className, classNames } from '@ember-decorators/component';
 import { service } from '@ember-decorators/service';
 
+import { WIDTH_CONSTRAINT } from '../../-private/column-tree';
 import {
   setupLegacyStickyPolyfill,
   teardownLegacyStickyPolyfill,
@@ -42,6 +45,20 @@ export default class EmberTable extends Component {
 
   @attribute('data-test-ember-table')
   dataTestEmberTable = true;
+
+  /**
+    Sets a constraint on the table's size, such that it must be greater than, less
+    than, or equal to the size of the containing element.
+  */
+  @argument({ defaultIfUndefined: true })
+  @type(optional('string'))
+  widthConstraint = WIDTH_CONSTRAINT.NONE;
+
+  @className('et-eq-container')
+  @computed('widthConstraint')
+  get isEqContainerWidth() {
+    return this.get('widthConstraint') === WIDTH_CONSTRAINT.EQ_CONTAINER;
+  }
 
   init() {
     super.init(...arguments);
@@ -101,6 +118,7 @@ export default class EmberTable extends Component {
       columns: null,
       registerColumnTree: this.registerColumnTree,
       tableId: this.elementId,
+      widthConstraint: this.get('widthConstraint'),
     };
   }
 

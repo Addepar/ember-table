@@ -48,6 +48,14 @@ export default PageObject.extend({
   },
 
   /**
+   * Returns true if the table has an vertical scrollbar.
+   */
+  get hasScrollBar() {
+    let table = findElement(this, 'table');
+    return findElement(this).clientWidth < table.scrollHeight;
+  },
+
+  /**
    * Selects a row in the body
    *
    * @param {number} index
