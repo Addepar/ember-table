@@ -97,14 +97,13 @@
     "loader.js": "^4.2.3"
   },
   "engines": {
-    "node": "6.* || >= 7.*"
+    "node": "8.* || >= 10.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
   },
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
-    "ember-cli-page-object": "1.15.1",
-    "jsdom": "^11.11.0"
+    "ember-cli-page-object": "1.15.1"
   }
 }
