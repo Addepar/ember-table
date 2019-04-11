@@ -1,6 +1,5 @@
 import EmberObject, { defineProperty, computed, observer } from '@ember/object';
 import { alias } from '@ember/object/computed';
-import { macro } from '@ember-decorators/object/computed';
 
 const PROPERTIES = new WeakMap();
 
@@ -40,6 +39,7 @@ const ClassBasedComputedProperty = EmberObject.extend({
   _dependencies: null,
 
   init() {
+    this._super(...arguments);
     this._redefineProperty();
   },
 
@@ -55,7 +55,9 @@ const ClassBasedComputedProperty = EmberObject.extend({
     let isDynamicList = this.get('_isDynamicList');
 
     let computed = this._computedFunction(
-      ...dependencies.map((d, i) => (isDynamicList[i] ? this.get(d) : d))
+      ...dependencies.map((d, i) =>
+        isDynamicList[i] ? this.get(`_context.${d}`) : `_context.${d}`
+      )
     );
 
     defineProperty(this, '_content', computed);
@@ -83,8 +85,6 @@ function classComputedProperty(isDynamicList, computedFunction) {
     };
 
     dependencies.forEach((dep, index) => {
-      extension[dep] = alias(`_context.${dep}`);
-
       if (isDynamicList[index] === true) {
         // eslint-disable-next-line
         extension[`${dep}DidChange`] = observer(`_context.${dep}`, function() {
@@ -110,12 +110,10 @@ function classComputedProperty(isDynamicList, computedFunction) {
   };
 }
 
-export const dynamicAlias = macro(
-  classComputedProperty([false, true], function(...segments) {
-    if (segments.every(s => typeof s === 'string')) {
-      return alias(segments.join('.'));
-    } else {
-      return null;
-    }
-  })
-);
+export const dynamicAlias = classComputedProperty([false, true], function(...segments) {
+  if (segments.every(s => typeof s === 'string')) {
+    return alias(segments.join('.'));
+  } else {
+    return null;
+  }
+});

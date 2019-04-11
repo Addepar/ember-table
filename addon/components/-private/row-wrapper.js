@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import hbs from 'htmlbars-inline-precompile';
 
-import EmberObject, { get, set } from '@ember/object';
+import EmberObject, { get, set, computed as emberComputed } from '@ember/object';
 import { A as emberA } from '@ember/array';
 
 import { tagName } from '@ember-decorators/component';
@@ -12,12 +12,10 @@ import { computed } from '@ember-decorators/object';
 import { objectAt } from '../../-private/utils/array';
 import { dynamicAlias } from '../../-private/utils/computed';
 
-class CellWrapper extends EmberObject {
-  @dynamicAlias('rowValue', 'columnValue.valuePath')
-  cellValue;
+const CellWrapper = EmberObject.extend({
+  cellValue: dynamicAlias('rowValue', 'columnValue.valuePath'),
 
-  @computed('rowMeta', 'columnValue')
-  get cellMeta() {
+  cellMeta: emberComputed('rowMeta', 'columnValue', function() {
     let rowMeta = get(this, 'rowMeta');
     let columnValue = get(this, 'columnValue');
 
@@ -26,8 +24,8 @@ class CellWrapper extends EmberObject {
     }
 
     return rowMeta._cellMetaCache.get(columnValue);
-  }
-}
+  }),
+});
 
 const layout = hbs`{{yield api}}`;
 
