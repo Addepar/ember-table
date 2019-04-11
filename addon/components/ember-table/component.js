@@ -1,9 +1,7 @@
 import Component from '@ember/component';
+import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
-
-import { computed } from '@ember-decorators/object';
-import { attribute, classNames } from '@ember-decorators/component';
-import { service } from '@ember-decorators/service';
+import { inject as service } from '@ember/service';
 
 import {
   setupLegacyStickyPolyfill,
@@ -35,22 +33,15 @@ import layout from './template';
   @yield {Component} t.body - The table body component
   @yield {Component} t.foot - The table footer component
 */
-@classNames('ember-table')
-export default class EmberTable extends Component {
-  @service
-  userAgent;
+export default Component.extend({
+  layout,
+  classNames: ['ember-table'],
+  userAgent: service(),
 
-  @attribute('data-test-ember-table')
-  dataTestEmberTable = true;
-
-  init() {
-    super.init(...arguments);
-
-    this.layout = layout;
-  }
+  'data-test-ember-table': true,
 
   didInsertElement() {
-    super.didInsertElement(...arguments);
+    this._super(...arguments);
 
     let browser = this.get('userAgent.browser');
 
@@ -67,7 +58,7 @@ export default class EmberTable extends Component {
         setupTableStickyPolyfill(tfoot);
       }
     }
-  }
+  },
 
   willDestroyElement() {
     let browser = this.get('userAgent.browser');
@@ -87,24 +78,22 @@ export default class EmberTable extends Component {
       }
     }
 
-    super.willDestroyElement(...arguments);
-  }
+    this._super(...arguments);
+  },
 
-  @computed('tableWidth')
-  get tableStyle() {
+  tableStyle: computed('tableWidth', function() {
     return htmlSafe(`width: ${this.get('tableWidth')}px;`);
-  }
+  }),
 
-  @computed
-  get api() {
+  api: computed(function() {
     return {
       columns: null,
-      registerColumnTree: this.registerColumnTree,
+      registerColumnTree: this.registerColumnTree.bind(this),
       tableId: this.elementId,
     };
-  }
+  }),
 
-  registerColumnTree = columnTree => {
+  registerColumnTree(columnTree) {
     this.set('api.columnTree', columnTree);
-  };
-}
+  },
+});

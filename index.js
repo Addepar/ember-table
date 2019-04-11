@@ -5,6 +5,12 @@ const replace = require('broccoli-string-replace');
 module.exports = {
   name: 'ember-table',
 
+  options: {
+    '@ember-decorators/argument': {
+      disableValidatedComponent: true,
+    },
+  },
+
   included() {
     this._super.included.apply(this, arguments);
 
