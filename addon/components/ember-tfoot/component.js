@@ -43,5 +43,5 @@ export default EmberTBody.extend({
     }
 
     return emberA(arr);
-  })
+  }),
 });

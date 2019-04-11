@@ -78,23 +78,22 @@ export default Component.extend({
       }
     }
 
-    super.willDestroyElement(...arguments);
+    this._super(...arguments);
   },
 
   tableStyle: computed('tableWidth', function() {
     return htmlSafe(`width: ${this.get('tableWidth')}px;`);
   }),
 
-
   api: computed(function() {
     return {
       columns: null,
-      registerColumnTree: this.registerColumnTree,
+      registerColumnTree: this.registerColumnTree.bind(this),
       tableId: this.elementId,
     };
   }),
 
-  registerColumnTree() {
+  registerColumnTree(columnTree) {
     this.set('api.columnTree', columnTree);
-  }
+  },
 });
