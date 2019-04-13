@@ -2,14 +2,8 @@
 import BaseTableCell from '../-private/base-table-cell';
 import { next } from '@ember/runloop';
 
-import { action } from '@ember-decorators/object';
+import defaultTo from '../../-private/utils/default-to';
 import { readOnly } from '@ember-decorators/object/computed';
-import { attribute, className, tagName } from '@ember-decorators/component';
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type, optional } from '@ember-decorators/argument/type';
-import { Action } from '@ember-decorators/argument/types';
-
 import { closest } from '../../-private/utils/element';
 
 import layout from './template';
@@ -39,81 +33,70 @@ const COLUMN_REORDERING = 2;
   @yield {object} columnValue - The column definition
   @yield {object} columnMeta - The meta object associated with this column
 */
-@tagName('th')
-export default class EmberTh extends BaseTableCell {
-  layout = layout;
+
+export default BaseTableCell.extend({
+  layout,
+  tagName: 'th',
+  classNameBindings: ['isSortable', 'isResizable', 'isReorderable'],
 
   /**
     The API object passed in by the table row
+    @argument
+    @required
+    @type('object')
   */
-  @argument
-  @required
-  @type('object')
-  api;
+  api: null,
 
   /**
     Action sent when the user clicks right this element
+    @argument
+    @type(optional(Action))
   */
-  @argument
-  @type(optional(Action))
-  onContextMenu;
+  onContextMenu: null,
 
-  @readOnly('api.columnValue')
-  columnValue;
+  columnValue: readOnly('api.columnValue'),
 
-  @readOnly('api.columnMeta')
-  columnMeta;
+  columnMeta: readOnly('api.columnMeta'),
 
   /**
     Any sorts applied to the table.
   */
-  @readOnly('api.sorts')
-  sorts;
+  sorts: readOnly('api.sorts'),
 
   /**
     Whether or not the column is sortable. Is true IFF the column is a leaf node
     onUpdateSorts is set on the thead.
   */
-  @className
-  @readOnly('columnMeta.isSortable')
-  isSortable;
+  isSortable: readOnly('columnMeta.isSortable'),
 
   /**
     Indicates if this column can be resized.
   */
-  @className
-  @readOnly('columnMeta.isResizable')
-  isResizable;
+  isResizable: readOnly('columnMeta.isResizable'),
 
   /**
    Indicates if this column can be reordered.
   */
-  @className
-  @readOnly('columnMeta.isReorderable')
-  isReorderable;
+  isReorderable: readOnly('columnMeta.isReorderable'),
 
-  @attribute('colspan')
-  @readOnly('columnMeta.columnSpan')
-  columnSpan;
+  columnSpan: readOnly('columnMeta.columnSpan'),
 
-  @attribute('rowspan')
-  @readOnly('columnMeta.rowSpan')
-  rowSpan;
+  rowSpan: readOnly('columnMeta.rowSpan'),
 
   /**
     A variable used for column resizing & ordering. When user press mouse at a point that's close
     to column boundary (using some threshold), this variable set whether it's the left or right
     column.
   */
-  _columnState = COLUMN_INACTIVE;
+  _columnState: defaultTo(COLUMN_INACTIVE),
 
   /**
     An object that listens to touch/ press/ drag events.
   */
-  _hammer = null;
+  _hammer: null,
 
   didInsertElement() {
-    super.didInsertElement(...arguments);
+    this._super(...arguments);
 
     this.get('columnMeta').registerElement(this.element);
 
@@ -121,13 +104,13 @@ export default class EmberTh extends BaseTableCell {
 
     hammer.add(new Hammer.Press({ time: 0 }));
 
-    hammer.on('press', this.pressHandler);
-    hammer.on('panstart', this.panStartHandler);
-    hammer.on('panmove', this.panMoveHandler);
-    hammer.on('panend', this.panEndHandler);
+    hammer.on('press', this.pressHandler.bind(this));
+    hammer.on('panstart', this.panStartHandler.bind(this));
+    hammer.on('panmove', this.panMoveHandler.bind(this));
+    hammer.on('panend', this.panEndHandler.bind(this));
 
     this._hammer = hammer;
-  }
+  },
 
   willDestroyElement() {
     let hammer = this._hammer;
@@ -139,13 +122,14 @@ export default class EmberTh extends BaseTableCell {
 
     hammer.destroy();
 
-    super.willDestroyElement(...arguments);
-  }
+    this._super(...arguments);
+  },
 
-  @action
-  sendDropdownAction(...args) {
-    this.sendAction('onDropdownAction', ...args);
-  }
+  actions: {
+    sendDropdownAction(...args) {
+      this.sendAction('onDropdownAction', ...args);
+    },
+  },
 
   click(event) {
     let isSortable = this.get('isSortable');
@@ -156,12 +140,12 @@ export default class EmberTh extends BaseTableCell {
 
       this.updateSort({ toggle });
     }
-  }
+  },
 
   contextMenu(event) {
     this.sendAction('onContextMenu', event);
     return false;
-  }
+  },
 
   keyUp(event) {
     let isSortable = this.get('isSortable');
@@ -175,7 +159,7 @@ export default class EmberTh extends BaseTableCell {
     ) {
       this.updateSort();
     }
-  }
+  },
 
   updateSort({ toggle }) {
     let valuePath = this.get('columnValue.valuePath');
@@ -191,16 +175,16 @@ export default class EmberTh extends BaseTableCell {
     }
 
     this.get('api').sendUpdateSort(newSortings);
-  }
+  },
 
-  pressHandler = event => {
+  pressHandler(event) {
     let [{ clientX, target }] = event.pointers;
 
     this._originalClientX = clientX;
     this._originalTargetWasResize = target.classList.contains('et-header-resize-area');
-  };
+  },
 
-  panStartHandler = event => {
+  panStartHandler(event) {
     let isResizable = this.get('isResizable');
     let isReorderable = this.get('isReorderable');
 
@@ -215,9 +199,9 @@ export default class EmberTh extends BaseTableCell {
 
       this.get('columnMeta').startReorder(clientX);
     }
-  };
+  },
 
-  panMoveHandler = event => {
+  panMoveHandler(event) {
     let [{ clientX }] = event.pointers;
 
     if (this._columnState === COLUMN_RESIZING) {
@@ -227,9 +211,9 @@ export default class EmberTh extends BaseTableCell {
       this.get('columnMeta').updateReorder(clientX);
       this._columnState = COLUMN_REORDERING;
     }
-  };
+  },
 
-  panEndHandler = () => {
+  panEndHandler() {
     if (this._columnState === COLUMN_RESIZING) {
       this.get('columnMeta').endResize();
     } else if (this._columnState === COLUMN_REORDERING) {
@@ -237,5 +221,5 @@ export default class EmberTh extends BaseTableCell {
     }
 
     next(() => (this._columnState = COLUMN_INACTIVE));
-  };
-}
+  },
+});
