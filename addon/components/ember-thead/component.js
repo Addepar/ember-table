@@ -232,7 +232,10 @@ export default Component.extend({
 
     this.columnTree.registerContainer(this._container);
 
-    this._tableResizeSensor = new ResizeSensor(this._container, bind(this.fillupHandler));
+    this._tableResizeSensor = new ResizeSensor(
+      this._container,
+      bind(this.fillupHandler.bind(this))
+    );
   },
 
   willDestroyElement() {

@@ -2,8 +2,7 @@
 import BaseTableCell from '../-private/base-table-cell';
 import { next } from '@ember/runloop';
 
-import defaultTo from '../../-private/utils/default-to';
-import { readOnly } from '@ember-decorators/object/computed';
+import { readOnly } from '@ember/object/computed';
 import { closest } from '../../-private/utils/element';
 
 import layout from './template';
@@ -88,7 +87,7 @@ export default BaseTableCell.extend({
     to column boundary (using some threshold), this variable set whether it's the left or right
     column.
   */
-  _columnState: defaultTo(COLUMN_INACTIVE),
+  _columnState: COLUMN_INACTIVE,
 
   /**
     An object that listens to touch/ press/ drag events.
