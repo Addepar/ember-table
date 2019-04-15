@@ -36,6 +36,7 @@ const COLUMN_REORDERING = 2;
 export default BaseTableCell.extend({
   layout,
   tagName: 'th',
+  attributeBindings: ['columnSpan:colspan', 'rowSpan:rowspan'],
   classNameBindings: ['isSortable', 'isResizable', 'isReorderable'],
 
   /**
