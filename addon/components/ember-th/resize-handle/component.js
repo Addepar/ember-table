@@ -1,11 +1,7 @@
 import Component from '@ember/component';
 import layout from './template';
 
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type } from '@ember-decorators/argument/type';
-import { tagName } from '@ember-decorators/component';
-import { readOnly } from '@ember-decorators/object/computed';
+import { readOnly } from '@ember/object/computed';
 
 /**
   The table header cell resize handle component. This component renders an area to grab to resize a column.
@@ -27,18 +23,17 @@ import { readOnly } from '@ember-decorators/object/computed';
   ```
 */
 
-@tagName('')
-export default class EmberThResizeHandle extends Component {
-  layout = layout;
+export default Component.extend({
+  layout,
+  tagName: '',
 
   /**
     The API object passed in by the table header cell
+    @argument
+    @required
+    @type('object')
   */
-  @argument
-  @required
-  @type('object')
-  columnMeta;
+  columnMeta: null,
 
-  @readOnly('columnMeta.isResizable')
-  isResizable;
-}
+  isResizable: readOnly('columnMeta.isResizable'),
+});

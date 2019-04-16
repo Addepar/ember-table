@@ -1,11 +1,7 @@
 import Component from '@ember/component';
 import layout from './template';
 
-import { argument } from '@ember-decorators/argument';
-import { required } from '@ember-decorators/argument/validation';
-import { type } from '@ember-decorators/argument/type';
-import { tagName } from '@ember-decorators/component';
-import { readOnly } from '@ember-decorators/object/computed';
+import { readOnly } from '@ember/object/computed';
 
 /**
   The table header cell sort indicator component. This component renders the state of the sort on the column (ascending/descending/none).
@@ -28,30 +24,25 @@ import { readOnly } from '@ember-decorators/object/computed';
   @yield {object} columnMeta - The meta object associated with this column
 */
 
-@tagName('')
-export default class EmberThSortIndicator extends Component {
-  layout = layout;
+export default Component.extend({
+  layout,
+  tagName: '',
 
   /**
     The API object passed in by the table header cell
+    @argument
+    @required
+    @type('object')
   */
-  @argument
-  @required
-  @type('object')
-  columnMeta;
+  columnMeta: null,
 
-  @readOnly('columnMeta.isSortable')
-  isSortable;
+  isSortable: readOnly('columnMeta.isSortable'),
 
-  @readOnly('columnMeta.isSorted')
-  isSorted;
+  isSorted: readOnly('columnMeta.isSorted'),
 
-  @readOnly('columnMeta.isSortedAsc')
-  isSortedAsc;
+  isSortedAsc: readOnly('columnMeta.isSortedAsc'),
 
-  @readOnly('columnMeta.isMultiSorted')
-  isMultiSorted;
+  isMultiSorted: readOnly('columnMeta.isMultiSorted'),
 
-  @readOnly('columnMeta.sortIndex')
-  sortIndex;
-}
+  sortIndex: readOnly('columnMeta.sortIndex'),
+});
