@@ -68,14 +68,14 @@ export default Component.extend({
     @argument({ defaultIfUndefined: true })
     @type(optional(Function))
   */
-  sortFunction: defaultTo(sortMultiple),
+  sortFunction: defaultTo(() => sortMultiple),
 
   /**
     An ordered array of the sorts applied to the table
     @argument({ defaultIfUndefined: true })
     @type(optional(Function))
   */
-  compareFunction: defaultTo(compareValues),
+  compareFunction: defaultTo(() => compareValues),
 
   /**
     Flag that allows to sort empty values after non empty ones

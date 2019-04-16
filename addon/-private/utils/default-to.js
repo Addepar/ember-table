@@ -19,7 +19,7 @@ export default function defaultTo(defaultValue) {
         values[key] = typeof defaultValue === 'function' ? defaultValue() : defaultValue;
       }
 
-      return defaultValue;
+      return values[key];
     },
 
     set(key, value) {
