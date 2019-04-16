@@ -57,21 +57,23 @@ export function mergeSort(array, comparator = compare) {
 export function sortMultiple(itemA, itemB, sorts, compare, sortEmptyLast) {
   let compareValue;
 
-  for (let { valuePath, isAscending } of sorts) {
-    let valueA = get(itemA, valuePath);
-    let valueB = get(itemB, valuePath);
+  if (sorts) {
+    for (let { valuePath, isAscending } of sorts) {
+      let valueA = get(itemA, valuePath);
+      let valueB = get(itemB, valuePath);
 
-    // The option only influences the outcome of an ascending sort.
-    if (sortEmptyLast) {
-      sortEmptyLast = isAscending;
-    }
+      // The option only influences the outcome of an ascending sort.
+      if (sortEmptyLast) {
+        sortEmptyLast = isAscending;
+      }
 
-    compareValue = isAscending
-      ? compare(valueA, valueB, sortEmptyLast)
-      : -compare(valueA, valueB, sortEmptyLast);
+      compareValue = isAscending
+        ? compare(valueA, valueB, sortEmptyLast)
+        : -compare(valueA, valueB, sortEmptyLast);
 
-    if (compareValue !== 0) {
-      break;
+      if (compareValue !== 0) {
+        break;
+      }
     }
   }
 
