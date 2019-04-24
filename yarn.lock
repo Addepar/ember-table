@@ -724,18 +724,6 @@
     lodash "^4.17.11"
     to-fast-properties "^2.0.0"
 
-"@ember-decorators/argument@^0.8.16":
-  version "0.8.21"
-  resolved "https://registry.npmjs.org/@ember-decorators/argument/-/argument-0.8.21.tgz#929789f9622ee935c3fad3332b3d179e98d05b15"
-  integrity sha512-WsNQMzlEEl7puxwC3yE6VUmRvAHdIbGOQJ+tYA4DXbZOAfagjCDxhz2Gxl0JVG7Sc87e6a2YAVZQr8CLDW8zJg==
-  dependencies:
-    babel-plugin-filter-imports "^1.1.1"
-    broccoli-funnel "^2.0.1"
-    ember-cli-babel "^6.17.0"
-    ember-cli-version-checker "^2.0.0"
-    ember-compatibility-helpers "^1.0.2"
-    ember-get-config "^0.2.3"
-
 "@ember-decorators/babel-transforms@^0.1.1":
   version "0.1.1"
   resolved "https://registry.npmjs.org/@ember-decorators/babel-transforms/-/babel-transforms-0.1.1.tgz#c2be1677192e55ccfeb806002d57e314a0e728bc"
@@ -1951,14 +1939,6 @@ babel-plugin-filter-imports@^0.3.1:
   version "0.3.1"
   resolved "https://registry.npmjs.org/babel-plugin-filter-imports/-/babel-plugin-filter-imports-0.3.1.tgz#e7859b56886b175dd2616425d277b219e209ea8b"
   integrity sha1-54WbVohrF13SYWQl0neyGeIJ6os=
-
-babel-plugin-filter-imports@^1.1.1:
-  version "1.1.2"
-  resolved "https://registry.npmjs.org/babel-plugin-filter-imports/-/babel-plugin-filter-imports-1.1.2.tgz#c6e1f2685253bbda91b1dc5a6652ce825f771264"
-  integrity sha512-BpXJV3fndKEP1D9Yhwpz4NIjM/d1FYpdx4E4KmUPnTIFUxXNj0QEAY18MXVzEyYi2EWEVhoOG2CmclDfdMj5ew==
-  dependencies:
-    babel-types "^6.26.0"
-    lodash "^4.17.10"
 
 babel-plugin-htmlbars-inline-precompile@^0.2.5:
   version "0.2.6"
@@ -5484,7 +5464,7 @@ ember-fetch@^6.4.0:
     node-fetch "^2.3.0"
     whatwg-fetch "^3.0.0"
 
-ember-get-config@^0.2.3, ember-get-config@^0.2.4:
+ember-get-config@^0.2.4:
   version "0.2.4"
   resolved "https://registry.npmjs.org/ember-get-config/-/ember-get-config-0.2.4.tgz#118492a2a03d73e46004ed777928942021fe1ecd"
   integrity sha1-EYSSoqA9c+RgBO13eSiUICH+Hs0=

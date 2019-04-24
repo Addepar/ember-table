@@ -508,16 +508,19 @@ export default EmberObject.extend({
 
     this.token = new Token();
 
-    addObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed.bind(this));
-    addObserver(this, 'widthConstraint', this.ensureWidthConstraint.bind(this));
+    this._sortColumnsByFixed = this.sortColumnsByFixed.bind(this);
+    this._ensureWidthConstraint = this.ensureWidthConstraint.bind(this);
+
+    addObserver(this, 'columns.@each.isFixed', this._sortColumnsByFixed);
+    addObserver(this, 'widthConstraint', this._ensureWidthConstraint);
   },
 
   destroy() {
     this.token.cancel();
     get(this, 'root').destroy();
 
-    removeObserver(this, 'columns.@each.isFixed', this.sortColumnsByFixed.bind(this));
-    removeObserver(this, 'widthConstraint', this.ensureWidthConstraint.bind(this));
+    removeObserver(this, 'columns.@each.isFixed', this._sortColumnsByFixed);
+    removeObserver(this, 'widthConstraint', this._ensureWidthConstraint);
 
     this._super(...arguments);
   },
