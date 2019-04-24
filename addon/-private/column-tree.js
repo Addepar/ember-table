@@ -359,19 +359,21 @@ const ColumnTreeNode = EmberObject.extend({
       delta = Math.max(Math.min(oldWidth + delta, maxWidth), minWidth) - oldWidth;
 
       if (delta === 0) {
-        return;
+        return oldWidth;
       }
 
       if (get(this, 'isLeaf')) {
         let column = get(this, 'column');
         let columnWidth = get(column, 'width');
+        let width = oldWidth + delta;
 
         if (typeof columnWidth === 'number') {
-          return set(column, 'width', oldWidth + delta);
+          set(column, 'width', width);
         } else {
           let meta = get(this, 'tree.columnMetaCache').get(column);
-          return set(meta, '_width', oldWidth + delta);
+          set(meta, '_width', width);
         }
+        return width;
       } else {
         let subcolumns = get(this, 'subcolumnNodes');
 
