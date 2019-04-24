@@ -196,7 +196,9 @@ export const TableRowMeta = EmberObject.extend({
       selection.add(rowValue);
     }
 
-    let rowMetas = Array.from(selection).map(r => rowMetaCache.get(r));
+    let rowMetas = Array.from(selection)
+      .map(r => rowMetaCache.get(r))
+      .filter(Boolean);
 
     if (selectingChildrenSelectsParent) {
       let groupingCounts = new Map();
