@@ -835,10 +835,9 @@
   dependencies:
     "@glimmer/util" "^0.30.5"
 
-"@html-next/vertical-collection@1.0.0-beta.13":
+"@html-next/vertical-collection@html-next/vertical-collection#ca8cab8a3204f99cca1cf7661e4170ac41dc3a07":
   version "1.0.0-beta.13"
-  resolved "https://registry.npmjs.org/@html-next/vertical-collection/-/vertical-collection-1.0.0-beta.13.tgz#0cd7fbe813fef8c7daea3c46a3d4167cbd8db682"
-  integrity sha512-YFs+toYLFSCiZSv1kkb3IPvrcVJHVX6q7vkzP0qb2Rvd0s61YqgpPDqtZ8sVViip0Lu3kw+Hs9fysjpAFqJDzQ==
+  resolved "https://codeload.github.com/html-next/vertical-collection/tar.gz/ca8cab8a3204f99cca1cf7661e4170ac41dc3a07"
   dependencies:
     babel-plugin-transform-es2015-block-scoping "^6.24.1"
     babel6-plugin-strip-class-callcheck "^6.0.0"
