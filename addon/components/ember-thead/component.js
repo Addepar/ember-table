@@ -227,6 +227,9 @@ export default Component.extend({
   },
 
   _onColumnsChange() {
+    if (this.get('columns.length') === 0) {
+      return;
+    }
     this._updateColumnTree();
     scheduleOnce('actions', this, this.fillupHandler);
   },
