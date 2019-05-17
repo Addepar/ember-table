@@ -8,6 +8,7 @@ import { notEmpty, or } from '@ember/object/computed';
 
 import { closest } from '../../-private/utils/element';
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
+import { scheduleOnce } from '@ember/runloop';
 
 import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
 
@@ -195,7 +196,7 @@ export default Component.extend({
     this.addObserver('reorderFunction', this._updateApi);
 
     this.addObserver('sorts', this._updateColumnTree);
-    this.addObserver('columns', this._updateColumnTree);
+    this.addObserver('columns.[]', this._onColumnsChange);
     this.addObserver('fillMode', this._updateColumnTree);
     this.addObserver('resizeMode', this._updateColumnTree);
     this.addObserver('widthConstraint', this._updateColumnTree);
@@ -225,6 +226,11 @@ export default Component.extend({
     this.columnTree.set('enableReorder', this.get('enableReorder'));
   },
 
+  _onColumnsChange() {
+    this._updateColumnTree();
+    scheduleOnce('actions', this, this.fillupHandler);
+  },
+
   didInsertElement() {
     this._super(...arguments);
 
@@ -232,10 +238,7 @@ export default Component.extend({
 
     this.columnTree.registerContainer(this._container);
 
-    this._tableResizeSensor = new ResizeSensor(
-      this._container,
-      bind(this.fillupHandler.bind(this))
-    );
+    this._tableResizeSensor = new ResizeSensor(this._container, bind(this, this.fillupHandler));
   },
 
   willDestroyElement() {
