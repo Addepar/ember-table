@@ -37,21 +37,22 @@ async function renderTable(context) {
     <button id="add-column" {{action 'addColumn'}}>Add Column</button>
     <button id="remove-column" {{action 'removeColumn'}}>Remove Column</button>
     {{#ember-table data-test-ember-table=true as |t|}}
-      {{#t.head
+      {{#ember-thead
+        api=t
         widthConstraint='eq-container'
         columns=columns as |h|}}
-        {{#h.row as |r|}}
-        {{r.cell}}
-        {{/h.row}}
-      {{/t.head}}
+        {{#ember-tr api=h as |r|}}
+          {{ember-th api=r}}
+        {{/ember-tr}}
+      {{/ember-thead}}
 
-      {{#t.body rows=rows as |b|}}
-        {{#b.row as |r|}}
-        {{#r.cell as |cellValue|}}
+      {{#ember-tbody api=t rows=rows as |b|}}
+        {{#ember-tr api=b as |r|}}
+          {{#ember-td api=r as |cellValue|}}
             {{cellValue}}
-        {{/r.cell}}
-        {{/b.row}}
-      {{/t.body}}
+          {{/ember-td}}
+        {{/ember-tr}}
+      {{/ember-tbody}}
     {{/ember-table}}
     `);
 
