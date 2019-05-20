@@ -124,6 +124,17 @@ async function testColumnAddition(assert, table) {
   assert.equal(table.containerWidth, originalContainerWidth, 'table container width is unchanged');
 }
 
+// In Ember-1.12, the `this` context has a `context` property itself that is used to `get` or `set`.
+// This function provides Ember-1.12 compatibility for `this.get`
+function compatGet(context, propName) {
+  return context.get ? context.get(propName) : context.context.get(propName);
+}
+
+// This function provides Ember-1.12 compatibility for `this.set`
+function compatSet(context, propName, value) {
+  return context.set ? context.set(propName, value) : context.context.set(propName, value);
+}
+
 moduleForComponent('ember-thead', '[Unit] ember-thead', { integration: true });
 
 test('table resizes when columns are removed', async function(assert) {
@@ -131,7 +142,7 @@ test('table resizes when columns are removed', async function(assert) {
   this.set('rows', data.rows);
   this.set('columns', data.columns);
   this.on('removeColumn', function() {
-    this.set('columns', this.get('columns').slice(0, -1));
+    compatSet(this, 'columns', compatGet(this, 'columns').slice(0, -1));
   });
 
   await renderTable(this);
@@ -143,7 +154,7 @@ test('table resizes when columns are removed via mutation', async function(asser
   this.set('rows', data.rows);
   this.set('columns', A(data.columns));
   this.on('removeColumn', function() {
-    this.get('columns').popObject();
+    compatGet(this, 'columns').popObject();
   });
 
   await renderTable(this);
@@ -155,7 +166,7 @@ test('table resizes when columns are added', async function(assert) {
   this.set('rows', data.rows);
   this.set('columns', data.columns);
   this.on('addColumn', function() {
-    this.set('columns', [...data.columns, data.newColumn]);
+    compatSet(this, 'columns', [...data.columns, data.newColumn]);
   });
 
   await renderTable(this);
@@ -167,7 +178,7 @@ test('table resizes when columns are added via mutation', async function(assert)
   this.set('rows', data.rows);
   this.set('columns', A(data.columns));
   this.on('addColumn', function() {
-    this.get('columns').pushObject(data.newColumn);
+    compatGet(this, 'columns').pushObject(data.newColumn);
   });
 
   await renderTable(this);
