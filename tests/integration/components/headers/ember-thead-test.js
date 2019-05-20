@@ -5,6 +5,11 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 import { A } from '@ember/array';
 import RSVP from 'rsvp';
 
+// This is a "waiter"-style helper to use to ensure that
+// the interior of the ember-table has finished all of its
+// layout-related logic has finished. If we don't use this to
+// wait after `render`, the column widths will not have been
+// set yet and the tests in this module are moot.
 async function rafFinished() {
   return new RSVP.Promise(resolve => {
     requestAnimationFrame(() => requestAnimationFrame(resolve));
