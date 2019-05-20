@@ -134,7 +134,7 @@ test('table resizes when columns are removed', async function(assert) {
   });
 
   await renderTable(this);
-  await testColumnRemovals(assert, new TablePage(), this);
+  await testColumnRemovals(assert, new TablePage());
 });
 
 test('table resizes when columns are removed via mutation', async function(assert) {
@@ -146,7 +146,7 @@ test('table resizes when columns are removed via mutation', async function(asser
   });
 
   await renderTable(this);
-  await testColumnRemovals(assert, new TablePage(), this);
+  await testColumnRemovals(assert, new TablePage());
 });
 
 test('table resizes when columns are added', async function(assert) {
@@ -158,7 +158,7 @@ test('table resizes when columns are added', async function(assert) {
   });
 
   await renderTable(this);
-  await testColumnAddition(assert, new TablePage(), this);
+  await testColumnAddition(assert, new TablePage());
 });
 
 test('table resizes when columns are added via mutation', async function(assert) {
@@ -170,5 +170,5 @@ test('table resizes when columns are added via mutation', async function(assert)
   });
 
   await renderTable(this);
-  await testColumnAddition(assert, new TablePage(), this);
+  await testColumnAddition(assert, new TablePage());
 });
