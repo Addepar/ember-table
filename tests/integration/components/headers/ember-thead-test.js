@@ -1,9 +1,15 @@
-import { module, test } from 'qunit';
-import { setupRenderingTest } from 'ember-qunit';
-import { click, render } from '@ember/test-helpers';
+import { moduleForComponent, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
+import { click } from 'ember-native-dom-helpers';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { A } from '@ember/array';
+import RSVP from 'rsvp';
+
+async function rafFinished() {
+  return new RSVP.Promise(resolve => {
+    requestAnimationFrame(() => requestAnimationFrame(resolve));
+  });
+}
 
 function tableData() {
   return {
@@ -26,8 +32,8 @@ function sumHeaderWidths(table) {
   return table.headers.map(h => h.width).reduce((sum, w) => sum + w, 0);
 }
 
-async function renderTable() {
-  await render(hbs`
+async function renderTable(context) {
+  await context.render(hbs`
     <button id="add-column" {{action 'addColumn'}}>Add Column</button>
     <button id="remove-column" {{action 'removeColumn'}}>Remove Column</button>
     {{#ember-table data-test-ember-table=true as |t|}}
@@ -48,6 +54,8 @@ async function renderTable() {
       {{/t.body}}
     {{/ember-table}}
     `);
+
+  await rafFinished();
 }
 
 async function testColumnRemovals(assert, table) {
@@ -115,54 +123,52 @@ async function testColumnAddition(assert, table) {
   assert.equal(table.containerWidth, originalContainerWidth, 'table container width is unchanged');
 }
 
-module('ember-thead', function(hooks) {
-  setupRenderingTest(hooks);
+moduleForComponent('ember-thead', '[Unit] ember-thead', { integration: true });
 
-  test('table resizes when columns are removed', async function(assert) {
-    let data = tableData();
-    this.set('rows', data.rows);
-    this.set('columns', data.columns);
-    this.set('removeColumn', function() {
-      this.set('columns', this.get('columns').slice(0, -1));
-    });
-
-    await renderTable();
-    await testColumnRemovals(assert, new TablePage());
+test('table resizes when columns are removed', async function(assert) {
+  let data = tableData();
+  this.set('rows', data.rows);
+  this.set('columns', data.columns);
+  this.on('removeColumn', function() {
+    this.set('columns', this.get('columns').slice(0, -1));
   });
 
-  test('table resizes when columns are removed via mutation', async function(assert) {
-    let data = tableData();
-    this.set('rows', data.rows);
-    this.set('columns', A(data.columns));
-    this.set('removeColumn', function() {
-      this.get('columns').popObject();
-    });
+  await renderTable(this);
+  await testColumnRemovals(assert, new TablePage(), this);
+});
 
-    await renderTable();
-    await testColumnRemovals(assert, new TablePage());
+test('table resizes when columns are removed via mutation', async function(assert) {
+  let data = tableData();
+  this.set('rows', data.rows);
+  this.set('columns', A(data.columns));
+  this.on('removeColumn', function() {
+    this.get('columns').popObject();
   });
 
-  test('table resizes when columns are added', async function(assert) {
-    let data = tableData();
-    this.set('rows', data.rows);
-    this.set('columns', data.columns);
-    this.set('addColumn', function() {
-      this.set('columns', [...data.columns, data.newColumn]);
-    });
+  await renderTable(this);
+  await testColumnRemovals(assert, new TablePage(), this);
+});
 
-    await renderTable();
-    await testColumnAddition(assert, new TablePage());
+test('table resizes when columns are added', async function(assert) {
+  let data = tableData();
+  this.set('rows', data.rows);
+  this.set('columns', data.columns);
+  this.on('addColumn', function() {
+    this.set('columns', [...data.columns, data.newColumn]);
   });
 
-  test('table resizes when columns are added via mutation', async function(assert) {
-    let data = tableData();
-    this.set('rows', data.rows);
-    this.set('columns', A(data.columns));
-    this.set('addColumn', function() {
-      this.get('columns').pushObject(data.newColumn);
-    });
+  await renderTable(this);
+  await testColumnAddition(assert, new TablePage(), this);
+});
 
-    await renderTable();
-    await testColumnAddition(assert, new TablePage());
+test('table resizes when columns are added via mutation', async function(assert) {
+  let data = tableData();
+  this.set('rows', data.rows);
+  this.set('columns', A(data.columns));
+  this.on('addColumn', function() {
+    this.get('columns').pushObject(data.newColumn);
   });
+
+  await renderTable(this);
+  await testColumnAddition(assert, new TablePage(), this);
 });
