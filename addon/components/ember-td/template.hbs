@@ -7,7 +7,7 @@
       >
         {{-ember-table-private/simple-checkbox
           data-test-select-row=true
-          checked=rowMeta.isGroupSelected
+          checked=unwrappedApi.rowMeta.isGroupSelected
           onClick=(action "onSelectionToggled")
           ariaLabel="Select row"
         }}
@@ -15,11 +15,11 @@
       </span>
     {{/if}}
 
-    {{#if canCollapse}}
+    {{#if unwrappedApi.rowMeta.canCollapse}}
       <span class="et-toggle-collapse et-depth-indent {{depthClass}}">
         {{-ember-table-private/simple-checkbox
           data-test-collapse-row=true
-          checked=rowMeta.isCollapsed
+          checked=unwrappedApi.rowMeta.isCollapsed
           onChange=(action "onCollapseToggled")
           ariaLabel="Collapse row"
         }}
@@ -31,16 +31,16 @@
 
     <div class="et-cell-content">
       {{#if hasBlock}}
-        {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
+        {{yield unwrappedApi.cellValue unwrappedApi.columnValue unwrappedApi.rowValue unwrappedApi.cellMeta unwrappedApi.columnMeta unwrappedApi.rowMeta unwrappedApi.rowsCount}}
       {{else}}
-        {{cellValue}}
+        {{unwrappedApi.cellValue}}
       {{/if}}
     </div>
   </div>
 {{else}}
   {{#if hasBlock}}
-    {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
+    {{yield unwrappedApi.cellValue unwrappedApi.columnValue unwrappedApi.rowValue unwrappedApi.cellMeta unwrappedApi.columnMeta unwrappedApi.rowMeta unwrappedMeta.rowsCount}}
   {{else}}
-    {{cellValue}}
+    {{unwrappedApi.cellValue}}
   {{/if}}
 {{/if}}
