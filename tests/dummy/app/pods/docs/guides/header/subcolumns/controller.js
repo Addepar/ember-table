@@ -1,21 +1,19 @@
 import Controller from '@ember/controller';
 import { A as emberA } from '@ember/array';
 
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 
 import { generateRows, generateColumn } from '../../../../../utils/generators';
 
 const COLUMN_COUNT = 4;
 
-export default class SubcolumnsController extends Controller {
-  @computed
-  get rows() {
+export default Controller.extend({
+  rows: computed(function() {
     return generateRows(100);
-  }
+  }),
 
   // BEGIN-SNIPPET docs-example-subcolumns.js
-  @computed
-  get simpleColumns() {
+  simpleColumns: computed(function() {
     return [
       {
         name: 'A',
@@ -42,11 +40,10 @@ export default class SubcolumnsController extends Controller {
         ],
       },
     ];
-  }
+  }),
   // END-SNIPPET
 
-  @computed
-  get complexColumns() {
+  complexColumns: computed(function() {
     let columns = emberA();
 
     for (let i = 0; i < COLUMN_COUNT; i++) {
@@ -70,5 +67,5 @@ export default class SubcolumnsController extends Controller {
     }
 
     return columns;
-  }
-}
+  }),
+});

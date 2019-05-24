@@ -1,15 +1,14 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import faker from 'faker';
 
 function getRandomInt(max, min) {
   return faker.random.number({ min, max });
 }
 
-export default class SimpleController extends Controller {
+export default Controller.extend({
   // BEGIN-SNIPPET docs-example-sortings.js
-  @computed
-  get columns() {
+  columns: computed(function() {
     return [
       { name: 'Company ▸ Department ▸ Product', valuePath: 'name' },
       { name: 'Price', valuePath: 'price' },
@@ -17,11 +16,10 @@ export default class SimpleController extends Controller {
       { name: 'Unsold', valuePath: 'unsold' },
       { name: 'Total Revenue', valuePath: 'totalRevenue' },
     ];
-  }
+  }),
   // END-SNIPPET
 
-  @computed
-  get rows() {
+  rows: computed(function() {
     let rows = [];
 
     for (let i = 0; i < getRandomInt(5, 2); i++) {
@@ -79,5 +77,5 @@ export default class SimpleController extends Controller {
     }
 
     return rows;
-  }
-}
+  }),
+});

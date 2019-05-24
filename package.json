@@ -23,7 +23,6 @@
     "lint:files": "ember adde-lint --file-names"
   },
   "dependencies": {
-    "@ember-decorators/babel-transforms": "^0.1.1",
     "@html-next/vertical-collection": "https://github.com/html-next/vertical-collection.git#ca8cab8a3204f99cca1cf7661e4170ac41dc3a07",
     "broccoli-string-replace": "^0.1.2",
     "css-element-queries": "^0.4.0",
@@ -74,7 +73,6 @@
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
-    "ember-decorators": "^2.2.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-fetch": "^6.4.0",

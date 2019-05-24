@@ -1,26 +1,24 @@
 import Controller from '@ember/controller';
 
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { generateRows } from '../../../../../utils/generators';
 
-export default class SizeConstraintsController extends Controller {
-  @computed
-  get rows() {
+export default Controller.extend({
+  rows: computed(function() {
     return generateRows(100);
-  }
+  }),
 
-  widthConstraint = 'eq-container';
-  fillMode = 'equal-column';
+  widthConstraint: 'eq-container',
+  fillMode: 'equal-column',
 
   // BEGIN-SNIPPET docs-example-header-size-constraints.js
-  @computed
-  get columns() {
+  columns: computed(function() {
     return [
       { name: 'A', valuePath: 'A' },
       { name: 'B', valuePath: 'B' },
       { name: 'C', valuePath: 'C' },
       { name: 'D', valuePath: 'D' },
     ];
-  }
+  }),
   // END-SNIPPET
-}
+});

@@ -1,11 +1,7 @@
 import Controller from '@ember/controller';
 
-import { computed } from '@ember-decorators/object';
-import { gte } from 'ember-compatibility-helpers';
+import { gte } from '@ember/object/computed';
 
-export default class ApplicationController extends Controller {
-  @computed
-  get canShowAddonDocs() {
-    return gte('2.8.0');
-  }
-}
+export default Controller.extend({
+  canShowAddonDocs: gte('2.8.0'),
+});

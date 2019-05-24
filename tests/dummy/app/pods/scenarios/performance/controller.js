@@ -1,20 +1,18 @@
 import Controller from '@ember/controller';
 
-import { action, computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { generateRows, generateColumns } from '../../../utils/generators';
 
-export default class BasicController extends Controller {
-  @computed
-  get rows() {
+export default Controller.extend({
+  rows: computed(function() {
     let rows = generateRows(10, 3, (row, key) => `${row.id}${key}`);
 
     rows[0].children[0].children[0].children = generateRows(10, 1, (row, key) => `${row.id}${key}`);
 
     return rows;
-  }
+  }),
 
-  @computed
-  get columns() {
+  columns: computed(function() {
     let columns = generateColumns(20);
 
     columns[0].width = 300;
@@ -27,15 +25,15 @@ export default class BasicController extends Controller {
     columns[1].subcolumns[2].isSortable = false;
 
     return columns;
-  }
+  }),
 
-  @action
-  onSelect(selection) {
-    this.set('selection', selection);
-  }
+  actions: {
+    onSelect(selection) {
+      this.set('selection', selection);
+    },
 
-  @action
-  onUpdateSorts(sorts) {
-    this.set('sorts', sorts);
-  }
-}
+    onUpdateSorts(sorts) {
+      this.set('sorts', sorts);
+    },
+  },
+});
