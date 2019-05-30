@@ -125,7 +125,7 @@ export default Component.extend({
     @argument
     @type number
   */
-  bufferSize: defaultTo(20),
+  bufferSize: defaultTo(1),
 
   /**
     A flag that tells the table to render all of its rows at once.
