@@ -31,7 +31,22 @@ module('Integration | basic', function() {
 
       // Check column header count
       assert.equal(table.headers.length, columnCount, 'renders the correct number of columns');
+      assert.equal(
+        table.header.rowCount,
+        1,
+        'The total number of rows in the header is available through the page object'
+      );
       assert.equal(table.rows.length, rowCount, 'renders the correct number of rows');
+      assert.equal(
+        table.body.rowCount,
+        rowCount,
+        'The total number of rows in the body is available through the page object'
+      );
+      assert.equal(
+        table.footer.rowCount,
+        0,
+        'The total number of rows in the footer is available through the page object'
+      );
     });
 
     test('it renders without any valuePaths', async function(assert) {
@@ -51,6 +66,11 @@ module('Integration | basic', function() {
       await generateTable(this, { columnCount, rowCount });
 
       assert.ok(table.rows.length < rowCount, 'not all rows have been rendered');
+      assert.equal(
+        table.body.rowCount,
+        rowCount,
+        'The total number of rows in the body is available through the page object'
+      );
       assert.equal(table.getCell(0, 0).text.trim(), '0A', 'correct first row rendered');
       assert.notEqual(
         table.getCell(table.rows.length - 1, 0).text.trim(),

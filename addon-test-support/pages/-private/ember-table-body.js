@@ -7,6 +7,13 @@ export default {
   scope: 'tbody',
 
   /**
+    Returns the number of rows in the body.
+  */
+  get rowCount() {
+    return Number(findElement(this).getAttribute('data-test-row-count'));
+  },
+
+  /**
     List of rows in table body. Each of property/function in this collections is the property/func
     of a single row selected by using calling rows.objectAt(index).
   */
