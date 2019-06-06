@@ -229,6 +229,8 @@ export default Component.extend({
   */
   canSelect: bool('onSelect'),
 
+  'data-test-row-count': readOnly('wrappedRows.length'),
+
   init() {
     this._super(...arguments);
 
