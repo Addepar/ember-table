@@ -48,6 +48,7 @@
     "@addepar/prettier-config": "^1.0.0",
     "@addepar/sass-lint-config": "^2.0.1",
     "@addepar/style-toolbox": "~0.7.0",
+    "@ember-decorators/argument": "^0.8.21",
     "@types/ember": "^2.8.22",
     "babel-eslint": "^10.0.1",
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
