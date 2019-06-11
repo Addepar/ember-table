@@ -1,17 +1,31 @@
 import Component from '@ember/component';
 import { equal } from '@ember/object/computed';
-import { observer } from '@ember/object';
+import { observer, computed } from '@ember/object';
 import { scheduleOnce } from '@ember/runloop';
 
 export default Component.extend({
   // Provided by subclasses
   columnMeta: null,
+  columnValue: null,
 
-  classNameBindings: ['isFirstColumn', 'isFixedLeft', 'isFixedRight'],
+  classNameBindings: ['isFirstColumn', 'isFixedLeft', 'isFixedRight', 'textAlign'],
 
   isFirstColumn: equal('columnMeta.index', 0),
   isFixedLeft: equal('columnMeta.isFixed', 'left'),
   isFixedRight: equal('columnMeta.isFixed', 'right'),
+
+  /**
+   Indicates the text alignment of this cell
+  */
+  textAlign: computed('columnValue.textAlign', function() {
+    let textAlign = this.get('columnValue.textAlign');
+
+    if (['left', 'center', 'right'].includes(textAlign)) {
+      return `ember-table__text-align-${textAlign}`;
+    }
+
+    return null;
+  }),
 
   // eslint-disable-next-line
   scheduleUpdateStyles: observer(

@@ -22,6 +22,18 @@
       position: sticky;
       left: 0;
     }
+
+    &.ember-table__text-align-left {
+      text-align: left;
+    }
+
+    &.ember-table__text-align-center {
+      text-align: center;
+    }
+
+    &.ember-table__text-align-right {
+      text-align: right;
+    }
   }
 
   th {

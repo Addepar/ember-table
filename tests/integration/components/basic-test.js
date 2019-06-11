@@ -238,6 +238,45 @@ module('Integration | basic', function() {
         );
       }
     });
+
+    test('Text can be aligned left, center or right', async function(assert) {
+      let classList;
+      let rowCount = 1;
+      let columns = generateColumns(4);
+      columns[1].textAlign = 'right';
+      columns[2].textAlign = 'center';
+      columns[3].textAlign = 'left';
+
+      await generateTable(this, { columns, columnCount: columns.length, rowCount });
+
+      for (let tagName of ['th', 'td']) {
+        classList = find(`${tagName}:nth-of-type(1)`).classList;
+        assert.notOk(
+          classList.contains('ember-table__text-align-left') ||
+            classList.contains('ember-table__text-align-center') ||
+            classList.contains('ember-table__text-align-right'),
+          `No class is applied by default on ${tagName} cells for text alignment`
+        );
+
+        classList = find(`${tagName}:nth-of-type(2)`).classList;
+        assert.ok(
+          classList.contains('ember-table__text-align-right'),
+          `${tagName} cells can be right aligned`
+        );
+
+        classList = find(`${tagName}:nth-of-type(3)`).classList;
+        assert.ok(
+          classList.contains('ember-table__text-align-center'),
+          `${tagName} cells can be centered`
+        );
+
+        classList = find(`${tagName}:nth-of-type(4)`).classList;
+        assert.ok(
+          classList.contains('ember-table__text-align-left'),
+          `${tagName} cells can be left aligned`
+        );
+      }
+    });
   });
 
   componentModule('lifecycle', function() {

@@ -184,3 +184,26 @@ reorder has occured.
 
   {{demo.snippet name='docs-example-resize-reorder-actions.hbs'}}
 {{/docs-demo}}
+
+## Text alignment
+
+A column can have its text aligned left, center or right by setting the `textAlign` property on the column definition.
+
+When the property is set, the cell will have the matching class (`ember-table__text-align-left`, `ember-table__text-align-center` or `ember-table__text-align-center`).
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name="text-align"}}
+    <div class="demo-container small">
+      {{! BEGIN-SNIPPET docs-example-text-align.hbs }}
+      <EmberTable as |t|>
+        <t.head @columns={{columnsWithTextAlign}} />
+
+        <t.body @rows={{rows}} />
+      </EmberTable>
+      {{! END-SNIPPET }}
+    </div>
+  {{/demo.example}}
+
+  {{demo.snippet name='docs-example-text-align.js' label='component.js'}}
+  {{demo.snippet name='docs-example-text-align.hbs'}}
+{{/docs-demo}}
