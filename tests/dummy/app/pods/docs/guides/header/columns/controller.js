@@ -62,4 +62,16 @@ export default class ColumnsController extends Controller {
 
   resizeCount = 0;
   reorderCount = 0;
+
+  // BEGIN-SNIPPET docs-example-text-align.js
+  @computed
+  get columnsWithTextAlign() {
+    return [
+      { name: 'No alignment', valuePath: 'A' },
+      { name: 'Left alignment', valuePath: 'B', textAlign: 'left' },
+      { name: 'Center alignment', valuePath: 'C', textAlign: 'center' },
+      { name: 'Right alignment', valuePath: 'D', textAlign: 'right' },
+    ];
+  }
+  // END-SNIPPET
 }
