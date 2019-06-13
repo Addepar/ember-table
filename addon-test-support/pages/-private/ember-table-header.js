@@ -62,16 +62,19 @@ const Header = PageObject.extend({
 
     let box = resizeHandle.getBoundingClientRect();
     let startX = (box.right + box.left) / 2;
+    let startY = resizeHandle.clientHeight / 2;
     let deltaX = (targetSize - this.width) / getScale(resizeHandle);
 
     if (this.isFixedRight) {
       deltaX = -deltaX;
     }
 
-    await mouseDown(resizeHandle, startX, resizeHandle.clientHeight / 2);
-    await mouseMove(resizeHandle, startX + 20, resizeHandle.clientHeight / 2);
-    await mouseMove(resizeHandle, startX + deltaX, resizeHandle.clientHeight / 2);
-    await mouseUp(resizeHandle, startX + deltaX, resizeHandle.clientHeight / 2);
+    await mouseDown(resizeHandle, startX, startY);
+    // Hammer.js has a threshold before picking up. The default value
+    // is 10 pixels. In order to ensure that
+    await mouseMove(resizeHandle, startX + 11, startY);
+    await mouseMove(resizeHandle, startX + deltaX, startY);
+    await mouseUp(resizeHandle, startX + deltaX, startY);
   },
 
   /**

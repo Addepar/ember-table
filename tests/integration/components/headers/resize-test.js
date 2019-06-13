@@ -12,13 +12,14 @@ module('Integration | header | resize', function() {
     test('basic', async function(assert) {
       await generateTable(this);
 
-      let originalWidth = table.headers.objectAt(1).width;
+      let th = table.headers.objectAt(1);
+      let originalWidth = th.width;
 
-      await table.headers.objectAt(1).resize(originalWidth + 30);
-      assert.equal(table.headers.objectAt(1).width, originalWidth + 30, 'Can be resized larger');
+      await th.resize(originalWidth + 30);
+      assert.equal(th.width, originalWidth + 30, 'Can be resized larger');
 
-      await table.headers.objectAt(1).resize(originalWidth - 30);
-      assert.equal(table.headers.objectAt(1).width, originalWidth - 30, 'Can be resized smaller');
+      await th.resize(originalWidth - 30);
+      assert.equal(th.width, originalWidth - 30, 'Can be resized smaller');
     });
 
     test('respects minWidth', async function(assert) {
