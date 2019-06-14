@@ -850,6 +850,8 @@ export default EmberObject.extend({
     this._originalClientX = clientX;
     this._originalWidth = get(node, 'width');
     this.clientX = clientX;
+    node.element.classList.add('is-resizing');
+    this.container.classList.add('is-resizing');
   },
 
   updateResize(node, clientX) {
@@ -860,9 +862,6 @@ export default EmberObject.extend({
     );
 
     this.clientX = clientX;
-
-    // Add the class after at least one update has occured
-    this.container.classList.add('is-resizing');
 
     this._updateResize(node, delta);
   },
@@ -913,6 +912,7 @@ export default EmberObject.extend({
 
     this.ensureWidthConstraint.call(this);
 
+    node.element.classList.remove('is-resizing');
     this.container.classList.remove('is-resizing');
 
     this.sendAction('onResize', get(node, 'column'));
