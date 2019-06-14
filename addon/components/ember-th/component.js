@@ -100,7 +100,13 @@ export default BaseTableCell.extend({
 
     this.get('columnMeta').registerElement(this.element);
 
+    let panItem = Hammer.defaults.preset.find(function(item) {
+      return item[0] === Hammer.Pan;
+    });
+    let threshold = panItem[1].threshold;
+    panItem[1].threshold = 1;
     let hammer = new Hammer(this.element);
+    panItem[1].threshold = threshold;
 
     hammer.add(new Hammer.Press({ time: 0 }));
 
