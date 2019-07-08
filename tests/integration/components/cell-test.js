@@ -1,8 +1,8 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 import { generateTable, generateColumns } from '../../helpers/generate-table';
-import { componentModule } from '../../helpers/module';
 import { set, get } from '@ember/object';
 
 import { fillIn } from 'ember-native-dom-helpers';
@@ -13,89 +13,87 @@ import { run } from '@ember/runloop';
 
 let table = new TablePage();
 
-module('Integration | cell', function() {
-  componentModule('basic', function() {
-    test('sends onClick action', async function(assert) {
-      this.on(
-        'onCellClick',
-        ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
-          assert.ok(event, 'event sent');
+module('Integration | cell', function(hooks) {
+  setupRenderingTest(hooks);
+  test('sends onClick action', async function(assert) {
+    this.set(
+      'onCellClick',
+      ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
+        assert.ok(event, 'event sent');
 
-          assert.equal(cellValue, '0A', 'cellValue sent');
-          assert.ok(cellMeta, 'cellMeta sent');
+        assert.equal(cellValue, '0A', 'cellValue sent');
+        assert.ok(cellMeta, 'cellMeta sent');
 
-          assert.equal(columnValue.name, 'A', 'columnValue sent');
-          assert.ok(columnMeta, 'columnMeta sent');
+        assert.equal(columnValue.name, 'A', 'columnValue sent');
+        assert.ok(columnMeta, 'columnMeta sent');
 
-          assert.ok(rowValue, 'rowValue sent');
-          assert.ok(rowMeta, 'rowMeta sent');
-        }
-      );
+        assert.ok(rowValue, 'rowValue sent');
+        assert.ok(rowMeta, 'rowMeta sent');
+      }
+    );
 
-      await generateTable(this);
-      await table.getCell(0, 0).click();
-    });
-
-    test('sends onDoubleClick action', async function(assert) {
-      this.on(
-        'onCellDoubleClick',
-        ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
-          assert.ok(event, 'event sent');
-
-          assert.equal(cellValue, '0A', 'cellValue sent');
-          assert.ok(cellMeta, 'cellMeta sent');
-
-          assert.equal(columnValue.name, 'A', 'columnValue sent');
-          assert.ok(columnMeta, 'columnMeta sent');
-
-          assert.ok(rowValue, 'rowValue sent');
-          assert.ok(rowMeta, 'rowMeta sent');
-        }
-      );
-
-      await generateTable(this);
-      await table.getCell(0, 0).doubleClick();
-    });
+    await generateTable(this);
+    await table.getCell(0, 0).click();
   });
 
-  componentModule('mutation', function() {
-    test('it updates cell values when changed externally', async function(assert) {
-      let columnCount = 2;
-      let rows = [
-        {
-          A: 'A',
-          B: 'B',
-        },
-      ];
+  test('sends onDoubleClick action', async function(assert) {
+    this.set(
+      'onCellDoubleClick',
+      ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
+        assert.ok(event, 'event sent');
 
-      await generateTable(this, { rows, columnCount });
+        assert.equal(cellValue, '0A', 'cellValue sent');
+        assert.ok(cellMeta, 'cellMeta sent');
 
-      assert.equal(table.getCell(0, 0).text, 'A', 'renders correct initial value');
-      assert.equal(table.getCell(0, 1).text, 'B', 'renders correct initial value');
+        assert.equal(columnValue.name, 'A', 'columnValue sent');
+        assert.ok(columnMeta, 'columnMeta sent');
 
-      run(() => {
-        set(rows[0], 'A', 'Y');
-        set(rows[0], 'B', 'Z');
-      });
+        assert.ok(rowValue, 'rowValue sent');
+        assert.ok(rowMeta, 'rowMeta sent');
+      }
+    );
 
-      await wait();
+    await generateTable(this);
+    await table.getCell(0, 0).doubleClick();
+  });
 
-      assert.equal(table.getCell(0, 0).text, 'Y', 'renders correct updated value');
-      assert.equal(table.getCell(0, 1).text, 'Z', 'renders correct updated value');
+  test('it updates cell values when changed externally', async function(assert) {
+    let columnCount = 2;
+    let rows = [
+      {
+        A: 'A',
+        B: 'B',
+      },
+    ];
+
+    await generateTable(this, { rows, columnCount });
+
+    assert.equal(table.getCell(0, 0).text, 'A', 'renders correct initial value');
+    assert.equal(table.getCell(0, 1).text, 'B', 'renders correct initial value');
+
+    run(() => {
+      set(rows[0], 'A', 'Y');
+      set(rows[0], 'B', 'Z');
     });
 
-    test('Can update cell values directly', async function(assert) {
-      let columnCount = 1;
-      let rows = [
-        {
-          A: 'A',
-        },
-      ];
+    await wait();
 
-      this.set('columns', generateColumns(columnCount));
-      this.set('rows', rows);
+    assert.equal(table.getCell(0, 0).text, 'Y', 'renders correct updated value');
+    assert.equal(table.getCell(0, 1).text, 'Z', 'renders correct updated value');
+  });
 
-      this.render(hbs`
+  test('Can update cell values directly', async function(assert) {
+    let columnCount = 1;
+    let rows = [
+      {
+        A: 'A',
+      },
+    ];
+
+    this.set('columns', generateColumns(columnCount));
+    this.set('rows', rows);
+
+    await this.render(hbs`
         <div id="container" style="height: 500px;">
           {{#ember-table as |t|}}
             {{ember-thead api=t columns=columns}}
@@ -111,11 +109,10 @@ module('Integration | cell', function() {
         </div>
       `);
 
-      await wait();
+    await wait();
 
-      fillIn('input', 'Z');
+    fillIn('input', 'Z');
 
-      assert.equal(get(rows[0], 'A'), 'Z', 'value updated successfully');
-    });
+    assert.equal(get(rows[0], 'A'), 'Z', 'value updated successfully');
   });
 });

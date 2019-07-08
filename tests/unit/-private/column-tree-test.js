@@ -3,6 +3,7 @@ import { get, set } from '@ember/object';
 import { run } from '@ember/runloop';
 import ColumnTree from 'ember-table/-private/column-tree';
 import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 
 let columnMetaCache, tree;
 
@@ -23,6 +24,7 @@ function generateTree(seq) {
 }
 
 module('Unit | Private | ColumnTree', function(hooks) {
+  setupTest(hooks);
   hooks.beforeEach(function() {
     columnMetaCache = new Map();
   });

@@ -1,8 +1,7 @@
-import { test } from 'qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { A as emberA } from '@ember/array';
-
-import { componentModule } from '../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
 import wait from 'ember-test-helpers/wait';
@@ -91,7 +90,8 @@ function verifyFooter(assert) {
     });
 }
 
-componentModule('Unit | Private | TableStickyPolyfill', function() {
+module('Unit | Private | TableStickyPolyfill', function(hooks) {
+  setupRenderingTest(hooks);
   test('it works', async function(assert) {
     this.set('headerRows', constructMatrix(3, 3));
     this.set('bodyRows', constructMatrix(20, 3));

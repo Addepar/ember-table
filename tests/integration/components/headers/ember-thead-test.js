@@ -1,4 +1,5 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 import { click } from 'ember-native-dom-helpers';
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -140,52 +141,54 @@ function compatSet(context, propName, value) {
   return context.set ? context.set(propName, value) : context.context.set(propName, value);
 }
 
-moduleForComponent('ember-thead', '[Unit] ember-thead', { integration: true });
+module('ember-thead', '[Unit] ember-thead', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('table resizes when columns are removed', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', data.columns);
-  this.on('removeColumn', function() {
-    compatSet(this, 'columns', compatGet(this, 'columns').slice(0, -1));
+  test('table resizes when columns are removed', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', data.columns);
+    this.set('removeColumn', function() {
+      compatSet(this, 'columns', compatGet(this, 'columns').slice(0, -1));
+    });
+
+    await renderTable(this);
+    await testColumnRemovals(assert, new TablePage());
   });
 
-  await renderTable(this);
-  await testColumnRemovals(assert, new TablePage());
-});
+  test('table resizes when columns are removed via mutation', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', A(data.columns));
+    this.set('removeColumn', function() {
+      compatGet(this, 'columns').popObject();
+    });
 
-test('table resizes when columns are removed via mutation', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', A(data.columns));
-  this.on('removeColumn', function() {
-    compatGet(this, 'columns').popObject();
+    await renderTable(this);
+    await testColumnRemovals(assert, new TablePage());
   });
 
-  await renderTable(this);
-  await testColumnRemovals(assert, new TablePage());
-});
+  test('table resizes when columns are added', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', data.columns);
+    this.set('addColumn', function() {
+      compatSet(this, 'columns', [...data.columns, data.newColumn]);
+    });
 
-test('table resizes when columns are added', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', data.columns);
-  this.on('addColumn', function() {
-    compatSet(this, 'columns', [...data.columns, data.newColumn]);
+    await renderTable(this);
+    await testColumnAddition(assert, new TablePage());
   });
 
-  await renderTable(this);
-  await testColumnAddition(assert, new TablePage());
-});
+  test('table resizes when columns are added via mutation', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', A(data.columns));
+    this.set('addColumn', function() {
+      compatGet(this, 'columns').pushObject(data.newColumn);
+    });
 
-test('table resizes when columns are added via mutation', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', A(data.columns));
-  this.on('addColumn', function() {
-    compatGet(this, 'columns').pushObject(data.newColumn);
+    await renderTable(this);
+    await testColumnAddition(assert, new TablePage());
   });
-
-  await renderTable(this);
-  await testColumnAddition(assert, new TablePage());
 });

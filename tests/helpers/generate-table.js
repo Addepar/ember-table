@@ -146,12 +146,9 @@ export function generateTableValues(
   testContext.set('columns', columns);
   testContext.set('rows', rows);
   testContext.set('footerRows', footerRows);
-
   for (let action in defaultActions) {
-    let actions = testContext.actions || testContext._actions;
-
-    if (actions && !actions[action]) {
-      testContext.on(action, defaultActions[action].bind(testContext));
+    if (!testContext[action]) {
+      testContext.set(action, defaultActions[action].bind(testContext));
     }
   }
 }

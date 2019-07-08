@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { setupTest } from 'ember-qunit';
 import { A as emberA } from '@ember/array';
 import { get, set } from '@ember/object';
 import { run } from '@ember/runloop';
@@ -29,6 +30,8 @@ function generateTree(seq) {
 }
 
 module('Unit | Private | CollapseTree', function(hooks) {
+  setupTest(hooks);
+
   hooks.beforeEach(function() {
     rowMetaCache = new Map();
   });
