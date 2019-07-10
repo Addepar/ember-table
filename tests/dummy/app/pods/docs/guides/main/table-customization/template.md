@@ -65,8 +65,8 @@ components:
           <h.row as |r|>
             <r.cell as |columnValue columnMeta|>
               <EmberTh::SortIndicator @columnMeta={{columnMeta}} />
-              Custom Header {{columnValue.name}}
-              <EmberTh::Resizehandle @columnMeta={{columnMeta}} />
+              {{columnValue.name}}
+              <EmberTh::ResizeHandle @columnMeta={{columnMeta}} />
             </r.cell>
           </h.row>
         </t.head>
