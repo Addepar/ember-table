@@ -20,14 +20,14 @@ global:
 env:
   # we recommend new addons test the current and previous LTS
   # as well as latest stable release (bonus points to beta/canary)
-  - EMBER_TRY_SCENARIO=ember-1.12
-  - EMBER_TRY_SCENARIO=ember-1.13
-  - EMBER_TRY_SCENARIO=ember-lts-2.8
-  - EMBER_TRY_SCENARIO=ember-lts-2.18
-  - EMBER_TRY_SCENARIO=ember-release
-  - EMBER_TRY_SCENARIO=ember-beta
-  - EMBER_TRY_SCENARIO=ember-canary
-  - EMBER_TRY_SCENARIO=ember-default
+  - RUN_DOCS_TESTS=false EMBER_TRY_SCENARIO=ember-1.12
+  - RUN_DOCS_TESTS=false EMBER_TRY_SCENARIO=ember-1.13
+  - RUN_DOCS_TESTS=false EMBER_TRY_SCENARIO=ember-lts-2.8
+  - RUN_DOCS_TESTS=false EMBER_TRY_SCENARIO=ember-lts-2.18
+  - RUN_DOCS_TESTS=false EMBER_TRY_SCENARIO=ember-release
+  - RUN_DOCS_TESTS=false EMBER_TRY_SCENARIO=ember-beta
+  - RUN_DOCS_TESTS=false EMBER_TRY_SCENARIO=ember-canary
+  - RUN_DOCS_TESTS=true EMBER_TRY_SCENARIO=ember-default
 
 matrix:
   fast_finish: true

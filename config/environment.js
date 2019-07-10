@@ -15,5 +15,7 @@ module.exports = function(environment /* , appConfig */) {
     };
   }
 
+  ENV.RUN_DOCS_TESTS = process.env.RUN_DOCS_TESTS !== 'false';
+
   return ENV;
 };
