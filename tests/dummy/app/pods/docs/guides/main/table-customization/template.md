@@ -48,37 +48,51 @@ components:
 
 {{#docs-demo as |demo|}}
   {{#demo.example}}
-    {{! BEGIN-SNIPPET docs-example-sortings.hbs }}
+    {{! BEGIN-SNIPPET table-customization-example-sorting.hbs }}
+    <div class='demo-options'>
+      <span class='demo-option'>
+        <input type='checkbox' checked={{showSortIndicator}} onclick={{action (mut showSortIndicator) (not showSortIndicator)}}>
+        Show Sort Indicator
+        <span class='small'>(Click header to sort)</span>
+      </span>
+      <span class='demo-option'>
+        <input type='checkbox' checked={{showResizeHandle}} onclick={{action (mut showResizeHandle) (not showResizeHandle)}}>
+        Show Resize Handle <span class='small'>(Only appears on hover)</span>
+      </span>
+    </div>
     <div class="demo-container">
       <EmberTable as |t|>
         <t.head
-          @columns={{columns}}
+          @columns={{columnsForSorting}}
           @sorts={{sorts}}
 
           @onUpdateSorts={{action (mut sorts)}}
-
           @widthConstraint='gte-container'
           @fillMode='first-column'
-        
+
           as |h|
         >
           <h.row as |r|>
             <r.cell as |columnValue columnMeta|>
-              <EmberTh::SortIndicator @columnMeta={{columnMeta}} />
+              {{#if showSortIndicator}}
+                <EmberTh::SortIndicator @columnMeta={{columnMeta}} />
+              {{/if}}
               {{columnValue.name}}
-              <EmberTh::ResizeHandle @columnMeta={{columnMeta}} />
+              {{#if showResizeHandle}}
+                <EmberTh::ResizeHandle @columnMeta={{columnMeta}} />
+              {{/if}}
             </r.cell>
           </h.row>
         </t.head>
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{rowsForSorting}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
   {{/demo.example}}
 
-  {{demo.snippet name='docs-example-sortings.hbs'}}
-  {{demo.snippet label='component.js' name='docs-example-sortings.js'}}
+  {{demo.snippet name='table-customization-example-sorting.hbs'}}
+  {{demo.snippet label='component.js' name='table-customization-example-sorting.js'}}
 {{/docs-demo}}
 
 Oftentimes you'll want to provide custom components for use in table headers,
@@ -142,7 +156,7 @@ rows), allowing us to customize the template in the same way as columns:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET table-customization-rows-with-components.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{fewerColumns}} />
+        <t.head @columns={{columnsForRowsWithComponents}} />
 
         <t.body @rows={{rowsWithComponents}} as |b|>
           <b.row as |r|>

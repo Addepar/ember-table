@@ -1,70 +1,33 @@
 @import './tables';
 @import '@addepar/style-toolbox/onyx/index';
 
-$navy: #001f3f;
-$blue: #0074d9;
-$aqua: #7fdbff;
-$teal: #39cccc;
-$olive: #3d9970;
-$green: #2ecc40;
-$lime: #01ff70;
-$yellow: #ffdc00;
-$orange: #ff851b;
-$red: #ff4136;
-$maroon: #85144b;
-$fuchsia: #f012be;
-$purple: #b10dc9;
-$black: #111111;
-$grey: #aaaaaa;
-$silver: #dddddd;
+$colors: (
+  navy: #001f3f,
+  blue: #0074d9,
+  aqua: #7fdbff,
+  teal: #39cccc,
+  olive: #3d9970,
+  green: #2ecc40,
+  lime: #01ff70,
+  yellow: #ffdc00,
+  orange: #ff851b,
+  red: #ff4136,
+  maroon: #85144b,
+  fuchsia: #f012be,
+  purple: #b10dc9,
+  black: #111111,
+  grey: #aaaaaa,
+  silver: #dddddd,
+);
 
-.text-navy {
-  color: $navy;
-}
-.text-blue {
-  color: $blue;
-}
-.text-aqua {
-  color: $aqua;
-}
-.text-teal {
-  color: $teal;
-}
-.text-olive {
-  color: $olive;
-}
-.text-green {
-  color: $green;
-}
-.text-lime {
-  color: $lime;
-}
-.text-yellow {
-  color: $yellow;
-}
-.text-orange {
-  color: $orange;
-}
-.text-red {
-  color: $red;
-}
-.text-maroon {
-  color: $maroon;
-}
-.text-fuchsia {
-  color: $fuchsia;
-}
-.text-purple {
-  color: $purple;
-}
-.text-black {
-  color: $black;
-}
-.text-grey {
-  color: $grey;
-}
-.text-silver {
-  color: $silver;
+@each $color-name, $color-value in $colors {
+  .bg-#{$color-name} {
+    background-color: #{$color-value};
+    color: white;
+  }
+  .text-#{$color-name} {
+    color: #{$color-value};
+  }
 }
 
 .options-container {
@@ -152,4 +115,12 @@ tr {
   margin: -4px;
   padding: 4px;
   height: 30px;
+}
+
+.small {
+  font-size: small;
+}
+
+.custom-header {
+  padding: 0.25em;
 }

@@ -1,3 +1,9 @@
+.demo-options {
+  & > * + * {
+    padding-left: 2em;
+  }
+}
+
 .demo-container {
   position: relative;
   width: 100%;
