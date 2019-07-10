@@ -2,6 +2,7 @@ import { module, test as qunitTest, skip as qunitSkip } from 'qunit';
 import { visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import config from 'dummy/config/environment';
+import TablePage from 'ember-table/test-support/pages/ember-table';
 
 let skip = (msg, ...args) =>
   qunitSkip(`Skip because ember-cli-addon-docs is not installed. ${msg}`, ...args);
@@ -32,5 +33,20 @@ module('Acceptance | docs', function(hooks) {
       assert.ok(true, `Visited ${href} successfully`);
       await visit('/docs'); // start over
     }
+  });
+
+  test('subcolumns docs renders cell content', async function(assert) {
+    let DemoTable = TablePage.extend({
+      scope: '[data-test-demo="docs-example-subcolumns"] [data-test-ember-table]',
+    });
+
+    await visit('/docs/guides/header/subcolumns');
+    let table = new DemoTable();
+    assert.equal(table.header.headers.objectAt(0).text, 'A', 'first header cell renders correctly');
+    assert.equal(
+      table.body.rows.objectAt(0).cells.objectAt(0).text,
+      'A A',
+      'first body cell renders correclty'
+    );
   });
 });

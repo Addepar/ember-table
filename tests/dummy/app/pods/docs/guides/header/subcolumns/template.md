@@ -8,7 +8,7 @@ lowest level of subcolumns (the leaves of the column tree). This means that
 
 {{#docs-demo as |demo|}}
   {{#demo.example}}
-    <div class="demo-container small">
+    <div class="demo-container small" data-test-demo="docs-example-subcolumns">
       {{! BEGIN-SNIPPET docs-example-subcolumns.hbs }}
         <EmberTable as |t|>
           <t.head @columns={{simpleColumns}} />

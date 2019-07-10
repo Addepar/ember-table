@@ -14,16 +14,14 @@ export class DummyRow {
   constructor(id, format = identity) {
     this.id = id;
     this.format = format;
+
+    // Set these so that they are not picked up by `unknownProperty` below
+    this.disableCollapse = null;
+    this.children = null;
   }
 
-  // this provides values for rows; but by convention in our tests, we don't use a key longer than 1
-  // so we exclude this turn off this behavior in other cases
   unknownProperty(key) {
-    if (key.length === 1) {
-      return this.format(this, key);
-    } else {
-      return undefined;
-    }
+    return this.format(this, key);
   }
 }
 
