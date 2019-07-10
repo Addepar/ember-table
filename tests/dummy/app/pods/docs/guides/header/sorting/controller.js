@@ -26,7 +26,7 @@ export default class SimpleController extends Controller {
 
     for (let i = 0; i < getRandomInt(5, 2); i++) {
       let companyRow = {
-        name: faker.company.companyName(i),
+        name: faker.company.companyName(),
         price: 'N/A',
         sold: 0,
         unsold: 0,
@@ -36,7 +36,7 @@ export default class SimpleController extends Controller {
 
       for (let j = 0; j < getRandomInt(5, 2); j++) {
         let departmentRow = {
-          name: faker.commerce.department(j),
+          name: faker.commerce.department(),
           price: 'N/A',
           sold: 0,
           unsold: 0,
@@ -51,7 +51,7 @@ export default class SimpleController extends Controller {
           let totalRevenue = price * sold;
 
           let product = {
-            name: faker.commerce.productName(k),
+            name: faker.commerce.productName(),
             price: `$${price}`,
             sold,
             unsold,

@@ -34,7 +34,7 @@ export default class EmptyValues extends Component {
       let totalRevenue = price * sold;
 
       let product = {
-        name: faker.commerce.productName(k),
+        name: faker.commerce.productName(),
         material: faker.commerce.productMaterial(),
         price: `$${price}`,
         sold,
@@ -52,7 +52,7 @@ export default class EmptyValues extends Component {
       let totalRevenue = price * sold;
 
       let product = {
-        name: faker.commerce.productName(k),
+        name: faker.commerce.productName(),
         material: '',
         price: `$${price}`,
         sold,
