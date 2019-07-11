@@ -1,5 +1,10 @@
 import { A as emberA } from '@ember/array';
 import { toBase26 } from './base-26';
+import faker from 'faker';
+
+export function getRandomInt(max, min) {
+  return faker.random.number({ min, max });
+}
 
 function identity(row, key) {
   return key;

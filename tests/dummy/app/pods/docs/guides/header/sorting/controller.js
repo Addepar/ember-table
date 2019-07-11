@@ -1,10 +1,7 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember-decorators/object';
 import faker from 'faker';
-
-function getRandomInt(max, min) {
-  return faker.random.number({ min, max });
-}
+import { getRandomInt } from '../../../../../utils/generators';
 
 export default class SimpleController extends Controller {
   // BEGIN-SNIPPET docs-example-sortings.js
