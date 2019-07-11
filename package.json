@@ -76,6 +76,7 @@
     "ember-decorators": "^2.2.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
+    "ember-faker": "^1.5.0",
     "ember-fetch": "^6.4.0",
     "ember-load-initializers": "^2.0.0",
     "ember-math-helpers": "^2.10.0",
