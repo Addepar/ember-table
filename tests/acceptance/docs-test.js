@@ -3,8 +3,9 @@ import { visit, currentURL } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import config from 'dummy/config/environment';
 
-let skip = (msg, ...args) => qunitSkip(`Skip because RUN_DOC_TESTS=false. ${msg}`, ...args);
-let test = config.RUN_DOCS_TESTS ? qunitTest : skip;
+let skip = (msg, ...args) =>
+  qunitSkip(`Skip because ember-cli-addon-docs is not installed. ${msg}`, ...args);
+let test = config.ADDON_DOCS_INSTALLED ? qunitTest : skip;
 
 module('Acceptance | docs', function(hooks) {
   setupApplicationTest(hooks);

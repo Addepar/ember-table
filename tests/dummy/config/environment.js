@@ -1,3 +1,10 @@
+// Detect if ember-cli-addon-docs is in the project package.json.
+// This is used at test runtime to decide whether to run the docs/
+// acceptance tests.
+const ADDON_DOCS_INSTALLED = Object.keys(require('../../../package.json').devDependencies).includes(
+  'ember-cli-addon-docs'
+);
+
 module.exports = function(environment) {
   let ENV = {
     modulePrefix: 'dummy',
@@ -51,6 +58,8 @@ module.exports = function(environment) {
     ENV.rootURL = 'ADDON_DOCS_ROOT_URL';
     ENV.locationType = 'router-scroll';
   }
+
+  ENV.ADDON_DOCS_INSTALLED = ADDON_DOCS_INSTALLED;
 
   return ENV;
 };
