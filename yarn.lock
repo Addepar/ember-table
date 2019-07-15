@@ -20,10 +20,10 @@
     sass-lint "^1.12.1"
     walk-sync "^0.3.2"
 
-"@addepar/eslint-config@^4.0.0":
-  version "4.0.1"
-  resolved "https://registry.npmjs.org/@addepar/eslint-config/-/eslint-config-4.0.1.tgz#6f131ee27d894225308a7059404a877f9f4fb596"
-  integrity sha512-H8EzoOfr+TqGSgEiq7yB2T18Tw7Y0pH31/X1Qv9QK13+jdKWEUCWot1rkATk2x6ILsBU3lMUYdxke9xfGj9kbA==
+"@addepar/eslint-config@^4.0.2":
+  version "4.0.2"
+  resolved "https://registry.npmjs.org/@addepar/eslint-config/-/eslint-config-4.0.2.tgz#312ac71dfa0123ef387342e5b71911019b878862"
+  integrity sha512-DXmIbhd7jlImQAUU++gVCplZEXUM5Hxrdeen+u3CdR8d1AncE7+P9W9OTQS7HnYkVxyZzky+YURtPk3LUaBcvg==
   dependencies:
     eslint-config-prettier "^2.9.0"
     eslint-plugin-ember "^5.0.1"
