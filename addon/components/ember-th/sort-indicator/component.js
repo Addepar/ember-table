@@ -22,6 +22,7 @@ import { readOnly } from '@ember/object/computed';
   </EmberTable>
   ```
   @yield {object} columnMeta - The meta object associated with this column
+  @class {{ember-th/sort-indicator}}
 */
 
 export default Component.extend({
@@ -30,9 +31,9 @@ export default Component.extend({
 
   /**
     The API object passed in by the table header cell
-    @argument
+    @argument columnMeta
     @required
-    @type('object')
+    @type object
   */
   columnMeta: null,
 

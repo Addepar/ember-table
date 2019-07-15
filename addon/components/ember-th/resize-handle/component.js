@@ -21,17 +21,18 @@ import { readOnly } from '@ember/object/computed';
     <t.body @rows={{rows}} />
   </EmberTable>
   ```
+  @class {{ember-th/resize-handle}}
+  @public
 */
-
 export default Component.extend({
   layout,
   tagName: '',
 
   /**
     The API object passed in by the table header cell
-    @argument
+    @argument columnMeta
     @required
-    @type('object')
+    @type object
   */
   columnMeta: null,
 

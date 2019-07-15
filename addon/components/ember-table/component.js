@@ -28,10 +28,12 @@ import layout from './template';
   </EmberTable>
   ```
 
-  @yield {object} t - the API object yielded by the table
-  @yield {Component} t.head - The table header component
-  @yield {Component} t.body - The table body component
-  @yield {Component} t.foot - The table footer component
+  @yield {object} table - the API object yielded by the table
+  @yield {Component} table.head - The table header component
+  @yield {Component} table.body - The table body component
+  @yield {Component} table.foot - The table footer component
+  @class {{ember-table}}
+  @public
 */
 export default Component.extend({
   layout,
