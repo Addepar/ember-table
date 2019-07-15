@@ -22,11 +22,12 @@ import layout from './template';
   </EmberTable>
   ```
 
-  @yield {object} f - the API object yielded by the table footer
-  @yield {Component} f.row - The table row component
-
-  @yield {object} f.rowValue - The value for the currently yielded row
-  @yield {object} f.rowMeta - The meta for the currently yielded row
+  @yield {object} foot - the API object yielded by the table footer
+  @yield {Component} foot.row - The table row component
+  @yield {object} foot.rowValue - The value for the currently yielded row
+  @yield {object} foot.rowMeta - The meta for the currently yielded row
+  @class {{ember-tfoot}}
+  @public
 */
 export default EmberTBody.extend({
   layout,

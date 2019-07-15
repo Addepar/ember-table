@@ -31,8 +31,9 @@ const COLUMN_REORDERING = 2;
   ```
   @yield {object} columnValue - The column definition
   @yield {object} columnMeta - The meta object associated with this column
+  @class {{ember-th}}
+  @public
 */
-
 export default BaseTableCell.extend({
   layout,
   tagName: 'th',
@@ -41,16 +42,16 @@ export default BaseTableCell.extend({
 
   /**
     The API object passed in by the table row
-    @argument
+    @argument api
     @required
-    @type('object')
+    @type object
   */
   api: null,
 
   /**
     Action sent when the user clicks right this element
-    @argument
-    @type(optional(Action))
+    @argument onContextMenu
+    @type Action?
   */
   onContextMenu: null,
 

@@ -32,6 +32,8 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
  @yield {object} cellMeta - The meta object associated with the cell
  @yield {object} columnMeta - The meta object associated with the column
  @yield {object} rowMeta - The meta object associated with the row
+ @class {{ember-td}}
+ @public
  */
 export default BaseTableCell.extend({
   layout,
@@ -39,17 +41,24 @@ export default BaseTableCell.extend({
 
   /**
    The API object passed in by the table row
-   */
+   @argument api
+   @required
+   @type object
+  */
   api: null,
 
   /**
    Action sent when the user clicks this element
-   */
+   @argument onClick
+   @type Action?
+  */
   onClick: null,
 
   /**
    Action sent when the user double clicks this element
-   */
+   @argument onDoubleClick
+   @type Action?
+  */
   onDoubleClick: null,
 
   // only watch `api` due to a bug in Ember

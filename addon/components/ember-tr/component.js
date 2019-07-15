@@ -29,19 +29,21 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
   </EmberTable>
   ```
 
-  @yield {object} r - the API object yielded by the table row
-  @yield {Component} r.cell - The table cell contextual component
+  @yield {object} row - the API object yielded by the table row
+  @yield {Component} row.cell - The table cell contextual component
 
-  @yield {any} r.cellValue - The value for the currently yielded cell
-  @yield {object} r.cellMeta - The meta for the currently yielded cell
+  @yield {any} row.cellValue - The value for the currently yielded cell
+  @yield {object} row.cellMeta - The meta for the currently yielded cell
 
-  @yield {object} r.columnValue - The value for the currently yielded column
-  @yield {object} r.columnMeta - The meta for the currently yielded column
+  @yield {object} row.columnValue - The value for the currently yielded column
+  @yield {object} row.columnMeta - The meta for the currently yielded column
 
-  @yield {object} r.rowValue - The value for the currently yielded row
-  @yield {object} r.rowMeta - The meta for the currently yielded row
+  @yield {object} row.rowValue - The value for the currently yielded row
+  @yield {object} row.rowMeta - The meta for the currently yielded row
+
+  @class {{ember-tr}}
+  @public
 */
-
 export default Component.extend({
   layout,
   tagName: 'tr',
@@ -50,8 +52,7 @@ export default Component.extend({
 
   /**
     The API object passed in by the table body, header, or footer
-
-    @argument
+    @argument api
     @required
     @type object
   */
@@ -59,15 +60,15 @@ export default Component.extend({
 
   /**
     Action sent when the user clicks this element
-    @argument
-    @type(optional(Action))
+    @argument onClick
+    @type Action?
   */
   onClick: null,
 
   /**
     Action sent when the user double clicks this element
-    @argument
-    @type(optional(Action))
+    @argument onDoubleClick
+    @type Action?
   */
   onDoubleClick: null,
 
