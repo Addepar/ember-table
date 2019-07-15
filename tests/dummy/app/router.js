@@ -36,6 +36,10 @@ Router.map(function() {
       });
     });
 
+    this.route('testing', function() {
+      this.route('test-page');
+    });
+
     this.route('api', function() {
       this.route('class', { path: '/:class_id' });
     });

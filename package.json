@@ -44,7 +44,7 @@
   },
   "devDependencies": {
     "@addepar/ember-toolbox": "^0.3.2",
-    "@addepar/eslint-config": "^4.0.0",
+    "@addepar/eslint-config": "^4.0.2",
     "@addepar/prettier-config": "^1.0.0",
     "@addepar/sass-lint-config": "^2.0.1",
     "@addepar/style-toolbox": "~0.7.0",
