@@ -1,10 +1,6 @@
-<div class="docs-hero">
-  {{docs-hero
-    logo='ember'
-    slimHeading='table'
-    byline='the power table for power users'
-  }}
-</div>
+{{docs-hero
+  byline='the power table for power users'
+}}
 
 Ember Table is a power table made for users who need a full-fledged,
 fully-customizable table component for their apps. It is built to be flexible,

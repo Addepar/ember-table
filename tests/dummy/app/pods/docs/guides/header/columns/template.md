@@ -106,21 +106,19 @@ using the `enableResize` and `enableReorder` flags. You can also change the
 {{#docs-demo as |demo|}}
   {{#demo.example name="column-resize-reorder"}}
     {{! BEGIN-SNIPPET docs-example-column-resize-reorder.hbs }}
-    <div class="py-2">
-      <label>
+    <div class='demo-options'>
+      <span class='demo-option'>
         {{input type="checkbox" checked=resizeEnabled}}
         Enable Resizing
-      </label>
-
-      <label>
+      </span>
+      <span class='demo-option'>
         {{input type="checkbox" checked=reorderEnabled}}
         Enable Reordering
-      </label>
-
-      <label>
+      </span>
+      <span class='demo-option'>
         {{input type="checkbox" checked=resizeModeFluid}}
         Resize Mode Fluid
-      </label>
+      </span>
     </div>
 
     <div class="demo-container small">
