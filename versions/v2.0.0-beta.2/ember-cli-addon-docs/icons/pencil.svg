@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="47px" height="46px" viewBox="0 0 47 46" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 48.2 (47327) - http://www.bohemiancoding.com/sketch -->
+    <title>Group</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" transform="translate(-9.000000, -8.000000)">
+        <g id="Group" transform="translate(31.845903, 31.214883) rotate(-135.000000) translate(-31.845903, -31.214883) translate(25.345903, 0.214883)" fill="#333333">
+            <path d="M12.5052441,9.72630093 L0,9.72630093 L4.89686078,0.858647479 C5.27124391,0.0916507287 6.18173639,-0.21923613 6.93050265,0.164262245 C7.223849,0.314506526 7.4617101,0.558158916 7.60838328,0.858647479 L12.5052441,9.72630093 Z" id="Triangle"></path>
+            <rect id="Rectangle" x="0" y="12.5052441" width="12.5052441" height="36.1262606"></rect>
+            <path d="M0,51.4104478 L12.5052441,51.4104478 L12.5052441,54.8841267 C12.5052441,58.3373545 9.70584982,61.1367487 6.25262203,61.1367487 L6.25262203,61.1367487 C2.79939424,61.1367487 -4.65279983e-16,58.3373545 -8.8817842e-16,54.8841267 L0,51.4104478 Z" id="Rectangle-Copy"></path>
+        </g>
+    </g>
+</svg>

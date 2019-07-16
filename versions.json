@@ -1,20 +1,28 @@
 {
   "v2.0.0-beta.1": {
-    "path": "v2.0.0-beta.1",
+    "path": "versions/v2.0.0-beta.1",
     "name": "v2.0.0-beta.1",
     "sha": "2eec4cbe0054c5faa645fdcdefb0084be0b4b90f",
-    "tag": null
-  },
-  "latest": {
-    "path": "latest",
-    "name": "latest",
-    "sha": "353132fb8ef4a6a295f6c5d98ba2e1e608f362a9",
-    "tag": "v2.0.0-beta.4"
+    "tag": null,
+    "oldPath": "v2.0.0-beta.1"
   },
   "v2.0.0-beta.2": {
-    "path": "v2.0.0-beta.2",
+    "path": "versions/v2.0.0-beta.2",
     "name": "v2.0.0-beta.2",
     "sha": "2b7ea9eb713f257c1ae4a13ac33a32eadc3c37ca",
-    "tag": "v2.0.0-beta.2"
+    "tag": "v2.0.0-beta.2",
+    "oldPath": "v2.0.0-beta.2"
+  },
+  "-latest": {
+    "path": "",
+    "name": "Latest",
+    "sha": "15cf3ae9e7f2b6fc2cd7e9ec503cd705d1d62cc6",
+    "tag": null
+  },
+  "master": {
+    "path": "versions/master",
+    "name": "master",
+    "sha": "15cf3ae9e7f2b6fc2cd7e9ec503cd705d1d62cc6",
+    "tag": null
   }
 }
