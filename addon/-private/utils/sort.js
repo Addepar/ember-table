@@ -37,7 +37,6 @@ function merge(left, right, comparator) {
  * are not stable, and `_.sortBy` doesn't take a general comparator. Ideally
  * lodash would add a `_.sort` function whose API would mimic this function's.
  *
- * @function
  * @param {Array} array The array to be sorted
  * @param {Comparator} comparator The comparator function to compare elements with.
  * @returns {Array} A sorted array
