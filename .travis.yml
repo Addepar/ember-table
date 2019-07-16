@@ -36,9 +36,16 @@ jobs:
 
     - stage: 'Tests'
       name: 'Tests'
+      install:
+        - yarn install --non-interactive
+
       script:
         - yarn run lint
         - yarn run test
+
+    - name: 'Floating dependencies'
+      script:
+        - yarn test
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
@@ -52,6 +59,10 @@ jobs:
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
     - env: EMBER_TRY_SCENARIO=ember-canary
+
+before_install:
+  - curl -o- -L https://yarnpkg.com/install.sh | bash
+  - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
   - yarn install --no-lockfile --non-interactive
