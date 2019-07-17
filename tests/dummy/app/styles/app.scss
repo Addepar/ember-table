@@ -1,6 +1,18 @@
 @import './tables';
 @import '@addepar/style-toolbox/onyx/index';
 
+// Override the url for the checkmark that indicates row selection.
+// This overrides a style in style-toolbox that uses the absolute url
+// '/@addepar/style-toolbox/assets/images/checkmark.svg'. When addon docs
+// are deployed, the root URL is '/ember-table/', and thus the checkmark asset
+// is not able to be loaded.
+// So instead we override the style and use a checkmark svg that has been added to this project:
+// See https://github.com/Addepar/ember-table/issues/593
+// The style-toolbox style is here: https://github.com/Addepar/addepar-style-toolbox/blob/640825d7722571c223f4b93e78a5c528018521e5/styles/onyx/elements/inputs/checkbox/_checkbox-core.scss#L68
+.ember-table .et-toggle-select input[type='checkbox'] + *:after {
+  background-image: url('images/checkmark.svg');
+}
+
 $colors: (
   navy: #001f3f,
   blue: #0074d9,
