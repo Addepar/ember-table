@@ -4,10 +4,10 @@ Ember Table ships with sorting built in to the table. Default sorting is a
 standard merge sort which does not affect the original ordering of the rows
 passed into the table. Users can sort by a column and toggle sort direction by
 clicking on its header, and can sort by multiple columns by clicking with `cmd`
-or `ctrl`:
+or `ctrl`.
 
 {{#docs-demo as |demo|}}
-  {{#demo.example}}
+  {{#demo.example name="docs-example-sortings"}}
     {{! BEGIN-SNIPPET docs-example-sortings.hbs }}
     <div class="demo-container">
       <EmberTable as |t|>
@@ -84,8 +84,49 @@ let columns = [
 ];
 ```
 
+## Sorting States
+
+By default, when a user repeatedly clicks on a column header to change sorting, ember-table
+cycles through these states:
+
+  * Unsorted (rows are in the same order as provided to the table)
+  * Sort Descending
+  * Sort Ascending
+
+You can use the `onUpdateSorts` action to change this behavior. For example, to cycle through 2 states
+(Ascending, Descending) rather than the default 3, you can modify the `onUpdateSorts` action as follows:
+  * If it is passed an empty `sorts` array, get the current sort array and toggle the `isAscending` property
+  * If it is passed anything else, set `this.sorts` to the passed-in `sorts` array (default behavior).
+
+This demo shows that in action:
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name="docs-example-2-state-sortings"}}
+    {{! BEGIN-SNIPPET docs-example-2-state-sortings.hbs }}
+    <div class="demo-container" data-test-demo="docs-example-2-state-sortings">
+      <EmberTable as |t|>
+        <t.head
+          @columns={{columns}}
+          @sorts={{sorts}}
+
+          @onUpdateSorts="twoStateSorting"
+
+          @widthConstraint='gte-container'
+          @fillMode='first-column'
+        />
+
+        <t.body @rows={{rows}} />
+      </EmberTable>
+    </div>
+    {{! END-SNIPPET }}
+  {{/demo.example}}
+
+  {{demo.snippet name='docs-example-2-state-sortings.hbs'}}
+  {{demo.snippet label='component.js' name='docs-example-2-state-sortings.js'}}
+{{/docs-demo}}
 ## Sorting empty values
 
 Empty values can be treated differently depending on the needs by using the `sortEmptyLast` option.
+To see its effect, try sorting the "Material" column in ascending order with and without "sortEmptyLast" checked.
 
 {{docs/guides/header/sorting/empty-values}}

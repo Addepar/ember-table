@@ -67,4 +67,31 @@ module('Acceptance | docs', function(hooks) {
       );
     });
   });
+
+  test('sorting: 2-state sorting works as expected', async function(assert) {
+    await visit('/docs/guides/header/sorting');
+    let DemoTable = TablePage.extend({
+      scope: '[data-test-demo="docs-example-2-state-sortings"] [data-test-ember-table]',
+    });
+
+    let table = new DemoTable();
+    let header = table.headers.objectAt(0);
+
+    assert.ok(!header.sortIndicator.isPresent, 'precond - sortIndicator is not present');
+
+    await header.click();
+    assert.ok(
+      header.sortIndicator.isPresent && header.sortIndicator.isDescending,
+      'sort descending'
+    );
+
+    await header.click();
+    assert.ok(header.sortIndicator.isPresent && header.sortIndicator.isAscending, 'sort ascending');
+
+    await header.click();
+    assert.ok(
+      header.sortIndicator.isPresent && header.sortIndicator.isDescending,
+      'sort cycles back to descending'
+    );
+  });
 });

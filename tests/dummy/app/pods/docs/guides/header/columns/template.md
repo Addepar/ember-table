@@ -107,18 +107,18 @@ using the `enableResize` and `enableReorder` flags. You can also change the
   {{#demo.example name="column-resize-reorder"}}
     {{! BEGIN-SNIPPET docs-example-column-resize-reorder.hbs }}
     <div class='demo-options'>
-      <span class='demo-option'>
+      <label class='demo-option'>
         {{input type="checkbox" checked=resizeEnabled}}
         Enable Resizing
-      </span>
-      <span class='demo-option'>
+      </label>
+      <label class='demo-option'>
         {{input type="checkbox" checked=reorderEnabled}}
         Enable Reordering
-      </span>
-      <span class='demo-option'>
+      </label>
+      <label class='demo-option'>
         {{input type="checkbox" checked=resizeModeFluid}}
         Resize Mode Fluid
-      </span>
+      </label>
     </div>
 
     <div class="demo-container small">

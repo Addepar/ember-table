@@ -1,6 +1,12 @@
 {{#docs-demo as |demo|}}
   {{#demo.example name='sorting-empty-values'}}
     {{! BEGIN-SNIPPET docs-example-sorting-empty-values.hbs }}
+    <div class='demo-options'>
+      <label class='demo-option'>
+        {{input type="checkbox" checked=sortEmptyLast}}
+        Sort Empty Last
+      </label>
+    </div>
     <div class="demo-container">
       <EmberTable as |t|>
         <t.head
