@@ -50,15 +50,15 @@ components:
   {{#demo.example}}
     {{! BEGIN-SNIPPET table-customization-example-sorting.hbs }}
     <div class='demo-options'>
-      <span class='demo-option'>
+      <label class='demo-option'>
         <input type='checkbox' checked={{showSortIndicator}} onclick={{action (mut showSortIndicator) (not showSortIndicator)}}>
         Show Sort Indicator
         <span class='small'>(Click header to sort)</span>
-      </span>
-      <span class='demo-option'>
+      </label>
+      <label class='demo-option'>
         <input type='checkbox' checked={{showResizeHandle}} onclick={{action (mut showResizeHandle) (not showResizeHandle)}}>
         Show Resize Handle <span class='small'>(Only appears on hover)</span>
-      </span>
+      </label>
     </div>
     <div class="demo-container">
       <EmberTable as |t|>
