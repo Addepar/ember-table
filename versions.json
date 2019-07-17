@@ -16,13 +16,19 @@
   "-latest": {
     "path": "",
     "name": "Latest",
-    "sha": "15cf3ae9e7f2b6fc2cd7e9ec503cd705d1d62cc6",
+    "sha": "74d858f3c32ec67f103da2484683062008b0aae5",
     "tag": null
   },
   "master": {
     "path": "versions/master",
     "name": "master",
     "sha": "15cf3ae9e7f2b6fc2cd7e9ec503cd705d1d62cc6",
+    "tag": null
+  },
+  "bantic/docs/checkmark": {
+    "path": "versions/bantic/docs/checkmark",
+    "name": "bantic/docs/checkmark",
+    "sha": "74d858f3c32ec67f103da2484683062008b0aae5",
     "tag": null
   }
 }
