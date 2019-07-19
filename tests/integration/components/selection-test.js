@@ -4,14 +4,18 @@ import { componentModule } from '../../helpers/module';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import { generateTable } from '../../helpers/generate-table';
+import { generateRows } from 'dummy/utils/generators';
 import { A as emberA } from '@ember/array';
 import { run } from '@ember/runloop';
+import { scrollTo } from 'ember-native-dom-helpers';
 
 let table = new TablePage({
   validateSelected(...selectedIndexes) {
     let valid = true;
 
+    let indexesSeen = [];
     this.rows.forEach((row, index) => {
+      indexesSeen.push(index);
       if (selectedIndexes.includes(index)) {
         valid = valid && row.isSelected;
       } else {
@@ -19,9 +23,25 @@ let table = new TablePage({
       }
     });
 
+    let unseenIndexes = selectedIndexes.filter(i => !indexesSeen.includes(i));
+    if (unseenIndexes.length) {
+      throw new Error(
+        `could not validateSelected because these indexes were not checked: ${unseenIndexes.join(
+          ','
+        )}`
+      );
+    }
+
     return valid;
   },
 });
+
+// Return an array filled with the indices for all the rendered rows of the table
+function allRenderedRowIndexes(table) {
+  return Array(table.rows.length)
+    .fill()
+    .map((_, index) => index);
+}
 
 module('Integration | selection', () => {
   module('rowSelectionMode', function() {
@@ -403,7 +423,7 @@ module('Integration | selection', () => {
         assert.expect(1);
 
         this.on('onSelect', selection => {
-          assert.ok(Array.isArray(selection), 'selection is not an array');
+          assert.ok(Array.isArray(selection), 'selection is an array');
         });
 
         await generateTable(this, { checkboxSelectionMode: 'single' });
@@ -469,6 +489,53 @@ module('Integration | selection', () => {
       await table.selectRange(1, 3);
 
       assert.ok(table.validateSelected(1, 2, 3), 'only children are selected');
+    });
+  });
+
+  module('occluded selection', function() {
+    componentModule('basic', function() {
+      test('Issue 726: changing selection state of unrendered rows', async function(assert) {
+        // Generate a table with 1 parent row that has 500 child rows
+        let rows = generateRows(1, 1, (row, key) => `${row.id}${key}`);
+        let childRows = generateRows(500, 1, (row, key) => `child${row.id}${key}`);
+        rows[0].children = childRows;
+        await generateTable(this, { rows });
+
+        let renderedRowCount = table.rows.length;
+        assert.ok(renderedRowCount < 500, 'some rows are occluded');
+
+        // Selecting the parent row will cause all child rows (ie the entire table)
+        // to also be selected
+        await table.selectRow(0);
+
+        assert.ok(
+          table.validateSelected(...allRenderedRowIndexes(table)),
+          `All ${renderedRowCount} rendered rows are selected`
+        );
+
+        // Deselect the first child row
+        await table.rows.objectAt(1).checkbox.click();
+
+        let expectedIndexes = allRenderedRowIndexes(table).filter(i => ![0, 1].includes(i));
+        assert.ok(
+          table.validateSelected(...expectedIndexes),
+          'All rendered rows other than row 0 (parent) and 1 (1st child) are selected'
+        );
+
+        // Toggle the parent row's checkbox on (selecting all rows) and then off (deselecting all rows)
+        await table.rows.objectAt(0).checkbox.click();
+        await table.rows.objectAt(0).checkbox.click();
+
+        assert.ok(table.validateSelected(), 'No rows are selected');
+
+        // scroll all the way down
+        await scrollTo('[data-test-ember-table]', 0, 10000);
+
+        assert.ok(
+          table.validateSelected(),
+          'After scrolling to bottom, there are still no rows selected'
+        );
+      });
     });
   });
 });
