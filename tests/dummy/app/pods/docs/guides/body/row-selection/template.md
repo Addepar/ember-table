@@ -5,7 +5,7 @@ table body will activate selection, and you can pass in the `selection` property
 to control the selection using DDAU:
 
 {{#docs-demo as |demo|}}
-  {{#demo.example}}
+  {{#demo.example name="docs-example-row-selection"}}
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-row-selection.hbs }}
       <EmberTable as |t|>
@@ -104,60 +104,23 @@ itself.
         />
       </EmberTable>
     </div>
-
-    <div class="options-container">
-      <h4 class="label">rowSelectionMode</h4>
-
-      <div class="options">
-        <label class="pr-4">
-          multiple
-          <RadioButton @name='row-selection-mode' @value='multiple' @groupValue={{rowSelectionMode}} />
-        </label>
-
-        <label class="pr-4">
-          single
-          <RadioButton @name='row-selection-mode' @value='single' @groupValue={{rowSelectionMode}} />
-        </label>
-
-        <label>
-          none
-          <RadioButton @name='row-selection-mode' @value='none' @groupValue={{rowSelectionMode}} />
-        </label>
-      </div>
-
-      <h4 class="label">checkboxSelectionMode</h4>
-
-      <div class="options">
-        <label class="pr-4">
-          multiple
-          <RadioButton @name='checkbox-selection-mode' @value='multiple' @groupValue={{checkboxSelectionMode}} />
-        </label>
-
-        <label class="pr-4">
-          single
-          <RadioButton @name='checkbox-selection-mode' @value='single' @groupValue={{checkboxSelectionMode}} />
-        </label>
-
-        <label>
-          none
-          <RadioButton @name='checkbox-selection-mode' @value='none' @groupValue={{checkboxSelectionMode}} />
-        </label>
-      </div>
-
-      <h4 class="label">selectingChildrenSelectsParent</h4>
-
-      <div class="options">
-        <label class="pr-4">
-          true
-          <RadioButton @name='selecting-children-selects-parent' @value={{true}} @groupValue={{selectingChildrenSelectsParent}} />
-        </label>
-
-        <label class="pr-4">
-          false
-          <RadioButton @name='selecting-children-selects-parent' @value={{false}} @groupValue={{selectingChildrenSelectsParent}} />
-        </label>
-      </div>
+    <div class="demo-options-group">
+      <h4>rowSelectionMode</h4>
+      <label> <RadioButton @name='row-selection-mode' @value='multiple' @groupValue={{rowSelectionMode}} /> multiple </label>
+      <label> <RadioButton @name='row-selection-mode' @value='single' @groupValue={{rowSelectionMode}} /> single </label>
+      <label> <RadioButton @name='row-selection-mode' @value='none' @groupValue={{rowSelectionMode}} /> none </label>
     </div>
+    <div class="demo-options-group">
+      <h4>checkboxSelectionMode</h4>
+      <label> <RadioButton @name='checkbox-selection-mode' @value='multiple' @groupValue={{checkboxSelectionMode}} /> multiple </label>
+      <label> <RadioButton @name='checkbox-selection-mode' @value='single' @groupValue={{checkboxSelectionMode}} /> single </label>
+      <label> <RadioButton @name='checkbox-selection-mode' @value='none' @groupValue={{checkboxSelectionMode}} /> none </label>
+    </div>
+    <div class="demo-options-group">
+      <h4>selectingChildrenSelectsParent</h4>
+      <label> {{input type="checkbox" checked=selectingChildrenSelectsParent}} </label>
+    </div>
+
     {{! END-SNIPPET }}
   {{/demo.example}}
 

@@ -4,6 +4,19 @@
   }
 }
 
+.demo-options-group {
+  display: flex;
+
+  & *:first-child {
+    text-align: right;
+    flex-basis: 40%;
+  }
+
+  & > * + * {
+    padding-left: 2em;
+  }
+}
+
 .demo-container {
   position: relative;
   width: 100%;
