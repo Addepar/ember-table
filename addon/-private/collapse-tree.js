@@ -174,13 +174,44 @@ export const TableRowMeta = EmberObject.extend({
         let meta = this;
         let currentValue = rowValue;
 
+        // If the parent is selected all of its children are selected. Since
+        // the current row is going to be removed from the selection, add all
+        // the sibling rows at each level of its grouping to be explicitly
+        // selected so their state remains stable.
         while (get(meta, '_parentMeta.isSelected')) {
           meta = get(meta, '_parentMeta');
 
-          for (let child of get(meta, '_rowValue.children')) {
-            if (child !== currentValue) {
-              selection.add(child);
+          // Iterate from the parent meta to the "next" tree node. Since this
+          // is a group it will have at least one child, so there should be at
+          // least one next row to iterate over.
+          let expectedChildDepth = get(meta, 'depth') + 1;
+          let childIndex = get(meta, 'index'); // will be incremented by 1 before use
+          let child;
+          while ((child = tree.objectAt(++childIndex))) {
+            // The currentValue is being toggled, don't add it to the selection
+            if (child === currentValue) {
+              continue;
             }
+
+            // If the depth of the row is lower than the expectedChildDepth a
+            // non-child meta has been found (a sibling or something higher.
+            // That means iterating children is complete, so break.
+            //
+            // If the depth is higher than expected then children of a child
+            // group are being iterated. Skip over them, but don't break since
+            // there may be a leaf child after a group child.
+            let childMeta = rowMetaCache.get(child);
+            let childDepth = get(childMeta, 'depth');
+            if (childDepth < expectedChildDepth) {
+              break;
+            }
+            if (childDepth > expectedChildDepth) {
+              continue;
+            }
+
+            // Else, this is a child node which must be explictly selected.
+            // Add it to the list.
+            selection.add(child);
           }
 
           selection.delete(currentValue);
