@@ -187,7 +187,7 @@ export const TableRowMeta = EmberObject.extend({
           let expectedChildDepth = get(meta, 'depth') + 1;
           let childIndex = get(meta, 'index'); // will be incremented by 1 before use
           let child;
-          while (child = tree.objectAt(++childIndex)) {
+          while ((child = tree.objectAt(++childIndex))) {
             // The currentValue is being toggled, don't add it to the selection
             if (child === currentValue) {
               continue;
