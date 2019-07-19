@@ -331,7 +331,7 @@ const CollapseTreeNode = EmberObject.extend({
 
     if (parent) {
       // Changes to the value directly should properly update all computeds on this
-      // node, but we need to manually propogate changes upwards to notify any other
+      // node, but we need to manually propagate changes upwards to notify any other
       // watchers
       addObserver(this, 'length', () => {
         notifyPropertyChange(parent, 'length');
