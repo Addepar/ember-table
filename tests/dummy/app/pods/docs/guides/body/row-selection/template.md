@@ -81,7 +81,7 @@ It can be either `multiple`, `single`, or `none`. If it is either `multiple` or
 marks the row as selected, but is not considered a group selection, so the
 checkbox will _not_ be checked.
 
-3. `selectingChildrenSelectsParent`: This is a boolean flag that  determines
+3. `selectingChildrenSelectsParent`: This is a boolean flag that determines
 whether selecting all of the children of a given row also selects the row
 itself.
 
