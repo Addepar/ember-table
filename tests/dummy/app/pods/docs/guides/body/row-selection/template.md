@@ -25,7 +25,7 @@ to control the selection using DDAU:
   {{demo.snippet label='component.js' name='docs-example-row-selection.js'}}
 {{/docs-demo}}
 
-# Selected Rows
+## Selected Rows
 
 `selection` can either be a single row, or a group of rows. Selecting a row also
 marks all of its children as selected.
@@ -62,12 +62,12 @@ in the `selection` group. It makes other tasks much easier though, like finding
 all of the groups that are selected, and selecting a group manually, external to
 the table.
 
-# Selection Modes
+## Selection Modes
 
 There are three different properties you can use to control the behavior of
 row selection:
 
-1. `checkboxSelectionMode`: This controls the behavior of the checkbox which
+1. `checkboxSelectionMode`: This controls the behavior of the checkbox that
 appears in the first cell of a row. It can be either `multiple`, `single`, or
 `none`. Checkbox selection is always a group selection - it will always pass an
 array to `onSelect`. In `multiple` mode it allows more than one checkbox to be
@@ -88,7 +88,7 @@ itself.
 {{#docs-demo as |demo|}}
   {{#demo.example name='selection-modes'}}
     {{! BEGIN-SNIPPET docs-example-selection-modes.hbs }}
-    <div class="demo-container small">
+    <div class="demo-container">
       <EmberTable as |t|>
         <t.head @columns={{columns}} />
 
@@ -103,6 +103,10 @@ itself.
           @selection={{selection}}
         />
       </EmberTable>
+    </div>
+    <div class="demo-options-group">
+      <h4>Current selection</h4>
+      <div class="demo-current-selection">{{currentSelection}}</div>
     </div>
     <div class="demo-options-group">
       <h4>rowSelectionMode</h4>
