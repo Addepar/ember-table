@@ -277,6 +277,11 @@ module('Integration | basic', function() {
         );
       }
     });
+
+    test('it can be rendered with no columns', async function(assert) {
+      await generateTable(this, { rows: [], columns: [] });
+      assert.ok(true, 'The empty table rendered without incident');
+    });
   });
 
   componentModule('lifecycle', function() {
