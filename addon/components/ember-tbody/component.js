@@ -85,15 +85,17 @@ export default Component.extend({
   selectingChildrenSelectsParent: defaultTo(true),
 
   /**
-    The currently selected rows. Can either be an array or and individual row.
+    The currently selected rows. Can either be an array or an individual row.
 
     @argument selection
-    @type object?
+    @type array|object|null
   */
   selection: null,
 
   /**
-    An action that triggers when the row selection of the table changes.
+    An action that is called when the row selection of the table changes.
+    Will be called with either an array or individual row, depending on the
+    checkboxSelectionMode.
 
     @argument onSelect
     @type Action?

@@ -4,11 +4,19 @@
   }
 }
 
+.demo-current-selection {
+  font-weight: bold;
+}
+
 .demo-options-group {
+  h4 {
+    font-weight: normal;
+    font-size: larger;
+  }
+
   display: flex;
 
   & *:first-child {
-    text-align: right;
     flex-basis: 40%;
   }
 

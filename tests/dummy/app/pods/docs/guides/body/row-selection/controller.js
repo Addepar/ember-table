@@ -75,44 +75,43 @@ export default class SimpleController extends Controller {
 
   @computed
   get rowsWithChildren() {
+    let makeRow = (id, { children } = { children: [] }) => {
+      return {
+        A: `A${id}`,
+        B: 'B',
+        C: 'C',
+        D: 'D',
+        children,
+      };
+    };
     return [
-      {
-        A: 'A',
-        B: 'B',
-        C: 'C',
-        D: 'D',
-
+      makeRow(1, {
         children: [
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
+          makeRow(2, {
+            children: [makeRow(3), makeRow(4), makeRow(5)],
+          }),
+          makeRow(6),
+          makeRow(7),
+          makeRow(8, {
+            children: [makeRow(9), makeRow(10), makeRow(11)],
+          }),
         ],
-      },
-      {
-        A: 'A',
-        B: 'B',
-        C: 'C',
-        D: 'D',
-
-        children: [
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-        ],
-      },
-      {
-        A: 'A',
-        B: 'B',
-        C: 'C',
-        D: 'D',
-
-        children: [
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-          { A: 'A', B: 'B', C: 'C', D: 'D' },
-        ],
-      },
+      }),
     ];
+  }
+
+  @computed('selection')
+  get currentSelection() {
+    if (!this.selection || this.selection.length === 0) {
+      return 'Nothing selected';
+    } else {
+      if (Array.isArray(this.selection)) {
+        return `Array: [${this.selection.map(row => row.A).join(',')}]`;
+      } else {
+        let row = this.selection;
+        return `Single: ${row.A}`;
+      }
+    }
   }
   // END-SNIPPET
 }
