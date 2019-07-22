@@ -216,8 +216,11 @@ const ColumnTreeNode = EmberObject.extend({
     return this._subcolumnNodes;
   }),
 
-  isLeaf: computed('column.subcolumns.[]', function() {
+  isLeaf: computed('column.subcolumns.[]', 'isRoot', function() {
     let subcolumns = get(this, 'column.subcolumns');
+    if (get(this, 'isRoot')) {
+      return false;
+    }
 
     return !subcolumns || get(subcolumns, 'length') === 0;
   }),
