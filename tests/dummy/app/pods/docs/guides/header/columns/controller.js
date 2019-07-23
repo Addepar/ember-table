@@ -28,13 +28,13 @@ export default class ColumnsController extends Controller {
   @computed
   get columnsWithComponents() {
     return [
-      { heading: 'A', valuePath: 'A', component: 'custom-header', color: 'text-navy' },
-      { heading: 'B', valuePath: 'B', component: 'custom-header', color: 'text-blue' },
-      { heading: 'C', valuePath: 'C', component: 'custom-header', color: 'text-aqua' },
-      { heading: 'D', valuePath: 'D', component: 'custom-header', color: 'text-teal' },
-      { heading: 'E', valuePath: 'E', component: 'custom-header', color: 'text-orange' },
-      { heading: 'F', valuePath: 'F', component: 'custom-header', color: 'text-red' },
-      { heading: 'G', valuePath: 'G', component: 'custom-header', color: 'text-maroon' },
+      { heading: 'A', valuePath: 'A', component: 'custom-header', color: 'navy' },
+      { heading: 'B', valuePath: 'B', component: 'custom-header', color: 'blue' },
+      { heading: 'C', valuePath: 'C', component: 'custom-header', color: 'aqua' },
+      { heading: 'D', valuePath: 'D', component: 'custom-header', color: 'teal' },
+      { heading: 'E', valuePath: 'E', component: 'custom-header', color: 'orange' },
+      { heading: 'F', valuePath: 'F', component: 'custom-header', color: 'red' },
+      { heading: 'G', valuePath: 'G', component: 'custom-header', color: 'maroon' },
     ];
   }
   // END-SNIPPET

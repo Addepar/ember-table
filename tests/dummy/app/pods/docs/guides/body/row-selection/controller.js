@@ -100,15 +100,16 @@ export default class SimpleController extends Controller {
     ];
   }
 
-  @computed('selection')
+  @computed('demoSelection')
   get currentSelection() {
-    if (!this.selection || this.selection.length === 0) {
+    let selection = this.demoSelection;
+    if (!selection || selection.length === 0) {
       return 'Nothing selected';
     } else {
-      if (Array.isArray(this.selection)) {
-        return `Array: [${this.selection.map(row => row.A).join(',')}]`;
+      if (Array.isArray(selection)) {
+        return `Array: [${selection.map(row => row.A).join(',')}]`;
       } else {
-        let row = this.selection;
+        let row = selection;
         return `Single: ${row.A}`;
       }
     }

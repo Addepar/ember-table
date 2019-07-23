@@ -107,15 +107,15 @@ using the `enableResize` and `enableReorder` flags. You can also change the
   {{#demo.example name="column-resize-reorder"}}
     {{! BEGIN-SNIPPET docs-example-column-resize-reorder.hbs }}
     <div class='demo-options'>
-      <label class='demo-option'>
+      <label>
         {{input type="checkbox" checked=resizeEnabled}}
         Enable Resizing
       </label>
-      <label class='demo-option'>
+      <label>
         {{input type="checkbox" checked=reorderEnabled}}
         Enable Reordering
       </label>
-      <label class='demo-option'>
+      <label>
         {{input type="checkbox" checked=resizeModeFluid}}
         Resize Mode Fluid
       </label>
@@ -164,7 +164,7 @@ reorder has occured.
   {{#demo.example name="resize-reorder-actions"}}
     {{! BEGIN-SNIPPET docs-example-resize-reorder-actions.hbs }}
     <p>Resized {{resizeCount}} times</p>
-    <p>Reorder {{reorderCount}} times</p>
+    <p>Reordered {{reorderCount}} times</p>
 
     <div class="demo-container small">
       <EmberTable as |t|>

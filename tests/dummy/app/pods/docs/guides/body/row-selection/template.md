@@ -99,8 +99,8 @@ itself.
           @checkboxSelectionMode={{checkboxSelectionMode}}
           @selectingChildrenSelectsParent={{selectingChildrenSelectsParent}}
 
-          @onSelect={{action (mut selection)}}
-          @selection={{selection}}
+          @onSelect={{action (mut demoSelection)}}
+          @selection={{demoSelection}}
         />
       </EmberTable>
     </div>

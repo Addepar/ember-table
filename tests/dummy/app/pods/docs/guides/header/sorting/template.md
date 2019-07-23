@@ -124,6 +124,7 @@ This demo shows that in action:
   {{demo.snippet name='docs-example-2-state-sortings.hbs'}}
   {{demo.snippet label='component.js' name='docs-example-2-state-sortings.js'}}
 {{/docs-demo}}
+
 ## Sorting empty values
 
 Empty values can be treated differently depending on the needs by using the `sortEmptyLast` option.
