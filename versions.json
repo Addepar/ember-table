@@ -2,8 +2,8 @@
   "-latest": {
     "path": "",
     "name": "Latest",
-    "sha": "b485e26bd0134e9fbb2d1d72b37c721cd6812a36",
-    "tag": "v2.0.0"
+    "sha": "66a45d41fd382cee50780f40d8b813653ec6fb35",
+    "tag": null
   },
   "v2.0.0": {
     "path": "versions/v2.0.0",
