@@ -50,12 +50,12 @@ components:
   {{#demo.example}}
     {{! BEGIN-SNIPPET table-customization-example-sorting.hbs }}
     <div class='demo-options'>
-      <label class='demo-option'>
+      <label>
         <input type='checkbox' checked={{showSortIndicator}} onclick={{action (mut showSortIndicator) (not showSortIndicator)}}>
         Show Sort Indicator
         <span class='small'>(Click header to sort)</span>
       </label>
-      <label class='demo-option'>
+      <label>
         <input type='checkbox' checked={{showResizeHandle}} onclick={{action (mut showResizeHandle) (not showResizeHandle)}}>
         Show Resize Handle <span class='small'>(Only appears on hover)</span>
       </label>

@@ -49,7 +49,7 @@ the table body.
 {{#docs-demo as |demo|}}
   {{#demo.example name="trees"}}
     {{! BEGIN-SNIPPET docs-example-tree-rows.hbs }}
-    <div class="py-2">
+    <div class="demo-options">
       <label>
         {{input type="checkbox" checked=treeEnabled}}
         Enable Tree
@@ -88,7 +88,7 @@ If you want to disable collapsing at a row level, you can pass
 {{#docs-demo as |demo|}}
   {{#demo.example name="collapse"}}
     {{! BEGIN-SNIPPET docs-example-rows-with-collapse.hbs }}
-    <div class="py-2">
+    <div class="demo-options">
       <label>
         {{input type="checkbox" checked=collapseEnabled}}
         Enable Collapse
