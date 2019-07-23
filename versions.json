@@ -1,41 +1,9 @@
 {
-  "v2.0.0-beta.1": {
-    "path": "versions/v2.0.0-beta.1",
-    "name": "v2.0.0-beta.1",
-    "sha": "2eec4cbe0054c5faa645fdcdefb0084be0b4b90f",
-    "tag": null,
-    "oldPath": "v2.0.0-beta.1"
-  },
-  "v2.0.0-beta.2": {
-    "path": "versions/v2.0.0-beta.2",
-    "name": "v2.0.0-beta.2",
-    "sha": "2b7ea9eb713f257c1ae4a13ac33a32eadc3c37ca",
-    "tag": "v2.0.0-beta.2",
-    "oldPath": "v2.0.0-beta.2"
-  },
   "-latest": {
     "path": "",
     "name": "Latest",
     "sha": "b485e26bd0134e9fbb2d1d72b37c721cd6812a36",
     "tag": "v2.0.0"
-  },
-  "master": {
-    "path": "versions/master",
-    "name": "master",
-    "sha": "15cf3ae9e7f2b6fc2cd7e9ec503cd705d1d62cc6",
-    "tag": null
-  },
-  "bantic/docs/checkmark": {
-    "path": "versions/bantic/docs/checkmark",
-    "name": "bantic/docs/checkmark",
-    "sha": "74d858f3c32ec67f103da2484683062008b0aae5",
-    "tag": null
-  },
-  "v2.0.0-beta.9": {
-    "path": "versions/v2.0.0-beta.9",
-    "name": "v2.0.0-beta.9",
-    "sha": "31b2c4d2eb75ab549fb57bcbcebc8188df08494f",
-    "tag": "v2.0.0-beta.9"
   },
   "v2.0.0": {
     "path": "versions/v2.0.0",
