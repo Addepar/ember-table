@@ -23,7 +23,10 @@ ember install ember-table
 
 ## Documentation
 
-For more detailed documentation, clone the repo, run `yarn && yarn start` and then navigate to `http://localhost:4200/docs`
+Documentation is available at: https://opensource.addepar.com/ember-table/docs
+
+Ember Table uses [ember-cli-addon-docs](https://github.com/ember-learn/ember-cli-addon-docs) for its documentation.
+To run the docs locally, clone the repo, run `yarn && yarn start` and then navigate to `http://localhost:4200/docs`.
 
 ## Usage.
 
