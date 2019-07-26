@@ -34,6 +34,7 @@ export const FILL_MODE = {
   EQUAL_COLUMN: 'equal-column',
   FIRST_COLUMN: 'first-column',
   LAST_COLUMN: 'last-column',
+  NTH_COLUMN: 'nth-column',
 };
 
 export const WIDTH_CONSTRAINT = {
@@ -636,6 +637,7 @@ export default EmberObject.extend({
 
     let widthConstraint = get(this, 'widthConstraint');
     let fillMode = get(this, 'fillMode');
+    let fillColumnIndex = get(this, 'fillColumnIndex');
 
     if (
       (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && treeWidth !== containerWidth) ||
@@ -647,15 +649,27 @@ export default EmberObject.extend({
       if (fillMode === FILL_MODE.EQUAL_COLUMN) {
         set(this, 'root.width', containerWidth);
       } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
-        let oldWidth = get(columns, 'firstObject.width');
-
-        set(columns, 'firstObject.width', oldWidth + delta);
+        this.resizeColumn(0, delta);
       } else if (fillMode === FILL_MODE.LAST_COLUMN) {
-        let oldWidth = get(columns, 'lastObject.width');
-
-        set(columns, 'lastObject.width', oldWidth + delta);
+        this.resizeColumn(columns.length - 1, delta);
+      } else if (fillMode === FILL_MODE.NTH_COLUMN) {
+        assert("fillMode 'nth-column' must have a fillColumnIndex defined", fillColumnIndex);
+        this.resizeColumn(fillColumnIndex, delta);
       }
     }
+  },
+
+  resizeColumn(index, delta) {
+    let columns = get(this, 'root.subcolumnNodes');
+
+    let fillColumn = columns[index];
+    assert(
+      `Invalid column index, ${index}, for a table with ${columns.length} columns`,
+      fillColumn
+    );
+
+    let oldWidth = get(fillColumn, 'width');
+    set(fillColumn, 'width', oldWidth + delta);
   },
 
   getReorderBounds(node) {
