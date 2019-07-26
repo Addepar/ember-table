@@ -126,8 +126,11 @@ export default Component.extend({
   fillMode: defaultTo(FILL_MODE.EQUAL_COLUMN),
 
   /**
-    A configuration that controls how which column shinks (or extends) when `fillMode` is
+    A configuration that controls which column shrinks (or extends) when `fillMode` is
     'nth-column'. This is zero indexed.
+
+    @argument fillColumnIndex
+    @type number?
   */
   fillColumnIndex: null,
 
