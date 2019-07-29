@@ -49,7 +49,7 @@ export default class FixedColumnsController extends Controller {
   }
   // END-SNIPPET
 
-  // BEGIN-SNIPPET docs-example-dynamic-fixed-column.js
+  // BEGIN-SNIPPET docs-example-dynamic-fixed-columns.js
   @computed
   get dynamicFixedColumns() {
     return emberA([
