@@ -8,6 +8,7 @@ import { computed } from '@ember/object';
 import { gt, readOnly } from '@ember/object/computed';
 
 import { scheduler, Token } from 'ember-raf-scheduler';
+import { SUPPORTS_CLOSURE_ACTIONS } from 'ember-compatibility-helpers';
 
 import { getOrCreate } from './meta-cache';
 import { objectAt, move, splice } from './utils/array';
@@ -860,7 +861,13 @@ export default EmberObject.extend({
 
     this.container.classList.remove('is-reordering');
 
-    this.sendAction('onReorder', get(node, 'column'), get(closestColumn, 'column'));
+    if (SUPPORTS_CLOSURE_ACTIONS) {
+      if (typeof this.onReorder === 'function') {
+        this.onReorder(get(node, 'column'), get(closestColumn, 'column'));
+      }
+    } else {
+      this.sendAction('onReorder', get(node, 'column'), get(closestColumn, 'column'));
+    }
   },
 
   startResize(node, clientX) {

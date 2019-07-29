@@ -205,6 +205,7 @@ export default Component.extend({
     this.columnMetaCache = new Map();
 
     this.columnTree = ColumnTree.create({
+      onReorder: typeof this.onReorder === 'function' ? this.onReorder.bind(this) : null,
       sendAction: this.sendAction.bind(this),
       columnMetaCache: this.columnMetaCache,
       containerWidthAdjustment: this.containerWidthAdjustment,

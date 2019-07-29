@@ -58,13 +58,13 @@ module('Integration | headers | reorder', function() {
       assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column is swapped forward');
     });
 
-    test('column reorder action is sent up to controller', async function(assert) {
-      this.on('onReorder', function(insertedColumn, insertedAfter) {
+    test('calls the closure action onReorder', async function(assert) {
+      let onReorder = function(insertedColumn, insertedAfter) {
         assert.equal(insertedColumn.name, 'A', 'old column index is correct');
         assert.equal(insertedAfter.name, 'B', 'new column index is correct');
-      });
+      };
 
-      await generateTable(this);
+      await generateTable(this, { onReorder });
       await table.headers.objectAt(0).reorderBy(1);
     });
 
