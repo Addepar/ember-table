@@ -1,5 +1,5 @@
 import { module, test as qunitTest, skip as qunitSkip } from 'qunit';
-import { visit, currentURL } from '@ember/test-helpers';
+import { visit, currentURL, click } from '@ember/test-helpers';
 import { setupApplicationTest } from 'ember-qunit';
 import config from 'dummy/config/environment';
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -7,6 +7,10 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 let skip = (msg, ...args) =>
   qunitSkip(`Skip because ember-cli-addon-docs is not installed. ${msg}`, ...args);
 let test = config.ADDON_DOCS_INSTALLED ? qunitTest : skip;
+
+// The nav that contains buttons to show each snippet in a
+// `{{docs.demo}}`. See https://github.com/ember-learn/ember-cli-addon-docs/blob/a00a28e33acea463d82c64fa0a712913d70de3f1/addon/components/docs-demo/template.hbs#L11
+const DOCS_DEMO_SNIPPET_NAV_SELECTOR = '.docs-demo__snippets-nav';
 
 module('Acceptance | docs', function(hooks) {
   setupApplicationTest(hooks);
@@ -31,6 +35,18 @@ module('Acceptance | docs', function(hooks) {
       let href = link.getAttribute('href');
       await visit(href);
       assert.ok(true, `Visited ${href} successfully`);
+
+      let buttonCount = 0;
+      let docsNavs = Array.from(this.element.querySelectorAll(DOCS_DEMO_SNIPPET_NAV_SELECTOR));
+      for (let nav of docsNavs) {
+        let buttons = Array.from(nav.querySelectorAll('button'));
+        for (let button of buttons) {
+          await click(button);
+          buttonCount++;
+        }
+      }
+      assert.ok(true, `Clicked ${buttonCount} snippet buttons on "${href}"`);
+
       await visit('/docs'); // start over
     }
   });

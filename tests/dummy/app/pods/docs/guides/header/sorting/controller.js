@@ -104,5 +104,5 @@ export default class SimpleController extends Controller {
 
     this.set('sorts', sorts);
   }
-  // BEGIN-SNIPPET docs-example-2-state-sortings.js
+  // END-SNIPPET
 }
