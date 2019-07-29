@@ -536,6 +536,59 @@ module('Integration | selection', () => {
           'After scrolling to bottom, there are still no rows selected'
         );
       });
+
+      test('Issue 747: Programmatically select an un-rendered row', async function(assert) {
+        let rows = generateRows(200, 1);
+        await generateTable(this, { rows, bufferSize: 1 });
+
+        let renderedRowCount = table.rows.length;
+        assert.ok(renderedRowCount < 200, 'some rows are occluded');
+
+        // Select rows at the end that will not all have been rendered yet
+        this.set('selection', rows.slice(-5));
+
+        await table.rows.objectAt(0).checkbox.click();
+        assert.ok(true, 'no error');
+      });
+
+      test('Issue 747: Programmatic selection of unrendered children plus manual selection -> selects parent', async function(assert) {
+        // 1 Parent row with 200 children
+        let children = generateRows(200, 1);
+        let rows = generateRows(1, 1);
+        rows[0].children = children;
+
+        await generateTable(this, { rows, selectingChildrenSelectsParent: true, bufferSize: 1 });
+
+        let renderedRowCount = table.rows.length;
+        assert.ok(renderedRowCount < 200, 'some rows are occluded');
+
+        // Select all the children but the first. Most have not yet been rendered.
+        this.set('selection', children.slice(1));
+
+        // Select the last un-selected child
+        await table.rows.objectAt(1).checkbox.click();
+
+        assert.ok(true, 'no error');
+        assert.ok(
+          table.validateSelected(...allRenderedRowIndexes(table)),
+          'All rendered rows are selected'
+        );
+        assert.ok(table.rows.objectAt(0).isSelected, 'Parent row is selected');
+      });
+
+      test('Issue 747: Programmatic selection that includes a row not part of `rows`', async function(assert) {
+        let rows = generateRows(1, 1);
+        await generateTable(this, { rows });
+
+        this.set('selection', [...rows, { fakeRow: true }]);
+        assert.ok(true, 'after setting bad selection, no error');
+        assert.ok(table.validateSelected(0), 'First row is selected');
+
+        // De-select selected row
+        await table.rows.objectAt(0).checkbox.click();
+        assert.ok(true, 'after un-checking, no error');
+        assert.ok(table.validateSelected(), 'No rows remain selected');
+      });
     });
   });
 });
