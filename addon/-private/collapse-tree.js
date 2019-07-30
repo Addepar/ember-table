@@ -1,6 +1,6 @@
 import EmberObject, { get, set } from '@ember/object';
 import EmberArray, { A as emberA, isArray } from '@ember/array';
-import { assert } from '@ember/debug';
+import { assert, warn } from '@ember/debug';
 
 import { computed } from '@ember/object';
 import { addObserver } from '@ember/object/observers';
@@ -227,7 +227,7 @@ export const TableRowMeta = EmberObject.extend({
       selection.add(rowValue);
     }
 
-    let rowMetas = Array.from(selection).map(r => rowMetaCache.get(r));
+    let rowMetas = mapSelectionToMeta(this.get('_tree'), selection, rowMetaCache);
 
     if (selectingChildrenSelectsParent) {
       let groupingCounts = new Map();
@@ -307,6 +307,77 @@ function setupRowMeta(tree, row, parentRow, node) {
   if (node) {
     set(node, 'rowMeta', rowMeta);
   }
+}
+
+/**
+ * Traverses the tree to set up row meta for every row in the tree.
+ * Usually row metas are lazily created as needed, but it's possible to end up in a state
+ * where a table's `selection` contains rows that do not have a rowMeta (for instance, if they
+ * have not yet been rendered due to occlusion rendering). In this state, there may not be a
+ * rowMeta for every row in the `selection`, so we need to explicitly set them all up at that
+ * time.
+ * This has adverse performance impact, so we lazily call this function only when we find that
+ * the `selection` has some rows with no corresponding rowMeta.
+ *
+ * @param {CollapseTree} tree The collapse tree for this section (body|footer) of the table
+ * @param {object} parentRow The parent row. Only present when called recursively
+ */
+function setupAllRowMeta(tree, rows, parentRow = null) {
+  for (let row of rows) {
+    setupRowMeta(tree, row, parentRow);
+    if (row.children && row.children.length) {
+      setupAllRowMeta(tree, row.children, row);
+    }
+  }
+}
+
+/**
+ * Maps the selection to an array of rowMetas.
+ *
+ * If any row in the selection does not have a rowMeta, calls `setupAllRowMeta`
+ * to materialize all rowMetas, then tries again to get the rowMeta for that
+ * row. This happens in rare cases where, due to occlusion rendering, a row may
+ * be part of the selection but not in view (and thus have no rowMeta; the
+ * rowMeta is lazily created when the row is rendered).
+ *
+ * If after calling `setupAllRowMeta` the row still does not have a
+ * corresponding rowMeta, it is likely an invalid selection, which can happen when a user
+ * sets the table's selection programmatically and includes a row that is not
+ * actually part of the table. If this happens we `warn` because of the adverse
+ * performance impact (the forced call to `setupAllRowMeta`) that is caused by
+ * spurious rows in the selection.
+ * @param {CollapseTree} tree The collapse tree for this section (body|footer) of the table
+ * @param {Set|Array} selection The selected rows
+ * @return {rowMeta[]} rowMeta for each of the rows in the selection
+ */
+function mapSelectionToMeta(tree, selection) {
+  let rowMetaCache = tree.get('rowMetaCache');
+  let rowMetas = [];
+  let didSetupAllRowMeta = false;
+
+  for (let item of Array.from(selection)) {
+    let rowMeta = rowMetaCache.get(item);
+    if (!rowMeta && !didSetupAllRowMeta) {
+      setupAllRowMeta(tree, tree.get('rows'));
+      didSetupAllRowMeta = true;
+      rowMeta = rowMetaCache.get(item);
+    }
+
+    if (!rowMeta && didSetupAllRowMeta) {
+      warn(
+        `[ember-table] The selection included a row that was not found in the table's rows. This should be avoided as it causes performance issues. The missing row is: ${JSON.stringify(
+          item
+        )}`,
+        {
+          id: 'ember-table.selection-invalid',
+        }
+      );
+    } else {
+      rowMetas.push(rowMeta);
+    }
+  }
+
+  return rowMetas;
 }
 
 /**

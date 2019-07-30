@@ -8,6 +8,7 @@ import { generateRows } from 'dummy/utils/generators';
 import { A as emberA } from '@ember/array';
 import { run } from '@ember/runloop';
 import { scrollTo } from 'ember-native-dom-helpers';
+import { registerTestWarnHandler } from '../../helpers/warn-handlers';
 
 let table = new TablePage({
   validateSelected(...selectedIndexes) {
@@ -577,6 +578,9 @@ module('Integration | selection', () => {
       });
 
       test('Issue 747: Programmatic selection that includes a row not part of `rows`', async function(assert) {
+        let capturedWarningIds = [];
+        registerTestWarnHandler((_message, { id }) => capturedWarningIds.push(id));
+
         let rows = generateRows(1, 1);
         await generateTable(this, { rows });
 
@@ -588,6 +592,11 @@ module('Integration | selection', () => {
         await table.rows.objectAt(0).checkbox.click();
         assert.ok(true, 'after un-checking, no error');
         assert.ok(table.validateSelected(), 'No rows remain selected');
+
+        assert.ok(
+          capturedWarningIds.includes('ember-table.selection-invalid'),
+          'ember-table warns about invalid selection'
+        );
       });
     });
   });
