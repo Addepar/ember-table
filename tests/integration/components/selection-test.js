@@ -549,6 +549,7 @@ module('Integration | selection', () => {
         this.set('selection', rows.slice(-5));
 
         await table.rows.objectAt(0).checkbox.click();
+        assert.ok(table.rows.objectAt(0).isSelected, 'first row is selected');
         assert.ok(true, 'no error');
       });
 
