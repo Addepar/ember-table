@@ -1,8 +1,15 @@
 import { registerWarnHandler } from '@ember/debug';
 
 let _registeredHandler = null;
+let _didRegisterWarnHandler = false;
 
 export function setup() {
+  if (_didRegisterWarnHandler) {
+    // We cannot unregister a warn handler, so make sure to only register the
+    // handler one time during all tests.
+    return;
+  }
+  _didRegisterWarnHandler = true;
   registerWarnHandler((message, options, next) => {
     if (_registeredHandler) {
       _registeredHandler(message, options);
@@ -17,7 +24,5 @@ export function registerTestWarnHandler(callback) {
 }
 
 export function teardown() {
-  if (_registeredHandler) {
-    _registeredHandler = null;
-  }
+  _registeredHandler = null;
 }
