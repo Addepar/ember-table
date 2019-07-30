@@ -10,7 +10,7 @@ import { getScale } from 'ember-table/test-support/helpers/element';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { toBase26 } from 'dummy/utils/base-26';
 
-import { gte } from 'ember-compatibility-helpers';
+import { SUPPORTS_CLOSURE_ACTIONS } from 'ember-compatibility-helpers';
 
 const table = new TablePage();
 
@@ -65,7 +65,7 @@ module('Integration | headers | reorder', function() {
         assert.equal(insertedColumn.name, 'A', 'old column index is correct');
         assert.equal(insertedAfter.name, 'B', 'new column index is correct');
       };
-      if (gte('1.13')) {
+      if (SUPPORTS_CLOSURE_ACTIONS) {
         await generateTable(this, { onReorder });
       } else {
         this.on('onReorder', onReorder);
