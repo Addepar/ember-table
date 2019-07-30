@@ -66,7 +66,7 @@ module('Integration | headers | reorder', function() {
         assert.equal(insertedAfter.name, 'B', 'new column index is correct');
       };
       if (SUPPORTS_CLOSURE_ACTIONS) {
-        await generateTable(this, { onReorder });
+        await generateTable(this, { onReorder, supportsClosureActions: SUPPORTS_CLOSURE_ACTIONS });
       } else {
         this.on('onReorder', onReorder);
         await generateTable(this);

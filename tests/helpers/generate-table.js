@@ -1,7 +1,6 @@
 import hbs from 'htmlbars-inline-precompile';
 import wait from 'ember-test-helpers/wait';
 import { generateColumns, generateRows } from 'dummy/utils/generators';
-import { SUPPORTS_CLOSURE_ACTIONS } from 'ember-compatibility-helpers';
 
 // reexport for use in tests
 export { generateColumns, generateRows };
@@ -25,7 +24,7 @@ const fullTable = hbs`
 
 
         onUpdateSorts="onUpdateSorts"
-        onReorder=${SUPPORTS_CLOSURE_ACTIONS ? 'onReorder' : '"onReorder"'}
+        onReorder=(if supportsClosureActions onReorder "onReorder")
         onResize="onResize"
 
         as |h|
