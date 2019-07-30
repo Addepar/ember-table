@@ -10,6 +10,8 @@ import { getScale } from 'ember-table/test-support/helpers/element';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { toBase26 } from 'dummy/utils/base-26';
 
+import { gte } from 'ember-compatibility-helpers';
+
 const table = new TablePage();
 
 export async function scrollToEdge(targetElement, edgeOffset, direction) {
@@ -58,13 +60,17 @@ module('Integration | headers | reorder', function() {
       assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column is swapped forward');
     });
 
-    test('calls the closure action onReorder', async function(assert) {
+    test('calls the closure action onReorder or sendAction given the ember version', async function(assert) {
       let onReorder = function(insertedColumn, insertedAfter) {
         assert.equal(insertedColumn.name, 'A', 'old column index is correct');
         assert.equal(insertedAfter.name, 'B', 'new column index is correct');
       };
-
-      await generateTable(this, { onReorder });
+      if (gte('1.13')) {
+        await generateTable(this, { onReorder });
+      } else {
+        this.on('onReorder', onReorder);
+        await generateTable(this);
+      }
       await table.headers.objectAt(0).reorderBy(1);
     });
 
