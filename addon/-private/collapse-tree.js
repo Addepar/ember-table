@@ -368,6 +368,7 @@ function mapSelectionToMeta(tree, selection) {
         `[ember-table] The selection included a row that was not found in the table's rows. This should be avoided as it causes performance issues. The missing row is: ${JSON.stringify(
           item
         )}`,
+        false,
         {
           id: 'ember-table.selection-invalid',
         }
