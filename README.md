@@ -13,6 +13,7 @@ ember install ember-table
 ```
 
 ## Features
+
 - Column resizing, column reordering.
 - Table resizing.
 - Fixed first column.
@@ -39,16 +40,16 @@ each row for that column. If you only want to use the default template, you can 
 specify a `name` on the column which will be rendered in the template.
 
 ```javascript
-  columns: [
-    {
-      name: `Open time`,
-      valuePath: `open`
-    },
-    {
-      name: `Close time`,
-      valuePath: `close`
-    }
-  ]
+columns: [
+  {
+    name: `Open time`,
+    valuePath: `open`,
+  },
+  {
+    name: `Close time`,
+    valuePath: `close`,
+  },
+];
 ```
 
 `rows` could be a javascript array, ember array or any data structure that implements `length` and
@@ -57,10 +58,10 @@ data as user scrolls. Each object in the `rows` data structure should contains a
 by all `valuePath` in `columns` array.
 
 ```javascript
-  rows: computed(function() {
-    const rows = emberA();
+rows: computed(function() {
+  const rows = emberA();
 
-    rows.pushObject({
+  rows.pushObject({
       open: '8AM',
       close: '8PM'
     });
@@ -154,4 +155,5 @@ of `ember-table` in `package.json`.
 # Releasing new versions (for maintainers)
 
 We use [`release-it`](https://github.com/release-it/release-it).
-To create a new release, run `yarn run release -- minor` or `yarn run release -- major`.
+To create a new release, run `yarn run release`. To do a dry-run: `yarn run release --dry-run`.
+The tool will prompt you to select the new release version.
