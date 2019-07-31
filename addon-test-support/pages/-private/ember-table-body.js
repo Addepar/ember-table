@@ -1,9 +1,15 @@
-import { alias, triggerable, collection, hasClass, property } from 'ember-classy-page-object';
+import PageObject, {
+  alias,
+  triggerable,
+  collection,
+  hasClass,
+  property,
+} from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 
 import { click } from 'ember-native-dom-helpers';
 
-export default {
+export default PageObject.extend({
   scope: 'tbody',
 
   /**
@@ -80,4 +86,4 @@ export default {
   getCell(rowIndex, columnIndex) {
     return this.rows.objectAt(rowIndex).cells.objectAt(columnIndex);
   },
-};
+});
