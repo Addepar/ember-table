@@ -20,7 +20,9 @@
     "test:all": "ember try:each",
     "lint": "ember adde-lint",
     "lint:sass": "ember adde-lint --sass",
-    "lint:files": "ember adde-lint --file-names"
+    "lint:files": "ember adde-lint --file-names",
+    "release": "release-it",
+    "docs:deploy": "ember deploy production"
   },
   "dependencies": {
     "@ember-decorators/babel-transforms": "^0.1.1",
@@ -90,7 +92,8 @@
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "2.6.0",
     "husky": "^1.3.1",
-    "loader.js": "^4.2.3"
+    "loader.js": "^4.2.3",
+    "release-it": "^12.3.4"
   },
   "engines": {
     "node": "8.* || >= 10.*"
