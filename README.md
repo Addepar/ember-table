@@ -150,3 +150,8 @@ of `ember-table` in `package.json`.
 3) Run your app to make sure that it works without issue.
 4) Reinstall the latest version of this `ember-table` repo.
 5) You can start using new version of Ember table from now or replacing the old ones.
+
+# Releasing new versions (for maintainers)
+
+We use [`release-it`](https://github.com/release-it/release-it).
+To create a new release, run `yarn run release -- minor` or `yarn run release -- major`.
