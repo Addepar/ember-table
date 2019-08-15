@@ -1,5 +1,5 @@
 [![Build Status](https://travis-ci.org/Addepar/ember-table.svg?branch=master)](https://travis-ci.org/Addepar/ember-table)
-![npm](https://img.shields.io/npm/v/ember-table)
+![GitHub release](https://img.shields.io/github/release/Addepar/ember-table)
 
 # Ember Table
 
