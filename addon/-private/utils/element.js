@@ -51,14 +51,20 @@ export function getInnerClientRect(element) {
   let borderLeftWidth = parseFloat(computedStyle.getPropertyValue('border-left-width')) / scale;
   let borderRightWidth = parseFloat(computedStyle.getPropertyValue('border-right-width')) / scale;
 
+  let height = outerClientRect.height - borderTopWidth - borderBottomWidth;
+  let width = outerClientRect.width - borderLeftWidth - borderRightWidth;
+
   return {
     top: outerClientRect.top + borderTopWidth,
     bottom: outerClientRect.bottom - borderBottomWidth,
     left: outerClientRect.left + borderLeftWidth,
     right: outerClientRect.right - borderRightWidth,
 
-    height: outerClientRect.height - borderTopWidth - borderBottomWidth,
-    width: outerClientRect.width - borderLeftWidth - borderRightWidth,
+    height,
+    width,
+
+    scrollbarXWidth: width - element.clientWidth / scale,
+    scrollbarYHeight: height - element.clientHeight / scale,
   };
 }
 
