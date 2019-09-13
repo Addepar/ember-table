@@ -232,7 +232,8 @@ export const TableRowMeta = EmberObject.extend({
     if (selectingChildrenSelectsParent) {
       let groupingCounts = new Map();
 
-      for (let rowMeta of rowMetas) {
+      for (let i = 0; i < rowMetas.length; i++) {
+        let rowMeta = rowMetas[i];
         let parentRow = get(rowMeta, '_parentMeta._rowValue');
 
         if (parentRow) {
@@ -244,7 +245,8 @@ export const TableRowMeta = EmberObject.extend({
       reduceSelectedRows(selection, groupingCounts, rowMetaCache);
     }
 
-    for (let rowMeta of rowMetas) {
+    for (let i = 0; i < rowMetas.length; i++) {
+      let rowMeta = rowMetas[i];
       let rowValue = get(rowMeta, '_rowValue');
       let parentMeta = get(rowMeta, '_parentMeta');
 
@@ -275,7 +277,9 @@ export const TableRowMeta = EmberObject.extend({
 function reduceSelectedRows(selection, groupingCounts, rowMetaCache) {
   let reducedGroupingCounts = new Map();
 
-  for (let [group, count] of groupingCounts.entries()) {
+  let groupingCountsEntries = Array.from(groupingCounts.entries());
+  for (let i = 0; i < groupingCountsEntries.length; i++) {
+    let [group, count] = groupingCountsEntries[i];
     if (get(group, 'children.length') === count) {
       selection.add(group);
 
@@ -323,7 +327,8 @@ function setupRowMeta(tree, row, parentRow, node) {
  * @param {object} parentRow The parent row. Only present when called recursively
  */
 function setupAllRowMeta(tree, rows, parentRow = null) {
-  for (let row of rows) {
+  for (let i = 0; i < rows.length; i++) {
+    let row = rows[i];
     setupRowMeta(tree, row, parentRow);
     if (row.children && row.children.length) {
       setupAllRowMeta(tree, row.children, row);
@@ -355,7 +360,9 @@ function mapSelectionToMeta(tree, selection) {
   let rowMetas = [];
   let didSetupAllRowMeta = false;
 
-  for (let item of Array.from(selection)) {
+  let selectionArray = Array.from(selection);
+  for (let i = 0; i < selectionArray.length; i++) {
+    let item = selectionArray[i];
     let rowMeta = rowMetaCache.get(item);
     if (!rowMeta && !didSetupAllRowMeta) {
       setupAllRowMeta(tree, tree.get('rows'));
@@ -453,7 +460,8 @@ const CollapseTreeNode = EmberObject.extend({
    */
   cleanChildNodes() {
     if (this._childNodes) {
-      for (let child of this._childNodes) {
+      for (let i = 0; i < this._childNodes.length; i++) {
+        let child = this._childNodes[i];
         if (child instanceof CollapseTreeNode) {
           child.destroy();
         }
@@ -630,8 +638,10 @@ const CollapseTreeNode = EmberObject.extend({
 
     let offset = 0;
     let offsetList = [];
+    let childNodes = get(this, 'childNodes');
 
-    for (let child of get(this, 'childNodes')) {
+    for (let i = 0; i < childNodes.length; i++) {
+      let child = childNodes[i];
       offsetList.push(offset);
       offset += get(child, 'length');
     }

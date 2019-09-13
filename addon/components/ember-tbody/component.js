@@ -286,7 +286,9 @@ export default Component.extend({
   ),
 
   willDestroy() {
-    for (let [row, meta] of this.rowMetaCache.entries()) {
+    let rowMetaCacheEntries = Array.from(this.rowMetaCache.entries());
+    for (let i = 0; i < rowMetaCacheEntries.length; i++) {
+      let [row, meta] = rowMetaCacheEntries[i];
       meta.destroy();
       this.rowMetaCache.delete(row);
     }

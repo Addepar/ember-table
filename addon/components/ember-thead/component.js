@@ -274,7 +274,9 @@ export default Component.extend({
     this.columnTree.destroy();
 
     // Clean the column meta cache
-    for (let [column, meta] of this.columnMetaCache.entries()) {
+    let columnMetaCacheEntries = Array.from(this.columnMetaCache.entries());
+    for (let i = 0; i < columnMetaCacheEntries.length; i++) {
+      let [column, meta] = columnMetaCacheEntries[i];
       meta.destroy();
       this.columnMetaCache.delete(column);
     }

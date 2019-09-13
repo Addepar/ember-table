@@ -190,7 +190,8 @@ class TableStickyPolyfill {
       let row = rows[this.side === 'top' ? i : rows.length - 1 - i];
       let height = heights[i];
 
-      for (let child of row.children) {
+      for (let i = 0; i < row.children.length; i++) {
+        let child = row.children[i];
         child.style.position = '-webkit-sticky';
         child.style.position = 'sticky';
         child.style[this.side] = `${offset}px`;

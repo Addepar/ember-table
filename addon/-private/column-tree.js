@@ -448,7 +448,8 @@ const ColumnTreeNode = EmberObject.extend({
     let subcolumns = get(parent, 'subcolumnNodes');
     let offsetIndex = get(parent, 'offsetIndex');
 
-    for (let column of subcolumns) {
+    for (let i = 0; i < subcolumns.length; i++) {
+      let column = subcolumns[i];
       if (column === this) {
         break;
       }
@@ -469,7 +470,8 @@ const ColumnTreeNode = EmberObject.extend({
     let subcolumns = get(parent, 'subcolumnNodes');
     let offsetLeft = get(parent, 'offsetLeft');
 
-    for (let column of subcolumns) {
+    for (let i = 0; i < subcolumns.length; i++) {
+      let column = subcolumns[i];
       if (column === this) {
         break;
       }
@@ -492,7 +494,8 @@ const ColumnTreeNode = EmberObject.extend({
       .reverse();
     let offsetRight = get(parent, 'offsetRight');
 
-    for (let column of subcolumns) {
+    for (let i = 0; i < subcolumns.length; i++) {
+      let column = subcolumns[i];
       if (column === this) {
         break;
       }
@@ -698,7 +701,8 @@ export default EmberObject.extend({
       let firstReorderableFound = false;
       let lastReorderableFound = false;
 
-      for (let node of nodes) {
+      for (let i = 0; i < nodes.length; i++) {
+        let node = nodes[i];
         if (lastReorderableFound && get(node, 'isReorderable')) {
           assert(
             'Non-reorderable columns may only be contiguous segments at the beginning or end of their section (i.e. node middle columns in a list).',
@@ -745,7 +749,8 @@ export default EmberObject.extend({
 
     let subcolumns = get(column.parent, 'subcolumnNodes');
 
-    for (let column of subcolumns) {
+    for (let i = 0; i < subcolumns.length; i++) {
+      let column = subcolumns[i];
       let offset = get(column, 'offsetLeft');
 
       if (left < offset + get(column, 'width')) {

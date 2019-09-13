@@ -78,7 +78,8 @@ class LegacyStickyPolyfill {
       this.fakeFooterRow.style.height = `${tfoot.offsetHeight}px`;
     }
 
-    for (let cell of leftColumn) {
+    for (let i = 0; i < leftColumn.length; i++) {
+      let cell = leftColumn[i];
       cell.style.transform = `translateX(${scrollLeft}px)`;
     }
   };
