@@ -167,12 +167,34 @@ module('Integration | header | main', function() {
       );
     });
 
+    test('nth column mode for first column', async function(assert) {
+      let columnWidth = 30;
+
+      await generateTable(this, {
+        fillMode: 'nth-column',
+        fillColumnIndex: 0,
+        widthConstraint: 'eq-container',
+        columnCount: 3,
+        columnOptions: {
+          width: columnWidth,
+        },
+      });
+
+      let tableWidth = table.width;
+      let middleColumnWidth = table.headers.objectAt(0).width;
+
+      assert.ok(
+        Math.abs(tableWidth - middleColumnWidth - 2 * columnWidth) <= 1,
+        'nth column takes extra space in nth column resize mode.'
+      );
+    });
+
     test('nth column mode', async function(assert) {
       let columnWidth = 30;
 
       await generateTable(this, {
         fillMode: 'nth-column',
-        fillColumnIndex: '1',
+        fillColumnIndex: 1,
         widthConstraint: 'eq-container',
         columnCount: 3,
         columnOptions: {

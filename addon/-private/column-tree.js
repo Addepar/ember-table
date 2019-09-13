@@ -12,6 +12,7 @@ import { scheduler, Token } from 'ember-raf-scheduler';
 import { getOrCreate } from './meta-cache';
 import { objectAt, move, splice } from './utils/array';
 import { mergeSort } from './utils/sort';
+import { isEmpty } from '@ember/utils';
 import { getScale, getOuterClientRect, getInnerClientRect } from './utils/element';
 import { MainIndicator, DropIndicator } from './utils/reorder-indicators';
 import { notifyPropertyChange } from './utils/ember';
@@ -653,7 +654,10 @@ export default EmberObject.extend({
       } else if (fillMode === FILL_MODE.LAST_COLUMN) {
         this.resizeColumn(columns.length - 1, delta);
       } else if (fillMode === FILL_MODE.NTH_COLUMN) {
-        assert("fillMode 'nth-column' must have a fillColumnIndex defined", fillColumnIndex);
+        assert(
+          "fillMode 'nth-column' must have a fillColumnIndex defined",
+          !isEmpty(fillColumnIndex)
+        );
         this.resizeColumn(fillColumnIndex, delta);
       }
     }
