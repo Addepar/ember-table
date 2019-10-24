@@ -5202,10 +5202,10 @@ ember-auto-import@^1.2.19:
     walk-sync "^0.3.3"
     webpack "~4.28"
 
-ember-classy-page-object@^0.6.0:
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.6.0.tgz#35224432f1d0006fda7901d212e31d53188d67ea"
-  integrity sha512-/jxDNPsC9a8moN4MTb4r70Fck9o2t8F/2IORJsG+yrmQIzaElyj6PqLGMdBXzQiVBlO8lL81wEoVs0aiyaS1dQ==
+ember-classy-page-object@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.6.1.tgz#f170b2f69f646ab406ff982874a2ab926af9294a"
+  integrity sha512-huSjPp6PWN2yLSugnJq/ysde9apAGXCzcN+07WgqALQqy4FnPty6DeYjwRpy5LLKjtUS8YDENb+JcyCz9XlfcQ==
   dependencies:
     broccoli-funnel "^2.0.1"
     ember-cli-babel "^6.6.0"
