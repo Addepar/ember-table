@@ -5202,14 +5202,14 @@ ember-auto-import@^1.2.19:
     walk-sync "^0.3.3"
     webpack "~4.28"
 
-ember-classy-page-object@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.5.0.tgz#42ffd395bb6045c1f3bd94d923e11f283d26d661"
-  integrity sha512-jIgUWHh9wMpYK+eZGtXpubTqACIicgB0XngGHkjmK9qVzc3XaUdV88J2Ia4/JhmIQmxUE/80iKm+G1MHEpSsqA==
+ember-classy-page-object@^0.6.1:
+  version "0.6.1"
+  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.6.1.tgz#f170b2f69f646ab406ff982874a2ab926af9294a"
+  integrity sha512-huSjPp6PWN2yLSugnJq/ysde9apAGXCzcN+07WgqALQqy4FnPty6DeYjwRpy5LLKjtUS8YDENb+JcyCz9XlfcQ==
   dependencies:
     broccoli-funnel "^2.0.1"
     ember-cli-babel "^6.6.0"
-    ember-cli-page-object "^1.15.0-beta.3"
+    ember-cli-page-object "^1.15.4"
 
 ember-cli-addon-docs-yuidoc@^0.2.1:
   version "0.2.1"
@@ -5554,7 +5554,7 @@ ember-cli-normalize-entity-name@^1.0.0:
   dependencies:
     silent-error "^1.0.0"
 
-ember-cli-page-object@1.15.1, ember-cli-page-object@^1.15.0-beta.3:
+ember-cli-page-object@1.15.1, ember-cli-page-object@^1.15.4:
   version "1.15.1"
   resolved "https://registry.npmjs.org/ember-cli-page-object/-/ember-cli-page-object-1.15.1.tgz#da1f870638584b17e183d0014b4efb15465fadd5"
   integrity sha512-/oUkiha+CLUNQGkQLHJ+mw9rm/V6Gi3VGgzKo7laEGZe6Mk8jl13otxEKWKI2NTJmL69fZxPPfFsqQqpzN+0UA==
