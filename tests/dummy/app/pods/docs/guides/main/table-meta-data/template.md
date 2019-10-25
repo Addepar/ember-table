@@ -71,7 +71,7 @@ meta objects:
 
               as |cell column row cellMeta columnMeta rowMeta|
             >
-              <div onclick={{action setSelected cellMeta columnMeta rowMeta}} class="cell-content">
+              <div onclick={{action "setSelected" cellMeta columnMeta rowMeta}} class="cell-content">
                 {{cell}}
               </div>
             </r.cell>

@@ -1,14 +1,6 @@
 module.exports = {
   extends: ['@addepar', '@addepar/eslint-config/ember'],
   parser: 'babel-eslint',
-  parserOptions: {
-    ecmaFeatures: {
-      legacyDecorators: true,
-    },
-  },
-  env: {
-    es6: true,
-  },
   rules: {
     'no-restricted-globals': 'off',
 

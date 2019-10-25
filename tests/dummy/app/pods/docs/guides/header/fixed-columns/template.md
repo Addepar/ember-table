@@ -56,7 +56,7 @@ you can make fixed columns toggleable for your users.
     {{docs/guides/header/fixed-columns/dynamic-example
       rows=rows
       columns=dynamicFixedColumns
-      toggleFixed=(action toggleFixed)
+      toggleFixed=(action "toggleFixed")
     }}
   {{/demo.example}}
 

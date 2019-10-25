@@ -1,16 +1,13 @@
 import Controller from '@ember/controller';
-
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { generateRows, generateColumns } from '../../../utils/generators';
 
-export default class SimpleController extends Controller {
-  @computed
-  get rows() {
+export default Controller.extend({
+  rows: computed(function() {
     return generateRows(100);
-  }
+  }),
 
-  @computed
-  get columns() {
+  columns: computed(function() {
     return generateColumns(7);
-  }
-}
+  }),
+});

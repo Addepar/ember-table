@@ -8,7 +8,7 @@ module.exports = function(defaults) {
       includePolyfill: true,
     },
     babel: {
-      plugins: ['transform-object-rest-spread'],
+      plugins: ['@babel/plugin-proposal-object-rest-spread'],
     },
     'ember-faker': {
       enabled: true, // Always enable for dummy app because the docs examples use faker
