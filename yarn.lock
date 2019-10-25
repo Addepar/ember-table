@@ -3662,7 +3662,7 @@ browserslist@^2.11.3:
     caniuse-lite "^1.0.30000792"
     electron-to-chromium "^1.3.30"
 
-browserslist@^3.1.0, browserslist@^3.2.6, browserslist@^3.2.8:
+browserslist@^3.2.6, browserslist@^3.2.8:
   version "3.2.8"
   resolved "https://registry.npmjs.org/browserslist/-/browserslist-3.2.8.tgz#b0005361d6471f0f5952797a76fc985f1f978fc6"
   integrity sha512-WHVocJYavUwVgVViC0ORikPHQquXwVh939TaelZ4WDqpWgTX/FsGhl/+P4qBUAGcRvtOgDgC+xftNWWp2RUTAQ==
@@ -6075,14 +6075,6 @@ ember-keyboard@^4.0.0:
   dependencies:
     babel-plugin-transform-object-rest-spread "^6.26.0"
     ember-cli-babel "^6.6.0"
-
-ember-legacy-class-shim@^1.0.0:
-  version "1.0.5"
-  resolved "https://registry.npmjs.org/ember-legacy-class-shim/-/ember-legacy-class-shim-1.0.5.tgz#c40b66e12d56655a98f1bffe7f02dd7df0202daf"
-  integrity sha512-XoPCA//+c8khzG76C7Men9kQK3RbULnP3JWc7v8i9OJiVtWUvzH+qhYP2b9j588KvGMnvRbL40S5LNgvmNh11A==
-  dependencies:
-    browserslist "^3.1.0"
-    ember-cli-version-checker "^2.0.0"
 
 ember-load-initializers@^2.0.0:
   version "2.1.0"

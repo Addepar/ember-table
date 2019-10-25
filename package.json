@@ -38,7 +38,6 @@
     "ember-cli-version-checker": "^3.0.1",
     "ember-compatibility-helpers": "^1.2.0",
     "ember-getowner-polyfill": "^2.2.0",
-    "ember-legacy-class-shim": "^1.0.0",
     "ember-raf-scheduler": "^0.1.0",
     "ember-test-selectors": "^0.3.9",
     "ember-useragent": "^0.6.0",
