@@ -167,6 +167,9 @@ module.exports = function() {
         },
         {
           name: 'ember-release',
+          env: {
+            SKIP_REORDERING_TESTS: true,
+          },
           npm: {
             devDependencies: {
               'ember-source': urls[0],
@@ -176,6 +179,9 @@ module.exports = function() {
         },
         {
           name: 'ember-beta',
+          env: {
+            SKIP_REORDERING_TESTS: true,
+          },
           npm: {
             devDependencies: {
               'ember-source': urls[1],
@@ -185,6 +191,9 @@ module.exports = function() {
         },
         {
           name: 'ember-canary',
+          env: {
+            SKIP_REORDERING_TESTS: true,
+          },
           npm: {
             devDependencies: {
               'ember-source': urls[2],
