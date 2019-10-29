@@ -81,7 +81,7 @@
     "ember-qunit": "^4.5.1",
     "ember-radio-button": "^1.2.3",
     "ember-resolver": "^5.1.1",
-    "ember-source": "~3.12",
+    "ember-source": "~3.13",
     "ember-source-channel-url": "^1.0.1",
     "ember-truth-helpers": "^2.0.0",
     "ember-try": "^1.1.0",

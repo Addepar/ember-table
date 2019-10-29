@@ -9,6 +9,7 @@ import { A as emberA } from '@ember/array';
 import { run } from '@ember/runloop';
 import { scrollTo } from 'ember-native-dom-helpers';
 import { registerTestWarnHandler } from '../../helpers/warn-handlers';
+import wait from 'ember-test-helpers/wait';
 
 let table = new TablePage({
   validateSelected(...selectedIndexes) {
@@ -585,7 +586,7 @@ module('Integration | selection', () => {
         let rows = generateRows(1, 1);
         await generateTable(this, { rows });
 
-        this.set('selection', [...rows, { fakeRow: true }]);
+        Ember.run(() => this.set('selection', [...rows, { fakeRow: true }]));
         assert.ok(true, 'after setting bad selection, no error');
         assert.ok(table.validateSelected(0), 'First row is selected');
 

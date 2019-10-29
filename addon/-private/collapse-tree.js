@@ -3,7 +3,7 @@ import EmberArray, { A as emberA, isArray } from '@ember/array';
 import { assert, warn } from '@ember/debug';
 
 import { computed } from '@ember/object';
-import { addObserver } from '@ember/object/observers';
+import { addObserver } from './utils/observer';
 
 import { objectAt } from './utils/array';
 import { notifyPropertyChange } from './utils/ember';

@@ -1,6 +1,6 @@
 /* eslint-disable getter-return */
 import EmberObject, { get, set } from '@ember/object';
-import { addObserver, removeObserver } from '@ember/object/observers';
+import { addObserver, removeObserver } from './utils/observer';
 import { A as emberA } from '@ember/array';
 import { DEBUG } from '@glimmer/env';
 
