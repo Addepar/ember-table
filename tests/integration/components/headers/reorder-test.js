@@ -9,7 +9,6 @@ import { getScale } from 'ember-table/test-support/helpers/element';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { toBase26 } from 'dummy/utils/base-26';
-import config from 'dummy/config/environment';
 
 const table = new TablePage();
 

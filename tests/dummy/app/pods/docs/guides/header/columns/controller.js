@@ -1,7 +1,6 @@
 import Controller from '@ember/controller';
 import { computed } from '@ember/object';
 import { generateRows } from '../../../../../utils/generators';
-import { A } from '@ember/array';
 
 export default Controller.extend({
   rows: computed(function() {
