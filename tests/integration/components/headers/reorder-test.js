@@ -46,13 +46,6 @@ async function reorderToRightEdge(column, edgeOffset = 0) {
 }
 
 module('Integration | headers | reorder', function() {
-  if (config.skipReorderingTests) {
-    skip('Skipping column reordering tests, see https://github.com/Addepar/ember-table/issues/775', async function(assert) {
-      assert.ok(true, 'Skipping column reordering tests');
-    });
-    return;
-  }
-
   componentModule('reordering', function() {
     test('standard columns', async function(assert) {
       await generateTable(this);
