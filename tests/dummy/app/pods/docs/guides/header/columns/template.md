@@ -103,6 +103,15 @@ Columns are resizeable and reorderable by default. You can disable these by
 using the `enableResize` and `enableReorder` flags. You can also change the
 `resizeMode` to `'fluid'` to have columns subtract width from their neighbors.
 
+**Note**: Ember 3.13 has changed the way property changes propagate. Due to these
+changes, column reordering with Ember 3.13 is very slow *unless you turn on async observers*.
+For more details, see the Ember Table [issue #775](https://github.com/Addepar/ember-table/issues/775)
+or the related Ember.js issue [#18225](https://github.com/emberjs/ember.js/issues/18225).
+
+In addition, in Ember 3.13+ there's also an issue that columns do not reorder on drag-drop properly
+when the column definitions are plain JavaScript arrays. The solution (for now) is to make sure your
+`columns` property is an Ember Array. See the Ember Table [issue #776](https://github.com/Addepar/ember-table/issues/776).
+
 {{#docs-demo as |demo|}}
   {{#demo.example name="column-resize-reorder"}}
     {{! BEGIN-SNIPPET docs-example-column-resize-reorder.hbs }}
