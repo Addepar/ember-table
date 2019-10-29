@@ -30,7 +30,17 @@ Documentation is available at: https://opensource.addepar.com/ember-table/docs
 Ember Table uses [ember-cli-addon-docs](https://github.com/ember-learn/ember-cli-addon-docs) for its documentation.
 To run the docs locally, clone the repo, run `yarn && yarn start` and then navigate to `http://localhost:4200/docs`.
 
-## Usage.
+## Known Issues with Ember 3.13+
+
+Ember 3.13 shipped with a change to the internal property change tracking system, which has
+caused a few issues with Ember Table:
+
+  * Issue [#775](https://github.com/Addepar/ember-table/issues/775): Column reordering is very slow (due to many sync observers firing). Workaround: Opt in to async observers.
+  * Issue [#776](https://github.com/Addepar/ember-table/issues/776): Column definitions that are plain JavaScript arrays will not reorder. Workaround: Wrap column definitions in `Ember.A()`
+
+New issues that arise will be given the [ember-3.13 label](https://github.com/Addepar/ember-table/labels/ember-3.13).
+
+## Usage
 
 To use `Ember Table`, you need to create `columns` and `rows` dataset.
 

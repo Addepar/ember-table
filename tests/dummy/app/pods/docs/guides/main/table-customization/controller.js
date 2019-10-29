@@ -1,17 +1,15 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import { generateRows, getRandomInt } from '../../../../../utils/generators';
 import faker from 'faker';
 
-export default class SimpleController extends Controller {
-  @computed
-  get rows() {
+export default Controller.extend({
+  rows: computed(function() {
     return generateRows(100);
-  }
+  }),
 
   // BEGIN-SNIPPET table-customization-rows-with-components.js
-  @computed
-  get rowsWithComponents() {
+  rowsWithComponents: computed(function() {
     return [
       { A: 'A', B: 'B', C: 'C', D: 'D', cellComponent: 'custom-cell', color: 'navy' },
       { A: 'A', B: 'B', C: 'C', D: 'D', cellComponent: 'custom-cell', color: 'blue' },
@@ -42,25 +40,23 @@ export default class SimpleController extends Controller {
       { A: 'A', B: 'B', C: 'C', D: 'D', cellComponent: 'custom-cell', color: 'red' },
       { A: 'A', B: 'B', C: 'C', D: 'D', cellComponent: 'custom-cell', color: 'maroon' },
     ];
-  }
+  }),
 
-  @computed
-  get columnsForRowsWithComponents() {
+  columnsForRowsWithComponents: computed(function() {
     return [
       { name: 'Column A', valuePath: 'A' },
       { name: 'Column B', valuePath: 'B' },
       { name: 'Column C', valuePath: 'C' },
       { name: 'Column D', valuePath: 'D' },
     ];
-  }
+  }),
   // END-SNIPPET
 
   // BEGIN-SNIPPET table-customization-example-sorting.js
-  showSortIndicator = true;
-  showResizeHandle = true;
+  showSortIndicator: true,
+  showResizeHandle: true,
 
-  @computed
-  get columnsForSorting() {
+  columnsForSorting: computed(function() {
     return [
       { name: 'Company ▸ Department ▸ Product', valuePath: 'name' },
       { name: 'Price', valuePath: 'price' },
@@ -68,10 +64,9 @@ export default class SimpleController extends Controller {
       { name: 'Unsold', valuePath: 'unsold' },
       { name: 'Total Revenue', valuePath: 'totalRevenue' },
     ];
-  }
+  }),
 
-  @computed
-  get rowsForSorting() {
+  rowsForSorting: computed(function() {
     let rows = [];
 
     for (let i = 0; i < 5; i++) {
@@ -129,22 +124,20 @@ export default class SimpleController extends Controller {
     }
 
     return rows;
-  }
+  }),
   // END-SNIPPET
 
   // BEGIN-SNIPPET table-customization-custom-table-components.js
-  @computed
-  get columnsWithSelection() {
+  columnsWithSelection: computed(function() {
     return [
       { name: 'A', valuePath: 'A', width: 180 },
       { name: 'B', valuePath: 'B', width: 180, isSelected: true },
       { name: 'C', valuePath: 'C', width: 180 },
       { name: 'D', valuePath: 'D', width: 180 },
     ];
-  }
+  }),
 
-  @computed
-  get rowsWithChildren() {
+  rowsWithChildren: computed(function() {
     return [
       {
         A: 'A',
@@ -183,12 +176,11 @@ export default class SimpleController extends Controller {
         ],
       },
     ];
-  }
+  }),
   // END-SNIPPET
 
   // BEGIN-SNIPPET table-customization-custom-cell-template.js
-  @computed
-  get columns() {
+  columns: computed(function() {
     return [
       { name: 'A', valuePath: 'A' },
       { name: 'B', valuePath: 'B' },
@@ -198,12 +190,11 @@ export default class SimpleController extends Controller {
       { name: 'F', valuePath: 'F' },
       { name: 'G', valuePath: 'G' },
     ];
-  }
+  }),
   // END-SNIPPET
 
   // BEGIN-SNIPPET table-customization-custom-cell-component.js
-  @computed
-  get columnsWithComponents() {
+  columnsWithComponents: computed(function() {
     return [
       {
         heading: 'A',
@@ -246,6 +237,6 @@ export default class SimpleController extends Controller {
         color: 'maroon',
       },
     ];
-  }
+  }),
   // END-SNIPPET
-}
+});

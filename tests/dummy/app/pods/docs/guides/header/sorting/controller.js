@@ -1,12 +1,11 @@
 import Controller from '@ember/controller';
-import { action, computed } from '@ember-decorators/object';
+import { computed } from '@ember/object';
 import faker from 'faker';
 import { getRandomInt } from '../../../../../utils/generators';
 
-export default class SimpleController extends Controller {
+export default Controller.extend({
   // BEGIN-SNIPPET docs-example-sortings.js
-  @computed
-  get columns() {
+  columns: computed(function() {
     return [
       { name: 'Company ▸ Department ▸ Product', valuePath: 'name' },
       { name: 'Price', valuePath: 'price' },
@@ -14,11 +13,10 @@ export default class SimpleController extends Controller {
       { name: 'Unsold', valuePath: 'unsold' },
       { name: 'Total Revenue', valuePath: 'totalRevenue' },
     ];
-  }
+  }),
   // END-SNIPPET
 
-  @computed
-  get rows() {
+  rows: computed(function() {
     let rows = [];
 
     for (let i = 0; i < getRandomInt(5, 2); i++) {
@@ -76,33 +74,34 @@ export default class SimpleController extends Controller {
     }
 
     return rows;
-  }
+  }),
 
   // BEGIN-SNIPPET docs-example-2-state-sortings.js
-  @action
-  twoStateSorting(sorts) {
-    if (sorts.length > 1) {
-      // multi-column sort, default behavior
+  actions: {
+    twoStateSorting(sorts) {
+      if (sorts.length > 1) {
+        // multi-column sort, default behavior
+        this.set('sorts', sorts);
+        return;
+      }
+
+      let hasExistingSort = this.sorts && this.sorts.length;
+      let isDefaultSort = !sorts.length;
+
+      if (hasExistingSort && isDefaultSort) {
+        // override empty sorts with reversed previous sort
+        let newSorts = [
+          {
+            valuePath: this.sorts[0].valuePath,
+            isAscending: !this.sorts[0].isAscending,
+          },
+        ];
+        this.set('sorts', newSorts);
+        return;
+      }
+
       this.set('sorts', sorts);
-      return;
-    }
-
-    let hasExistingSort = this.sorts && this.sorts.length;
-    let isDefaultSort = !sorts.length;
-
-    if (hasExistingSort && isDefaultSort) {
-      // override empty sorts with reversed previous sort
-      let newSorts = [
-        {
-          valuePath: this.sorts[0].valuePath,
-          isAscending: !this.sorts[0].isAscending,
-        },
-      ];
-      this.set('sorts', newSorts);
-      return;
-    }
-
-    this.set('sorts', sorts);
-  }
+    },
+  },
   // END-SNIPPET
-}
+});

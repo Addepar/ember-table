@@ -16,6 +16,7 @@ module.exports = function(environment) {
     fastboot: {
       hostWhitelist: [/^localhost:\d+$/],
     },
+    skipReorderingTests: process.env.SKIP_REORDERING_TESTS,
     EmberENV: {
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
