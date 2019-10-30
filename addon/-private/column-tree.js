@@ -176,7 +176,6 @@ const ColumnTreeNode = EmberObject.extend({
       // watchers
       this._notifyMaxChildDepth = () => notifyPropertyChange(parent, 'maxChildDepth');
       this._notifyLeaves = () => notifyPropertyChange(parent, 'leaves');
-      this._notifyCollection = () => notifyPropertyChange(parent, '[]');
 
       addObserver(this, 'maxChildDepth', this._notifyMaxChildDepth);
       addObserver(this, 'leaves.[]', this._notifyLeaves);
