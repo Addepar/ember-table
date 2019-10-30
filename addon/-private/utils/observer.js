@@ -2,12 +2,12 @@ import { gte } from 'ember-compatibility-helpers';
 import { assert } from '@ember/debug';
 
 // eslint-disable-next-line no-restricted-imports
-import { observer as eObserver } from '@ember/object';
+import { observer as emberObserver } from '@ember/object';
 
 // eslint-disable-next-line no-restricted-imports
 import {
-  addObserver as eAddObserver,
-  removeObserver as eRemoveObserver,
+  addObserver as emberAddObserver,
+  removeObserver as emberRemoveObserver,
 } from '@ember/object/observers';
 
 const USE_ASYNC_OBSERVERS = gte('3.13.0');
@@ -17,7 +17,7 @@ function asyncObserver(...args) {
   let dependentKeys = args;
   let sync = false;
 
-  return eObserver({ dependentKeys, fn, sync });
+  return emberObserver({ dependentKeys, fn, sync });
 }
 
 function asyncAddObserver(...args) {
@@ -37,14 +37,14 @@ function asyncAddObserver(...args) {
     method = args[3];
   }
 
-  return eAddObserver(obj, target, path, method, sync);
+  return emberAddObserver(obj, target, path, method, sync);
 }
 
 function asyncRemoveObserver(key, target, method) {
   let sync = false;
-  return eRemoveObserver(key, target, method, sync);
+  return emberRemoveObserver(key, target, method, sync);
 }
 
-export const observer = USE_ASYNC_OBSERVERS ? asyncObserver : eObserver;
-export const addObserver = USE_ASYNC_OBSERVERS ? asyncAddObserver : eAddObserver;
-export const removeObserver = USE_ASYNC_OBSERVERS ? asyncRemoveObserver : eRemoveObserver;
+export const observer = USE_ASYNC_OBSERVERS ? asyncObserver : emberObserver;
+export const addObserver = USE_ASYNC_OBSERVERS ? asyncAddObserver : emberAddObserver;
+export const removeObserver = emberRemoveObserver ? asyncRemoveObserver : emberRemoveObserver;
