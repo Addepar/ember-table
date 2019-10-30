@@ -1,7 +1,8 @@
 import Component from '@ember/component';
 import { equal } from '@ember/object/computed';
-import { observer, computed } from '@ember/object';
+import { observer } from '../../-private/utils/observer';
 import { scheduleOnce } from '@ember/runloop';
+import { computed } from '@ember/object';
 
 export default Component.extend({
   // Provided by subclasses

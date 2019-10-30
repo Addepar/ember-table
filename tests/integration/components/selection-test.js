@@ -585,7 +585,7 @@ module('Integration | selection', () => {
         let rows = generateRows(1, 1);
         await generateTable(this, { rows });
 
-        this.set('selection', [...rows, { fakeRow: true }]);
+        run(() => this.set('selection', [...rows, { fakeRow: true }]));
         assert.ok(true, 'after setting bad selection, no error');
         assert.ok(table.validateSelected(0), 'First row is selected');
 

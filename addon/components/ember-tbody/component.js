@@ -1,6 +1,7 @@
 import Component from '@ember/component';
 
-import { computed, observer } from '@ember/object';
+import { computed } from '@ember/object';
+import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
 
 import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';

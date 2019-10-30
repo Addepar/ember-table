@@ -1,4 +1,5 @@
-import EmberObject, { defineProperty, computed, observer } from '@ember/object';
+import EmberObject, { defineProperty, computed } from '@ember/object';
+import { observer } from './observer';
 import { alias } from '@ember/object/computed';
 
 const PROPERTIES = new WeakMap();

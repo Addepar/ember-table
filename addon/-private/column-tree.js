@@ -1,6 +1,6 @@
 /* eslint-disable getter-return */
 import EmberObject, { get, set } from '@ember/object';
-import { addObserver, removeObserver } from '@ember/object/observers';
+import { addObserver, removeObserver } from './utils/observer';
 import { A as emberA } from '@ember/array';
 import { DEBUG } from '@glimmer/env';
 
@@ -172,7 +172,7 @@ const ColumnTreeNode = EmberObject.extend({
       meta.endReorder = (...args) => tree.endReorder(this, ...args);
 
       // Changes to the value directly should properly update all computeds on this
-      // node, but we need to manually propogate changes upwards to notify any other
+      // node, but we need to manually propagate changes upwards to notify any other
       // watchers
       this._notifyMaxChildDepth = () => notifyPropertyChange(parent, 'maxChildDepth');
       this._notifyLeaves = () => notifyPropertyChange(parent, 'leaves');

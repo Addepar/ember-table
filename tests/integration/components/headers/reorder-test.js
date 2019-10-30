@@ -9,7 +9,6 @@ import { getScale } from 'ember-table/test-support/helpers/element';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { toBase26 } from 'dummy/utils/base-26';
-import config from 'dummy/config/environment';
 
 const table = new TablePage();
 
@@ -46,13 +45,6 @@ async function reorderToRightEdge(column, edgeOffset = 0) {
 }
 
 module('Integration | headers | reorder', function() {
-  if (config.skipReorderingTests) {
-    skip('Skipping column reordering tests, see https://github.com/Addepar/ember-table/issues/775', async function(assert) {
-      assert.ok(true, 'Skipping column reordering tests');
-    });
-    return;
-  }
-
   componentModule('reordering', function() {
     test('standard columns', async function(assert) {
       await generateTable(this);

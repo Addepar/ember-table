@@ -3,7 +3,7 @@ import EmberArray, { A as emberA, isArray } from '@ember/array';
 import { assert, warn } from '@ember/debug';
 
 import { computed } from '@ember/object';
-import { addObserver } from '@ember/object/observers';
+import { addObserver } from './utils/observer';
 
 import { objectAt } from './utils/array';
 import { notifyPropertyChange } from './utils/ember';
@@ -758,7 +758,7 @@ export default EmberObject.extend(EmberArray, {
   init() {
     this._super(...arguments);
 
-    // Whenever the root node's length changes we need to propogate the change to
+    // Whenever the root node's length changes we need to propagate the change to
     // users of the tree, and since the tree is meant to work like an array we should
     // trigger a change on the `[]` key as well.
     addObserver(this, 'root.length', () => notifyPropertyChange(this, '[]'));

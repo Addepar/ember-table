@@ -3,6 +3,7 @@ import Component from '@ember/component';
 import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
 import defaultTo from '../../-private/utils/default-to';
+import { addObserver } from '../../-private/utils/observer';
 import { computed } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
 
@@ -213,20 +214,20 @@ export default Component.extend({
     this._updateApi();
     this._updateColumnTree();
 
-    this.addObserver('sorts', this._updateApi);
-    this.addObserver('sortFunction', this._updateApi);
-    this.addObserver('reorderFunction', this._updateApi);
+    addObserver(this, 'sorts', this._updateApi);
+    addObserver(this, 'sortFunction', this._updateApi);
+    addObserver(this, 'reorderFunction', this._updateApi);
 
-    this.addObserver('sorts', this._updateColumnTree);
-    this.addObserver('columns.[]', this._onColumnsChange);
-    this.addObserver('fillMode', this._updateColumnTree);
-    this.addObserver('fillColumnIndex', this._updateColumnTree);
-    this.addObserver('resizeMode', this._updateColumnTree);
-    this.addObserver('widthConstraint', this._updateColumnTree);
+    addObserver(this, 'sorts', this._updateColumnTree);
+    addObserver(this, 'columns.[]', this._onColumnsChange);
+    addObserver(this, 'fillMode', this._updateColumnTree);
+    addObserver(this, 'fillColumnIndex', this._updateColumnTree);
+    addObserver(this, 'resizeMode', this._updateColumnTree);
+    addObserver(this, 'widthConstraint', this._updateColumnTree);
 
-    this.addObserver('enableSort', this._updateColumnTree);
-    this.addObserver('enableResize', this._updateColumnTree);
-    this.addObserver('enableReorder', this._updateColumnTree);
+    addObserver(this, 'enableSort', this._updateColumnTree);
+    addObserver(this, 'enableResize', this._updateColumnTree);
+    addObserver(this, 'enableReorder', this._updateColumnTree);
   },
 
   _updateApi() {
