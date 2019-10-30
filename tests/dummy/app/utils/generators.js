@@ -2,6 +2,17 @@ import { A as emberA } from '@ember/array';
 import { toBase26 } from './base-26';
 import faker from 'faker';
 
+const DEFAULT_USE_EMBER_ARRAY = true;
+let useEmberArray = DEFAULT_USE_EMBER_ARRAY;
+
+export function configureTableGeneration({ useEmberArray: _useEmberArray }) {
+  useEmberArray = _useEmberArray;
+}
+
+export function resetTableGenerationConfig() {
+  useEmberArray = DEFAULT_USE_EMBER_ARRAY;
+}
+
 export function getRandomInt(max, min) {
   return faker.random.number({ min, max });
 }
@@ -43,7 +54,7 @@ export function generateRows(rowCount, depth, format, idPrefix = '') {
     arr.push(row);
   }
 
-  return emberA(arr);
+  return useEmberArray ? emberA(arr) : arr;
 }
 
 export function generateColumn(id, options) {
@@ -95,5 +106,5 @@ export function generateColumns(
     columns[columnCount - i - 1].isFixed = 'right';
   }
 
-  return emberA(columns);
+  return useEmberArray ? emberA(columns) : columns;
 }

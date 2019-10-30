@@ -1,9 +1,14 @@
 import hbs from 'htmlbars-inline-precompile';
 import wait from 'ember-test-helpers/wait';
-import { generateColumns, generateRows } from 'dummy/utils/generators';
+import {
+  configureTableGeneration,
+  generateColumns,
+  generateRows,
+  resetTableGenerationConfig,
+} from 'dummy/utils/generators';
 
 // reexport for use in tests
-export { generateColumns, generateRows };
+export { configureTableGeneration, resetTableGenerationConfig, generateColumns, generateRows };
 
 const fullTable = hbs`
   <div style="height: 500px;">
