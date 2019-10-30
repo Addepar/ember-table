@@ -16,12 +16,13 @@ module.exports = {
           {
             name: '@ember/object',
             importNames: ['observer'],
-            message: 'For compatibility, import observers from -private/utils/observer',
+            message: 'For compatibility, use `import { observer } from "-private/utils/observer"`',
           },
           {
             name: '@ember/object/observers',
             importNames: ['addObserver', 'removeObserver'],
-            message: 'For compatibility, import observers from -private/utils/observer',
+            message:
+              'For compatibility, use `import { addObserver, removeObserver } from "-private/utils/observer"`',
           },
         ],
       },
