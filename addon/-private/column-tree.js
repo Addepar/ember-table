@@ -791,7 +791,7 @@ export default EmberObject.extend({
 
     move(subcolumns, insertIndex, afterIndex);
 
-    notifyPropertyChange(parent, 'column.subcolumns.[]');
+    notifyPropertyChange(subcolumns, '[]');
   },
 
   startReorder(node, clientX) {
