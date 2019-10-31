@@ -146,6 +146,19 @@ You can also use the `ember-tfoot` component, which has the same API as
   {{/ember-table}}
 ```
 
+## Browser compatibility
+
+This project is written using an EcmaScript 6 javascript syntax.
+Babel doesn't include polyfill by default, so if you want to target legacy browsers (eg. IE11), 
+you need to add this to your `ember-cli-build.js`:
+
+```js
+var app = new EmberApp({
+  'ember-cli-babel': {
+    includePolyfill: true
+  }
+});
+```
 
 ## Migrating from old Ember table
 To support smooth migration from old version of Ember table (support only till ember 1.11), we have
