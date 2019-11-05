@@ -30,16 +30,6 @@ Documentation is available at: https://opensource.addepar.com/ember-table/docs
 Ember Table uses [ember-cli-addon-docs](https://github.com/ember-learn/ember-cli-addon-docs) for its documentation.
 To run the docs locally, clone the repo, run `yarn && yarn start` and then navigate to `http://localhost:4200/docs`.
 
-## Known Issues with Ember 3.13+
-
-Ember 3.13 shipped with a change to the internal property change tracking system, which has
-caused a few issues with Ember Table:
-
-  * Issue [#775](https://github.com/Addepar/ember-table/issues/775): Column reordering is very slow (due to many sync observers firing). Workaround: Opt in to async observers.
-  * Issue [#776](https://github.com/Addepar/ember-table/issues/776): Column definitions that are plain JavaScript arrays will not reorder. Workaround: Wrap column definitions in `Ember.A()`
-
-New issues that arise will be given the [ember-3.13 label](https://github.com/Addepar/ember-table/labels/ember-3.13).
-
 ## Usage
 
 To use `Ember Table`, you need to create `columns` and `rows` dataset.
@@ -73,17 +63,17 @@ rows: computed(function() {
   const rows = emberA();
 
   rows.pushObject({
-      open: '8AM',
-      close: '8PM'
-    });
+    open: '8AM',
+    close: '8PM',
+  });
 
-    rows.pushObject({
-      open: '11AM',
-      close: '9PM'
-    });
+  rows.pushObject({
+    open: '11AM',
+    close: '9PM',
+  });
 
-    return rows;
-  })
+  return rows;
+});
 ```
 
 ### Template
@@ -102,11 +92,11 @@ You can use the block form of the table to customize its template. The component
 structure matches that of actual HTML tables, and allows you to customize it at
 any level. At the cell level, you get access to these four values:
 
-* `value` - The value of the cell
-* `cell` - A unique cell cache. You can use this to track cell state without
+- `value` - The value of the cell
+- `cell` - A unique cell cache. You can use this to track cell state without
   dirtying the underlying model.
-* `column` - The column itself.
-* `row` - The row itself.
+- `column` - The column itself.
+- `row` - The row itself.
 
 You can use these values to customize cell in many ways. For instance, if you
 want to have every cell in a particular column use a component, you can add a
@@ -135,7 +125,6 @@ If you want to use default table style, import the `ember-table/default` SASS fi
 You can also use the `ember-tfoot` component, which has the same API as
 `ember-tbody`:
 
-
 ```
   {{#ember-table as |t|}}
     {{t.head columns=columns}}
@@ -149,32 +138,33 @@ You can also use the `ember-tfoot` component, which has the same API as
 ## Browser compatibility
 
 This project is written using an EcmaScript 6 javascript syntax.
-Babel doesn't include polyfill by default, so if you want to target legacy browsers (eg. IE11), 
+Babel doesn't include polyfill by default, so if you want to target legacy browsers (eg. IE11),
 you need to add this to your `ember-cli-build.js`:
 
 ```js
 var app = new EmberApp({
   'ember-cli-babel': {
-    includePolyfill: true
-  }
+    includePolyfill: true,
+  },
 });
 ```
 
 ## Migrating from old Ember table
+
 To support smooth migration from old version of Ember table (support only till ember 1.11), we have
 move the old source code to separate package [ember-table-legacy](https://github.com/Addepar/ember-table-legacy).
 It's a separate package from this Ember table package and you can install it using yarn or npm.
 This allows you to have 2 versions of ember table in your code base and you can start your migrating
 one table at at time. The recommended migration steps are as follows (if you are using ember 1.11):
 
-1) Rename all your ember-table import to ember-table-legacy. (for example:
-`import EmberTable from 'ember-table/components/ember-table'` becomes
-`import EmberTableLegacy from 'ember-table-legacy/components/ember-table-legacy'`. Remove reference
-of `ember-table` in `package.json`.
-2) Install `ember-table-legacy` using `yarn add ember-table-legacy` or `npm install ember-table-legacy`
-3) Run your app to make sure that it works without issue.
-4) Reinstall the latest version of this `ember-table` repo.
-5) You can start using new version of Ember table from now or replacing the old ones.
+1. Rename all your ember-table import to ember-table-legacy. (for example:
+   `import EmberTable from 'ember-table/components/ember-table'` becomes
+   `import EmberTableLegacy from 'ember-table-legacy/components/ember-table-legacy'`. Remove reference
+   of `ember-table` in `package.json`.
+2. Install `ember-table-legacy` using `yarn add ember-table-legacy` or `npm install ember-table-legacy`
+3. Run your app to make sure that it works without issue.
+4. Reinstall the latest version of this `ember-table` repo.
+5. You can start using new version of Ember table from now or replacing the old ones.
 
 # Releasing new versions (for maintainers)
 
