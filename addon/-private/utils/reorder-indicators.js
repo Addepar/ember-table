@@ -33,6 +33,7 @@ class ReorderIndicator {
     let left = (elementLeft - containerLeft) * this.scale + scrollLeft;
     let width = elementWidth * this.scale;
 
+    this.originLeft = left;
     this.indicatorElement = createElement(mainClass, { top, left, width });
 
     if (child) {
@@ -64,6 +65,14 @@ class ReorderIndicator {
       newLeft = leftBound;
     } else if (newLeft + width > rightBound) {
       newLeft = rightBound - width;
+    }
+
+    if (newLeft < this.originLeft) {
+      this.indicatorElement.classList.remove('et-reorder-direction-right');
+      this.indicatorElement.classList.add('et-reorder-direction-left');
+    } else {
+      this.indicatorElement.classList.remove('et-reorder-direction-left');
+      this.indicatorElement.classList.add('et-reorder-direction-right');
     }
 
     this.indicatorElement.style.left = `${newLeft}px`;
