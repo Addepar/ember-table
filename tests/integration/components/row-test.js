@@ -1,7 +1,11 @@
 import { module, test } from 'ember-qunit';
 
-import { generateTable } from '../../helpers/generate-table';
-import { componentModule } from '../../helpers/module';
+import {
+  generateTable,
+  configureTableGeneration,
+  resetTableGenerationConfig,
+} from '../../helpers/generate-table';
+import { parameterizedComponentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
@@ -14,8 +18,22 @@ let table = new TablePage({
   },
 });
 
+const USE_EMBER_ARRAY_PARAMETERS = {
+  useEmberArray: {
+    values: [true, false],
+    hooks: {
+      beforeEach(value) {
+        configureTableGeneration({ useEmberArray: value });
+      },
+      afterEach() {
+        resetTableGenerationConfig();
+      },
+    },
+  },
+};
+
 module('Integration | row', function() {
-  componentModule('basic', function() {
+  parameterizedComponentModule('basic', USE_EMBER_ARRAY_PARAMETERS, function() {
     test('can use a custom row component', async function(assert) {
       await generateTable(this, {
         rowComponent: 'custom-row',

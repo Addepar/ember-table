@@ -1,7 +1,12 @@
 import { module, test, skip } from 'ember-qunit';
 
-import { generateTable, generateColumns } from '../../../helpers/generate-table';
-import { componentModule } from '../../../helpers/module';
+import {
+  configureTableGeneration,
+  generateTable,
+  generateColumns,
+  resetTableGenerationConfig,
+} from '../../../helpers/generate-table';
+import { parameterizedComponentModule } from '../../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
 import { mouseDown, mouseMove, mouseUp } from 'ember-table/test-support/helpers/mouse';
@@ -36,6 +41,20 @@ export async function scrollToEdge(targetElement, edgeOffset, direction) {
   await mouseUp(targetElement);
 }
 
+const USE_EMBER_ARRAY_PARAMETERS = {
+  useEmberArray: {
+    values: [true, false],
+    hooks: {
+      beforeEach(value) {
+        configureTableGeneration({ useEmberArray: value });
+      },
+      afterEach() {
+        resetTableGenerationConfig();
+      },
+    },
+  },
+};
+
 async function reorderToLeftEdge(column, edgeOffset = 0) {
   await scrollToEdge(column, edgeOffset, 'left', true);
 }
@@ -45,7 +64,7 @@ async function reorderToRightEdge(column, edgeOffset = 0) {
 }
 
 module('Integration | headers | reorder', function() {
-  componentModule('reordering', function() {
+  parameterizedComponentModule('reordering', USE_EMBER_ARRAY_PARAMETERS, function() {
     test('standard columns', async function(assert) {
       await generateTable(this);
 
@@ -181,7 +200,7 @@ module('Integration | headers | reorder', function() {
     });
   });
 
-  componentModule('fixed columns', function() {
+  parameterizedComponentModule('fixed columns', USE_EMBER_ARRAY_PARAMETERS, function() {
     test('left fixed column can be reordered with other left fixed columns', async function(assert) {
       await generateTable(this, { columnOptions: { fixedLeftCount: 2 } });
 
@@ -290,7 +309,7 @@ module('Integration | headers | reorder', function() {
     });
   });
 
-  componentModule('subheaders', function() {
+  parameterizedComponentModule('subheaders', USE_EMBER_ARRAY_PARAMETERS, function() {
     test('subheaders can be reordered', async function(assert) {
       await generateTable(this, { columnCount: 1, columnOptions: { subcolumnCount: 2 } });
 

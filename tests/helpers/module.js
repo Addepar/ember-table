@@ -13,3 +13,22 @@ export function componentModule(moduleName, callback) {
 
   callback();
 }
+
+export function parameterizedComponentModule(moduleName, parameters, callback) {
+  Object.keys(parameters).forEach(key => {
+    let { values, hooks } = parameters[key];
+
+    for (let value of values) {
+      moduleForComponent('ember-table', `${moduleName} > params {${key}: ${value}}`, {
+        integration: true,
+        beforeEach() {
+          hooks.beforeEach && hooks.beforeEach(value);
+        },
+        afterEach() {
+          hooks.afterEach && hooks.afterEach(value);
+        },
+      });
+      callback();
+    }
+  });
+}

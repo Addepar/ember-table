@@ -1,14 +1,33 @@
 import { module, test } from 'ember-qunit';
 
-import { generateTable, generateColumns } from '../../../helpers/generate-table';
-import { componentModule } from '../../../helpers/module';
+import {
+  configureTableGeneration,
+  resetTableGenerationConfig,
+  generateTable,
+  generateColumns,
+} from '../../../helpers/generate-table';
+import { componentModule, parameterizedComponentModule } from '../../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 const table = new TablePage();
 
+const USE_EMBER_ARRAY_PARAMETERS = {
+  useEmberArray: {
+    values: [true, false],
+    hooks: {
+      beforeEach(value) {
+        configureTableGeneration({ useEmberArray: value });
+      },
+      afterEach() {
+        resetTableGenerationConfig();
+      },
+    },
+  },
+};
+
 module('Integration | header | resize', function() {
-  componentModule('basic', function() {
+  parameterizedComponentModule('basic', USE_EMBER_ARRAY_PARAMETERS, function() {
     test('basic', async function(assert) {
       await generateTable(this);
 
