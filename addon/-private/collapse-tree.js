@@ -163,8 +163,10 @@ export const TableRowMeta = EmberObject.extend({
       // Use a set to avoid item duplication
       let { _lastSelectedIndex } = tree;
 
-      let minIndex = Math.min(_lastSelectedIndex, rowIndex);
-      let maxIndex = Math.max(_lastSelectedIndex, rowIndex);
+      let isFirstIndexDefined = typeof _lastSelectedIndex === 'number';
+
+      let minIndex = isFirstIndexDefined ? Math.min(_lastSelectedIndex, rowIndex) : rowIndex;
+      let maxIndex = isFirstIndexDefined ? Math.max(_lastSelectedIndex, rowIndex) : rowIndex;
 
       for (let i = minIndex; i <= maxIndex; i++) {
         selection.add(tree.objectAt(i));

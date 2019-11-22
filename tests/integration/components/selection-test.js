@@ -115,12 +115,22 @@ module('Integration | selection', () => {
         assert.ok(table.validateSelected(), 'the rows are toggled back off');
       });
 
-      test('Can select a range with shift', async function(assert) {
+      test('Can select a range with shift from click', async function(assert) {
         await generateTable(this);
 
         assert.ok(table.validateSelected(), 'rows are not selected');
 
-        await table.selectRange(0, 2);
+        await table.selectRangeFromClick(0, 2);
+
+        assert.ok(table.validateSelected(0, 1, 2), 'rows are selected');
+      });
+
+      test('Can select a range with shift from shift-click', async function(assert) {
+        await generateTable(this);
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        await table.selectRangeFromShiftClick(0, 2);
 
         assert.ok(table.validateSelected(0, 1, 2), 'rows are selected');
       });
@@ -130,7 +140,7 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'rows are not selected');
 
-        await table.selectRange(3, 5);
+        await table.selectRangeFromClick(3, 5);
 
         assert.ok(table.validateSelected(3, 4, 5), 'rows are selected');
       });
@@ -144,7 +154,7 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(4), 'middle row selected');
 
-        await table.selectRange(3, 5);
+        await table.selectRangeFromClick(3, 5);
 
         assert.ok(table.validateSelected(3, 4, 5), 'all rows are selected');
       });
@@ -288,7 +298,7 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'no rows are not selected');
 
-        await table.selectRange(0, 3);
+        await table.selectRangeFromClick(0, 3);
 
         assert.ok(table.validateSelected(3), 'last row only is selected');
       });
@@ -473,7 +483,7 @@ module('Integration | selection', () => {
 
       assert.ok(table.validateSelected(), 'rows are not selected');
 
-      await table.selectRange(1, 3);
+      await table.selectRangeFromClick(1, 3);
 
       assert.ok(table.validateSelected(0, 1, 2, 3), 'row and its children are selected');
     });
@@ -487,7 +497,7 @@ module('Integration | selection', () => {
 
       assert.ok(table.validateSelected(), 'rows are not selected');
 
-      await table.selectRange(1, 3);
+      await table.selectRangeFromClick(1, 3);
 
       assert.ok(table.validateSelected(1, 2, 3), 'only children are selected');
     });

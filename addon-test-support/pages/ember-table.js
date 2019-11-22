@@ -66,13 +66,24 @@ export default PageObject.extend({
   },
 
   /**
-   * Selects a range of rows in the body
+   * Selects a range of rows in the body with simple click first
    *
    * @param {number} beginIndex
    * @param {number} endIndex
    */
-  async selectRange(beginIndex, endIndex) {
+  async selectRangeFromClick(beginIndex, endIndex) {
     await this.body.rows.objectAt(beginIndex).click();
+    await this.body.rows.objectAt(endIndex).clickWith({ shiftKey: true });
+  },
+
+  /**
+   * Selects a range of rows in the body with shift+click first
+   *
+   * @param {number} beginIndex
+   * @param {number} endIndex
+   */
+  async selectRangeFromShiftClick(beginIndex, endIndex) {
+    await this.body.rows.objectAt(beginIndex).clickWith({ shiftKey: true });
     await this.body.rows.objectAt(endIndex).clickWith({ shiftKey: true });
   },
 });
