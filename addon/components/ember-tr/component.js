@@ -80,6 +80,8 @@ export default Component.extend({
 
   rowSelectionMode: readOnly('api.rowSelectionMode'),
 
+  rowToggleMode: readOnly('api.rowToggleMode'),
+
   isHeader: readOnly('api.isHeader'),
 
   isSelected: readOnly('rowMeta.isSelected'),
@@ -100,7 +102,7 @@ export default Component.extend({
       let rowMeta = this.get('rowMeta');
 
       if (rowMeta && rowSelectionMode === SELECT_MODE.MULTIPLE) {
-        let toggle = event.ctrlKey || event.metaKey;
+        let toggle = event.ctrlKey || event.metaKey || this.get('rowToggleMode');
         let range = event.shiftKey;
 
         rowMeta.select({ toggle, range });

@@ -78,6 +78,14 @@ export default Component.extend({
   rowSelectionMode: defaultTo(SELECT_MODE.MULTIPLE),
 
   /**
+    When true, this option enables the toggling of rows without using the ctrlKey or metaKey.
+
+    @argument rowToggleMode
+    @type boolean
+  */
+  rowToggleMode: defaultTo(false),
+
+  /**
     When true, this option causes selecting all of a node's children to also
     select the node itself.
 

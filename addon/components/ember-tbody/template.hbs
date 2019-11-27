@@ -23,9 +23,9 @@
     rowMetaCache=this.rowMetaCache
 
     canSelect=this.canSelect
-    rowSelectionMode=this.rowSelectionMode
     checkboxSelectionMode=this.checkboxSelectionMode
-
+    rowSelectionMode=this.rowSelectionMode
+    rowToggleMode=this.rowToggleMode
     rowsCount=this.wrappedRows.length
 
     as |api|
@@ -36,6 +36,7 @@
         rowMeta=api.rowMeta
         cells=api.cells
         rowSelectionMode=api.rowSelectionMode
+        rowToggleMode=api.rowToggleMode
         rowsCount=api.rowsCount
 
         row=(component "ember-tr" api=api)

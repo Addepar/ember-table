@@ -43,6 +43,7 @@ export default Component.extend({
   columns: undefined,
   rowMetaCache: undefined,
   rowSelectionMode: undefined,
+  rowToggleMode: undefined,
   rowValue: undefined,
   rowsCount: undefined,
 
@@ -64,6 +65,7 @@ export default Component.extend({
     'cells',
     'canSelect',
     'rowSelectionMode',
+    'rowToggleMode',
     'rowsCount',
     function() {
       let rowValue = this.get('rowValue');
@@ -71,9 +73,10 @@ export default Component.extend({
       let cells = this.get('cells');
       let canSelect = this.get('canSelect');
       let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
+      let rowToggleMode = this.get('rowToggleMode');
       let rowsCount = this.get('rowsCount');
 
-      return { rowValue, rowMeta, cells, rowSelectionMode, rowsCount };
+      return { rowValue, rowMeta, cells, rowSelectionMode, rowToggleMode, rowsCount };
     }
   ),
 
