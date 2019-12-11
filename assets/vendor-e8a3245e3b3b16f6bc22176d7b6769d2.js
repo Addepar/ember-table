@@ -9782,18 +9782,18 @@ return Ember.get(this,"index")+1>=Ember.get(e,"length")?null:e.objectAt(Ember.ge
 if(!Ember.get(this,"isDestroying")&&!Ember.get(this,"isDestroyed")){var a=Ember.get(this,"_tree"),i=Ember.get(this,"_rowValue"),s=Ember.get(this,"index"),l=Ember.get(this,"isGroupSelected"),c=Ember.get(a,"selectingChildrenSelectsParent"),d=Ember.get(a,"rowMetaCache")
 if(t)return a._lastSelectedIndex=null,void a.sendAction("onSelect",i)
 var p=Ember.get(a,"selection"),f=Ember.isArray(p)?new Set(p):new Set
-if(r)for(var h=a._lastSelectedIndex,m=Math.min(h,s),v=Math.max(h,s),g=m;g<=v;g++)f.add(a.objectAt(g))
-else if(n)if(l){for(var b=this,y=i;Ember.get(b,"_parentMeta.isSelected");){b=Ember.get(b,"_parentMeta")
-for(var w=Ember.get(b,"depth")+1,_=Ember.get(b,"index"),k=void 0;k=a.objectAt(++_);)if(k!==y){var x=d.get(k),E=Ember.get(x,"depth")
-if(E<w)break
-E>w||f.add(k)}f.delete(y),y=Ember.get(b,"_rowValue")}f.delete(y)}else f.add(i)
+if(r)for(var h=a._lastSelectedIndex,m="number"==typeof h,v=m?Math.min(h,s):s,g=m?Math.max(h,s):s,b=v;b<=g;b++)f.add(a.objectAt(b))
+else if(n)if(l){for(var y=this,w=i;Ember.get(y,"_parentMeta.isSelected");){y=Ember.get(y,"_parentMeta")
+for(var _=Ember.get(y,"depth")+1,k=Ember.get(y,"index"),x=void 0;x=a.objectAt(++k);)if(x!==w){var E=d.get(x),S=Ember.get(E,"depth")
+if(S<_)break
+S>_||f.add(x)}f.delete(w),w=Ember.get(y,"_rowValue")}f.delete(w)}else f.add(i)
 else f.clear(),f.add(i)
-var S=function(e,t){for(var n=e.get("rowMetaCache"),r=[],a=!1,i=0,o=Array.from(t);i<o.length;i++){var s=o[i],l=n.get(s)
+var A=function(e,t){for(var n=e.get("rowMetaCache"),r=[],a=!1,i=0,o=Array.from(t);i<o.length;i++){var s=o[i],l=n.get(s)
 l||a||(u(e,e.get("rows")),a=!0,l=n.get(s)),!l&&a||r.push(l)}return r}(this.get("_tree"),f)
-if(c){var A=new Map,j=!0,M=!1,R=void 0
-try{for(var C,z=S[Symbol.iterator]();!(j=(C=z.next()).done);j=!0){var P=C.value,T=Ember.get(P,"_parentMeta._rowValue")
-if(T){var O=A.has(T)?A.get(T):0
-A.set(T,O+1)}}}catch(G){M=!0,R=G}finally{try{j||null==z.return||z.return()}finally{if(M)throw R}}(function e(t,n,r){var a=new Map
+if(c){var j=new Map,M=!0,R=!1,C=void 0
+try{for(var z,P=A[Symbol.iterator]();!(M=(z=P.next()).done);M=!0){var T=z.value,O=Ember.get(T,"_parentMeta._rowValue")
+if(O){var N=j.has(O)?j.get(O):0
+j.set(O,N+1)}}}catch(U){R=!0,C=U}finally{try{M||null==P.return||P.return()}finally{if(R)throw C}}(function e(t,n,r){var a=new Map
 var i=!0
 var s=!1
 var l=void 0
@@ -9801,9 +9801,9 @@ try{for(var u,c=n.entries()[Symbol.iterator]();!(i=(u=c.next()).done);i=!0){var 
 if(Ember.get(p,"children.length")===f){t.add(p)
 var h=r.get(p).get("_parentMeta._rowValue")
 if(h){var m=a.get(h)||n.get(h)||0
-a.set(h,m+1)}}}}catch(G){s=!0,l=G}finally{try{i||null==c.return||c.return()}finally{if(s)throw l}}a.size>0&&e(t,a,r)})(f,A,d)}var N=!0,L=!1,D=void 0
-try{for(var B,I=S[Symbol.iterator]();!(N=(B=I.next()).done);N=!0)for(var F=B.value,H=Ember.get(F,"_rowValue"),K=Ember.get(F,"_parentMeta");K;){if(f.has(Ember.get(K,"_rowValue"))){f.delete(H)
-break}K=Ember.get(K,"_parentMeta")}}catch(G){L=!0,D=G}finally{try{N||null==I.return||I.return()}finally{if(L)throw D}}f=Ember.A(Array.from(f)),a.sendAction("onSelect",f),a._lastSelectedIndex=s}},destroy:function(){this._super(),this._cellMetaCache.clear()}})
+a.set(h,m+1)}}}}catch(U){s=!0,l=U}finally{try{i||null==c.return||c.return()}finally{if(s)throw l}}a.size>0&&e(t,a,r)})(f,j,d)}var L=!0,D=!1,B=void 0
+try{for(var I,F=A[Symbol.iterator]();!(L=(I=F.next()).done);L=!0)for(var H=I.value,K=Ember.get(H,"_rowValue"),G=Ember.get(H,"_parentMeta");G;){if(f.has(Ember.get(G,"_rowValue"))){f.delete(K)
+break}G=Ember.get(G,"_parentMeta")}}catch(U){D=!0,B=U}finally{try{L||null==F.return||F.return()}finally{if(D)throw B}}f=Ember.A(Array.from(f)),a.sendAction("onSelect",f),a._lastSelectedIndex=s}},destroy:function(){this._super(),this._cellMetaCache.clear()}})
 function l(e,t,n,r){var i=Ember.get(e,"rowMetaCache"),o=(0,a.getOrCreate)(t,i,s),l=n?i.get(n):null
 Ember.set(o,"_tree",e),Ember.set(o,"_rowValue",t),Ember.set(o,"_parentMeta",l),r&&Ember.set(r,"rowMeta",o)}function u(e,t){var n=arguments.length>2&&void 0!==arguments[2]?arguments[2]:null,r=!0,a=!1,i=void 0
 try{for(var o,s=t[Symbol.iterator]();!(r=(o=s.next()).done);r=!0){var c=o.value
