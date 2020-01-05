@@ -3,7 +3,7 @@ import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 
 import { closest } from '../../-private/utils/element';
-
+import sendAction from '../../-private/utils/send-action';
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
@@ -119,12 +119,6 @@ export default Component.extend({
   sendEventAction(action, event) {
     let rowValue = this.get('rowValue');
     let rowMeta = this.get('rowMeta');
-
-    this.sendAction(action, {
-      event,
-
-      rowValue,
-      rowMeta,
-    });
+    sendAction(this, action, { event, rowValue, rowMeta });
   },
 });
