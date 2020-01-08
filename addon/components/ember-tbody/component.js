@@ -1,5 +1,6 @@
 import Component from '@ember/component';
 
+import { run } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
@@ -234,7 +235,9 @@ export default Component.extend({
   */
   canSelect: bool('onSelect'),
 
-  'data-test-row-count': readOnly('wrappedRows.length'),
+  dataTestRowCount: null,
+
+  'data-test-row-count': readOnly('dataTestRowCount'),
 
   init() {
     this._super(...arguments);
@@ -297,7 +300,7 @@ export default Component.extend({
 
   /**
     Computed property which updates the CollapseTree and erases caches. This is
-    a computed for 1.11 compatibility, otherwise it would make sense to use
+    a computed for 1.12 compatibility, otherwise it would make sense to use
     lifecycle hooks instead.
   */
   wrappedRows: computed('rows', function() {
@@ -305,6 +308,11 @@ export default Component.extend({
 
     this.collapseTree.set('rowMetaCache', this.rowMetaCache);
     this.collapseTree.set('rows', rows);
+
+    run.schedule('actions', () => {
+      // eslint-disable-next-line ember-best-practices/no-side-effect-cp
+      this.set('dataTestRowCount', this.get('wrappedRows.length')); // eslint-disable-line ember/no-side-effects
+    });
 
     return this.collapseTree;
   }),
