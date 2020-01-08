@@ -23,10 +23,12 @@ module.exports = {
         ],
       };
     }
-
     this.import('node_modules/css-element-queries/src/ResizeSensor.js', importOptions);
-
     this.import('node_modules/hammerjs/hammer.js', importOptions);
+
+    if (this.isDevelopingAddon()) {
+      this.import('vendor/ember/ember-template-compiler.js');
+    }
   },
 
   isDevelopingAddon() {

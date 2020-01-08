@@ -1,4 +1,5 @@
-import hbs from 'htmlbars-inline-precompile';
+import { SUPPORTS_CLOSURE_ACTIONS } from 'ember-compatibility-helpers';
+import { compileTemplate } from '@ember/template-compilation';
 import wait from 'ember-test-helpers/wait';
 import {
   configureTableGeneration,
@@ -10,7 +11,12 @@ import {
 // reexport for use in tests
 export { configureTableGeneration, resetTableGenerationConfig, generateColumns, generateRows };
 
-const fullTable = hbs`
+function actionString(actionName) {
+  let quotedActionName = `"${actionName}"`;
+  return SUPPORTS_CLOSURE_ACTIONS ? `(action ${quotedActionName})` : quotedActionName;
+}
+
+const fullTable = compileTemplate(`
   <div style="height: 500px;">
     {{#ember-table data-test-ember-table=true as |t|}}
       {{#ember-thead
@@ -66,9 +72,8 @@ const fullTable = hbs`
       }}
         {{#component rowComponent
           api=b
-
-          onClick="onRowClick"
-          onDoubleClick="onRowDoubleClick"
+          onClick=${actionString('onRowClick')}
+          onDoubleClick=${actionString('onRowDoubleClick')}
 
           as |r|
         }}
@@ -99,7 +104,7 @@ const fullTable = hbs`
       {{/ember-tfoot}}
     {{/ember-table}}
   </div>
-`;
+`);
 
 const defaultActions = {
   onSelect(newRows) {
