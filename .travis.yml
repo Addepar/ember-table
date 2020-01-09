@@ -66,7 +66,7 @@ before_install:
   - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
-  - yarn install --no-lockfile --non-interactive
+  - yarn install --no-lockfile --non-interactive --ignore-engines
 
 script:
   # Usually, it's ok to finish the test scenario without reverting
