@@ -11,7 +11,7 @@ import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 import defaultTo from '../../-private/utils/default-to';
 
 import layout from './template';
-import { assert } from '@ember/debug';
+import { assert, runInDebug } from '@ember/debug';
 
 /**
   The table body component. This component manages the main bulk of the rows of
@@ -258,10 +258,22 @@ export default Component.extend({
 
     this._updateCollapseTree();
 
+    runInDebug(() => {
+      let scheduleUpdate = (this._scheduleUpdate = () => {
+        run.scheduleOnce('actions', this, this._updateDataTestRowCount);
+      });
+      this.collapseTree.addObserver('rows', scheduleUpdate);
+      this.collapseTree.addObserver('[]', scheduleUpdate);
+    });
+
     assert(
       'You must create an {{ember-thead}} with columns before creating an {{ember-tbody}}',
       !!this.get('unwrappedApi.columnTree')
     );
+  },
+
+  _updateDataTestRowCount() {
+    this.set('dataTestRowCount', this.get('collapseTree.length'));
   },
 
   // eslint-disable-next-line
@@ -295,6 +307,10 @@ export default Component.extend({
       this.rowMetaCache.delete(row);
     }
 
+    runInDebug(() => {
+      this.collapseTree.removeObserver('rows', this._scheduleUpdate);
+      this.collapseTree.removeObserver('[]', this._scheduleUpdate);
+    });
     this.collapseTree.destroy();
   },
 
@@ -308,11 +324,6 @@ export default Component.extend({
 
     this.collapseTree.set('rowMetaCache', this.rowMetaCache);
     this.collapseTree.set('rows', rows);
-
-    run.schedule('actions', () => {
-      // eslint-disable-next-line ember-best-practices/no-side-effect-cp
-      this.set('dataTestRowCount', this.get('wrappedRows.length')); // eslint-disable-line ember/no-side-effects
-    });
 
     return this.collapseTree;
   }),
