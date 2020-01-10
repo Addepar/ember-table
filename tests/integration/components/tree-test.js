@@ -47,18 +47,21 @@ module('Integration | Tree', () => {
       await generateTable(this, { rowCount: 2, rowDepth: 2 });
 
       assert.equal(table.rows.length, 6, 'renders all rows');
+      assert.equal(table.body.rowCount, 6, 'total number of rows');
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
 
       // toggle a row
       await table.rows.objectAt(0).toggleCollapse();
       assert.equal(table.rows.length, 4, 'rows were removed');
+      assert.equal(table.body.rowCount, 4, 'total number of rows removed');
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '1A', 'correct cell rendered');
 
       // uncollapse
       await table.rows.objectAt(0).toggleCollapse();
       assert.equal(table.rows.length, 6, 'rows were removed');
+      assert.equal(table.body.rowCount, 6, 'total number of rows removed');
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
     });
