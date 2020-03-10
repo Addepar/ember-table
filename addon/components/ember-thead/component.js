@@ -104,6 +104,13 @@ export default Component.extend({
   enableResize: defaultTo(true),
 
   /**
+    Flag that toggles scroll indicator shadows
+    @argument enableScrollIndicator
+    @type boolean? (false)
+  */
+  enableScrollIndicator: defaultTo(false),
+
+  /**
     Sets which column resizing behavior to use. Possible values are `standard`
     (resizing a column pushes or pulls all other columns) and `fluid` (resizing a
     column subtracts width from neighboring columns).
