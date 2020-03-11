@@ -7,7 +7,7 @@ respective direction.
 
 {{#docs-demo as |demo|}}
   {{#demo.example name='scroll-indicators'}}
-    <div class="demo-container small">
+    <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-scroll-indicators.hbs }}
         <EmberTable as |t|>
           <t.head @columns={{columns}} @enableScrollIndicators={{true}} />
@@ -29,7 +29,7 @@ them when they are present or at the edges of the table when they are not.
 
 {{#docs-demo as |demo|}}
   {{#demo.example name='scroll-indicators-with-fixed'}}
-    <div class="demo-container small">
+    <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-scroll-indicators-with-fixed.hbs }}
         <EmberTable as |t|>
           <t.head @columns={{columnsWithFixed}} @enableScrollIndicators={{true}} />

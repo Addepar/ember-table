@@ -91,7 +91,7 @@ export default Component.extend({
     return {
       columns: null,
       registerColumnTree: this.registerColumnTree.bind(this),
-      tableId: this.elementId,
+      tableId: `${this.elementId}-overflow`,
     };
   }),
 

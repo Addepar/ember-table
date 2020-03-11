@@ -1,8 +1,11 @@
-<table>
-  {{yield (hash
-    api=api
-    head=(component "ember-thead" api=api)
-    body=(component "ember-tbody" api=api)
-    foot=(component "ember-tfoot" api=api)
-  )}}
-</table>
+<div class="ember-table-overflow" id="{{elementId}}-overflow">
+  <table>
+    {{yield (hash
+      api=api
+      head=(component "ember-thead" api=api)
+      body=(component "ember-tbody" api=api)
+      foot=(component "ember-tfoot" api=api)
+    )}}
+  </table>
+</div>
+{{-ember-table-private/scroll-indicators api=api}}
