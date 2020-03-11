@@ -105,10 +105,10 @@ export default Component.extend({
 
   /**
     Flag that toggles scroll indicator shadows
-    @argument enableScrollIndicator
+    @argument enableScrollIndicators
     @type boolean? (false)
   */
-  enableScrollIndicator: defaultTo(false),
+  enableScrollIndicators: defaultTo(false),
 
   /**
     Sets which column resizing behavior to use. Possible values are `standard`
