@@ -18,7 +18,6 @@ export default Component.extend({
   */
   api: null,
 
-  scrollElement: null,
   showLeft: true,
   showRight: false,
 
@@ -46,25 +45,29 @@ export default Component.extend({
 
   _addScrollListener() {
     this._boundOnScroll = this._onScroll.bind(this);
-    this.get('scrollElement').addEventListener('scroll', this._boundOnScroll);
+    this._getScrollElement().addEventListener('scroll', this._boundOnScroll);
+  },
+
+  _getScrollElement() {
+    return document.getElementById(this.get('tableScrollId'));
   },
 
   _removeScrollListener() {
-    this.get('scrollElement').removeEventListener('scroll', this._boundOnScroll);
+    this._getScrollElement().removeEventListener('scroll', this._boundOnScroll);
   },
 
   _onScroll(e) {
     this._updateIndicatorShow(e.target);
   },
 
-  _updateIndicatorShow(scrollElement) {
-    scrollElement = scrollElement || this.get('scrollElement');
+  _updateIndicatorShow() {
+    let scrollElement = this._getScrollElement();
     let scrollRect = scrollElement.getBoundingClientRect();
     let tableRect = scrollElement.querySelector('table').getBoundingClientRect();
     let xDiff = scrollRect.x - tableRect.x;
     let widthDiff = tableRect.width - scrollRect.width;
     this.set('showLeft', xDiff !== 0);
-    this.set('showRight', xDiff !== widthDiff);
+    this.set('showRight', widthDiff > 0 && xDiff !== widthDiff);
   },
 
   _updateScrollListener() {
@@ -75,15 +78,13 @@ export default Component.extend({
     }
   },
 
-  init() {
+  didInsertElement() {
     this._super(...arguments);
-    let scrollElement = document.getElementById(this.get('tableScrollId'));
-    this.set('scrollElement', scrollElement);
     this._updateIndicatorShow();
     if (this.get('enableScrollIndicators')) {
       this._addScrollListener();
     }
-    addObserver(this, 'columnTree.columns.@each.width', this._updateIndicatorShow);
+    addObserver(this, 'columnTree.root.width', this._updateIndicatorShow);
     addObserver(this, 'enableScrollIndicators', this._updateScrollListener);
   },
 
