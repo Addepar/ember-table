@@ -58,6 +58,7 @@ export default Component.extend({
   },
 
   _updateIndicatorShow(scrollElement) {
+    scrollElement = scrollElement || this.get('scrollElement');
     let scrollRect = scrollElement.getBoundingClientRect();
     let tableRect = scrollElement.querySelector('table').getBoundingClientRect();
     let xDiff = scrollRect.x - tableRect.x;
@@ -78,10 +79,11 @@ export default Component.extend({
     this._super(...arguments);
     let scrollElement = document.getElementById(this.get('tableScrollId'));
     this.set('scrollElement', scrollElement);
-    this._updateIndicatorShow(scrollElement);
+    this._updateIndicatorShow();
     if (this.get('enableScrollIndicators')) {
       this._addScrollListener();
     }
+    addObserver(this, 'columnTree.columns.@each.width', this._updateIndicatorShow);
     addObserver(this, 'enableScrollIndicators', this._updateScrollListener);
   },
 
