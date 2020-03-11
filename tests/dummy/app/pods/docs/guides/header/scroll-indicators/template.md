@@ -10,8 +10,10 @@ respective direction.
     <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-scroll-indicators.hbs }}
         <EmberTable as |t|>
-          <t.head @columns={{columns}} @enableScrollIndicators={{true}} />
-
+          <t.head
+            @columns={{columns}}
+            @enableScrollIndicators={{true}}
+          />
           <t.body @rows={{rows}} />
         </EmberTable>
       {{! END-SNIPPET }}
@@ -32,8 +34,10 @@ them when they are present or at the edges of the table when they are not.
     <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-scroll-indicators-with-fixed.hbs }}
         <EmberTable as |t|>
-          <t.head @columns={{columnsWithFixed}} @enableScrollIndicators={{true}} />
-
+          <t.head
+            @columns={{columnsWithFixed}}
+            @enableScrollIndicators={{true}}
+          />
           <t.body @rows={{rows}} />
         </EmberTable>
       {{! END-SNIPPET }}
