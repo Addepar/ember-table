@@ -1,9 +1,38 @@
+/* global ResizeSensor */
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
+import { bind } from '@ember/runloop';
 import { isEmpty } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
 import layout from './template';
+
+const indicatorStyle = side => {
+  return computed(
+    `columnTree.${side}FixedNodes.@each.width`,
+    'scrollRect',
+    'tableRect',
+    function() {
+      let style = [];
+
+      // left/right position
+      let fixedNodes = this.get(`columnTree.${side}FixedNodes`);
+      if (!isEmpty(fixedNodes)) {
+        let fixedWidth = fixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
+        style.push(`${side}:${fixedWidth}px;`);
+      }
+
+      // height
+      let scrollRect = this.get('scrollRect');
+      let tableRect = this.get('tableRect');
+      if (scrollRect && tableRect) {
+        style.push(`height:${Math.min(scrollRect.height, tableRect.height)}px;`);
+      }
+
+      return style.join('');
+    }
+  );
+};
 
 export default Component.extend({
   layout,
@@ -25,56 +54,45 @@ export default Component.extend({
   enableScrollIndicators: readOnly('api.enableScrollIndicators'),
   tableScrollId: readOnly('api.tableId'),
 
-  leftStyle: computed('columnTree.leftFixedNodes.@each.width', function() {
-    let leftFixedNodes = this.get('columnTree.leftFixedNodes');
-    if (isEmpty(leftFixedNodes)) {
-      return null;
-    }
-    let leftFixedWidth = leftFixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
-    return `left:${leftFixedWidth}px;`;
-  }),
+  leftStyle: indicatorStyle('left'),
+  rightStyle: indicatorStyle('right'),
 
-  rightStyle: computed('columnTree.rightFixedNodes.@each.width', function() {
-    let rightFixedNodes = this.get('columnTree.rightFixedNodes');
-    if (isEmpty(rightFixedNodes)) {
-      return null;
-    }
-    let rightFixedWidth = rightFixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
-    return `right:${rightFixedWidth}px;`;
-  }),
-
-  _addScrollListener() {
-    this._boundOnScroll = this._onScroll.bind(this);
-    this._getScrollElement().addEventListener('scroll', this._boundOnScroll);
+  _addListeners() {
+    this._onScroll = this._updateIndicatorShow.bind(this);
+    this._getScrollElement().addEventListener('scroll', this._onScroll);
+    this._resizeSensor = new ResizeSensor(this._getScrollElement(), bind(this, this._setRects));
   },
 
   _getScrollElement() {
     return document.getElementById(this.get('tableScrollId'));
   },
 
-  _removeScrollListener() {
-    this._getScrollElement().removeEventListener('scroll', this._boundOnScroll);
-  },
-
-  _onScroll(e) {
-    this._updateIndicatorShow(e.target);
-  },
-
-  _updateIndicatorShow() {
+  _setRects() {
     let scrollElement = this._getScrollElement();
     let scrollRect = scrollElement.getBoundingClientRect();
     let tableRect = scrollElement.querySelector('table').getBoundingClientRect();
+    this.set('scrollRect', scrollRect);
+    this.set('tableRect', tableRect);
+    return { scrollRect, tableRect };
+  },
+
+  _removeListeners() {
+    this._getScrollElement().removeEventListener('scroll', this._onScroll);
+  },
+
+  _updateIndicatorShow() {
+    let { scrollRect, tableRect } = this._setRects();
     let xDiff = scrollRect.x - tableRect.x;
     let widthDiff = tableRect.width - scrollRect.width;
     this.set('showLeft', xDiff !== 0);
     this.set('showRight', widthDiff > 0 && xDiff !== widthDiff);
   },
 
-  _updateScrollListener() {
+  _updateListeners() {
     if (this.get('enableScrollIndicators')) {
-      this._addScrollListener();
+      this._addListeners();
     } else {
-      this._removeScrollListener();
+      this._removeListeners();
     }
   },
 
@@ -82,15 +100,14 @@ export default Component.extend({
     this._super(...arguments);
     this._updateIndicatorShow();
     if (this.get('enableScrollIndicators')) {
-      this._addScrollListener();
+      this._addListeners();
     }
-    addObserver(this, 'columnTree.root.width', this._updateIndicatorShow);
-    addObserver(this, 'enableScrollIndicators', this._updateScrollListener);
+    addObserver(this, 'enableScrollIndicators', this._updateListeners);
   },
 
   willDestroy() {
     if (this.get('enableScrollIndicators')) {
-      this._removeScrollListener();
+      this._removeListeners();
     }
   },
 });
