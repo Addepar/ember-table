@@ -221,9 +221,10 @@ export default Component.extend({
     this._updateApi();
     this._updateColumnTree();
 
+    addObserver(this, 'enableScrollIndicators', this._updateApi);
+    addObserver(this, 'reorderFunction', this._updateApi);
     addObserver(this, 'sorts', this._updateApi);
     addObserver(this, 'sortFunction', this._updateApi);
-    addObserver(this, 'reorderFunction', this._updateApi);
 
     addObserver(this, 'sorts', this._updateColumnTree);
     addObserver(this, 'columns.[]', this._onColumnsChange);
@@ -239,10 +240,11 @@ export default Component.extend({
 
   _updateApi() {
     this.set('unwrappedApi.columnTree', this.columnTree);
-    this.set('unwrappedApi.sorts', this.get('sorts'));
-    this.set('unwrappedApi.sortFunction', this.get('sortFunction'));
     this.set('unwrappedApi.compareFunction', this.get('compareFunction'));
+    this.set('unwrappedApi.enableScrollIndicators', this.get('enableScrollIndicators'));
+    this.set('unwrappedApi.sorts', this.get('sorts'));
     this.set('unwrappedApi.sortEmptyLast', this.get('sortEmptyLast'));
+    this.set('unwrappedApi.sortFunction', this.get('sortFunction'));
   },
 
   _updateColumnTree() {
