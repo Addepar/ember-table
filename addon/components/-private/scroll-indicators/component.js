@@ -60,11 +60,17 @@ export default Component.extend({
   _addListeners() {
     this._onScroll = this._updateIndicatorShow.bind(this);
     this._getScrollElement().addEventListener('scroll', this._onScroll);
-    this._resizeSensor = new ResizeSensor(this._getScrollElement(), bind(this, this._setRects));
+    this._scrollElement = this._getScrollElement();
+    this._resizeSensor = new ResizeSensor(this._scrollElement, bind(this, this._setRects));
   },
 
   _getScrollElement() {
     return document.getElementById(this.get('tableScrollId'));
+  },
+
+  _removeListeners() {
+    this._getScrollElement().removeEventListener('scroll', this._onScroll);
+    this._resizeSensor.detach(this._scrollElement);
   },
 
   _setRects() {
@@ -73,15 +79,12 @@ export default Component.extend({
     let tableRect = scrollElement.querySelector('table').getBoundingClientRect();
     this.set('scrollRect', scrollRect);
     this.set('tableRect', tableRect);
-    return { scrollRect, tableRect };
-  },
-
-  _removeListeners() {
-    this._getScrollElement().removeEventListener('scroll', this._onScroll);
   },
 
   _updateIndicatorShow() {
-    let { scrollRect, tableRect } = this._setRects();
+    this._setRects();
+    let scrollRect = this.get('scrollRect');
+    let tableRect = this.get('tableRect');
     let xDiff = scrollRect.x - tableRect.x;
     let widthDiff = tableRect.width - scrollRect.width;
     this.set('showLeft', xDiff !== 0);
