@@ -60,8 +60,11 @@ export default Component.extend({
   _addListeners() {
     this._onScroll = this._updateIndicatorShow.bind(this);
     this._getScrollElement().addEventListener('scroll', this._onScroll);
-    this._scrollElement = this._getScrollElement();
-    this._resizeSensor = new ResizeSensor(this._scrollElement, bind(this, this._setRects));
+    this._tableElement = this._getScrollElement().querySelector('table');
+    this._resizeSensor = new ResizeSensor(
+      this._tableElement,
+      bind(this, this._updateIndicatorShow)
+    );
   },
 
   _getScrollElement() {
@@ -70,7 +73,7 @@ export default Component.extend({
 
   _removeListeners() {
     this._getScrollElement().removeEventListener('scroll', this._onScroll);
-    this._resizeSensor.detach(this._scrollElement);
+    this._resizeSensor.detach(this._tableElement);
   },
 
   _setRects() {
