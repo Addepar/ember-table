@@ -3,6 +3,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { bind } from '@ember/runloop';
+import { htmlSafe } from '@ember/template';
 import { isEmpty } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
 import layout from './template';
@@ -29,7 +30,7 @@ const indicatorStyle = side => {
         style.push(`height:${Math.min(scrollRect.height, tableRect.height)}px;`);
       }
 
-      return style.join('');
+      return htmlSafe(style.join(''));
     }
   );
 };
