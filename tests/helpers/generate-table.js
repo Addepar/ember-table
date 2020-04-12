@@ -29,8 +29,8 @@ const fullTable = hbs`
 
 
         onUpdateSorts="onUpdateSorts"
-        onReorder="onReorder"
-        onResize="onResize"
+        onReorder=(action "onReorder")
+        onResize=(action "onResize")
 
         as |h|
       }}
