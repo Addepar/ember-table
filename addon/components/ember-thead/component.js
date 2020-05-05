@@ -271,7 +271,7 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    this._container = closest(this.element, '.ember-table');
+    this._container = closest(this.element, '.ember-table-overflow');
 
     this.columnTree.registerContainer(this._container);
 

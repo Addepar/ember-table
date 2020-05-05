@@ -79,7 +79,7 @@ module('Integration | meta', function() {
       assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
 
-      await scrollTo('[data-test-ember-table]', 0, 100000);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 100000);
 
       assert.notOk(table.getCell(0, 0).text.includes('cell'), 'meta updated on scroll');
 
@@ -94,7 +94,7 @@ module('Integration | meta', function() {
       assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
 
-      await scrollTo('[data-test-ember-table]', 0, 0);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 0);
 
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta updated when scrolling back');
 
