@@ -1,8 +1,16 @@
 {{#if enableScrollIndicators}}
   {{#if showLeft}}
-    <div class="scroll-indicator scroll-indicator__left" style={{leftStyle}}></div>
+    <div
+      data-test-ember-table-scroll-indicator="left"
+      class="scroll-indicator scroll-indicator__left"
+      style={{leftStyle}}
+    ></div>
   {{/if}}
   {{#if showRight}}
-    <div class="scroll-indicator scroll-indicator__right" style={{rightStyle}}></div>
+    <div
+      data-test-ember-table-scroll-indicator="right"
+      class="scroll-indicator scroll-indicator__right"
+      style={{rightStyle}}
+    ></div>
   {{/if}}
 {{/if}}

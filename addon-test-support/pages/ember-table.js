@@ -48,6 +48,20 @@ export default PageObject.extend({
   },
 
   /**
+   * Returns the specified scroll indicator element
+   */
+  scrollIndicator(side = 'right') {
+    return findElement(this, `[data-test-ember-table-scroll-indicator="${side}"]`);
+  },
+
+  /**
+   * Returns whether the specified scroll indicator is currently visible
+   */
+  isScrollIndicatorRendered(side = 'right') {
+    return !!this.scrollIndicator(side);
+  },
+
+  /**
    * Selects a row in the body
    *
    * @param {number} index
