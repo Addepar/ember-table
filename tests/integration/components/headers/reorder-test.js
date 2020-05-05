@@ -104,13 +104,13 @@ module('Integration | headers | reorder', function() {
       let columnCount = 20;
       await generateTable(this, { columnCount });
 
-      let tableContainer = find('.ember-table');
+      let tableOverflowContainer = find('[data-test-ember-table-overflow]');
       let header = findAll('th')[columnCount - 1];
 
-      await scrollTo(tableContainer, 10000, 0);
+      await scrollTo(tableOverflowContainer, 10000, 0);
       await reorderToLeftEdge(header);
 
-      assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
+      assert.equal(tableOverflowContainer.scrollLeft, 0, 'table scrolled back to the left');
       assert.equal(table.headers.objectAt(0).text, toBase26(columnCount - 1), 'table scrolled');
     });
 
@@ -298,13 +298,13 @@ module('Integration | headers | reorder', function() {
         },
       });
 
-      let tableContainer = find('.ember-table');
+      let tableOverflowContainer = find('[data-test-ember-table-overflow]');
       let header = findAll('th')[columnCount - 1];
 
-      await scrollTo(tableContainer, 10000, 0);
+      await scrollTo(tableOverflowContainer, 10000, 0);
       await reorderToLeftEdge(header, columnWidth);
 
-      assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
+      assert.equal(tableOverflowContainer.scrollLeft, 0, 'table scrolled back to the left');
       assert.equal(table.headers.objectAt(1).text, toBase26(columnCount - 1), 'table scrolled');
     });
   });
