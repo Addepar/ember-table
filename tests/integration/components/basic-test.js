@@ -146,21 +146,21 @@ module('Integration | basic', function() {
       validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
 
-      await scrollTo('[data-test-ember-table]', 10000, 0);
+      await scrollTo('[data-test-ember-table-overflow]', 10000, 0);
 
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
       validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
 
-      await scrollTo('[data-test-ember-table]', 10000, 10000);
+      await scrollTo('[data-test-ember-table-overflow]', 10000, 10000);
 
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
       validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
 
-      await scrollTo('[data-test-ember-table]', 0, 10000);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 10000);
 
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
