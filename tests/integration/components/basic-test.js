@@ -79,7 +79,7 @@ module('Integration | basic', function() {
       );
 
       // scroll all the way down
-      await scrollTo('[data-test-ember-table]', 0, 10000);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 10000);
 
       assert.notEqual(
         table.getCell(0, 0).text.trim(),
