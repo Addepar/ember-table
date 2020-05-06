@@ -118,5 +118,130 @@ module('Integration | scroll indicators', function() {
       );
       assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
     });
+
+    test('right scroll indicators accounts for scrollbar when determining positioning', async function(assert) {
+      this.set('enableScrollIndicators', true);
+      await generateTable(this, {
+        columnCount: 30,
+        rowCount: 100, // add rows to get overflow-y
+        columnOptions: {
+          width: 100,
+        },
+      });
+
+      /**
+       * Use a threshold instead of direct equality
+       * based on the test environment the window scrollbar size will vary due to scale/zoom
+       */
+      function isOffsetAbove(side, minDistance) {
+        let element = table.scrollIndicator(side);
+        let calculatedDistance = Number(getComputedStyle(element)[side].replace('px', ''));
+        return calculatedDistance > minDistance;
+      }
+
+      assert.equal(
+        table.isScrollIndicatorRendered('right'),
+        true,
+        'right scroll indicator is initially shown'
+      );
+
+      assert.equal(
+        table.isScrollIndicatorRendered('left'),
+        false,
+        'left scroll indicator is not initially shown'
+      );
+
+      // a little scroll
+      await scrollTo('[data-test-ember-table-overflow]', 150, 0);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('left'),
+        true,
+        'left scroll indicator is shown after scrolling'
+      );
+
+      assert.ok(
+        isOffsetAbove('right', 0),
+        'right scrollbar is offset by the width of the scrollbar'
+      );
+
+      // scroll to the end
+      await scrollTo('[data-test-ember-table-overflow]', 9999999, 0);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('right'),
+        false,
+        'right scroll indicator is not shown at end of scroll'
+      );
+
+      assert.equal(
+        table.isScrollIndicatorRendered('left'),
+        true,
+        'left scroll indicator is shown at end of scroll'
+      );
+    });
+
+    test('right scroll indicator account for scrollbar in conjunction with frozen rows', async function(assert) {
+      this.set('enableScrollIndicators', true);
+      await generateTable(this, {
+        columnCount: 30,
+        rowCount: 357,
+        columnOptions: {
+          fixedLeftCount: 1,
+          fixedRightCount: 1,
+          width: 100,
+        },
+      });
+
+      /**
+       * Use a threshold instead of direct equality
+       * based on the test environment the window scrollbar size will vary due to scale/zoom
+       */
+      function isOffsetAbove(side, minDistance) {
+        let element = table.scrollIndicator(side);
+        let calculatedDistance = Number(getComputedStyle(element)[side].replace('px', ''));
+        return calculatedDistance > minDistance;
+      }
+
+      assert.equal(
+        table.isScrollIndicatorRendered('right'),
+        true,
+        'right scroll indicator is initially shown'
+      );
+
+      assert.equal(
+        table.isScrollIndicatorRendered('left'),
+        false,
+        'left scroll indicator is not initially shown'
+      );
+
+      // a little scroll
+      await scrollTo('[data-test-ember-table-overflow]', 150, 0);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('left'),
+        true,
+        'left scroll indicator is shown after scrolling'
+      );
+
+      assert.ok(
+        isOffsetAbove('right', 100),
+        'right scrollbar is offset by the width of the scrollbar'
+      );
+
+      // scroll to the end
+      await scrollTo('[data-test-ember-table-overflow]', 9999999, 0);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('right'),
+        false,
+        'right scroll indicator is not shown at end of scroll'
+      );
+      assert.equal(
+        table.isScrollIndicatorRendered('left'),
+        true,
+        'left scroll indicator is shown at end of scroll'
+      );
+    });
   });
 });

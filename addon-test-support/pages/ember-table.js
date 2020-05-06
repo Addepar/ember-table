@@ -41,6 +41,14 @@ export default PageObject.extend({
   },
 
   /**
+   * Gets the width of overflow scrollbar-y in pixels
+   */
+  get scrollbarWidth() {
+    let scrollContainer = findElement(this, '[data-test-ember-table-overflow]');
+    return scrollContainer.offsetWidth - scrollContainer.clientWidth;
+  },
+
+  /**
    * Returns the table container width.
    */
   get containerWidth() {
