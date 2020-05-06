@@ -7,6 +7,7 @@ import { htmlSafe } from '@ember/template';
 import { isEmpty } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
 import layout from './template';
+import { getScale } from 'ember-table/-private/utils/element';
 
 const indicatorStyle = side => {
   return computed(
@@ -18,9 +19,12 @@ const indicatorStyle = side => {
 
       // left/right position
       let fixedNodes = this.get(`columnTree.${side}FixedNodes`);
+      let scrollbarOffsets = { left: 0, right: this.get('scrollbarOffset') };
       if (!isEmpty(fixedNodes)) {
         let fixedWidth = fixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
-        style.push(`${side}:${fixedWidth}px;`);
+        style.push(`${side}:${fixedWidth + scrollbarOffsets[side]}px;`);
+      } else {
+        style.push(`${side}:${scrollbarOffsets[side]}px;`);
       }
 
       // height
@@ -86,18 +90,24 @@ export default Component.extend({
     let scrollElement = this._getScrollElement();
     let scrollRect = scrollElement.getBoundingClientRect();
     let tableRect = scrollElement.querySelector('table').getBoundingClientRect();
+    let tableScale = 1 / getScale(scrollElement);
+    let scrollbarOffset = (scrollElement.offsetWidth - scrollElement.clientWidth) * tableScale;
+    this.set('scale', tableScale);
     this.set('scrollRect', scrollRect);
     this.set('tableRect', tableRect);
+    this.set('scrollbarOffset', scrollbarOffset);
   },
 
   _updateIndicatorShow() {
     this._setRects();
     let scrollRect = this.get('scrollRect');
     let tableRect = this.get('tableRect');
+    let scrollbarOffset = this.get('scrollbarOffset');
+
     let xDiff = scrollRect.x - tableRect.x;
     let widthDiff = tableRect.width - scrollRect.width;
     this.set('showLeft', xDiff !== 0);
-    this.set('showRight', widthDiff > 0 && xDiff !== widthDiff);
+    this.set('showRight', widthDiff > 0 && xDiff - scrollbarOffset !== widthDiff);
   },
 
   _updateListeners() {
