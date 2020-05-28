@@ -63,14 +63,14 @@ export default Component.extend({
     @argument onClick
     @type Action?
   */
-  onClick: null,
+  onClick: () => {},
 
   /**
     Action sent when the user double clicks this element
     @argument onDoubleClick
     @type Action?
   */
-  onDoubleClick: null,
+  onDoubleClick: () => {},
 
   rowValue: readOnly('api.rowValue'),
 
@@ -109,14 +109,13 @@ export default Component.extend({
       }
     }
 
-    this.sendEventAction('onClick', event);
+    let rowValue = this.get('rowValue');
+    let rowMeta = this.get('rowMeta');
+
+    this.onClick({ event, rowValue, rowMeta });
   },
 
   doubleClick(event) {
-    this.sendEventAction('onDoubleClick', event);
-  },
-
-  sendEventAction(action, event) {
     let rowValue = this.get('rowValue');
     let rowMeta = this.get('rowMeta');
 

@@ -1,27 +1,23 @@
-{{#vertical-collection wrappedRows
+{{#vertical-collection
+  wrappedRows
   containerSelector=_containerSelector
-
   estimateHeight=estimateRowHeight
   key=key
   staticHeight=staticHeight
   bufferSize=bufferSize
   renderAll=renderAll
-
   firstReached=firstReached
   lastReached=lastReached
   firstVisibleChanged=firstVisibleChanged
   lastVisibleChanged=lastVisibleChanged
-  idForFirstItem=idForFirstItem
-
-  as |rowValue|
+  idForFirstItem=idForFirstItem as |rowValue|
 }}
   {{#-ember-table-private/row-wrapper
     rowValue=rowValue
+    checkboxComponent=this.unwrappedApi.checkboxComponent
     columns=columns
-
     columnMetaCache=columnMetaCache
     rowMetaCache=rowMetaCache
-
     canSelect=canSelect
     rowSelectionMode=rowSelectionMode
     checkboxSelectionMode=checkboxSelectionMode
@@ -44,7 +40,6 @@
       {{ember-tr api=api}}
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
-
 {{else if shouldYieldToInverse}}
   {{yield to='inverse'}}
 {{/vertical-collection}}
