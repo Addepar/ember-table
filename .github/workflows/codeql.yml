@@ -4,7 +4,8 @@ on:
   push:
   pull_request:
   schedule:
-    - cron: '0 19 * * 0'
+    # Every Monday at 1pm
+    - cron: '0 13 * * 1'
 
 jobs:
   CodeQL-Build:
