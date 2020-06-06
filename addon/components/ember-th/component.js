@@ -1,12 +1,14 @@
 /* global Hammer */
 import BaseTableCell from '../-private/base-table-cell';
 import { next } from '@ember/runloop';
+import { get } from '@ember/object';
 
 import { readOnly } from '@ember/object/computed';
 import { closest } from '../../-private/utils/element';
 
 import layout from './template';
-import { get } from '@ember/object';
+
+import { gte } from 'ember-compatibility-helpers';
 
 const COLUMN_INACTIVE = 0;
 const COLUMN_RESIZING = 1;
@@ -128,7 +130,13 @@ export default BaseTableCell.extend({
 
   actions: {
     sendDropdownAction(...args) {
-      this.sendAction('onDropdownAction', ...args);
+      if (gte('1.13.0')) {
+        if (get(this, 'onDropdownAction')) {
+          get(this, 'onDropdownAction')(...args);
+        }
+      } else {
+        this.sendAction('onDropdownAction', ...args);
+      }
     },
   },
 
@@ -144,7 +152,14 @@ export default BaseTableCell.extend({
   },
 
   contextMenu(event) {
-    this.sendAction('onContextMenu', event);
+    if (gte('1.13.0')) {
+      if (get(this, 'onContextMenu')) {
+        get(this, 'onContextMenu')(event);
+      }
+    } else {
+      this.sendAction('onContextMenu', event);
+    }
+
     return false;
   },
 

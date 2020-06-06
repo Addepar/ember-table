@@ -4,6 +4,7 @@ import { componentModule } from '../../helpers/module';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import { generateTable } from '../../helpers/generate-table';
+import defineAction from '../../helpers/define-action';
 import { generateRows } from 'dummy/utils/generators';
 import { A as emberA } from '@ember/array';
 import { run } from '@ember/runloop';
@@ -184,7 +185,7 @@ module('Integration | selection', () => {
       });
 
       test('selecting a child and then a parent dedupes selected rows correctly', async function(assert) {
-        this.on('onSelect', selection => {
+        defineAction(this, 'onSelect', selection => {
           assert.equal(selection.length, 1, 'correct number of rows selected');
 
           this.set('selection', selection);
@@ -306,7 +307,7 @@ module('Integration | selection', () => {
       test('selection is a single row', async function(assert) {
         assert.expect(1);
 
-        this.on('onSelect', selection => {
+        defineAction(this, 'onSelect', selection => {
           assert.ok(!Array.isArray(selection), 'selection is not an array');
         });
 
@@ -433,7 +434,7 @@ module('Integration | selection', () => {
       test('selection is an array', async function(assert) {
         assert.expect(1);
 
-        this.on('onSelect', selection => {
+        defineAction(this, 'onSelect', selection => {
           assert.ok(Array.isArray(selection), 'selection is an array');
         });
 
@@ -461,7 +462,7 @@ module('Integration | selection', () => {
     test('Can disable selection by not using an action', async function(assert) {
       assert.expect(3);
 
-      this.on('onSelect', () => {
+      defineAction(this, 'onSelect', () => {
         assert.ok(true, 'select called');
       });
 

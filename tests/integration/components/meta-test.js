@@ -3,8 +3,10 @@ import wait from 'ember-test-helpers/wait';
 import { module, test } from 'ember-qunit';
 import { set } from '@ember/object';
 import { scrollTo } from 'ember-native-dom-helpers';
+import { gte } from 'ember-compatibility-helpers';
 
 import { generateTableValues } from '../../helpers/generate-table';
+import defineAction from '../../helpers/define-action';
 import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -15,7 +17,7 @@ let otherTable = new TablePage('[data-test-other-table]');
 module('Integration | meta', function() {
   componentModule('basic', function() {
     test('meta caches work', async function(assert) {
-      this.on('onClick', ({ cellMeta, rowMeta, columnMeta }) => {
+      defineAction(this, 'onClick', ({ cellMeta, rowMeta, columnMeta }) => {
         set(cellMeta, 'wasClicked', true);
         set(columnMeta, 'wasClicked', true);
         set(rowMeta, 'wasClicked', true);
@@ -23,45 +25,87 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { rowCount: 100, footerRowCount: 1 });
 
-      this.render(hbs`
-        <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
-            {{#ember-thead api=t columns=columns as |h|}}
-              {{#ember-tr api=h as |r|}}
-                {{#ember-th api=r as |column columnMeta|}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  clicked
-                {{/ember-th}}
-              {{/ember-tr}}
-            {{/ember-thead}}
+      if (gte('1.13.0')) {
+        this.render(hbs`
+          <div style="height: 500px;">
+            {{#ember-table data-test-main-table=true as |t|}}
+              {{#ember-thead api=t columns=columns as |h|}}
+                {{#ember-tr api=h as |r|}}
+                  {{#ember-th api=r as |column columnMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-th}}
+                {{/ember-tr}}
+              {{/ember-thead}}
 
-            {{#ember-tbody api=t rows=rows as |b|}}
-              {{#ember-tr api=b as |r|}}
-                {{#ember-td
-                  api=r
-                  onClick="onClick"
+              {{#ember-tbody api=t rows=rows as |b|}}
+                {{#ember-tr api=b as |r|}}
+                  {{#ember-td
+                    api=r
+                    onClick=(action onClick)
 
-                  as |value column row cellMeta columnMeta rowMeta|
-                }}
-                  {{#if cellMeta.wasClicked}}cell{{/if}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  {{#if rowMeta.wasClicked}}row{{/if}}
-                  clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tbody}}
+                    as |value column row cellMeta columnMeta rowMeta|
+                  }}
+                    {{#if cellMeta.wasClicked}}cell{{/if}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    {{#if rowMeta.wasClicked}}row{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
-              {{#ember-tr api=f as |r|}}
-                {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tfoot}}
-          {{/ember-table}}
-        </div>
-      `);
+              {{#ember-tfoot api=t rows=footerRows as |f|}}
+                {{#ember-tr api=f as |r|}}
+                  {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tfoot}}
+            {{/ember-table}}
+          </div>
+        `);
+      } else {
+        this.render(hbs`
+          <div style="height: 500px;">
+            {{#ember-table data-test-main-table=true as |t|}}
+              {{#ember-thead api=t columns=columns as |h|}}
+                {{#ember-tr api=h as |r|}}
+                  {{#ember-th api=r as |column columnMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-th}}
+                {{/ember-tr}}
+              {{/ember-thead}}
+
+              {{#ember-tbody api=t rows=rows as |b|}}
+                {{#ember-tr api=b as |r|}}
+                  {{#ember-td
+                    api=r
+                    onClick="onClick"
+
+                    as |value column row cellMeta columnMeta rowMeta|
+                  }}
+                    {{#if cellMeta.wasClicked}}cell{{/if}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    {{#if rowMeta.wasClicked}}row{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tbody}}
+
+              {{#ember-tfoot api=t rows=footerRows as |f|}}
+                {{#ember-tr api=f as |r|}}
+                  {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tfoot}}
+            {{/ember-table}}
+          </div>
+        `);
+      }
 
       await wait();
       await table.getCell(0, 0).click();
@@ -111,7 +155,7 @@ module('Integration | meta', function() {
     });
 
     test('meta caches are unique per table instance', async function(assert) {
-      this.on('onClick', ({ cellMeta, rowMeta, columnMeta }) => {
+      defineAction(this, 'onClick', ({ cellMeta, rowMeta, columnMeta }) => {
         set(cellMeta, 'wasClicked', true);
         set(columnMeta, 'wasClicked', true);
         set(rowMeta, 'wasClicked', true);
@@ -119,83 +163,163 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { rowCount: 100, footerRowCount: 1 });
 
-      this.render(hbs`
-        <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
-            {{#ember-thead api=t columns=columns as |h|}}
-              {{#ember-tr api=h as |r|}}
-                {{#ember-th api=r as |column columnMeta|}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  clicked
-                {{/ember-th}}
-              {{/ember-tr}}
-            {{/ember-thead}}
+      if (gte('1.13.0')) {
+        this.render(hbs`
+          <div style="height: 500px;">
+            {{#ember-table data-test-main-table=true as |t|}}
+              {{#ember-thead api=t columns=columns as |h|}}
+                {{#ember-tr api=h as |r|}}
+                  {{#ember-th api=r as |column columnMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-th}}
+                {{/ember-tr}}
+              {{/ember-thead}}
 
-            {{#ember-tbody api=t rows=rows as |b|}}
-              {{#ember-tr api=b as |r|}}
-                {{#ember-td
-                  api=r
-                  onClick="onClick"
+              {{#ember-tbody api=t rows=rows as |b|}}
+                {{#ember-tr api=b as |r|}}
+                  {{#ember-td
+                    api=r
+                    onClick=(action onClick)
 
-                  as |value column row cellMeta columnMeta rowMeta|
-                }}
-                  {{#if cellMeta.wasClicked}}cell{{/if}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  {{#if rowMeta.wasClicked}}row{{/if}}
-                  clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tbody}}
+                    as |value column row cellMeta columnMeta rowMeta|
+                  }}
+                    {{#if cellMeta.wasClicked}}cell{{/if}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    {{#if rowMeta.wasClicked}}row{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
-              {{#ember-tr api=f as |r|}}
-                {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tfoot}}
-          {{/ember-table}}
-        </div>
+              {{#ember-tfoot api=t rows=footerRows as |f|}}
+                {{#ember-tr api=f as |r|}}
+                  {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tfoot}}
+            {{/ember-table}}
+          </div>
 
-        <div style="height: 500px;">
-          {{#ember-table data-test-other-table=true as |t|}}
-            {{#ember-thead api=t columns=columns as |h|}}
-              {{#ember-tr api=h as |r|}}
-                {{#ember-th api=r as |column columnMeta|}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  clicked
-                {{/ember-th}}
-              {{/ember-tr}}
-            {{/ember-thead}}
+          <div style="height: 500px;">
+            {{#ember-table data-test-other-table=true as |t|}}
+              {{#ember-thead api=t columns=columns as |h|}}
+                {{#ember-tr api=h as |r|}}
+                  {{#ember-th api=r as |column columnMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-th}}
+                {{/ember-tr}}
+              {{/ember-thead}}
 
-            {{#ember-tbody api=t rows=rows as |b|}}
-              {{#ember-tr api=b as |r|}}
-                {{#ember-td
-                  api=r
-                  onClick="onClick"
+              {{#ember-tbody api=t rows=rows as |b|}}
+                {{#ember-tr api=b as |r|}}
+                  {{#ember-td
+                    api=r
+                    onClick=(action onClick)
 
-                  as |value column row cellMeta columnMeta rowMeta|
-                }}
-                  {{#if cellMeta.wasClicked}}cell{{/if}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  {{#if rowMeta.wasClicked}}row{{/if}}
-                  clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tbody}}
+                    as |value column row cellMeta columnMeta rowMeta|
+                  }}
+                    {{#if cellMeta.wasClicked}}cell{{/if}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    {{#if rowMeta.wasClicked}}row{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
-              {{#ember-tr api=f as |r|}}
-                {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
-                  {{#if columnMeta.wasClicked}}column{{/if}}
-                  clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tfoot}}
-          {{/ember-table}}
-        </div>
-      `);
+              {{#ember-tfoot api=t rows=footerRows as |f|}}
+                {{#ember-tr api=f as |r|}}
+                  {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tfoot}}
+            {{/ember-table}}
+          </div>
+        `);
+      } else {
+        this.render(hbs`
+          <div style="height: 500px;">
+            {{#ember-table data-test-main-table=true as |t|}}
+              {{#ember-thead api=t columns=columns as |h|}}
+                {{#ember-tr api=h as |r|}}
+                  {{#ember-th api=r as |column columnMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-th}}
+                {{/ember-tr}}
+              {{/ember-thead}}
+
+              {{#ember-tbody api=t rows=rows as |b|}}
+                {{#ember-tr api=b as |r|}}
+                  {{#ember-td
+                    api=r
+                    onClick="onClick"
+
+                    as |value column row cellMeta columnMeta rowMeta|
+                  }}
+                    {{#if cellMeta.wasClicked}}cell{{/if}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    {{#if rowMeta.wasClicked}}row{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tbody}}
+
+              {{#ember-tfoot api=t rows=footerRows as |f|}}
+                {{#ember-tr api=f as |r|}}
+                  {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tfoot}}
+            {{/ember-table}}
+          </div>
+
+          <div style="height: 500px;">
+            {{#ember-table data-test-other-table=true as |t|}}
+              {{#ember-thead api=t columns=columns as |h|}}
+                {{#ember-tr api=h as |r|}}
+                  {{#ember-th api=r as |column columnMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-th}}
+                {{/ember-tr}}
+              {{/ember-thead}}
+
+              {{#ember-tbody api=t rows=rows as |b|}}
+                {{#ember-tr api=b as |r|}}
+                  {{#ember-td
+                    api=r
+                    onClick="onClick"
+
+                    as |value column row cellMeta columnMeta rowMeta|
+                  }}
+                    {{#if cellMeta.wasClicked}}cell{{/if}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    {{#if rowMeta.wasClicked}}row{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tbody}}
+
+              {{#ember-tfoot api=t rows=footerRows as |f|}}
+                {{#ember-tr api=f as |r|}}
+                  {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+                    {{#if columnMeta.wasClicked}}column{{/if}}
+                    clicked
+                  {{/ember-td}}
+                {{/ember-tr}}
+              {{/ember-tfoot}}
+            {{/ember-table}}
+          </div>
+        `);
+      }
 
       await wait();
       await table.getCell(0, 0).click();

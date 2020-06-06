@@ -5,6 +5,7 @@ import {
   configureTableGeneration,
   resetTableGenerationConfig,
 } from '../../helpers/generate-table';
+import defineAction from '../../helpers/define-action';
 import { parameterizedComponentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -43,7 +44,7 @@ module('Integration | row', function() {
     });
 
     test('sends onClick action', async function(assert) {
-      this.on('onRowClick', ({ event, rowValue, rowMeta }) => {
+      defineAction(this, 'onRowClick', ({ event, rowValue, rowMeta }) => {
         assert.ok(event, 'event sent');
         assert.ok(rowValue, 'rowValue sent');
         assert.ok(rowMeta, 'rowMeta sent');
@@ -54,7 +55,7 @@ module('Integration | row', function() {
     });
 
     test('sends onDoubleClick action', async function(assert) {
-      this.on('onRowDoubleClick', ({ event, rowValue, rowMeta }) => {
+      defineAction(this, 'onRowDoubleClick', ({ event, rowValue, rowMeta }) => {
         assert.ok(event, 'event sent');
         assert.ok(rowValue, 'rowValue sent');
         assert.ok(rowMeta, 'rowMeta sent');

@@ -1,6 +1,7 @@
 import { module, test } from 'ember-qunit';
 
 import { generateTable } from '../../helpers/generate-table';
+import defineAction from '../../helpers/define-action';
 import { componentModule } from '../../helpers/module';
 
 import { findAll } from 'ember-native-dom-helpers';
@@ -131,7 +132,7 @@ module('Integration | sort', function() {
     });
 
     test('sends the onUpdateSorts action', async function(assert) {
-      this.on('onUpdateSorts', sorts => {
+      defineAction(this, 'onUpdateSorts', sorts => {
         assert.equal(sorts.length, 1);
         assert.equal(sorts[0].valuePath, 'name');
         assert.equal(sorts[0].isAscending, false);

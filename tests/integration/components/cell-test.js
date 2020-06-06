@@ -2,6 +2,7 @@ import { module, test } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 import { generateTable, generateColumns } from '../../helpers/generate-table';
+import defineAction from '../../helpers/define-action';
 import { componentModule } from '../../helpers/module';
 import { set, get } from '@ember/object';
 
@@ -16,7 +17,8 @@ let table = new TablePage();
 module('Integration | cell', function() {
   componentModule('basic', function() {
     test('sends onClick action', async function(assert) {
-      this.on(
+      defineAction(
+        this,
         'onCellClick',
         ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
           assert.ok(event, 'event sent');
@@ -37,7 +39,8 @@ module('Integration | cell', function() {
     });
 
     test('sends onDoubleClick action', async function(assert) {
-      this.on(
+      defineAction(
+        this,
         'onCellDoubleClick',
         ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
           assert.ok(event, 'event sent');

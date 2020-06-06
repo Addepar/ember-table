@@ -5,24 +5,42 @@
         class="et-toggle-select {{unless shouldShowCheckbox 'et-speech-only'}}"
         data-test-select-row-container
       >
-        {{-ember-table-private/simple-checkbox
-          data-test-select-row=true
-          checked=rowMeta.isGroupSelected
-          onClick="onSelectionToggled"
-          ariaLabel="Select row"
-        }}
+        {{#if closureActions}}
+          {{-ember-table-private/simple-checkbox
+            data-test-select-row=true
+            checked=rowMeta.isGroupSelected
+            onClick=(action "onSelectionToggled")
+            ariaLabel="Select row"
+          }}
+        {{else}}
+          {{-ember-table-private/simple-checkbox
+            data-test-select-row=true
+            checked=rowMeta.isGroupSelected
+            onClick="onSelectionToggled"
+            ariaLabel="Select row"
+          }}
+        {{/if}}
         <span></span>
       </span>
     {{/if}}
 
     {{#if canCollapse}}
       <span class="et-toggle-collapse et-depth-indent {{depthClass}}">
-        {{-ember-table-private/simple-checkbox
-          data-test-collapse-row=true
-          checked=rowMeta.isCollapsed
-          onChange="onCollapseToggled"
-          ariaLabel="Collapse row"
-        }}
+        {{#if closureActions}}
+          {{-ember-table-private/simple-checkbox
+              data-test-collapse-row=true
+              checked=rowMeta.isCollapsed
+              onChange=(action "onCollapseToggled")
+              ariaLabel="Collapse row"
+          }}
+        {{else}}
+          {{-ember-table-private/simple-checkbox
+            data-test-collapse-row=true
+            checked=rowMeta.isCollapsed
+            onChange="onCollapseToggled"
+            ariaLabel="Collapse row"
+          }}
+        {{/if}}
         <span></span>
       </span>
     {{else}}

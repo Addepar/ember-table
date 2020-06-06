@@ -6,6 +6,8 @@ import { alias, readOnly } from '@ember/object/computed';
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
+import { gte } from 'ember-compatibility-helpers';
+
 /**
  The table cell component. This component manages cell level concerns, yields
  the cell value, column value, row value, and all of their associated meta
@@ -83,6 +85,10 @@ export default BaseTableCell.extend({
   checkboxSelectionMode: readOnly('unwrappedApi.checkboxSelectionMode'),
 
   canCollapse: readOnly('rowMeta.canCollapse'),
+
+  closureActions: computed(function() {
+    return gte('1.13.0');
+  }),
 
   depthClass: computed('rowMeta.depth', function() {
     return `depth-${this.get('rowMeta.depth')}`;
@@ -167,6 +173,12 @@ export default BaseTableCell.extend({
       rowMeta,
     });
 
-    this.sendAction(action, values);
+    if (gte('1.13.0')) {
+      if (this[action]) {
+        this[action](values);
+      }
+    } else {
+      this.sendAction(action, values);
+    }
   },
 });

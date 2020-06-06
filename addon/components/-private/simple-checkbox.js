@@ -1,5 +1,8 @@
 import Component from '@ember/component';
+import { get } from '@ember/object';
 import defaultTo from '../../-private/utils/default-to';
+
+import { gte } from 'ember-compatibility-helpers';
 
 export default Component.extend({
   tagName: 'input',
@@ -23,7 +26,13 @@ export default Component.extend({
   value: null,
 
   click(event) {
-    this.sendAction('onClick', event);
+    if (gte('1.13.0')) {
+      if (get(this, 'onClick')) {
+        get(this, 'onClick')(event);
+      }
+    } else {
+      this.sendAction('onClick', event);
+    }
   },
 
   change(event) {
@@ -36,6 +45,12 @@ export default Component.extend({
     this.element.checked = this.get('checked');
     this.element.indeterminate = this.get('indeterminate');
 
-    this.sendAction('onChange', checked, { value, indeterminate }, event);
+    if (gte('1.13.0')) {
+      if (get(this, 'onChange')) {
+        get(this, 'onChange')(checked, { value, indeterminate }, event);
+      }
+    } else {
+      this.sendAction('onChange', checked, { value, indeterminate }, event);
+    }
   },
 });

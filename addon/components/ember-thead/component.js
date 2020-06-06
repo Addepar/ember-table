@@ -4,8 +4,10 @@ import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
 import defaultTo from '../../-private/utils/default-to';
 import { addObserver } from '../../-private/utils/observer';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
+
+import { gte } from 'ember-compatibility-helpers';
 
 import { closest } from '../../-private/utils/element';
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
@@ -206,7 +208,7 @@ export default Component.extend({
     this.columnMetaCache = new Map();
 
     this.columnTree = ColumnTree.create({
-      sendAction: this.sendAction.bind(this),
+      sendAction: this._callAction.bind(this),
       columnMetaCache: this.columnMetaCache,
       containerWidthAdjustment: this.containerWidthAdjustment,
     });
@@ -228,6 +230,19 @@ export default Component.extend({
     addObserver(this, 'enableSort', this._updateColumnTree);
     addObserver(this, 'enableResize', this._updateColumnTree);
     addObserver(this, 'enableReorder', this._updateColumnTree);
+  },
+
+  _callAction() {
+    if (gte('1.13.0')) {
+      let arrayArguments = Array.prototype.slice.call(arguments);
+      let actionName = arrayArguments.shift();
+
+      if (get(this, actionName)) {
+        get(this, actionName)(...arrayArguments);
+      }
+    } else {
+      this.sendAction(...arguments);
+    }
   },
 
   _updateApi() {
@@ -318,7 +333,13 @@ export default Component.extend({
   ),
 
   sendUpdateSort(newSorts) {
-    this.sendAction('onUpdateSorts', newSorts);
+    if (gte('1.13.0')) {
+      if (get(this, 'onUpdateSorts')) {
+        get(this, 'onUpdateSorts')(newSorts);
+      }
+    } else {
+      this.sendAction('onUpdateSorts', newSorts);
+    }
   },
 
   fillupHandler() {

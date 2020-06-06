@@ -1,6 +1,8 @@
 import Component from '@ember/component';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
+
+import { gte } from 'ember-compatibility-helpers';
 
 import { closest } from '../../-private/utils/element';
 
@@ -120,11 +122,21 @@ export default Component.extend({
     let rowValue = this.get('rowValue');
     let rowMeta = this.get('rowMeta');
 
-    this.sendAction(action, {
-      event,
+    if (gte('1.13.0')) {
+      if (get(this, action)) {
+        get(this, action)({
+          event,
+          rowValue,
+          rowMeta,
+        });
+      }
+    } else {
+      this.sendAction(action, {
+        event,
 
-      rowValue,
-      rowMeta,
-    });
+        rowValue,
+        rowMeta,
+      });
+    }
   },
 });

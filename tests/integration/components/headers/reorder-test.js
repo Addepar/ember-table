@@ -6,6 +6,7 @@ import {
   generateColumns,
   resetTableGenerationConfig,
 } from '../../../helpers/generate-table';
+import defineAction from '../../../helpers/define-action';
 import { parameterizedComponentModule } from '../../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
@@ -78,7 +79,7 @@ module('Integration | headers | reorder', function() {
     });
 
     test('column reorder action is sent up to controller', async function(assert) {
-      this.on('onReorder', function(insertedColumn, insertedAfter) {
+      defineAction(this, 'onReorder', function(insertedColumn, insertedAfter) {
         assert.equal(insertedColumn.name, 'A', 'old column index is correct');
         assert.equal(insertedAfter.name, 'B', 'new column index is correct');
       });

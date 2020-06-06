@@ -1,9 +1,11 @@
 import Component from '@ember/component';
 
 import { run } from '@ember/runloop';
-import { computed } from '@ember/object';
+import { computed, get } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
+
+import { gte } from 'ember-compatibility-helpers';
 
 import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
 
@@ -253,7 +255,7 @@ export default Component.extend({
       items. This is much more convenient for most table operations in general.
     */
     this.collapseTree = CollapseTree.create({
-      sendAction: this.sendAction.bind(this),
+      sendAction: this._callAction.bind(this),
     });
 
     this._updateCollapseTree();
@@ -270,6 +272,19 @@ export default Component.extend({
       'You must create an {{ember-thead}} with columns before creating an {{ember-tbody}}',
       !!this.get('unwrappedApi.columnTree')
     );
+  },
+
+  _callAction() {
+    if (gte('1.13.0')) {
+      let arrayArguments = Array.prototype.slice.call(arguments);
+      let actionName = arrayArguments.shift();
+
+      if (get(this, actionName)) {
+        get(this, actionName)(...arrayArguments);
+      }
+    } else {
+      this.sendAction(...arguments);
+    }
   },
 
   _updateDataTestRowCount() {
