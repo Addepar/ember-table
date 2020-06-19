@@ -15,6 +15,7 @@
   {{#-ember-table-private/row-wrapper
     rowValue=rowValue
     checkboxComponent=this.unwrappedApi.checkboxComponent
+    toggleComponent=this.unwrappedApi.toggleComponent
     columns=columns
     columnMetaCache=columnMetaCache
     rowMetaCache=rowMetaCache
@@ -41,5 +42,5 @@
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
 {{else if shouldYieldToInverse}}
-  {{yield to='inverse'}}
+  {{yield to="inverse"}}
 {{/vertical-collection}}
