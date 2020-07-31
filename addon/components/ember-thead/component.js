@@ -207,8 +207,6 @@ export default Component.extend({
 
     this.columnTree = ColumnTree.create({
       sendAction: this.sendAction.bind(this),
-      onReorder: this.onReorder,
-      onResize: this.onResize,
       columnMetaCache: this.columnMetaCache,
       containerWidthAdjustment: this.containerWidthAdjustment,
     });
