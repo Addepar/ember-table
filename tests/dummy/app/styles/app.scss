@@ -33,11 +33,11 @@ $colors: (
 );
 
 @each $color-name, $color-value in $colors {
-  .bg-#{$color-name} {
+  .bg-#{"" + $color-name} {
     background-color: #{$color-value};
     color: white;
   }
-  .text-#{$color-name} {
+  .text-#{"" + $color-name} {
     color: #{$color-value};
   }
 }
