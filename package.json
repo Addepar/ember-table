@@ -34,7 +34,7 @@
     "ember-cli-htmlbars": "^3.0.1",
     "ember-cli-htmlbars-inline-precompile": "^2.1.0",
     "ember-cli-node-assets": "^0.2.2",
-    "ember-cli-sass": "^7.0.0",
+    "ember-cli-sass": "^10.0.0",
     "ember-cli-version-checker": "^3.0.1",
     "ember-compatibility-helpers": "^1.2.0",
     "ember-getowner-polyfill": "^2.2.0",
@@ -48,7 +48,7 @@
     "@addepar/eslint-config": "^4.0.2",
     "@addepar/prettier-config": "^1.0.0",
     "@addepar/sass-lint-config": "^2.0.1",
-    "@addepar/style-toolbox": "~0.7.0",
+    "@addepar/style-toolbox": "~0.8.1",
     "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@types/ember": "^2.8.22",
     "babel-eslint": "^10.0.1",
@@ -93,7 +93,7 @@
     "release-it": "^12.3.4"
   },
   "engines": {
-    "node": "8.* || >= 10.*"
+    "node": ">= 10.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
