@@ -4,7 +4,9 @@ import { run } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
+import { next } from '@ember/runloop';
 
+import { scheduler, Token } from 'ember-raf-scheduler';
 import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
 
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
@@ -246,6 +248,7 @@ export default Component.extend({
       The map that contains row meta information for this table.
     */
     this.rowMetaCache = new Map();
+    this.token = new Token();
 
     /**
       A data structure that the table uses wrapping the `rows` object. It flattens
@@ -275,6 +278,22 @@ export default Component.extend({
   _updateDataTestRowCount() {
     this.set('dataTestRowCount', this.get('collapseTree.length'));
   },
+
+  // eslint-disable-next-line
+  _updateColumnTree: observer('wrappedRows.[]', function() {
+    scheduler.schedule(
+      'affect',
+      () => {
+        next(() => {
+          let columnTree = this.get('unwrappedApi.columnTree');
+          if (columnTree) {
+            columnTree.ensureWidthConstraint();
+          }
+        });
+      },
+      this.token
+    );
+  }),
 
   // eslint-disable-next-line
   _updateCollapseTree: observer(
@@ -312,6 +331,7 @@ export default Component.extend({
       this.collapseTree.removeObserver('[]', this._scheduleUpdate);
     });
     this.collapseTree.destroy();
+    scheduler.forget(this.token);
   },
 
   /**

@@ -630,8 +630,13 @@ export default EmberObject.extend({
     }
 
     let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
+    let {
+      width: containerInnerWidth,
+      scrollbarXWidth: containerScrollbarXWidth,
+    } = getInnerClientRect(this.container);
+
     let containerWidth =
-      getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
+      (containerInnerWidth - containerScrollbarXWidth) * this.scale + containerWidthAdjustment;
     let treeWidth = get(this, 'root.width');
     let columns = get(this, 'root.subcolumnNodes');
 
