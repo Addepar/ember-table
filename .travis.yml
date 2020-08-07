@@ -3,17 +3,15 @@ language: node_js
 node_js:
   # we recommend testing addons with the same minimum supported node version as Ember CLI
   # so that your addon works for all apps
-  - '10'
+  - "10"
 
-dist: trusty
+dist: xenial
 
 addons:
   chrome: stable
 
 cache:
   yarn: true
-  directories:
-    - node_modules
 
 env:
   global:
@@ -28,48 +26,47 @@ branches:
     - /^v\d+\.\d+\.\d+/
 
 jobs:
-  fail_fast: true
+  fast_finish: true
   allow_failures:
     - env: EMBER_TRY_SCENARIO=ember-beta
     - env: EMBER_TRY_SCENARIO=ember-canary
 
   include:
-    # runs linting and tests with current locked deps
+    # runs linting and tests with locked deps
+    - stage: "Tests"
+      name: "Tests"
+      script:
+        - yarn lint
+        - yarn test:ember
 
-    - stage: 'Tests'
-      name: 'Tests'
+    - stage: "Additional Tests"
+      name: "Floating Dependencies"
       install:
-        - yarn install --non-interactive
-
+        - yarn install --no-lockfile --non-interactive
       script:
-        - yarn run lint
-        - yarn run test
-
-    - name: 'Floating dependencies'
-      script:
-        - yarn test
+        - yarn test:ember
 
     # we recommend new addons test the current and previous LTS
     # as well as latest stable release (bonus points to beta/canary)
-    - stage: 'Additional Tests'
-      env: EMBER_TRY_SCENARIO=ember-1.12
-    - env: EMBER_TRY_SCENARIO=ember-1.13
+    - env: EMBER_TRY_SCENARIO=ember-lts-2.4
     - env: EMBER_TRY_SCENARIO=ember-lts-2.8
+    - env: EMBER_TRY_SCENARIO=ember-lts-2.12
     - env: EMBER_TRY_SCENARIO=ember-lts-2.18
     - env: EMBER_TRY_SCENARIO=ember-lts-3.4
     - env: EMBER_TRY_SCENARIO=ember-lts-3.8
+    - env: EMBER_TRY_SCENARIO=ember-lts-3.16
     - env: EMBER_TRY_SCENARIO=ember-release
     - env: EMBER_TRY_SCENARIO=ember-beta
     - env: EMBER_TRY_SCENARIO=ember-canary
+
 
 before_install:
   - curl -o- -L https://yarnpkg.com/install.sh | bash
   - export PATH=$HOME/.yarn/bin:$PATH
 
 install:
-  - yarn install --no-lockfile --non-interactive --ignore-engines
+  - yarn install --non-interactive
 
 script:
-  # Usually, it's ok to finish the test scenario without reverting
-  #  to the addon's original dependency state, skipping "cleanup".
-  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO --skip-cleanup
+  - yarn lint
+  - node_modules/.bin/ember try:one $EMBER_TRY_SCENARIO
