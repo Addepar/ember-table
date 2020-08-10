@@ -6,11 +6,11 @@
 An addon to support large data set and a number of features around table. Ember Table can
 handle over 100,000 rows without any rendering or performance issues.
 
-Ember Table 3 supports:
+Ember Table 3.x supports:
 
 * Ember 2.4 to latest version of Ember.
 
-For legacy platforms, the final release of Ember Table 2 (2.2.3) supports:
+For older platforms, the final release of Ember Table 2.x (2.2.3) supports:
 
 * Ember 1.11-3.8+
 * IE11+
