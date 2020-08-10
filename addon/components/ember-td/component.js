@@ -1,7 +1,7 @@
 import BaseTableCell from '../-private/base-table-cell';
 
 import { computed } from '@ember/object';
-import { alias, readOnly } from '@ember/object/computed';
+import { alias, readOnly, reads } from '@ember/object/computed';
 
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
@@ -82,7 +82,7 @@ export default BaseTableCell.extend({
 
   rowSelectionMode: readOnly('unwrappedApi.rowSelectionMode'),
 
-  checkboxSelectionMode: readOnly('unwrappedApi.checkboxSelectionMode'),
+  checkboxSelectionMode: reads('unwrappedApi.checkboxSelectionMode'),
 
   canCollapse: readOnly('rowMeta.canCollapse'),
 

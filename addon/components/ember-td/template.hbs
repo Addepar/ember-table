@@ -1,38 +1,40 @@
 {{#if isFirstColumn}}
-  <div class="et-cell-container {{if (and isFirstColumn canSelect) "flex items-center"}}">
-    {{#if canSelect}}
+  <div class="et-cell-container {{if (and isFirstColumn canSelect) 'flex items-center'}}">
+    {{#if this.canSelect}}
       <span
-        class="et-toggle-select {{unless shouldShowCheckbox "et-speech-only"}}"
+        class="et-toggle-select {{unless this.shouldShowCheckbox 'et-speech-only'}}"
         data-test-select-row-container
       >
-        {{component
+        {{
+          component
           this.api.checkboxComponent
           data-test-select-row=true
           checked=rowMeta.isGroupSelected
-          onClick=(action "onSelectionToggled")
-          onChange=(action "onSelectionToggled")
-          ariaLabel="Select row"
+          onClick=(action 'onSelectionToggled')
+          onChange=(action 'onSelectionToggled')
+          ariaLabel='Select row'
         }}
         <span></span>
       </span>
     {{/if}}
     {{#if canCollapse}}
       <span class="et-toggle-collapse et-depth-indent {{depthClass}}">
-        {{component
+        {{
+          component
           this.api.toggleComponent
           data-test-collapse-row=true
           checked=rowMeta.isCollapsed
           onChange=(action "onCollapseToggled")
           isCollapsed=rowMeta.isCollapsed
-          onClick=(action "onCollapseToggled")
-          ariaLabel="Collapse row"
+          onClick=(action 'onCollapseToggled')
+          ariaLabel='Collapse row'
         }}
         <span></span>
       </span>
     {{else}}
       <div class="et-depth-indent et-depth-placeholder {{depthClass}}"></div>
     {{/if}}
-    <div class="flex-1 et-cell-content">
+    <div class='flex-1 et-cell-content'>
       {{#if hasBlock}}
         {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
       {{else}}
@@ -43,14 +45,9 @@
 {{else if hasBlock}}
   {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta}}
 {{else}}
-<<<<<<< HEAD
   {{#if hasBlock}}
     {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
   {{else}}
     {{cellValue}}
   {{/if}}
 {{/if}}
-=======
-  {{cellValue}}
-{{/if}}
->>>>>>> 2558f7f... customizable toggle component
