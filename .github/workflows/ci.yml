@@ -33,3 +33,31 @@ jobs:
         run: yarn test
         env:
           CI: true
+
+  test-ember-try:
+    name: Run Tests
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        ember-version: [ember-1.13, ember-lts-2.8]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.x
+
+      - name: Node Modules Cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ci-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Run Tests
+        run: node_modules/.bin/ember try:one ${{ matrix.ember-version }} --skip-cleanup
