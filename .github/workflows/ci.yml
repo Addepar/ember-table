@@ -1,0 +1,35 @@
+name: Ember-Table CI
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v2
+        with:
+          node-version: 12.x
+
+      - name: Node Modules Cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ci-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint JS
+        run: yarn lint:js
+
+      - name: Run Tests
+        run: yarn test
+        env:
+          CI: true
