@@ -56,8 +56,5 @@ jobs:
           path: '**/node_modules'
           key: ci-yarn-${{ matrix.ember-version }}-${{ hashFiles('**/yarn.lock') }}
 
-      - name: Install Dependencies
-        run: yarn install --frozen-lockfile --ignore-engines
-
       - name: Run Tests
         run: node_modules/.bin/ember try:one ${{ matrix.ember-version }} --skip-cleanup
