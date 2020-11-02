@@ -100,6 +100,7 @@
   },
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
+    "ember-cli-addon-docs/ember-fetch/whatwg-fetch": "3.3.1",
     "ember-cli-page-object": "1.15.1",
     "prettier": "1.18.2"
   }
