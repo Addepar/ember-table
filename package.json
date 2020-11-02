@@ -93,7 +93,7 @@
     "release-it": "^12.3.4"
   },
   "engines": {
-    "node": "8.* || >= 10.*"
+    "node": ">= 12"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
