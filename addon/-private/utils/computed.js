@@ -113,7 +113,11 @@ function classComputedProperty(isDynamicList, computedFunction) {
 
 export const dynamicAlias = classComputedProperty([false, true], function(...segments) {
   if (segments.every(s => typeof s === 'string')) {
-    return alias(segments.join('.'));
+    let path = segments.filter(s => s !== '').join('.');
+    if (path === '') {
+      throw new Error('invalid empty path');
+    }
+    return alias(path);
   } else {
     return null;
   }
