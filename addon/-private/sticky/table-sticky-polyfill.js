@@ -92,7 +92,7 @@ class TableStickyPolyfill {
          add row 0's height (25px) to its current offset and move on to row 1,
          where it will set each of that row's `th` cells' `top` to the current
          offset of `25px`.
-       * For the tfoot TableStickyPolyfill, its `respositionStickyElements` will
+       * For the tfoot TableStickyPolyfill, its `repositionStickyElements` will
          start at the bottom-most row, row 1, and set each of its `td` cells'
          `bottom` value to `0px`, then add row 1's height (20px) to its current
          offset and move on to the next row, row 0, where it will set each of that
@@ -187,8 +187,9 @@ class TableStickyPolyfill {
     for (let i = 0; i < rows.length; i++) {
       // Work top-down (index order) for 'top', bottom-up (reverse index
       // order) for 'bottom' rows
-      let row = rows[this.side === 'top' ? i : rows.length - 1 - i];
-      let height = heights[i];
+      let index = this.side === 'top' ? i : rows.length - 1 - i;
+      let row = rows[index];
+      let height = heights[index];
 
       for (let child of row.children) {
         child.style.position = '-webkit-sticky';
