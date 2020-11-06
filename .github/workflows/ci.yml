@@ -39,7 +39,7 @@ jobs:
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        ember-version: [ember-1.13, ember-lts-2.8]
+        ember-version: [ember-lts-2.4, ember-lts-2.8]
 
     steps:
       - name: Checkout
