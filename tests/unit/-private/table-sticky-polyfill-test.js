@@ -114,11 +114,23 @@ function verifyFooter(assert) {
  * @param assert
  */
 function verifyMultiLineHeader(assert) {
+  let firstTableCellOfEachHeaderRow = findAll('thead > tr > th:first-child');
+  let tableHeaderCellHeights = firstTableCellOfEachHeaderRow.map(
+    cell => cell.getBoundingClientRect().height
+  );
+  let isAllHeaderCellsIdenticalHeights = tableHeaderCellHeights.every(function(cell, i, array) {
+    return i === 0 || cell === array[i - 1];
+  });
   let firstCellRect = find('thead tr:first-child th:first-child').getBoundingClientRect();
   let expectedOffset = firstCellRect.top;
 
-  findAll('thead > tr').forEach(row => {
-    let firstCellRect = row.firstElementChild.getBoundingClientRect();
+  assert.notOk(
+    isAllHeaderCellsIdenticalHeights,
+    'precond - header table rows have varying heights'
+  );
+
+  firstTableCellOfEachHeaderRow.forEach(cell => {
+    let firstCellRect = cell.getBoundingClientRect();
     expectedOffset += firstCellRect.height;
     assert.equal(expectedOffset, firstCellRect.bottom);
   });
@@ -129,11 +141,23 @@ function verifyMultiLineHeader(assert) {
  * @param assert
  */
 function verifyMultiLineFooter(assert) {
+  let firstTableCellOfEachFooterRow = findAll('tfoot > tr > td:first-child');
+  let tableFooterCellHeights = firstTableCellOfEachFooterRow.map(
+    cell => cell.getBoundingClientRect().height
+  );
+  let isAllFooterCellsIdenticalHeights = tableFooterCellHeights.every(function(cell, i, array) {
+    return i === 0 || cell === array[i - 1];
+  });
   let firstCellRect = find('tfoot tr:first-child td:first-child').getBoundingClientRect();
   let expectedOffset = firstCellRect.top;
 
-  findAll('tfoot > tr').forEach(row => {
-    let firstCellRect = row.firstElementChild.getBoundingClientRect();
+  assert.notOk(
+    isAllFooterCellsIdenticalHeights,
+    'precond - footer table rows have varying heights'
+  );
+
+  firstTableCellOfEachFooterRow.forEach(cell => {
+    let firstCellRect = cell.getBoundingClientRect();
     expectedOffset += firstCellRect.height;
     assert.equal(expectedOffset, firstCellRect.bottom);
   });
