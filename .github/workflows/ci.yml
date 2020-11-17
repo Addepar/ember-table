@@ -1,0 +1,75 @@
+name: Ember-Table CI
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+jobs:
+  test:
+    name: Run Tests
+    runs-on: ubuntu-18.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.x
+
+      - name: Node Modules Cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ci-yarn-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Lint
+        run: yarn lint
+
+      - name: Run Tests
+        run: yarn test
+        env:
+          CI: true
+
+  test-ember-try:
+    name: Run Tests
+    runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        ember-version:
+          [
+            ember-lts-2.4,
+            ember-lts-2.8,
+            ember-lts-2.12,
+            ember-lts-2.18,
+            ember-lts-3.4,
+            ember-lts-3.8,
+            ember-lts-3.16,
+            ember-release,
+            ember-beta,
+            ember-canary,
+          ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Use Node 12
+        uses: actions/setup-node@v2-beta
+        with:
+          node-version: 12.x
+
+      - name: Node Modules Cache
+        uses: actions/cache@v2
+        with:
+          path: '**/node_modules'
+          key: ci-yarn-${{ matrix.ember-version }}-${{ hashFiles('**/yarn.lock') }}
+
+      - name: Install
+        run: yarn install --frozen-lockfile --ignore-engines
+
+      - name: Run Tests
+        run: node_modules/.bin/ember try:one ${{ matrix.ember-version }} --skip-cleanup
