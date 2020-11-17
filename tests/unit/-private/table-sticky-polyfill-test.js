@@ -52,14 +52,23 @@ const standardTemplate = hbs`
   </div>
 `;
 
-function constructMatrix(n, m, prefix = '') {
+/**
+ * Constructs a matrix m by n
+ * @param m Rows
+ * @param n Columns
+ * @param prefix Prefix string
+ * @param skipPrefixOnRowIndices Skip adding the prefix string to the row (m) indices specified in the list
+ * @returns {Array} matrix
+ */
+function constructMatrix(m, n, prefix = '', skipPrefixOnRowIndices = []) {
   let rows = emberA();
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < m; i++) {
     let cols = emberA();
 
-    for (let j = 0; j < m; j++) {
-      cols.pushObject(`${m}${prefix}`);
+    for (let j = 0; j < n; j++) {
+      let skipPrefix = skipPrefixOnRowIndices.includes(i);
+      cols.pushObject(skipPrefix ? n : `${n}${prefix}`);
     }
 
     rows.pushObject(cols);
@@ -98,6 +107,60 @@ function verifyFooter(assert) {
         );
       }
     });
+}
+
+/**
+ * Verifies multi line header when scrolled to the bottom of the table
+ * @param assert
+ */
+function verifyMultiLineHeader(assert) {
+  let firstTableCellOfEachHeaderRow = findAll('thead > tr > th:first-child');
+  let tableHeaderCellHeights = firstTableCellOfEachHeaderRow.map(
+    cell => cell.getBoundingClientRect().height
+  );
+  let isAllHeaderCellsIdenticalHeights = tableHeaderCellHeights.every(function(cell, i, array) {
+    return i === 0 || cell === array[i - 1];
+  });
+  let firstCellRect = find('thead tr:first-child th:first-child').getBoundingClientRect();
+  let expectedOffset = firstCellRect.top;
+
+  assert.notOk(
+    isAllHeaderCellsIdenticalHeights,
+    'precond - header table rows have varying heights'
+  );
+
+  firstTableCellOfEachHeaderRow.forEach(cell => {
+    let firstCellRect = cell.getBoundingClientRect();
+    expectedOffset += firstCellRect.height;
+    assert.equal(expectedOffset, firstCellRect.bottom);
+  });
+}
+
+/**
+ * Verifies multi line footer when scrolled to the top of the table
+ * @param assert
+ */
+function verifyMultiLineFooter(assert) {
+  let firstTableCellOfEachFooterRow = findAll('tfoot > tr > td:first-child');
+  let tableFooterCellHeights = firstTableCellOfEachFooterRow.map(
+    cell => cell.getBoundingClientRect().height
+  );
+  let isAllFooterCellsIdenticalHeights = tableFooterCellHeights.every(function(cell, i, array) {
+    return i === 0 || cell === array[i - 1];
+  });
+  let firstCellRect = find('tfoot tr:first-child td:first-child').getBoundingClientRect();
+  let expectedOffset = firstCellRect.top;
+
+  assert.notOk(
+    isAllFooterCellsIdenticalHeights,
+    'precond - footer table rows have varying heights'
+  );
+
+  firstTableCellOfEachFooterRow.forEach(cell => {
+    let firstCellRect = cell.getBoundingClientRect();
+    expectedOffset += firstCellRect.height;
+    assert.equal(expectedOffset, firstCellRect.bottom);
+  });
 }
 
 componentModule('Unit | Private | TableStickyPolyfill', function() {
@@ -292,5 +355,44 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
       ),
       'the bottom of the last header cell is close to 50% of the way down the table'
     );
+  });
+
+  test('when the header has rows with varying heights', async function(assert) {
+    this.set(
+      'headerRows',
+      constructMatrix(2, 3, 'table header has multiple lines of content', [1])
+    );
+    this.set('bodyRows', constructMatrix(20, 3, 'body'));
+    this.set('footerRows', constructMatrix(1, 3, 'footer'));
+
+    await this.render(standardTemplate);
+
+    setupTableStickyPolyfill(find('thead'));
+    setupTableStickyPolyfill(find('tfoot'));
+
+    await wait();
+
+    let container = find('.ember-table');
+    await scrollTo('.ember-table', 0, container.scrollHeight);
+
+    verifyMultiLineHeader(assert);
+  });
+
+  test('when the footer has rows with varying heights', async function(assert) {
+    this.set('headerRows', constructMatrix(1, 3, 'header'));
+    this.set('bodyRows', constructMatrix(20, 3, 'body'));
+    this.set(
+      'footerRows',
+      constructMatrix(2, 3, 'table footer has multiple lines of content', [1])
+    );
+
+    await this.render(standardTemplate);
+
+    setupTableStickyPolyfill(find('thead'));
+    setupTableStickyPolyfill(find('tfoot'));
+
+    await wait();
+
+    verifyMultiLineFooter(assert);
   });
 });
