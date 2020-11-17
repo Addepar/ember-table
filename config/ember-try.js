@@ -25,6 +25,10 @@ module.exports = function() {
               // conflicts this older version of ember with a message:
               // "ember-cli-htmlbars: Cannot find the ember-source addon"...
               'ember-cli-htmlbars': '^3',
+              // The 1.2.2 release causes an error related to a missing 'match'
+              // property which is due to the lack of ember-source.
+              // See https://github.com/pzuraq/ember-compatibility-helpers/issues/47
+              'ember-compatibility-helpers': '1.2.1',
             },
             devDependencies: {
               'ember-source': null,
@@ -49,6 +53,10 @@ module.exports = function() {
               // conflicts this older version of ember with a message:
               // "ember-cli-htmlbars: Cannot find the ember-source addon"...
               'ember-cli-htmlbars': '^3',
+              // The 1.2.2 release causes an error related to a missing 'match'
+              // property which is due to the lack of ember-source.
+              // See https://github.com/pzuraq/ember-compatibility-helpers/issues/47
+              'ember-compatibility-helpers': '1.2.1',
             },
             devDependencies: {
               'ember-source': null,
