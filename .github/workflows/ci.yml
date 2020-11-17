@@ -30,7 +30,7 @@ jobs:
         run: yarn lint
 
       - name: Run Tests
-        run: yarn test
+        run: yarn test:ember
         env:
           CI: true
 
