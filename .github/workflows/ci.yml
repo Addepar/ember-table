@@ -41,7 +41,6 @@ jobs:
       matrix:
         ember-version:
           [
-            ember-2.0,
             ember-lts-2.4,
             ember-lts-2.8,
             ember-lts-2.12,
