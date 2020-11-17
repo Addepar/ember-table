@@ -30,6 +30,9 @@ module.exports = function() {
               // See https://github.com/pzuraq/ember-compatibility-helpers/issues/47
               'ember-compatibility-helpers': '1.2.1',
             },
+            dependencies: {
+              'ember-compatibility-helpers': '1.2.1',
+            },
             devDependencies: {
               'ember-source': null,
               'ember-cli-addon-docs': null,
@@ -56,6 +59,9 @@ module.exports = function() {
               // The 1.2.2 release causes an error related to a missing 'match'
               // property which is due to the lack of ember-source.
               // See https://github.com/pzuraq/ember-compatibility-helpers/issues/47
+              'ember-compatibility-helpers': '1.2.1',
+            },
+            dependencies: {
               'ember-compatibility-helpers': '1.2.1',
             },
             devDependencies: {
