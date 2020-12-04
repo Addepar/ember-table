@@ -501,6 +501,29 @@ module('Integration | selection', () => {
 
       assert.ok(table.validateSelected(1, 2, 3), 'only children are selected');
     });
+
+    test('rows can be selected using selectionMatchFunction', async function(assert) {
+      this.set('selection', undefined);
+      let rows = [
+        { id: '1', name: 'Zoe', age: 34 },
+        { id: '2', name: 'Alex', age: 43 },
+        { id: '3', name: 'Liz', age: 25 },
+      ];
+      let selectionMatchFunction = function(a, b) {
+        if (!a || !b) {
+          return false;
+        }
+        return a.id === b.id;
+      };
+
+      await generateTable(this, { rows, selectionMatchFunction });
+
+      assert.ok(table.validateSelected(), 'rows are not selected');
+
+      this.set('selection', { id: '2' });
+
+      assert.ok(table.validateSelected(1), 'Alex is selected after external change');
+    });
   });
 
   module('occluded selection', function() {
