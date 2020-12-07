@@ -8,6 +8,12 @@ import { isEmpty } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
 import layout from './template';
 
+/**
+   Computed property macro that builds the CSS styles (position, height)
+   for each scroll indicator element.
+
+   @param {string} side - which side we are computing styles for: `left` or `right`
+ */
 const indicatorStyle = side => {
   return computed(
     `columnTree.${side}FixedNodes.@each.width`,
