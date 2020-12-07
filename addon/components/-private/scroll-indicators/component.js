@@ -62,7 +62,7 @@ export default Component.extend({
     this._scrollElement = this._getScrollElement();
     this._onScroll = bind(this, this._updateIndicatorShow);
     this._scrollElement.addEventListener('scroll', this._onScroll);
-    this._tableElement = this._getScrollElement().querySelector('table');
+    this._tableElement = this._scrollElement.querySelector('table');
     this._resizeSensor = new ResizeSensor(
       this._tableElement,
       bind(this, this._updateIndicatorShow)
