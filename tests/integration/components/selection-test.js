@@ -503,7 +503,7 @@ module('Integration | selection', () => {
     });
 
     test('rows can be selected using selectionMatchFunction', async function(assert) {
-      this.set('selection', undefined);
+      let selection = emberA();
       let rows = [
         { id: '1', name: 'Zoe', age: 34 },
         { id: '2', name: 'Alex', age: 43 },
@@ -516,13 +516,13 @@ module('Integration | selection', () => {
         return a.id === b.id;
       };
 
-      await generateTable(this, { rows, selectionMatchFunction });
+      await generateTable(this, { rows, selection, selectionMatchFunction });
 
       assert.ok(table.validateSelected(), 'rows are not selected');
 
-      this.set('selection', { id: '2' });
+      run(() => selection.pushObject({ id: rows[1].id }));
 
-      assert.ok(table.validateSelected(1), 'Alex is selected after external change');
+      assert.ok(table.validateSelected(1), 'Alex is selected after selection change');
     });
   });
 
