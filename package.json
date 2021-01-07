@@ -29,7 +29,6 @@
     "@html-next/vertical-collection": "^1.0.0-beta.14",
     "broccoli-string-replace": "^0.1.2",
     "css-element-queries": "^0.4.0",
-    "ember-assign-polyfill": "^2.2.0",
     "ember-classy-page-object": "^0.6.1",
     "ember-cli-babel": "^7.12.0",
     "ember-cli-htmlbars": "^3.0.1",
