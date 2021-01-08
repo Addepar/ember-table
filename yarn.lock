@@ -6592,18 +6592,6 @@ ember-try@^1.1.0:
     rsvp "^4.7.0"
     walk-sync "^1.1.3"
 
-ember-useragent@^0.6.0:
-  version "0.6.1"
-  resolved "https://registry.npmjs.org/ember-useragent/-/ember-useragent-0.6.1.tgz#0854b3c11acf0fdd98a165fba9bf5dc76eace804"
-  integrity sha512-J+itj4FVtE0aM+Wx4pInjI2nuSmrQKJhubVJ8twPmmSTLpjatA+DFhiStGc76cZBAyeQQhXezVQyvzzH3RIEoQ==
-  dependencies:
-    broccoli-debug "^0.6.3"
-    broccoli-funnel "^2.0.1"
-    broccoli-merge-trees "^3.0.0"
-    ember-cli-babel "^6.6.0"
-    fastboot-transform "^0.1.2"
-    ua-parser-js "^0.7.14"
-
 ember-wormhole@^0.5.5:
   version "0.5.5"
   resolved "https://registry.npmjs.org/ember-wormhole/-/ember-wormhole-0.5.5.tgz#db417ff748cb21e574cd5f233889897bc27096cb"
@@ -7560,14 +7548,6 @@ fastboot-transform@0.1.1:
   integrity sha512-aY3wh4kFCYOZWZM88f2svB9OL8UNpqBtOQxV3hHxjeRncQUKLD81I2GXayIFaGEQiS8g34awXfq46WZv8uIHvQ==
   dependencies:
     broccoli-stew "^1.5.0"
-
-fastboot-transform@^0.1.2:
-  version "0.1.3"
-  resolved "https://registry.npmjs.org/fastboot-transform/-/fastboot-transform-0.1.3.tgz#7dea0b117594afd8772baa6c9b0919644e7f7dcd"
-  integrity sha512-6otygPIJw1ARp1jJb+6KVO56iKBjhO+5x59RSC9qiZTbZRrv+HZAuP00KD3s+nWMvcFDemtdkugki9DNFTTwCQ==
-  dependencies:
-    broccoli-stew "^1.5.0"
-    convert-source-map "^1.5.1"
 
 fastq@^1.6.0:
   version "1.8.0"
@@ -14340,11 +14320,6 @@ typescript-memoize@^1.0.0-alpha.3:
   integrity sha1-aZpUFfiGaUqNbi5UUbwoo5prwvk=
   dependencies:
     core-js "2.4.1"
-
-ua-parser-js@^0.7.14:
-  version "0.7.21"
-  resolved "https://registry.npmjs.org/ua-parser-js/-/ua-parser-js-0.7.21.tgz#853cf9ce93f642f67174273cc34565ae6f308777"
-  integrity sha512-+O8/qh/Qj8CgC6eYBVBykMrNtp5Gebn4dlGD/kKXVkJNDwyrAwSIqwz8CDf+tsAIWVycKcku6gIXJ0qwx/ZXaQ==
 
 uc.micro@^1.0.0, uc.micro@^1.0.1, uc.micro@^1.0.5:
   version "1.0.6"
