@@ -18,15 +18,15 @@ const fullTable = hbs`
 
         columns=columns
         containerWidthAdjustment=containerWidthAdjustment
+        enableReorder=enableReorder
+        enableResize=enableResize
+        enableScrollIndicators=enableScrollIndicators
+        fillColumnIndex=fillColumnIndex
+        fillMode=fillMode
+        resizeMode=resizeMode
         sorts=sorts
         sortEmptyLast=sortEmptyLast
-        resizeMode=resizeMode
-        fillMode=fillMode
-        enableResize=enableResize
-        enableReorder=enableReorder
         widthConstraint=widthConstraint
-        fillColumnIndex=fillColumnIndex
-
 
         onUpdateSorts="onUpdateSorts"
         onReorder="onReorder"

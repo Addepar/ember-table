@@ -56,11 +56,11 @@ const USE_EMBER_ARRAY_PARAMETERS = {
 };
 
 async function reorderToLeftEdge(column, edgeOffset = 0) {
-  await scrollToEdge(column, edgeOffset, 'left', true);
+  await scrollToEdge(column, edgeOffset, 'left');
 }
 
 async function reorderToRightEdge(column, edgeOffset = 0) {
-  await scrollToEdge(column, edgeOffset, 'right', true);
+  await scrollToEdge(column, edgeOffset, 'right');
 }
 
 module('Integration | headers | reorder', function() {
@@ -91,12 +91,12 @@ module('Integration | headers | reorder', function() {
       let columnCount = 20;
       await generateTable(this, { columnCount });
 
-      let tableContainer = find('.ember-table');
+      let tableOverflowContainer = find('[data-test-ember-table-overflow]');
       let header = findAll('th')[0];
 
       await reorderToRightEdge(header);
 
-      assert.ok(tableContainer.scrollLeft > 0, 'table scrolled');
+      assert.ok(tableOverflowContainer.scrollLeft > 0, 'table scrolled');
       assert.equal(table.headers.objectAt(columnCount - 1).text, toBase26(0), 'table scrolled');
     });
 
@@ -104,13 +104,13 @@ module('Integration | headers | reorder', function() {
       let columnCount = 20;
       await generateTable(this, { columnCount });
 
-      let tableContainer = find('.ember-table');
+      let tableOverflowContainer = find('[data-test-ember-table-overflow]');
       let header = findAll('th')[columnCount - 1];
 
-      await scrollTo(tableContainer, 10000, 0);
+      await scrollTo(tableOverflowContainer, 10000, 0);
       await reorderToLeftEdge(header);
 
-      assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
+      assert.equal(tableOverflowContainer.scrollLeft, 0, 'table scrolled back to the left');
       assert.equal(table.headers.objectAt(0).text, toBase26(columnCount - 1), 'table scrolled');
     });
 
@@ -277,12 +277,12 @@ module('Integration | headers | reorder', function() {
         },
       });
 
-      let tableContainer = find('.ember-table');
+      let tableOverflowContainer = find('[data-test-ember-table-overflow]');
       let header = findAll('th')[0];
 
       await reorderToRightEdge(header, columnWidth);
 
-      assert.ok(tableContainer.scrollLeft > 0, 'table scrolled');
+      assert.ok(tableOverflowContainer.scrollLeft > 0, 'table scrolled');
       assert.equal(table.headers.objectAt(columnCount - 2).text, toBase26(0), 'table scrolled');
     });
 
@@ -298,13 +298,13 @@ module('Integration | headers | reorder', function() {
         },
       });
 
-      let tableContainer = find('.ember-table');
+      let tableOverflowContainer = find('[data-test-ember-table-overflow]');
       let header = findAll('th')[columnCount - 1];
 
-      await scrollTo(tableContainer, 10000, 0);
+      await scrollTo(tableOverflowContainer, 10000, 0);
       await reorderToLeftEdge(header, columnWidth);
 
-      assert.equal(tableContainer.scrollLeft, 0, 'table scrolled back to the left');
+      assert.equal(tableOverflowContainer.scrollLeft, 0, 'table scrolled back to the left');
       assert.equal(table.headers.objectAt(1).text, toBase26(columnCount - 1), 'table scrolled');
     });
   });

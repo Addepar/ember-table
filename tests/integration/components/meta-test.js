@@ -79,7 +79,7 @@ module('Integration | meta', function() {
       assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
 
-      await scrollTo('[data-test-ember-table]', 0, 100000);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 100000);
 
       assert.notOk(table.getCell(0, 0).text.includes('cell'), 'meta updated on scroll');
 
@@ -94,7 +94,7 @@ module('Integration | meta', function() {
       assert.ok(table.headers.objectAt(0).text.match(/column/i), 'header meta correct');
       assert.ok(table.footers.objectAt(0).text.includes('column'), 'footer meta correct');
 
-      await scrollTo('[data-test-ember-table]', 0, 0);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 0);
 
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta updated when scrolling back');
 
@@ -201,10 +201,11 @@ module('Integration | meta', function() {
       await table.getCell(0, 0).click();
 
       // ensure we trigger property updates by scrolling around a bit
-      await scrollTo('[data-test-other-table]', 0, 10000);
-      await scrollTo('[data-test-other-table]', 0, 1000);
-      await scrollTo('[data-test-other-table]', 0, 100);
-      await scrollTo('[data-test-other-table]', 0, 0);
+      let scrollSelector = '[data-test-other-table] [data-test-ember-table-overflow]';
+      await scrollTo(scrollSelector, 0, 10000);
+      await scrollTo(scrollSelector, 0, 1000);
+      await scrollTo(scrollSelector, 0, 100);
+      await scrollTo(scrollSelector, 0, 0);
 
       // Main table was affected
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta property set correctly');
