@@ -4,7 +4,7 @@ import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { bind } from '@ember/runloop';
 import { htmlSafe } from '@ember/template';
-import { isEmpty } from '@ember/utils';
+import { isEmpty, isNone } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
 import layout from './template';
 
@@ -17,8 +17,7 @@ import layout from './template';
 const indicatorStyle = side => {
   return computed(
     `columnTree.${side}FixedNodes.@each.width`,
-    'scrollRect',
-    'tableRect',
+    'height',
     function() {
       let style = [];
 
@@ -30,10 +29,9 @@ const indicatorStyle = side => {
       }
 
       // height
-      let scrollRect = this.get('scrollRect');
-      let tableRect = this.get('tableRect');
-      if (scrollRect && tableRect) {
-        style.push(`height:${Math.min(scrollRect.height, tableRect.height)}px;`);
+      let height = this.get('height');
+      if (!isNone(height)) {
+        style.push(`height:${height}px;`);
       }
 
       return htmlSafe(style.join(''));
@@ -54,8 +52,9 @@ export default Component.extend({
   */
   api: null,
 
-  showLeft: true,
+  showLeft: false,
   showRight: false,
+  height: null,
 
   columnTree: readOnly('api.columnTree'),
   enableScrollIndicators: readOnly('api.enableScrollIndicators'),
@@ -66,12 +65,12 @@ export default Component.extend({
 
   _addListeners() {
     this._scrollElement = this._getScrollElement();
-    this._onScroll = bind(this, this._updateIndicatorShow);
+    this._onScroll = bind(this, this._updateIndicators);
     this._scrollElement.addEventListener('scroll', this._onScroll);
     this._tableElement = this._scrollElement.querySelector('table');
     this._resizeSensor = new ResizeSensor(
       this._tableElement,
-      bind(this, this._updateIndicatorShow)
+      bind(this, this._updateIndicators)
     );
   },
 
@@ -88,22 +87,14 @@ export default Component.extend({
     }
   },
 
-  _setRects() {
-    let scrollElement = this._getScrollElement();
-    let scrollRect = scrollElement.getBoundingClientRect();
-    let tableRect = scrollElement.querySelector('table').getBoundingClientRect();
-    this.set('scrollRect', scrollRect);
-    this.set('tableRect', tableRect);
-  },
-
-  _updateIndicatorShow() {
-    this._setRects();
-    let scrollRect = this.get('scrollRect');
-    let tableRect = this.get('tableRect');
-    let xDiff = scrollRect.x - tableRect.x;
-    let widthDiff = tableRect.width - scrollRect.width;
-    this.set('showLeft', xDiff !== 0);
-    this.set('showRight', widthDiff > 0 && xDiff !== widthDiff);
+  _updateIndicators() {
+    let el = this._scrollElement;
+    let showLeft = el.scrollLeft > 0;
+    let showRight = el.scrollLeft + el.offsetWidth < el.scrollWidth;
+    let height = el.offsetHeight;
+    this.set('showLeft', showLeft);
+    this.set('showRight', showRight);
+    this.set('height', height);
   },
 
   _updateListeners() {
@@ -116,9 +107,9 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    this._updateIndicatorShow();
     if (this.get('enableScrollIndicators')) {
       this._addListeners();
+      this._updateIndicators();
     }
     addObserver(this, 'enableScrollIndicators', this._updateListeners);
   },
