@@ -15,28 +15,24 @@ import layout from './template';
    @param {string} side - which side we are computing styles for: `left` or `right`
  */
 const indicatorStyle = side => {
-  return computed(
-    `columnTree.${side}FixedNodes.@each.width`,
-    'height',
-    function() {
-      let style = [];
+  return computed(`columnTree.${side}FixedNodes.@each.width`, 'height', function() {
+    let style = [];
 
-      // left/right position
-      let fixedNodes = this.get(`columnTree.${side}FixedNodes`);
-      if (!isEmpty(fixedNodes)) {
-        let fixedWidth = fixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
-        style.push(`${side}:${fixedWidth}px;`);
-      }
-
-      // height
-      let height = this.get('height');
-      if (!isNone(height)) {
-        style.push(`height:${height}px;`);
-      }
-
-      return htmlSafe(style.join(''));
+    // left/right position
+    let fixedNodes = this.get(`columnTree.${side}FixedNodes`);
+    if (!isEmpty(fixedNodes)) {
+      let fixedWidth = fixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
+      style.push(`${side}:${fixedWidth}px;`);
     }
-  );
+
+    // height
+    let height = this.get('height');
+    if (!isNone(height)) {
+      style.push(`height:${height}px;`);
+    }
+
+    return htmlSafe(style.join(''));
+  });
 };
 
 export default Component.extend({
@@ -68,10 +64,7 @@ export default Component.extend({
     this._onScroll = bind(this, this._updateIndicators);
     this._scrollElement.addEventListener('scroll', this._onScroll);
     this._tableElement = this._scrollElement.querySelector('table');
-    this._resizeSensor = new ResizeSensor(
-      this._tableElement,
-      bind(this, this._updateIndicators)
-    );
+    this._resizeSensor = new ResizeSensor(this._tableElement, bind(this, this._updateIndicators));
   },
 
   _getScrollElement() {
