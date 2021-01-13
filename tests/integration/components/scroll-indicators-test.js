@@ -3,6 +3,7 @@ import { module, test } from 'ember-qunit';
 import { generateTable } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
+import { findElement } from 'ember-classy-page-object/extend';
 import { scrollTo } from 'ember-native-dom-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -117,6 +118,29 @@ module('Integration | scroll indicators', function() {
         'left scroll indicator is still shown at end of scroll'
       );
       assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
+    });
+
+    test('does not show left scroll indicator when table has negative left margin and user scrolls all the way to the left', async function(assert) {
+      this.set('enableScrollIndicators', true);
+
+      await generateTable(this, {
+        columnCount: 30,
+      });
+
+      let tableElement = await findElement(table, 'table');
+
+      // negative margin pushes the left edge of the table outside of overflow
+      tableElement.style.marginLeft = '-1px';
+
+      // scroll horizontally just a little bit and back to reset indicators
+      await scrollTo('[data-test-ember-table-overflow]', 1, 0);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 0);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('left'),
+        false,
+        'left scroll indicator is not shown'
+      );
     });
   });
 });
