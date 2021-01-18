@@ -10,12 +10,12 @@ import layout from './template';
 
 /**
    Computed property macro that builds the CSS styles (position, height)
-   for each scroll indicator element.
+   for each horizontal scroll indicator element.
 
    @param {string} side - which side we are computing styles for: `left` or `right`
  */
-const indicatorStyle = side => {
-  return computed(`columnTree.${side}FixedNodes.@each.width`, 'height', function() {
+const horizontalIndicatorStyle = side => {
+  return computed(`columnTree.${side}FixedNodes.@each.width`, 'overflowHeight', function() {
     let style = [];
 
     // left/right position
@@ -26,13 +26,58 @@ const indicatorStyle = side => {
     }
 
     // height
-    let height = this.get('height');
-    if (!isNone(height)) {
-      style.push(`height:${height}px;`);
+    let overflowHeight = this.get('overflowHeight');
+    if (!isNone(overflowHeight)) {
+      style.push(`height:${overflowHeight}px;`);
     }
 
     return htmlSafe(style.join(''));
   });
+};
+
+/**
+   Computed property macro that builds the CSS styles (position, width)
+   for each vertical scroll indicator element.
+
+   @param {string} location - which location we are computing styles for: `top` or `bottom`
+ */
+const verticalIndicatorStyle = location => {
+  return computed(
+    `columnTree.${location}FixedNodes.@each.width`,
+    'overflowWidth',
+    'tableWidth',
+    'headerHeight',
+    'footerHeight',
+    function() {
+      let style = [];
+
+      // top
+      if (location === 'top') {
+        let headerHeight = this.get('headerHeight');
+        if (!isNone(headerHeight)) {
+          style.push(`top:${headerHeight}px;`);
+        }
+      }
+
+      // bottom
+      if (location === 'bottom') {
+        let footerHeight = this.get('footerHeight');
+        if (!isNone(footerHeight)) {
+          style.push(`bottom:${footerHeight}px;`);
+        }
+      }
+
+      // width
+      let tableWidth = this.get('tableWidth');
+      if (!isNone(tableWidth)) {
+        let overflowWidth = this.get('overflowWidth');
+        let width = Math.min(tableWidth, overflowWidth);
+        style.push(`width:${width}px;`);
+      }
+
+      return htmlSafe(style.join(''));
+    }
+  );
 };
 
 export default Component.extend({
@@ -50,14 +95,23 @@ export default Component.extend({
 
   showLeft: false,
   showRight: false,
-  height: null,
+  showTop: false,
+  showBottom: false,
+
+  overflowHeight: null,
+  overflowWidth: null,
+  tableWidth: null,
+  headerHeight: null,
+  footerHeight: null,
 
   columnTree: readOnly('api.columnTree'),
   enableScrollIndicators: readOnly('api.enableScrollIndicators'),
   tableScrollId: readOnly('api.tableId'),
 
-  leftStyle: indicatorStyle('left'),
-  rightStyle: indicatorStyle('right'),
+  leftStyle: horizontalIndicatorStyle('left'),
+  rightStyle: horizontalIndicatorStyle('right'),
+  topStyle: verticalIndicatorStyle('top'),
+  bottomStyle: verticalIndicatorStyle('bottom'),
 
   _addListeners() {
     this._scrollElement = this._getScrollElement();
@@ -82,12 +136,32 @@ export default Component.extend({
 
   _updateIndicators() {
     let el = this._scrollElement;
+    let table = el.querySelector('table');
+    let header = el.querySelector('thead');
+    let footer = el.querySelector('tfoot');
+
     let showLeft = el.scrollLeft > 0;
     let showRight = el.scrollLeft + el.offsetWidth < el.scrollWidth;
-    let height = el.offsetHeight;
-    this.set('showLeft', showLeft);
-    this.set('showRight', showRight);
-    this.set('height', height);
+    let showTop = el.scrollTop > 0;
+    let showBottom = el.scrollTop + el.offsetHeight < el.scrollHeight;
+
+    let overflowHeight = el.offsetHeight;
+    let overflowWidth = el.offsetWidth;
+    let tableWidth = table.offsetWidth;
+    let headerHeight = header?.offsetHeight;
+    let footerHeight = footer?.offsetHeight;
+
+    this.setProperties({
+      showLeft,
+      showRight,
+      showTop,
+      showBottom,
+      overflowHeight,
+      overflowWidth,
+      tableWidth,
+      headerHeight,
+      footerHeight,
+    });
   },
 
   _updateListeners() {

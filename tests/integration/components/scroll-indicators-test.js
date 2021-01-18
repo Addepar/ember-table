@@ -8,11 +8,18 @@ import { scrollTo } from 'ember-native-dom-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
+const SCROLL_MAX = 999999;
+
 let table = new TablePage();
+
+let isOffset = (side, distance) => {
+  let element = table.scrollIndicator(side);
+  return getComputedStyle(element)[side] === `${distance}px`;
+};
 
 module('Integration | scroll indicators', function() {
   componentModule('rendering', function() {
-    test('it renders scroll indicators appropriately', async function(assert) {
+    test('it renders horizontal indicators appropriately', async function(assert) {
       this.set('enableScrollIndicators', true);
 
       await generateTable(this, {
@@ -31,7 +38,7 @@ module('Integration | scroll indicators', function() {
       );
 
       // scroll horizontally just a little bit
-      await scrollTo('[data-test-ember-table-overflow]', 100, 0);
+      await scrollTo('[data-test-ember-table-overflow]', 1, 0);
 
       assert.equal(
         table.isScrollIndicatorRendered('right'),
@@ -45,7 +52,7 @@ module('Integration | scroll indicators', function() {
       );
 
       // scroll horizontally to the end
-      await scrollTo('[data-test-ember-table-overflow]', 999999, 0);
+      await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, 0);
 
       assert.equal(
         table.isScrollIndicatorRendered('right'),
@@ -59,7 +66,54 @@ module('Integration | scroll indicators', function() {
       );
     });
 
-    test('scroll indicators respect fixed columns', async function(assert) {
+    test('it renders vertical scroll indicators appropriately', async function(assert) {
+      this.set('enableScrollIndicators', true);
+
+      await generateTable(this, {
+        rowCount: 100,
+      });
+
+      assert.equal(
+        table.isScrollIndicatorRendered('bottom'),
+        true,
+        'bottom scroll indicator is initially shown'
+      );
+      assert.equal(
+        table.isScrollIndicatorRendered('top'),
+        false,
+        'top scroll indicator is not initially shown'
+      );
+
+      // scroll vertically just a little bit
+      await scrollTo('[data-test-ember-table-overflow]', 0, 1);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('top'),
+        true,
+        'top scroll indicator is shown during partial scroll'
+      );
+      assert.equal(
+        table.isScrollIndicatorRendered('bottom'),
+        true,
+        'bottom scroll indicator is shown during partial scroll'
+      );
+
+      // scroll vertically to the end
+      await scrollTo('[data-test-ember-table-overflow]', 0, SCROLL_MAX);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('bottom'),
+        false,
+        'bottom scroll indicator is not shown at end of scroll'
+      );
+      assert.equal(
+        table.isScrollIndicatorRendered('top'),
+        true,
+        'top scroll indicator is still shown at end of scroll'
+      );
+    });
+
+    test('horizontal scroll indicators respect fixed columns', async function(assert) {
       this.set('enableScrollIndicators', true);
 
       await generateTable(this, {
@@ -71,11 +125,6 @@ module('Integration | scroll indicators', function() {
         },
       });
 
-      function isOffset(side, distance) {
-        let element = table.scrollIndicator(side);
-        return getComputedStyle(element)[side] === `${distance}px`;
-      }
-
       assert.equal(
         table.isScrollIndicatorRendered('right'),
         true,
@@ -89,7 +138,7 @@ module('Integration | scroll indicators', function() {
       );
 
       // scroll horizontally just a little bit
-      await scrollTo('[data-test-ember-table-overflow]', 100, 0);
+      await scrollTo('[data-test-ember-table-overflow]', 1, 0);
 
       assert.equal(
         table.isScrollIndicatorRendered('right'),
@@ -105,7 +154,7 @@ module('Integration | scroll indicators', function() {
       assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
 
       // scroll horizontally to the end
-      await scrollTo('[data-test-ember-table-overflow]', 999999, 0);
+      await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, 0);
 
       assert.equal(
         table.isScrollIndicatorRendered('right'),
@@ -120,26 +169,75 @@ module('Integration | scroll indicators', function() {
       assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
     });
 
-    test('does not show left scroll indicator when table has negative left margin and user scrolls all the way to the left', async function(assert) {
+    test('top scroll indicator positioned below header', async function(assert) {
+      this.set('enableScrollIndicators', true);
+
+      await generateTable(this, {
+        rowCount: 100,
+        columnOptions: {
+          subcolumnCount: 1,
+        },
+      });
+
+      // scroll down a little bit
+      await scrollTo('[data-test-ember-table-overflow]', 0, 1);
+
+      assert.ok(isOffset('top', table.header.height), 'top indicator is below header');
+    });
+
+    test('bottom scroll indicator positioned above footer', async function(assert) {
+      this.set('enableScrollIndicators', true);
+
+      await generateTable(this, {
+        rowCount: 100,
+        footerRowCount: 2,
+      });
+
+      assert.ok(isOffset('bottom', table.footer.height), 'bottom indicator is above footer');
+    });
+
+    test('negative table margins do not break scroll indicators', async function(assert) {
       this.set('enableScrollIndicators', true);
 
       await generateTable(this, {
         columnCount: 30,
+        rowCount: 100,
       });
 
       let tableElement = await findElement(table, 'table');
 
-      // negative margin pushes the left edge of the table outside of overflow
-      tableElement.style.marginLeft = '-1px';
+      // negative margins push the edges of table outside of overflow
+      tableElement.style.margin = '-1px';
 
-      // scroll horizontally just a little bit and back to reset indicators
-      await scrollTo('[data-test-ember-table-overflow]', 1, 0);
+      // scroll just a little bit and back to upper-left to reset indicators
+      await scrollTo('[data-test-ember-table-overflow]', 1, 1);
       await scrollTo('[data-test-ember-table-overflow]', 0, 0);
 
       assert.equal(
         table.isScrollIndicatorRendered('left'),
         false,
         'left scroll indicator is not shown'
+      );
+
+      assert.equal(
+        table.isScrollIndicatorRendered('top'),
+        false,
+        'top scroll indicator is not shown'
+      );
+
+      // scroll all the way to bottom-right
+      await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, SCROLL_MAX);
+
+      assert.equal(
+        table.isScrollIndicatorRendered('right'),
+        false,
+        'right scroll indicator is not shown'
+      );
+
+      assert.equal(
+        table.isScrollIndicatorRendered('bottom'),
+        false,
+        'bottom scroll indicator is not shown'
       );
     });
   });

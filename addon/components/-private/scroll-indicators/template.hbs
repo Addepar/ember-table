@@ -13,4 +13,18 @@
       style={{rightStyle}}
     ></div>
   {{/if}}
+  {{#if showTop}}
+    <div
+      data-test-ember-table-scroll-indicator="top"
+      class="scroll-indicator scroll-indicator__top"
+      style={{topStyle}}
+    ></div>
+  {{/if}}
+  {{#if showBottom}}
+    <div
+      data-test-ember-table-scroll-indicator="bottom"
+      class="scroll-indicator scroll-indicator__bottom"
+      style={{bottomStyle}}
+    ></div>
+  {{/if}}
 {{/if}}
