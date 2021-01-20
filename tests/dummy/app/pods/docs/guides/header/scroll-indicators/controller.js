@@ -41,7 +41,7 @@ export default Controller.extend({
   // END-SNIPPET
 
   // BEGIN-SNIPPET docs-example-scroll-indicators-with-footer.js
-  columnsForFooter: computed(function() {
+  columnsWithFooter: computed(function() {
     return [
       { name: 'A', valuePath: 'A' },
       { name: 'B', valuePath: 'B' },

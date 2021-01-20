@@ -104,11 +104,13 @@ export default Component.extend({
   enableResize: defaultTo(true),
 
   /**
-    Flag that toggles scroll indicator shadows
-    @argument enableScrollIndicators
-    @type boolean? (false)
+    Enables shadows at the edges of the table to show that the user can scroll
+    to view more content. Possible string values are `all`, `horizontal`,
+    `vertical`, and `none`. The boolean values `true` and `false` are aliased to `all` and `none`, respectively.
+    @argument scrollIndicators
+    @type boolean|string? (false)
   */
-  enableScrollIndicators: defaultTo(false),
+  scrollIndicators: defaultTo(false),
 
   /**
     Sets which column resizing behavior to use. Possible values are `standard`
@@ -221,7 +223,7 @@ export default Component.extend({
     this._updateApi();
     this._updateColumnTree();
 
-    addObserver(this, 'enableScrollIndicators', this._updateApi);
+    addObserver(this, 'scrollIndicators', this._updateApi);
     addObserver(this, 'reorderFunction', this._updateApi);
     addObserver(this, 'sorts', this._updateApi);
     addObserver(this, 'sortFunction', this._updateApi);
@@ -241,7 +243,7 @@ export default Component.extend({
   _updateApi() {
     this.set('unwrappedApi.columnTree', this.columnTree);
     this.set('unwrappedApi.compareFunction', this.get('compareFunction'));
-    this.set('unwrappedApi.enableScrollIndicators', this.get('enableScrollIndicators'));
+    this.set('unwrappedApi.scrollIndicators', this.get('scrollIndicators'));
     this.set('unwrappedApi.sorts', this.get('sorts'));
     this.set('unwrappedApi.sortEmptyLast', this.get('sortEmptyLast'));
     this.set('unwrappedApi.sortFunction', this.get('sortFunction'));

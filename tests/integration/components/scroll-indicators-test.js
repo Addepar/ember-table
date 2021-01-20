@@ -20,7 +20,7 @@ let isOffset = (side, distance) => {
 module('Integration | scroll indicators', function() {
   componentModule('rendering', function() {
     test('it renders horizontal indicators appropriately', async function(assert) {
-      this.set('enableScrollIndicators', true);
+      this.set('scrollIndicators', 'all');
 
       await generateTable(this, {
         columnCount: 30,
@@ -67,7 +67,7 @@ module('Integration | scroll indicators', function() {
     });
 
     test('it renders vertical scroll indicators appropriately', async function(assert) {
-      this.set('enableScrollIndicators', true);
+      this.set('scrollIndicators', 'vertical');
 
       await generateTable(this, {
         rowCount: 100,
@@ -114,7 +114,7 @@ module('Integration | scroll indicators', function() {
     });
 
     test('horizontal scroll indicators respect fixed columns', async function(assert) {
-      this.set('enableScrollIndicators', true);
+      this.set('scrollIndicators', 'horizontal');
 
       await generateTable(this, {
         columnCount: 30,
@@ -170,7 +170,7 @@ module('Integration | scroll indicators', function() {
     });
 
     test('top scroll indicator positioned below header', async function(assert) {
-      this.set('enableScrollIndicators', true);
+      this.set('scrollIndicators', 'vertical');
 
       await generateTable(this, {
         rowCount: 100,
@@ -186,7 +186,7 @@ module('Integration | scroll indicators', function() {
     });
 
     test('bottom scroll indicator positioned above footer', async function(assert) {
-      this.set('enableScrollIndicators', true);
+      this.set('scrollIndicators', 'vertical');
 
       await generateTable(this, {
         rowCount: 100,
@@ -197,7 +197,7 @@ module('Integration | scroll indicators', function() {
     });
 
     test('negative table margins do not break scroll indicators', async function(assert) {
-      this.set('enableScrollIndicators', true);
+      this.set('scrollIndicators', 'all');
 
       await generateTable(this, {
         columnCount: 30,

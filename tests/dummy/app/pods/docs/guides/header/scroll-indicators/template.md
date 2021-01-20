@@ -1,7 +1,7 @@
 # Scroll Indicators
 
-Set the `enableScrollIndicators` argument to `true` to
-enable visual indicators that the table content can be scrolled to reveal more data.
+Set the `scrollIndicators` argument to `all`, `horizontal`, `vertical`, or `none` to
+shade the edges of the table where the user can scroll to see more data.
 These indicators will show/hide when there is content overflowing in their
 respective direction.
 
@@ -12,7 +12,7 @@ respective direction.
         <EmberTable as |t|>
           <t.head
             @columns={{columns}}
-            @enableScrollIndicators={{true}}
+            @scrollIndicators="all"
           />
           <t.body @rows={{rows}} />
         </EmberTable>
@@ -24,10 +24,10 @@ respective direction.
   {{demo.snippet name='docs-example-scroll-indicators.js' label='component.js'}}
 {{/docs-demo}}
 
-## Scroll Indicators with Fixed Columns
+## Horizontal Scroll Indicators with Fixed Columns
 
-Scroll indicators will respect fixed columns, appearing inside of
-them when they are present or at the edges of the table when they are not.
+Horizontal indicators will respect fixed columns, appearing inside of
+them when they are present, or at the edges of the table when they are not.
 
 {{#docs-demo as |demo|}}
   {{#demo.example name='scroll-indicators-with-fixed'}}
@@ -36,7 +36,7 @@ them when they are present or at the edges of the table when they are not.
         <EmberTable as |t|>
           <t.head
             @columns={{columnsWithFixed}}
-            @enableScrollIndicators={{true}}
+            @scrollIndicators="horizontal"
           />
           <t.body @rows={{rows}} />
         </EmberTable>
@@ -47,7 +47,7 @@ them when they are present or at the edges of the table when they are not.
   {{demo.snippet name='docs-example-scroll-indicators-with-fixed.hbs'}}
   {{demo.snippet name='docs-example-scroll-indicators-with-fixed.js' label='component.js'}}
 {{/docs-demo}}
-## Scroll Indicators with Footer
+## Vertical Scroll Indicators with a Header & Footer
 
 Vertical scroll indicators respect both headers and footers, appearing just
 inside any sticky rows at the top or bottom of the table.
@@ -58,8 +58,8 @@ inside any sticky rows at the top or bottom of the table.
       {{! BEGIN-SNIPPET docs-example-scroll-indicators-with-footer.hbs }}
         <EmberTable as |t|>
           <t.head
-            @columns={{columnsForFooter}}
-            @enableScrollIndicators={{true}}
+            @columns={{columnsWithFooter}}
+            @scrollIndicators="vertical"
           />
           <t.body @rows={{rows}} />
           <t.foot @rows={{footerRows}} as |f|>

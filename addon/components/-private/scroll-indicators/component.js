@@ -3,6 +3,7 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { bind } from '@ember/runloop';
+import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
@@ -80,6 +81,19 @@ const verticalIndicatorStyle = location => {
   );
 };
 
+/**
+   Computed property macro that builds a boolean to determine whether or not
+   to show a scroll indicator in the given position.
+
+   @param {string} location - `left`, `right`, `top`, or `bottom`
+ */
+const showIndicator = location => {
+  let scrollProp = `scroll${capitalize(location)}`;
+  return computed('enabledIndicators', scrollProp, function() {
+    return this.get('enabledIndicators').includes(location) && this.get(scrollProp) > 0;
+  });
+};
+
 export default Component.extend({
   layout,
   tagName: '',
@@ -93,10 +107,10 @@ export default Component.extend({
   */
   api: null,
 
-  showLeft: false,
-  showRight: false,
-  showTop: false,
-  showBottom: false,
+  scrollLeft: null,
+  scrollRight: null,
+  scrollTop: null,
+  scrollBottom: null,
 
   overflowHeight: null,
   overflowWidth: null,
@@ -105,57 +119,78 @@ export default Component.extend({
   footerHeight: null,
 
   columnTree: readOnly('api.columnTree'),
-  enableScrollIndicators: readOnly('api.enableScrollIndicators'),
+  scrollIndicators: readOnly('api.scrollIndicators'),
   tableScrollId: readOnly('api.tableId'),
+
+  showLeft: showIndicator('left'),
+  showRight: showIndicator('right'),
+  showTop: showIndicator('top'),
+  showBottom: showIndicator('bottom'),
 
   leftStyle: horizontalIndicatorStyle('left'),
   rightStyle: horizontalIndicatorStyle('right'),
   topStyle: verticalIndicatorStyle('top'),
   bottomStyle: verticalIndicatorStyle('bottom'),
 
+  enabledIndicators: computed('scrollIndicators', function() {
+    switch (this.get('scrollIndicators')) {
+      case true:
+      case 'all':
+        return ['left', 'right', 'top', 'bottom'];
+      case 'horizontal':
+        return ['left', 'right'];
+      case 'vertical':
+        return ['top', 'bottom'];
+      case false:
+      case 'none':
+      default:
+        return [];
+    }
+  }),
+
   _addListeners() {
-    this._scrollElement = this._getScrollElement();
+    this._isListening = true;
+
+    // cache static elements for performance
+    this._scrollElement = document.getElementById(this.get('tableScrollId'));
+    this._tableElement = this._scrollElement.querySelector('table');
+    this._headerElement = this._tableElement.querySelector('thead');
+
     this._onScroll = bind(this, this._updateIndicators);
     this._scrollElement.addEventListener('scroll', this._onScroll);
-    this._tableElement = this._scrollElement.querySelector('table');
     this._resizeSensor = new ResizeSensor(this._tableElement, bind(this, this._updateIndicators));
   },
 
-  _getScrollElement() {
-    return document.getElementById(this.get('tableScrollId'));
-  },
-
   _removeListeners() {
-    if (this._scrollElement) {
-      this._scrollElement.removeEventListener('scroll', this._onScroll);
-    }
-    if (this._resizeSensor) {
-      this._resizeSensor.detach(this._tableElement);
-    }
+    this._isListening = false;
+    this._scrollElement.removeEventListener('scroll', this._onScroll);
+    this._resizeSensor.detach();
   },
 
   _updateIndicators() {
     let el = this._scrollElement;
-    let table = el.querySelector('table');
-    let header = el.querySelector('thead');
-    let footer = el.querySelector('tfoot');
+    let table = this._tableElement;
+    let header = this._headerElement;
 
-    let showLeft = el.scrollLeft > 0;
-    let showRight = el.scrollLeft + el.offsetWidth < el.scrollWidth;
-    let showTop = el.scrollTop > 0;
-    let showBottom = el.scrollTop + el.offsetHeight < el.scrollHeight;
+    // could appear/disappear over lifetime of component
+    let footer = table.querySelector('tfoot');
+
+    let scrollLeft = el.scrollLeft;
+    let scrollRight = el.scrollWidth - el.offsetWidth - scrollLeft;
+    let scrollTop = el.scrollTop;
+    let scrollBottom = el.scrollHeight - el.offsetHeight - scrollTop;
 
     let overflowHeight = el.offsetHeight;
     let overflowWidth = el.offsetWidth;
-    let tableWidth = table.offsetWidth;
+    let tableWidth = table?.offsetWidth;
     let headerHeight = header?.offsetHeight;
     let footerHeight = footer?.offsetHeight;
 
     this.setProperties({
-      showLeft,
-      showRight,
-      showTop,
-      showBottom,
+      scrollLeft,
+      scrollRight,
+      scrollTop,
+      scrollBottom,
       overflowHeight,
       overflowWidth,
       tableWidth,
@@ -165,24 +200,24 @@ export default Component.extend({
   },
 
   _updateListeners() {
-    if (this.get('enableScrollIndicators')) {
+    let hasIndicators = !isEmpty(this.get('enabledIndicators'));
+
+    if (hasIndicators && !this._isListening) {
       this._addListeners();
-    } else {
+      this._updateIndicators();
+    } else if (!hasIndicators && this._isListening) {
       this._removeListeners();
     }
   },
 
   didInsertElement() {
     this._super(...arguments);
-    if (this.get('enableScrollIndicators')) {
-      this._addListeners();
-      this._updateIndicators();
-    }
-    addObserver(this, 'enableScrollIndicators', this._updateListeners);
+    this._updateListeners();
+    addObserver(this, 'enabledIndicators', this._updateListeners);
   },
 
   willDestroy() {
-    if (this.get('enableScrollIndicators')) {
+    if (this._isListening) {
       this._removeListeners();
     }
   },
