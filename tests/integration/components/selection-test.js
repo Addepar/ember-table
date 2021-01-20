@@ -245,6 +245,29 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
       });
+
+      test('Rows are selected when selection is changed externally with selectionMatchFunction', async function(assert) {
+        let selection = emberA();
+        let selectionMatchFunction = function(a, b) {
+          if (!a || !b) {
+            return false;
+          }
+          return a.id === b.id;
+        };
+        let rows = [
+          { id: 1, name: 'Zoe', age: 34 },
+          { id: 2, name: 'Alex', age: 43 },
+          { id: 3, name: 'Liz', age: 25 },
+        ];
+
+        await generateTable(this, { rows, selection, selectionMatchFunction });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        run(() => selection.pushObject({ id: rows[0].id }));
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
+      });
     });
 
     componentModule('single', function() {
@@ -313,6 +336,46 @@ module('Integration | selection', () => {
         await generateTable(this, { rowSelectionMode: 'single' });
 
         await table.selectRow(0);
+      });
+
+      test('Row is selected when selection is changed externally', async function(assert) {
+        this.set('selection', null);
+        let rows = [{ name: 'Zoe', age: 34 }, { name: 'Alex', age: 43 }, { name: 'Liz', age: 25 }];
+
+        await generateTable(this, { rows, rowSelectionMode: 'single' });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        run(() => this.set('selection', rows[0]));
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
+      });
+
+      test('Row is selected when selection is changed externally with selectionMatchFunction', async function(assert) {
+        this.set('selection', null);
+        let selectionMatchFunction = function(a, b) {
+          if (!a || !b) {
+            return false;
+          }
+          return a.id === b.id;
+        };
+        let rows = [
+          { id: 1, name: 'Zoe', age: 34 },
+          { id: 2, name: 'Alex', age: 43 },
+          { id: 3, name: 'Liz', age: 25 },
+        ];
+
+        await generateTable(this, {
+          rows,
+          rowSelectionMode: 'single',
+          selectionMatchFunction,
+        });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        run(() => this.set('selection', { id: rows[0].id }));
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
       });
     });
 
