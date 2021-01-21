@@ -20,7 +20,7 @@ let isOffset = (side, distance) => {
 module('Integration | scroll indicators', function() {
   componentModule('rendering', function() {
     test('it renders horizontal indicators appropriately', async function(assert) {
-      this.set('scrollIndicators', 'all');
+      this.set('scrollIndicators', 'horizontal');
 
       await generateTable(this, {
         columnCount: 30,
