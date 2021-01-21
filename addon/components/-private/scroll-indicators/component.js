@@ -16,24 +16,38 @@ import layout from './template';
    @param {string} side - which side we are computing styles for: `left` or `right`
  */
 const horizontalIndicatorStyle = side => {
-  return computed(`columnTree.${side}FixedNodes.@each.width`, 'overflowHeight', function() {
-    let style = [];
+  return computed(
+    `columnTree.${side}FixedNodes.@each.width`,
+    'overflowHeight',
+    'scrollbarWidth',
+    function() {
+      let style = [];
 
-    // left/right position
-    let fixedNodes = this.get(`columnTree.${side}FixedNodes`);
-    if (!isEmpty(fixedNodes)) {
-      let fixedWidth = fixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
-      style.push(`${side}:${fixedWidth}px;`);
+      // left/right position
+      let offset = 0;
+
+      let fixedNodes = this.get(`columnTree.${side}FixedNodes`);
+      if (!isEmpty(fixedNodes)) {
+        let fixedWidth = fixedNodes.reduce((acc, node) => acc + node.get('width'), 0);
+        offset += fixedWidth;
+      }
+
+      if (side === 'right') {
+        let scrollbarWidth = this.get('scrollbarWidth') || 0;
+        offset += scrollbarWidth;
+      }
+
+      style.push(`${side}:${offset}px;`);
+
+      // height
+      let overflowHeight = this.get('overflowHeight');
+      if (!isNone(overflowHeight)) {
+        style.push(`height:${overflowHeight}px;`);
+      }
+
+      return htmlSafe(style.join(''));
     }
-
-    // height
-    let overflowHeight = this.get('overflowHeight');
-    if (!isNone(overflowHeight)) {
-      style.push(`height:${overflowHeight}px;`);
-    }
-
-    return htmlSafe(style.join(''));
-  });
+  );
 };
 
 /**
@@ -49,24 +63,24 @@ const verticalIndicatorStyle = location => {
     'tableWidth',
     'headerHeight',
     'footerHeight',
+    'scrollbarHeight',
     function() {
       let style = [];
+      let offset = 0;
 
-      // top
+      // top/bottom offset
       if (location === 'top') {
-        let headerHeight = this.get('headerHeight');
-        if (!isNone(headerHeight)) {
-          style.push(`top:${headerHeight}px;`);
-        }
+        let headerHeight = this.get('headerHeight') || 0;
+        offset += headerHeight;
       }
 
-      // bottom
       if (location === 'bottom') {
-        let footerHeight = this.get('footerHeight');
-        if (!isNone(footerHeight)) {
-          style.push(`bottom:${footerHeight}px;`);
-        }
+        let footerHeight = this.get('footerHeight') || 0;
+        let scrollbarHeight = this.get('scrollbarHeight') || 0;
+        offset += footerHeight + scrollbarHeight;
       }
+
+      style.push(`${location}:${offset}px;`);
 
       // width
       let tableWidth = this.get('tableWidth');
@@ -111,6 +125,9 @@ export default Component.extend({
   scrollRight: null,
   scrollTop: null,
   scrollBottom: null,
+
+  scrollbarWidth: null,
+  scrollbarHeight: null,
 
   overflowHeight: null,
   overflowWidth: null,
@@ -176,13 +193,16 @@ export default Component.extend({
     let footer = table.querySelector('tfoot');
 
     let scrollLeft = el.scrollLeft;
-    let scrollRight = el.scrollWidth - el.offsetWidth - scrollLeft;
+    let scrollRight = el.scrollWidth - el.clientWidth - scrollLeft;
     let scrollTop = el.scrollTop;
-    let scrollBottom = el.scrollHeight - el.offsetHeight - scrollTop;
+    let scrollBottom = el.scrollHeight - el.clientHeight - scrollTop;
 
-    let overflowHeight = el.offsetHeight;
-    let overflowWidth = el.offsetWidth;
-    let tableWidth = table?.offsetWidth;
+    let scrollbarWidth = el.offsetWidth - el.clientWidth;
+    let scrollbarHeight = el.offsetHeight - el.clientHeight;
+
+    let overflowHeight = el.clientHeight;
+    let overflowWidth = el.clientWidth;
+    let tableWidth = table?.clientWidth;
     let headerHeight = header?.offsetHeight;
     let footerHeight = footer?.offsetHeight;
 
@@ -191,6 +211,10 @@ export default Component.extend({
       scrollRight,
       scrollTop,
       scrollBottom,
+
+      scrollbarHeight,
+      scrollbarWidth,
+
       overflowHeight,
       overflowWidth,
       tableWidth,
