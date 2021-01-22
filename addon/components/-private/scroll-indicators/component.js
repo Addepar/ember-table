@@ -202,9 +202,9 @@ export default Component.extend({
 
     let overflowHeight = el.clientHeight;
     let overflowWidth = el.clientWidth;
-    let tableWidth = table?.clientWidth;
-    let headerHeight = header?.offsetHeight;
-    let footerHeight = footer?.offsetHeight;
+    let tableWidth = table ? table.clientWidth : null;
+    let headerHeight = header ? header.offsetHeight : null;
+    let footerHeight = footer ? footer.offsetHeight : null;
 
     this.setProperties({
       scrollLeft,
