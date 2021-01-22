@@ -62,6 +62,29 @@ export default PageObject.extend({
   },
 
   /**
+   * Returns the scrollable overflow element
+   */
+  overflow() {
+    return findElement(this, '[data-test-ember-table-overflow]');
+  },
+
+  /**
+   * Returns the height of the horizontal scrollbar on the overflow element
+   */
+  horizontalScrollbarHeight() {
+    let overflow = this.overflow();
+    return overflow.offsetHeight - overflow.clientHeight;
+  },
+
+  /**
+   * Returns the width of the vertical scrollbar on the overflow element
+   */
+  verticalScrollbarWidth() {
+    let overflow = this.overflow();
+    return overflow.offsetWidth - overflow.clientWidth;
+  },
+
+  /**
    * Selects a row in the body
    *
    * @param {number} index

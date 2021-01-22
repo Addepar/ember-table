@@ -13,6 +13,13 @@ export default PageObject.extend({
   scope: 'tbody',
 
   /**
+    Returns the height of the entire tbody element.
+  */
+  get height() {
+    return findElement(this).offsetHeight;
+  },
+
+  /**
     Returns the number of rows in the body.
   */
   get rowCount() {

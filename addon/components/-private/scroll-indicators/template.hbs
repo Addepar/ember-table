@@ -1,16 +1,28 @@
-{{#if enableScrollIndicators}}
-  {{#if showLeft}}
-    <div
-      data-test-ember-table-scroll-indicator="left"
-      class="scroll-indicator scroll-indicator__left"
-      style={{leftStyle}}
-    ></div>
-  {{/if}}
-  {{#if showRight}}
-    <div
-      data-test-ember-table-scroll-indicator="right"
-      class="scroll-indicator scroll-indicator__right"
-      style={{rightStyle}}
-    ></div>
-  {{/if}}
+{{#if showLeft}}
+  <div
+    data-test-ember-table-scroll-indicator="left"
+    class="scroll-indicator scroll-indicator__left"
+    style={{leftStyle}}
+  ></div>
+{{/if}}
+{{#if showRight}}
+  <div
+    data-test-ember-table-scroll-indicator="right"
+    class="scroll-indicator scroll-indicator__right"
+    style={{rightStyle}}
+  ></div>
+{{/if}}
+{{#if showTop}}
+  <div
+    data-test-ember-table-scroll-indicator="top"
+    class="scroll-indicator scroll-indicator__top"
+    style={{topStyle}}
+  ></div>
+{{/if}}
+{{#if showBottom}}
+  <div
+    data-test-ember-table-scroll-indicator="bottom"
+    class="scroll-indicator scroll-indicator__bottom"
+    style={{bottomStyle}}
+  ></div>
 {{/if}}
