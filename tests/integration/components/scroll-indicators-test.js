@@ -13,6 +13,14 @@ const SCROLL_MAX = 999999;
 let table = new TablePage();
 
 let isOffset = (side, distance) => {
+  if (side === 'right') {
+    distance += table.verticalScrollbarWidth();
+  }
+
+  if (side === 'bottom') {
+    distance += table.horizontalScrollbarHeight();
+  }
+
   let element = table.scrollIndicator(side);
   return getComputedStyle(element)[side] === `${distance}px`;
 };
@@ -118,6 +126,7 @@ module('Integration | scroll indicators', function() {
 
       await generateTable(this, {
         columnCount: 30,
+        rowCount: 100,
         columnOptions: {
           fixedLeftCount: 1,
           fixedRightCount: 1,
