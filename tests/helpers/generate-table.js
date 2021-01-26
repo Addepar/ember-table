@@ -61,6 +61,7 @@ const fullTable = hbs`
         checkboxSelectionMode=checkboxSelectionMode
         rowSelectionMode=rowSelectionMode
         selection=selection
+        selectionMatchFunction=selectionMatchFunction
 
         as |b|
       }}
@@ -142,7 +143,6 @@ export function generateTableValues(
   for (let property in options) {
     testContext.set(property, options[property]);
   }
-
   testContext.set('rowComponent', rowComponent);
 
   columns = columns || generateColumns(columnCount, columnOptions);

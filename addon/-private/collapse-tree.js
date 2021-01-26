@@ -44,27 +44,44 @@ export const TableRowMeta = EmberObject.extend({
     },
   }),
 
-  isSelected: computed('_tree.selection.[]', '_parentMeta.isSelected', function() {
-    let rowValue = get(this, '_rowValue');
-    let selection = get(this, '_tree.selection');
+  // eslint-disable-next-line ember/use-brace-expansion
+  isSelected: computed(
+    '_tree.{selection.[],selectionMatchFunction}',
+    '_parentMeta.isSelected',
+    function() {
+      let rowValue = get(this, '_rowValue');
+      let selection = get(this, '_tree.selection');
+      let selectionMatchFunction = get(this, '_tree.selectionMatchFunction');
 
-    if (isArray(selection)) {
-      return this.get('isGroupSelected');
+      if (isArray(selection)) {
+        return this.get('isGroupSelected');
+      }
+
+      let isRowSelection = selectionMatchFunction
+        ? selectionMatchFunction(selection, rowValue)
+        : selection === rowValue;
+      return isRowSelection || get(this, '_parentMeta.isSelected');
     }
+  ),
 
-    return selection === rowValue || get(this, '_parentMeta.isSelected');
-  }),
+  isGroupSelected: computed(
+    '_tree.{selection.[],selectionMatchFunction}',
+    '_parentMeta.isSelected',
+    function() {
+      let rowValue = get(this, '_rowValue');
+      let selection = get(this, '_tree.selection');
+      let selectionMatchFunction = get(this, '_tree.selectionMatchFunction');
 
-  isGroupSelected: computed('_tree.selection.[]', '_parentMeta.isSelected', function() {
-    let rowValue = get(this, '_rowValue');
-    let selection = get(this, '_tree.selection');
+      if (!selection || !isArray(selection)) {
+        return false;
+      }
 
-    if (!selection || !isArray(selection)) {
-      return false;
+      let isSelectionMatch = selectionMatchFunction
+        ? selection.filter(item => selectionMatchFunction(item, rowValue)).length > 0
+        : selection.includes(rowValue);
+      return isSelectionMatch || get(this, '_parentMeta.isGroupSelected');
     }
-
-    return selection.includes(rowValue) || get(this, '_parentMeta.isGroupSelected');
-  }),
+  ),
 
   canCollapse: computed(
     '_tree.{enableTree,enableCollapse}',
