@@ -312,7 +312,7 @@ const ColumnTreeNode = EmberObject.extend({
     }, 0);
   }),
 
-  maxWidth: computed('column.minWidth', function() {
+  maxWidth: computed('column.maxWidth', function() {
     if (get(this, 'isLeaf')) {
       let columnMaxWidth = get(this, 'column.maxWidth');
 
