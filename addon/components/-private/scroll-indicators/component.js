@@ -62,10 +62,8 @@ const verticalIndicatorStyle = location => {
     'overflowWidth',
     'tableWidth',
     'headerHeight',
-    'footerHeight',
-    'footerBottom',
-    'footerScrollTop',
     'scrollbarHeight',
+    'visibleFooterHeight',
     function() {
       let style = [];
       let offset = 0;
@@ -77,11 +75,9 @@ const verticalIndicatorStyle = location => {
       }
 
       if (location === 'bottom') {
-        let footerHeight = this.get('footerHeight') || 0;
-        let footerBottom = this.get('footerBottom') || 0;
-        let footerScrollTop = this.get('footerScrollTop') || 0;
         let scrollbarHeight = this.get('scrollbarHeight') || 0;
-        offset += footerHeight + footerBottom + footerScrollTop + scrollbarHeight;
+        let visibleFooterHeight = this.get('visibleFooterHeight') || 0;
+        offset += visibleFooterHeight + scrollbarHeight;
       }
 
       style.push(`${location}:${offset}px;`);
@@ -137,9 +133,7 @@ export default Component.extend({
   overflowWidth: null,
   tableWidth: null,
   headerHeight: null,
-  footerHeight: null,
-  footerBottom: null,
-  footerScrollTop: null,
+  visibleFooterHeight: null,
 
   columnTree: readOnly('api.columnTree'),
   scrollIndicators: readOnly('api.scrollIndicators'),
@@ -195,9 +189,6 @@ export default Component.extend({
     let table = this._tableElement;
     let header = this._headerElement;
 
-    // could appear/disappear over lifetime of component
-    let footer = table.querySelector('tfoot');
-
     let scrollLeft = el.scrollLeft;
     let scrollRight = el.scrollWidth - el.clientWidth - scrollLeft;
     let scrollTop = el.scrollTop;
@@ -210,22 +201,16 @@ export default Component.extend({
     let overflowWidth = el.clientWidth;
     let tableWidth = table ? table.clientWidth : null;
     let headerHeight = header ? header.offsetHeight : null;
-    let footerHeight = footer ? footer.offsetHeight : null;
 
-    // calculate minimum `bottom` style for sticky footer cells; can be negative
-    // see `repositionStickyElements()` in `table-sticky-polyfill.js`
-    let footerBottom = 0;
-
-    if (footer) {
-      let footerCell = footer.querySelector('tr:last-child > td');
-      if (footerCell) {
-        let bottom = parseInt(footerCell.style.bottom, 10);
-        footerBottom = isNaN(bottom) ? 0 : bottom;
-      }
+    // part of the footer can be obscured until the table is scrolled to the
+    // bottom; see `addon/-private/sticky/table-sticky-polyfill.js`
+    let visibleFooterHeight = 0;
+    let footerCell = table.querySelector('tfoot td');
+    if (footerCell) {
+      let footerCellY = footerCell.getBoundingClientRect().y;
+      let overflowY = el.getBoundingClientRect().y;
+      visibleFooterHeight = overflowHeight - (footerCellY - overflowY);
     }
-
-    // calculate how far into the footer we have scrolled
-    let footerScrollTop = Math.max(-Math.min(footerBottom, 0) - scrollBottom, 0);
 
     this.setProperties({
       scrollLeft,
@@ -240,9 +225,8 @@ export default Component.extend({
       overflowWidth,
       tableWidth,
       headerHeight,
-      footerHeight,
-      footerBottom,
-      footerScrollTop,
+
+      visibleFooterHeight,
     });
   },
 
