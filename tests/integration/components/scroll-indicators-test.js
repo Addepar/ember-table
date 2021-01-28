@@ -199,10 +199,34 @@ module('Integration | scroll indicators', function() {
 
       await generateTable(this, {
         rowCount: 100,
-        footerRowCount: 2,
+        footerRowCount: 10,
       });
 
-      assert.ok(isOffset('bottom', table.footer.height), 'bottom indicator is above footer');
+      // sanity check: footer rows are restricted to 50% of table height when
+      // scrolled to the top, so bottom rows are hidden
+      assert.ok(
+        table.visibleFooterHeight() < table.footer.height,
+        'part of footer is obscured before scrolling'
+      );
+
+      assert.ok(
+        isOffset('bottom', table.visibleFooterHeight()),
+        'bottom indicator is positioned above footer before scrolling'
+      );
+
+      // scroll _almost_ all the way down
+      let overflow = await table.overflow();
+      let maxScroll = overflow.scrollHeight - overflow.clientHeight;
+
+      // the `2` here is because qunit runs at 1/2 scale
+      await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll - 2);
+
+      // all but the last pixel of the footer is now visible, so the bottom
+      // indicator needs to placed higher
+      assert.ok(
+        isOffset('bottom', table.footer.height - 1),
+        'bottom indicator is positioned above footer after scrolling'
+      );
     });
 
     test('negative table margins do not break scroll indicators', async function(assert) {

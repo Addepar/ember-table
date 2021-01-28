@@ -208,8 +208,9 @@ export default Component.extend({
     let footerCell = table.querySelector('tfoot td');
     if (footerCell) {
       let footerCellY = footerCell.getBoundingClientRect().y;
-      let overflowY = el.getBoundingClientRect().y;
-      visibleFooterHeight = overflowHeight - (footerCellY - overflowY);
+      let overflowRect = el.getBoundingClientRect();
+      let scale = overflowHeight / overflowRect.height;
+      visibleFooterHeight = scale * (overflowRect.height - (footerCellY - overflowRect.y));
     }
 
     this.setProperties({
