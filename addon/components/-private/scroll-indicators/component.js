@@ -63,6 +63,8 @@ const verticalIndicatorStyle = location => {
     'tableWidth',
     'headerHeight',
     'footerHeight',
+    'footerBottom',
+    'footerScrollTop',
     'scrollbarHeight',
     function() {
       let style = [];
@@ -76,8 +78,10 @@ const verticalIndicatorStyle = location => {
 
       if (location === 'bottom') {
         let footerHeight = this.get('footerHeight') || 0;
+        let footerBottom = this.get('footerBottom') || 0;
+        let footerScrollTop = this.get('footerScrollTop') || 0;
         let scrollbarHeight = this.get('scrollbarHeight') || 0;
-        offset += footerHeight + scrollbarHeight;
+        offset += footerHeight + footerBottom + footerScrollTop + scrollbarHeight;
       }
 
       style.push(`${location}:${offset}px;`);
@@ -134,6 +138,8 @@ export default Component.extend({
   tableWidth: null,
   headerHeight: null,
   footerHeight: null,
+  footerBottom: null,
+  footerScrollTop: null,
 
   columnTree: readOnly('api.columnTree'),
   scrollIndicators: readOnly('api.scrollIndicators'),
@@ -206,6 +212,21 @@ export default Component.extend({
     let headerHeight = header ? header.offsetHeight : null;
     let footerHeight = footer ? footer.offsetHeight : null;
 
+    // calculate minimum `bottom` style for sticky footer cells; can be negative
+    // see `repositionStickyElements()` in `table-sticky-polyfill.js`
+    let footerBottom = 0;
+
+    if (footer) {
+      let footerCell = footer.querySelector('tr:last-child > td');
+      if (footerCell) {
+        let bottom = parseInt(footerCell.style.bottom, 10);
+        footerBottom = isNaN(bottom) ? 0 : bottom;
+      }
+    }
+
+    // calculate how far into the footer we have scrolled
+    let footerScrollTop = Math.max(-Math.min(footerBottom, 0) - scrollBottom, 0);
+
     this.setProperties({
       scrollLeft,
       scrollRight,
@@ -220,6 +241,8 @@ export default Component.extend({
       tableWidth,
       headerHeight,
       footerHeight,
+      footerBottom,
+      footerScrollTop,
     });
   },
 
