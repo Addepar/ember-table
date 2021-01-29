@@ -85,6 +85,28 @@ export default PageObject.extend({
   },
 
   /**
+   * Returns the height of the visible portion of the footer
+   */
+  visibleFooterHeight() {
+    let footerCells = findElement(this, 'tfoot td', { multiple: true });
+
+    if (footerCells.length > 0) {
+      let footerCellY = footerCells[0].getBoundingClientRect().y;
+
+      let overflow = this.overflow();
+      let overflowRect = overflow.getBoundingClientRect();
+      let scale = overflow.offsetHeight / overflowRect.height;
+
+      return Math.min(
+        overflow.clientHeight - scale * (footerCellY - overflowRect.y),
+        overflow.clientHeight
+      );
+    }
+
+    return 0;
+  },
+
+  /**
    * Selects a row in the body
    *
    * @param {number} index

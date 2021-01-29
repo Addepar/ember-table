@@ -59,11 +59,13 @@ const horizontalIndicatorStyle = side => {
 const verticalIndicatorStyle = location => {
   return computed(
     `columnTree.${location}FixedNodes.@each.width`,
+    'overflowHeight',
     'overflowWidth',
     'tableWidth',
     'headerHeight',
-    'footerHeight',
     'scrollbarHeight',
+    'visibleFooterHeight',
+    'footerRatio',
     function() {
       let style = [];
       let offset = 0;
@@ -75,9 +77,17 @@ const verticalIndicatorStyle = location => {
       }
 
       if (location === 'bottom') {
-        let footerHeight = this.get('footerHeight') || 0;
+        let visibleFooterHeight = this.get('visibleFooterHeight') || 0;
         let scrollbarHeight = this.get('scrollbarHeight') || 0;
-        offset += footerHeight + scrollbarHeight;
+        let footerRatio = this.get('footerRatio');
+
+        // when footer occupies > 50% of the overflow height, we are now
+        // scrolling the footer rows, so indicator should jump to table bottom
+        if (footerRatio <= 0.5) {
+          offset += visibleFooterHeight;
+        }
+
+        offset += scrollbarHeight;
       }
 
       style.push(`${location}:${offset}px;`);
@@ -133,7 +143,8 @@ export default Component.extend({
   overflowWidth: null,
   tableWidth: null,
   headerHeight: null,
-  footerHeight: null,
+  visibleFooterHeight: null,
+  footerRatio: null,
 
   columnTree: readOnly('api.columnTree'),
   scrollIndicators: readOnly('api.scrollIndicators'),
@@ -189,9 +200,6 @@ export default Component.extend({
     let table = this._tableElement;
     let header = this._headerElement;
 
-    // could appear/disappear over lifetime of component
-    let footer = table.querySelector('tfoot');
-
     let scrollLeft = el.scrollLeft;
     let scrollRight = el.scrollWidth - el.clientWidth - scrollLeft;
     let scrollTop = el.scrollTop;
@@ -204,7 +212,26 @@ export default Component.extend({
     let overflowWidth = el.clientWidth;
     let tableWidth = table ? table.clientWidth : null;
     let headerHeight = header ? header.offsetHeight : null;
-    let footerHeight = footer ? footer.offsetHeight : null;
+
+    // part of the footer can be obscured until the table is scrolled to the
+    // bottom; see `addon/-private/sticky/table-sticky-polyfill.js`
+    let visibleFooterHeight = 0;
+    let footerCell = table.querySelector('tfoot td');
+    if (footerCell) {
+      let footerCellY = footerCell.getBoundingClientRect().y;
+      let overflowRect = el.getBoundingClientRect();
+      let scale = el.offsetHeight / overflowRect.height;
+
+      visibleFooterHeight = Math.min(
+        el.clientHeight - scale * (footerCellY - overflowRect.y),
+        el.clientHeight
+      );
+    }
+
+    let footerRatio;
+    if (overflowHeight > 0) {
+      footerRatio = visibleFooterHeight / el.offsetHeight;
+    }
 
     this.setProperties({
       scrollLeft,
@@ -219,7 +246,9 @@ export default Component.extend({
       overflowWidth,
       tableWidth,
       headerHeight,
-      footerHeight,
+
+      visibleFooterHeight,
+      footerRatio,
     });
   },
 

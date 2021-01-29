@@ -194,7 +194,7 @@ module('Integration | scroll indicators', function() {
       assert.ok(isOffset('top', table.header.height), 'top indicator is below header');
     });
 
-    test('bottom scroll indicator positioned above footer', async function(assert) {
+    test('bottom scroll indicator positioned above non-scrollable footer', async function(assert) {
       this.set('scrollIndicators', 'vertical');
 
       await generateTable(this, {
@@ -202,7 +202,48 @@ module('Integration | scroll indicators', function() {
         footerRowCount: 2,
       });
 
-      assert.ok(isOffset('bottom', table.footer.height), 'bottom indicator is above footer');
+      assert.ok(
+        isOffset('bottom', table.footer.height),
+        'bottom indicator is above footer initially'
+      );
+
+      // scroll almost to bottom
+      let overflow = await table.overflow();
+      let maxScroll = overflow.scrollHeight - overflow.clientHeight;
+      await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll * 0.9);
+
+      assert.ok(
+        isOffset('bottom', table.footer.height),
+        'bottom indicator is above footer after scrolling'
+      );
+    });
+
+    test('bottom scroll indicator positioned above scrollable footer', async function(assert) {
+      this.set('scrollIndicators', 'vertical');
+
+      await generateTable(this, {
+        rowCount: 100,
+        footerRowCount: 100,
+      });
+
+      let visibleFooterHeight = table.visibleFooterHeight();
+
+      assert.ok(
+        isOffset('bottom', visibleFooterHeight),
+        'bottom indicator is positioned above footer initially'
+      );
+
+      // scroll more than half way, but not all the way; because there are an
+      // equal number of rows in body and footer, this guarantees that more
+      // footer will be visible
+      let overflow = await table.overflow();
+      let maxScroll = overflow.scrollHeight - overflow.clientHeight;
+      await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll * 0.75);
+
+      assert.ok(
+        isOffset('bottom', 0),
+        'bottom indicator is positioned at bottom of table when footer scrolls'
+      );
     });
 
     test('negative table margins do not break scroll indicators', async function(assert) {
