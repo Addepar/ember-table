@@ -194,7 +194,31 @@ module('Integration | scroll indicators', function() {
       assert.ok(isOffset('top', table.header.height), 'top indicator is below header');
     });
 
-    test('bottom scroll indicator positioned above footer', async function(assert) {
+    test('bottom scroll indicator positioned above non-scrollable footer', async function(assert) {
+      this.set('scrollIndicators', 'vertical');
+
+      await generateTable(this, {
+        rowCount: 100,
+        footerRowCount: 2,
+      });
+
+      assert.ok(
+        isOffset('bottom', table.footer.height),
+        'bottom indicator is above footer initially'
+      );
+
+      // scroll almost to bottom
+      let overflow = await table.overflow();
+      let maxScroll = overflow.scrollHeight - overflow.clientHeight;
+      await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll * 0.9);
+
+      assert.ok(
+        isOffset('bottom', table.footer.height),
+        'bottom indicator is above footer after scrolling'
+      );
+    });
+
+    test('bottom scroll indicator positioned above scrollable footer', async function(assert) {
       this.set('scrollIndicators', 'vertical');
 
       await generateTable(this, {
