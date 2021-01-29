@@ -199,32 +199,33 @@ module('Integration | scroll indicators', function() {
 
       await generateTable(this, {
         rowCount: 100,
-        footerRowCount: 10,
+        footerRowCount: 100,
       });
 
-      // sanity check: footer rows are restricted to 50% of table height when
-      // scrolled to the top, so bottom rows are hidden
-      assert.ok(
-        table.visibleFooterHeight() < table.footer.height,
-        'part of footer is obscured before scrolling'
-      );
+      let visibleFooterHeight = table.visibleFooterHeight();
 
       assert.ok(
-        isOffset('bottom', table.visibleFooterHeight()),
+        isOffset('bottom', visibleFooterHeight),
         'bottom indicator is positioned above footer before scrolling'
       );
 
-      // scroll _almost_ all the way down
+      // scroll more than half way, but not all the way; because there are an
+      // equal number of rows in body and footer, this guarantees that more
+      // footer will be visible
       let overflow = await table.overflow();
       let maxScroll = overflow.scrollHeight - overflow.clientHeight;
+      await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll * 0.75);
 
-      // the `2` here is because qunit runs at 1/2 scale
-      await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll - 2);
+      let newVisibleFooterHeight = table.visibleFooterHeight();
 
-      // all but the last pixel of the footer is now visible, so the bottom
-      // indicator needs to placed higher
+      // sanity check: ensure visible footer height has actually changed
       assert.ok(
-        isOffset('bottom', table.footer.height - 1),
+        newVisibleFooterHeight > visibleFooterHeight,
+        'more footer is visible after scrolling'
+      );
+
+      assert.ok(
+        isOffset('bottom', newVisibleFooterHeight),
         'bottom indicator is positioned above footer after scrolling'
       );
     });
