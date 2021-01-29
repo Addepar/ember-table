@@ -206,7 +206,7 @@ module('Integration | scroll indicators', function() {
 
       assert.ok(
         isOffset('bottom', visibleFooterHeight),
-        'bottom indicator is positioned above footer before scrolling'
+        'bottom indicator is positioned above footer initially'
       );
 
       // scroll more than half way, but not all the way; because there are an
@@ -216,17 +216,9 @@ module('Integration | scroll indicators', function() {
       let maxScroll = overflow.scrollHeight - overflow.clientHeight;
       await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll * 0.75);
 
-      let newVisibleFooterHeight = table.visibleFooterHeight();
-
-      // sanity check: ensure visible footer height has actually changed
       assert.ok(
-        newVisibleFooterHeight > visibleFooterHeight,
-        'more footer is visible after scrolling'
-      );
-
-      assert.ok(
-        isOffset('bottom', newVisibleFooterHeight),
-        'bottom indicator is positioned above footer after scrolling'
+        isOffset('bottom', 0),
+        'bottom indicator is positioned at bottom of table when footer scrolls'
       );
     });
 

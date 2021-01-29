@@ -59,6 +59,7 @@ const horizontalIndicatorStyle = side => {
 const verticalIndicatorStyle = location => {
   return computed(
     `columnTree.${location}FixedNodes.@each.width`,
+    'overflowHeight',
     'overflowWidth',
     'tableWidth',
     'headerHeight',
@@ -75,9 +76,17 @@ const verticalIndicatorStyle = location => {
       }
 
       if (location === 'bottom') {
-        let scrollbarHeight = this.get('scrollbarHeight') || 0;
+        let overflowHeight = this.get('overflowHeight') || 0;
         let visibleFooterHeight = this.get('visibleFooterHeight') || 0;
-        offset += visibleFooterHeight + scrollbarHeight;
+        let scrollbarHeight = this.get('scrollbarHeight') || 0;
+
+        // when footer occupies > 50% of the overflow height, we are now
+        // scrolling the footer rows, so indicator should jump to table bottom
+        if (overflowHeight > 0 && visibleFooterHeight / overflowHeight <= 0.5) {
+          offset += visibleFooterHeight;
+        }
+
+        offset += scrollbarHeight;
       }
 
       style.push(`${location}:${offset}px;`);
