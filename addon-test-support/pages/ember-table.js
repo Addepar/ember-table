@@ -91,11 +91,16 @@ export default PageObject.extend({
     let footerCells = findElement(this, 'tfoot td', { multiple: true });
 
     if (footerCells.length > 0) {
-      let firstFooterCellRect = footerCells[0].getBoundingClientRect();
+      let footerCellY = footerCells[0].getBoundingClientRect().y;
+
       let overflow = this.overflow();
       let overflowRect = overflow.getBoundingClientRect();
       let scale = overflow.offsetHeight / overflowRect.height;
-      return scale * (overflowRect.height - (firstFooterCellRect.y - overflowRect.y));
+
+      return Math.min(
+        overflow.clientHeight - scale * (footerCellY - overflowRect.y),
+        overflow.clientHeight
+      );
     }
 
     return 0;

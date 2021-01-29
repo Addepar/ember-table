@@ -65,6 +65,7 @@ const verticalIndicatorStyle = location => {
     'headerHeight',
     'scrollbarHeight',
     'visibleFooterHeight',
+    'footerRatio',
     function() {
       let style = [];
       let offset = 0;
@@ -76,13 +77,13 @@ const verticalIndicatorStyle = location => {
       }
 
       if (location === 'bottom') {
-        let overflowHeight = this.get('overflowHeight') || 0;
         let visibleFooterHeight = this.get('visibleFooterHeight') || 0;
         let scrollbarHeight = this.get('scrollbarHeight') || 0;
+        let footerRatio = this.get('footerRatio');
 
         // when footer occupies > 50% of the overflow height, we are now
         // scrolling the footer rows, so indicator should jump to table bottom
-        if (overflowHeight > 0 && visibleFooterHeight / overflowHeight <= 0.5) {
+        if (footerRatio <= 0.5) {
           offset += visibleFooterHeight;
         }
 
@@ -143,6 +144,7 @@ export default Component.extend({
   tableWidth: null,
   headerHeight: null,
   visibleFooterHeight: null,
+  footerRatio: null,
 
   columnTree: readOnly('api.columnTree'),
   scrollIndicators: readOnly('api.scrollIndicators'),
@@ -218,8 +220,17 @@ export default Component.extend({
     if (footerCell) {
       let footerCellY = footerCell.getBoundingClientRect().y;
       let overflowRect = el.getBoundingClientRect();
-      let scale = overflowHeight / overflowRect.height;
-      visibleFooterHeight = scale * (overflowRect.height - (footerCellY - overflowRect.y));
+      let scale = el.offsetHeight / overflowRect.height;
+
+      visibleFooterHeight = Math.min(
+        el.clientHeight - scale * (footerCellY - overflowRect.y),
+        el.clientHeight
+      );
+    }
+
+    let footerRatio;
+    if (overflowHeight > 0) {
+      footerRatio = visibleFooterHeight / el.offsetHeight;
     }
 
     this.setProperties({
@@ -237,6 +248,7 @@ export default Component.extend({
       headerHeight,
 
       visibleFooterHeight,
+      footerRatio,
     });
   },
 

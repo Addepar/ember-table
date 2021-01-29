@@ -63,6 +63,8 @@ export default Controller.extend({
   }),
 
   footerRows: computed(function() {
-    return generateRows(1);
+    return generateRows(100, 1, (row, key) => {
+      return String.fromCharCode(key.charCodeAt(0) + 7);
+    });
   }),
 });
