@@ -88,5 +88,11 @@
     "name": "v3.0.0-6",
     "sha": "73cc6698f037a12d6b35ab6a20e959ffb05e1882",
     "tag": "v3.0.0-6"
+  },
+  "v3.0.0-7": {
+    "path": "versions/v3.0.0-7",
+    "name": "v3.0.0-7",
+    "sha": "90a9eac32ee6aecfc443367c5cdcc52320b1083e",
+    "tag": "v3.0.0-7"
   }
 }
