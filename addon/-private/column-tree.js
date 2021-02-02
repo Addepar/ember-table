@@ -82,6 +82,8 @@ const TableColumnMeta = EmberObject.extend({
 
   isReorderable: readOnly('_node.isReorderable'),
 
+  isSlack: readOnly('_node.isSlack'),
+
   width: readOnly('_node.width'),
 
   offsetLeft: readOnly('_node.offsetLeft'),
@@ -224,6 +226,8 @@ const ColumnTreeNode = EmberObject.extend({
       let slackColumnNode = ColumnTreeNode.create({
         column: {
           isResizable: false,
+          isReorderable: false,
+          minWidth: 0,
         },
         tree,
         parent,
@@ -687,6 +691,9 @@ export default EmberObject.extend({
       }, 0);
 
       let slack = Math.max(containerWidth - contentWidth, 0);
+
+      // slack -= 8; // TODO: remove Glados-specific 8px adjustment
+
       let slackColumn = columns.findBy('isSlack', true);
 
       if (slack !== slackColumn.get('width')) {
