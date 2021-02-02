@@ -42,6 +42,7 @@ export const WIDTH_CONSTRAINT = {
   NONE: 'none',
   EQ_CONTAINER: 'eq-container',
   GTE_CONTAINER: 'gte-container',
+  GTE_CONTAINER_SLACK: 'gte-container-slack',
   LTE_CONTAINER: 'lte-container',
 };
 
@@ -148,6 +149,8 @@ const TableColumnMeta = EmberObject.extend({
 const ColumnTreeNode = EmberObject.extend({
   _subcolumnNodes: null,
 
+  isSlack: false,
+
   init() {
     this._super(...arguments);
 
@@ -200,7 +203,7 @@ const ColumnTreeNode = EmberObject.extend({
     }
   },
 
-  subcolumnNodes: computed('column.subcolumns.[]', function() {
+  subcolumnNodes: computed('column.subcolumns.[]', 'tree.widthConstraint', function() {
     this.cleanSubcolumnNodes();
 
     if (get(this, 'isLeaf')) {
@@ -213,6 +216,22 @@ const ColumnTreeNode = EmberObject.extend({
     this._subcolumnNodes = emberA(
       get(this, 'column.subcolumns').map(column => ColumnTreeNode.create({ column, tree, parent }))
     );
+
+    if (
+      tree.get('widthConstraint') === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK &&
+      get(this, 'isRoot')
+    ) {
+      let slackColumnNode = ColumnTreeNode.create({
+        column: {
+          isResizable: false,
+        },
+        tree,
+        parent,
+        isSlack: true,
+      });
+
+      this._subcolumnNodes.push(slackColumnNode);
+    }
 
     return this._subcolumnNodes;
   }),
@@ -350,8 +369,9 @@ const ColumnTreeNode = EmberObject.extend({
     set(key, newWidth) {
       let oldWidth = get(this, 'width');
       let isResizable = get(this, 'isResizable');
+      let isSlack = get(this, 'isSlack');
 
-      if (!isResizable) {
+      if (!isResizable && !isSlack) {
         return oldWidth;
       }
 
@@ -658,6 +678,19 @@ export default EmberObject.extend({
           !isEmpty(fillColumnIndex)
         );
         this.resizeColumn(fillColumnIndex, delta);
+      }
+    }
+
+    if (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK) {
+      let contentWidth = columns.reduce((sum, column) => {
+        return column.get('isSlack') ? sum : sum + column.get('width');
+      }, 0);
+
+      let slack = Math.max(containerWidth - contentWidth, 0);
+      let slackColumn = columns.findBy('isSlack', true);
+
+      if (slack !== slackColumn.get('width')) {
+        slackColumn.set('width', slack);
       }
     }
   },
