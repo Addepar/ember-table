@@ -184,7 +184,7 @@ module('Integration | selection', () => {
       });
 
       test('selecting a child and then a parent dedupes selected rows correctly', async function(assert) {
-        this.on('onSelect', selection => {
+        this.set('onSelect', selection => {
           assert.equal(selection.length, 1, 'correct number of rows selected');
 
           this.set('selection', selection);
@@ -329,7 +329,7 @@ module('Integration | selection', () => {
       test('selection is a single row', async function(assert) {
         assert.expect(1);
 
-        this.on('onSelect', selection => {
+        this.set('onSelect', selection => {
           assert.ok(!Array.isArray(selection), 'selection is not an array');
         });
 
@@ -496,7 +496,7 @@ module('Integration | selection', () => {
       test('selection is an array', async function(assert) {
         assert.expect(1);
 
-        this.on('onSelect', selection => {
+        this.set('onSelect', selection => {
           assert.ok(Array.isArray(selection), 'selection is an array');
         });
 
@@ -524,7 +524,7 @@ module('Integration | selection', () => {
     test('Can disable selection by not using an action', async function(assert) {
       assert.expect(3);
 
-      this.on('onSelect', () => {
+      this.set('onSelect', () => {
         assert.ok(true, 'select called');
       });
 

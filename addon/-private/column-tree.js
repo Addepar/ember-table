@@ -863,7 +863,7 @@ export default EmberObject.extend({
 
     this.container.classList.remove('is-reordering');
 
-    this.sendAction('onReorder', get(node, 'column'), get(closestColumn, 'column'));
+    this.onReorder?.(get(node, 'column'), get(closestColumn, 'column'));
   },
 
   startResize(node, clientX) {
@@ -938,7 +938,7 @@ export default EmberObject.extend({
 
     this.container.classList.remove('is-resizing');
 
-    this.sendAction('onResize', get(node, 'column'));
+    this.onResize?.(get(node, 'column'));
   },
 
   updateScroll(node, stopAtLeft, stopAtRight, callback) {

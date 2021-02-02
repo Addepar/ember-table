@@ -15,7 +15,7 @@ let otherTable = new TablePage('[data-test-other-table]');
 module('Integration | meta', function() {
   componentModule('basic', function() {
     test('meta caches work', async function(assert) {
-      this.on('onClick', ({ cellMeta, rowMeta, columnMeta }) => {
+      this.set('onClick', ({ cellMeta, rowMeta, columnMeta }) => {
         set(cellMeta, 'wasClicked', true);
         set(columnMeta, 'wasClicked', true);
         set(rowMeta, 'wasClicked', true);
@@ -39,7 +39,7 @@ module('Integration | meta', function() {
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick="onClick"
+                  onClick=(action onClick)
 
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
@@ -111,7 +111,7 @@ module('Integration | meta', function() {
     });
 
     test('meta caches are unique per table instance', async function(assert) {
-      this.on('onClick', ({ cellMeta, rowMeta, columnMeta }) => {
+      this.set('onClick', ({ cellMeta, rowMeta, columnMeta }) => {
         set(cellMeta, 'wasClicked', true);
         set(columnMeta, 'wasClicked', true);
         set(rowMeta, 'wasClicked', true);
@@ -135,7 +135,7 @@ module('Integration | meta', function() {
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick="onClick"
+                  onClick=(action onClick)
 
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
@@ -173,7 +173,7 @@ module('Integration | meta', function() {
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick="onClick"
+                  onClick=(action onClick)
 
                   as |value column row cellMeta columnMeta rowMeta|
                 }}

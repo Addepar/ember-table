@@ -69,7 +69,7 @@ module('Integration | header | resize', function() {
     });
 
     test('column resize action is sent up to controller', async function(assert) {
-      this.on('onResize', function(column) {
+      this.set('onResize', function(column) {
         assert.equal(column.name, 'B', 'action is sent to controller after resizing');
       });
 

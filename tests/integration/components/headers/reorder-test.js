@@ -78,7 +78,7 @@ module('Integration | headers | reorder', function() {
     });
 
     test('column reorder action is sent up to controller', async function(assert) {
-      this.on('onReorder', function(insertedColumn, insertedAfter) {
+      this.set('onReorder', function(insertedColumn, insertedAfter) {
         assert.equal(insertedColumn.name, 'A', 'old column index is correct');
         assert.equal(insertedAfter.name, 'B', 'new column index is correct');
       });
