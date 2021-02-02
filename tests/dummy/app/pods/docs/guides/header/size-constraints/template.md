@@ -6,12 +6,13 @@ grows too big or too small. There are 4 possible settings:
 1. `eq-container`: Ensures that the table is always exactly the width the of its
 container.
 
-2. `gte-container`: Ensures that the table is always larger than the width of
-its container.
+2. `gte-container`: Ensures that the table is always the same width or larger than its container.
 
-3. `lte-container`: Ensures that the table is never larger than its container.
+3. `gte-container-slack`: Similar to `gte-container`, but when columns don't fill the container, a blank "slack" column is added to fill available whitespace.
 
-4. `none`: The default, does not enforce any size constraint.
+4. `lte-container`: Ensures that the table is never larger than its container.
+
+5. `none`: The default, does not enforce any size constraint.
 
 The table will react to resizing its container automatically. Sizing will _not_
 override the min/max widths provided by columns.
@@ -42,6 +43,11 @@ override the min/max widths provided by columns.
       </label>
 
       <label>
+        gte-container-slack
+        {{radio-button name='width-constraint' value='gte-container-slack' groupValue=widthConstraint}}
+      </label>
+
+      <label>
         lte-container
         {{radio-button name='width-constraint' value='lte-container' groupValue=widthConstraint}}
       </label>
@@ -53,11 +59,11 @@ override the min/max widths provided by columns.
     </div>
 
     <div class="resize-container">
-      <EmberTable as |t|>
+      <EmberTable class="vertical-borders" as |t|>
         <t.head
           @columns={{columns}}
           @widthConstraint={{widthConstraint}}
-          @resizeMode={{if (eq widthConstraint 'eq-container') 'fluid' 'standard'}}
+          @scrollIndicators="horizontal"
         />
 
         <t.body @rows={{rows}} />

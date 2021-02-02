@@ -4,6 +4,10 @@
   }
   padding-top: 0.5em;
   padding-bottom: 0.5em;
+
+  label {
+    white-space: nowrap;
+  }
 }
 
 .demo-current-selection {
@@ -38,6 +42,16 @@
 
   &.fixed-width {
     width: 800px;
+  }
+}
+
+.vertical-borders {
+  td,
+  th {
+    &:not(:first-child) {
+      box-sizing: border-box;
+      border-left: 1px solid #ddd;
+    }
   }
 }
 
