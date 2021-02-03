@@ -8,11 +8,9 @@ container.
 
 2. `gte-container`: Ensures that the table is always the same width or larger than its container.
 
-3. `gte-container-slack`: Similar to `gte-container`, but when columns don't fill the container, a blank "slack" column is added to fill available whitespace.
+3. `lte-container`: Ensures that the table is never larger than its container.
 
-4. `lte-container`: Ensures that the table is never larger than its container.
-
-5. `none`: The default, does not enforce any size constraint.
+4. `none`: The default, does not enforce any size constraint.
 
 The table will react to resizing its container automatically. Sizing will _not_
 override the min/max widths provided by columns.
@@ -40,11 +38,6 @@ override the min/max widths provided by columns.
       <label>
         gte-container
         {{radio-button name='width-constraint' value='gte-container' groupValue=widthConstraint}}
-      </label>
-
-      <label>
-        gte-container-slack
-        {{radio-button name='width-constraint' value='gte-container-slack' groupValue=widthConstraint}}
       </label>
 
       <label>
@@ -88,6 +81,8 @@ constraint. The options are:
 
 * `nth-column`: Puts the delta in the nth column as defined by `fillColumnIndex`
 
+* `slack-column`: Puts the delta into a blank column, so long as the table is smaller than the container
+
 {{#docs-demo as |demo|}}
   {{#demo.example name='docs-example-header-fill-mode'}}
     {{! BEGIN-SNIPPET docs-example-header-fill-mode.hbs }}
@@ -106,21 +101,27 @@ constraint. The options are:
         last-column
         {{radio-button name='fill-mode' value='last-column' groupValue=fillMode}}
       </label>
+
+      <label>
+        nth-column
+        {{radio-button name='fill-mode' value='nth-column' groupValue=fillMode}}
+      </label>
+
+      <label>
+        slack-column
+        {{radio-button name='fill-mode' value='slack-column' groupValue=fillMode}}
+      </label>
     </div>
 
-    <label>
-      nth-column
-      {{radio-button name='fill-mode' value='nth-column' groupValue=fillMode}}
-    </label>
-
     <div class="resize-container">
-      <EmberTable as |t|>
+      <EmberTable class="vertical-borders" as |t|>
         <t.head
           @columns={{columns}}
           @widthConstraint='eq-container'
-          @resizeMode='fluid'
+          @resizeMode={{if (eq fillMode 'slack-column') 'standard' 'fluid'}}
           @fillMode={{fillMode}}
           @fillColumnIndex=1
+          @scrollIndicators='horizontal'
         />
 
         <t.body @rows={{rows}} />
