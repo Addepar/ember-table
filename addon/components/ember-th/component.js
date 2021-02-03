@@ -128,7 +128,7 @@ export default BaseTableCell.extend({
 
   actions: {
     sendDropdownAction(...args) {
-      this.sendAction('onDropdownAction', ...args);
+      this.onDropdownAction?.(...args);
     },
   },
 
@@ -144,7 +144,7 @@ export default BaseTableCell.extend({
   },
 
   contextMenu(event) {
-    this.sendAction('onContextMenu', event);
+    this.onContextMenu?.(event);
     return false;
   },
 

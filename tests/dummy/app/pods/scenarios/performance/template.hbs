@@ -4,7 +4,7 @@
       api=t
       columns=columns
       sorts=sorts
-      onUpdateSorts="onUpdateSorts"
+      onUpdateSorts=(action "onUpdateSorts")
 
       as |h|
     }}
@@ -18,7 +18,7 @@
       rows=rows
 
       selection=selection
-      onSelect="onSelect"
+      onSelect=(action "onSelect")
 
       as |b|
     }}

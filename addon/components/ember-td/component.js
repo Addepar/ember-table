@@ -167,6 +167,7 @@ export default BaseTableCell.extend({
       rowMeta,
     });
 
-    this.sendAction(action, values);
+    let closureAction = this[action];
+    closureAction?.(values);
   },
 });

@@ -16,7 +16,7 @@ let table = new TablePage();
 module('Integration | cell', function() {
   componentModule('basic', function() {
     test('sends onClick action', async function(assert) {
-      this.on(
+      this.set(
         'onCellClick',
         ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
           assert.ok(event, 'event sent');
@@ -37,7 +37,7 @@ module('Integration | cell', function() {
     });
 
     test('sends onDoubleClick action', async function(assert) {
-      this.on(
+      this.set(
         'onCellDoubleClick',
         ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
           assert.ok(event, 'event sent');

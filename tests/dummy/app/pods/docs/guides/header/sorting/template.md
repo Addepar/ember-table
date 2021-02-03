@@ -109,7 +109,7 @@ This demo shows that in action:
           @columns={{columns}}
           @sorts={{sorts}}
 
-          @onUpdateSorts="twoStateSorting"
+          @onUpdateSorts={{action "twoStateSorting"}}
 
           @widthConstraint='gte-container'
           @fillMode='first-column'
