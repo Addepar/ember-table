@@ -6,9 +6,13 @@ grows too big or too small. There are 4 possible settings:
 1. `eq-container`: Ensures that the table is always exactly the width the of its
 container.
 
-2. `gte-container`: Ensures that the table is always the same width or larger than its container.
+2. `eq-container-slack`: Similar to `eq-container`, but allocates excess whitespace to an empty slack column on the right side of the table.
 
-3. `lte-container`: Ensures that the table is never larger than its container.
+3. `gte-container`: Ensures that the table is always the same width or larger than its container.
+
+4. `eq-container-slack`: Similar to `gte-container`, but allocates excess whitespace to an empty slack column on the right side of the table.
+
+5. `lte-container`: Ensures that the table is never larger than its container.
 
 4. `none`: The default, does not enforce any size constraint.
 
@@ -36,8 +40,18 @@ override the min/max widths provided by columns.
       </label>
 
       <label>
+        eq-container-slack
+        {{radio-button name='width-constraint' value='eq-container-slack' groupValue=widthConstraint}}
+      </label>
+
+      <label>
         gte-container
         {{radio-button name='width-constraint' value='gte-container' groupValue=widthConstraint}}
+      </label>
+
+      <label>
+        gte-container-slack
+        {{radio-button name='width-constraint' value='gte-container-slack' groupValue=widthConstraint}}
       </label>
 
       <label>
@@ -81,8 +95,6 @@ constraint. The options are:
 
 * `nth-column`: Puts the delta in the nth column as defined by `fillColumnIndex`
 
-* `slack-column`: Puts the delta into a blank column, so long as the table is smaller than the container
-
 {{#docs-demo as |demo|}}
   {{#demo.example name='docs-example-header-fill-mode'}}
     {{! BEGIN-SNIPPET docs-example-header-fill-mode.hbs }}
@@ -106,11 +118,6 @@ constraint. The options are:
         nth-column
         {{radio-button name='fill-mode' value='nth-column' groupValue=fillMode}}
       </label>
-
-      <label>
-        slack-column
-        {{radio-button name='fill-mode' value='slack-column' groupValue=fillMode}}
-      </label>
     </div>
 
     <div class="resize-container">
@@ -118,7 +125,7 @@ constraint. The options are:
         <t.head
           @columns={{columns}}
           @widthConstraint='eq-container'
-          @resizeMode={{if (eq fillMode 'slack-column') 'standard' 'fluid'}}
+          @resizeMode='fluid'
           @fillMode={{fillMode}}
           @fillColumnIndex=1
           @scrollIndicators='horizontal'

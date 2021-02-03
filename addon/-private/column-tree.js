@@ -36,13 +36,14 @@ export const FILL_MODE = {
   FIRST_COLUMN: 'first-column',
   LAST_COLUMN: 'last-column',
   NTH_COLUMN: 'nth-column',
-  SLACK_COLUMN: 'slack-column',
 };
 
 export const WIDTH_CONSTRAINT = {
   NONE: 'none',
   EQ_CONTAINER: 'eq-container',
+  EQ_CONTAINER_SLACK: 'eq-container-slack',
   GTE_CONTAINER: 'gte-container',
+  GTE_CONTAINER_SLACK: 'gte-container-slack',
   LTE_CONTAINER: 'lte-container',
 };
 
@@ -205,7 +206,7 @@ const ColumnTreeNode = EmberObject.extend({
     }
   },
 
-  subcolumnNodes: computed('column.subcolumns.[]', 'tree.fillMode', function() {
+  subcolumnNodes: computed('column.subcolumns.[]', 'tree.widthConstraint', function() {
     this.cleanSubcolumnNodes();
 
     if (get(this, 'isLeaf')) {
@@ -219,7 +220,13 @@ const ColumnTreeNode = EmberObject.extend({
       get(this, 'column.subcolumns').map(column => ColumnTreeNode.create({ column, tree, parent }))
     );
 
-    if (tree.get('fillMode') === FILL_MODE.SLACK_COLUMN && get(this, 'isRoot')) {
+    let widthConstraint = tree.get('widthConstraint');
+
+    if (
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK ||
+        widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK) &&
+      get(this, 'isRoot')
+    ) {
       let slackColumnNode = ColumnTreeNode.create({
         column: {
           isResizable: false,
@@ -656,23 +663,32 @@ export default EmberObject.extend({
       getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
     let columns = get(this, 'root.subcolumnNodes');
 
-    // exclude slack column from tree width calculation
-    let treeWidth = columns.reduce((sum, column) => {
+    // excludes slack column
+    let contentWidth = columns.reduce((sum, column) => {
       return column.get('isSlack') ? sum : sum + column.get('width');
     }, 0);
 
     let widthConstraint = get(this, 'widthConstraint');
     let fillMode = get(this, 'fillMode');
     let fillColumnIndex = get(this, 'fillColumnIndex');
+    let delta = containerWidth - contentWidth;
 
     if (
-      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && treeWidth !== containerWidth) ||
-      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && treeWidth > containerWidth) ||
-      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && treeWidth < containerWidth) ||
-      fillMode === FILL_MODE.SLACK_COLUMN
+      widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK ||
+      widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK
     ) {
-      let delta = containerWidth - treeWidth;
+      // first absorb as much delta as we can using the slack column
+      let slackColumn = columns.findBy('isSlack');
+      slackColumn.set('width', Math.max(delta, 0));
+    }
 
+    if (
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && delta < 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0)
+    ) {
       if (fillMode === FILL_MODE.EQUAL_COLUMN) {
         set(this, 'root.width', containerWidth);
       } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
@@ -685,9 +701,6 @@ export default EmberObject.extend({
           !isEmpty(fillColumnIndex)
         );
         this.resizeColumn(fillColumnIndex, delta);
-      } else if (fillMode === FILL_MODE.SLACK_COLUMN) {
-        let slackColumn = columns.findBy('isSlack', true);
-        slackColumn.set('width', delta > 0 ? delta : 0);
       }
     }
   },
