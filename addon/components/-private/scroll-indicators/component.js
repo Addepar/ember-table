@@ -226,6 +226,9 @@ export default Component.extend({
         el.clientHeight - scale * (footerCellY - overflowRect.y),
         el.clientHeight
       );
+
+      // can be negative if sticky footers don't work in browser (e.g. Safari)
+      visibleFooterHeight = Math.max(visibleFooterHeight, 0);
     }
 
     let footerRatio;
