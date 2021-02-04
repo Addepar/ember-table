@@ -3,6 +3,7 @@ import { module, test } from 'ember-qunit';
 import { generateTable } from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
 import { toBase26 } from 'dummy/utils/base-26';
+import { findElement } from 'ember-classy-page-object/extend';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
@@ -98,6 +99,80 @@ module('Integration | header | main', function() {
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
+    });
+
+    test('eq-container-slack', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'eq-container-slack',
+        columnCount: 1,
+        columnOptions: {
+          width: 100,
+        },
+      });
+
+      let containerWidth = table.containerWidth;
+      let header = table.headers.objectAt(0);
+      let row = table.rows.objectAt(0);
+
+      assert.equal(table.width, containerWidth, 'table fits container exactly');
+      assert.equal(row.cells.length, 2, 'slack column exists');
+
+      let slackCell = findElement(row.cells.objectAt(row.cells.length - 1));
+      assert.notEqual(slackCell.style.display, 'none', 'slack column is rendered');
+      assert.equal(slackCell.offsetWidth, containerWidth - 100, 'slack column fills whitespace');
+
+      // expand column a little bit
+      await header.resize(200);
+      assert.equal(table.width, containerWidth, 'table fits container exactly');
+      assert.notEqual(slackCell.style.display, 'none', 'slack column is rendered');
+      assert.equal(slackCell.offsetWidth, containerWidth - 200, 'slack column fills whitespace');
+
+      // expand column to fill container
+      await header.resize(containerWidth);
+      assert.equal(table.width, containerWidth, 'table fits container exactly');
+      assert.equal(slackCell.style.display, 'none', 'slack column is not rendered');
+
+      // try to expand column beyond container
+      await header.resize(containerWidth + 100);
+      assert.equal(table.width, containerWidth, 'table fits container exactly');
+      assert.equal(slackCell.style.display, 'none', 'slack column is not rendered');
+    });
+
+    test('gte-container-slack', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'gte-container-slack',
+        columnCount: 1,
+        columnOptions: {
+          width: 100,
+        },
+      });
+
+      let containerWidth = table.containerWidth;
+      let header = table.headers.objectAt(0);
+      let row = table.rows.objectAt(0);
+
+      assert.equal(table.width, containerWidth, 'table fits container exactly');
+      assert.equal(row.cells.length, 2, 'slack column exists');
+
+      let slackCell = findElement(row.cells.objectAt(row.cells.length - 1));
+      assert.notEqual(slackCell.style.display, 'none', 'slack column is rendered');
+      assert.equal(slackCell.offsetWidth, containerWidth - 100, 'slack column fills whitespace');
+
+      // expand column a little bit
+      await header.resize(200);
+      assert.equal(table.width, containerWidth, 'table fits container exactly');
+      assert.notEqual(slackCell.style.display, 'none', 'slack column is rendered');
+      assert.equal(slackCell.offsetWidth, containerWidth - 200, 'slack column fills whitespace');
+
+      // expand column to fill container
+      await header.resize(containerWidth);
+      assert.equal(table.width, containerWidth, 'table fits container exactly');
+      assert.equal(slackCell.style.display, 'none', 'slack column is not rendered');
+
+      // expand column beyond container
+      await header.resize(containerWidth + 100);
+      assert.equal(table.width, containerWidth + 100, 'table extends beyond container');
+      assert.equal(slackCell.style.display, 'none', 'slack column is not rendered');
     });
   });
 
