@@ -6,11 +6,11 @@ grows too big or too small. There are 4 possible settings:
 1. `eq-container`: Ensures that the table is always exactly the width the of its
 container.
 
-2. `eq-container-slack`: Similar to `eq-container`, but allocates excess whitespace to an empty slack column on the right side of the table.
+2. `eq-container-slack`: Similar to `eq-container`, but allocates excess whitespace to an empty "slack" column on the right side of the table.
 
 3. `gte-container`: Ensures that the table is always the same width or larger than its container.
 
-4. `eq-container-slack`: Similar to `gte-container`, but allocates excess whitespace to an empty slack column on the right side of the table.
+4. `eq-container-slack`: Similar to `gte-container`, but allocates excess whitespace to an empty "slack" column on the right side of the table.
 
 5. `lte-container`: Ensures that the table is never larger than its container.
 
