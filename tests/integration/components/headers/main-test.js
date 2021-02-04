@@ -27,6 +27,8 @@ module('Integration | header | main', function() {
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
+
+      assert.equal(table.rows.objectAt(0).cells.length, 2, 'slack column does not exist');
     });
 
     test('eq-container when larger', async function(assert) {
@@ -45,6 +47,8 @@ module('Integration | header | main', function() {
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
+
+      assert.equal(table.rows.objectAt(0).cells.length, 2, 'slack column does not exist');
     });
 
     test('eq-container with containerWidthAdjustment', async function(assert) {
@@ -63,6 +67,8 @@ module('Integration | header | main', function() {
         adjustmentValue,
         'Table width is adjusted from container width by the specified amount.'
       );
+
+      assert.equal(table.rows.objectAt(0).cells.length, 2, 'slack column does not exist');
     });
 
     test('gte-container', async function(assert) {
@@ -81,6 +87,8 @@ module('Integration | header | main', function() {
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
+
+      assert.equal(table.rows.objectAt(0).cells.length, 2, 'slack column does not exist');
     });
 
     test('lte-container', async function(assert) {
@@ -99,6 +107,8 @@ module('Integration | header | main', function() {
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
+
+      assert.equal(table.rows.objectAt(0).cells.length, 2, 'slack column does not exist');
     });
 
     test('eq-container-slack', async function(assert) {
