@@ -9,6 +9,7 @@ export default Component.extend({
   columnMeta: null,
   columnValue: null,
 
+  attributeBindings: ['isSlack:data-test-ember-table-slack'],
   classNameBindings: ['isFirstColumn', 'isFixedLeft', 'isFixedRight', 'textAlign'],
 
   isFirstColumn: equal('columnMeta.index', 0),

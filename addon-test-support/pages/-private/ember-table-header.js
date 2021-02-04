@@ -149,6 +149,10 @@ export default {
     return Number(findElement(this).getAttribute('data-test-row-count'));
   },
 
+  get slackHeader() {
+    return findElement(this, '[data-test-ember-table-slack]');
+  },
+
   rows: collection({
     scope: 'tr',
   }),
