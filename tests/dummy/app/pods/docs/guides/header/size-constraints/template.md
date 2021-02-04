@@ -1,7 +1,7 @@
 # Size Constraints
 
 You can set the `widthConstraint` property on your table to ensure that it never
-grows too big or too small. There are 4 possible settings:
+grows too big or too small. There are six possible settings:
 
 1. `eq-container`: Ensures that the table is always exactly the width the of its
 container.
@@ -14,7 +14,7 @@ container.
 
 5. `lte-container`: Ensures that the table is never larger than its container.
 
-4. `none`: The default, does not enforce any size constraint.
+6. `none`: The default, does not enforce any size constraint.
 
 The table will react to resizing its container automatically. Sizing will _not_
 override the min/max widths provided by columns.
