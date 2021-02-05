@@ -863,11 +863,7 @@ export default EmberObject.extend({
 
     this.container.classList.remove('is-reordering');
 
-    this.onReorder?.(
-      get(node, 'column'), 
-      get(closestColumn, 'column'),
-      get(this, 'columns')
-    );
+    this.onReorder?.(get(node, 'column'), get(closestColumn, 'column'), get(this, 'columns'));
   },
 
   startResize(node, clientX) {
