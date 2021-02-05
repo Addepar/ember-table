@@ -1,3 +1,4 @@
+/* eslint-env node */
 const getChannelURL = require('ember-source-channel-url');
 
 module.exports = function() {
@@ -36,7 +37,6 @@ module.exports = function() {
             devDependencies: {
               'ember-source': null,
               'ember-angle-bracket-invocation-polyfill': null,
-              'ember-cli-addon-docs': null,
             },
           },
         },
@@ -45,7 +45,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~2.12.0',
-              'ember-cli-addon-docs': null,
             },
           },
         },
@@ -54,7 +53,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~2.18.0',
-              'ember-cli-addon-docs': null,
             },
           },
         },
@@ -63,7 +61,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.4.0',
-              'ember-cli-addon-docs': null,
             },
           },
         },
@@ -72,7 +69,14 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.8.0',
-              'ember-cli-addon-docs': null,
+            },
+          },
+        },
+        {
+          name: 'ember-lts-3.12',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.12.0',
             },
           },
         },
@@ -81,7 +85,14 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.16.0',
-              'ember-cli-addon-docs': null,
+            },
+          },
+        },
+        {
+          name: 'ember-lts-3.20',
+          npm: {
+            devDependencies: {
+              'ember-source': '~3.18.0',
             },
           },
         },
@@ -90,7 +101,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': urls[0],
-              'ember-cli-addon-docs': null,
             },
           },
         },
@@ -99,7 +109,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': urls[1],
-              'ember-cli-addon-docs': null,
             },
           },
         },
@@ -108,7 +117,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': urls[2],
-              'ember-cli-addon-docs': null,
             },
           },
         },
@@ -116,6 +124,17 @@ module.exports = function() {
           name: 'ember-default',
           npm: {
             devDependencies: {},
+          },
+        },
+        {
+          name: 'ember-default-docs',
+          command: 'ember test --filter="Acceptance | docs"',
+          npm: {
+            devDependencies: {
+              'ember-data': '~3.24.0',
+              'ember-cli-addon-docs': '^1.0.0',
+              'ember-cli-addon-docs-yuidoc': '^1.0.0',
+            },
           },
         },
       ],
