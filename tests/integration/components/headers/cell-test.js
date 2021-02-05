@@ -9,7 +9,7 @@ let table = new TablePage();
 module('Integration | header | th', function() {
   componentModule('basic', function() {
     test('sends onContextMenu action', async function(assert) {
-      this.on('onHeaderCellContextMenu', event => {
+      this.set('onHeaderCellContextMenu', event => {
         assert.ok(event, 'event sent');
       });
 

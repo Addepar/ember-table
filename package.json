@@ -1,11 +1,11 @@
 {
   "name": "ember-table",
-  "version": "3.0.0-3",
+  "version": "3.0.0-8",
   "description": "An addon to support large data set and a number of features around table.",
   "keywords": [
     "ember-addon"
   ],
-  "license": "MIT",
+  "license": "BSD-3-Clause",
   "author": "",
   "directories": {
     "doc": "doc",
@@ -26,10 +26,14 @@
     "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
+    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.13",
+    "@babel/plugin-proposal-numeric-separator": "^7.12.13",
+    "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
+    "@babel/plugin-proposal-optional-catch-binding": "^7.12.13",
+    "@babel/plugin-proposal-optional-chaining": "^7.12.13",
     "@html-next/vertical-collection": "^1.0.0-beta.14",
     "broccoli-string-replace": "^0.1.2",
     "css-element-queries": "^0.4.0",
-    "ember-assign-polyfill": "^2.2.0",
     "ember-classy-page-object": "^0.6.1",
     "ember-cli-babel": "^7.12.0",
     "ember-cli-htmlbars": "^3.0.1",
@@ -40,7 +44,6 @@
     "ember-compatibility-helpers": "^1.2.0",
     "ember-raf-scheduler": "^0.1.0",
     "ember-test-selectors": "^2.1.0",
-    "ember-useragent": "^0.6.0",
     "hammerjs": "^2.0.8"
   },
   "devDependencies": {
@@ -49,7 +52,6 @@
     "@addepar/prettier-config": "^1.0.0",
     "@addepar/sass-lint-config": "^2.0.1",
     "@addepar/style-toolbox": "~0.8.1",
-    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
     "@types/ember": "^2.8.22",
     "babel-eslint": "^10.0.1",
     "broccoli-asset-rev": "^3.0.0",

@@ -36,7 +36,7 @@ test('A header cell accepts a block', async function(assert) {
       columns=columns
       sorts=sorts
 
-      onUpdateSorts="onUpdateSorts"
+      onUpdateSorts=(action onUpdateSorts)
 
       as |h|}}
       {{#ember-tr api=h as |r|}}

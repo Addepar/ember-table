@@ -5,10 +5,16 @@ const EmberAddon = require('ember-cli/lib/broccoli/ember-addon');
 module.exports = function(defaults) {
   let app = new EmberAddon(defaults, {
     'ember-cli-babel': {
-      includePolyfill: true,
+      includePolyfill: false,
     },
     babel: {
-      plugins: ['@babel/plugin-proposal-object-rest-spread'],
+      plugins: [
+        '@babel/plugin-proposal-object-rest-spread',
+        '@babel/plugin-proposal-optional-chaining',
+        '@babel/plugin-proposal-nullish-coalescing-operator',
+        '@babel/plugin-proposal-numeric-separator',
+        '@babel/plugin-proposal-optional-catch-binding',
+      ],
     },
     'ember-faker': {
       enabled: true, // Always enable for dummy app because the docs examples use faker

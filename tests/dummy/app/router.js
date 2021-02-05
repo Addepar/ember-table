@@ -26,7 +26,7 @@ Router.map(function() {
         this.route('fixed-columns');
         this.route('size-constraints');
         this.route('sorting');
-        this.route('actions');
+        this.route('scroll-indicators');
       });
 
       this.route('body', function() {

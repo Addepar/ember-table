@@ -136,7 +136,14 @@ export default {
   headers: collection('th', Header),
 
   /**
-    Returns the number of rows in the footer.
+    Returns the height of the entire thead element.
+  */
+  get height() {
+    return findElement(this).offsetHeight;
+  },
+
+  /**
+    Returns the number of rows in the header.
   */
   get rowCount() {
     return Number(findElement(this).getAttribute('data-test-row-count'));

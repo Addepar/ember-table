@@ -19,35 +19,37 @@ function isNearTo(value, expected, epsilon = 0.01) {
 const standardTemplate = hbs`
   <div style="height: 500px;">
     <div class="ember-table">
-      <table>
-        <thead>
-          {{#each headerRows as |row|}}
-            <tr>
-              {{#each row as |item|}}
-                <th style="width: 100px; min-width: 100px; height: 50px;">{{item}}</th>
-              {{/each}}
-            </tr>
-          {{/each}}
-        </thead>
-        <tbody>
-          {{#each bodyRows as |row|}}
-            <tr>
-              {{#each row as |item|}}
-                <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
-              {{/each}}
-            </tr>
-          {{/each}}
-        </tbody>
-        <tfoot>
-          {{#each footerRows as |row|}}
-            <tr>
-              {{#each row as |item|}}
-                <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
-              {{/each}}
-            </tr>
-          {{/each}}
-        </tfoot>
-      </table>
+      <div class="ember-table-overflow">
+        <table>
+          <thead>
+            {{#each headerRows as |row|}}
+              <tr>
+                {{#each row as |item|}}
+                  <th style="width: 100px; min-width: 100px; height: 50px;">{{item}}</th>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </thead>
+          <tbody>
+            {{#each bodyRows as |row|}}
+              <tr>
+                {{#each row as |item|}}
+                  <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </tbody>
+          <tfoot>
+            {{#each footerRows as |row|}}
+              <tr>
+                {{#each row as |item|}}
+                  <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </tfoot>
+        </table>
+      </div>
     </div>
   </div>
 `;
@@ -174,7 +176,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     verifyHeader(assert);
     verifyFooter(assert);
@@ -190,7 +192,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     this.set('headerRows', constructMatrix(3, 5));
     this.set('footerRows', constructMatrix(3, 5));
@@ -211,7 +213,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     this.set('headerRows', constructMatrix(5, 3));
     this.set('footerRows', constructMatrix(5, 3));
@@ -232,7 +234,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     this.set('headerRows', constructMatrix(3, 5));
     this.set('footerRows', constructMatrix(3, 5));
@@ -263,7 +265,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
 
     let firstCell = find('tfoot tr:first-child td:first-child');
     let lastCell = find('tfoot tr:last-child td:first-child');
-    let container = find('.ember-table');
+    let container = find('.ember-table-overflow');
 
     let firstCellRect = firstCell.getBoundingClientRect();
     let lastCellRect = lastCell.getBoundingClientRect();
@@ -289,7 +291,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
 
     assert.ok(lastCellRect.top > containerRect.bottom, 'last footer cell is out of view');
 
-    await scrollTo('.ember-table', 0, container.scrollHeight);
+    await scrollTo('.ember-table-overflow', 0, container.scrollHeight);
 
     // Recompute dimensions
     lastCellRect = lastCell.getBoundingClientRect();
@@ -317,7 +319,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
 
     let firstCell = find('thead tr:first-child th:first-child');
     let lastCell = find('thead tr:last-child th:first-child');
-    let container = find('.ember-table');
+    let container = find('.ember-table-overflow');
 
     let firstCellRect = firstCell.getBoundingClientRect();
     let lastCellRect = lastCell.getBoundingClientRect();
@@ -335,7 +337,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     );
     assert.ok(lastCellRect.top > containerRect.bottom, 'last header cell is out of view');
 
-    await scrollTo('.ember-table', 0, container.scrollHeight);
+    await scrollTo('.ember-table-overflow', 0, container.scrollHeight);
 
     // recompute dimensions
     lastCellRect = lastCell.getBoundingClientRect();
