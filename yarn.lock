@@ -2939,7 +2939,7 @@ broccoli-lint-eslint@^5.0.0:
     lodash.defaultsdeep "^4.6.0"
     md5-hex "^2.0.0"
 
-broccoli-merge-trees@^1.0.0, broccoli-merge-trees@^1.1.1:
+broccoli-merge-trees@^1.1.1:
   version "1.2.4"
   resolved "https://registry.npmjs.org/broccoli-merge-trees/-/broccoli-merge-trees-1.2.4.tgz#a001519bb5067f06589d91afa2942445a2d0fdb5"
   integrity sha1-oAFRm7UGfwZYnZGvopQkRaLQ/bU=
@@ -4251,21 +4251,21 @@ ember-assign-polyfill@^2.2.0, ember-assign-polyfill@^2.6.0:
     ember-cli-babel "^7.20.5"
     ember-cli-version-checker "^2.0.0"
 
-ember-classy-page-object@^0.6.1:
-  version "0.6.1"
-  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.6.1.tgz#f170b2f69f646ab406ff982874a2ab926af9294a"
-  integrity sha512-huSjPp6PWN2yLSugnJq/ysde9apAGXCzcN+07WgqALQqy4FnPty6DeYjwRpy5LLKjtUS8YDENb+JcyCz9XlfcQ==
+ember-classy-page-object@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.7.0.tgz#6da6700ba94090a9e6da70e6754ce55c555f40c9"
+  integrity sha512-J/2nkhi6PtZ3CQ1B9MwQM+FcvbdqWNaFVldMskBFCTKjCjoWNvsSzSjKgGKdOI51R71zaETYMwbJ3i/LJRx6yQ==
   dependencies:
     broccoli-funnel "^2.0.1"
-    ember-cli-babel "^6.6.0"
-    ember-cli-page-object "^1.15.4"
+    ember-cli-babel "^7.12.0"
+    ember-cli-page-object "^1.17.6"
 
 ember-cli-babel-plugin-helpers@^1.0.0, ember-cli-babel-plugin-helpers@^1.1.1:
   version "1.1.1"
   resolved "https://registry.npmjs.org/ember-cli-babel-plugin-helpers/-/ember-cli-babel-plugin-helpers-1.1.1.tgz#5016b80cdef37036c4282eef2d863e1d73576879"
   integrity sha512-sKvOiPNHr5F/60NLd7SFzMpYPte/nnGkq/tMIfXejfKHIhaiIkYFqX8Z9UFTKWLLn+V7NOaby6niNPZUdvKCRw==
 
-ember-cli-babel@^6.0.0-beta.4, ember-cli-babel@^6.11.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.17.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.2:
+ember-cli-babel@^6.11.0, ember-cli-babel@^6.16.0, ember-cli-babel@^6.17.0, ember-cli-babel@^6.3.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.1, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.2:
   version "6.18.0"
   resolved "https://registry.npmjs.org/ember-cli-babel/-/ember-cli-babel-6.18.0.tgz#3f6435fd275172edeff2b634ee7b29ce74318957"
   integrity sha512-7ceC8joNYxY2wES16iIBlbPSxwKDBhYwC8drU3ZEvuPDMwVv1KzxCNu1fvxyFEBWhwaRNTUxSCsEVoTd9nosGA==
@@ -4480,18 +4480,18 @@ ember-cli-normalize-entity-name@^1.0.0:
   dependencies:
     silent-error "^1.0.0"
 
-ember-cli-page-object@1.15.1, ember-cli-page-object@^1.15.4:
-  version "1.15.1"
-  resolved "https://registry.npmjs.org/ember-cli-page-object/-/ember-cli-page-object-1.15.1.tgz#da1f870638584b17e183d0014b4efb15465fadd5"
-  integrity sha512-/oUkiha+CLUNQGkQLHJ+mw9rm/V6Gi3VGgzKo7laEGZe6Mk8jl13otxEKWKI2NTJmL69fZxPPfFsqQqpzN+0UA==
+ember-cli-page-object@^1.17.6:
+  version "1.17.7"
+  resolved "https://registry.npmjs.org/ember-cli-page-object/-/ember-cli-page-object-1.17.7.tgz#a35c4cc1ece147e9752604cbc2266038660a84f6"
+  integrity sha512-sp7lunZa9p57cNm6og86F12SBx5Tt/7dWndfIKGE9Kol3QP2/72qiUVauhbfoUDSjfYLG2xEAFWDbiLHPMPYsg==
   dependencies:
     broccoli-file-creator "^2.1.1"
     broccoli-merge-trees "^2.0.0"
     ceibo "~2.0.0"
     ember-cli-babel "^6.16.0"
     ember-cli-node-assets "^0.2.2"
-    ember-native-dom-helpers "^0.5.3"
-    jquery "^3.2.1"
+    ember-native-dom-helpers "^0.7.0"
+    jquery "^3.4.1"
     rsvp "^4.7.0"
 
 ember-cli-path-utils@^1.0.0:
@@ -4781,28 +4781,10 @@ ember-math-helpers@~2.11.3:
     ember-cli-babel "^7.7.3"
     ember-cli-htmlbars "^3.0.1"
 
-ember-maybe-import-regenerator@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/ember-maybe-import-regenerator/-/ember-maybe-import-regenerator-0.1.6.tgz#35d41828afa6d6a59bc0da3ce47f34c573d776ca"
-  integrity sha1-NdQYKK+m1qWbwNo85H80xXPXdso=
-  dependencies:
-    broccoli-funnel "^1.0.1"
-    broccoli-merge-trees "^1.0.0"
-    ember-cli-babel "^6.0.0-beta.4"
-    regenerator-runtime "^0.9.5"
-
-ember-native-dom-helpers@0.6.2:
-  version "0.6.2"
-  resolved "https://registry.npmjs.org/ember-native-dom-helpers/-/ember-native-dom-helpers-0.6.2.tgz#ad1f82d64ac9abdd612022f4f390bdb6653b3d39"
-  integrity sha512-J4SfukTITFFsCYbOxG/sjGBTcZVrxgbMyFKrrTcB2cKfrglyTZSwqs9jBUpF91FEwetzmYP02Nh9N4WzcJ8cRQ==
-  dependencies:
-    broccoli-funnel "^1.1.0"
-    ember-cli-babel "^6.6.0"
-
-ember-native-dom-helpers@^0.5.3:
-  version "0.5.10"
-  resolved "https://registry.npmjs.org/ember-native-dom-helpers/-/ember-native-dom-helpers-0.5.10.tgz#9c7172e4ddfa5dd86830c46a936e2f8eca3e5896"
-  integrity sha512-bPJX49vlgnBGwFn/3WJPPJjjyd7/atvzW5j01u1dbyFf3bXvHg9Rs1qaZJdk8js0qZ1FINadIEC9vWtgN3w7tg==
+ember-native-dom-helpers@^0.7.0:
+  version "0.7.0"
+  resolved "https://registry.npmjs.org/ember-native-dom-helpers/-/ember-native-dom-helpers-0.7.0.tgz#98a87c11a391cec5c12382a4857e59ea2fb4b00a"
+  integrity sha512-ySJRGRhwYIWUAZKilB8xEcIatP9wKfEBX6JFG8bG4Ck7GvA0eau265hTGZz/+ntZuwcY4HrzSNkwimlHx4cM/A==
   dependencies:
     broccoli-funnel "^1.1.0"
     ember-cli-babel "^6.6.0"
@@ -7483,7 +7465,7 @@ jest-validate@^23.5.0:
     leven "^2.1.0"
     pretty-format "^23.6.0"
 
-jquery@^3.2.1, jquery@^3.5.1:
+jquery@^3.4.1, jquery@^3.5.1:
   version "3.6.0"
   resolved "https://registry.npmjs.org/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
   integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
@@ -9509,11 +9491,6 @@ regenerator-runtime@^0.13.4:
   version "0.13.9"
   resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.13.9.tgz#8925742a98ffd90814988d7566ad30ca3b263b52"
   integrity sha512-p3VT+cOEgxFsRRA9X4lkI1E+k2/CtnKtU4gcxyaCUreilL/vqI6CdZ3wxVUx3UOUg+gnUOQQcRI7BmSI656MYA==
-
-regenerator-runtime@^0.9.5:
-  version "0.9.6"
-  resolved "https://registry.npmjs.org/regenerator-runtime/-/regenerator-runtime-0.9.6.tgz#d33eb95d0d2001a4be39659707c51b0cb71ce029"
-  integrity sha1-0z65XQ0gAaS+OWWXB8UbDLcc4Ck=
 
 regenerator-transform@^0.10.0:
   version "0.10.1"
