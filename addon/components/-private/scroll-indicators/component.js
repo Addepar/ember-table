@@ -146,7 +146,9 @@ export default Component.extend({
   visibleFooterHeight: null,
   footerRatio: null,
 
+
   columnTree: readOnly('api.columnTree'),
+  containerWidthAdjustment: readOnly('api.columnTree.containerWidthAdjustment'),
   scrollIndicators: readOnly('api.scrollIndicators'),
   tableScrollId: readOnly('api.tableId'),
 

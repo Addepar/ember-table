@@ -23,6 +23,7 @@ const fullTable = hbs`
         scrollIndicators=scrollIndicators
         fillColumnIndex=fillColumnIndex
         fillMode=fillMode
+        initialFillMode=initialFillMode
         resizeMode=resizeMode
         sorts=sorts
         sortEmptyLast=sortEmptyLast

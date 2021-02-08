@@ -653,7 +653,7 @@ export default EmberObject.extend({
     this._isSorting = false;
   },
 
-  ensureWidthConstraint() {
+  ensureWidthConstraint(isInitialRun = false) {
     if (!this.container) {
       return;
     }
@@ -669,15 +669,15 @@ export default EmberObject.extend({
     }, 0);
 
     let widthConstraint = get(this, 'widthConstraint');
-    let fillMode = get(this, 'fillMode');
-    let fillColumnIndex = get(this, 'fillColumnIndex');
+
+    let isSlackEnabled =
+      widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK ||
+      widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK;
+
     let delta = containerWidth - contentWidth;
 
-    if (
-      widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK ||
-      widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK
-    ) {
-      // first absorb as much delta as we can using the slack column
+    // allocate slack before fill, unless this is very first run
+    if (isSlackEnabled && !isInitialRun) {
       let slackColumn = columns.findBy('isSlack');
       slackColumn.set('width', Math.max(delta, 0));
     }
@@ -689,6 +689,9 @@ export default EmberObject.extend({
       (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
       (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0)
     ) {
+      let fillMode =
+        isSlackEnabled && isInitialRun ? get(this, 'initialFillMode') : get(this, 'fillMode');
+
       if (fillMode === FILL_MODE.EQUAL_COLUMN) {
         set(this, 'root.width', containerWidth);
       } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
@@ -696,12 +699,20 @@ export default EmberObject.extend({
       } else if (fillMode === FILL_MODE.LAST_COLUMN) {
         this.resizeColumn(columns.length - 1, delta);
       } else if (fillMode === FILL_MODE.NTH_COLUMN) {
+        let fillColumnIndex = get(this, 'fillColumnIndex');
+
         assert(
           "fillMode 'nth-column' must have a fillColumnIndex defined",
           !isEmpty(fillColumnIndex)
         );
+
         this.resizeColumn(fillColumnIndex, delta);
       }
+    }
+
+    if (isSlackEnabled && isInitialRun) {
+      // initial layout complete; run again to fill excess space with slack
+      this.ensureWidthConstraint();
     }
   },
 

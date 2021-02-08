@@ -136,6 +136,16 @@ export default Component.extend({
   fillMode: defaultTo(FILL_MODE.EQUAL_COLUMN),
 
   /**
+    Specifies how columns should be sized when the table is initialized. This only affects
+    `eq-container-slack` and `gte-container-slack` width constraint modes. Permitted values are
+    the same as `fillMode`.
+
+    @argument initialFillMode
+    @type string? ('none')
+  */
+  initialFillMode: defaultTo(FILL_MODE.NONE),
+
+  /**
     A configuration that controls which column shrinks (or extends) when `fillMode` is
     'nth-column'. This is zero indexed.
 
@@ -223,6 +233,7 @@ export default Component.extend({
 
     this._updateApi();
     this._updateColumnTree();
+    scheduleOnce('actions', this, this.fillupHandler, true);
 
     addObserver(this, 'scrollIndicators', this._updateApi);
     addObserver(this, 'reorderFunction', this._updateApi);
@@ -232,6 +243,7 @@ export default Component.extend({
     addObserver(this, 'sorts', this._updateColumnTree);
     addObserver(this, 'columns.[]', this._onColumnsChange);
     addObserver(this, 'fillMode', this._updateColumnTree);
+    addObserver(this, 'initialFillMode', this._updateColumnTree);
     addObserver(this, 'fillColumnIndex', this._updateColumnTree);
     addObserver(this, 'resizeMode', this._updateColumnTree);
     addObserver(this, 'widthConstraint', this._updateColumnTree);
@@ -254,6 +266,7 @@ export default Component.extend({
     this.columnTree.set('sorts', this.get('sorts'));
     this.columnTree.set('columns', this.get('columns'));
     this.columnTree.set('fillMode', this.get('fillMode'));
+    this.columnTree.set('initialFillMode', this.get('initialFillMode'));
     this.columnTree.set('fillColumnIndex', this.get('fillColumnIndex'));
     this.columnTree.set('resizeMode', this.get('resizeMode'));
     this.columnTree.set('widthConstraint', this.get('widthConstraint'));
@@ -268,7 +281,8 @@ export default Component.extend({
       return;
     }
     this._updateColumnTree();
-    scheduleOnce('actions', this, this.fillupHandler);
+
+    scheduleOnce('actions', this, this.fillupHandler, true);
   },
 
   didInsertElement() {
@@ -333,11 +347,11 @@ export default Component.extend({
     this.onUpdateSorts?.(newSorts);
   },
 
-  fillupHandler() {
+  fillupHandler(isInitialRun = false) {
     if (this.isDestroying) {
       return;
     }
 
-    this.get('columnTree').ensureWidthConstraint();
+    this.get('columnTree').ensureWidthConstraint(isInitialRun);
   },
 });

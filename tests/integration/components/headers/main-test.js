@@ -309,6 +309,104 @@ module('Integration | header | main', function() {
     });
   });
 
+  componentModule('initialFillMode', function() {
+    test('eq-container-slack with no initialFillMode', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'eq-container-slack',
+        fillMode: 'equal-column',
+        columnCount: 2,
+        columnOptions: {
+          width: 100,
+        },
+      });
+
+      let containerWidth = table.containerWidth;
+      let header1 = table.headers.objectAt(0);
+      let header2 = table.headers.objectAt(1);
+      let slackHeader = table.headers.objectAt(2);
+
+      // `fillMode` is ignored because we are in slack mode
+      assert.equal(header1.width, 100, 'first column is default size');
+      assert.equal(header2.width, 100, 'second column is default size');
+      assert.equal(slackHeader.width, containerWidth - 200, 'slack column fills remaining space');
+
+      // expand first column to eliminate slack
+      await header1.resize(containerWidth - 100);
+      assert.equal(header1.width, containerWidth - 100, 'first column is resized');
+      assert.equal(header2.width, 100, 'second column remains default size');
+      assert.equal(slackHeader.width, 0, 'slack column is unused');
+
+      // expand second column beyond container; `equal-column` fill mode is applied
+      await header2.resize(200);
+      assert.equal(header1.width, containerWidth - 150, 'first column receives equal share');
+      assert.equal(header2.width, 150, 'second column receives equal share');
+      assert.equal(slackHeader.width, 0, 'slack column is unused');
+
+      // shrink second column to original size; slack is applied
+      await header2.resize(100);
+      assert.equal(header1.width, containerWidth - 150, 'first column is unaffected');
+      assert.equal(header2.width, 100, 'second column is resized');
+      assert.equal(slackHeader.width, 50, 'slack column receives the balance');
+    });
+
+    test('eq-container-slack with initialFillMode', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'eq-container-slack',
+        initialFillMode: 'first-column',
+        fillMode: 'equal-column',
+        columnCount: 2,
+        columnOptions: {
+          width: 100,
+        },
+      });
+
+      let containerWidth = table.containerWidth;
+      let header1 = table.headers.objectAt(0);
+      let header2 = table.headers.objectAt(1);
+      let slackHeader = table.headers.objectAt(2);
+
+      // `first-column` initial fill mode is applied
+      assert.equal(header1.width, containerWidth - 100, 'first column receives fill');
+      assert.equal(header2.width, 100, 'second column remains default size');
+      assert.equal(slackHeader.width, 0, 'slack column is unused');
+
+      // expand second column beyond container; `equal-column` fill mode is applied
+      await header2.resize(200);
+      assert.equal(header1.width, containerWidth - 150, 'first column receives equal share');
+      assert.equal(header2.width, 150, 'second column receives equal share');
+      assert.equal(slackHeader.width, 0, 'slack column is unused');
+
+      // shrink second column to original size; slack is applied
+      await header2.resize(100);
+      assert.equal(header1.width, containerWidth - 150, 'first column is unaffected');
+      assert.equal(header2.width, 100, 'second column is resized');
+      assert.equal(slackHeader.width, 50, 'slack column receives the balance');
+    });
+
+    test('gte-container-slack', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'gte-container-slack',
+        initialFillMode: 'equal-column',
+        columnCount: 1,
+        columnOptions: {
+          width: 100,
+        },
+      });
+
+      let containerWidth = table.containerWidth;
+      let header = table.headers.objectAt(0);
+      let slackHeader = table.headers.objectAt(1);
+
+      assert.equal(header.width, containerWidth, 'fill mode is applied on initial run');
+      assert.equal(slackHeader.width, 0, 'slack column is hidden');
+
+      await header.resize(100);
+
+      assert.equal(header.width, 100, 'header is resized');
+      assert.equal(slackHeader.width, containerWidth - 100, 'slack column is expanded');
+    });
+  });
+
   componentModule('subcolumns', function() {
     test('they work', async function(assert) {
       await generateTable(this, {
