@@ -24,6 +24,8 @@ override the min/max widths provided by columns.
   get a more natural resize effect. This is useful for tables that must fit
   a constrained space, like tables in a powerpoint.
   <br><br>
+  Most other modes should be paired with `resizeMode='standard'` to achieve an effect similar to most spreadsheet applications, where resizing one column does not typically change the size of the others.
+  <br><br>
   If you need to make a small adjustment to the container width (such as to
   account for a customized scrollbar that would cover some portion of the
   container width), set `containerWidthAdjustment` to a numerical value equal to
@@ -33,6 +35,7 @@ override the min/max widths provided by columns.
 {{#docs-demo as |demo|}}
   {{#demo.example}}
     {{! BEGIN-SNIPPET docs-example-header-size-constraint.hbs }}
+    <h6 class="demo-options-heading">Width Constraint</h6>
     <div class="demo-options">
       <label>
         eq-container
@@ -65,11 +68,25 @@ override the min/max widths provided by columns.
       </label>
     </div>
 
+    <h6 class="demo-options-heading">Resize Mode</h6>
+    <div class="demo-options">
+      <label>
+        standard
+        {{radio-button name='resize-mode' value='standard' groupValue=resizeMode}}
+      </label>
+
+      <label>
+        fluid
+        {{radio-button name='resize-mode' value='fluid' groupValue=resizeMode}}
+      </label>
+    </div>
+
     <div class="resize-container">
       <EmberTable class="vertical-borders" as |t|>
         <t.head
           @columns={{columns}}
           @widthConstraint={{widthConstraint}}
+          @resizeMode={{resizeMode}}
           @scrollIndicators="horizontal"
         />
 

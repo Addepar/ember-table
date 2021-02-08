@@ -5,9 +5,17 @@
   padding-top: 0.5em;
   padding-bottom: 0.5em;
 
+  &:not(:last-child) {
+    padding-bottom: 1em;
+  }
+
   label {
     white-space: nowrap;
   }
+}
+
+.demo-options-heading {
+  text-transform: uppercase;
 }
 
 .demo-current-selection {
