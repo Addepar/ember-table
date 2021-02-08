@@ -81,3 +81,29 @@
 .custom-footer {
   background-color: #00ff00;
 }
+
+.info-table {
+  margin: 2em auto;
+
+  th {
+    background-color: #f1f5f8;
+  }
+
+  th,
+  td {
+    padding: .5em;
+    border: 1px solid #555;
+
+    &.center {
+      text-align: center;
+    }
+
+    &.highlight {
+      background-color:#96c178;
+    }
+  }
+
+  td:not(:first-child) {
+    font-weight: bold;
+  }
+}

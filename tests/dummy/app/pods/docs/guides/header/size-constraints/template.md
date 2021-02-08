@@ -139,3 +139,76 @@ constraint. The options are:
 
   {{demo.snippet name='docs-example-header-fill-mode.hbs'}}
 {{/docs-demo}}
+
+## Initial Fill Mode
+
+When the width constraint is set to `eq-container-slack` or `gte-container-slack`, you may also set an _initial_ fill mode that is used to size the columns when the table is first rendered. This setting has no effect when combined with other width constraints.
+
+The `initialFillMode` property can be set to any of the allowed values for `fillMode`, but it defaults to `none`.
+
+This table summarizes which fill mode properties are used by each width constraint:
+
+<table class="info-table">
+  <thead>
+    <th>widthContraint</th>
+    <th>fillMode</th>
+    <th>initialFillMode</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>eq-container</td>
+      <td class="center highlight">Y</td>
+      <td class="center">N</td>
+    </tr>
+    <tr>
+      <td>eq-container-slack</td>
+      <td class="center highlight">Y</td>
+      <td class="center highlight">Y</td>
+    </tr>
+    <tr>
+      <td>gte-container</td>
+      <td class="center highlight">Y</td>
+      <td class="center">N</td>
+    </tr>
+    <tr>
+      <td>gte-container-slack</td>
+      <td class="center">N</td>
+      <td class="center highlight">Y</td>
+    </tr>
+    <tr>
+      <td>lte-container</td>
+      <td class="center highlight">Y</td>
+      <td class="center">N</td>
+    </tr>
+    <tr>
+      <td>none</td>
+      <td class="center">N</td>
+      <td class="center">N</td>
+    </tr>
+  </tbody>
+</table>
+
+Note that `eq-container-slack` uses both `fillMode` _and_ `initialFillMode`. The former is used to enforce the width constraint when the columns are resized beyond the width of the container, while the latter is used only to size the columns at initial render.
+
+In this example, `eq-container-slack` is combined with `equal-column` fill mode and `first-column` initial fill mode. At render, excess whitespace is allocated to the first column. When any column is resized such that the total width of the columns exceeds the container, each column is shrunk equally to satisfy the width constraint.
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name='docs-example-header-initial-fill-mode'}}
+    {{! BEGIN-SNIPPET docs-example-header-initial-fill-mode.hbs }}
+    <div class="resize-container w-100">
+      <EmberTable class="vertical-borders" as |t|>
+        <t.head
+          @columns={{columns}}
+          @widthConstraint='eq-container-slack'
+          @fillMode='equal-column'
+          @initialFillMode='first-column'
+        />
+
+        <t.body @rows={{rows}} />
+      </EmberTable>
+    </div>
+    {{! END-SNIPPET }}
+  {{/demo.example}}
+
+  {{demo.snippet name='docs-example-header-initial-fill-mode.hbs'}}
+{{/docs-demo}}
