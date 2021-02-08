@@ -37,7 +37,7 @@ export default PageObject.extend({
       List of all cells for the selected row.
     */
     cells: collection({
-      scope: 'td',
+      scope: 'td:not([data-test-ember-table-slack])',
 
       doubleClick: triggerable('dblclick'),
     }),
