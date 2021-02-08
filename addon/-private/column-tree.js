@@ -697,7 +697,8 @@ export default EmberObject.extend({
       } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
         this.resizeColumn(0, delta);
       } else if (fillMode === FILL_MODE.LAST_COLUMN) {
-        this.resizeColumn(columns.length - 1, delta);
+        let lastColumnIndex = isSlackEnabled ? columns.length - 2 : columns.length - 1;
+        this.resizeColumn(lastColumnIndex, delta);
       } else if (fillMode === FILL_MODE.NTH_COLUMN) {
         let fillColumnIndex = get(this, 'fillColumnIndex');
 
