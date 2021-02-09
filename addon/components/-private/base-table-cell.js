@@ -9,13 +9,18 @@ export default Component.extend({
   columnMeta: null,
   columnValue: null,
 
-  attributeBindings: ['isSlack:data-test-ember-table-slack'],
+  attributeBindings: ['slackAttribute:data-test-ember-table-slack'],
   classNameBindings: ['isFirstColumn', 'isFixedLeft', 'isFixedRight', 'textAlign'],
 
   isFirstColumn: equal('columnMeta.index', 0),
   isFixedLeft: equal('columnMeta.isFixed', 'left'),
   isFixedRight: equal('columnMeta.isFixed', 'right'),
   isSlack: readOnly('columnMeta.isSlack'),
+
+  // prevents `data-test-ember-table-slack="false"` on non-slack cells in Ember 2.4
+  slackAttribute: computed('isSlack', function() {
+    return this.get('isSlack') ? true : null;
+  }),
 
   /**
    Indicates the text alignment of this cell
