@@ -708,7 +708,7 @@ export default EmberObject.extend({
   },
 
   applyFillMode(fillMode) {
-    fillMode = fillMode ?? get(this, 'fillMode');
+    fillMode = fillMode || get(this, 'fillMode');
 
     let widthConstraint = get(this, 'widthConstraint');
     let containerWidth = this.getContainerWidth();
@@ -758,7 +758,7 @@ export default EmberObject.extend({
   },
 
   getContainerWidth() {
-    let containerWidthAdjustment = get(this, 'containerWidthAdjustment') ?? 0;
+    let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
     return getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
   },
 
