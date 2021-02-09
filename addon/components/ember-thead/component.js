@@ -233,7 +233,7 @@ export default Component.extend({
 
     this._updateApi();
     this._updateColumnTree();
-    scheduleOnce('actions', this, this.fillupHandler, true);
+    scheduleOnce('actions', this.columnTree, 'performInitialLayout');
 
     addObserver(this, 'scrollIndicators', this._updateApi);
     addObserver(this, 'reorderFunction', this._updateApi);
@@ -282,7 +282,7 @@ export default Component.extend({
     }
     this._updateColumnTree();
 
-    scheduleOnce('actions', this, this.fillupHandler, true);
+    scheduleOnce('actions', this, this.fillupHandler);
   },
 
   didInsertElement() {
@@ -347,11 +347,11 @@ export default Component.extend({
     this.onUpdateSorts?.(newSorts);
   },
 
-  fillupHandler(isInitialRun = false) {
+  fillupHandler() {
     if (this.isDestroying) {
       return;
     }
 
-    this.get('columnTree').ensureWidthConstraint(isInitialRun);
+    this.get('columnTree').ensureWidthConstraint();
   },
 });
