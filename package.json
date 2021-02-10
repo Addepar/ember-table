@@ -31,7 +31,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
     "@babel/plugin-proposal-optional-catch-binding": "^7.12.13",
     "@babel/plugin-proposal-optional-chaining": "^7.12.13",
-    "@html-next/vertical-collection": "^1.0.0-beta.14",
+    "@html-next/vertical-collection": "2.0.0-0",
     "broccoli-string-replace": "^0.1.2",
     "css-element-queries": "^0.4.0",
     "ember-classy-page-object": "^0.6.1",
