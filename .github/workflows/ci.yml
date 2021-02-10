@@ -41,16 +41,18 @@ jobs:
       matrix:
         ember-version:
           [
-            ember-lts-2.4,
             ember-lts-2.8,
             ember-lts-2.12,
             ember-lts-2.18,
             ember-lts-3.4,
             ember-lts-3.8,
+            ember-lts-3.12,
             ember-lts-3.16,
+            ember-lts-3.20,
             ember-release,
             ember-beta,
             ember-canary,
+            ember-default-docs
           ]
 
     steps:
