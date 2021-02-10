@@ -9,7 +9,6 @@ respective direction.
   {{#demo.example name='scroll-indicators'}}
     <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-scroll-indicators.hbs }}
-
         <EmberTable as |t|>
           <t.head
             @columns={{columns}}
@@ -34,7 +33,6 @@ them when they are present, or at the edges of the table when they are not.
   {{#demo.example name='scroll-indicators-with-fixed'}}
     <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-scroll-indicators-with-fixed.hbs }}
-
         <EmberTable as |t|>
           <t.head
             @columns={{columnsWithFixed}}
@@ -49,7 +47,6 @@ them when they are present, or at the edges of the table when they are not.
   {{demo.snippet name='docs-example-scroll-indicators-with-fixed.hbs'}}
   {{demo.snippet name='docs-example-scroll-indicators-with-fixed.js' label='component.js'}}
 {{/docs-demo}}
-
 ## Vertical Scroll Indicators with a Header & Footer
 
 Vertical scroll indicators respect both headers and footers, appearing just
@@ -59,7 +56,6 @@ inside any sticky rows at the top or bottom of the table.
   {{#demo.example name='scroll-indicators-with-footer'}}
     <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-scroll-indicators-with-footer.hbs }}
-
         <EmberTable as |t|>
           <t.head
             @columns={{columnsWithFooter}}

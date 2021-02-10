@@ -14,7 +14,7 @@
   "repository": "https://github.com/Addepar/ember-table",
   "scripts": {
     "build": "ember build",
-    "docs:deploy": "ember try:one ember-default-docs --- ember deploy production",
+    "docs:deploy": "ember deploy production",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
     "lint:files": "ember adde-lint --file-names",
     "lint:js": "ember adde-lint --javascript",
@@ -42,7 +42,7 @@
     "ember-cli-sass": "^10.0.0",
     "ember-cli-version-checker": "^3.0.1",
     "ember-compatibility-helpers": "^1.2.0",
-    "ember-raf-scheduler": "^0.2.0",
+    "ember-raf-scheduler": "^0.1.0",
     "ember-test-selectors": "^2.1.0",
     "hammerjs": "^2.0.8"
   },
@@ -58,6 +58,8 @@
     "ember-a11y-testing": "^0.5.0",
     "ember-angle-bracket-invocation-polyfill": "^1.3.1",
     "ember-cli": "~3.1.4",
+    "ember-cli-addon-docs": "0.6.13",
+    "ember-cli-addon-docs-yuidoc": "^0.2.1",
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-deploy": "^1.0.2",
     "ember-cli-deploy-build": "^1.1.1",
@@ -68,6 +70,7 @@
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-uglify": "^2.0.0",
+    "ember-debug-handlers-polyfill": "^1.1.1",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-faker": "^1.5.0",
@@ -78,7 +81,7 @@
     "ember-qunit": "^4.5.1",
     "ember-radio-button": "^1.2.3",
     "ember-resolver": "^5.1.1",
-    "ember-source": "~3.24.0",
+    "ember-source": "~3.12",
     "ember-source-channel-url": "^1.0.1",
     "ember-truth-helpers": "^2.0.0",
     "ember-try": "^1.1.0",
@@ -99,6 +102,7 @@
   },
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
+    "ember-cli-addon-docs/ember-fetch/whatwg-fetch": "3.3.1",
     "ember-cli-page-object": "1.15.1",
     "prettier": "1.18.2"
   }

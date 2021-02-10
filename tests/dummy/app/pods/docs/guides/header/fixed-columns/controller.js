@@ -62,7 +62,6 @@ export default Controller.extend({
       { name: 'K', valuePath: 'K' },
     ]);
   }),
-  // END-SNIPPET
 
   actions: {
     toggleFixed(column) {

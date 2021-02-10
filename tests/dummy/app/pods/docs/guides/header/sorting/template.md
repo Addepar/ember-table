@@ -66,11 +66,7 @@ you want to sort the content of the table asynchronously, you can unset the
 `sortFunction` and handle the async request yourself.
 
 ```hbs
-<EmberTable as |t|>
-  <t.head
-    sortFunction=null
-  />
-</EmberTable>
+{{ember-thead sortFunction=null}}
 ```
 
 ## Disabling Sorting

@@ -1,8 +1,8 @@
 # Legacy Usage
 
-Ember Table is compatible (and tested) with Ember 2.8 and up.
+Ember Table is compatible (and tested) with Ember 2.4 and up.
 
-## Usage with Ember 2.8-2.11
+## Usage with Ember 2.4-2.11
 
 You may have noticed that all of the examples for Ember Table on this docs site
 are using angle bracket syntax (.e.g. `foo-bar`). This is an exciting new
