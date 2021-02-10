@@ -954,20 +954,20 @@
   dependencies:
     "@glimmer/di" "^0.2.0"
 
-"@html-next/vertical-collection@^1.0.0-beta.14":
-  version "1.0.0"
-  resolved "https://registry.npmjs.org/@html-next/vertical-collection/-/vertical-collection-1.0.0.tgz#2845bce90a72bb212ec307b184c98e4d78d023fc"
-  integrity sha512-qmSbIXiiQVNBkSJZK2or8TVhMn7aiUFHlbkHcKa1Cbn6BDQnqKkdoMaB+Ii1s0Dc8XmpMS1t/enCmAfszZ9+cw==
+"@html-next/vertical-collection@2.0.0-0":
+  version "2.0.0-0"
+  resolved "https://registry.npmjs.org/@html-next/vertical-collection/-/vertical-collection-2.0.0-0.tgz#84c36afa08127ce57c1a2122d2c16fb9fdd9eb64"
+  integrity sha512-0UML0r+B5KFx28Dvw6PmsEW+UC7jyJJlKv0aBC1wUcrqE/WesE5brsHF5p8T1UQyJ7ibLHLCNkNABqXiP6traw==
   dependencies:
     babel6-plugin-strip-class-callcheck "^6.0.0"
     broccoli-funnel "^2.0.2"
     broccoli-merge-trees "^3.0.1"
     broccoli-rollup "^4.1.1"
-    ember-cli-babel "^7.7.3"
-    ember-cli-htmlbars "^3.0.0"
+    ember-cli-babel "^7.12.0"
+    ember-cli-htmlbars "^3.0.1"
     ember-cli-version-checker "^3.1.3"
-    ember-compatibility-helpers "^1.2.0"
-    ember-raf-scheduler "0.1.0"
+    ember-compatibility-helpers "^1.2.1"
+    ember-raf-scheduler "0.2.0"
 
 "@iarna/toml@2.2.3":
   version "2.2.3"
@@ -4149,7 +4149,7 @@ ember-cli-htmlbars@^1.1.1:
     json-stable-stringify "^1.0.0"
     strip-bom "^2.0.0"
 
-ember-cli-htmlbars@^3.0.0, ember-cli-htmlbars@^3.0.1:
+ember-cli-htmlbars@^3.0.1:
   version "3.1.0"
   resolved "https://registry.npmjs.org/ember-cli-htmlbars/-/ember-cli-htmlbars-3.1.0.tgz#87806c2a0bca2ab52d4fb8af8e2215c1ca718a99"
   integrity sha512-cgvRJM73IT0aePUG7oQ/afB7vSRBV3N0wu9BrWhHX2zkR7A7cUBI7KC9VPk6tbctCXoM7BRGsCC4aIjF7yrfXA==
@@ -4421,7 +4421,7 @@ ember-cli@~3.1.4:
     watch-detector "^0.1.0"
     yam "^0.0.24"
 
-ember-compatibility-helpers@^1.0.2, ember-compatibility-helpers@^1.2.0:
+ember-compatibility-helpers@^1.0.2, ember-compatibility-helpers@^1.2.0, ember-compatibility-helpers@^1.2.1:
   version "1.2.2"
   resolved "https://registry.npmjs.org/ember-compatibility-helpers/-/ember-compatibility-helpers-1.2.2.tgz#839e0c24190b7a2ec8c39b80e030811b1a95b6d3"
   integrity sha512-EKyCGOGBvKkBsk6wKfg3GhjTvTTkcEwzl/cv4VYvZM18cihmjGNpliR4BymWsKRWrv4VJLyq15Vhk3NHkSNBag==
@@ -4544,14 +4544,7 @@ ember-radio-button@^1.2.3:
     ember-cli-babel "^6.9.2"
     ember-cli-htmlbars "^1.1.1"
 
-ember-raf-scheduler@0.1.0:
-  version "0.1.0"
-  resolved "https://registry.npmjs.org/ember-raf-scheduler/-/ember-raf-scheduler-0.1.0.tgz#a22a02d238c374499231c03ab9c5b9887c72a853"
-  integrity sha1-oioC0jjDdEmSMcA6ucW5iHxyqFM=
-  dependencies:
-    ember-cli-babel "^6.6.0"
-
-ember-raf-scheduler@^0.2.0:
+ember-raf-scheduler@0.2.0, ember-raf-scheduler@^0.2.0:
   version "0.2.0"
   resolved "https://registry.npmjs.org/ember-raf-scheduler/-/ember-raf-scheduler-0.2.0.tgz#73250f6ca9760e4920c26d2eeb69738dc66dadc5"
   integrity sha512-z34reOLFORfigukrba3d5I333rixfcPjjfKPOKeaPAHf3I5wXfenoAze0Ijc7r4l/lO/4ocLw9RJbtNL2/oNpw==
