@@ -220,13 +220,10 @@ const ColumnTreeNode = EmberObject.extend({
       get(this, 'column.subcolumns').map(column => ColumnTreeNode.create({ column, tree, parent }))
     );
 
-    let widthConstraint = tree.get('widthConstraint');
+    let isRoot = get(this, 'isRoot');
+    let isSlackModeEnabled = get(tree, 'isSlackModeEnabled');
 
-    if (
-      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK ||
-        widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK) &&
-      get(this, 'isRoot')
-    ) {
+    if (isRoot && isSlackModeEnabled) {
       let slackColumnNode = ColumnTreeNode.create({
         column: {
           isResizable: false,
@@ -667,6 +664,13 @@ export default EmberObject.extend({
     this._isSorting = false;
   },
 
+  /**
+    Performs initial sizing of the table columns according to tree's
+    `initialFillMode` property, then attempts to satisfy width constraint.
+
+    In `eq-container-slack` and `gte-container-slack` width contraint modes,
+    this allows a default layout to be applied before slack is allocated.
+  */
   performInitialLayout() {
     if (!this.container) {
       return;
@@ -682,6 +686,10 @@ export default EmberObject.extend({
     this.ensureWidthConstraint();
   },
 
+  /**
+    Allocates excess whitespace to slack column (if present), then applies
+    tree's `fillMode` in attempt to satisfy its `widthConstraint`.
+   */
   ensureWidthConstraint() {
     if (!this.container) {
       return;
@@ -696,6 +704,14 @@ export default EmberObject.extend({
     this.applyFillMode();
   },
 
+  /**
+    Resizes the slack column to fill excess whitespace in the container. If
+    table columns exceed the width of the container, the slack column is set to
+    a width of zero.
+
+    The slack column is only present when the `widthConstraint` property is set
+    to `eq-container-slack` or `gte-container-slack`.
+  */
   updateSlackColumn() {
     let slackColumn = get(this, 'root.subcolumnNodes').findBy('isSlack');
 
@@ -707,6 +723,13 @@ export default EmberObject.extend({
     }
   },
 
+  /**
+    Attempts to satisfy tree's width constraint by resizing columns according
+    to the specifid `fillMode`. If no `fillMode` is specified, the tree's
+    own `fillMode` property will be used.
+
+    @param {String} fillMode
+   */
   applyFillMode(fillMode) {
     fillMode = fillMode || get(this, 'fillMode');
 
