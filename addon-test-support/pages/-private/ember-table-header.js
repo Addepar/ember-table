@@ -133,7 +133,12 @@ export default {
   /**
    * List of columns in the header.
    */
-  headers: collection('th', Header),
+  headers: collection('th:not([data-test-ember-table-slack])', Header),
+
+  /**
+   * List of columns in the header, excluding slack column if present.
+   */
+  contentHeaders: collection('th:not([data-test-ember-table-slack])', Header),
 
   /**
     Returns the height of the entire thead element.
@@ -147,6 +152,10 @@ export default {
   */
   get rowCount() {
     return Number(findElement(this).getAttribute('data-test-row-count'));
+  },
+
+  get slackHeader() {
+    return findElement(this, '[data-test-ember-table-slack]');
   },
 
   rows: collection({

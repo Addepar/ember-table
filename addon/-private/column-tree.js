@@ -41,7 +41,9 @@ export const FILL_MODE = {
 export const WIDTH_CONSTRAINT = {
   NONE: 'none',
   EQ_CONTAINER: 'eq-container',
+  EQ_CONTAINER_SLACK: 'eq-container-slack',
   GTE_CONTAINER: 'gte-container',
+  GTE_CONTAINER_SLACK: 'gte-container-slack',
   LTE_CONTAINER: 'lte-container',
 };
 
@@ -80,6 +82,8 @@ const TableColumnMeta = EmberObject.extend({
   isResizable: readOnly('_node.isResizable'),
 
   isReorderable: readOnly('_node.isReorderable'),
+
+  isSlack: readOnly('_node.isSlack'),
 
   width: readOnly('_node.width'),
 
@@ -148,6 +152,8 @@ const TableColumnMeta = EmberObject.extend({
 const ColumnTreeNode = EmberObject.extend({
   _subcolumnNodes: null,
 
+  isSlack: false,
+
   init() {
     this._super(...arguments);
 
@@ -200,7 +206,7 @@ const ColumnTreeNode = EmberObject.extend({
     }
   },
 
-  subcolumnNodes: computed('column.subcolumns.[]', function() {
+  subcolumnNodes: computed('column.subcolumns.[]', 'tree.widthConstraint', function() {
     this.cleanSubcolumnNodes();
 
     if (get(this, 'isLeaf')) {
@@ -213,6 +219,25 @@ const ColumnTreeNode = EmberObject.extend({
     this._subcolumnNodes = emberA(
       get(this, 'column.subcolumns').map(column => ColumnTreeNode.create({ column, tree, parent }))
     );
+
+    let isRoot = get(this, 'isRoot');
+    let isSlackModeEnabled = get(tree, 'isSlackModeEnabled');
+
+    if (isRoot && isSlackModeEnabled) {
+      let slackColumnNode = ColumnTreeNode.create({
+        column: {
+          isResizable: false,
+          isReorderable: false,
+          minWidth: 0,
+          width: 0,
+        },
+        tree,
+        parent,
+        isSlack: true,
+      });
+
+      this._subcolumnNodes.push(slackColumnNode);
+    }
 
     return this._subcolumnNodes;
   }),
@@ -312,7 +337,7 @@ const ColumnTreeNode = EmberObject.extend({
     }, 0);
   }),
 
-  maxWidth: computed('column.minWidth', function() {
+  maxWidth: computed('column.maxWidth', function() {
     if (get(this, 'isLeaf')) {
       let columnMaxWidth = get(this, 'column.maxWidth');
 
@@ -350,8 +375,9 @@ const ColumnTreeNode = EmberObject.extend({
     set(key, newWidth) {
       let oldWidth = get(this, 'width');
       let isResizable = get(this, 'isResizable');
+      let isSlack = get(this, 'isSlack');
 
-      if (!isResizable) {
+      if (!isResizable && !isSlack) {
         return oldWidth;
       }
 
@@ -436,6 +462,12 @@ const ColumnTreeNode = EmberObject.extend({
         return get(this, 'width');
       }
     },
+  }),
+
+  contentWidth: computed('subcolumnNodes.@each.{isSlack,width}', function() {
+    return this.get('subcolumnNodes').reduce((sum, column) => {
+      return column.get('isSlack') ? sum : sum + column.get('width');
+    }, 0);
   }),
 
   offsetIndex: computed('parent.{offsetIndex,subcolumnNodes.[]}', function() {
@@ -588,6 +620,14 @@ export default EmberObject.extend({
     return { containerLeft, containerRight };
   }),
 
+  isSlackModeEnabled: computed('widthConstraint', function() {
+    let widthConstraint = get(this, 'widthConstraint');
+    return (
+      widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK ||
+      widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK
+    );
+  }),
+
   sortColumnsByFixed() {
     // disable observer
     if (this._isSorting) {
@@ -624,39 +664,104 @@ export default EmberObject.extend({
     this._isSorting = false;
   },
 
+  /**
+    Performs initial sizing of the table columns according to tree's
+    `initialFillMode` property, then attempts to satisfy width constraint.
+
+    In `eq-container-slack` and `gte-container-slack` width contraint modes,
+    this allows a default layout to be applied before slack is allocated.
+  */
+  performInitialLayout() {
+    if (!this.container) {
+      return;
+    }
+
+    let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
+    let initialFillMode = get(this, 'initialFillMode');
+
+    if (isSlackModeEnabled && initialFillMode) {
+      this.applyFillMode(initialFillMode);
+    }
+
+    this.ensureWidthConstraint();
+  },
+
+  /**
+    Allocates excess whitespace to slack column (if present), then applies
+    tree's `fillMode` in attempt to satisfy its `widthConstraint`.
+   */
   ensureWidthConstraint() {
     if (!this.container) {
       return;
     }
 
-    let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
-    let containerWidth =
-      getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
-    let treeWidth = get(this, 'root.width');
-    let columns = get(this, 'root.subcolumnNodes');
+    let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
+
+    if (isSlackModeEnabled) {
+      this.updateSlackColumn();
+    }
+
+    this.applyFillMode();
+  },
+
+  /**
+    Resizes the slack column to fill excess whitespace in the container. If
+    table columns exceed the width of the container, the slack column is set to
+    a width of zero.
+
+    The slack column is only present when the `widthConstraint` property is set
+    to `eq-container-slack` or `gte-container-slack`.
+  */
+  updateSlackColumn() {
+    let slackColumn = get(this, 'root.subcolumnNodes').findBy('isSlack');
+
+    if (slackColumn) {
+      let containerWidth = this.getContainerWidth();
+      let contentWidth = get(this, 'root.contentWidth');
+      let width = Math.max(containerWidth - contentWidth, 0);
+      slackColumn.set('width', width);
+    }
+  },
+
+  /**
+    Attempts to satisfy tree's width constraint by resizing columns according
+    to the specifid `fillMode`. If no `fillMode` is specified, the tree's
+    own `fillMode` property will be used.
+
+    @param {String} fillMode
+   */
+  applyFillMode(fillMode) {
+    fillMode = fillMode || get(this, 'fillMode');
 
     let widthConstraint = get(this, 'widthConstraint');
-    let fillMode = get(this, 'fillMode');
-    let fillColumnIndex = get(this, 'fillColumnIndex');
+    let containerWidth = this.getContainerWidth();
+    let contentWidth = get(this, 'root.contentWidth');
+    let delta = containerWidth - contentWidth;
 
     if (
-      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && treeWidth !== containerWidth) ||
-      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && treeWidth > containerWidth) ||
-      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && treeWidth < containerWidth)
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && delta < 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0)
     ) {
-      let delta = containerWidth - treeWidth;
-
       if (fillMode === FILL_MODE.EQUAL_COLUMN) {
         set(this, 'root.width', containerWidth);
       } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
         this.resizeColumn(0, delta);
       } else if (fillMode === FILL_MODE.LAST_COLUMN) {
-        this.resizeColumn(columns.length - 1, delta);
+        let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
+        let columns = get(this, 'root.subcolumnNodes');
+        let lastColumnIndex = isSlackModeEnabled ? columns.length - 2 : columns.length - 1;
+        this.resizeColumn(lastColumnIndex, delta);
       } else if (fillMode === FILL_MODE.NTH_COLUMN) {
+        let fillColumnIndex = get(this, 'fillColumnIndex');
+
         assert(
           "fillMode 'nth-column' must have a fillColumnIndex defined",
           !isEmpty(fillColumnIndex)
         );
+
         this.resizeColumn(fillColumnIndex, delta);
       }
     }
@@ -673,6 +778,11 @@ export default EmberObject.extend({
 
     let oldWidth = get(fillColumn, 'width');
     set(fillColumn, 'width', oldWidth + delta);
+  },
+
+  getContainerWidth() {
+    let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
+    return getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
   },
 
   getReorderBounds(node) {

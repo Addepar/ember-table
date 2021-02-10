@@ -31,6 +31,7 @@ export default PageObject.extend({
   getCell: alias('body.getCell'),
 
   headers: alias('header.headers'),
+  slackHeader: alias('header.slackHeader'),
   footers: alias('footer.footers'),
 
   /**
