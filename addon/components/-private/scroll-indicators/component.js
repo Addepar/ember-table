@@ -193,36 +193,47 @@ export default Component.extend({
       bind(this, this._updateIndicators)
     );
 
-    this._addFooterListener();
+    this._addFooterListeners();
   },
 
   _removeListeners() {
     this._isListening = false;
     this._scrollElement.removeEventListener('scroll', this._onScroll);
     this._tableResizeSensor.detach();
-    this._removeFooterListener();
+    this._removeFooterListeners();
   },
 
   // footer can appear/disappear dynamically, so this listener needs to be
   // added/removed occasionally
-  _addFooterListener() {
-    if (this._footerResizeSensor) {
-      return;
+  _addFooterListeners() {
+    if (!this._footerResizeSensor) {
+      let footerElement = this._tableElement.querySelector('tfoot');
+      if (footerElement) {
+        this._footerResizeSensor = new ResizeSensor(
+          footerElement,
+          bind(this, this._updateIndicators)
+        );
+      }
     }
 
-    let footerElement = this._tableElement.querySelector('tfoot');
-    if (footerElement) {
-      this._footerResizeSensor = new ResizeSensor(
-        footerElement,
-        bind(this, this._updateIndicators)
-      );
+    if (!this._footerCellMutationObserver) {
+      let footerCell = this._tableElement.querySelector('tfoot td');
+      if (footerCell) {
+        this._footerCellMutationObserver = new MutationObserver(bind(this, this._updateIndicators));
+        this._footerCellMutationObserver.observe(footerCell, { attributes: true });
+      }
     }
   },
 
-  _removeFooterListener() {
+  _removeFooterListeners() {
     if (this._footerResizeSensor) {
       this._footerResizeSensor.detach();
       this._footerResizeSensor = null;
+    }
+
+    if (this._footerCellMutationObserver) {
+      this._footerCellMutationObserver.disconnect();
+      this._footerCellMutationObserver = null;
     }
   },
 
@@ -249,7 +260,7 @@ export default Component.extend({
     let visibleFooterHeight = 0;
     let footerCell = table.querySelector('tfoot td');
     if (footerCell) {
-      this._addFooterListener();
+      this._addFooterListeners();
 
       let footerCellY = footerCell.getBoundingClientRect().y;
       let overflowRect = el.getBoundingClientRect();
@@ -263,7 +274,7 @@ export default Component.extend({
       // can be negative if sticky footers don't work in browser (e.g. Safari)
       visibleFooterHeight = Math.max(visibleFooterHeight, 0);
     } else {
-      this._removeFooterListener();
+      this._removeFooterListeners();
     }
 
     let footerRatio;
