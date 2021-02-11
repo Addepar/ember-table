@@ -954,10 +954,10 @@
   dependencies:
     "@glimmer/di" "^0.2.0"
 
-"@html-next/vertical-collection@2.0.0-0":
-  version "2.0.0-0"
-  resolved "https://registry.npmjs.org/@html-next/vertical-collection/-/vertical-collection-2.0.0-0.tgz#84c36afa08127ce57c1a2122d2c16fb9fdd9eb64"
-  integrity sha512-0UML0r+B5KFx28Dvw6PmsEW+UC7jyJJlKv0aBC1wUcrqE/WesE5brsHF5p8T1UQyJ7ibLHLCNkNABqXiP6traw==
+"@html-next/vertical-collection@2.0.0":
+  version "2.0.0"
+  resolved "https://registry.npmjs.org/@html-next/vertical-collection/-/vertical-collection-2.0.0.tgz#469f30966cf665afcc24a80b59cd0725134b7f79"
+  integrity sha512-+RMxBz8tSSFDDA8Q8NBC5Eak50PVHsB73GL7bkPyAuNtdm324nMVrzqJ6TYVg5mTFbc02W261/9jhfbawQbczA==
   dependencies:
     babel6-plugin-strip-class-callcheck "^6.0.0"
     broccoli-funnel "^2.0.2"
