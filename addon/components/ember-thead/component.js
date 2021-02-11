@@ -104,6 +104,15 @@ export default Component.extend({
   enableResize: defaultTo(true),
 
   /**
+    Enables shadows at the edges of the table to show that the user can scroll
+    to view more content. Possible string values are `all`, `horizontal`,
+    `vertical`, and `none`. The boolean values `true` and `false` are aliased to `all` and `none`, respectively.
+    @argument scrollIndicators
+    @type boolean|string? (false)
+  */
+  scrollIndicators: defaultTo(false),
+
+  /**
     Sets which column resizing behavior to use. Possible values are `standard`
     (resizing a column pushes or pulls all other columns) and `fluid` (resizing a
     column subtracts width from neighboring columns).
@@ -125,6 +134,16 @@ export default Component.extend({
     @type string? ('equal-column')
   */
   fillMode: defaultTo(FILL_MODE.EQUAL_COLUMN),
+
+  /**
+    Specifies how columns should be sized when the table is initialized. This only affects
+    `eq-container-slack` and `gte-container-slack` width constraint modes. Permitted values are
+    the same as `fillMode`.
+
+    @argument initialFillMode
+    @type string? ('none')
+  */
+  initialFillMode: defaultTo(FILL_MODE.NONE),
 
   /**
     A configuration that controls which column shrinks (or extends) when `fillMode` is
@@ -206,21 +225,25 @@ export default Component.extend({
     this.columnMetaCache = new Map();
 
     this.columnTree = ColumnTree.create({
-      sendAction: this.sendAction.bind(this),
+      onReorder: this.onReorder?.bind(this),
+      onResize: this.onResize?.bind(this),
       columnMetaCache: this.columnMetaCache,
       containerWidthAdjustment: this.containerWidthAdjustment,
     });
 
     this._updateApi();
     this._updateColumnTree();
+    scheduleOnce('actions', this.columnTree, 'performInitialLayout');
 
+    addObserver(this, 'scrollIndicators', this._updateApi);
+    addObserver(this, 'reorderFunction', this._updateApi);
     addObserver(this, 'sorts', this._updateApi);
     addObserver(this, 'sortFunction', this._updateApi);
-    addObserver(this, 'reorderFunction', this._updateApi);
 
     addObserver(this, 'sorts', this._updateColumnTree);
     addObserver(this, 'columns.[]', this._onColumnsChange);
     addObserver(this, 'fillMode', this._updateColumnTree);
+    addObserver(this, 'initialFillMode', this._updateColumnTree);
     addObserver(this, 'fillColumnIndex', this._updateColumnTree);
     addObserver(this, 'resizeMode', this._updateColumnTree);
     addObserver(this, 'widthConstraint', this._updateColumnTree);
@@ -232,16 +255,18 @@ export default Component.extend({
 
   _updateApi() {
     this.set('unwrappedApi.columnTree', this.columnTree);
-    this.set('unwrappedApi.sorts', this.get('sorts'));
-    this.set('unwrappedApi.sortFunction', this.get('sortFunction'));
     this.set('unwrappedApi.compareFunction', this.get('compareFunction'));
+    this.set('unwrappedApi.scrollIndicators', this.get('scrollIndicators'));
+    this.set('unwrappedApi.sorts', this.get('sorts'));
     this.set('unwrappedApi.sortEmptyLast', this.get('sortEmptyLast'));
+    this.set('unwrappedApi.sortFunction', this.get('sortFunction'));
   },
 
   _updateColumnTree() {
     this.columnTree.set('sorts', this.get('sorts'));
     this.columnTree.set('columns', this.get('columns'));
     this.columnTree.set('fillMode', this.get('fillMode'));
+    this.columnTree.set('initialFillMode', this.get('initialFillMode'));
     this.columnTree.set('fillColumnIndex', this.get('fillColumnIndex'));
     this.columnTree.set('resizeMode', this.get('resizeMode'));
     this.columnTree.set('widthConstraint', this.get('widthConstraint'));
@@ -256,13 +281,14 @@ export default Component.extend({
       return;
     }
     this._updateColumnTree();
+
     scheduleOnce('actions', this, this.fillupHandler);
   },
 
   didInsertElement() {
     this._super(...arguments);
 
-    this._container = closest(this.element, '.ember-table');
+    this._container = closest(this.element, '.ember-table-overflow');
 
     this.columnTree.registerContainer(this._container);
 
@@ -318,7 +344,7 @@ export default Component.extend({
   ),
 
   sendUpdateSort(newSorts) {
-    this.sendAction('onUpdateSorts', newSorts);
+    this.onUpdateSorts?.(newSorts);
   },
 
   fillupHandler() {

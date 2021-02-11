@@ -18,19 +18,20 @@ const fullTable = hbs`
 
         columns=columns
         containerWidthAdjustment=containerWidthAdjustment
+        enableReorder=enableReorder
+        enableResize=enableResize
+        scrollIndicators=scrollIndicators
+        fillColumnIndex=fillColumnIndex
+        fillMode=fillMode
+        initialFillMode=initialFillMode
+        resizeMode=resizeMode
         sorts=sorts
         sortEmptyLast=sortEmptyLast
-        resizeMode=resizeMode
-        fillMode=fillMode
-        enableResize=enableResize
-        enableReorder=enableReorder
         widthConstraint=widthConstraint
-        fillColumnIndex=fillColumnIndex
 
-
-        onUpdateSorts="onUpdateSorts"
-        onReorder="onReorder"
-        onResize="onResize"
+        onUpdateSorts=(action onUpdateSorts)
+        onReorder=(action onReorder)
+        onResize=(action onResize)
 
         as |h|
       }}
@@ -38,7 +39,7 @@ const fullTable = hbs`
           {{ember-th
             api=r
 
-            onContextMenu="onHeaderCellContextMenu"
+            onContextMenu=(action onHeaderCellContextMenu)
           }}
         {{/ember-tr}}
       {{/ember-thead}}
@@ -56,27 +57,28 @@ const fullTable = hbs`
         idForFirstItem=idForFirstItem
 
 
-        onSelect="onSelect"
+        onSelect=(action onSelect)
         selectingChildrenSelectsParent=selectingChildrenSelectsParent
         checkboxSelectionMode=checkboxSelectionMode
         rowSelectionMode=rowSelectionMode
         selection=selection
+        selectionMatchFunction=selectionMatchFunction
 
         as |b|
       }}
         {{#component rowComponent
           api=b
 
-          onClick="onRowClick"
-          onDoubleClick="onRowDoubleClick"
+          onClick=(action onRowClick)
+          onDoubleClick=(action onRowDoubleClick)
 
           as |r|
         }}
           {{#ember-td
             api=r
 
-            onClick="onCellClick"
-            onDoubleClick="onCellDoubleClick"
+            onClick=(action onCellClick)
+            onDoubleClick=(action onCellDoubleClick)
 
             as |value|
           }}
@@ -112,6 +114,7 @@ const defaultActions = {
 
   onDropdownAction() {},
   onColumnHeaderAction() {},
+  onHeaderCellContextMenu() {},
   onReorder() {},
   onResize() {},
 
@@ -142,7 +145,6 @@ export function generateTableValues(
   for (let property in options) {
     testContext.set(property, options[property]);
   }
-
   testContext.set('rowComponent', rowComponent);
 
   columns = columns || generateColumns(columnCount, columnOptions);
@@ -155,10 +157,8 @@ export function generateTableValues(
   testContext.set('footerRows', footerRows);
 
   for (let action in defaultActions) {
-    let actions = testContext.actions || testContext._actions;
-
-    if (actions && !actions[action]) {
-      testContext.on(action, defaultActions[action].bind(testContext));
+    if (!testContext[action]) {
+      testContext.set(action, defaultActions[action].bind(testContext));
     }
   }
 }

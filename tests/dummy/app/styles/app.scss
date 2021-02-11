@@ -33,11 +33,11 @@ $colors: (
 );
 
 @each $color-name, $color-value in $colors {
-  .bg-#{$color-name} {
+  .bg-#{'' + $color-name} {
     background-color: #{$color-value};
     color: white;
   }
-  .text-#{$color-name} {
+  .text-#{'' + $color-name} {
     color: #{$color-value};
   }
 }
@@ -49,6 +49,10 @@ $colors: (
   width: 400px;
   height: 200px;
   padding: 10px;
+
+  &.w-100 {
+    width: 100%;
+  }
 }
 
 .docs-hero {

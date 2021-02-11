@@ -31,6 +31,7 @@ export default PageObject.extend({
   getCell: alias('body.getCell'),
 
   headers: alias('header.headers'),
+  slackHeader: alias('header.slackHeader'),
   footers: alias('footer.footers'),
 
   /**
@@ -45,6 +46,65 @@ export default PageObject.extend({
    */
   get containerWidth() {
     return findElement(this).offsetWidth;
+  },
+
+  /**
+   * Returns the specified scroll indicator element
+   */
+  scrollIndicator(side = 'right') {
+    return findElement(this, `[data-test-ember-table-scroll-indicator="${side}"]`);
+  },
+
+  /**
+   * Returns whether the specified scroll indicator is currently visible
+   */
+  isScrollIndicatorRendered(side = 'right') {
+    return !!this.scrollIndicator(side);
+  },
+
+  /**
+   * Returns the scrollable overflow element
+   */
+  overflow() {
+    return findElement(this, '[data-test-ember-table-overflow]');
+  },
+
+  /**
+   * Returns the height of the horizontal scrollbar on the overflow element
+   */
+  horizontalScrollbarHeight() {
+    let overflow = this.overflow();
+    return overflow.offsetHeight - overflow.clientHeight;
+  },
+
+  /**
+   * Returns the width of the vertical scrollbar on the overflow element
+   */
+  verticalScrollbarWidth() {
+    let overflow = this.overflow();
+    return overflow.offsetWidth - overflow.clientWidth;
+  },
+
+  /**
+   * Returns the height of the visible portion of the footer
+   */
+  visibleFooterHeight() {
+    let footerCells = findElement(this, 'tfoot td', { multiple: true });
+
+    if (footerCells.length > 0) {
+      let footerCellY = footerCells[0].getBoundingClientRect().y;
+
+      let overflow = this.overflow();
+      let overflowRect = overflow.getBoundingClientRect();
+      let scale = overflow.offsetHeight / overflowRect.height;
+
+      return Math.min(
+        overflow.clientHeight - scale * (footerCellY - overflowRect.y),
+        overflow.clientHeight
+      );
+    }
+
+    return 0;
   },
 
   /**

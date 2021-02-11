@@ -8,7 +8,7 @@
         {{-ember-table-private/simple-checkbox
           data-test-select-row=true
           checked=rowMeta.isGroupSelected
-          onClick="onSelectionToggled"
+          onClick=(action "onSelectionToggled")
           ariaLabel="Select row"
         }}
         <span></span>
@@ -20,7 +20,7 @@
         {{-ember-table-private/simple-checkbox
           data-test-collapse-row=true
           checked=rowMeta.isCollapsed
-          onChange="onCollapseToggled"
+          onChange=(action "onCollapseToggled")
           ariaLabel="Collapse row"
         }}
         <span></span>

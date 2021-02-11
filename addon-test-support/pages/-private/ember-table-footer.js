@@ -5,6 +5,6 @@ export default EmberTableBody.extend({
   scope: 'tfoot',
 
   footers: collection({
-    scope: 'td',
+    scope: 'td:not([data-test-ember-table-slack])',
   }),
 });

@@ -95,6 +95,14 @@ export default Component.extend({
   selection: null,
 
   /**
+    A function that will override how selection is compared to row value.
+
+    @argument selectionMatchFunction
+    @type function?
+  */
+  selectionMatchFunction: null,
+
+  /**
     An action that is called when the row selection of the table changes.
     Will be called with either an array or individual row, depending on the
     checkboxSelectionMode.
@@ -253,7 +261,7 @@ export default Component.extend({
       items. This is much more convenient for most table operations in general.
     */
     this.collapseTree = CollapseTree.create({
-      sendAction: this.sendAction.bind(this),
+      onSelect: this.onSelect?.bind(this),
     });
 
     this._updateCollapseTree();
@@ -282,6 +290,7 @@ export default Component.extend({
     'enableCollapse',
     'enableTree',
     'selection',
+    'selectionMatchFunction',
     'selectingChildrenSelectsParent',
     'onSelect',
 
@@ -294,6 +303,7 @@ export default Component.extend({
       this.collapseTree.set('enableCollapse', this.get('enableCollapse'));
       this.collapseTree.set('enableTree', this.get('enableTree'));
       this.collapseTree.set('selection', this.get('selection'));
+      this.collapseTree.set('selectionMatchFunction', this.get('selectionMatchFunction'));
       this.collapseTree.set(
         'selectingChildrenSelectsParent',
         this.get('selectingChildrenSelectsParent')

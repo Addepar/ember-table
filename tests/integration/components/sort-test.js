@@ -131,7 +131,7 @@ module('Integration | sort', function() {
     });
 
     test('sends the onUpdateSorts action', async function(assert) {
-      this.on('onUpdateSorts', sorts => {
+      this.set('onUpdateSorts', sorts => {
         assert.equal(sorts.length, 1);
         assert.equal(sorts[0].valuePath, 'name');
         assert.equal(sorts[0].isAscending, false);

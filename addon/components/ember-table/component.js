@@ -1,12 +1,6 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/string';
-import { inject as service } from '@ember/service';
-
-import {
-  setupLegacyStickyPolyfill,
-  teardownLegacyStickyPolyfill,
-} from '../../-private/sticky/legacy-sticky-polyfill';
 import {
   setupTableStickyPolyfill,
   teardownTableStickyPolyfill,
@@ -38,46 +32,33 @@ import layout from './template';
 export default Component.extend({
   layout,
   classNames: ['ember-table'],
-  userAgent: service(),
 
   'data-test-ember-table': true,
 
   didInsertElement() {
     this._super(...arguments);
 
-    let browser = this.get('userAgent.browser');
+    let thead = this.element.querySelector('thead');
+    let tfoot = this.element.querySelector('tfoot');
 
-    if (browser.isIE) {
-      setupLegacyStickyPolyfill(this.element);
-    } else {
-      let thead = this.element.querySelector('thead');
-      let tfoot = this.element.querySelector('tfoot');
-
-      if (thead) {
-        setupTableStickyPolyfill(thead);
-      }
-      if (tfoot) {
-        setupTableStickyPolyfill(tfoot);
-      }
+    if (thead) {
+      setupTableStickyPolyfill(thead);
+    }
+    if (tfoot) {
+      setupTableStickyPolyfill(tfoot);
     }
   },
 
   willDestroyElement() {
-    let browser = this.get('userAgent.browser');
+    let thead = this.element.querySelector('thead');
+    let tfoot = this.element.querySelector('tfoot');
 
-    if (browser.isIE) {
-      teardownLegacyStickyPolyfill(this.element);
-    } else {
-      let thead = this.element.querySelector('thead');
-      let tfoot = this.element.querySelector('tfoot');
+    if (thead) {
+      teardownTableStickyPolyfill(this.element.querySelector('thead'));
+    }
 
-      if (thead) {
-        teardownTableStickyPolyfill(this.element.querySelector('thead'));
-      }
-
-      if (tfoot) {
-        teardownTableStickyPolyfill(this.element.querySelector('tfoot'));
-      }
+    if (tfoot) {
+      teardownTableStickyPolyfill(this.element.querySelector('tfoot'));
     }
 
     this._super(...arguments);
@@ -91,7 +72,7 @@ export default Component.extend({
     return {
       columns: null,
       registerColumnTree: this.registerColumnTree.bind(this),
-      tableId: this.elementId,
+      tableId: `${this.elementId}-overflow`,
     };
   }),
 

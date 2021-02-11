@@ -3,9 +3,18 @@
 
 # Ember Table
 
-An addon to support large data set and a number of features around table. `Ember Table` can
-handle over 100,000 rows without any rendering or performance issue. This version of `Ember Table`
-supports Ember 1.11 to latest version of Ember.
+An addon to support large data set and a number of features around table. Ember Table can
+handle over 100,000 rows without any rendering or performance issues.
+
+Ember Table 3.x supports:
+
+* Ember 2.8 to latest version of Ember.
+* Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile.
+
+For older platforms, the final release of Ember Table 2.x (2.2.3) supports:
+
+* Ember 1.11-3.8+
+* IE11+
 
 ## Install
 
@@ -135,20 +144,6 @@ You can also use the `ember-tfoot` component, which has the same API as
   {{/ember-table}}
 ```
 
-## Browser compatibility
-
-This project is written using an EcmaScript 6 javascript syntax.
-Babel doesn't include polyfill by default, so if you want to target legacy browsers (eg. IE11),
-you need to add this to your `ember-cli-build.js`:
-
-```js
-var app = new EmberApp({
-  'ember-cli-babel': {
-    includePolyfill: true,
-  },
-});
-```
-
 ## Migrating from old Ember table
 
 To support smooth migration from old version of Ember table (support only till ember 1.11), we have
@@ -166,8 +161,31 @@ one table at at time. The recommended migration steps are as follows (if you are
 4. Reinstall the latest version of this `ember-table` repo.
 5. You can start using new version of Ember table from now or replacing the old ones.
 
-# Releasing new versions (for maintainers)
+# Notes for maintainers
+
+### Releasing new versions (for maintainers)
 
 We use [`release-it`](https://github.com/release-it/release-it).
 To create a new release, run `yarn run release`. To do a dry-run: `yarn run release --dry-run`.
 The tool will prompt you to select the new release version.
+
+### Generating documentation.
+
+This library is documented using Ember Addon Docs. v0.6.3+ of that library
+bring a CSS reset files into the test suite of Ember Table, meaning many
+tests would be corrupted away from the useragent styles they were written
+against.
+
+Because of this, building the docs requires going through Ember Try. For
+example to run tests asserting the docs build:
+
+```
+ember try:one ember-default-docs
+```
+
+You might also want to run a command with the addon docs libraries installed,
+for example to create a production build, and you can do so like this:
+
+```
+ember try:one ember-default-docs --- ember build -e production
+```

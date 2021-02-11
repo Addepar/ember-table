@@ -184,7 +184,7 @@ module('Integration | selection', () => {
       });
 
       test('selecting a child and then a parent dedupes selected rows correctly', async function(assert) {
-        this.on('onSelect', selection => {
+        this.set('onSelect', selection => {
           assert.equal(selection.length, 1, 'correct number of rows selected');
 
           this.set('selection', selection);
@@ -242,6 +242,29 @@ module('Integration | selection', () => {
         assert.ok(table.validateSelected(), 'rows are not selected');
 
         run(() => selection.pushObject(rows[0]));
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
+      });
+
+      test('Rows are selected when selection is changed externally with selectionMatchFunction', async function(assert) {
+        let selection = emberA();
+        let selectionMatchFunction = function(a, b) {
+          if (!a || !b) {
+            return false;
+          }
+          return a.id === b.id;
+        };
+        let rows = [
+          { id: 1, name: 'Zoe', age: 34 },
+          { id: 2, name: 'Alex', age: 43 },
+          { id: 3, name: 'Liz', age: 25 },
+        ];
+
+        await generateTable(this, { rows, selection, selectionMatchFunction });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        run(() => selection.pushObject({ id: rows[0].id }));
 
         assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
       });
@@ -306,13 +329,53 @@ module('Integration | selection', () => {
       test('selection is a single row', async function(assert) {
         assert.expect(1);
 
-        this.on('onSelect', selection => {
+        this.set('onSelect', selection => {
           assert.ok(!Array.isArray(selection), 'selection is not an array');
         });
 
         await generateTable(this, { rowSelectionMode: 'single' });
 
         await table.selectRow(0);
+      });
+
+      test('Row is selected when selection is changed externally', async function(assert) {
+        this.set('selection', null);
+        let rows = [{ name: 'Zoe', age: 34 }, { name: 'Alex', age: 43 }, { name: 'Liz', age: 25 }];
+
+        await generateTable(this, { rows, rowSelectionMode: 'single' });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        run(() => this.set('selection', rows[0]));
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
+      });
+
+      test('Row is selected when selection is changed externally with selectionMatchFunction', async function(assert) {
+        this.set('selection', null);
+        let selectionMatchFunction = function(a, b) {
+          if (!a || !b) {
+            return false;
+          }
+          return a.id === b.id;
+        };
+        let rows = [
+          { id: 1, name: 'Zoe', age: 34 },
+          { id: 2, name: 'Alex', age: 43 },
+          { id: 3, name: 'Liz', age: 25 },
+        ];
+
+        await generateTable(this, {
+          rows,
+          rowSelectionMode: 'single',
+          selectionMatchFunction,
+        });
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        run(() => this.set('selection', { id: rows[0].id }));
+
+        assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
       });
     });
 
@@ -433,7 +496,7 @@ module('Integration | selection', () => {
       test('selection is an array', async function(assert) {
         assert.expect(1);
 
-        this.on('onSelect', selection => {
+        this.set('onSelect', selection => {
           assert.ok(Array.isArray(selection), 'selection is an array');
         });
 
@@ -461,7 +524,7 @@ module('Integration | selection', () => {
     test('Can disable selection by not using an action', async function(assert) {
       assert.expect(3);
 
-      this.on('onSelect', () => {
+      this.set('onSelect', () => {
         assert.ok(true, 'select called');
       });
 
@@ -500,6 +563,29 @@ module('Integration | selection', () => {
       await table.selectRangeFromClick(1, 3);
 
       assert.ok(table.validateSelected(1, 2, 3), 'only children are selected');
+    });
+
+    test('rows can be selected using selectionMatchFunction', async function(assert) {
+      let selection = emberA();
+      let rows = [
+        { id: '1', name: 'Zoe', age: 34 },
+        { id: '2', name: 'Alex', age: 43 },
+        { id: '3', name: 'Liz', age: 25 },
+      ];
+      let selectionMatchFunction = function(a, b) {
+        if (!a || !b) {
+          return false;
+        }
+        return a.id === b.id;
+      };
+
+      await generateTable(this, { rows, selection, selectionMatchFunction });
+
+      assert.ok(table.validateSelected(), 'rows are not selected');
+
+      run(() => selection.pushObject({ id: rows[1].id }));
+
+      assert.ok(table.validateSelected(1), 'Alex is selected after selection change');
     });
   });
 
@@ -540,7 +626,7 @@ module('Integration | selection', () => {
         assert.ok(table.validateSelected(), 'No rows are selected');
 
         // scroll all the way down
-        await scrollTo('[data-test-ember-table]', 0, 10000);
+        await scrollTo('[data-test-ember-table-overflow]', 0, 10000);
 
         assert.ok(
           table.validateSelected(),

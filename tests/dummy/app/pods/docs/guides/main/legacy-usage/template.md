@@ -1,11 +1,8 @@
 # Legacy Usage
 
-Ember Table is backwards compatible and tested back to Ember 1.11! It's meant to
-be a fully replacement for Ember Table 1, and we intend to provide a path
-forward for all of our original users, and any other applications that may be
-stuck in the days of `ListView` et. al.
+Ember Table is compatible (and tested) with Ember 2.8 and up.
 
-## Usage with Ember 2.3-2.11
+## Usage with Ember 2.8-2.11
 
 You may have noticed that all of the examples for Ember Table on this docs site
 are using angle bracket syntax (.e.g. `foo-bar`). This is an exciting new
@@ -42,37 +39,5 @@ or the original [angle bracket invocation rfc](https://github.com/emberjs/rfcs/b
       {{/r.cell}}
     {{/f.row}}
   {{/t.foot}}
-{{/ember-table}}
-```
-
-## Usage with Ember 1.11-2.2
-
-When using Ember Table with versions of Ember that do not yet support contextual
-components, you can invoke its' component directly and manually pass the `api`
-object forward:
-
-```hbs
-{{#ember-table data-test-ember-table=true as |t|}}
-  {{#ember-thead api=t columns=columns as |h|}}
-    {{#ember-tr api=h as |r|}}
-      {{ember-th api=r}}
-    {{/ember-tr}}
-  {{/ember-thead}}
-
-  {{#ember-tbody api=t rows=rows as |b|}}
-    {{#ember-tr api=b as |r|}}
-      {{#ember-td api=r as |cellValue|}}
-        {{cellValue}}
-      {{/ember-td}}
-    {{/ember-tr}}
-  {{/ember-tbody}}
-
-  {{#ember-tfoot api=t rows=footerRows as |f|}}
-    {{#ember-tr api=f as |r|}}
-      {{#ember-td api=r as |cellValue|}}
-        {{cellValue}}
-      {{/ember-td}}
-    {{/ember-tr}}
-  {{/ember-tfoot}}
 {{/ember-table}}
 ```

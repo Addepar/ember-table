@@ -19,47 +19,58 @@ function isNearTo(value, expected, epsilon = 0.01) {
 const standardTemplate = hbs`
   <div style="height: 500px;">
     <div class="ember-table">
-      <table>
-        <thead>
-          {{#each headerRows as |row|}}
-            <tr>
-              {{#each row as |item|}}
-                <th style="width: 100px; min-width: 100px; height: 50px;">{{item}}</th>
-              {{/each}}
-            </tr>
-          {{/each}}
-        </thead>
-        <tbody>
-          {{#each bodyRows as |row|}}
-            <tr>
-              {{#each row as |item|}}
-                <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
-              {{/each}}
-            </tr>
-          {{/each}}
-        </tbody>
-        <tfoot>
-          {{#each footerRows as |row|}}
-            <tr>
-              {{#each row as |item|}}
-                <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
-              {{/each}}
-            </tr>
-          {{/each}}
-        </tfoot>
-      </table>
+      <div class="ember-table-overflow">
+        <table>
+          <thead>
+            {{#each headerRows as |row|}}
+              <tr>
+                {{#each row as |item|}}
+                  <th style="width: 100px; min-width: 100px; height: 50px;">{{item}}</th>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </thead>
+          <tbody>
+            {{#each bodyRows as |row|}}
+              <tr>
+                {{#each row as |item|}}
+                  <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </tbody>
+          <tfoot>
+            {{#each footerRows as |row|}}
+              <tr>
+                {{#each row as |item|}}
+                  <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
+                {{/each}}
+              </tr>
+            {{/each}}
+          </tfoot>
+        </table>
+      </div>
     </div>
   </div>
 `;
 
-function constructMatrix(n, m, prefix = '') {
+/**
+ * Constructs a matrix m by n
+ * @param m Rows
+ * @param n Columns
+ * @param prefix Prefix string
+ * @param skipPrefixOnRowIndices Skip adding the prefix string to the row (m) indices specified in the list
+ * @returns {Array} matrix
+ */
+function constructMatrix(m, n, prefix = '', skipPrefixOnRowIndices = []) {
   let rows = emberA();
 
-  for (let i = 0; i < n; i++) {
+  for (let i = 0; i < m; i++) {
     let cols = emberA();
 
-    for (let j = 0; j < m; j++) {
-      cols.pushObject(`${m}${prefix}`);
+    for (let j = 0; j < n; j++) {
+      let skipPrefix = skipPrefixOnRowIndices.includes(i);
+      cols.pushObject(skipPrefix ? n : `${n}${prefix}`);
     }
 
     rows.pushObject(cols);
@@ -100,6 +111,60 @@ function verifyFooter(assert) {
     });
 }
 
+/**
+ * Verifies multi line header when scrolled to the bottom of the table
+ * @param assert
+ */
+function verifyMultiLineHeader(assert) {
+  let firstTableCellOfEachHeaderRow = findAll('thead > tr > th:first-child');
+  let tableHeaderCellHeights = firstTableCellOfEachHeaderRow.map(
+    cell => cell.getBoundingClientRect().height
+  );
+  let isAllHeaderCellsIdenticalHeights = tableHeaderCellHeights.every(function(cell, i, array) {
+    return i === 0 || cell === array[i - 1];
+  });
+  let firstCellRect = find('thead tr:first-child th:first-child').getBoundingClientRect();
+  let expectedOffset = firstCellRect.top;
+
+  assert.notOk(
+    isAllHeaderCellsIdenticalHeights,
+    'precond - header table rows have varying heights'
+  );
+
+  firstTableCellOfEachHeaderRow.forEach(cell => {
+    let firstCellRect = cell.getBoundingClientRect();
+    expectedOffset += firstCellRect.height;
+    assert.equal(expectedOffset, firstCellRect.bottom);
+  });
+}
+
+/**
+ * Verifies multi line footer when scrolled to the top of the table
+ * @param assert
+ */
+function verifyMultiLineFooter(assert) {
+  let firstTableCellOfEachFooterRow = findAll('tfoot > tr > td:first-child');
+  let tableFooterCellHeights = firstTableCellOfEachFooterRow.map(
+    cell => cell.getBoundingClientRect().height
+  );
+  let isAllFooterCellsIdenticalHeights = tableFooterCellHeights.every(function(cell, i, array) {
+    return i === 0 || cell === array[i - 1];
+  });
+  let firstCellRect = find('tfoot tr:first-child td:first-child').getBoundingClientRect();
+  let expectedOffset = firstCellRect.top;
+
+  assert.notOk(
+    isAllFooterCellsIdenticalHeights,
+    'precond - footer table rows have varying heights'
+  );
+
+  firstTableCellOfEachFooterRow.forEach(cell => {
+    let firstCellRect = cell.getBoundingClientRect();
+    expectedOffset += firstCellRect.height;
+    assert.equal(expectedOffset, firstCellRect.bottom);
+  });
+}
+
 componentModule('Unit | Private | TableStickyPolyfill', function() {
   test('it works', async function(assert) {
     this.set('headerRows', constructMatrix(3, 3, 'thead'));
@@ -111,7 +176,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     verifyHeader(assert);
     verifyFooter(assert);
@@ -127,7 +192,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     this.set('headerRows', constructMatrix(3, 5));
     this.set('footerRows', constructMatrix(3, 5));
@@ -148,7 +213,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     this.set('headerRows', constructMatrix(5, 3));
     this.set('footerRows', constructMatrix(5, 3));
@@ -169,7 +234,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await scrollTo('.ember-table', 0, 500);
+    await scrollTo('.ember-table-overflow', 0, 500);
 
     this.set('headerRows', constructMatrix(3, 5));
     this.set('footerRows', constructMatrix(3, 5));
@@ -200,7 +265,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
 
     let firstCell = find('tfoot tr:first-child td:first-child');
     let lastCell = find('tfoot tr:last-child td:first-child');
-    let container = find('.ember-table');
+    let container = find('.ember-table-overflow');
 
     let firstCellRect = firstCell.getBoundingClientRect();
     let lastCellRect = lastCell.getBoundingClientRect();
@@ -226,7 +291,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
 
     assert.ok(lastCellRect.top > containerRect.bottom, 'last footer cell is out of view');
 
-    await scrollTo('.ember-table', 0, container.scrollHeight);
+    await scrollTo('.ember-table-overflow', 0, container.scrollHeight);
 
     // Recompute dimensions
     lastCellRect = lastCell.getBoundingClientRect();
@@ -254,7 +319,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
 
     let firstCell = find('thead tr:first-child th:first-child');
     let lastCell = find('thead tr:last-child th:first-child');
-    let container = find('.ember-table');
+    let container = find('.ember-table-overflow');
 
     let firstCellRect = firstCell.getBoundingClientRect();
     let lastCellRect = lastCell.getBoundingClientRect();
@@ -272,7 +337,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     );
     assert.ok(lastCellRect.top > containerRect.bottom, 'last header cell is out of view');
 
-    await scrollTo('.ember-table', 0, container.scrollHeight);
+    await scrollTo('.ember-table-overflow', 0, container.scrollHeight);
 
     // recompute dimensions
     lastCellRect = lastCell.getBoundingClientRect();
@@ -292,5 +357,44 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
       ),
       'the bottom of the last header cell is close to 50% of the way down the table'
     );
+  });
+
+  test('when the header has rows with varying heights', async function(assert) {
+    this.set(
+      'headerRows',
+      constructMatrix(2, 3, 'table header has multiple lines of content', [1])
+    );
+    this.set('bodyRows', constructMatrix(20, 3, 'body'));
+    this.set('footerRows', constructMatrix(1, 3, 'footer'));
+
+    await this.render(standardTemplate);
+
+    setupTableStickyPolyfill(find('thead'));
+    setupTableStickyPolyfill(find('tfoot'));
+
+    await wait();
+
+    let container = find('.ember-table');
+    await scrollTo('.ember-table', 0, container.scrollHeight);
+
+    verifyMultiLineHeader(assert);
+  });
+
+  test('when the footer has rows with varying heights', async function(assert) {
+    this.set('headerRows', constructMatrix(1, 3, 'header'));
+    this.set('bodyRows', constructMatrix(20, 3, 'body'));
+    this.set(
+      'footerRows',
+      constructMatrix(2, 3, 'table footer has multiple lines of content', [1])
+    );
+
+    await this.render(standardTemplate);
+
+    setupTableStickyPolyfill(find('thead'));
+    setupTableStickyPolyfill(find('tfoot'));
+
+    await wait();
+
+    verifyMultiLineFooter(assert);
   });
 });

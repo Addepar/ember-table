@@ -13,6 +13,13 @@ export default PageObject.extend({
   scope: 'tbody',
 
   /**
+    Returns the height of the entire tbody element.
+  */
+  get height() {
+    return findElement(this).offsetHeight;
+  },
+
+  /**
     Returns the number of rows in the body.
   */
   get rowCount() {
@@ -30,7 +37,7 @@ export default PageObject.extend({
       List of all cells for the selected row.
     */
     cells: collection({
-      scope: 'td',
+      scope: 'td:not([data-test-ember-table-slack])',
 
       doubleClick: triggerable('dblclick'),
     }),

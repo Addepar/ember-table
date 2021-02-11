@@ -66,7 +66,11 @@ you want to sort the content of the table asynchronously, you can unset the
 `sortFunction` and handle the async request yourself.
 
 ```hbs
-{{ember-thead sortFunction=null}}
+<EmberTable as |t|>
+  <t.head
+    sortFunction=null
+  />
+</EmberTable>
 ```
 
 ## Disabling Sorting
@@ -109,7 +113,7 @@ This demo shows that in action:
           @columns={{columns}}
           @sorts={{sorts}}
 
-          @onUpdateSorts="twoStateSorting"
+          @onUpdateSorts={{action "twoStateSorting"}}
 
           @widthConstraint='gte-container'
           @fillMode='first-column'

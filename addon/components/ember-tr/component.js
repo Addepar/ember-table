@@ -120,9 +120,10 @@ export default Component.extend({
     let rowValue = this.get('rowValue');
     let rowMeta = this.get('rowMeta');
 
-    this.sendAction(action, {
-      event,
+    let closureAction = this[action];
 
+    closureAction?.({
+      event,
       rowValue,
       rowMeta,
     });
