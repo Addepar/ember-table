@@ -187,13 +187,43 @@ export default Component.extend({
 
     this._onScroll = bind(this, this._updateIndicators);
     this._scrollElement.addEventListener('scroll', this._onScroll);
-    this._resizeSensor = new ResizeSensor(this._tableElement, bind(this, this._updateIndicators));
+
+    this._tableResizeSensor = new ResizeSensor(
+      this._tableElement,
+      bind(this, this._updateIndicators)
+    );
+
+    this._addFooterListener();
   },
 
   _removeListeners() {
     this._isListening = false;
     this._scrollElement.removeEventListener('scroll', this._onScroll);
-    this._resizeSensor.detach();
+    this._tableResizeSensor.detach();
+    this._removeFooterListener();
+  },
+
+  // footer can appear/disappear dynamically, so this listener needs to be
+  // added/removed occasionally
+  _addFooterListener() {
+    if (this._footerResizeSensor) {
+      return;
+    }
+
+    let footerElement = this._tableElement.querySelector('tfoot');
+    if (footerElement) {
+      this._footerResizeSensor = new ResizeSensor(
+        footerElement,
+        bind(this, this._updateIndicators)
+      );
+    }
+  },
+
+  _removeFooterListener() {
+    if (this._footerResizeSensor) {
+      this._footerResizeSensor.detach();
+      this._footerResizeSensor = null;
+    }
   },
 
   _updateIndicators() {
@@ -219,6 +249,8 @@ export default Component.extend({
     let visibleFooterHeight = 0;
     let footerCell = table.querySelector('tfoot td');
     if (footerCell) {
+      this._addFooterListener();
+
       let footerCellY = footerCell.getBoundingClientRect().y;
       let overflowRect = el.getBoundingClientRect();
       let scale = el.offsetHeight / overflowRect.height;
@@ -230,6 +262,8 @@ export default Component.extend({
 
       // can be negative if sticky footers don't work in browser (e.g. Safari)
       visibleFooterHeight = Math.max(visibleFooterHeight, 0);
+    } else {
+      this._removeFooterListener();
     }
 
     let footerRatio;
