@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/Addepar/ember-table.svg?branch=master)](https://travis-ci.org/Addepar/ember-table)
 ![npm version](https://img.shields.io/npm/v/ember-table)
 
 # Ember Table
