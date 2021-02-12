@@ -2,7 +2,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { scheduleOnce } from '@ember/runloop';
+import { bind, scheduleOnce } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
@@ -185,22 +185,15 @@ export default Component.extend({
     this._tableElement = this._scrollElement.querySelector('table');
     this._headerElement = this._tableElement.querySelector('thead');
 
-    this._onScroll = () => {
-      scheduleOnce('actions', this, '_updateIndicators');
-    };
-
-    this._scrollElement.addEventListener('scroll', this._onScroll);
-
-    this._tableResizeSensor = new ResizeSensor(this._tableElement, () => {
-      scheduleOnce('actions', this, '_updateIndicators');
-    });
-
+    this._scrollElement.addEventListener('scroll', this._updateIndicators);
+    this._tableResizeSensor = new ResizeSensor(this._tableElement, this._updateIndicators);
     this._addFooterListeners();
   },
 
   _removeListeners() {
     this._isListening = false;
-    this._scrollElement.removeEventListener('scroll', this._onScroll);
+
+    this._scrollElement.removeEventListener('scroll', this._updateIndicators);
     this._tableResizeSensor.detach();
     this._removeFooterListeners();
   },
@@ -215,15 +208,11 @@ export default Component.extend({
     }
 
     if (!this._footerResizeSensor) {
-      this._footerResizeSensor = new ResizeSensor(footerElement, () => {
-        scheduleOnce('actions', this, '_updateIndicators');
-      });
+      this._footerResizeSensor = new ResizeSensor(footerElement, this._updateIndicators);
     }
 
     if (!this._footerMutationObserver) {
-      this._footerMutationObserver = new MutationObserver(() => {
-        scheduleOnce('actions', this, '_updateIndicators');
-      });
+      this._footerMutationObserver = new MutationObserver(this._updateIndicators);
       this._footerMutationObserver.observe(footerElement, {
         subtree: true,
         attributes: true,
@@ -244,7 +233,11 @@ export default Component.extend({
     }
   },
 
-  _updateIndicators() {
+  /**
+    Recomputes table geometry and triggers update of scroll indicator positions
+    and dimensions.
+  */
+  updateIndicators() {
     let el = this._scrollElement;
     let table = this._tableElement;
     let header = this._headerElement;
@@ -313,7 +306,7 @@ export default Component.extend({
 
     if (hasIndicators && !this._isListening) {
       this._addListeners();
-      scheduleOnce('actions', this, '_updateIndicators');
+      this._updateIndicators();
     } else if (!hasIndicators && this._isListening) {
       this._removeListeners();
     }
@@ -321,6 +314,12 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
+
+    // debounced, runloop-safe version
+    this._updateIndicators = bind(this, () => {
+      scheduleOnce('actions', this, this.updateIndicators);
+    });
+
     this._updateListeners();
     addObserver(this, 'enabledIndicators', this._updateListeners);
   },
