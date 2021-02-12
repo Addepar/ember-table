@@ -2,7 +2,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { bind } from '@ember/runloop';
+import { scheduleOnce } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
@@ -185,13 +185,15 @@ export default Component.extend({
     this._tableElement = this._scrollElement.querySelector('table');
     this._headerElement = this._tableElement.querySelector('thead');
 
-    this._onScroll = bind(this, this._updateIndicators);
+    this._onScroll = () => {
+      scheduleOnce('actions', this, '_updateIndicators');
+    };
+
     this._scrollElement.addEventListener('scroll', this._onScroll);
 
-    this._tableResizeSensor = new ResizeSensor(
-      this._tableElement,
-      bind(this, this._updateIndicators)
-    );
+    this._tableResizeSensor = new ResizeSensor(this._tableElement, () => {
+      scheduleOnce('actions', this, '_updateIndicators');
+    });
 
     this._addFooterListeners();
   },
@@ -206,22 +208,27 @@ export default Component.extend({
   // footer can appear/disappear dynamically, so this listener needs to be
   // added/removed occasionally
   _addFooterListeners() {
-    if (!this._footerResizeSensor) {
-      let footerElement = this._tableElement.querySelector('tfoot');
-      if (footerElement) {
-        this._footerResizeSensor = new ResizeSensor(
-          footerElement,
-          bind(this, this._updateIndicators)
-        );
-      }
+    let footerElement = this._tableElement.querySelector('tfoot');
+
+    if (!footerElement) {
+      return;
     }
 
-    if (!this._footerCellMutationObserver) {
-      let footerCell = this._tableElement.querySelector('tfoot td');
-      if (footerCell) {
-        this._footerCellMutationObserver = new MutationObserver(bind(this, this._updateIndicators));
-        this._footerCellMutationObserver.observe(footerCell, { attributes: true });
-      }
+    if (!this._footerResizeSensor) {
+      this._footerResizeSensor = new ResizeSensor(footerElement, () => {
+        scheduleOnce('actions', this, '_updateIndicators');
+      });
+    }
+
+    if (!this._footerMutationObserver) {
+      this._footerMutationObserver = new MutationObserver(() => {
+        scheduleOnce('actions', this, '_updateIndicators');
+      });
+      this._footerMutationObserver.observe(footerElement, {
+        subtree: true,
+        attributes: true,
+        childList: true,
+      });
     }
   },
 
@@ -231,9 +238,9 @@ export default Component.extend({
       this._footerResizeSensor = null;
     }
 
-    if (this._footerCellMutationObserver) {
-      this._footerCellMutationObserver.disconnect();
-      this._footerCellMutationObserver = null;
+    if (this._footerMutationObserver) {
+      this._footerMutationObserver.disconnect();
+      this._footerMutationObserver = null;
     }
   },
 
@@ -306,7 +313,7 @@ export default Component.extend({
 
     if (hasIndicators && !this._isListening) {
       this._addListeners();
-      this._updateIndicators();
+      scheduleOnce('actions', this, '_updateIndicators');
     } else if (!hasIndicators && this._isListening) {
       this._removeListeners();
     }
