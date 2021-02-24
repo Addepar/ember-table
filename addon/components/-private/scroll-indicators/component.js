@@ -216,6 +216,7 @@ export default Component.extend({
       this._footerMutationObserver.observe(footerElement, {
         subtree: true,
         attributes: true,
+        attributesFilter: ['style'],
         childList: true,
       });
     }
