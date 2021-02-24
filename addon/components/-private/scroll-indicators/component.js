@@ -208,10 +208,12 @@ export default Component.extend({
     }
 
     if (!this._footerResizeSensor) {
+      // triggers when entire footer changes size
       this._footerResizeSensor = new ResizeSensor(footerElement, this._updateIndicators);
     }
 
     if (!this._footerMutationObserver) {
+      // triggers when individual footer cells are updated by sticky polyfill
       this._footerMutationObserver = new MutationObserver(this._updateIndicators);
       this._footerMutationObserver.observe(footerElement, {
         subtree: true,
