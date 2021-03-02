@@ -175,7 +175,7 @@ module('Integration | cell', function() {
       );
     });
 
-    test('applies is-first-column class to last column cells in slack mode', async function(assert) {
+    test('applies positional classes correctly in slack mode', async function(assert) {
       let columnCount = 1;
       let rows = [
         {
@@ -202,7 +202,18 @@ module('Integration | cell', function() {
 
       let cells = document.querySelectorAll('.ember-table td');
 
-      // initially, slack column has zero width
+      // slack column should be marked
+      assert.notOk(
+        cells[0].classList.contains('is-slack'),
+        'is-slack class is not applied supplied column cell'
+      );
+
+      assert.ok(
+        cells[1].classList.contains('is-slack'),
+        'is-slack class is applied to slack column cell'
+      );
+
+      // initially, slack column has zero width, so "A" is the last column
       assert.ok(
         cells[0].classList.contains('is-last-column'),
         'is-last-column class is applied to last supplied column cell'
