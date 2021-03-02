@@ -10,9 +10,17 @@ export default Component.extend({
   columnValue: null,
 
   attributeBindings: ['slackAttribute:data-test-ember-table-slack'],
-  classNameBindings: ['isFirstColumn', 'isFixedLeft', 'isFixedRight', 'textAlign'],
+  classNameBindings: [
+    'isFirstColumn',
+    'isLastColumn',
+    'isFixedLeft',
+    'isFixedRight',
+    'textAlign',
+    'isSlack',
+  ],
 
   isFirstColumn: equal('columnMeta.index', 0),
+  isLastColumn: readOnly('columnMeta.isLastRendered'),
   isFixedLeft: equal('columnMeta.isFixed', 'left'),
   isFixedRight: equal('columnMeta.isFixed', 'right'),
   isSlack: readOnly('columnMeta.isSlack'),
