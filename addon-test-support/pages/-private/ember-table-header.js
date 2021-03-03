@@ -45,8 +45,16 @@ const Header = PageObject.extend({
     return findElement(this).dataset.testLeafHeader;
   },
 
+  get isRendered() {
+    return findElement(this).style.display !== 'none';
+  },
+
   isFixedLeft: hasClass('is-fixed-left'),
   isFixedRight: hasClass('is-fixed-right'),
+
+  isFirstColumn: hasClass('is-first-column'),
+  isLastColumn: hasClass('is-last-column'),
+  isSlack: hasClass('is-slack'),
 
   contextMenu: triggerable('contextmenu'),
 
@@ -131,14 +139,14 @@ export default {
   scope: 'thead',
 
   /**
-   * List of columns in the header.
+   * Selects all non-slack `th` header elements from all header rows.
    */
   headers: collection('th:not([data-test-ember-table-slack])', Header),
 
   /**
-   * List of columns in the header, excluding slack column if present.
+   * Selects all slack `th` header elements from all header rows.
    */
-  contentHeaders: collection('th:not([data-test-ember-table-slack])', Header),
+  slackHeaders: collection('th[data-test-ember-table-slack]', Header),
 
   /**
     Returns the height of the entire thead element.
@@ -154,11 +162,13 @@ export default {
     return Number(findElement(this).getAttribute('data-test-row-count'));
   },
 
-  get slackHeader() {
-    return findElement(this, '[data-test-ember-table-slack]');
-  },
-
   rows: collection({
     scope: 'tr',
+
+    headers: collection('th:not([data-test-ember-table-slack])', Header),
+
+    slackHeader: Header.extend({
+      scope: 'th[data-test-ember-table-slack]',
+    }),
   }),
 };

@@ -142,37 +142,18 @@ module('Integration | cell', function() {
 
       await wait();
 
-      let cells = document.querySelectorAll('.ember-table td');
+      let row = table.rows.objectAt(0);
+      let cells = row.cells.toArray();
 
-      assert.ok(
-        cells[0].classList.contains('is-first-column'),
-        'is-first-column class is applied to first column cell'
-      );
+      // `is-first-column` class only appears on first cell
+      assert.ok(cells[0].isFirstColumn, 'is-first-column applied to first column cell');
+      assert.notOk(cells[1].isFirstColumn, 'is-first-column not applied to middle column cell');
+      assert.notOk(cells[2].isFirstColumn, 'is-first-column not applied to last column cell');
 
-      assert.notOk(
-        cells[1].classList.contains('is-first-column'),
-        'is-first-column class is not applied to middle column cell'
-      );
-
-      assert.notOk(
-        cells[2].classList.contains('is-first-column'),
-        'is-first-column class is not applied to last column cell'
-      );
-
-      assert.notOk(
-        cells[0].classList.contains('is-last-column'),
-        'is-last-column class is not applied to first column cell'
-      );
-
-      assert.notOk(
-        cells[1].classList.contains('is-last-column'),
-        'is-last-column class is not applied to middle column cell'
-      );
-
-      assert.ok(
-        cells[2].classList.contains('is-last-column'),
-        'is-last-column class is applied to last column cell'
-      );
+      // `is-last-column` class only appears on last cell
+      assert.notOk(cells[0].isLastColumn, 'is-last-column not applied to first column cell');
+      assert.notOk(cells[1].isLastColumn, 'is-last-column not applied to middle column cell');
+      assert.ok(cells[2].isLastColumn, 'is-last-column applied to last column cell');
     });
 
     test('applies positional classes correctly in slack mode', async function(assert) {
@@ -200,43 +181,23 @@ module('Integration | cell', function() {
 
       await wait();
 
-      let cells = document.querySelectorAll('.ember-table td');
+      let header = table.headers.objectAt(0);
+      let row = table.rows.objectAt(0);
+      let cell = row.cells.objectAt(0);
+      let slackCell = row.slackCell;
 
-      // slack column should be marked
-      assert.notOk(
-        cells[0].classList.contains('is-slack'),
-        'is-slack class is not applied supplied column cell'
-      );
+      // slack header should be marked accordingly
+      assert.notOk(cell.isSlack, 'is-slack not applied to normal cell');
+      assert.ok(slackCell.isSlack, 'is-slack applied to slack cell');
 
-      assert.ok(
-        cells[1].classList.contains('is-slack'),
-        'is-slack class is applied to slack column cell'
-      );
+      // initially, slack column has zero width, so "A" gets `is-last-column` class
+      assert.ok(cell.isLastColumn, 'is-last-column applied to normal cell');
+      assert.notOk(slackCell.isLastColumn, 'is-last-column not applied to slack cell');
 
-      // initially, slack column has zero width, so "A" is the last column
-      assert.ok(
-        cells[0].classList.contains('is-last-column'),
-        'is-last-column class is applied to last supplied column cell'
-      );
-
-      assert.notOk(
-        cells[1].classList.contains('is-last-column'),
-        'is-last-column class is not applied to slack column cell'
-      );
-
-      // shrink header, giving slack column non-zero width
-      let firstHeader = table.headers.objectAt(0);
-      await firstHeader.resize(firstHeader.width - 1);
-
-      assert.notOk(
-        cells[0].classList.contains('is-last-column'),
-        'is-last-column class is not applied to last supplied column cell'
-      );
-
-      assert.ok(
-        cells[1].classList.contains('is-last-column'),
-        'is-last-column class is applied to slack column cell'
-      );
+      // shrink cell "A"; now slack column gets the `is-last-column` class
+      await header.resize(header.width - 1);
+      assert.notOk(cell.isLastColumn, 'is-last-column not applied to normal cell');
+      assert.ok(slackCell.isLastColumn, 'is-last-column applied to slack cell');
     });
   });
 });
