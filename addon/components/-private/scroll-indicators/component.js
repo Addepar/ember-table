@@ -20,6 +20,7 @@ const horizontalIndicatorStyle = side => {
     `columnTree.${side}FixedNodes.@each.width`,
     'overflowHeight',
     'scrollbarWidth',
+    'tableHeight',
     function() {
       let style = [];
 
@@ -42,7 +43,9 @@ const horizontalIndicatorStyle = side => {
       // height
       let overflowHeight = this.get('overflowHeight');
       if (!isNone(overflowHeight)) {
-        style.push(`height:${overflowHeight}px;`);
+        let tableHeight = this.get('tableHeight');
+        let height = isNone(tableHeight) ? overflowHeight : Math.min(overflowHeight, tableHeight);
+        style.push(`height:${height}px;`);
       }
 
       return htmlSafe(style.join(''));
@@ -141,6 +144,7 @@ export default Component.extend({
 
   overflowHeight: null,
   overflowWidth: null,
+  tableHeight: null,
   tableWidth: null,
   headerHeight: null,
   visibleFooterHeight: null,
@@ -211,7 +215,8 @@ export default Component.extend({
 
     let overflowHeight = el.clientHeight;
     let overflowWidth = el.clientWidth;
-    let tableWidth = table ? table.clientWidth : null;
+    let tableWidth = table ? table.offsetWidth : null;
+    let tableHeight = table ? table.offsetHeight : null;
     let headerHeight = header ? header.offsetHeight : null;
 
     // part of the footer can be obscured until the table is scrolled to the
@@ -248,6 +253,7 @@ export default Component.extend({
 
       overflowHeight,
       overflowWidth,
+      tableHeight,
       tableWidth,
       headerHeight,
 
