@@ -26,6 +26,8 @@
     rowSelectionMode=rowSelectionMode
     checkboxSelectionMode=checkboxSelectionMode
 
+    rowsCount=wrappedRows.length
+
     as |api|
   }}
     {{#if hasBlock}}
@@ -34,6 +36,7 @@
         rowMeta=api.rowMeta
         cells=api.cells
         rowSelectionMode=api.rowSelectionMode
+        rowsCount=api.rowsCount
 
         row=(component "ember-tr" api=api)
       )}}

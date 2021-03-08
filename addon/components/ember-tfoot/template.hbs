@@ -10,6 +10,8 @@
     rowSelectionMode=rowSelectionMode
     checkboxSelectionMode=checkboxSelectionMode
 
+    rowsCount=wrappedRowArray.length
+
     as |api|
   }}
     {{#if hasBlock}}
@@ -18,6 +20,7 @@
         rowMeta=api.rowMeta
         cells=api.cells
         rowSelectionMode=api.rowSelectionMode
+        rowsCount=api.rowsCount
 
         row=(component "ember-tr" api=api)
       )}}

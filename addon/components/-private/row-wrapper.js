@@ -35,6 +35,7 @@ export default Component.extend({
   rowMetaCache: undefined,
   rowSelectionMode: undefined,
   rowValue: undefined,
+  rowsCount: undefined,
 
   init() {
     this._super(...arguments);
@@ -48,14 +49,22 @@ export default Component.extend({
     this._super(...arguments);
   },
 
-  api: computed('rowValue', 'rowMeta', 'cells', 'canSelect', 'rowSelectionMode', function() {
-    let rowValue = this.get('rowValue');
-    let rowMeta = this.get('rowMeta');
-    let cells = this.get('cells');
-    let canSelect = this.get('canSelect');
-    let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
+  api: computed(
+    'rowValue',
+    'rowMeta',
+    'cells',
+    'canSelect',
+    'rowSelectionMode',
+    'rowsCount',
+    function() {
+      let rowValue = this.get('rowValue');
+      let rowMeta = this.get('rowMeta');
+      let cells = this.get('cells');
+      let canSelect = this.get('canSelect');
+      let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
+      let rowsCount = this.get('rowsCount');
 
-    return { rowValue, rowMeta, cells, rowSelectionMode };
+      return { rowValue, rowMeta, cells, rowSelectionMode, rowsCount };
   }),
 
   rowMeta: computed('rowValue', function() {
