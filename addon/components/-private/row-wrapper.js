@@ -1,14 +1,23 @@
 import Component from '@ember/component';
 import hbs from 'htmlbars-inline-precompile';
 
-import EmberObject, { get, setProperties, computed } from '@ember/object';
+import EmberObject, { get, setProperties, computed, defineProperty } from '@ember/object';
+import { alias } from '@ember/object/computed';
 import { A as emberA } from '@ember/array';
 
+import { notifyPropertyChange } from '../../-private/utils/ember';
 import { objectAt } from '../../-private/utils/array';
-import { dynamicAlias } from '../../-private/utils/computed';
+import { observer } from '../../-private/utils/observer';
 
 const CellWrapper = EmberObject.extend({
-  cellValue: dynamicAlias('rowValue', 'columnValue.valuePath'),
+  /* eslint-disable-next-line ember/no-observers, ember-best-practices/no-observers */
+  columnValueValuePathDidChange: observer('columnValue.valuePath', function() {
+    let columnValuePath = get(this, 'columnValue.valuePath');
+    let cellValue = columnValuePath ? alias(`rowValue.${columnValuePath}`) : null;
+
+    defineProperty(this, 'cellValue', cellValue);
+    notifyPropertyChange(this, 'cellValue');
+  }),
 
   cellMeta: computed('rowMeta', 'columnValue', function() {
     let rowMeta = get(this, 'rowMeta');
