@@ -4,7 +4,7 @@ import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
 import defaultTo from '../../-private/utils/default-to';
 import { addObserver } from '../../-private/utils/observer';
-import { computed } from '@ember/object';
+import EmberObject, { computed } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
 
 import { closest } from '../../-private/utils/element';
@@ -231,6 +231,11 @@ export default Component.extend({
       containerWidthAdjustment: this.containerWidthAdjustment,
     });
 
+    /**
+      The map that contains row meta information for this table header.
+    */
+    this.rowMetaCache = new Map();
+
     this._updateApi();
     this._updateColumnTree();
     scheduleOnce('actions', this.columnTree, 'performInitialLayout');
@@ -306,6 +311,12 @@ export default Component.extend({
       this.columnMetaCache.delete(column);
     }
 
+    // Clean the row meta cache
+    for (let [row, meta] of this.rowMetaCache.entries()) {
+      meta.destroy();
+      this.rowMetaCache.delete(row);
+    }
+
     this._super(...arguments);
   },
 
@@ -321,9 +332,19 @@ export default Component.extend({
       let rows = this.get('columnTree.rows');
       let sorts = this.get('sorts');
       let columnMetaCache = this.get('columnMetaCache');
+      let rowMetaCache = this.get('rowMetaCache');
 
       return emberA(
-        rows.map(row => {
+        rows.map((row, i) => {
+          let rowMeta = rowMetaCache.get(row);
+
+          if (!rowMeta) {
+            rowMeta = EmberObject.create();
+            rowMetaCache.set(row, rowMeta);
+          }
+
+          rowMeta.set('index', i);
+
           let cells = emberA(
             row.map(columnValue => {
               let columnMeta = columnMetaCache.get(columnValue);
@@ -331,13 +352,14 @@ export default Component.extend({
               return {
                 columnValue,
                 columnMeta,
+                rowMeta,
                 sorts,
                 sendUpdateSort: this.sendUpdateSort.bind(this),
               };
             })
           );
 
-          return { cells, isHeader: true };
+          return { cells, rowMeta, isHeader: true };
         })
       );
     }
