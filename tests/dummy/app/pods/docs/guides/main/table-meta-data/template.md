@@ -17,7 +17,7 @@ cell/column/row values at the cell level, and are generally accessible wherever
 their corresponding values are:
 
 ```hbs
-<t.cell as |cell column row cellMeta columnMeta rowMeta|>
+<t.cell as |cell column row cellMeta columnMeta rowMeta rowsCount|>
 ```
 
 ## What are meta objects?
@@ -43,37 +43,43 @@ active to show the user where they are in the table. Ember Table does _not_ have
 this functionality out of the box - let's see how we would implement it with
 meta objects:
 
+<!-- this example breaks markdown parsing below it, so it can't be inline -->
+{{main/table-meta-data/cell-selection}}
+
+## Accessing row indices in templates
+
+Meta objects can be used in templates to render conditional markdown based on
+the index of the current row.
+
 {{#docs-demo as |demo|}}
-  {{#demo.example name="cell-selection"}}
+  {{#demo.example name="row-indices"}}
     <div class="demo-container small">
-      {{! BEGIN-SNIPPET table-meta-data-cell-selection.hbs }}
+      <style>
+        {{! BEGIN-SNIPPET table-meta-data-row-indices.css}}
+        .first-row-cell {
+          font-weight: bold;
+        }
+
+        .last-row-cell {
+          font-style: italic;
+        }
+        {{! END-SNIPPET}}
+      </style>
+
+      {{! BEGIN-SNIPPET table-meta-data-row-indices.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} as |h|>
-          <h.row as |r|>
-            <r.cell
-              class="{{if r.columnMeta.selected 'is-column-selected'}}"
-
-              as |column|
-            >
-              {{column.name}}
-            </r.cell>
-          </h.row>
-        </t.head>
-
+        <t.head @columns={{columns}} />
         <t.body @rows={{rows}} as |b|>
-          <b.row
-            class="{{if b.rowMeta.selected 'is-row-selected'}}"
-
-            as |r|
-          >
-            <r.cell
-              class="{{if r.cellMeta.selected 'is-cell-selected'}} {{if r.columnMeta.selected 'is-column-selected'}}"
-
-              as |cell column row cellMeta columnMeta rowMeta|
-            >
-              <div onclick={{action "setSelected" cellMeta columnMeta rowMeta}} class="cell-content">
+          <b.row as |r|>
+            <r.cell as |cell column row cellMeta columnMeta rowMeta rowsCount|>
+              {{#if (eq rowMeta.index 0)}}
+                <span class="first-row-cell">{{cell}}</span>
+              {{!-- `dec` helper is part of `ember-composable-helpers` --}}
+              {{else if (lt rowMeta.index (dec rowsCount))}}
                 {{cell}}
-              </div>
+              {{else}}
+                <span class="last-row-cell">{{cell}}</span>
+              {{/if}}
             </r.cell>
           </b.row>
         </t.body>
@@ -82,6 +88,6 @@ meta objects:
     </div>
   {{/demo.example}}
 
-  {{demo.snippet name='table-meta-data-cell-selection.hbs'}}
-  {{demo.snippet name='table-meta-data-cell-selection.js' label='component.js'}}
+  {{demo.snippet name='table-meta-data-row-indices.hbs'}}
+  {{demo.snippet name='table-meta-data-row-indices.css'}}
 {{/docs-demo}}
