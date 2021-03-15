@@ -88,6 +88,7 @@ export default Component.extend({
 
       let rowValue = this.get('rowValue');
       let rowMeta = this.get('rowMeta');
+      let rowsCount = this.get('rowsCount');
       let canSelect = this.get('canSelect');
       let checkboxSelectionMode = canSelect ? this.get('checkboxSelectionMode') : 'none';
       let rowSelectionMode = canSelect ? this.get('rowSelectionMode') : 'none';
@@ -116,6 +117,7 @@ export default Component.extend({
           rowMeta,
           rowSelectionMode,
           rowValue,
+          rowsCount,
         });
       });
 
