@@ -235,5 +235,28 @@ module('Integration | meta', function() {
       assert.notOk(otherTable.headers.objectAt(0).text.includes('column'), 'header meta correct');
       assert.notOk(otherTable.footers.objectAt(0).text.includes('column'), 'footer meta correct');
     });
+
+    test('header rowMeta includes index', async function(assert) {
+      generateTableValues(this, { rowCount: 100 });
+
+      this.render(hbs`
+        {{#ember-table data-test-main-table=true as |t|}}
+          {{#ember-thead api=t columns=columns as |h|}}
+            {{#ember-tr api=h as |r|}}
+              {{#ember-th api=r as |column columnMeta rowMeta|}}
+                {{rowMeta.index}}
+              {{/ember-th}}
+            {{/ember-tr}}
+          {{/ember-thead}}
+
+          {{ember-tbody api=t rows=rows}}
+        {{/ember-table}}
+      `);
+
+      await wait();
+
+      let header = table.headers.objectAt(0);
+      assert.ok(header.text.includes('0'));
+    });
   });
 });
