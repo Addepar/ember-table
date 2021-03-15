@@ -65,7 +65,8 @@ export default Component.extend({
       let rowsCount = this.get('rowsCount');
 
       return { rowValue, rowMeta, cells, rowSelectionMode, rowsCount };
-  }),
+    }
+  ),
 
   rowMeta: computed('rowValue', function() {
     let rowValue = this.get('rowValue');
