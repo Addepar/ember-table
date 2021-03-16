@@ -31,6 +31,12 @@ internal bookkeeping such as collapse and selection state, but you are free to
 use these objects to store whatever meta information you would like in the
 table.
 
+`rowsCount` is also yielded by the cell component. This count is a reflection
+of how many rows the user can currently see by scrolling through the table. It
+is typically smaller than the total number of rows passed into, say, the
+`ember-tbody` component, because it excludes rows that have been hidden by
+collapsing a parent.
+
 ## What are they used for?
 
 Complex data tables have lots of functionality that requires some amount of
