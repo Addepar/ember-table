@@ -177,6 +177,34 @@ module('Integration | header | main', function() {
       assert.equal(table.width, containerWidth + 100, 'table extends beyond container');
       assert.equal(slackHeader.style.display, 'none', 'slack column is not rendered');
     });
+
+    test('none respects min widths on initial render', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'none',
+        columnCount: 1,
+        columnOptions: {
+          width: 100,
+          minWidth: 200,
+        },
+      });
+
+      let header = table.headers.objectAt(0);
+      assert.equal(header.width, 200, 'column has min width');
+    });
+
+    test('none respects max widths on initial render', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'none',
+        columnCount: 1,
+        columnOptions: {
+          width: 200,
+          maxWidth: 100,
+        },
+      });
+
+      let header = table.headers.objectAt(0);
+      assert.equal(header.width, 100, 'column has max width');
+    });
   });
 
   componentModule('fillMode', function() {
