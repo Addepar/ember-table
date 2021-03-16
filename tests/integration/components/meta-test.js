@@ -237,7 +237,10 @@ module('Integration | meta', function() {
     });
 
     test('header rowMeta includes index', async function(assert) {
-      generateTableValues(this, { rowCount: 100 });
+      let columnCount = 1;
+      let subcolumnCount = 2;
+
+      generateTableValues(this, { columnCount, columnOptions: { subcolumnCount } });
 
       this.render(hbs`
         {{#ember-table data-test-main-table=true as |t|}}
@@ -255,8 +258,11 @@ module('Integration | meta', function() {
 
       await wait();
 
-      let header = table.headers.objectAt(0);
-      assert.ok(header.text.includes('0'));
+      // single cell in first header row
+      assert.ok(table.headers.objectAt(0).text.includes('0'));
+
+      // first cell from sub-header row
+      assert.ok(table.headers.objectAt(1).text.includes('1'));
     });
   });
 });
