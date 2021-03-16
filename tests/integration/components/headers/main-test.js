@@ -9,6 +9,34 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 const table = new TablePage();
 
 module('Integration | header | main', function() {
+  componentModule('initial render', function() {
+    test('min column widths respected', async function(assert) {
+      await generateTable(this, {
+        columnCount: 1,
+        columnOptions: {
+          width: 100,
+          minWidth: 200,
+        },
+      });
+
+      let header = table.headers.objectAt(0);
+      assert.equal(header.width, 200, 'column has min width');
+    });
+
+    test('max column widths respected', async function(assert) {
+      await generateTable(this, {
+        columnCount: 1,
+        columnOptions: {
+          width: 200,
+          maxWidth: 100,
+        },
+      });
+
+      let header = table.headers.objectAt(0);
+      assert.equal(header.width, 100, 'column has max width');
+    });
+  });
+
   componentModule('widthConstraint', function() {
     test('eq-container when smaller', async function(assert) {
       await generateTable(this, {
@@ -177,34 +205,6 @@ module('Integration | header | main', function() {
       assert.equal(table.width, containerWidth + 100, 'table extends beyond container');
       assert.equal(slackHeader.style.display, 'none', 'slack column is not rendered');
     });
-
-    test('none respects min widths on initial render', async function(assert) {
-      await generateTable(this, {
-        widthConstraint: 'none',
-        columnCount: 1,
-        columnOptions: {
-          width: 100,
-          minWidth: 200,
-        },
-      });
-
-      let header = table.headers.objectAt(0);
-      assert.equal(header.width, 200, 'column has min width');
-    });
-
-    test('none respects max widths on initial render', async function(assert) {
-      await generateTable(this, {
-        widthConstraint: 'none',
-        columnCount: 1,
-        columnOptions: {
-          width: 200,
-          maxWidth: 100,
-        },
-      });
-
-      let header = table.headers.objectAt(0);
-      assert.equal(header.width, 100, 'column has max width');
-    });
   });
 
   componentModule('fillMode', function() {
@@ -230,6 +230,7 @@ module('Integration | header | main', function() {
         columnCount: 2,
         columnOptions: {
           width: columnWidth,
+          minWidth: columnWidth,
         },
       });
 
@@ -256,6 +257,7 @@ module('Integration | header | main', function() {
         columnCount: 2,
         columnOptions: {
           width: columnWidth,
+          minWidth: columnWidth,
         },
       });
 
@@ -283,6 +285,7 @@ module('Integration | header | main', function() {
         columnCount: 3,
         columnOptions: {
           width: columnWidth,
+          minWidth: columnWidth,
         },
       });
 
@@ -305,6 +308,7 @@ module('Integration | header | main', function() {
         columnCount: 3,
         columnOptions: {
           width: columnWidth,
+          minWidth: columnWidth,
         },
       });
 
