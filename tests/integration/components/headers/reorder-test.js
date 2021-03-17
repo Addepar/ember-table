@@ -69,12 +69,40 @@ module('Integration | headers | reorder', function() {
       await generateTable(this);
 
       await table.headers.objectAt(0).reorderBy(1);
-      assert.equal(table.headers.objectAt(0).text.trim(), 'B', 'First column is swapped forward');
-      assert.equal(table.headers.objectAt(1).text.trim(), 'A', 'Second column is swapped backward');
+      assert.equal(
+        table.headers.objectAt(0).text.trim(),
+        'B',
+        'First column header is swapped forward'
+      );
+      assert.equal(table.getCell(0, 0).text.trim(), '0B', 'First column cells are swapped forward');
+      assert.equal(
+        table.headers.objectAt(1).text.trim(),
+        'A',
+        'Second column header is swapped backward'
+      );
+      assert.equal(
+        table.getCell(0, 1).text.trim(),
+        '0A',
+        'Second column cells are swapped forward'
+      );
 
       await table.headers.objectAt(1).reorderBy(-1);
-      assert.equal(table.headers.objectAt(1).text.trim(), 'B', 'Second column is swapped backward');
-      assert.equal(table.headers.objectAt(0).text.trim(), 'A', 'First column is swapped forward');
+      assert.equal(
+        table.headers.objectAt(1).text.trim(),
+        'B',
+        'Second column header is swapped backward'
+      );
+      assert.equal(
+        table.getCell(0, 1).text.trim(),
+        '0B',
+        'Second column cells are swapped forward'
+      );
+      assert.equal(
+        table.headers.objectAt(0).text.trim(),
+        'A',
+        'First column header is swapped forward'
+      );
+      assert.equal(table.getCell(0, 0).text.trim(), '0A', 'First column cells are swapped forward');
     });
 
     test('column reorder action is sent up to controller', async function(assert) {
