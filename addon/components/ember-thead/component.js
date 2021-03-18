@@ -359,7 +359,12 @@ export default Component.extend({
             })
           );
 
-          return { cells, rowMeta, isHeader: true };
+          return {
+            cells,
+            rowMeta,
+            rowsCount: rows.length,
+            isHeader: true,
+          };
         })
       );
     }

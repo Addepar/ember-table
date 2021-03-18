@@ -676,6 +676,18 @@ export default EmberObject.extend({
       return;
     }
 
+    let leaves = get(this, 'root.leaves');
+
+    // ensures that min and max widths are respected _before_ `applyFillMode()`
+    // decides if the width constraint has been violated
+    leaves.forEach(leaf => {
+      let width = get(leaf, 'width');
+      let minWidth = get(leaf, 'minWidth');
+      let maxWidth = get(leaf, 'maxWidth');
+      let newWidth = Math.min(Math.max(width, minWidth), maxWidth);
+      set(leaf, 'width', newWidth);
+    });
+
     let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
     let initialFillMode = get(this, 'initialFillMode');
 
