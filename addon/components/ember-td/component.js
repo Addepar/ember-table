@@ -78,6 +78,8 @@ export default BaseTableCell.extend({
 
   rowMeta: readOnly('unwrappedApi.rowMeta'),
 
+  rowsCount: readOnly('unwrappedApi.rowsCount'),
+
   rowSelectionMode: readOnly('unwrappedApi.rowSelectionMode'),
 
   checkboxSelectionMode: readOnly('unwrappedApi.checkboxSelectionMode'),

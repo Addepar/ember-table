@@ -1,9 +1,11 @@
 import { module, test } from 'ember-qunit';
 import { componentModule } from '../../helpers/module';
+import hbs from 'htmlbars-inline-precompile';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-import { generateTable, generateRows } from '../../helpers/generate-table';
+import { generateTable, generateColumns, generateRows } from '../../helpers/generate-table';
+
 import wait from 'ember-test-helpers/wait';
 
 let table = new TablePage();
@@ -80,6 +82,37 @@ module('Integration | Tree', () => {
       await wait();
 
       assert.ok(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is back');
+    });
+  });
+
+  componentModule('row counting', function() {
+    test('rowsCount excludes collapsed rows', async function(assert) {
+      let columnCount = 1;
+      let rowCount = 1;
+      let rowDepth = 2;
+
+      this.set('columns', generateColumns(columnCount));
+      this.set('rows', generateRows(rowCount, rowDepth));
+
+      this.render(hbs`
+        {{#ember-table as |t|}}
+          {{ember-thead api=t columns=columns}}
+          {{#ember-tbody api=t rows=rows as |b|}}
+            {{#ember-tr api=b as |r|}}
+              {{#ember-td api=r as |c|}}
+                {{b.rowsCount}}
+              {{/ember-td}}
+            {{/ember-tr}}
+          {{/ember-tbody}}
+        {{/ember-table}}
+      `);
+
+      await wait();
+
+      assert.equal(table.getCell(0, 0).text, '2', 'rowsCount is correct before collapse');
+
+      await table.rows.objectAt(0).toggleCollapse();
+      assert.equal(table.getCell(0, 0).text, '1', 'rowsCount is correct after collapse');
     });
   });
 });

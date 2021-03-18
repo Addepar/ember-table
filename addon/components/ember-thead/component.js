@@ -337,7 +337,7 @@ export default Component.extend({
             })
           );
 
-          return { cells, isHeader: true };
+          return { cells, isHeader: true, rowsCount: rows.length };
         })
       );
     }

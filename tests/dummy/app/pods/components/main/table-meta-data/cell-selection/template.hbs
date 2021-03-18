@@ -1,0 +1,43 @@
+
+{{#docs-demo as |demo|}}
+  {{#demo.example name="cell-selection"}}
+    <div class="demo-container small">
+      {{! BEGIN-SNIPPET table-meta-data-cell-selection.hbs }}
+      <EmberTable as |t|>
+        <t.head @columns={{columns}} as |h|>
+          <h.row as |r|>
+            <r.cell
+              class="{{if r.columnMeta.selected 'is-column-selected'}}"
+
+              as |column|
+            >
+              {{column.name}}
+            </r.cell>
+          </h.row>
+        </t.head>
+
+        <t.body @rows={{rows}} as |b|>
+          <b.row
+            class="{{if b.rowMeta.selected 'is-row-selected'}}"
+
+            as |r|
+          >
+            <r.cell
+              class="{{if r.cellMeta.selected 'is-cell-selected'}} {{if r.columnMeta.selected 'is-column-selected'}}"
+
+              as |cell column row cellMeta columnMeta rowMeta|
+            >
+              <div onclick={{action "setSelected" cellMeta columnMeta rowMeta}} class="cell-content">
+                {{cell}}
+              </div>
+            </r.cell>
+          </b.row>
+        </t.body>
+      </EmberTable>
+      {{! END-SNIPPET }}
+    </div>
+  {{/demo.example}}
+
+  {{demo.snippet name='table-meta-data-cell-selection.hbs'}}
+  {{demo.snippet name='table-meta-data-cell-selection.js' label='component.js'}}
+{{/docs-demo}}
