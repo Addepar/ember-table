@@ -2,7 +2,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { scheduleOnce } from '@ember/runloop';
+import { bind, scheduleOnce } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
@@ -318,9 +318,10 @@ export default Component.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    this._updateIndicators = () => {
+    // debounced, runloop-safe version
+    this._updateIndicators = bind(this, () => {
       scheduleOnce('actions', this, this.updateIndicators);
-    };
+    });
 
     this._updateListeners();
     addObserver(this, 'enabledIndicators', this._updateListeners);
