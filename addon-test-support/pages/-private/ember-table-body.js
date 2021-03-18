@@ -9,6 +9,10 @@ import { findElement } from 'ember-classy-page-object/extend';
 
 import { click } from 'ember-native-dom-helpers';
 
+/**
+ * Page object for single table `td` cell; also used by the footer page object
+ * to represent footer cells.
+ */
 export const BodyCell = PageObject.extend({
   scope: 'td',
 
