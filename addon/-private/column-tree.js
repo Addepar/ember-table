@@ -676,6 +676,9 @@ export default EmberObject.extend({
       return;
     }
 
+    // cache right scrollbar width so we can detect if it appears or disappears
+    this._scrollbarWidth = this.getScrollbarWidth();
+
     let leaves = get(this, 'root.leaves');
 
     // ensures that min and max widths are respected _before_ `applyFillMode()`
@@ -750,12 +753,19 @@ export default EmberObject.extend({
     let contentWidth = get(this, 'root.contentWidth');
     let delta = containerWidth - contentWidth;
 
+    // force re-fill when right scrollbar appears; this prevents the bottom
+    // scrollbar from unnecessarily showing when table becomes scrollable
+    let scrollbarWidth = this.getScrollbarWidth();
+    let didScrollbarShow = scrollbarWidth > this._scrollbarWidth;
+    this._scrollbarWidth = scrollbarWidth;
+
     if (
       (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && delta !== 0) ||
       (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK && delta !== 0) ||
       (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && delta < 0) ||
       (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0)
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0) ||
+      didScrollbarShow
     ) {
       if (fillMode === FILL_MODE.EQUAL_COLUMN) {
         set(this, 'root.width', containerWidth);
@@ -795,6 +805,10 @@ export default EmberObject.extend({
   getContainerWidth() {
     let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
     return getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
+  },
+
+  getScrollbarWidth() {
+    return this.container.offsetWidth - this.container.clientWidth;
   },
 
   getReorderBounds(node) {
