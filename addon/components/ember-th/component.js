@@ -59,6 +59,8 @@ export default BaseTableCell.extend({
 
   columnMeta: readOnly('api.columnMeta'),
 
+  rowMeta: readOnly('api.rowMeta'),
+
   /**
     Any sorts applied to the table.
   */
