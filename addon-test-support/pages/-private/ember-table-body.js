@@ -9,6 +9,20 @@ import { findElement } from 'ember-classy-page-object/extend';
 
 import { click } from 'ember-native-dom-helpers';
 
+/**
+ * Page object for single table `td` cell; also used by the footer page object
+ * to represent footer cells.
+ */
+export const BodyCell = PageObject.extend({
+  scope: 'td',
+
+  doubleClick: triggerable('dblclick'),
+
+  isFirstColumn: hasClass('is-first-column'),
+  isLastColumn: hasClass('is-last-column'),
+  isSlack: hasClass('is-slack'),
+});
+
 export default PageObject.extend({
   scope: 'tbody',
 
@@ -36,10 +50,13 @@ export default PageObject.extend({
     /**
       List of all cells for the selected row.
     */
-    cells: collection({
-      scope: 'td:not([data-test-ember-table-slack])',
+    cells: collection('td:not([data-test-ember-table-slack])', BodyCell),
 
-      doubleClick: triggerable('dblclick'),
+    /**
+      Slack cell from this row, if present.
+    */
+    slackCell: BodyCell.extend({
+      scope: 'td[data-test-ember-table-slack]',
     }),
 
     /**

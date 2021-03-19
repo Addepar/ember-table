@@ -116,6 +116,8 @@ const TableColumnMeta = EmberObject.extend({
     }
   }),
 
+  isLastRendered: computed.readOnly('_node.isLastRendered'),
+
   sortIndex: computed('_node.{tree.sorts.[],column.valuePath}', function() {
     let valuePath = this.get('_node.column.valuePath');
     let sorts = this.get('_node.tree.sorts');
@@ -534,6 +536,48 @@ const ColumnTreeNode = EmberObject.extend({
 
     return offsetRight;
   }),
+
+  /**
+   * Value is `true` if any of the following are true:
+   *
+   * 1) this is the slack leaf and has non-zero width
+   * 2) this is the rightmost leaf and there is no slack leaf
+   * 3) this is the rightmost leaf and the slack leaf has zero width
+   *
+   * Use this to style the rightmost column.
+   */
+  isLastRendered: computed(
+    'tree.root.leaves.length',
+    'tree.root.leaves.lastObject.{isSlack,width}',
+    'offsetIndex',
+    'isLeaf',
+    'isSlack',
+    'width',
+    function() {
+      let isLeaf = get(this, 'isLeaf');
+      if (!isLeaf) {
+        return false;
+      }
+
+      let tree = get(this, 'tree');
+      let leaves = get(tree, 'root.leaves');
+      let lastLeaf = get(leaves, 'lastObject');
+
+      // calculate index from the right
+      let offsetIndex = get(this, 'offsetIndex');
+      let rightOffsetIndex = leaves.length - offsetIndex - 1;
+
+      if (rightOffsetIndex === 0) {
+        let isSlack = get(this, 'isSlack');
+        let width = get(this, 'width');
+        return !isSlack || width > 0;
+      } else if (rightOffsetIndex === 1 && get(lastLeaf, 'isSlack')) {
+        return get(lastLeaf, 'width') === 0;
+      }
+
+      return false;
+    }
+  ),
 
   registerElement(element) {
     this.element = element;

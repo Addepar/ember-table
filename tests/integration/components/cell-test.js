@@ -118,4 +118,86 @@ module('Integration | cell', function() {
       assert.equal(get(rows[0], 'A'), 'Z', 'value updated successfully');
     });
   });
+
+  componentModule('positional css classes', function() {
+    test('applies is-first-column, is-last-column classes', async function(assert) {
+      let columnCount = 3;
+      let rows = [
+        {
+          A: 'A',
+          B: 'B',
+          C: 'C',
+        },
+      ];
+
+      this.set('columns', generateColumns(columnCount));
+      this.set('rows', rows);
+
+      this.render(hbs`
+        {{#ember-table as |t|}}
+          {{ember-thead api=t columns=columns}}
+          {{ember-tbody api=t rows=rows}}
+        {{/ember-table}}
+      `);
+
+      await wait();
+
+      let row = table.rows.objectAt(0);
+      let cells = row.cells.toArray();
+
+      // `is-first-column` class only appears on first cell
+      assert.ok(cells[0].isFirstColumn, 'is-first-column applied to first column cell');
+      assert.notOk(cells[1].isFirstColumn, 'is-first-column not applied to middle column cell');
+      assert.notOk(cells[2].isFirstColumn, 'is-first-column not applied to last column cell');
+
+      // `is-last-column` class only appears on last cell
+      assert.notOk(cells[0].isLastColumn, 'is-last-column not applied to first column cell');
+      assert.notOk(cells[1].isLastColumn, 'is-last-column not applied to middle column cell');
+      assert.ok(cells[2].isLastColumn, 'is-last-column applied to last column cell');
+    });
+
+    test('applies positional classes correctly in slack mode', async function(assert) {
+      let columnCount = 1;
+      let rows = [
+        {
+          A: 'A',
+        },
+      ];
+
+      this.set('columns', generateColumns(columnCount));
+      this.set('rows', rows);
+
+      this.render(hbs`
+        {{#ember-table as |t|}}
+          {{ember-thead
+            api=t
+            columns=columns
+            widthConstraint="eq-container-slack"
+            initialFillMode="equal-column"}}
+
+          {{ember-tbody api=t rows=rows}}
+        {{/ember-table}}
+      `);
+
+      await wait();
+
+      let header = table.headers.objectAt(0);
+      let row = table.rows.objectAt(0);
+      let cell = row.cells.objectAt(0);
+      let slackCell = row.slackCell;
+
+      // slack header should be marked accordingly
+      assert.notOk(cell.isSlack, 'is-slack not applied to normal cell');
+      assert.ok(slackCell.isSlack, 'is-slack applied to slack cell');
+
+      // initially, slack column has zero width, so "A" gets `is-last-column` class
+      assert.ok(cell.isLastColumn, 'is-last-column applied to normal cell');
+      assert.notOk(slackCell.isLastColumn, 'is-last-column not applied to slack cell');
+
+      // shrink cell "A"; now slack column gets the `is-last-column` class
+      await header.resize(header.width - 1);
+      assert.notOk(cell.isLastColumn, 'is-last-column not applied to normal cell');
+      assert.ok(slackCell.isLastColumn, 'is-last-column applied to slack cell');
+    });
+  });
 });
