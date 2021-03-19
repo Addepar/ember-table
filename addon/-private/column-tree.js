@@ -713,13 +713,33 @@ export default EmberObject.extend({
 
     let fillMode = get(this, 'fillMode');
 
-    // resize columns when right scrollbar appears or vanishes; this prevents
-    // the bottom scrollbar from showing unnecessarily
+    // accommodate scrollbar as it appears/vanishes
     let scrollbarDelta = this.getScrollbarWidth() - this._scrollbarWidth;
     if (scrollbarDelta !== 0) {
-      let targetWidth = get(this, 'root.contentWidth') - scrollbarDelta;
-      this.applyFillMode(fillMode, targetWidth);
+      let treeWidth = get(this, 'root.width');
+      let contentWidth = get(this, 'root.contentWidth');
+      let containerWidth = this.getContainerWidth();
+      let extra = containerWidth - contentWidth;
+
+      // If `scrollbarDelta` is positive, it means the right scrollbar just
+      // appeared; in this case, we shrink the columns if they are within a
+      // scrollbar width of the container. This prevents a bottom scrollbar
+      // from appearing when it is not necessary.
+
+      // If `scrollbarDelta` is negative, it means the right scrollbar just
+      // vanished; in this case, we enlarge if the rightmost column's edge is
+      // between one and two scrollbar widths of the container's edge. This
+      // ensures the inverse action to the above.
+
+      if (
+        (scrollbarDelta > 0 && (0 < -extra && -extra <= scrollbarDelta)) ||
+        (scrollbarDelta < 0 && (-scrollbarDelta <= extra && extra < -2 * scrollbarDelta))
+      ) {
+        let targetWidth = treeWidth - scrollbarDelta;
+        this.applyFillMode(fillMode, targetWidth);
+      }
     }
+
     this._scrollbarWidth += scrollbarDelta;
 
     // if `widthConstraint` is set to a slack variety, fill excess space
