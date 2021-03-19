@@ -695,7 +695,8 @@ export default EmberObject.extend({
     let initialFillMode = get(this, 'initialFillMode');
 
     if (isSlackModeEnabled && initialFillMode) {
-      this.applyFillMode(initialFillMode);
+      let containerWidth = this.getContainerWidth();
+      this.applyFillMode(initialFillMode, containerWidth);
     }
 
     this.ensureWidthConstraint();
@@ -710,13 +711,38 @@ export default EmberObject.extend({
       return;
     }
 
-    let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
+    let fillMode = get(this, 'fillMode');
 
+    // resize columns when right scrollbar appears or vanishes; this prevents
+    // the bottom scrollbar from showing unnecessarily
+    let scrollbarDelta = this.getScrollbarWidth() - this._scrollbarWidth;
+    if (scrollbarDelta !== 0) {
+      let targetWidth = get(this, 'root.contentWidth') - scrollbarDelta;
+      this.applyFillMode(fillMode, targetWidth);
+    }
+    this._scrollbarWidth += scrollbarDelta;
+
+    // if `widthConstraint` is set to a slack variety, fill excess space
+    // with a slack column before applying `fillMode`
+    let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
     if (isSlackModeEnabled) {
       this.updateSlackColumn();
     }
 
-    this.applyFillMode();
+    // only trigger fill mode if `widthConstraint` has been violated
+    let widthConstraint = get(this, 'widthConstraint');
+    let contentWidth = get(this, 'root.contentWidth');
+    let containerWidth = this.getContainerWidth();
+    let delta = containerWidth - contentWidth;
+    if (
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && delta < 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0)
+    ) {
+      this.applyFillMode(fillMode, containerWidth);
+    }
   },
 
   /**
@@ -739,53 +765,34 @@ export default EmberObject.extend({
   },
 
   /**
-    Attempts to satisfy tree's width constraint by resizing columns according
-    to the specifid `fillMode`. If no `fillMode` is specified, the tree's
-    own `fillMode` property will be used.
+    Attempts to fit columns to container size by resizing columns using the
+    specified `fillMode` to fit in the specified target width.
 
     @param {String} fillMode
+    @param {Number} targetWidth
    */
-  applyFillMode(fillMode) {
-    fillMode = fillMode || get(this, 'fillMode');
-
-    let widthConstraint = get(this, 'widthConstraint');
-    let containerWidth = this.getContainerWidth();
+  applyFillMode(fillMode, targetWidth) {
     let contentWidth = get(this, 'root.contentWidth');
-    let delta = containerWidth - contentWidth;
+    let delta = targetWidth - contentWidth;
 
-    // force re-fill when right scrollbar appears; this prevents the bottom
-    // scrollbar from unnecessarily showing when table becomes scrollable
-    let scrollbarWidth = this.getScrollbarWidth();
-    let didScrollbarShow = scrollbarWidth > this._scrollbarWidth;
-    this._scrollbarWidth = scrollbarWidth;
+    if (fillMode === FILL_MODE.EQUAL_COLUMN) {
+      set(this, 'root.width', targetWidth);
+    } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
+      this.resizeColumn(0, delta);
+    } else if (fillMode === FILL_MODE.LAST_COLUMN) {
+      let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
+      let columns = get(this, 'root.subcolumnNodes');
+      let lastColumnIndex = isSlackModeEnabled ? columns.length - 2 : columns.length - 1;
+      this.resizeColumn(lastColumnIndex, delta);
+    } else if (fillMode === FILL_MODE.NTH_COLUMN) {
+      let fillColumnIndex = get(this, 'fillColumnIndex');
 
-    if (
-      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && delta !== 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK && delta !== 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && delta < 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0) ||
-      didScrollbarShow
-    ) {
-      if (fillMode === FILL_MODE.EQUAL_COLUMN) {
-        set(this, 'root.width', containerWidth);
-      } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
-        this.resizeColumn(0, delta);
-      } else if (fillMode === FILL_MODE.LAST_COLUMN) {
-        let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
-        let columns = get(this, 'root.subcolumnNodes');
-        let lastColumnIndex = isSlackModeEnabled ? columns.length - 2 : columns.length - 1;
-        this.resizeColumn(lastColumnIndex, delta);
-      } else if (fillMode === FILL_MODE.NTH_COLUMN) {
-        let fillColumnIndex = get(this, 'fillColumnIndex');
+      assert(
+        "fillMode 'nth-column' must have a fillColumnIndex defined",
+        !isEmpty(fillColumnIndex)
+      );
 
-        assert(
-          "fillMode 'nth-column' must have a fillColumnIndex defined",
-          !isEmpty(fillColumnIndex)
-        );
-
-        this.resizeColumn(fillColumnIndex, delta);
-      }
+      this.resizeColumn(fillColumnIndex, delta);
     }
   },
 
