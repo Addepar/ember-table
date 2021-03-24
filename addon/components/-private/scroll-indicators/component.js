@@ -2,7 +2,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { bind, scheduleOnce } from '@ember/runloop';
+import { run, scheduleOnce } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
@@ -177,6 +177,16 @@ export default Component.extend({
     }
   }),
 
+  init() {
+    this._super(...arguments);
+
+    // common callback for event listeners
+    this._updateIndicators = () => {
+      // test suite requires this callback to be wrapped in a runloop
+      run(() => scheduleOnce('actions', this, this.updateIndicators));
+    };
+  },
+
   _addListeners() {
     this._isListening = true;
 
@@ -317,12 +327,6 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-
-    // debounced, runloop-safe version
-    this._updateIndicators = bind(this, () => {
-      scheduleOnce('actions', this, this.updateIndicators);
-    });
-
     this._updateListeners();
     addObserver(this, 'enabledIndicators', this._updateListeners);
   },
