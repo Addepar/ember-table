@@ -2,7 +2,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { run, scheduleOnce } from '@ember/runloop';
+import { bind, scheduleOnce } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
@@ -180,11 +180,11 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    // common callback for event listeners
-    this._updateIndicators = () => {
-      // test suite requires this callback to be wrapped in a runloop
-      run(() => scheduleOnce('actions', this, this.updateIndicators));
-    };
+    // common callback for event listeners; the `bind` appears redundant, but is
+    // required by the test suite
+    this._updateIndicators = bind(this, () => {
+      scheduleOnce('actions', this, this.updateIndicators);
+    });
   },
 
   _addListeners() {
