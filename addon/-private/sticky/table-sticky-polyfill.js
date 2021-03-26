@@ -174,7 +174,8 @@ class TableStickyPolyfill {
     let scale = table.offsetHeight / table.getBoundingClientRect().height;
     let containerHeight = table.parentNode.offsetHeight;
 
-    let rows = Array.from(this.element.children);
+    // exclude ResizeSensor divs
+    let rows = Array.from(this.element.querySelectorAll('tr'));
     let offset = 0;
     let heights = rows.map(r => r.getBoundingClientRect().height * scale);
 

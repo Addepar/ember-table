@@ -2,7 +2,7 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
-import { bind } from '@ember/runloop';
+import { bind, scheduleOnce } from '@ember/runloop';
 import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
@@ -181,6 +181,16 @@ export default Component.extend({
     }
   }),
 
+  init() {
+    this._super(...arguments);
+
+    // common callback for event listeners; the `bind` appears redundant, but is
+    // required by the test suite
+    this._updateIndicators = bind(this, () => {
+      scheduleOnce('actions', this, this.updateIndicators);
+    });
+  },
+
   _addListeners() {
     this._isListening = true;
 
@@ -189,18 +199,62 @@ export default Component.extend({
     this._tableElement = this._scrollElement.querySelector('table');
     this._headerElement = this._tableElement.querySelector('thead');
 
-    this._onScroll = bind(this, this._updateIndicators);
-    this._scrollElement.addEventListener('scroll', this._onScroll);
-    this._resizeSensor = new ResizeSensor(this._tableElement, bind(this, this._updateIndicators));
+    this._scrollElement.addEventListener('scroll', this._updateIndicators);
+    this._tableResizeSensor = new ResizeSensor(this._tableElement, this._updateIndicators);
+    this._addFooterListeners();
   },
 
   _removeListeners() {
     this._isListening = false;
-    this._scrollElement.removeEventListener('scroll', this._onScroll);
-    this._resizeSensor.detach();
+
+    this._scrollElement.removeEventListener('scroll', this._updateIndicators);
+    this._tableResizeSensor.detach();
+    this._removeFooterListeners();
   },
 
-  _updateIndicators() {
+  // footer can appear/disappear dynamically, so this listener needs to be
+  // added/removed occasionally
+  _addFooterListeners() {
+    let footerElement = this._tableElement.querySelector('tfoot');
+
+    if (!footerElement) {
+      return;
+    }
+
+    if (!this._footerResizeSensor) {
+      // triggers when entire footer changes size
+      this._footerResizeSensor = new ResizeSensor(footerElement, this._updateIndicators);
+    }
+
+    if (!this._footerMutationObserver) {
+      // triggers when individual footer cells are updated by sticky polyfill
+      this._footerMutationObserver = new MutationObserver(this._updateIndicators);
+      this._footerMutationObserver.observe(footerElement, {
+        subtree: true,
+        attributes: true,
+        attributesFilter: ['style'],
+        childList: true,
+      });
+    }
+  },
+
+  _removeFooterListeners() {
+    if (this._footerResizeSensor) {
+      this._footerResizeSensor.detach();
+      this._footerResizeSensor = null;
+    }
+
+    if (this._footerMutationObserver) {
+      this._footerMutationObserver.disconnect();
+      this._footerMutationObserver = null;
+    }
+  },
+
+  /**
+    Recomputes table geometry and triggers update of scroll indicator positions
+    and dimensions.
+  */
+  updateIndicators() {
     let el = this._scrollElement;
     let table = this._tableElement;
     let header = this._headerElement;
@@ -224,6 +278,8 @@ export default Component.extend({
     let visibleFooterHeight = 0;
     let footerCell = table.querySelector('tfoot td');
     if (footerCell) {
+      this._addFooterListeners();
+
       let footerCellY = footerCell.getBoundingClientRect().y;
       let overflowRect = el.getBoundingClientRect();
       let scale = el.offsetHeight / overflowRect.height;
@@ -235,6 +291,8 @@ export default Component.extend({
 
       // can be negative if sticky footers don't work in browser (e.g. Safari)
       visibleFooterHeight = Math.max(visibleFooterHeight, 0);
+    } else {
+      this._removeFooterListeners();
     }
 
     let footerRatio;
