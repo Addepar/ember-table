@@ -8,6 +8,7 @@ import EmberObject, { computed } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
 
 import { closest } from '../../-private/utils/element';
+import { MetaCache } from '../../-private/meta-cache';
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
 import { scheduleOnce } from '@ember/runloop';
 
@@ -59,6 +60,11 @@ export default Component.extend({
     @type array? ([])
   */
   columns: defaultTo(() => []),
+
+  /**
+    TODO: document
+  */
+  columnMetaKey: null,
 
   /**
     An ordered array of the sorts applied to the table
@@ -222,7 +228,8 @@ export default Component.extend({
       memory leaks, we need to be able to clean the cache manually when the table
       is destroyed or updated, which is why we use a Map instead of WeakMap
     */
-    this.columnMetaCache = new Map();
+    let metaKey = this.get('columnMetaKey');
+    this.columnMetaCache = new MetaCache({ metaKey });
 
     this.columnTree = ColumnTree.create({
       onReorder: this.onReorder?.bind(this),
@@ -234,7 +241,7 @@ export default Component.extend({
     /**
       The map that contains row meta information for this table header.
     */
-    this.rowMetaCache = new Map();
+    this.rowMetaCache = new MetaCache();
 
     this._updateApi();
     this._updateColumnTree();
@@ -247,6 +254,7 @@ export default Component.extend({
 
     addObserver(this, 'sorts', this._updateColumnTree);
     addObserver(this, 'columns.[]', this._onColumnsChange);
+    addObserver(this, 'columnMetaKey', this._updateColumnMetaKey);
     addObserver(this, 'fillMode', this._updateColumnTree);
     addObserver(this, 'initialFillMode', this._updateColumnTree);
     addObserver(this, 'fillColumnIndex', this._updateColumnTree);
@@ -279,6 +287,10 @@ export default Component.extend({
     this.columnTree.set('enableSort', this.get('enableSort'));
     this.columnTree.set('enableResize', this.get('enableResize'));
     this.columnTree.set('enableReorder', this.get('enableReorder'));
+  },
+
+  _updateColumnMetaKey() {
+    this.columnMetaCache.metaKey = this.get('columnMetaKey');
   },
 
   _onColumnsChange() {

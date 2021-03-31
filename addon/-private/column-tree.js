@@ -9,7 +9,6 @@ import { gt, readOnly } from '@ember/object/computed';
 
 import { scheduler, Token } from 'ember-raf-scheduler';
 
-import { getOrCreate } from './meta-cache';
 import { objectAt, move, splice } from './utils/array';
 import { mergeSort } from './utils/sort';
 import { isEmpty } from '@ember/utils';
@@ -166,7 +165,8 @@ const ColumnTreeNode = EmberObject.extend({
     if (!parent) {
       this.isRoot = true;
     } else {
-      let meta = getOrCreate(column, get(tree, 'columnMetaCache'), TableColumnMeta);
+      let columnMetaCache = get(tree, 'columnMetaCache');
+      let meta = columnMetaCache.getOrCreate(column, TableColumnMeta);
 
       set(meta, '_node', this);
       meta.registerElement = (...args) => this.registerElement(...args);
