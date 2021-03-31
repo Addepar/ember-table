@@ -8,7 +8,7 @@ import EmberObject, { computed } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
 
 import { closest } from '../../-private/utils/element';
-import { MetaCache } from '../../-private/meta-cache';
+import MetaCache from '../../-private/meta-cache';
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
 import { scheduleOnce } from '@ember/runloop';
 

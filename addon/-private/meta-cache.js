@@ -7,7 +7,7 @@ export function getOrCreate(obj, cache, Class) {
 
   return cache.get(obj);
 }
-export class MetaCache {
+export default class MetaCache {
   constructor({ metaKey } = {}) {
     this.metaKey = metaKey;
     this._map = new Map();
