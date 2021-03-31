@@ -2,6 +2,7 @@ import { A as emberA } from '@ember/array';
 import { get, set } from '@ember/object';
 import { run } from '@ember/runloop';
 import ColumnTree from 'ember-table/-private/column-tree';
+import MetaCache from 'ember-table/-private/meta-cache';
 import { module, test } from 'qunit';
 
 let columnMetaCache, tree;
@@ -24,7 +25,7 @@ function generateTree(seq) {
 
 module('Unit | Private | ColumnTree', function(hooks) {
   hooks.beforeEach(function() {
-    columnMetaCache = new Map();
+    columnMetaCache = new MetaCache();
   });
 
   hooks.afterEach(function() {
