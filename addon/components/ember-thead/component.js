@@ -62,7 +62,12 @@ export default Component.extend({
   columns: defaultTo(() => []),
 
   /**
-    TODO: document
+    Specifies the name of the property on the column objects that should be
+    used as the key for caching column metadata. For example, if columns have
+    a unique `id` property, the value could be set to `id`. If unspecified, the column object itself is used as a key.
+
+    @argument columnMetaKey
+    @type string?
   */
   columnMetaKey: null,
 
