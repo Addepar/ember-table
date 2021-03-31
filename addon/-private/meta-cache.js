@@ -43,6 +43,12 @@ export class MetaCache {
   }
 
   _keyFor(obj) {
-    return obj && this.metaKey ? get(obj, this.metaKey) : obj;
+    // falls back to `obj` as key if a legitimate key cannot be produced
+    if (!obj || !this.metaKey) {
+      return obj;
+    }
+
+    let key = get(obj, this.metaKey);
+    return key ? key : obj;
   }
 }
