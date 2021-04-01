@@ -6,6 +6,7 @@ import defaultTo from '../../-private/utils/default-to';
 import { addObserver } from '../../-private/utils/observer';
 import EmberObject, { computed } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
+import { isPresent } from '@ember/utils';
 
 import { closest } from '../../-private/utils/element';
 import MetaCache from '../../-private/meta-cache';
@@ -15,7 +16,6 @@ import { scheduleOnce } from '@ember/runloop';
 import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
 
 import layout from './template';
-import { isPresent } from '@ember/utils';
 
 /**
   The table header component. This component manages and receives the column
