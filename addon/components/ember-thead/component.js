@@ -15,6 +15,7 @@ import { scheduleOnce } from '@ember/runloop';
 import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
 
 import layout from './template';
+import { isPresent } from '@ember/utils';
 
 /**
   The table header component. This component manages and receives the column
@@ -241,11 +242,13 @@ export default Component.extend({
     });
 
     /**
-      The map that contains row meta information for this table header.
+      The map that contains column meta information for this table. Is meant to be
+      unique to this table, which is why it is created here.
     */
     this.rowMetaCache = new MetaCache();
 
     this._updateApi();
+    this._validateUniqueColumnKeys();
     this._updateColumnTree();
     scheduleOnce('actions', this.columnTree, 'performInitialLayout');
 
@@ -292,6 +295,7 @@ export default Component.extend({
   },
 
   _updateColumnMetaCache() {
+    this._validateUniqueColumnKeys();
     this.columnMetaCache.keyPath = this.get('columnKeyPath');
   },
 
@@ -299,9 +303,37 @@ export default Component.extend({
     if (this.get('columns.length') === 0) {
       return;
     }
+    this._validateUniqueColumnKeys();
     this._updateColumnTree();
 
     scheduleOnce('actions', this, this.fillupHandler);
+  },
+
+  _validateUniqueColumnKeys() {
+    let columnKeyPath = this.get('columnKeyPath');
+    if (columnKeyPath) {
+      let columns = this.get('columns');
+      let keys = emberA(columns).mapBy(columnKeyPath);
+      let presentKeys = emberA(keys.filter(isPresent));
+
+      // If a column has a falsey key, its meta data cannot be mapped to a
+      // replacement column in the future. This is not necessarily a problem,
+      // but it's reasonable to assume the consumer will want to avoid this
+      // scenario if they have bothered to set `columnKeyPath` at all.
+      if (presentKeys.length < keys.length) {
+        throw new Error(
+          'Missing column key detected. If columnKeyPath is specified, every column must have a key.'
+        );
+      }
+
+      // Duplicate non-blank keys are the real problem; the meta cache will map
+      // two columns to the same meta object and havoc will ensue.
+      if (presentKeys.uniq().length < presentKeys.length) {
+        throw new Error(
+          'Duplicate column key detected. If columnKeyPath is specified, no two columns can share the same key.'
+        );
+      }
+    }
   },
 
   didInsertElement() {
