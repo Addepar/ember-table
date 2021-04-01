@@ -8,9 +8,23 @@ export function getOrCreate(obj, cache, Class) {
   return cache.get(obj);
 }
 
+/**
+ * Substitute for `Map` that allows non-identical object keys to share
+ * identical values by specifying a key path for the associating keys.
+ *
+ * If no key path is specified, it behaves like a `Map`.
+ *
+ * @class MetaCache
+ * @constructor
+ * @param {Object} options
+ */
 export default class MetaCache {
-  constructor({ metaKey } = {}) {
-    this.metaKey = metaKey;
+  constructor({ keyPath } = {}) {
+    this.keyPath = keyPath;
+
+    // in order to prevent memory leaks, we need to be able to clean the cache
+    // manually when the table is destroyed or updated; this is why we use a
+    // Map instead of WeakMap
     this._map = new Map();
   }
 
@@ -45,11 +59,11 @@ export default class MetaCache {
 
   _keyFor(obj) {
     // falls back to `obj` as key if a legitimate key cannot be produced
-    if (!obj || !this.metaKey) {
+    if (!obj || !this.keyPath) {
       return obj;
     }
 
-    let key = get(obj, this.metaKey);
+    let key = get(obj, this.keyPath);
     return key ? key : obj;
   }
 }

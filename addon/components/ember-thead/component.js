@@ -66,10 +66,10 @@ export default Component.extend({
     used as the key for caching column metadata. For example, if columns have
     a unique `id` property, the value could be set to `id`. If unspecified, the column object itself is used as a key.
 
-    @argument columnMetaKey
+    @argument columnKeyPath
     @type string?
   */
-  columnMetaKey: null,
+  columnKeyPath: null,
 
   /**
     An ordered array of the sorts applied to the table
@@ -228,13 +228,10 @@ export default Component.extend({
     this._tableResizeSensor = null;
 
     /**
-      The map that contains column meta information for this table. Is meant to be
-      unique to this table, which is why it is created here. In order to prevent
-      memory leaks, we need to be able to clean the cache manually when the table
-      is destroyed or updated, which is why we use a Map instead of WeakMap
+      The map that contains column meta information for this table.
     */
-    let metaKey = this.get('columnMetaKey');
-    this.columnMetaCache = new MetaCache({ metaKey });
+    let columnKeyPath = this.get('columnKeyPath');
+    this.columnMetaCache = new MetaCache({ keyPath: columnKeyPath });
 
     this.columnTree = ColumnTree.create({
       onReorder: this.onReorder?.bind(this),
@@ -259,7 +256,7 @@ export default Component.extend({
 
     addObserver(this, 'sorts', this._updateColumnTree);
     addObserver(this, 'columns.[]', this._onColumnsChange);
-    addObserver(this, 'columnMetaKey', this._updateColumnMetaKey);
+    addObserver(this, 'columnKeyPath', this._updateColumnMetaCache);
     addObserver(this, 'fillMode', this._updateColumnTree);
     addObserver(this, 'initialFillMode', this._updateColumnTree);
     addObserver(this, 'fillColumnIndex', this._updateColumnTree);
@@ -294,8 +291,8 @@ export default Component.extend({
     this.columnTree.set('enableReorder', this.get('enableReorder'));
   },
 
-  _updateColumnMetaKey() {
-    this.columnMetaCache.metaKey = this.get('columnMetaKey');
+  _updateColumnMetaCache() {
+    this.columnMetaCache.keyPath = this.get('columnKeyPath');
   },
 
   _onColumnsChange() {
