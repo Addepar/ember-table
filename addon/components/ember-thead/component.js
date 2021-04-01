@@ -229,7 +229,8 @@ export default Component.extend({
     this._tableResizeSensor = null;
 
     /**
-      The map that contains column meta information for this table.
+      The map that contains column meta information for this table. Is meant to be
+      unique to this table, which is why it is created here.
     */
     let columnKeyPath = this.get('columnKeyPath');
     this.columnMetaCache = new MetaCache({ keyPath: columnKeyPath });
@@ -242,10 +243,9 @@ export default Component.extend({
     });
 
     /**
-      The map that contains column meta information for this table. Is meant to be
-      unique to this table, which is why it is created here.
+      The map that contains row meta information for this table header.
     */
-    this.rowMetaCache = new MetaCache();
+    this.rowMetaCache = new Map();
 
     this._updateApi();
     this._validateUniqueColumnKeys();
