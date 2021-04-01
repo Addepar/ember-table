@@ -45,7 +45,8 @@ async function renderTable(context) {
       {{#ember-thead
         api=t
         widthConstraint='eq-container'
-        columns=columns as |h|}}
+        columns=columns
+        columnKeyPath=columnKeyPath as |h|}}
         {{#ember-tr api=h as |r|}}
           {{ember-th api=r}}
         {{/ember-tr}}
@@ -177,4 +178,39 @@ test('table resizes when columns are added via mutation', async function(assert)
 
   await renderTable(this);
   await testColumnAddition(assert, new TablePage());
+});
+
+test('if columnKeyPath is set, meta data is preserved when columns are replaced', async function(assert) {
+  let data = tableData();
+
+  data.columns.forEach((column, i) => {
+    // column width is only stored as meta data when it is not specified
+    delete column.width;
+
+    // add a unique key for `columnKeyPath`
+    column.key = `${i}`;
+  });
+
+  this.set('rows', data.rows);
+  this.set('columns', data.columns);
+  this.set('columnKeyPath', 'key');
+
+  await renderTable(this);
+
+  let table = new TablePage();
+  let header = table.headers.objectAt(0);
+  let initialHeaderWidth = header.width;
+  await header.resize(500);
+  let expectedHeaderWidth = header.width; // might not be exactly 500
+
+  // sanity check
+  assert.notEqual(initialHeaderWidth, expectedHeaderWidth, 'header width has changed');
+
+  // substitute deeply equal, but non-identical columns
+  let newColumns = data.columns.map(column => Object.assign({}, column));
+  this.set('columns', newColumns);
+  await rafFinished();
+
+  // without `columnKeyPath`, header would snap back to default width
+  assert.equal(header.width, expectedHeaderWidth, 'meta data is preserved');
 });
