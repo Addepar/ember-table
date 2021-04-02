@@ -4,7 +4,7 @@ import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
 import defaultTo from '../../-private/utils/default-to';
 import { addObserver } from '../../-private/utils/observer';
-import EmberObject, { computed } from '@ember/object';
+import EmberObject, { computed, get } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
 
@@ -65,7 +65,8 @@ export default Component.extend({
   /**
     Specifies the name of the property on the column objects that should be
     used as the key for caching column metadata. For example, if columns have
-    a unique `id` property, the value could be set to `id`. If unspecified, the column object itself is used as a key.
+    a unique `id` property, the value could be set to `id`. If unspecified,
+    the column object itself is used as a key.
 
     @argument columnKeyPath
     @type string?
@@ -310,10 +311,21 @@ export default Component.extend({
   },
 
   _validateUniqueColumnKeys() {
+    let columns = this.get('columns');
     let columnKeyPath = this.get('columnKeyPath');
-    if (columnKeyPath) {
-      let columns = this.get('columns');
-      let keys = emberA(columns).mapBy(columnKeyPath);
+
+    if (columns && columnKeyPath) {
+      // traverse tree to collect column keys
+      let keys = [];
+      let queue = [...columns];
+      while (queue.length > 0) {
+        let column = queue.shift();
+        keys.push(get(column, columnKeyPath));
+        if (column.subcolumns) {
+          queue.push(...column.subcolumns);
+        }
+      }
+
       let presentKeys = emberA(keys.filter(isPresent));
 
       // If a column has a falsey key, its meta data cannot be mapped to a
