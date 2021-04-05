@@ -2,6 +2,7 @@
 import Component from '@ember/component';
 import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
+import { assert } from '@ember/debug';
 import defaultTo from '../../-private/utils/default-to';
 import { addObserver } from '../../-private/utils/observer';
 import EmberObject, { computed, get } from '@ember/object';
@@ -332,19 +333,17 @@ export default Component.extend({
       // replacement column in the future. This is not necessarily a problem,
       // but it's reasonable to assume the consumer will want to avoid this
       // scenario if they have bothered to set `columnKeyPath` at all.
-      if (presentKeys.length < keys.length) {
-        throw new Error(
-          'Missing column key detected. If columnKeyPath is specified, every column must have a key.'
-        );
-      }
+      assert(
+        'if columnKeyPath is specified, every column must have a key',
+        presentKeys.length === keys.length
+      );
 
       // Duplicate non-blank keys are the real problem; the meta cache will map
       // two columns to the same meta object and havoc will ensue.
-      if (presentKeys.uniq().length < presentKeys.length) {
-        throw new Error(
-          'Duplicate column key detected. If columnKeyPath is specified, no two columns can share the same key.'
-        );
-      }
+      assert(
+        'if columnKeyPath is specified, no two columns can share the same key',
+        presentKeys.uniq().length === presentKeys.length
+      );
     }
   },
 
