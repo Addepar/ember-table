@@ -30,7 +30,7 @@
     {{/if}}
 
     <div class="et-cell-content">
-      {{#if hasBlock}}
+      {{#if (has-block)}}
         {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
       {{else}}
         {{cellValue}}
@@ -38,7 +38,7 @@
     </div>
   </div>
 {{else}}
-  {{#if hasBlock}}
+  {{#if (has-block)}}
     {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
   {{else}}
     {{cellValue}}
