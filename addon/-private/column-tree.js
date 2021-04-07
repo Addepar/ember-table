@@ -1033,24 +1033,21 @@ export default EmberObject.extend({
   },
 
   startResize(node, clientX) {
+    this._originalClientX = clientX;
+    this._originalWidth = get(node, 'width');
     this.clientX = clientX;
+    node.element.classList.add('is-resizing');
+    this.container.classList.add('is-resizing');
   },
 
   updateResize(node, clientX) {
     let delta = Math.floor(
       get(node, 'isFixed') === 'right'
-        ? (this.clientX - clientX) * this.scale
-        : (clientX - this.clientX) * this.scale
+        ? (this._originalClientX - clientX) * this.scale
+        : (clientX - this._originalClientX) * this.scale
     );
 
     this.clientX = clientX;
-
-    if (Math.abs(delta) < 1) {
-      return;
-    }
-
-    // Add the class after at least one update has occured
-    this.container.classList.add('is-resizing');
 
     this._updateResize(node, delta);
   },
@@ -1058,10 +1055,11 @@ export default EmberObject.extend({
   _updateResize(node, delta) {
     let resizeMode = get(this, 'resizeMode');
 
-    let oldWidth = get(node, 'width');
     let minWidth = get(node, 'minWidth');
 
-    delta = Math.max(oldWidth + delta, minWidth) - oldWidth;
+    delta = Math.max(this._originalWidth + delta, minWidth) - this._originalWidth;
+
+    let newWidth = this._originalWidth + delta;
 
     if (resizeMode === RESIZE_MODE.FLUID) {
       let parent = get(node, 'parent');
@@ -1089,11 +1087,7 @@ export default EmberObject.extend({
       }
     }
 
-    let newWidth = oldWidth + delta;
-
     set(node, 'width', newWidth);
-
-    this.ensureWidthConstraint.call(this);
   },
 
   endResize(node) {
@@ -1102,6 +1096,9 @@ export default EmberObject.extend({
       this._nextUpdateScroll = null;
     }
 
+    this.ensureWidthConstraint.call(this);
+
+    node.element.classList.remove('is-resizing');
     this.container.classList.remove('is-resizing');
 
     this.onResize?.(get(node, 'column'));
