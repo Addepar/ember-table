@@ -2,12 +2,15 @@
 import Component from '@ember/component';
 import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
+import { assert } from '@ember/debug';
 import defaultTo from '../../-private/utils/default-to';
 import { addObserver } from '../../-private/utils/observer';
-import EmberObject, { computed } from '@ember/object';
+import EmberObject, { computed, get } from '@ember/object';
 import { notEmpty, or, readOnly } from '@ember/object/computed';
+import { isPresent } from '@ember/utils';
 
 import { closest } from '../../-private/utils/element';
+import MetaCache from '../../-private/meta-cache';
 import { sortMultiple, compareValues } from '../../-private/utils/sort';
 import { scheduleOnce } from '@ember/runloop';
 
@@ -59,6 +62,17 @@ export default Component.extend({
     @type array? ([])
   */
   columns: defaultTo(() => []),
+
+  /**
+    Specifies the name of the property on the column objects that should be
+    used as the key for caching column metadata. For example, if columns have
+    a unique `id` property, the value could be set to `id`. If unspecified,
+    the column object itself is used as a key.
+
+    @argument columnKeyPath
+    @type string?
+  */
+  columnKeyPath: null,
 
   /**
     An ordered array of the sorts applied to the table
@@ -218,11 +232,10 @@ export default Component.extend({
 
     /**
       The map that contains column meta information for this table. Is meant to be
-      unique to this table, which is why it is created here. In order to prevent
-      memory leaks, we need to be able to clean the cache manually when the table
-      is destroyed or updated, which is why we use a Map instead of WeakMap
+      unique to this table, which is why it is created here.
     */
-    this.columnMetaCache = new Map();
+    let columnKeyPath = this.get('columnKeyPath');
+    this.columnMetaCache = new MetaCache({ keyPath: columnKeyPath });
 
     this.columnTree = ColumnTree.create({
       onReorder: this.onReorder?.bind(this),
@@ -237,6 +250,7 @@ export default Component.extend({
     this.rowMetaCache = new Map();
 
     this._updateApi();
+    this._validateUniqueColumnKeys();
     this._updateColumnTree();
     scheduleOnce('actions', this.columnTree, 'performInitialLayout');
 
@@ -247,6 +261,7 @@ export default Component.extend({
 
     addObserver(this, 'sorts', this._updateColumnTree);
     addObserver(this, 'columns.[]', this._onColumnsChange);
+    addObserver(this, 'columnKeyPath', this._updateColumnMetaCache);
     addObserver(this, 'fillMode', this._updateColumnTree);
     addObserver(this, 'initialFillMode', this._updateColumnTree);
     addObserver(this, 'fillColumnIndex', this._updateColumnTree);
@@ -281,13 +296,55 @@ export default Component.extend({
     this.columnTree.set('enableReorder', this.get('enableReorder'));
   },
 
+  _updateColumnMetaCache() {
+    this._validateUniqueColumnKeys();
+    this.columnMetaCache.keyPath = this.get('columnKeyPath');
+  },
+
   _onColumnsChange() {
     if (this.get('columns.length') === 0) {
       return;
     }
+    this._validateUniqueColumnKeys();
     this._updateColumnTree();
 
     scheduleOnce('actions', this, this.fillupHandler);
+  },
+
+  _validateUniqueColumnKeys() {
+    let columns = this.get('columns');
+    let columnKeyPath = this.get('columnKeyPath');
+
+    if (columns && columnKeyPath) {
+      // traverse tree to collect column keys
+      let keys = [];
+      let queue = [...columns];
+      while (queue.length > 0) {
+        let column = queue.shift();
+        keys.push(get(column, columnKeyPath));
+        if (column.subcolumns) {
+          queue.push(...column.subcolumns);
+        }
+      }
+
+      let presentKeys = emberA(keys.filter(isPresent));
+
+      // If a column has a falsey key, its meta data cannot be mapped to a
+      // replacement column in the future. This is not necessarily a problem,
+      // but it's reasonable to assume the consumer will want to avoid this
+      // scenario if they have bothered to set `columnKeyPath` at all.
+      assert(
+        'if columnKeyPath is specified, every column must have a key',
+        presentKeys.length === keys.length
+      );
+
+      // Duplicate non-blank keys are the real problem; the meta cache will map
+      // two columns to the same meta object and havoc will ensue.
+      assert(
+        'if columnKeyPath is specified, no two columns can share the same key',
+        presentKeys.uniq().length === presentKeys.length
+      );
+    }
   },
 
   didInsertElement() {

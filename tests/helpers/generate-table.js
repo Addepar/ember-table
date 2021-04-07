@@ -17,6 +17,7 @@ const fullTable = hbs`
         api=t
 
         columns=columns
+        columnKeyPath=columnKeyPath
         containerWidthAdjustment=containerWidthAdjustment
         enableReorder=enableReorder
         enableResize=enableResize
