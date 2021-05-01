@@ -1,39 +1,39 @@
-{{#each cells as |api|}}
+{{#each api.cells as |cellApi|}}
   {{#if hasBlock}}
-    {{#if isHeader}}
+    {{#if api.isHeader}}
       {{yield (hash
-        columnValue=api.columnValue
-        columnMeta=api.columnMeta
+        columnValue=cellApi.columnValue
+        columnMeta=cellApi.columnMeta
 
-        sorts=api.sorts
-        sendUpdateSort=api.sendUpdateSort
+        sorts=cellApi.sorts
+        sendUpdateSort=cellApi.sendUpdateSort
 
-        rowMeta=api.rowMeta
-        rowsCount=api.rowsCount
+        rowMeta=cellApi.rowMeta
+        rowsCount=cellApi.rowsCount
 
-        cell=(component "ember-th" api=api)
+        cell=(component "ember-th" api=cellApi)
       )}}
     {{else}}
       {{yield (hash
-        api=api
+        api=cellApi
 
-        cellValue=api.cellValue
-        cellMeta=api.cellMeta
+        cellValue=cellApi.cellValue
+        cellMeta=cellApi.cellMeta
 
-        columnValue=api.columnValue
-        columnMeta=api.columnMeta
+        columnValue=cellApi.columnValue
+        columnMeta=cellApi.columnMeta
 
-        rowValue=api.rowValue
-        rowMeta=api.rowMeta
+        rowValue=cellApi.rowValue
+        rowMeta=cellApi.rowMeta
 
-        rowsCount=api.rowsCount
+        rowsCount=cellApi.rowsCount
 
-        cell=(component "ember-td" api=api)
+        cell=(component "ember-td" api=cellApi)
       )}}
     {{/if}}
-  {{else if isHeader}}
-    {{ember-th api=api}}
+  {{else if api.isHeader}}
+    {{ember-th api=cellApi}}
   {{else}}
-    {{ember-td api=api}}
+    {{ember-td api=cellApi}}
   {{/if}}
 {{/each}}
