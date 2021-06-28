@@ -3,7 +3,7 @@ import Component from '@ember/component';
 import { run } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
-import { bool, readOnly, or } from '@ember/object/computed';
+import { bool, readOnly, or, alias } from '@ember/object/computed';
 
 import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
 
@@ -100,7 +100,8 @@ export default Component.extend({
     @argument selectionMatchFunction
     @type function?
   */
-  selectionMatchFunction: null,
+  selectionMatcher: null,
+  selectionMatchFunction: alias('selectionMatcher'),
 
   /**
     An action that is called when the row selection of the table changes.
