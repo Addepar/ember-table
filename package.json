@@ -2,9 +2,7 @@
   "name": "ember-table",
   "version": "3.0.2-2",
   "description": "An addon to support large data set and a number of features around table.",
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "license": "BSD-3-Clause",
   "author": "",
   "directories": {
@@ -101,5 +99,9 @@
   "resolutions": {
     "ember-cli-page-object": "1.15.1",
     "prettier": "1.18.2"
+  },
+  "volta": {
+    "node": "12.22.3",
+    "yarn": "1.22.10"
   }
 }
