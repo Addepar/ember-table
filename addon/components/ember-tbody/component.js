@@ -11,7 +11,7 @@ import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 import defaultTo from '../../-private/utils/default-to';
 
 import layout from './template';
-import { assert, runInDebug } from '@ember/debug';
+import { assert } from '@ember/debug';
 
 /**
   The table body component. This component manages the main bulk of the rows of
@@ -266,13 +266,18 @@ export default Component.extend({
 
     this._updateCollapseTree();
 
-    runInDebug(() => {
+    /*
+     * Ember test selectors will remove data-test-row-count from the bindings,
+     * so if it is missing there is no need to all the count.
+     */
+    if (this.attributeBindings.includes('data-test-row-count')) {
+      this._isObservingDebugRowCount = true;
       let scheduleUpdate = (this._scheduleUpdate = () => {
         run.scheduleOnce('actions', this, this._updateDataTestRowCount);
       });
       this.collapseTree.addObserver('rows', scheduleUpdate);
       this.collapseTree.addObserver('[]', scheduleUpdate);
-    });
+    }
 
     assert(
       'You must create an {{ember-thead}} with columns before creating an {{ember-tbody}}',
@@ -317,10 +322,10 @@ export default Component.extend({
       this.rowMetaCache.delete(row);
     }
 
-    runInDebug(() => {
+    if (this._isObservingDebugRowCount) {
       this.collapseTree.removeObserver('rows', this._scheduleUpdate);
       this.collapseTree.removeObserver('[]', this._scheduleUpdate);
-    });
+    }
     this.collapseTree.destroy();
   },
 
