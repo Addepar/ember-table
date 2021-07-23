@@ -7,7 +7,7 @@ jobs:
   test:
     name: Run Tests
     runs-on: ubuntu-18.04
-    timout-minutes: 6
+    timeout-minutes: 6
 
     steps:
       - name: Checkout
@@ -38,7 +38,7 @@ jobs:
   test-ember-try:
     name: Run Tests
     runs-on: ubuntu-18.04
-    timout-minutes: 6
+    timeout-minutes: 6
 
     strategy:
       matrix:
