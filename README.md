@@ -7,7 +7,7 @@ handle over 100,000 rows without any rendering or performance issues.
 
 Ember Table 3.x supports:
 
-* Ember 2.8 to latest version of Ember.
+* Ember 2.8 to Ember 3.28 (last 3.x version of Ember).
 * Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile.
 
 For older platforms, the final release of Ember Table 2.x (2.2.3) supports:
