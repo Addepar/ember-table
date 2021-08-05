@@ -1,6 +1,7 @@
 import { module, test } from 'ember-qunit';
 import { componentModule } from '../../helpers/module';
 import hbs from 'htmlbars-inline-precompile';
+import { find } from 'ember-native-dom-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
@@ -43,6 +44,36 @@ module('Integration | Tree', () => {
 
       assert.equal(table.rows.length, 6, 'renders all rows');
       assert.ok(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is back');
+    });
+
+    test('trees autoresize when scrollbar appears', async function(assert) {
+      this.set('widthConstraint', 'eq-container');
+
+      await generateTable(this, { rowCount: 1, rowDepth: 1, enableTree: false });
+
+      let table = find('[data-test-ember-table]');
+
+      let initialScrollWidth = table.scrollWidth;
+      assert.equal(initialScrollWidth, table.clientWidth);
+
+      let newRows = generateRows(99999, 1);
+      this.set('rows', newRows);
+
+      await wait();
+
+      assert.equal(table.scrollWidth, table.clientWidth);
+
+      // Borders aren't present in tests
+      let scrollbarWidth = table.offsetWidth - table.clientWidth;
+
+      assert.equal(table.scrollWidth, initialScrollWidth - scrollbarWidth);
+
+      newRows = generateRows(1, 1);
+      this.set('rows', newRows);
+
+      await wait();
+
+      assert.equal(table.scrollWidth, table.clientWidth);
     });
 
     test('trees can be collapsed', async function(assert) {
