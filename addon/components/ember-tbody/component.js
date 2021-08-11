@@ -270,7 +270,7 @@ export default Component.extend({
      * Ember test selectors will remove data-test-row-count from the bindings,
      * so if it is missing there is no need to all the count.
      */
-    if (this.attributeBindings.includes('data-test-row-count')) {
+    if (this.attributeBindings && this.attributeBindings.includes('data-test-row-count')) {
       this._isObservingDebugRowCount = true;
       let scheduleUpdate = (this._scheduleUpdate = () => {
         run.scheduleOnce('actions', this, this._updateDataTestRowCount);
