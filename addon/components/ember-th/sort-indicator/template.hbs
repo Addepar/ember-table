@@ -1,15 +1,15 @@
-{{#if isSorted}}
-  <span data-test-sort-indicator class="et-sort-indicator {{if isSortedAsc 'is-ascending' 'is-descending'}}">
+{{#if this.isSorted}}
+  <span data-test-sort-indicator class="et-sort-indicator {{if this.isSortedAsc 'is-ascending' 'is-descending'}}">
     {{#if hasBlock}}
-      {{yield columnMeta}}
+      {{yield this.columnMeta}}
     {{else}}
-      {{#if isMultiSorted}}
-        {{sortIndex}}
+      {{#if this.isMultiSorted}}
+        {{this.sortIndex}}
       {{/if}}
     {{/if}}
   </span>
 {{/if}}
 
-{{#if isSortable}}
+{{#if this.isSortable}}
   <button data-test-sort-toggle class="et-sort-toggle et-speech-only">Toggle Sort</button>
 {{/if}}

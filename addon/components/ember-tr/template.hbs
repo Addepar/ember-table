@@ -1,6 +1,6 @@
-{{#each cells as |api|}}
+{{#each this.cells as |api|}}
   {{#if hasBlock}}
-    {{#if isHeader}}
+    {{#if this.isHeader}}
       {{yield (hash
         columnValue=api.columnValue
         columnMeta=api.columnMeta

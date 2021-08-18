@@ -1,9 +1,9 @@
 {{#if hasBlock}}
-  {{yield columnValue columnMeta rowMeta}}
+  {{yield this.columnValue this.columnMeta this.rowMeta}}
 {{else}}
-  {{columnValue.name}}
+  {{this.columnValue.name}}
 
-  {{ember-th/sort-indicator columnMeta=columnMeta}}
+  {{ember-th/sort-indicator columnMeta=this.columnMeta}}
 
-  {{ember-th/resize-handle columnMeta=columnMeta}}
+  {{ember-th/resize-handle columnMeta=this.columnMeta}}
 {{/if}}
