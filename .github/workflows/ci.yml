@@ -52,6 +52,8 @@ jobs:
             ember-lts-3.12,
             ember-lts-3.16,
             ember-lts-3.20,
+            ember-lts-3.24,
+            ember-production,
             ember-release,
             ember-beta,
             ember-canary,
