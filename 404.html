@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Redirect</title>
+    <title>Single Page Apps for GitHub Pages</title>
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
       // https://github.com/rafrex/spa-github-pages
@@ -24,31 +24,15 @@
       // Otherwise, leave segmentCount as 0.
       var segmentCount = 1;
       var l = window.location;
-      var segments = l.pathname.split('/');
-      var redirects = {};
-
-      var firstLocalSegment = segments[segmentCount+1];
-      if (redirects[firstLocalSegment] != null) {
-        segments = [""].concat(segments.slice(0, segmentCount+1).concat(redirects[firstLocalSegment]).concat(segments.slice(segmentCount+2)).filter(Boolean).join('/').split('/'))
-      }
-
-      // If we're inside the special "versions" path, we want to load a versioned 
-      // child app, and those are two segments deeper than the top-level app.
-      if (segments[segmentCount+1] === "versions") {
-        segmentCount += 2;
-      }
-
-      // Avoid an infinite loop if we try to direct to a location that doesn't exist
-      if (!/^\?p=\/.*&q=.*/.test(l.search)) {
-        l.replace(
-          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-          segments.slice(0, 1 + segmentCount).join('/') + '/?p=/' +
-          segments.slice(segmentCount+1).join('/').replace(/&/g, '~and~') +
-          (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-          l.hash
-        );
-      }
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+        l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
     </script>
   </head>
-  <body>The requested page wasn't found.</body>
+  <body>
+  </body>
 </html>
