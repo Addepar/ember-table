@@ -1,32 +1,32 @@
-{{#vertical-collection wrappedRows
-  containerSelector=_containerSelector
+{{#vertical-collection this.wrappedRows
+  containerSelector=this._containerSelector
 
-  estimateHeight=estimateRowHeight
-  key=key
-  staticHeight=staticHeight
-  bufferSize=bufferSize
-  renderAll=renderAll
+  estimateHeight=this.estimateRowHeight
+  key=this.key
+  staticHeight=this.staticHeight
+  bufferSize=this.bufferSize
+  renderAll=this.renderAll
 
-  firstReached=firstReached
-  lastReached=lastReached
-  firstVisibleChanged=firstVisibleChanged
-  lastVisibleChanged=lastVisibleChanged
-  idForFirstItem=idForFirstItem
+  firstReached=this.firstReached
+  lastReached=this.lastReached
+  firstVisibleChanged=this.firstVisibleChanged
+  lastVisibleChanged=this.lastVisibleChanged
+  idForFirstItem=this.idForFirstItem
 
   as |rowValue|
 }}
   {{#-ember-table-private/row-wrapper
     rowValue=rowValue
-    columns=columns
+    columns=this.columns
 
-    columnMetaCache=columnMetaCache
-    rowMetaCache=rowMetaCache
+    columnMetaCache=this.columnMetaCache
+    rowMetaCache=this.rowMetaCache
 
-    canSelect=canSelect
-    rowSelectionMode=rowSelectionMode
-    checkboxSelectionMode=checkboxSelectionMode
+    canSelect=this.canSelect
+    rowSelectionMode=this.rowSelectionMode
+    checkboxSelectionMode=this.checkboxSelectionMode
 
-    rowsCount=wrappedRows.length
+    rowsCount=this.wrappedRows.length
 
     as |api|
   }}
@@ -45,6 +45,6 @@
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
 
-{{else if shouldYieldToInverse}}
+{{else if this.shouldYieldToInverse}}
   {{yield to='inverse'}}
 {{/vertical-collection}}

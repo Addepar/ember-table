@@ -1,13 +1,13 @@
-{{#if isFirstColumn}}
+{{#if this.isFirstColumn}}
   <div class="et-cell-container">
-    {{#if canSelect}}
+    {{#if this.canSelect}}
       <span
-        class="et-toggle-select {{unless shouldShowCheckbox 'et-speech-only'}}"
+        class="et-toggle-select {{unless this.shouldShowCheckbox 'et-speech-only'}}"
         data-test-select-row-container
       >
         {{-ember-table-private/simple-checkbox
           data-test-select-row=true
-          checked=rowMeta.isGroupSelected
+          checked=this.rowMeta.isGroupSelected
           onClick=(action "onSelectionToggled")
           ariaLabel="Select row"
         }}
@@ -16,31 +16,31 @@
     {{/if}}
 
     {{#if canCollapse}}
-      <span class="et-toggle-collapse et-depth-indent {{depthClass}}">
+      <span class="et-toggle-collapse et-depth-indent {{this.depthClass}}">
         {{-ember-table-private/simple-checkbox
           data-test-collapse-row=true
-          checked=rowMeta.isCollapsed
+          checked=this.rowMeta.isCollapsed
           onChange=(action "onCollapseToggled")
           ariaLabel="Collapse row"
         }}
         <span></span>
       </span>
     {{else}}
-      <div class="et-depth-indent et-depth-placeholder {{depthClass}}"></div>
+      <div class="et-depth-indent et-depth-placeholder {{this.depthClass}}"></div>
     {{/if}}
 
     <div class="et-cell-content">
       {{#if hasBlock}}
-        {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
+        {{yield this.cellValue this.columnValue this.rowValue this.cellMeta this.columnMeta this.rowMeta this.rowsCount}}
       {{else}}
-        {{cellValue}}
+        {{this.cellValue}}
       {{/if}}
     </div>
   </div>
 {{else}}
   {{#if hasBlock}}
-    {{yield cellValue columnValue rowValue cellMeta columnMeta rowMeta rowsCount}}
+    {{yield this.cellValue this.columnValue this.rowValue this.cellMeta this.columnMeta this.rowMeta this.rowsCount}}
   {{else}}
-    {{cellValue}}
+    {{this.cellValue}}
   {{/if}}
 {{/if}}
