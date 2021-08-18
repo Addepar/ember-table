@@ -72,32 +72,23 @@ export default Component.extend({
   */
   onDoubleClick: null,
 
-  rowValue: readOnly('api.rowValue'),
+  isSelected: readOnly('api.rowMeta.isSelected'),
 
-  rowMeta: readOnly('api.rowMeta'),
+  isGroupSelected: readOnly('api.rowMeta.isGroupSelected'),
 
-  cells: readOnly('api.cells'),
-
-  rowSelectionMode: readOnly('api.rowSelectionMode'),
-
-  isHeader: readOnly('api.isHeader'),
-
-  isSelected: readOnly('rowMeta.isSelected'),
-
-  isGroupSelected: readOnly('rowMeta.isGroupSelected'),
-
-  isSelectable: computed('rowSelectionMode', function() {
-    let rowSelectionMode = this.get('rowSelectionMode');
+  isSelectable: computed('api.rowSelectionMode', function() {
+    let rowSelectionMode = this.get('api').rowSelectionMode;
 
     return rowSelectionMode === SELECT_MODE.MULTIPLE || rowSelectionMode === SELECT_MODE.SINGLE;
   }),
 
   click(event) {
-    let rowSelectionMode = this.get('rowSelectionMode');
+    let api = this.get('api');
+    let rowSelectionMode = api.rowSelectionMode;
     let inputParent = closest(event.target, 'input, button, label, a, select');
 
     if (!inputParent) {
-      let rowMeta = this.get('rowMeta');
+      let rowMeta = api.rowMeta;
 
       if (rowMeta && rowSelectionMode === SELECT_MODE.MULTIPLE) {
         let toggle = event.ctrlKey || event.metaKey;
@@ -117,8 +108,9 @@ export default Component.extend({
   },
 
   sendEventAction(action, event) {
-    let rowValue = this.get('rowValue');
-    let rowMeta = this.get('rowMeta');
+    let api = this.get('api');
+    let rowValue = api.rowValue;
+    let rowMeta = api.rowMeta;
 
     let closureAction = this[action];
 

@@ -53,7 +53,9 @@ export default Component.extend({
   },
 
   destroy() {
-    this._cells.forEach(cell => cell.destroy());
+    for (let cell of this._cells) {
+      cell.destroy();
+    }
 
     this._super(...arguments);
   },
@@ -114,7 +116,8 @@ export default Component.extend({
         }
       }
 
-      _cells.forEach((cell, i) => {
+      for (let i = 0; i < this._cells.length; i++) {
+        let cell = this._cells[i];
         let columnValue = objectAt(columns, i);
         let columnMeta = this.get('columnMetaCache').get(columnValue);
 
@@ -128,7 +131,7 @@ export default Component.extend({
           rowValue,
           rowsCount,
         });
-      });
+      }
 
       return _cells;
     }

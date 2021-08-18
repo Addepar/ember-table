@@ -1,8 +1,5 @@
 import BaseTableCell from '../-private/base-table-cell';
-
 import { computed } from '@ember/object';
-import { alias, readOnly } from '@ember/object/computed';
-
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
@@ -66,32 +63,13 @@ export default BaseTableCell.extend({
     return this.get('api.api') || this.get('api');
   }),
 
-  cellValue: alias('unwrappedApi.cellValue'),
-
-  cellMeta: readOnly('unwrappedApi.cellMeta'),
-
-  columnValue: readOnly('unwrappedApi.columnValue'),
-
-  columnMeta: readOnly('unwrappedApi.columnMeta'),
-
-  rowValue: readOnly('unwrappedApi.rowValue'),
-
-  rowMeta: readOnly('unwrappedApi.rowMeta'),
-
-  rowsCount: readOnly('unwrappedApi.rowsCount'),
-
-  rowSelectionMode: readOnly('unwrappedApi.rowSelectionMode'),
-
-  checkboxSelectionMode: readOnly('unwrappedApi.checkboxSelectionMode'),
-
-  canCollapse: readOnly('rowMeta.canCollapse'),
-
-  depthClass: computed('rowMeta.depth', function() {
-    return `depth-${this.get('rowMeta.depth')}`;
+  depthClass: computed('unwrappedApi.rowMeta.depth', function() {
+    return `depth-${this.get('unwrappedApi.rowMeta.depth')}`;
   }),
 
-  canSelect: computed('shouldShowCheckbox', 'rowSelectionMode', function() {
-    let rowSelectionMode = this.get('rowSelectionMode');
+  canSelect: computed('shouldShowCheckbox', 'unwrappedApi.rowSelectionMode', function() {
+    let unwrappedApi = this.get('unwrappedApi');
+    let rowSelectionMode = unwrappedApi.get('rowSelectionMode');
     let shouldShowCheckbox = this.get('shouldShowCheckbox');
 
     return (
@@ -101,8 +79,9 @@ export default BaseTableCell.extend({
     );
   }),
 
-  shouldShowCheckbox: computed('checkboxSelectionMode', function() {
-    let checkboxSelectionMode = this.get('checkboxSelectionMode');
+  shouldShowCheckbox: computed('unwrappedApi.checkboxSelectionMode', function() {
+    let unwrappedApi = this.get('unwrappedApi');
+    let checkboxSelectionMode = unwrappedApi.get('checkboxSelectionMode');
 
     return (
       checkboxSelectionMode === SELECT_MODE.MULTIPLE || checkboxSelectionMode === SELECT_MODE.SINGLE
@@ -111,8 +90,10 @@ export default BaseTableCell.extend({
 
   actions: {
     onSelectionToggled(event) {
-      let rowMeta = this.get('rowMeta');
-      let checkboxSelectionMode = this.get('checkboxSelectionMode') || this.get('rowSelectionMode');
+      let unwrappedApi = this.get('unwrappedApi');
+      let rowMeta = unwrappedApi.get('rowMeta');
+      let checkboxSelectionMode =
+        unwrappedApi.get('checkboxSelectionMode') || unwrappedApi.get('rowSelectionMode');
 
       if (rowMeta && checkboxSelectionMode === SELECT_MODE.MULTIPLE) {
         let toggle = true;
@@ -127,7 +108,8 @@ export default BaseTableCell.extend({
     },
 
     onCollapseToggled() {
-      let rowMeta = this.get('rowMeta');
+      let unwrappedApi = this.get('unwrappedApi');
+      let rowMeta = unwrappedApi.get('rowMeta');
 
       rowMeta.toggleCollapse();
 
@@ -149,14 +131,16 @@ export default BaseTableCell.extend({
       return;
     }
 
-    let cellValue = this.get('cellValue');
-    let cellMeta = this.get('cellMeta');
+    let { unwrappedApi } = this;
 
-    let columnValue = this.get('columnValue');
-    let columnMeta = this.get('columnMeta');
+    let cellValue = unwrappedApi.get('cellValue');
+    let cellMeta = unwrappedApi.get('cellMeta');
 
-    let rowValue = this.get('rowValue');
-    let rowMeta = this.get('rowMeta');
+    let columnValue = unwrappedApi.get('columnValue');
+    let columnMeta = unwrappedApi.get('columnMeta');
+
+    let rowValue = unwrappedApi.get('rowValue');
+    let rowMeta = unwrappedApi.get('rowMeta');
 
     Object.assign(values, {
       cellValue,
