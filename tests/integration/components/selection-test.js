@@ -10,6 +10,8 @@ import { run } from '@ember/runloop';
 import { scrollTo } from 'ember-native-dom-helpers';
 import { registerTestWarnHandler } from '../../helpers/warn-handlers';
 
+import { runInDebug } from '@ember/debug';
+
 let table = new TablePage({
   validateSelected(...selectedIndexes) {
     let valid = true;
@@ -674,26 +676,28 @@ module('Integration | selection', () => {
         assert.ok(table.rows.objectAt(0).isSelected, 'Parent row is selected');
       });
 
-      test('Issue 747: Programmatic selection that includes a row not part of `rows`', async function(assert) {
-        let capturedWarningIds = [];
-        registerTestWarnHandler((_message, { id }) => capturedWarningIds.push(id));
+      runInDebug(() => {
+        test('Issue 747: Programmatic selection that includes a row not part of `rows`', async function(assert) {
+          let capturedWarningIds = [];
+          registerTestWarnHandler((_message, { id }) => capturedWarningIds.push(id));
 
-        let rows = generateRows(1, 1);
-        await generateTable(this, { rows });
+          let rows = generateRows(1, 1);
+          await generateTable(this, { rows });
 
-        run(() => this.set('selection', [...rows, { fakeRow: true }]));
-        assert.ok(true, 'after setting bad selection, no error');
-        assert.ok(table.validateSelected(0), 'First row is selected');
+          run(() => this.set('selection', [...rows, { fakeRow: true }]));
+          assert.ok(true, 'after setting bad selection, no error');
+          assert.ok(table.validateSelected(0), 'First row is selected');
 
-        // De-select selected row
-        await table.rows.objectAt(0).checkbox.click();
-        assert.ok(true, 'after un-checking, no error');
-        assert.ok(table.validateSelected(), 'No rows remain selected');
+          // De-select selected row
+          await table.rows.objectAt(0).checkbox.click();
+          assert.ok(true, 'after un-checking, no error');
+          assert.ok(table.validateSelected(), 'No rows remain selected');
 
-        assert.ok(
-          capturedWarningIds.includes('ember-table.selection-invalid'),
-          'ember-table warns about invalid selection'
-        );
+          assert.ok(
+            capturedWarningIds.includes('ember-table.selection-invalid'),
+            'ember-table warns about invalid selection'
+          );
+        });
       });
     });
   });

@@ -269,6 +269,11 @@ export default Component.extend({
     /*
      * Ember test selectors will remove data-test-row-count from the bindings,
      * so if it is missing there is no need to all the count.
+     *
+     * Even when ember-table is testing a production build, the test selectors
+     * addon remains enabled and causes `this.attributeBindings` to be present.
+     * In an actual app build, `this.attributeBindings` may be undefined.
+     * Guard against it being `undefined` before checking for the attribute.
      */
     if (this.attributeBindings && this.attributeBindings.includes('data-test-row-count')) {
       this._isObservingDebugRowCount = true;

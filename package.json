@@ -2,9 +2,7 @@
   "name": "ember-table",
   "version": "3.0.2-3",
   "description": "An addon to support large data set and a number of features around table.",
-  "keywords": [
-    "ember-addon"
-  ],
+  "keywords": ["ember-addon"],
   "license": "BSD-3-Clause",
   "author": "",
   "directories": {
@@ -67,7 +65,7 @@
     "ember-cli-inject-live-reload": "^2.0.1",
     "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
-    "ember-cli-uglify": "^2.0.0",
+    "ember-cli-terser": "^4.0.0",
     "ember-disable-prototype-extensions": "^1.1.2",
     "ember-export-application-global": "^2.0.0",
     "ember-faker": "^1.5.0",
@@ -78,7 +76,7 @@
     "ember-qunit": "^4.5.1",
     "ember-radio-button": "^1.2.3",
     "ember-resolver": "^5.1.1",
-    "ember-source": "~3.24.0",
+    "ember-source": "~3.28.0",
     "ember-source-channel-url": "^1.0.1",
     "ember-truth-helpers": "^2.0.0",
     "ember-try": "^1.1.0",
