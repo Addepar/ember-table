@@ -31,7 +31,7 @@ const CellWrapper = EmberObject.extend({
   }),
 });
 
-const layout = hbs`{{yield api}}`;
+const layout = hbs`{{yield this.api}}`;
 
 export default Component.extend({
   layout,
