@@ -3,24 +3,24 @@
     {{! BEGIN-SNIPPET docs-example-sorting-empty-values.hbs }}
     <div class='demo-options'>
       <label>
-        {{input type="checkbox" checked=sortEmptyLast}}
+        {{input type="checkbox" checked=this.sortEmptyLast}}
         Sort Empty Last
       </label>
     </div>
     <div class="demo-container">
       <EmberTable as |t|>
         <t.head
-          @columns={{columns}}
-          @sorts={{sorts}}
-          @sortEmptyLast={{sortEmptyLast}}
+          @columns={{this.columns}}
+          @sorts={{this.sorts}}
+          @sortEmptyLast={{this.sortEmptyLast}}
 
-          @onUpdateSorts={{action (mut sorts)}}
+          @onUpdateSorts={{action (mut this.sorts)}}
 
           @widthConstraint='gte-container'
           @fillMode='first-column'
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}

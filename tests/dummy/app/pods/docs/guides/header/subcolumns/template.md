@@ -11,9 +11,9 @@ lowest level of subcolumns (the leaves of the column tree). This means that
     <div class="demo-container small" data-test-demo="docs-example-subcolumns">
       {{! BEGIN-SNIPPET docs-example-subcolumns.hbs }}
         <EmberTable as |t|>
-          <t.head @columns={{simpleColumns}} />
+          <t.head @columns={{this.simpleColumns}} />
 
-          <t.body @rows={{rows}} />
+          <t.body @rows={{this.rows}} />
         </EmberTable>
       {{! END-SNIPPET }}
     </div>
@@ -36,9 +36,9 @@ randomly, demonstrating the flexibility of subcolumns.
 
 <div class="demo-container">
   <EmberTable as |t|>
-    <t.head @columns={{complexColumns}} />
+    <t.head @columns={{this.complexColumns}} />
 
-    <t.body @rows={{rows}} />
+    <t.body @rows={{this.rows}} />
 
   </EmberTable>
 

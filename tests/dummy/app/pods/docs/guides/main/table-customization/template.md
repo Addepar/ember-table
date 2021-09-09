@@ -18,7 +18,7 @@ lookup paths:
     <div class="demo-container">
       {{! BEGIN-SNIPPET table-customization-custom-cell-template.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} as |h|>
+        <t.head @columns={{this.columns}} as |h|>
           <h.row as |r|>
             <r.cell as |column|>
               Custom Header {{column.name}}
@@ -26,7 +26,7 @@ lookup paths:
           </h.row>
         </t.head>
 
-        <t.body @rows={{rows}} as |b|>
+        <t.body @rows={{this.rows}} as |b|>
           <b.row as |r|>
             <r.cell as |value|>
               Custom Cell {{value}}
@@ -51,20 +51,20 @@ components:
     {{! BEGIN-SNIPPET table-customization-example-sorting.hbs }}
     <div class='demo-options'>
       <label>
-        <input type='checkbox' checked={{showSortIndicator}} onclick={{action (mut showSortIndicator) (not showSortIndicator)}}>
+        <input type='checkbox' checked={{this.showSortIndicator}} onclick={{action (mut this.showSortIndicator) (not this.showSortIndicator)}}>
         Show Sort Indicator
         <span class='small'>(Click header to sort)</span>
       </label>
       <label>
-        <input type='checkbox' checked={{showResizeHandle}} onclick={{action (mut showResizeHandle) (not showResizeHandle)}}>
+        <input type='checkbox' checked={{this.showResizeHandle}} onclick={{action (mut this.showResizeHandle) (not this.showResizeHandle)}}>
         Show Resize Handle <span class='small'>(Only appears on hover)</span>
       </label>
     </div>
     <div class="demo-container">
       <EmberTable as |t|>
         <t.head
-          @columns={{columnsForSorting}}
-          @sorts={{sorts}}
+          @columns={{this.columnsForSorting}}
+          @sorts={{this.sorts}}
 
           @onUpdateSorts={{action (mut sorts)}}
           @widthConstraint='gte-container'
@@ -74,18 +74,18 @@ components:
         >
           <h.row as |r|>
             <r.cell as |columnValue columnMeta|>
-              {{#if showSortIndicator}}
+              {{#if this.showSortIndicator}}
                 <EmberTh::SortIndicator @columnMeta={{columnMeta}} />
               {{/if}}
               {{columnValue.name}}
-              {{#if showResizeHandle}}
+              {{#if this.showResizeHandle}}
                 <EmberTh::ResizeHandle @columnMeta={{columnMeta}} />
               {{/if}}
             </r.cell>
           </h.row>
         </t.head>
 
-        <t.body @rows={{rowsForSorting}} />
+        <t.body @rows={{this.rowsForSorting}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
@@ -109,7 +109,7 @@ per cell:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET table-customization-custom-cell-component.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columnsWithComponents}} as |h|>
+        <t.head @columns={{this.columnsWithComponents}} as |h|>
           <h.row as |r|>
             <r.cell as |column|>
               {{#if column.headerComponent}}
@@ -123,7 +123,7 @@ per cell:
           </h.row>
         </t.head>
 
-        <t.body @rows={{rows}} as |b|>
+        <t.body @rows={{this.rows}} as |b|>
           <b.row as |r|>
             <r.cell as |cell column|>
               {{#if column.cellComponent}}
@@ -156,9 +156,9 @@ rows), allowing us to customize the template in the same way as columns:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET table-customization-rows-with-components.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columnsForRowsWithComponents}} />
+        <t.head @columns={{this.columnsForRowsWithComponents}} />
 
-        <t.body @rows={{rowsWithComponents}} as |b|>
+        <t.body @rows={{this.rowsWithComponents}} as |b|>
           <b.row as |r|>
             <r.cell as |cell column row|>
               {{#component row.cellComponent color=row.color}}
@@ -191,7 +191,7 @@ value:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET table-customization-custom-table-components.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columnsWithSelection}} as |h|>
+        <t.head @columns={{this.columnsWithSelection}} as |h|>
           <h.row as |r|>
             <r.cell
               class="{{if r.columnValue.isSelected 'is-column-selected'}}"
@@ -203,7 +203,7 @@ value:
           </h.row>
         </t.head>
 
-        <t.body @rows={{rowsWithChildren}} as |b|>
+        <t.body @rows={{this.rowsWithChildren}} as |b|>
           <b.row
             class="{{if b.rowValue.children 'has-children'}}"
 

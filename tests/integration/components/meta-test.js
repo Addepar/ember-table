@@ -35,11 +35,11 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-thead}}
 
-            {{#ember-tbody api=t rows=rows as |b|}}
+            {{#ember-tbody api=t rows=this.rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick=(action onClick)
+                  onClick=(action this.onClick)
 
                   as |value column row cellMeta columnMeta rowMeta|
                 }}

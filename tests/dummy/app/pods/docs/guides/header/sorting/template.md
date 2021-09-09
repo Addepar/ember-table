@@ -12,16 +12,16 @@ or `ctrl`.
     <div class="demo-container">
       <EmberTable as |t|>
         <t.head
-          @columns={{columns}}
-          @sorts={{sorts}}
+          @columns={{this.columns}}
+          @sorts={{this.sorts}}
 
-          @onUpdateSorts={{action (mut sorts)}}
+          @onUpdateSorts={{action (mut this.sorts)}}
 
           @widthConstraint='gte-container'
           @fillMode='first-column'
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
@@ -110,7 +110,7 @@ This demo shows that in action:
     <div class="demo-container" data-test-demo="docs-example-2-state-sortings">
       <EmberTable as |t|>
         <t.head
-          @columns={{columns}}
+          @columns={{this.columns}}
           @sorts={{sorts}}
 
           @onUpdateSorts={{action "twoStateSorting"}}
@@ -119,7 +119,7 @@ This demo shows that in action:
           @fillMode='first-column'
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}

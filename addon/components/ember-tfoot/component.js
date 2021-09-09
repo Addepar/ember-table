@@ -13,8 +13,8 @@ import layout from './template';
 
   ```hbs
   <EmberTable as |t|>
-    <t.head @columns={{columns}} />
-    <t.body @rows={{rows}} />
+    <t.head @columns={{this.columns}} />
+    <t.body @rows={{this.rows}} />
 
     <t.foot @rows={{footerRows}} as |f|>
       <f.row />

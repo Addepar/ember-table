@@ -13,9 +13,9 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
 
  ```hbs
  <EmberTable as |t|>
- <t.head @columns={{columns}} />
+ <t.head @columns={{this.columns}} />
 
- <t.body @rows={{rows}} as |b|>
+ <t.body @rows={{this.rows}} as |b|>
  <b.row as |r|>
  <r.cell as |cellValue columnValue rowValue cellMeta columnMeta rowMeta|>
 

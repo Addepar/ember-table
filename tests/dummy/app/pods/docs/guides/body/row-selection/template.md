@@ -9,12 +9,12 @@ to control the selection using DDAU:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-row-selection.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
+        <t.head @columns={{this.columns}} />
 
         <t.body
-          @rows={{rows}}
-          @onSelect={{action (mut selection)}}
-          @selection={{selection}}
+          @rows={{this.rows}}
+          @onSelect={{action (mut this.selection)}}
+          @selection={{this.selection}}
         />
       </EmberTable>
       {{! END-SNIPPET }}
@@ -40,12 +40,12 @@ selected, all of its children _must_ be selected:
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-selected-rows.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
+        <t.head @columns={{this.columns}} />
 
         <t.body
-          @rows={{rowWithChildren}}
-          @onSelect={{action (mut preselection)}}
-          @selection={{preselection}}
+          @rows={{this.rowWithChildren}}
+          @onSelect={{action (mut this.preselection)}}
+          @selection={{this.preselection}}
         />
       </EmberTable>
       {{! END-SNIPPET }}
@@ -90,39 +90,39 @@ itself.
     {{! BEGIN-SNIPPET docs-example-selection-modes.hbs }}
     <div class="demo-container">
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
+        <t.head @columns={{this.columns}} />
 
         <t.body
-          @rows={{rowsWithChildren}}
+          @rows={{this.rowsWithChildren}}
 
-          @rowSelectionMode={{rowSelectionMode}}
-          @checkboxSelectionMode={{checkboxSelectionMode}}
-          @selectingChildrenSelectsParent={{selectingChildrenSelectsParent}}
+          @rowSelectionMode={{this.rowSelectionMode}}
+          @checkboxSelectionMode={{this.checkboxSelectionMode}}
+          @selectingChildrenSelectsParent={{this.selectingChildrenSelectsParent}}
 
-          @onSelect={{action (mut demoSelection)}}
-          @selection={{demoSelection}}
+          @onSelect={{action (mut this.demoSelection)}}
+          @selection={{this.demoSelection}}
         />
       </EmberTable>
     </div>
     <div class="demo-options-group">
       <h4>Current selection</h4>
-      <div class="demo-current-selection">{{currentSelection}}</div>
+      <div class="demo-current-selection">{{this.currentSelection}}</div>
     </div>
     <div class="demo-options-group">
       <h4>rowSelectionMode</h4>
-      <label> <RadioButton @name='row-selection-mode' @value='multiple' @groupValue={{rowSelectionMode}} /> multiple </label>
-      <label> <RadioButton @name='row-selection-mode' @value='single' @groupValue={{rowSelectionMode}} /> single </label>
-      <label> <RadioButton @name='row-selection-mode' @value='none' @groupValue={{rowSelectionMode}} /> none </label>
+      <label> <RadioButton @name='row-selection-mode' @value='multiple' @groupValue={{this.rowSelectionMode}} /> multiple </label>
+      <label> <RadioButton @name='row-selection-mode' @value='single' @groupValue={{this.rowSelectionMode}} /> single </label>
+      <label> <RadioButton @name='row-selection-mode' @value='none' @groupValue={{this.rowSelectionMode}} /> none </label>
     </div>
     <div class="demo-options-group">
       <h4>checkboxSelectionMode</h4>
-      <label> <RadioButton @name='checkbox-selection-mode' @value='multiple' @groupValue={{checkboxSelectionMode}} /> multiple </label>
-      <label> <RadioButton @name='checkbox-selection-mode' @value='single' @groupValue={{checkboxSelectionMode}} /> single </label>
-      <label> <RadioButton @name='checkbox-selection-mode' @value='none' @groupValue={{checkboxSelectionMode}} /> none </label>
+      <label> <RadioButton @name='checkbox-selection-mode' @value='multiple' @groupValue={{this.checkboxSelectionMode}} /> multiple </label>
+      <label> <RadioButton @name='checkbox-selection-mode' @value='single' @groupValue={{this.checkboxSelectionMode}} /> single </label>
+      <label> <RadioButton @name='checkbox-selection-mode' @value='none' @groupValue={{this.checkboxSelectionMode}} /> none </label>
     </div>
     <div class="demo-options-group">
       <h4>selectingChildrenSelectsParent</h4>
-      <label> {{input type="checkbox" checked=selectingChildrenSelectsParent}} </label>
+      <label> {{input type="checkbox" checked=this.selectingChildrenSelectsParent}} </label>
     </div>
 
     {{! END-SNIPPET }}
