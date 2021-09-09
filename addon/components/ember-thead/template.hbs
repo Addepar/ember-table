@@ -1,5 +1,5 @@
 {{#each this.wrappedRows as |api|}}
-  {{#if hasBlock}}
+  {{#if (has-block)}}
     {{yield (hash
       cells=api.cells
       isHeader=api.isHeader
