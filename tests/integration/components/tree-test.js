@@ -49,14 +49,14 @@ module('Integration | Tree', () => {
     test('trees autoresize when scrollbar appears', async function(assert) {
       this.set('widthConstraint', 'eq-container');
 
-      await generateTable(this, { rowCount: 1, rowDepth: 1, enableTree: false });
+      await generateTable(this, { rowCount: 1, rowDepth: 1 });
 
       let table = find('[data-test-ember-table]');
 
       let initialScrollWidth = table.scrollWidth;
       assert.equal(initialScrollWidth, table.clientWidth);
 
-      let newRows = generateRows(99999, 1);
+      let newRows = generateRows(999, 1);
       this.set('rows', newRows);
 
       await wait();
