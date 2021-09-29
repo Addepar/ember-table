@@ -644,7 +644,9 @@ module('Integration | selection', () => {
         assert.ok(renderedRowCount < 200, 'some rows are occluded');
 
         // Select rows at the end that will not all have been rendered yet
-        this.set('selection', rows.slice(-5));
+        run(() => {
+          this.set('selection', rows.slice(-5));
+        });
 
         await table.rows.objectAt(0).checkbox.click();
         assert.ok(table.rows.objectAt(0).isSelected, 'first row is selected');
@@ -663,7 +665,9 @@ module('Integration | selection', () => {
         assert.ok(renderedRowCount < 200, 'some rows are occluded');
 
         // Select all the children but the first. Most have not yet been rendered.
-        this.set('selection', children.slice(1));
+        run(() => {
+          this.set('selection', children.slice(1));
+        });
 
         // Select the last un-selected child
         await table.rows.objectAt(1).checkbox.click();
@@ -684,7 +688,9 @@ module('Integration | selection', () => {
           let rows = generateRows(1, 1);
           await generateTable(this, { rows });
 
-          run(() => this.set('selection', [...rows, { fakeRow: true }]));
+          run(() => {
+            this.set('selection', [...rows, { fakeRow: true }]);
+          });
           assert.ok(true, 'after setting bad selection, no error');
           assert.ok(table.validateSelected(0), 'First row is selected');
 
