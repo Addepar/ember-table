@@ -1,6 +1,6 @@
 {
   "name": "ember-table",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "An addon to support large data set and a number of features around table.",
   "keywords": [
     "ember-addon"
