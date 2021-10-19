@@ -8,7 +8,6 @@ class TableStickyPolyfill {
     this.element = element;
     this.maxStickyProportion = 0.5;
 
-    this.element.style.position = 'static';
     this.side = element.tagName === 'THEAD' ? 'top' : 'bottom';
 
     this.setupRaf = requestAnimationFrame(this.repositionStickyElements);
