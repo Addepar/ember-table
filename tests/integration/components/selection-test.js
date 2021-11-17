@@ -522,6 +522,127 @@ module('Integration | selection', () => {
     });
   });
 
+  module('rowToggleMode', function() {
+    componentModule('true', function() {
+      test('Can select a row by clicking on it', async function(assert) {
+        await generateTable(this, { rowToggleMode: true });
+
+        assert.ok(table.validateSelected(), 'the row is not marked as selected on initialization');
+
+        await table.selectRow(0);
+
+        assert.ok(table.validateSelected(0), 'the row is selected after being clicked');
+      });
+
+      test('Can toggle a row', async function(assert) {
+        await generateTable(this, { rowToggleMode: true });
+
+        let row = table.body.rows.objectAt(0);
+
+        assert.ok(table.validateSelected(), 'the row is not toggled on');
+
+        await row.clickWith();
+
+        assert.ok(table.validateSelected(0), 'the row is toggled on');
+
+        await row.clickWith();
+
+        assert.ok(table.validateSelected(), 'the row is toggled back off');
+      });
+
+      test('Can toggle multiple rows', async function(assert) {
+        await generateTable(this, { rowToggleMode: true });
+
+        let rowOne = table.rows.objectAt(0);
+        let rowTwo = table.rows.objectAt(1);
+
+        assert.ok(table.validateSelected(), 'the rows are not selected');
+
+        await rowOne.clickWith();
+        await rowTwo.clickWith();
+
+        assert.ok(table.validateSelected(0, 1), 'the rows are selected');
+
+        await rowOne.clickWith();
+        await rowTwo.clickWith();
+
+        assert.ok(table.validateSelected(), 'the rows are toggled back off');
+      });
+    });
+
+    componentModule('false', function() {
+      test('Cannot toggle a row', async function(assert) {
+        await generateTable(this, { rowToggleMode: false });
+
+        await table.selectRow(0);
+
+        assert.ok(table.validateSelected(0), 'the row is toggled on');
+
+        let row = table.rows.objectAt(0);
+
+        await row.clickWith();
+
+        assert.ok(table.validateSelected(0), 'the row is still on');
+      });
+
+      test('Cannot toggle multiple rows', async function(assert) {
+        await generateTable(this, { rowToggleMode: false });
+
+        assert.ok(table.validateSelected(), 'no rows are selected');
+
+        let rowOne = table.rows.objectAt(0);
+        let rowTwo = table.rows.objectAt(1);
+
+        await rowOne.clickWith();
+
+        assert.ok(table.validateSelected(0), 'the first row is selected');
+
+        await rowTwo.clickWith();
+
+        assert.ok(table.validateSelected(1), 'the second row is selected');
+      });
+
+      test('Can toggle a row with meta and control', async function(assert) {
+        await generateTable(this, { rowToggleMode: false });
+
+        let row = table.body.rows.objectAt(0);
+
+        for (let key of ['ctrlKey', 'metaKey']) {
+          assert.ok(table.validateSelected(), 'the row is not toggled on');
+
+          await row.clickWith({ [key]: true });
+
+          assert.ok(table.validateSelected(0), 'the row is toggled on');
+
+          await row.clickWith({ [key]: true });
+
+          assert.ok(table.validateSelected(), 'the row is toggled back off');
+        }
+      });
+
+      test('Can toggle multiple rows with meta and control', async function(assert) {
+        await generateTable(this, { rowToggleMode: false });
+
+        let rowOne = table.rows.objectAt(0);
+        let rowTwo = table.rows.objectAt(1);
+
+        for (let key of ['ctrlKey', 'metaKey']) {
+          assert.ok(table.validateSelected(), 'the rows are not selected');
+
+          await rowOne.clickWith({ [key]: true });
+          await rowTwo.clickWith({ [key]: true });
+
+          assert.ok(table.validateSelected(0, 1), 'the rows are selected');
+
+          await rowOne.clickWith({ [key]: true });
+          await rowTwo.clickWith({ [key]: true });
+
+          assert.ok(table.validateSelected(), 'the rows are toggled back off');
+        }
+      });
+    });
+  });
+
   componentModule('misc', function() {
     test('Can disable selection by not using an action', async function(assert) {
       assert.expect(3);
@@ -644,7 +765,9 @@ module('Integration | selection', () => {
         assert.ok(renderedRowCount < 200, 'some rows are occluded');
 
         // Select rows at the end that will not all have been rendered yet
-        this.set('selection', rows.slice(-5));
+        run(() => {
+          this.set('selection', rows.slice(-5));
+        });
 
         await table.rows.objectAt(0).checkbox.click();
         assert.ok(table.rows.objectAt(0).isSelected, 'first row is selected');
@@ -663,7 +786,9 @@ module('Integration | selection', () => {
         assert.ok(renderedRowCount < 200, 'some rows are occluded');
 
         // Select all the children but the first. Most have not yet been rendered.
-        this.set('selection', children.slice(1));
+        run(() => {
+          this.set('selection', children.slice(1));
+        });
 
         // Select the last un-selected child
         await table.rows.objectAt(1).checkbox.click();
@@ -684,7 +809,9 @@ module('Integration | selection', () => {
           let rows = generateRows(1, 1);
           await generateTable(this, { rows });
 
-          run(() => this.set('selection', [...rows, { fakeRow: true }]));
+          run(() => {
+            this.set('selection', [...rows, { fakeRow: true }]);
+          });
           assert.ok(true, 'after setting bad selection, no error');
           assert.ok(table.validateSelected(0), 'First row is selected');
 

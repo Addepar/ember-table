@@ -1,6 +1,6 @@
 {
   "name": "ember-table",
-  "version": "3.0.2",
+  "version": "3.1.0",
   "description": "An addon to support large data set and a number of features around table.",
   "keywords": [
     "ember-addon"
@@ -26,6 +26,7 @@
     "test:ember-compatibility": "ember try:each"
   },
   "dependencies": {
+    "@babel/core": "^7.0.0-0",
     "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.13",
     "@babel/plugin-proposal-numeric-separator": "^7.12.13",
     "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
@@ -34,7 +35,7 @@
     "@html-next/vertical-collection": "2.0.0",
     "broccoli-string-replace": "^0.1.2",
     "css-element-queries": "^0.4.0",
-    "ember-classy-page-object": "^0.6.1",
+    "ember-classy-page-object": "^0.7.0",
     "ember-cli-babel": "^7.12.0",
     "ember-cli-htmlbars": "^3.0.1",
     "ember-cli-htmlbars-inline-precompile": "^2.1.0",
@@ -73,8 +74,7 @@
     "ember-faker": "^1.5.0",
     "ember-load-initializers": "^2.0.0",
     "ember-math-helpers": "~2.11.3",
-    "ember-maybe-import-regenerator": "^0.1.6",
-    "ember-native-dom-helpers": "0.6.2",
+    "ember-native-dom-helpers": "^0.7.0",
     "ember-qunit": "^4.5.1",
     "ember-radio-button": "^1.2.3",
     "ember-resolver": "^5.1.1",
@@ -99,7 +99,6 @@
   },
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
-    "ember-cli-page-object": "1.15.1",
     "prettier": "1.18.2"
   },
   "volta": {

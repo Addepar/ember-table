@@ -57,9 +57,9 @@ const fullTable = hbs`
         selectingChildrenSelectsParent=this.selectingChildrenSelectsParent
         checkboxSelectionMode=this.checkboxSelectionMode
         rowSelectionMode=this.rowSelectionMode
+        rowToggleMode=this.rowToggleMode
         selection=this.selection
         selectionMatchFunction=this.selectionMatchFunction
-
         as |b|
       }}
         {{#component rowComponent
