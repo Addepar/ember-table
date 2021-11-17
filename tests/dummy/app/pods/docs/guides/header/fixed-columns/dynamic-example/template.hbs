@@ -4,7 +4,7 @@
     <t.head @columns={{this.columns}} as |h|>
       {{#h.row as |r|}}
         {{#r.cell as |column|}}
-          <input type="checkbox" checked={{eq column.isFixed 'left'}} onclick={{action 'toggleFixed' column}} />
+          <input type="checkbox" checked={{eq column.isFixed 'left'}} {{on "click" (fn this.toggleFixed column)}} />
 
           {{column.name}}
         {{/r.cell}}
