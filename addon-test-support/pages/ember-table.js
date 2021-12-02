@@ -125,6 +125,15 @@ export default PageObject.extend({
   },
 
   /**
+   * Selects a row in the body while holding shift key
+   *
+   * @param {number} index
+   */
+  async selectRowWithShiftClick(index) {
+    await this.body.rows.objectAt(index).clickWith({ shiftKey: true });
+  },
+
+  /**
    * Toggles a row in the body
    *
    * @param {number} index

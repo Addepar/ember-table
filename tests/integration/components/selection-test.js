@@ -272,6 +272,8 @@ module('Integration | selection', () => {
       });
 
       test('Can abort multi-select so that next multi-select starts from the same row', async function(assert) {
+        let successHandler = selection => this.set('selection', selection);
+        let abortHandler = (selection, { abort }) => abort();
         let selectHandler;
 
         this.set('onSelect', function() {
@@ -282,13 +284,17 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(), 'rows are not selected');
 
-        selectHandler = (selection, abort) => abort();
-        await table.selectRangeFromClick(0, 2);
+        selectHandler = successHandler;
+        await table.selectRow(0);
 
-        selectHandler = selection => this.set('selection', selection);
-        await table.selectRangeFromClick(0, 2);
+        selectHandler = abortHandler;
+        await table.selectRowWithShiftClick(2);
 
-        assert.ok(table.validateSelected(0, 1, 2), 'rows are selected');
+        selectHandler = successHandler;
+        await table.selectRowWithShiftClick(3);
+
+        // without abort, row 1 would not be selected
+        assert.ok(table.validateSelected(0, 1, 2, 3), 'correct rows are selected');
 
         this.set('onSelect', undefined);
       });
