@@ -276,8 +276,8 @@ module('Integration | selection', () => {
         let abortHandler = (selection, { abort }) => abort();
         let selectHandler;
 
-        this.set('onSelect', function() {
-          selectHandler(...arguments);
+        this.set('onSelect', (selection, hash) => {
+          selectHandler(selection, hash);
         });
 
         await generateTable(this);
@@ -296,7 +296,7 @@ module('Integration | selection', () => {
         // without abort, row 1 would not be selected
         assert.ok(table.validateSelected(0, 1, 2, 3), 'correct rows are selected');
 
-        this.set('onSelect', undefined);
+        // this.set('onSelect', undefined);
       });
     });
 
