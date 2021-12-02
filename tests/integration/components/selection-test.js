@@ -289,6 +289,8 @@ module('Integration | selection', () => {
         await table.selectRangeFromClick(0, 2);
 
         assert.ok(table.validateSelected(0, 1, 2), 'rows are selected');
+
+        this.set('onSelect', undefined);
       });
     });
 
