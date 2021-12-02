@@ -6,19 +6,9 @@ to control the selection using DDAU:
 
 {{#docs-demo as |demo|}}
   {{#demo.example name="docs-example-row-selection"}}
-    <div class="demo-container small">
-      {{! BEGIN-SNIPPET docs-example-row-selection.hbs }}
-      <EmberTable as |t|>
-        <t.head @columns={{columns}} />
-
-        <t.body
-          @rows={{rows}}
-          @onSelect={{action (mut selection)}}
-          @selection={{selection}}
-        />
-      </EmberTable>
-      {{! END-SNIPPET }}
-    </div>
+    {{docs/guides/body/row-selection/examples/row-selection
+      rows=rows
+      columns=columns}}
   {{/demo.example}}
 
   {{demo.snippet name='docs-example-row-selection.hbs'}}
@@ -37,19 +27,9 @@ selected, all of its children _must_ be selected:
 
 {{#docs-demo as |demo|}}
   {{#demo.example name="selected-rows"}}
-    <div class="demo-container small">
-      {{! BEGIN-SNIPPET docs-example-selected-rows.hbs }}
-      <EmberTable as |t|>
-        <t.head @columns={{columns}} />
-
-        <t.body
-          @rows={{rowWithChildren}}
-          @onSelect={{action (mut preselection)}}
-          @selection={{preselection}}
-        />
-      </EmberTable>
-      {{! END-SNIPPET }}
-    </div>
+    {{docs/guides/body/row-selection/examples/selected-rows
+      rowWithChildren=rowWithChildren
+      columns=columns}}
   {{/demo.example}}
 
   {{demo.snippet label='component.js' name='docs-example-selected-rows.js'}}
@@ -87,47 +67,29 @@ itself.
 
 {{#docs-demo as |demo|}}
   {{#demo.example name='selection-modes'}}
-    {{! BEGIN-SNIPPET docs-example-selection-modes.hbs }}
-    <div class="demo-container">
-      <EmberTable as |t|>
-        <t.head @columns={{columns}} />
-
-        <t.body
-          @rows={{rowsWithChildren}}
-
-          @rowSelectionMode={{rowSelectionMode}}
-          @checkboxSelectionMode={{checkboxSelectionMode}}
-          @selectingChildrenSelectsParent={{selectingChildrenSelectsParent}}
-
-          @onSelect={{action (mut demoSelection)}}
-          @selection={{demoSelection}}
-        />
-      </EmberTable>
-    </div>
-    <div class="demo-options-group">
-      <h4>Current selection</h4>
-      <div class="demo-current-selection">{{currentSelection}}</div>
-    </div>
-    <div class="demo-options-group">
-      <h4>rowSelectionMode</h4>
-      <label> <RadioButton @name='row-selection-mode' @value='multiple' @groupValue={{rowSelectionMode}} /> multiple </label>
-      <label> <RadioButton @name='row-selection-mode' @value='single' @groupValue={{rowSelectionMode}} /> single </label>
-      <label> <RadioButton @name='row-selection-mode' @value='none' @groupValue={{rowSelectionMode}} /> none </label>
-    </div>
-    <div class="demo-options-group">
-      <h4>checkboxSelectionMode</h4>
-      <label> <RadioButton @name='checkbox-selection-mode' @value='multiple' @groupValue={{checkboxSelectionMode}} /> multiple </label>
-      <label> <RadioButton @name='checkbox-selection-mode' @value='single' @groupValue={{checkboxSelectionMode}} /> single </label>
-      <label> <RadioButton @name='checkbox-selection-mode' @value='none' @groupValue={{checkboxSelectionMode}} /> none </label>
-    </div>
-    <div class="demo-options-group">
-      <h4>selectingChildrenSelectsParent</h4>
-      <label> {{input type="checkbox" checked=selectingChildrenSelectsParent}} </label>
-    </div>
-
-    {{! END-SNIPPET }}
+    {{docs/guides/body/row-selection/examples/selection-modes
+      rowsWithChildren=rowsWithChildren
+      columns=columns
+      rowSelectionMode=rowSelectionMode
+      checkboxSelectionMode=checkboxSelectionMode
+      selectingChildrenSelectsParent=selectingChildrenSelectsParent
+      demoSelection=demoSelection
+      currentSelection=currentSelection}}
   {{/demo.example}}
 
   {{demo.snippet name='docs-example-selection-modes.hbs'}}
   {{demo.snippet label='component.js' name='docs-example-selection-modes.js'}}
+{{/docs-demo}}
+
+## Aborting a Selection
+
+Row selection follows a <a href="https://embermap.com/topics/component-side-effects/data-down-actions-up">DDAU</a> pattern, whereby the `onSelect` action handler supplied to Ember Table has control over which rows become selected. To ignore a user selection, it suffices to simply do nothing in the action handler.
+
+There is, however, some internal state that needs to be reset to fully abort a user selection. For example, Ember Table tracks the _last selected_ row in order to determine the range of rows affected in a user multi-selection. If the intent is to completely prevent a user selection, this value must not change when the action is aborted. Otherwise, a subsequent user multi-selection may target the wrong rows.
+
+To reset all internal state relating to an attempted user selection, call the `abort` function in the options object passed to the `onChange` action handler:
+
+{{#docs-demo as |demo|}}
+  {{demo.snippet name='docs-example-aborting-a-selection.hbs'}}
+  {{demo.snippet label='component.js' name='docs-example-aborting-a-selection.js'}}
 {{/docs-demo}}

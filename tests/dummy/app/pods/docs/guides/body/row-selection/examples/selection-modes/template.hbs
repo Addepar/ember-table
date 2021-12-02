@@ -1,0 +1,39 @@
+{{! BEGIN-SNIPPET docs-example-selection-modes.hbs }}
+<div class="demo-container">
+  <EmberTable as |t|>
+    <t.head @columns={{columns}} />
+
+    <t.body
+      @rows={{rowsWithChildren}}
+
+      @rowSelectionMode={{rowSelectionMode}}
+      @checkboxSelectionMode={{checkboxSelectionMode}}
+      @selectingChildrenSelectsParent={{selectingChildrenSelectsParent}}
+
+      @onSelect={{action (mut demoSelection)}}
+      @selection={{demoSelection}}
+    />
+  </EmberTable>
+</div>
+<div class="demo-options-group">
+  <h4>Current selection</h4>
+  <div class="demo-current-selection">{{currentSelection}}</div>
+</div>
+<div class="demo-options-group">
+  <h4>rowSelectionMode</h4>
+  <label> <RadioButton @name='row-selection-mode' @value='multiple' @groupValue={{rowSelectionMode}} /> multiple </label>
+  <label> <RadioButton @name='row-selection-mode' @value='single' @groupValue={{rowSelectionMode}} /> single </label>
+  <label> <RadioButton @name='row-selection-mode' @value='none' @groupValue={{rowSelectionMode}} /> none </label>
+</div>
+<div class="demo-options-group">
+  <h4>checkboxSelectionMode</h4>
+  <label> <RadioButton @name='checkbox-selection-mode' @value='multiple' @groupValue={{checkboxSelectionMode}} /> multiple </label>
+  <label> <RadioButton @name='checkbox-selection-mode' @value='single' @groupValue={{checkboxSelectionMode}} /> single </label>
+  <label> <RadioButton @name='checkbox-selection-mode' @value='none' @groupValue={{checkboxSelectionMode}} /> none </label>
+</div>
+<div class="demo-options-group">
+  <h4>selectingChildrenSelectsParent</h4>
+  <label> {{input type="checkbox" checked=selectingChildrenSelectsParent}} </label>
+</div>
+
+{{! END-SNIPPET }}
