@@ -164,9 +164,16 @@ export const TableRowMeta = EmberObject.extend({
 
     let rowMetaCache = get(tree, 'rowMetaCache');
 
+    // create an abort function that the action handler can call to roll back
+    // internal state (e.g. last selected index)
+    let didAbort = false;
+    let abort = function abort() {
+      didAbort = true;
+    };
+
     if (single) {
       tree._lastSelectedIndex = null;
-      tree.onSelect?.(rowValue);
+      tree.onSelect?.(rowValue, { abort });
       return;
     }
 
@@ -279,9 +286,13 @@ export const TableRowMeta = EmberObject.extend({
 
     selection = emberA(Array.from(selection));
 
-    tree.onSelect?.(selection);
+    tree.onSelect?.(selection, { abort });
 
-    tree._lastSelectedIndex = rowIndex;
+    // if the action handler calls `abort`, do not update the starting point
+    // for a subsequent multi-select
+    if (!didAbort) {
+      tree._lastSelectedIndex = rowIndex;
+    }
   },
 
   destroy() {
