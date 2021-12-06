@@ -1,6 +1,6 @@
 {{#if this.isSorted}}
   <span data-test-sort-indicator class="et-sort-indicator {{if this.isSortedAsc 'is-ascending' 'is-descending'}}">
-    {{#if hasBlock}}
+    {{#if (has-block)}}
       {{yield this.columnMeta}}
     {{else}}
       {{#if this.isMultiSorted}}

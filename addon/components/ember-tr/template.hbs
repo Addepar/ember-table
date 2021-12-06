@@ -1,5 +1,5 @@
 {{#each this.cells as |api|}}
-  {{#if hasBlock}}
+  {{#if (has-block)}}
     {{#if this.isHeader}}
       {{yield (hash
         columnValue=api.columnValue
