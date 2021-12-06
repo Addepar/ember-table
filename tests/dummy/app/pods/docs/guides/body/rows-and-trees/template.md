@@ -9,8 +9,8 @@ objects themselves - they can be anything.
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-rows.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
-        <t.body @rows={{rows}} />
+        <t.head @columns={{this.columns}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
       {{! END-SNIPPET }}
     </div>
@@ -25,7 +25,7 @@ the `column` object. A simplified version of this in handlebars would look like
 this:
 
 ```hbs
-{{#each rows as |row|}}
+{{#each this.rows as |row|}}
   <tr>
     {{#each columns as |column|}}
       <td>
@@ -57,11 +57,11 @@ the table body.
     </div>
     <div class="demo-container small">
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
+        <t.head @columns={{this.columns}} />
 
         <t.body
-          @rows={{rowsWithChildren}}
-          @enableTree={{treeEnabled}}
+          @rows={{this.rowsWithChildren}}
+          @enableTree={{this.treeEnabled}}
         />
       </EmberTable>
     </div>
@@ -96,11 +96,11 @@ If you want to disable collapsing at a row level, you can pass
     </div>
     <div class="demo-container small">
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
+        <t.head @columns={{this.columns}} />
 
         <t.body
-          @rows={{rowsWithCollapse}}
-          @enableCollapse={{collapseEnabled}}
+          @rows={{this.rowsWithCollapse}}
+          @enableCollapse={{this.collapseEnabled}}
         />
       </EmberTable>
     </div>

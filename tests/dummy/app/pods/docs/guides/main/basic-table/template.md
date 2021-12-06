@@ -15,9 +15,9 @@ header and a body, with columns and rows passed to it.
     <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-basic-table.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
+        <t.head @columns={{this.columns}} />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
       {{! END-SNIPPET }}
     </div>
@@ -40,7 +40,7 @@ This example demonstrates the same table as above, but with each level yielded.
     <div class="demo-container">
       {{! BEGIN-SNIPPET docs-example-basic-expanded-table.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} as |h|>
+        <t.head @columns={{this.columns}} as |h|>
           <h.row as |r|>
             <r.cell as |column|>
               {{column.name}}
@@ -48,7 +48,7 @@ This example demonstrates the same table as above, but with each level yielded.
           </h.row>
         </t.head>
 
-        <t.body @rows={{rows}} as |b|>
+        <t.body @rows={{this.rows}} as |b|>
           <b.row as |r|>
             <r.cell as |value|>
               {{value}}

@@ -2,13 +2,13 @@
   {{#ember-table as |t|}}
     {{ember-thead
       api=t
-      columns=columns
+      columns=this.columns
     }}
 
     {{ember-tbody
       api=t
-      rows=rows
-      selection=selection
+      rows=this.rows
+      selection=this.selection
     }}
   {{/ember-table}}
 </div>

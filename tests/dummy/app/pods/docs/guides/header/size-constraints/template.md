@@ -84,13 +84,13 @@ override the min/max widths provided by columns.
     <div class="resize-container">
       <EmberTable class="vertical-borders" as |t|>
         <t.head
-          @columns={{columns}}
-          @widthConstraint={{widthConstraint}}
-          @resizeMode={{resizeMode}}
+          @columns={{this.columns}}
+          @widthConstraint={{this.widthConstraint}}
+          @resizeMode={{this.resizeMode}}
           @scrollIndicators="horizontal"
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
@@ -140,7 +140,7 @@ constraint. The options are:
     <div class="resize-container">
       <EmberTable class="vertical-borders" as |t|>
         <t.head
-          @columns={{columns}}
+          @columns={{this.columns}}
           @widthConstraint='eq-container'
           @resizeMode='fluid'
           @fillMode={{fillMode}}
@@ -148,7 +148,7 @@ constraint. The options are:
           @scrollIndicators='horizontal'
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
@@ -215,13 +215,13 @@ In this example, `eq-container-slack` is combined with `equal-column` fill mode 
     <div class="resize-container w-100">
       <EmberTable class="vertical-borders" as |t|>
         <t.head
-          @columns={{columns}}
+          @columns={{this.columns}}
           @widthConstraint='eq-container-slack'
           @fillMode='equal-column'
           @initialFillMode='first-column'
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}

@@ -21,9 +21,9 @@ import { assert } from '@ember/debug';
 
   ```hbs
   <EmberTable as |t|>
-    <t.head @columns={{columns}} />
+    <t.head @columns={{this.columns}} />
 
-    <t.body @rows={{rows}} as |b|>
+    <t.body @rows={{this.rows}} as |b|>
       <b.row>
     </t.body>
   </EmberTable>

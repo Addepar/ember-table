@@ -42,10 +42,10 @@ settings. The current options are:
     {{! BEGIN-SNIPPET docs-example-occlusion.hbs }}
     <div class="demo-container">
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
+        <t.head @columns={{this.columns}} />
 
         <t.body
-          @rows={{rows}}
+          @rows={{this.rows}}
           @staticHeight={{true}}
           @estimateRowHeight={{41}}
           @key="A"

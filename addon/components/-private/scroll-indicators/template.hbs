@@ -1,28 +1,28 @@
-{{#if showLeft}}
+{{#if this.showLeft}}
   <div
     data-test-ember-table-scroll-indicator="left"
     class="scroll-indicator scroll-indicator__left"
-    style={{leftStyle}}
+    style={{this.leftStyle}}
   ></div>
 {{/if}}
-{{#if showRight}}
+{{#if this.showRight}}
   <div
     data-test-ember-table-scroll-indicator="right"
     class="scroll-indicator scroll-indicator__right"
-    style={{rightStyle}}
+    style={{this.rightStyle}}
   ></div>
 {{/if}}
-{{#if showTop}}
+{{#if this.showTop}}
   <div
     data-test-ember-table-scroll-indicator="top"
     class="scroll-indicator scroll-indicator__top"
-    style={{topStyle}}
+    style={{this.topStyle}}
   ></div>
 {{/if}}
-{{#if showBottom}}
+{{#if this.showBottom}}
   <div
     data-test-ember-table-scroll-indicator="bottom"
     class="scroll-indicator scroll-indicator__bottom"
-    style={{bottomStyle}}
+    style={{this.bottomStyle}}
   ></div>
 {{/if}}

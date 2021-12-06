@@ -12,10 +12,10 @@ respective direction.
 
         <EmberTable as |t|>
           <t.head
-            @columns={{columns}}
+            @columns={{this.columns}}
             @scrollIndicators="all"
           />
-          <t.body @rows={{rows}} />
+          <t.body @rows={{this.rows}} />
         </EmberTable>
       {{! END-SNIPPET }}
     </div>
@@ -37,10 +37,10 @@ them when they are present, or at the edges of the table when they are not.
 
         <EmberTable as |t|>
           <t.head
-            @columns={{columnsWithFixed}}
+            @columns={{this.columnsWithFixed}}
             @scrollIndicators="horizontal"
           />
-          <t.body @rows={{rows}} />
+          <t.body @rows={{this.rows}} />
         </EmberTable>
       {{! END-SNIPPET }}
     </div>
@@ -62,11 +62,11 @@ inside any sticky rows at the top or bottom of the table.
 
         <EmberTable as |t|>
           <t.head
-            @columns={{columnsWithFooter}}
+            @columns={{this.columnsWithFooter}}
             @scrollIndicators="vertical"
           />
-          <t.body @rows={{rows}} />
-          <t.foot @rows={{footerRows}} as |f|>
+          <t.body @rows={{this.rows}} />
+          <t.foot @rows={{this.footerRows}} as |f|>
             <f.row />
           </t.foot>
         </EmberTable>

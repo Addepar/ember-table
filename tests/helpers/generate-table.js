@@ -16,72 +16,63 @@ const fullTable = hbs`
       {{#ember-thead
         api=t
 
-        columns=columns
-        columnKeyPath=columnKeyPath
-        containerWidthAdjustment=containerWidthAdjustment
-        enableReorder=enableReorder
-        enableResize=enableResize
-        scrollIndicators=scrollIndicators
-        fillColumnIndex=fillColumnIndex
-        fillMode=fillMode
-        initialFillMode=initialFillMode
-        resizeMode=resizeMode
-        sorts=sorts
-        sortEmptyLast=sortEmptyLast
-        widthConstraint=widthConstraint
-
-        onUpdateSorts=(action onUpdateSorts)
-        onReorder=(action onReorder)
-        onResize=(action onResize)
+        columns=this.columns
+        columnKeyPath=this.columnKeyPath
+        containerWidthAdjustment=this.containerWidthAdjustment
+        enableReorder=this.enableReorder
+        enableResize=this.enableResize
+        scrollIndicators=this.scrollIndicators
+        fillColumnIndex=this.fillColumnIndex
+        fillMode=this.fillMode
+        initialFillMode=this.initialFillMode
+        resizeMode=this.resizeMode
+        sorts=this.sorts
+        sortEmptyLast=this.sortEmptyLast
+        widthConstraint=this.widthConstraint
+        onUpdateSorts=(action this.onUpdateSorts)
+        onReorder=(action this.onReorder)
+        onResize=(action this.onResize)
 
         as |h|
       }}
         {{#ember-tr api=h as |r|}}
           {{ember-th
             api=r
-
-            onContextMenu=(action onHeaderCellContextMenu)
+            onContextMenu=(action this.onHeaderCellContextMenu)
           }}
         {{/ember-tr}}
       {{/ember-thead}}
 
       {{#ember-tbody
         api=t
-
-        rows=rows
-        estimateRowHeight=estimateRowHeight
-        staticHeight=staticHeight
-        enableCollapse=enableCollapse
-        enableTree=enableTree
-        key=key
-        bufferSize=bufferSize
-        idForFirstItem=idForFirstItem
-
-
-        onSelect=(action onSelect)
-        selectingChildrenSelectsParent=selectingChildrenSelectsParent
-        checkboxSelectionMode=checkboxSelectionMode
-        rowSelectionMode=rowSelectionMode
-        rowToggleMode=rowToggleMode
-        selection=selection
-        selectionMatchFunction=selectionMatchFunction
-
+        rows=this.rows
+        estimateRowHeight=this.estimateRowHeight
+        staticHeight=this.staticHeight
+        enableCollapse=this.enableCollapse
+        enableTree=this.enableTree
+        key=this.key
+        bufferSize=this.bufferSize
+        idForFirstItem=this.idForFirstItem
+        onSelect=(action this.onSelect)
+        selectingChildrenSelectsParent=this.selectingChildrenSelectsParent
+        checkboxSelectionMode=this.checkboxSelectionMode
+        rowSelectionMode=this.rowSelectionMode
+        rowToggleMode=this.rowToggleMode
+        selection=this.selection
+        selectionMatchFunction=this.selectionMatchFunction
         as |b|
       }}
         {{#component rowComponent
           api=b
-
-          onClick=(action onRowClick)
-          onDoubleClick=(action onRowDoubleClick)
+          onClick=(action this.onRowClick)
+          onDoubleClick=(action this.onRowDoubleClick)
 
           as |r|
         }}
           {{#ember-td
             api=r
-
-            onClick=(action onCellClick)
-            onDoubleClick=(action onCellDoubleClick)
-
+            onClick=(action this.onCellClick)
+            onDoubleClick=(action this.onCellDoubleClick)
             as |value|
           }}
             {{value}}
@@ -91,8 +82,7 @@ const fullTable = hbs`
 
       {{#ember-tfoot
         api=t
-        rows=footerRows
-
+        rows=this.footerRows
         as |f|
       }}
         {{#ember-tr api=f as |r|}}

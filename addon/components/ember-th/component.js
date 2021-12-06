@@ -18,7 +18,7 @@ const COLUMN_REORDERING = 2;
 
   ```hbs
   <EmberTable as |t|>
-    <t.head @columns={{columns}} as |h|>
+    <t.head @columns={{this.columns}} as |h|>
       <h.row as |r|>
         <r.cell as |columnValue columnMeta|>
 
@@ -26,7 +26,7 @@ const COLUMN_REORDERING = 2;
       </h.row>
     </t.head>
 
-    <t.body @rows={{rows}} />
+    <t.body @rows={{this.rows}} />
   </EmberTable>
   ```
   @yield {object} columnValue - The column definition

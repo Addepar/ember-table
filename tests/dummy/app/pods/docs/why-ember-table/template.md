@@ -64,7 +64,7 @@ and actions:
 <!-- Ember Table -->
 
 <EmberTable as |t|>
-  <t.head @columns={{columns}} as |h|>
+  <t.head @columns={{this.columns}} as |h|>
     <h.row as |r|>
       <r.cell>
         Header
@@ -72,7 +72,7 @@ and actions:
     </h.row>
   </t.head>
 
-  <t.body @rows={{rows}} as |b|>
+  <t.body @rows={{this.rows}} as |b|>
     <b.row as |r|>
       <r.cell>
         Cell
@@ -80,7 +80,7 @@ and actions:
     </b.row>
   </t.body>
 
-  <t.foot @rows={{rows}} as |f|>
+  <t.foot @rows={{this.rows}} as |f|>
     <f.row as |r|>
       <r.cell>
         Footer

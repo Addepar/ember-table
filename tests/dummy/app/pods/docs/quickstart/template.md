@@ -48,8 +48,8 @@ Now let's setup the template for this component:
 
 ```hbs
   <EmberTable as |t|>
-    <t.head @columns={{columns}} />
-    <t.body @rows={{rows}} />
+    <t.head @columns={{this.columns}} />
+    <t.body @rows={{this.rows}} />
   </EmberTable>
 ```
 

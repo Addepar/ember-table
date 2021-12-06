@@ -4,7 +4,7 @@
     <div class="demo-container small">
       {{! BEGIN-SNIPPET table-meta-data-cell-selection.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} as |h|>
+        <t.head @columns={{this.columns}} as |h|>
           <h.row as |r|>
             <r.cell
               class="{{if r.columnMeta.selected 'is-column-selected'}}"
@@ -16,7 +16,7 @@
           </h.row>
         </t.head>
 
-        <t.body @rows={{rows}} as |b|>
+        <t.body @rows={{this.rows}} as |b|>
           <b.row
             class="{{if b.rowMeta.selected 'is-row-selected'}}"
 

@@ -74,8 +74,8 @@ the index of the current row.
 
       {{! BEGIN-SNIPPET table-meta-data-row-indices.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
-        <t.body @rows={{rows}} as |b|>
+        <t.head @columns={{this.columns}} />
+        <t.body @rows={{this.rows}} as |b|>
           <b.row as |r|>
             <r.cell as |cell column row cellMeta columnMeta rowMeta rowsCount|>
               {{#if (eq rowMeta.index 0)}}

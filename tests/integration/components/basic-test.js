@@ -295,12 +295,12 @@ module('Integration | basic', function() {
       this.set('showComponent', true);
 
       this.render(hbs`
-        {{#if showComponent}}
+        {{#if this.showComponent}}
           <div id="container" style="height: 500px;">
             {{#ember-table as |t|}}
-              {{ember-thead api=t columns=columns}}
+              {{ember-thead api=t columns=this.columns}}
 
-              {{ember-tbody api=t rows=rows estimateRowHeight=13}}
+              {{ember-tbody api=t rows=this.rows estimateRowHeight=13}}
             {{/ember-table}}
           </div>
         {{/if}}

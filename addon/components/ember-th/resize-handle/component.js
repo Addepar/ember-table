@@ -8,7 +8,7 @@ import { readOnly } from '@ember/object/computed';
 
   ```hbs
   <EmberTable as |t|>
-    <t.head @columns={{columns}} as |h|>
+    <t.head @columns={{this.columns}} as |h|>
       <h.row as |r|>
         <r.cell as |columnValue columnMeta|>
           {{columnValue.name}}
@@ -18,7 +18,7 @@ import { readOnly } from '@ember/object/computed';
       </h.row>
     </t.head>
 
-    <t.body @rows={{rows}} />
+    <t.body @rows={{this.rows}} />
   </EmberTable>
   ```
   @class {{ember-th/resize-handle}}
