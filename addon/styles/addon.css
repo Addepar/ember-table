@@ -1,0 +1,157 @@
+.ember-table {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ember-table .ember-table-overflow {
+  overflow: auto;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+.ember-table table {
+  border-spacing: 0;
+  table-layout: fixed;
+  box-sizing: border-box;
+}
+
+.ember-table td,
+.ember-table th {
+  box-sizing: border-box;
+}
+
+.ember-table td.is-fixed-left,
+.ember-table td.is-fixed-right,
+.ember-table th.is-fixed-left,
+.ember-table th.is-fixed-right {
+  position: -webkit-sticky;
+  position: sticky;
+  left: 0;
+}
+
+.ember-table td.ember-table__text-align-left,
+.ember-table th.ember-table__text-align-left {
+  text-align: left;
+}
+
+.ember-table td.ember-table__text-align-center,
+.ember-table th.ember-table__text-align-center {
+  text-align: center;
+}
+
+.ember-table td.ember-table__text-align-right,
+.ember-table th.ember-table__text-align-right {
+  text-align: right;
+}
+
+.ember-table th {
+  z-index: 2;
+}
+
+.ember-table th:not(.is-fixed-right) .et-header-resize-area {
+  right: 0;
+}
+
+.ember-table th.is-fixed-right .et-header-resize-area {
+  left: 0;
+}
+
+.ember-table td.is-fixed-left,
+.ember-table td.is-fixed-right {
+  z-index: 3;
+}
+
+.ember-table th.is-fixed-left,
+.ember-table th.is-fixed-right {
+  z-index: 4;
+}
+
+.ember-table th.is-sortable {
+  cursor: pointer;
+}
+
+.ember-table thead {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.ember-table tbody {
+  box-sizing: border-box;
+}
+
+.ember-table tfoot {
+  position: -webkit-sticky;
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+  box-sizing: border-box;
+}
+
+.ember-table .scroll-indicator {
+  position: absolute;
+  z-index: 5;
+}
+
+.ember-table .scroll-indicator__left,
+.ember-table .scroll-indicator__right {
+  top: 0;
+  width: 8px;
+  height: 100%;
+}
+
+.ember-table .scroll-indicator__left {
+  background: linear-gradient(to right, rgba(168, 168, 168, 0.4), rgba(168, 168, 168, 0));
+}
+
+.ember-table .scroll-indicator__right {
+  right: 0;
+  background: linear-gradient(to left, rgba(168, 168, 168, 0.4), rgba(168, 168, 168, 0));
+}
+
+.ember-table .scroll-indicator__top,
+.ember-table .scroll-indicator__bottom {
+  left: 0;
+  width: 100%;
+  height: 8px;
+}
+
+.ember-table .scroll-indicator__top {
+  top: 0;
+  background: linear-gradient(to bottom, rgba(168, 168, 168, 0.4), rgba(168, 168, 168, 0));
+}
+
+.ember-table .scroll-indicator__bottom {
+  bottom: 0;
+  background: linear-gradient(to top, rgba(168, 168, 168, 0.4), rgba(168, 168, 168, 0));
+}
+
+.ember-table.et-unselectable {
+  user-select: none;
+}
+
+.ember-table .et-header-resize-area {
+  cursor: col-resize;
+  width: 10px;
+  height: 100%;
+  position: absolute;
+  top: 0;
+}
+
+.ember-table .et-speech-only {
+  display: none !important;
+}
+
+@media speech {
+  .ember-table .et-speech-only {
+    display: block !important;
+  }
+}
+
+.ember-table .ember-table-loading-more {
+  display: inline-block;
+}
