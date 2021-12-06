@@ -25,11 +25,11 @@ import layout from './template';
 
   ```hbs
   <EmberTable as |t|>
-    <t.head @columns={{columns}} as |h|>
+    <t.head @columns={{this.columns}} as |h|>
 
     </t.head>
 
-    <t.body @rows={{rows}} />
+    <t.body @rows={{this.rows}} />
   </EmberTable>
   ```
 

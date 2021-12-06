@@ -1,11 +1,11 @@
 {{! BEGIN-SNIPPET docs-example-aborting-a-selection.hbs }}
 <EmberTable as |t|>
-  <t.head @columns={{columns}} />
+  <t.head @columns={{this.columns}} />
 
   <t.body
-    @rows={{rows}}
+    @rows={{this.rows}}
     @onSelect={{action this.selectRows}}
-    @selection={{selection}}
+    @selection={{this.selection}}
   />
 </EmberTable>
 {{! END-SNIPPET }}

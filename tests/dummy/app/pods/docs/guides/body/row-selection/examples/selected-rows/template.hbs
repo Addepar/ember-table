@@ -1,12 +1,12 @@
 <div class="demo-container small">
   {{! BEGIN-SNIPPET docs-example-selected-rows.hbs }}
   <EmberTable as |t|>
-    <t.head @columns={{columns}} />
+    <t.head @columns={{this.columns}} />
 
     <t.body
-      @rows={{rowWithChildren}}
+      @rows={{this.rowWithChildren}}
       @onSelect={{action (mut preselection)}}
-      @selection={{preselection}}
+      @selection={{this.preselection}}
     />
   </EmberTable>
   {{! END-SNIPPET }}

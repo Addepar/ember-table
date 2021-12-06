@@ -11,8 +11,8 @@ also specify a `name` on the column which will be rendered in the template.
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-columns.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columns}} />
-        <t.body @rows={{rows}} />
+        <t.head @columns={{this.columns}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
       {{! END-SNIPPET }}
     </div>
@@ -34,7 +34,7 @@ header components by passing the name of the component through this way.
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-columns-with-components.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columnsWithComponents}} as |h|>
+        <t.head @columns={{this.columnsWithComponents}} as |h|>
           <h.row as |r|>
             <r.cell as |column|>
               {{#component column.component color=column.color}}
@@ -44,7 +44,7 @@ header components by passing the name of the component through this way.
           </h.row>
         </t.head>
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
       {{! END-SNIPPET }}
     </div>
@@ -75,17 +75,17 @@ definitions, so their widths are tied together.
     {{! BEGIN-SNIPPET docs-example-columns-with-widths.hbs }}
     <div class="demo-container small">
       <EmberTable as |t|>
-        <t.head @columns={{columnsWithWidths}} />
+        <t.head @columns={{this.columnsWithWidths}} />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
 
     <div class="demo-container small mt-4">
       <EmberTable as |t|>
-        <t.head @columns={{columnsWithWidths}} />
+        <t.head @columns={{this.columnsWithWidths}} />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
@@ -133,13 +133,13 @@ when the column definitions are plain JavaScript arrays. The solution (for now) 
     <div class="demo-container small">
       <EmberTable as |t|>
         <t.head
-          @columns={{columns}}
-          @enableResize={{resizeEnabled}}
-          @enableReorder={{reorderEnabled}}
-          @resizeMode={{if resizeModeFluid 'fluid' 'standard'}}
+          @columns={{this.columns}}
+          @enableResize={{this.resizeEnabled}}
+          @enableReorder={{this.reorderEnabled}}
+          @resizeMode={{if this.resizeModeFluid 'fluid' 'standard'}}
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
@@ -172,18 +172,18 @@ reorder has occured.
 {{#docs-demo as |demo|}}
   {{#demo.example name="resize-reorder-actions"}}
     {{! BEGIN-SNIPPET docs-example-resize-reorder-actions.hbs }}
-    <p>Resized {{resizeCount}} times</p>
-    <p>Reordered {{reorderCount}} times</p>
+    <p>Resized {{this.resizeCount}} times</p>
+    <p>Reordered {{this.reorderCount}} times</p>
 
     <div class="demo-container small">
       <EmberTable as |t|>
         <t.head
-          @columns={{columns}}
-          @onResize={{action (mut resizeCount) (add resizeCount 1)}}
-          @onReorder={{action (mut reorderCount) (add reorderCount 1)}}
+          @columns={{this.columns}}
+          @onResize={{action (mut this.resizeCount) (add this.resizeCount 1)}}
+          @onReorder={{action (mut this.reorderCount) (add this.reorderCount 1)}}
         />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
     </div>
     {{! END-SNIPPET }}
@@ -203,9 +203,9 @@ When the property is set, the cell will have the matching class (`ember-table__t
     <div class="demo-container small">
       {{! BEGIN-SNIPPET docs-example-text-align.hbs }}
       <EmberTable as |t|>
-        <t.head @columns={{columnsWithTextAlign}} />
+        <t.head @columns={{this.columnsWithTextAlign}} />
 
-        <t.body @rows={{rows}} />
+        <t.body @rows={{this.rows}} />
       </EmberTable>
       {{! END-SNIPPET }}
     </div>

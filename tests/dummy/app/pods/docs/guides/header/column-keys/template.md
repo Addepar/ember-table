@@ -48,10 +48,10 @@ get columns() {
 ```hbs
 <EmberTable as |t|>
   <t.head
-    @columns={{columns}}
+    @columns={{this.columns}}
     @columnKeyPath="key"
   />
 
-  <t.body @rows={{rows}} />
+  <t.body @rows={{this.rows}} />
 </EmberTable>
 ```

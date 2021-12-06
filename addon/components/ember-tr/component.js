@@ -15,13 +15,13 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
 
   ```hbs
   <EmberTable as |t|>
-    <t.head @columns={{columns}} as |h|>
+    <t.head @columns={{this.columns}} as |h|>
       <h.row as |r|>
         <r.cell>
       </h.row>
     </t.head>
 
-    <t.body @rows={{rows}} as |b|>
+    <t.body @rows={{this.rows}} as |b|>
       <b.row as |r|>
         <r.cell>
       </b.row>

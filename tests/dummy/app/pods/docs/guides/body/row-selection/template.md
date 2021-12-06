@@ -7,8 +7,8 @@ to control the selection using DDAU:
 {{#docs-demo as |demo|}}
   {{#demo.example name="docs-example-row-selection"}}
     {{docs/guides/body/row-selection/examples/row-selection
-      rows=rows
-      columns=columns}}
+      rows=this.rows
+      columns=this.columns}}
   {{/demo.example}}
 
   {{demo.snippet name='docs-example-row-selection.hbs'}}
@@ -28,8 +28,9 @@ selected, all of its children _must_ be selected:
 {{#docs-demo as |demo|}}
   {{#demo.example name="selected-rows"}}
     {{docs/guides/body/row-selection/examples/selected-rows
-      rowWithChildren=rowWithChildren
-      columns=columns}}
+      rowWithChildren=this.rowWithChildren
+      columns=this.columns
+      preselection=this.preselection}}
   {{/demo.example}}
 
   {{demo.snippet label='component.js' name='docs-example-selected-rows.js'}}
@@ -68,13 +69,12 @@ itself.
 {{#docs-demo as |demo|}}
   {{#demo.example name='selection-modes'}}
     {{docs/guides/body/row-selection/examples/selection-modes
-      rowsWithChildren=rowsWithChildren
-      columns=columns
-      rowSelectionMode=rowSelectionMode
-      checkboxSelectionMode=checkboxSelectionMode
-      selectingChildrenSelectsParent=selectingChildrenSelectsParent
-      demoSelection=demoSelection
-      currentSelection=currentSelection}}
+      columns=this.columns
+      rowsWithChildren=this.rowsWithChildren
+      rowSelectionMode=this.rowSelectionMode
+      checkboxSelectionMode=this.checkboxSelectionMode
+      selectingChildrenSelectsParent=this.selectingChildrenSelectsParent
+      demoSelection=this.demoSelection}}
   {{/demo.example}}
 
   {{demo.snippet name='docs-example-selection-modes.hbs'}}

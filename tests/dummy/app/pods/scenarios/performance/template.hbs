@@ -2,8 +2,8 @@
   {{#ember-table as |t|}}
     {{#ember-thead
       api=t
-      columns=columns
-      sorts=sorts
+      columns=this.columns
+      sorts=this.sorts
       onUpdateSorts=(action "onUpdateSorts")
 
       as |h|
@@ -15,9 +15,9 @@
 
     {{#ember-tbody
       api=t
-      rows=rows
+      rows=this.rows
 
-      selection=selection
+      selection=this.selection
       onSelect=(action "onSelect")
 
       as |b|
