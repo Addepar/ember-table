@@ -1,0 +1,13 @@
+<div class="demo-container small">
+  {{! BEGIN-SNIPPET docs-example-row-selection.hbs }}
+  <EmberTable as |t|>
+    <t.head @columns={{this.columns}} />
+
+    <t.body
+      @rows={{this.rows}}
+      @onSelect={{action (mut selection)}}
+      @selection={{this.selection}}
+    />
+  </EmberTable>
+  {{! END-SNIPPET }}
+</div>

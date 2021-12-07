@@ -270,6 +270,32 @@ module('Integration | selection', () => {
 
         assert.ok(table.validateSelected(0), 'Zoe is selected after external change');
       });
+
+      test('Can abort multi-select so that next multi-select starts from the same row', async function(assert) {
+        let successHandler = selection => this.set('selection', selection);
+        let abortHandler = (selection, { abort }) => abort();
+        let selectHandler;
+
+        this.set('onSelect', (selection, hash) => {
+          selectHandler(selection, hash);
+        });
+
+        await generateTable(this);
+
+        assert.ok(table.validateSelected(), 'rows are not selected');
+
+        selectHandler = successHandler;
+        await table.selectRow(0);
+
+        selectHandler = abortHandler;
+        await table.selectRowWithShiftClick(2);
+
+        selectHandler = successHandler;
+        await table.selectRowWithShiftClick(3);
+
+        // without abort, row 1 would not be selected
+        assert.ok(table.validateSelected(0, 1, 2, 3), 'correct rows are selected');
+      });
     });
 
     componentModule('single', function() {
