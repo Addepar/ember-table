@@ -32,7 +32,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
     "@babel/plugin-proposal-optional-catch-binding": "^7.12.13",
     "@babel/plugin-proposal-optional-chaining": "^7.12.13",
-    "@html-next/vertical-collection": "2.0.0",
+    "@html-next/vertical-collection": "3.0.0-0",
     "broccoli-string-replace": "^0.1.2",
     "css-element-queries": "^0.4.0",
     "ember-classy-page-object": "^0.7.0",
@@ -92,7 +92,7 @@
     "sass": "^1.26.10"
   },
   "engines": {
-    "node": ">= 10.*"
+    "node": ">= 14.*"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
@@ -102,7 +102,7 @@
     "prettier": "1.18.2"
   },
   "volta": {
-    "node": "12.22.3",
-    "yarn": "1.22.10"
+    "node": "14.18.2",
+    "yarn": "1.22.17"
   }
 }
