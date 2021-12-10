@@ -43,7 +43,7 @@
     "ember-cli-version-checker": "^3.0.1",
     "ember-compatibility-helpers": "^1.2.0",
     "ember-raf-scheduler": "^0.2.0",
-    "ember-test-selectors": "^2.1.0",
+    "ember-test-selectors": "^6.0.0",
     "hammerjs": "^2.0.8"
   },
   "devDependencies": {
