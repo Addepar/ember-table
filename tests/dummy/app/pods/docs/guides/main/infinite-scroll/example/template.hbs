@@ -1,0 +1,16 @@
+<div class="demo-container visual-fixes">
+  {{! BEGIN-SNIPPET docs-example-infinite-scroll.hbs }}
+  <EmberTable as |t|>
+    <t.head @columns={{this.columns}} />
+    <t.body
+      @rows={{this.rows}}
+      @lastReached={{perform this.loadMore}} />
+    <t.loadingMore
+      @isLoading={{this.loadMore.isRunning}}
+      @canLoadMore={{this.canLoadMore}}
+      @center={{true}}>
+      <img class="spinner" src="/assets/images/spinner.gif"/>
+    </t.loadingMore>
+  </EmberTable>
+  {{! END-SNIPPET }}
+</div>
