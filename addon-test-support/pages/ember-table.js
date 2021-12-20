@@ -23,6 +23,40 @@ export default PageObject.extend({
   body: EmberTableBodyPage,
 
   /**
+   * Page object for "Loading More" component that renders beneath the body.
+   */
+  loadingMore: {
+    scope: '[data-test-ember-table-loading-more]',
+
+    /**
+     * Returns the pixel value of the `translateX` transform applied to center
+     * the indicator in the scroll viewport.
+     */
+    get translateX() {
+      let transform = findElement(this).style.transform;
+      let result = transform.match(/translateX\((\d+)px\)/);
+      if (!result) {
+        return 0;
+      }
+      return parseInt(result[1]);
+    },
+
+    /**
+     * Returns if the LoadingMore component is occupying space in the layout.
+     */
+    get isInLayout() {
+      return findElement(this).style.display !== 'none';
+    },
+
+    /**
+     * Returns if the LoadingMore component and user block is visible.
+     */
+    get isShown() {
+      return findElement(this).style.visibility !== 'hidden';
+    },
+  },
+
+  /**
    * Page object for table footer.
    */
   footer: EmberTableFooterPage,
