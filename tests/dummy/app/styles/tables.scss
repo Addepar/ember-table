@@ -115,3 +115,25 @@
     font-weight: bold;
   }
 }
+
+.visual-fixes {
+  table {
+    /* fix for vanishing borders in Ember Table */
+    border-spacing: 0;
+    border-collapse: separate;
+  }
+
+  thead {
+    /* fix for buggy Ember Table headers, especially if using `isFixed` */
+    position: sticky !important;
+
+    /* z-index must be > 10, or else row checkbox hit targets will float over top of header */
+    z-index: 11;
+
+    th {
+      /* paint over Ember Table header bleed */
+      box-shadow: 0 -1px 0 0 white;
+    }
+  }
+}
+

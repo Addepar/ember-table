@@ -1,6 +1,6 @@
 # Infinite Scroll
 
-Ember Table has all the pieces required to implement an infinite scroll table.
+Ember Table provides all the building blocks required to build an infinite scrolling table.
 
 {{#docs-demo as |demo|}}
   {{#demo.example}}

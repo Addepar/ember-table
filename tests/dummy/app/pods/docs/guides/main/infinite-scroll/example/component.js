@@ -5,9 +5,21 @@ import { A } from '@ember/array';
 
 export default Component.extend({
   // BEGIN-SNIPPET docs-example-infinite-scroll.js
+  // count of records loaded so far
   offset: 0,
+
+  // count of records per "page"
   limit: 20,
+
+  // substitute total count of records from API response meta data
   maxRows: 100,
+
+  // center spinner horizontally in scroll viewport
+  centerSpinner: true,
+
+  canLoadMore: computed('offset', 'maxRows', function() {
+    return this.get('offset') < this.get('maxRows');
+  }),
 
   columns: computed(function() {
     return [
@@ -23,12 +35,9 @@ export default Component.extend({
   }),
 
   didInsertElement() {
+    this._super(...arguments);
     this.get('loadMore').perform();
   },
-
-  canLoadMore: computed('offset', 'maxRows', function() {
-    return this.get('offset') < this.get('maxRows');
-  }),
 
   loadMore: task(function*() {
     let offset = this.get('offset');

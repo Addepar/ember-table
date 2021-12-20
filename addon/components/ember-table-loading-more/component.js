@@ -1,28 +1,33 @@
 /* global ResizeSensor */
 import Component from '@ember/component';
-import { computed } from '@ember/object';
 import { or, readOnly } from '@ember/object/computed';
+import { next, schedule, scheduleOnce } from '@ember/runloop';
 
 /**
   Renders a custom loading indicator beneath the table body. Can be used to
-  implement an infinite scroll pattern. Provides optional centering to keep the user-provided block centered horizontally in the scroll viewport.
+  implement an infinite scroll pattern. Provides optional centering to keep the
+  user-provided block centered horizontally in the scroll viewport.
 
   ```hbs
-  <EmberTableLoadingMore
-    @isLoading={{this.isLoading}}
-    @canLoadMore={{this.canLoadMore}}
-    @center={{true}}>
+  <EmberTable as |t|>
+    <t.head @columns={{this.columns}} />
+    <t.body @rows={{this.rows}} />
 
-    {{!-- custom spinner --}}
-    <img class="spinner" src="/assets/images/spinner.gif"/>
-  </EmberTableLoadingMore>
+    <t.loadingMore
+      @isLoading={{this.isLoadingMore}}
+      @canLoadMore={{this.canLoadMore}}
+      @center={{true}}>
+
+      {{!-- custom spinner --}}
+      <img class="spinner" src="spinner.gif"/>
+    </t.loadingMore>
+  </EmberTable>
   ```
 
   @class {{ember-table-loading-more}}
   @public
 */
 export default Component.extend({
-  attributeBindings: ['style'],
   classNames: ['ember-table-loading-more'],
 
   'data-test-ember-table-loading-more': true,
@@ -32,7 +37,7 @@ export default Component.extend({
 
   /**
    * Boolean flag specifying if additional rows are being loaded. If true,
-   * indicator block will be shown at bottom of table body.
+   * indicator block will be visible below the table body.
    *
    * @argument isLoading
    * @type boolean
@@ -41,7 +46,7 @@ export default Component.extend({
 
   /**
    * Boolean flag specifying if there are more rows yet to load. If false, the
-   * indicator block will be completely removed from the DOM.
+   * indicator block will be removed from the DOM.
    *
    * @argument canLoadMore
    * @type boolean
@@ -57,58 +62,91 @@ export default Component.extend({
    */
   center: true,
 
-  _leftOffset: 0,
-
-  style: computed('canLoadMore', 'isLoading', 'center', '_leftOffset', function() {
-    if (!this.get('canLoadMore')) {
-      // remove indicator from DOM so end of table has no extra whitespace
-      return 'display: none !important;';
-    }
-
-    if (!this.get('isLoading')) {
-      // hide indicator but don't remove it; preserves scroll position
-      return 'visibility: hidden !important';
-    }
-
-    if (this.get('center')) {
-      return `transform: translateX(${this.get('_leftOffset')}px);`;
-    }
-  }),
-
   init() {
     this._super(...arguments);
-    this._recomputeLeftOffset = this.recomputeLeftOffset.bind(this);
+    this._updateTransform = () => scheduleOnce('afterRender', this, 'updateTransform');
+  },
+
+  didReceiveAttrs() {
+    this._super(...arguments);
+
+    // no observers here, no sir.
+    let canLoadMore = this.get('canLoadMore');
+    if (canLoadMore !== this._canLoadMore) {
+      scheduleOnce('afterRender', this, 'canLoadMoreChanged');
+      this._canLoadMore = canLoadMore;
+    }
+
+    let isLoading = this.get('isLoading');
+    if (isLoading !== this._isLoading) {
+      scheduleOnce('afterRender', this, 'isLoadingChanged');
+      this._isLoading = isLoading;
+    }
+
+    let center = this.get('center');
+    if (center !== this._center) {
+      scheduleOnce('afterRender', this, 'centerChanged');
+      this._center = center;
+    }
   },
 
   didInsertElement() {
     this._super(...arguments);
 
-    let scrollElement = this.get('scrollElement');
-    scrollElement.addEventListener('scroll', this._recomputeLeftOffset);
-    this._resizeSensor = new ResizeSensor(scrollElement, this._recomputeLeftOffset);
+    this.canLoadMoreChanged();
+    this.isLoadingChanged();
+    this.centerChanged();
   },
 
-  willDestroyElement() {
-    this.get('scrollElement').removeEventListener('scroll', this._recomputeLeftOffset);
-    this._resizeSensor.detach();
-
-    this._super(...arguments);
-  },
-
-  /**
-   * Horizontally re-centers the spinner with respect to the scrolling viewport.
-   * Ensures that no matter how wide the scrollable content of the table is, the
-   * spinner will remain centered in the user's view.
-   */
-  recomputeLeftOffset() {
-    let scrollElement = this.get('scrollElement');
-    if (!scrollElement || !this.element) {
+  canLoadMoreChanged() {
+    if (!this.element) {
       return;
     }
 
-    let _leftOffset = Math.round(
+    if (this.get('canLoadMore')) {
+      this.element.style.display = '';
+    } else {
+      // Delay removal to minimize impact on scroll position. Usually any new
+      // rows have been rendered by now, but sometimes they are not, and
+      // removing this element from the DOM will cause a small scrollback.
+      next(() => schedule('afterRender', () => (this.element.style.display = 'none')));
+    }
+  },
+
+  isLoadingChanged() {
+    if (!this.element) {
+      return;
+    }
+
+    this.element.style.visibility = this.get('isLoading') ? '' : 'hidden';
+  },
+
+  centerChanged() {
+    let scrollElement = this.get('scrollElement');
+    if (!scrollElement) {
+      return;
+    }
+
+    if (this.get('center')) {
+      scrollElement.addEventListener('scroll', this._updateTransform);
+      this._scrollElementResizeSensor = new ResizeSensor(scrollElement, this._updateTransform);
+    } else {
+      this.get('scrollElement').removeEventListener('scroll', this._updateTransform);
+      this._scrollElementResizeSensor.detach();
+    }
+
+    this.updateTransform();
+  },
+
+  updateTransform() {
+    let scrollElement = this.get('scrollElement');
+    if (!scrollElement || !this.element || this.isDestroying) {
+      return;
+    }
+
+    let leftOffset = Math.round(
       scrollElement.scrollLeft + (scrollElement.clientWidth - this.element.clientWidth) / 2
     );
-    this.set('_leftOffset', _leftOffset);
+    this.element.style.transform = this.get('center') ? `translateX(${leftOffset}px)` : '';
   },
 });
