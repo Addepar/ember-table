@@ -1,7 +1,7 @@
 /* global ResizeSensor */
 import Component from '@ember/component';
 import { or, readOnly } from '@ember/object/computed';
-import { next, schedule, scheduleOnce } from '@ember/runloop';
+import { next, run, schedule, scheduleOnce } from '@ember/runloop';
 
 /**
   Renders a custom loading indicator beneath the table body. Can be used to
@@ -104,7 +104,7 @@ export default Component.extend({
     }
 
     if (this.get('canLoadMore')) {
-      this.element.style.display = '';
+      run(() => (this.element.style.display = ''));
     } else {
       // Delay removal to minimize impact on scroll position. Usually any new
       // rows have been rendered by now, but sometimes they are not, and
@@ -118,7 +118,7 @@ export default Component.extend({
       return;
     }
 
-    this.element.style.visibility = this.get('isLoading') ? '' : 'hidden';
+    run(() => (this.element.style.visibility = this.get('isLoading') ? '' : 'hidden'));
   },
 
   centerChanged() {
@@ -147,6 +147,9 @@ export default Component.extend({
     let leftOffset = Math.round(
       scrollElement.scrollLeft + (scrollElement.clientWidth - this.element.clientWidth) / 2
     );
-    this.element.style.transform = this.get('center') ? `translateX(${leftOffset}px)` : '';
+
+    run(
+      () => (this.element.style.transform = this.get('center') ? `translateX(${leftOffset}px)` : '')
+    );
   },
 });
