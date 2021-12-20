@@ -41,7 +41,7 @@ module('Integration | loading more', function() {
       assert.ok(table.loadingMore.isShown, 'Loading more indicator is shown');
     });
 
-    test('it is nt shown when isLoading is false', async function(assert) {
+    test('it is not shown when isLoading is false', async function(assert) {
       await this.render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead columns=columns api=t}}
