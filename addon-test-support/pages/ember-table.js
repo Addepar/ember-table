@@ -4,6 +4,7 @@ import { findElement } from 'ember-classy-page-object/extend';
 import EmberTableBodyPage from './-private/ember-table-body';
 import EmberTableFooterPage from './-private/ember-table-footer';
 import EmberTableHeaderPage from './-private/ember-table-header';
+import EmberTableLoadingMorePage from './-private/ember-table-loading-more';
 
 /**
  * Ember Table page object. Use this page object and its nested header/body object to retrieve table
@@ -25,36 +26,7 @@ export default PageObject.extend({
   /**
    * Page object for "Loading More" component that renders beneath the body.
    */
-  loadingMore: {
-    scope: '[data-test-ember-table-loading-more]',
-
-    /**
-     * Returns the pixel value of the `translateX` transform applied to center
-     * the indicator in the scroll viewport.
-     */
-    get translateX() {
-      let transform = findElement(this).style.transform;
-      let result = transform.match(/translateX\((\d+)px\)/);
-      if (!result) {
-        return 0;
-      }
-      return parseInt(result[1]);
-    },
-
-    /**
-     * Returns if the LoadingMore component is occupying space in the layout.
-     */
-    get isInLayout() {
-      return findElement(this).style.display !== 'none';
-    },
-
-    /**
-     * Returns if the LoadingMore component and user block is visible.
-     */
-    get isShown() {
-      return findElement(this).style.visibility !== 'hidden';
-    },
-  },
+  loadingMore: EmberTableLoadingMorePage,
 
   /**
    * Page object for table footer.
