@@ -14,10 +14,7 @@ export default PageObject.extend({
   get translateX() {
     let transform = findElement(this).style.transform;
     let result = transform.match(/translateX\((\d+)px\)/);
-    if (!result) {
-      return 0;
-    }
-    return parseInt(result[1]);
+    return result ? parseInt(result[1]) : 0;
   },
 
   /**
