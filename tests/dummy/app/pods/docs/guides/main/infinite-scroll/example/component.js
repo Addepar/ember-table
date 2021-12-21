@@ -39,6 +39,7 @@ export default Component.extend({
     this.get('loadMore').perform();
   },
 
+  // ember-concurrency task
   loadMore: task(function*() {
     let offset = this.get('offset');
     let limit = this.get('limit');
