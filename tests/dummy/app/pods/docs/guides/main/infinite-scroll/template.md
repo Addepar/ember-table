@@ -1,6 +1,6 @@
 # Infinite Scroll
 
-Ember Table provides all the building blocks required to build an infinite scrolling table.
+Infinite scroll is a common UI pattern where additional table rows are loaded as the user scrolls toward the bottom of the table. Ember Table does not provide infinite scrolling out of the box, but it has all the parts required to build an infinite scrolling table.
 
 {{#docs-demo as |demo|}}
   {{#demo.example}}
@@ -10,3 +10,5 @@ Ember Table provides all the building blocks required to build an infinite scrol
   {{demo.snippet name='docs-example-infinite-scroll.hbs'}}
   {{demo.snippet label='component.js' name='docs-example-infinite-scroll.js'}}
 {{/docs-demo}}
+
+Ember Table does not provide a built-in spinner. You must specify your own by passing a block to `<t.loadingMore>` like in the example above. See the {{#link-to 'docs.api.item' 'components/ember-table-loading-more'}}`EmberTableLoadingMore`{{/link-to}} component docs for more information.
