@@ -66,7 +66,7 @@ module('Integration | loading more', function() {
 
       await wait();
 
-      assert.ok(table.loadingMore.isInLayout, 'Loading more indicator included in layout');
+      assert.ok(table.loadingMore.isIncludedInLayout, 'Loading more indicator included in layout');
     });
 
     test('it is not included in layout when canLoadMore is false', async function(assert) {
@@ -80,7 +80,10 @@ module('Integration | loading more', function() {
 
       await wait();
 
-      assert.notOk(table.loadingMore.isInLayout, 'Loading more indicator not included in layout');
+      assert.notOk(
+        table.loadingMore.isIncludedInLayout,
+        'Loading more indicator not included in layout'
+      );
     });
 
     test('it centers the indicator in the scroll viewport', async function(assert) {

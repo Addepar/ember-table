@@ -20,7 +20,7 @@ export default PageObject.extend({
   /**
    * Returns if the LoadingMore component is occupying space in the layout.
    */
-  get isInLayout() {
+  get isIncludedInLayout() {
     return findElement(this).style.display !== 'none';
   },
 
