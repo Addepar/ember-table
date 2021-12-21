@@ -72,6 +72,11 @@ export default Component.extend({
   didReceiveAttrs() {
     this._super(...arguments);
 
+    // ignore the first run of `didReceiveAttrs` before element exists
+    if (!this.element) {
+      return;
+    }
+
     // no observers here, no sir.
     let canLoadMore = this.get('canLoadMore');
     if (canLoadMore !== this._canLoadMore) {
@@ -94,17 +99,19 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-
     this.canLoadMoreChanged();
     this.isLoadingChanged();
     this.centerChanged();
   },
 
-  canLoadMoreChanged() {
-    if (!this.element) {
-      return;
+  willDestroyElement() {
+    if (this.get('center')) {
+      this.removeListeners();
     }
+    this._super(...arguments);
+  },
 
+  canLoadMoreChanged() {
     if (this.get('canLoadMore')) {
       this.setIncludedInLayout(true);
     } else {
@@ -116,28 +123,41 @@ export default Component.extend({
   },
 
   isLoadingChanged() {
-    if (!this.element) {
-      return;
-    }
-
     this.setVisible(this.get('isLoading'));
   },
 
   centerChanged() {
-    let scrollElement = this.get('scrollElement');
-    if (!scrollElement) {
-      return;
-    }
+    this.updateTransform();
 
     if (this.get('center')) {
-      scrollElement.addEventListener('scroll', this._updateTransform);
-      this._scrollElementResizeSensor = new ResizeSensor(scrollElement, this._updateTransform);
+      this.addListeners();
     } else {
-      this.get('scrollElement').removeEventListener('scroll', this._updateTransform);
-      this._scrollElementResizeSensor.detach();
+      this.removeListeners();
+    }
+  },
+
+  addListeners() {
+    let scrollElement = this.get('scrollElement');
+    scrollElement.addEventListener('scroll', this._updateTransform);
+    this._scrollElementResizeSensor = new ResizeSensor(scrollElement, this._updateTransform);
+  },
+
+  removeListeners() {
+    this.get('scrollElement').removeEventListener('scroll', this._updateTransform);
+    this._scrollElementResizeSensor.detach();
+  },
+
+  updateTransform() {
+    let scrollElement = this.get('scrollElement');
+    let translateX = 0;
+
+    if (this.get('center')) {
+      translateX = Math.round(
+        scrollElement.scrollLeft + (scrollElement.clientWidth - this.element.clientWidth) / 2
+      );
     }
 
-    this.updateTransform();
+    this.setTranslateX(translateX);
   },
 
   setIncludedInLayout(value) {
@@ -148,15 +168,7 @@ export default Component.extend({
     this.element.style.visibility = value ? '' : 'hidden';
   },
 
-  updateTransform() {
-    let scrollElement = this.get('scrollElement');
-    if (!scrollElement || !this.element || this.isDestroying) {
-      return;
-    }
-
-    let leftOffset = Math.round(
-      scrollElement.scrollLeft + (scrollElement.clientWidth - this.element.clientWidth) / 2
-    );
-    this.element.style.transform = this.get('center') ? `translateX(${leftOffset}px)` : '';
+  setTranslateX(value) {
+    this.element.style.transform = value === 0 ? '' : `translateX(${value}px)`;
   },
 });
