@@ -152,6 +152,7 @@ export default Component.extend({
     let translateX = 0;
 
     if (this.get('center')) {
+      // keep indicator centered in viewport, even if user scrolls left or right
       translateX = Math.round(
         scrollElement.scrollLeft + (scrollElement.clientWidth - this.element.clientWidth) / 2
       );
