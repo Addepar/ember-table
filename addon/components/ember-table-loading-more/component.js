@@ -64,7 +64,9 @@ export default Component.extend({
 
   init() {
     this._super(...arguments);
-    this._updateTransform = () => scheduleOnce('afterRender', this, 'updateTransform');
+
+    // wrapped in `run` for testing compatibility in ember 2.12, 2.18
+    this._updateTransform = () => run(() => scheduleOnce('afterRender', this, 'updateTransform'));
   },
 
   didReceiveAttrs() {
@@ -104,12 +106,12 @@ export default Component.extend({
     }
 
     if (this.get('canLoadMore')) {
-      run(() => (this.element.style.display = ''));
+      this.setIncludedInLayout(true);
     } else {
       // Delay removal to minimize impact on scroll position. Usually any new
       // rows have been rendered by now, but sometimes they are not, and
       // removing this element from the DOM will cause a small scrollback.
-      next(() => schedule('afterRender', () => (this.element.style.display = 'none')));
+      next(() => schedule('afterRender', this, 'setIncludedInLayout', false));
     }
   },
 
@@ -118,7 +120,7 @@ export default Component.extend({
       return;
     }
 
-    run(() => (this.element.style.visibility = this.get('isLoading') ? '' : 'hidden'));
+    this.setVisible(this.get('isLoading'));
   },
 
   centerChanged() {
@@ -138,6 +140,14 @@ export default Component.extend({
     this.updateTransform();
   },
 
+  setIncludedInLayout(value) {
+    this.element.style.display = value ? '' : 'none';
+  },
+
+  setVisible(value) {
+    this.element.style.visibility = value ? '' : 'hidden';
+  },
+
   updateTransform() {
     let scrollElement = this.get('scrollElement');
     if (!scrollElement || !this.element || this.isDestroying) {
@@ -147,9 +157,6 @@ export default Component.extend({
     let leftOffset = Math.round(
       scrollElement.scrollLeft + (scrollElement.clientWidth - this.element.clientWidth) / 2
     );
-
-    run(
-      () => (this.element.style.transform = this.get('center') ? `translateX(${leftOffset}px)` : '')
-    );
+    this.element.style.transform = this.get('center') ? `translateX(${leftOffset}px)` : '';
   },
 });
