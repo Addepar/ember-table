@@ -62,7 +62,7 @@ const fullTable = hbs`
         selectionMatchFunction=this.selectionMatchFunction
         as |b|
       }}
-        {{#component rowComponent
+        {{#component this.rowComponent
           api=b
           onClick=(action this.onRowClick)
           onDoubleClick=(action this.onRowDoubleClick)
