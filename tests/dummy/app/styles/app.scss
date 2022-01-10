@@ -1,4 +1,5 @@
 @import './tables';
+@import './fixes';
 @import '@addepar/style-toolbox/onyx/index';
 
 // Override the url for the checkmark that indicates row selection.
@@ -116,4 +117,10 @@ tr {
 
 .custom-header {
   padding: 0.25em;
+}
+
+.spinner {
+  margin-top: 7px;
+  width: 50%;
+  height: 50%;
 }

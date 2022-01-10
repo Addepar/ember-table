@@ -1,0 +1,19 @@
+/* CSS fixes for Chrome table rendering issues */
+.table-fixes {
+  table {
+    /* fix for vanishing borders */
+    border-spacing: 0;
+    border-collapse: separate;
+  }
+
+  thead {
+    /* fix for buggy Ember Table headers, especially with `isFixed` */
+    position: sticky !important;
+    z-index: 5;
+
+    th {
+      /* paint over Ember Table header bleed */
+      box-shadow: 0 -1px 0 0 white;
+    }
+  }
+}

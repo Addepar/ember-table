@@ -4,6 +4,7 @@ import { findElement } from 'ember-classy-page-object/extend';
 import EmberTableBodyPage from './-private/ember-table-body';
 import EmberTableFooterPage from './-private/ember-table-footer';
 import EmberTableHeaderPage from './-private/ember-table-header';
+import EmberTableLoadingMorePage from './-private/ember-table-loading-more';
 
 /**
  * Ember Table page object. Use this page object and its nested header/body object to retrieve table
@@ -21,6 +22,11 @@ export default PageObject.extend({
    * Page object for table body.
    */
   body: EmberTableBodyPage,
+
+  /**
+   * Page object for "Loading More" component that renders beneath the body.
+   */
+  loadingMore: EmberTableLoadingMorePage,
 
   /**
    * Page object for table footer.

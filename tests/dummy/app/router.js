@@ -18,6 +18,7 @@ Router.map(function() {
         this.route('table-meta-data');
         this.route('styling-the-table');
         this.route('legacy-usage');
+        this.route('infinite-scroll');
       });
 
       this.route('header', function() {
