@@ -14,7 +14,15 @@ module.exports = function() {
           name: 'ember-lts-2.18',
           npm: {
             devDependencies: {
+              '@ember/jquery': '^1.1.0',
+              '@ember/test-helpers': '^1.7.0',
+              'ember-angle-bracket-invocation-polyfill': '^3.0.1',
+              'ember-qunit': '^4.0.0',
               'ember-source': '~2.18.0',
+              qunit: null,
+            },
+            dependencies: {
+              'ember-test-selectors': '5.0.0',
             },
           },
         },
@@ -22,6 +30,7 @@ module.exports = function() {
           name: 'ember-lts-3.4',
           npm: {
             devDependencies: {
+              'ember-angle-bracket-invocation-polyfill': '^3.0.1',
               'ember-source': '~3.4.0',
             },
           },
@@ -30,6 +39,7 @@ module.exports = function() {
           name: 'ember-lts-3.8',
           npm: {
             devDependencies: {
+              'ember-angle-bracket-invocation-polyfill': '^3.0.1',
               'ember-source': '~3.8.0',
             },
           },
@@ -112,11 +122,12 @@ module.exports = function() {
           },
         },
         {
-          name: 'ember-default-docs',
+          name: 'ember-docs',
           command: 'ember test --filter="Acceptance | docs"',
           npm: {
             devDependencies: {
               'ember-data': '~3.24.0',
+              'ember-source': '~3.28.0',
               'ember-cli-addon-docs': '^1.0.0',
               'ember-cli-addon-docs-yuidoc': '^1.0.0',
             },

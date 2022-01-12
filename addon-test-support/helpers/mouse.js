@@ -1,4 +1,4 @@
-import { triggerEvent } from 'ember-native-dom-helpers';
+import { triggerEvent } from '@ember/test-helpers';
 
 export async function mouseDown(target, x, y) {
   await triggerEvent(target, 'pointerdown', {

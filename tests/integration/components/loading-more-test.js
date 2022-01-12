@@ -1,10 +1,10 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 import { componentModule } from '../../helpers/module';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import hbs from 'htmlbars-inline-precompile';
-import wait from 'ember-test-helpers/wait';
+import { settled } from '@ember/test-helpers';
 import { generateColumns } from '../../helpers/generate-table';
-import { scrollTo } from 'ember-native-dom-helpers';
+import scrollTo from '../../helpers/scroll-to';
 
 let table = new TablePage();
 
@@ -21,7 +21,7 @@ module('Integration | loading more', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       let customSpinner = document.querySelector('[data-test-custom-spinner]');
       assert.ok(customSpinner, 'Renders a custom spinner');
@@ -36,7 +36,7 @@ module('Integration | loading more', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       assert.ok(table.loadingMore.isShown, 'Loading more indicator is shown');
     });
@@ -50,7 +50,7 @@ module('Integration | loading more', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       assert.notOk(table.loadingMore.isShown, 'Loading more indicator is not shown');
     });
@@ -64,7 +64,7 @@ module('Integration | loading more', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       assert.ok(table.loadingMore.isIncludedInLayout, 'Loading more indicator included in layout');
     });
@@ -78,7 +78,7 @@ module('Integration | loading more', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       assert.notOk(
         table.loadingMore.isIncludedInLayout,
@@ -101,7 +101,7 @@ module('Integration | loading more', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
       await scrollTo(table.overflow(), scrollLeft, 0);
 
       let expectedTranslateX = scrollLeft + (table.containerWidth - indicatorWidth) / 2;

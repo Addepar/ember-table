@@ -179,12 +179,12 @@ Because of this, building the docs requires going through Ember Try. For
 example to run tests asserting the docs build:
 
 ```
-ember try:one ember-default-docs
+ember try:one ember-docs
 ```
 
 You might also want to run a command with the addon docs libraries installed,
 for example to create a production build, and you can do so like this:
 
 ```
-ember try:one ember-default-docs --- ember build -e production
+ember try:one ember-docs --- ember build -e production
 ```

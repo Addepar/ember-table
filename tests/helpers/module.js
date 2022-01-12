@@ -1,4 +1,5 @@
-import { module, moduleForComponent } from 'ember-qunit';
+import { module } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 
 export function scenarioModule(scenarios, callback) {
   for (let scenario in scenarios) {
@@ -9,9 +10,11 @@ export function scenarioModule(scenarios, callback) {
 }
 
 export function componentModule(moduleName, callback) {
-  moduleForComponent('ember-table', moduleName, { integration: true });
+  module(moduleName, function(hooks) {
+    setupRenderingTest(hooks);
 
-  callback();
+    callback();
+  });
 }
 
 export function parameterizedComponentModule(moduleName, parameters, callback) {
@@ -19,14 +22,14 @@ export function parameterizedComponentModule(moduleName, parameters, callback) {
     let { values, hooks } = parameters[key];
 
     for (let value of values) {
-      moduleForComponent('ember-table', `${moduleName} > params {${key}: ${value}}`, {
-        integration: true,
-        beforeEach() {
+      module(`${moduleName} > params {${key}: ${value}}`, function(qunitHooks) {
+        setupRenderingTest(qunitHooks);
+        qunitHooks.beforeEach(function() {
           hooks.beforeEach && hooks.beforeEach(value);
-        },
-        afterEach() {
+        });
+        qunitHooks.afterEach(function() {
           hooks.afterEach && hooks.afterEach(value);
-        },
+        });
       });
       callback();
     }

@@ -1,12 +1,11 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 
 import { generateTable, generateColumns } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 import { set, get } from '@ember/object';
 
-import { fillIn } from 'ember-native-dom-helpers';
-import wait from 'ember-test-helpers/wait';
+import { fillIn, settled } from '@ember/test-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { run } from '@ember/runloop';
@@ -78,7 +77,7 @@ module('Integration | cell', function() {
         set(rows[0], 'B', 'Z');
       });
 
-      await wait();
+      await settled();
 
       assert.equal(table.getCell(0, 0).text, 'Y', 'renders correct updated value');
       assert.equal(table.getCell(0, 1).text, 'Z', 'renders correct updated value');
@@ -111,7 +110,7 @@ module('Integration | cell', function() {
         </div>
       `);
 
-      await wait();
+      await settled();
 
       fillIn('input', 'Z');
 
@@ -140,7 +139,7 @@ module('Integration | cell', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       let row = table.rows.objectAt(0);
       let cells = row.cells.toArray();
@@ -179,7 +178,7 @@ module('Integration | cell', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       let header = table.headers.objectAt(0);
       let row = table.rows.objectAt(0);
