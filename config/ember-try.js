@@ -14,6 +14,7 @@ module.exports = function() {
           name: 'ember-lts-2.18',
           npm: {
             devDependencies: {
+              'ember-angle-bracket-invocation-polyfill': '^3.0.1',
               'ember-source': '~2.18.0',
             },
           },
@@ -22,6 +23,7 @@ module.exports = function() {
           name: 'ember-lts-3.4',
           npm: {
             devDependencies: {
+              'ember-angle-bracket-invocation-polyfill': '^3.0.1',
               'ember-source': '~3.4.0',
             },
           },
@@ -30,6 +32,7 @@ module.exports = function() {
           name: 'ember-lts-3.8',
           npm: {
             devDependencies: {
+              'ember-angle-bracket-invocation-polyfill': '^3.0.1',
               'ember-source': '~3.8.0',
             },
           },
