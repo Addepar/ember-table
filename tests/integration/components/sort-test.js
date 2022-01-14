@@ -1,9 +1,9 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 
 import { generateTable } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
-import { findAll } from 'ember-native-dom-helpers';
+import { findAll } from '@ember/test-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 

@@ -1,4 +1,4 @@
-import { module, test, skip } from 'ember-qunit';
+import { module, test, skip } from 'qunit';
 
 import {
   configureTableGeneration,
@@ -8,7 +8,8 @@ import {
 } from '../../../helpers/generate-table';
 import { parameterizedComponentModule } from '../../../helpers/module';
 
-import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
+import { find, findAll } from '@ember/test-helpers';
+import scrollTo from '../../../helpers/scroll-to';
 import { mouseDown, mouseMove, mouseUp } from 'ember-table/test-support/helpers/mouse';
 import { getScale } from 'ember-table/test-support/helpers/element';
 
