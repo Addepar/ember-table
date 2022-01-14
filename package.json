@@ -37,13 +37,12 @@
     "css-element-queries": "^0.4.0",
     "ember-classy-page-object": "^0.7.0",
     "ember-cli-babel": "^7.12.0",
-    "ember-cli-htmlbars": "^3.0.1",
-    "ember-cli-htmlbars-inline-precompile": "^2.1.0",
+    "ember-cli-htmlbars": "^5.0.1",
     "ember-cli-node-assets": "^0.2.2",
     "ember-cli-version-checker": "^3.0.1",
     "ember-compatibility-helpers": "^1.2.0",
-    "ember-raf-scheduler": "^0.2.0",
-    "ember-test-selectors": "^2.1.0",
+    "ember-raf-scheduler": "^0.3.0",
+    "ember-test-selectors": "^5.0.0",
     "hammerjs": "^2.0.8"
   },
   "devDependencies": {
@@ -52,10 +51,12 @@
     "@addepar/prettier-config": "^1.0.0",
     "@addepar/sass-lint-config": "^2.0.1",
     "@addepar/style-toolbox": "~0.8.1",
+    "@ember/optional-features": "^2.0.0",
     "@types/ember": "^2.8.22",
     "babel-eslint": "^10.0.1",
     "broccoli-asset-rev": "^3.0.0",
     "ember-a11y-testing": "^0.5.0",
+    "ember-auto-import": "^2.0.0",
     "ember-angle-bracket-invocation-polyfill": "^1.3.1",
     "ember-cli": "~3.1.4",
     "ember-cli-dependency-checker": "^3.2.0",
@@ -66,7 +67,6 @@
     "ember-cli-eslint": "^5.1.0",
     "ember-cli-inject-live-reload": "^2.0.1",
     "ember-cli-sass": "^10.0.0",
-    "ember-cli-shims": "^1.2.0",
     "ember-cli-sri": "^2.1.0",
     "ember-cli-terser": "^4.0.0",
     "ember-disable-prototype-extensions": "^1.1.2",
@@ -77,11 +77,11 @@
     "ember-native-dom-helpers": "^0.7.0",
     "ember-qunit": "^4.5.1",
     "ember-radio-button": "^1.2.3",
-    "ember-resolver": "^5.1.1",
+    "ember-resolver": "^8.0.2",
     "ember-source": "~3.28.0",
     "ember-source-channel-url": "^1.0.1",
     "ember-truth-helpers": "^2.0.0",
-    "ember-try": "^1.1.0",
+    "ember-try": "^1.4.0",
     "eslint-plugin-ember": "^6.2.0",
     "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-prettier": "2.6.0",
@@ -89,10 +89,14 @@
     "loader.js": "^4.2.3",
     "npm-run-all": "^4.1.5",
     "release-it": "^12.3.4",
-    "sass": "^1.26.10"
+    "sass": "^1.26.10",
+    "webpack": "^5.0.0"
   },
   "engines": {
     "node": ">= 14.*"
+  },
+  "ember": {
+    "edition": "octane"
   },
   "ember-addon": {
     "configPath": "tests/dummy/config"
