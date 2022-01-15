@@ -1,6 +1,6 @@
 import PageObject, { alias, collection, hasClass, triggerable } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
-import { click } from 'ember-native-dom-helpers';
+import { click } from '@ember/test-helpers';
 
 import { mouseDown, mouseMove, mouseUp } from '../../helpers/mouse';
 import { getScale } from '../../helpers/element';

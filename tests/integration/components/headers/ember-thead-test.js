@@ -1,6 +1,7 @@
-import { moduleForComponent, test } from 'ember-qunit';
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { click } from 'ember-native-dom-helpers';
+import { click } from '@ember/test-helpers';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { A } from '@ember/array';
 import RSVP from 'rsvp';
@@ -39,8 +40,8 @@ function sumHeaderWidths(table) {
 
 async function renderTable(context) {
   await context.render(hbs`
-    <button id="add-column" {{action 'addColumn'}}>Add Column</button>
-    <button id="remove-column" {{action 'removeColumn'}}>Remove Column</button>
+    <button id="add-column" {{action this.addColumn}}>Add Column</button>
+    <button id="remove-column" {{action this.removeColumn}}>Remove Column</button>
     {{#ember-table data-test-ember-table=true as |t|}}
       {{#ember-thead
         api=t
@@ -130,87 +131,94 @@ async function testColumnAddition(assert, table) {
   assert.equal(table.containerWidth, originalContainerWidth, 'table container width is unchanged');
 }
 
-moduleForComponent('ember-thead', '[Unit] ember-thead', { integration: true });
+module('[Unit] ember-thead', function(hooks) {
+  setupRenderingTest(hooks);
 
-test('table resizes when columns are removed', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', data.columns);
-  this.on('removeColumn', function() {
-    this.set('columns', this.get('columns').slice(0, -1));
+  hooks.beforeEach(function() {
+    this.set('addColumn', () => {});
+    this.set('removeColumn', () => {});
   });
 
-  await renderTable(this);
-  await testColumnRemovals(assert, new TablePage());
-});
+  test('table resizes when columns are removed', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', data.columns);
+    this.set('removeColumn', () => {
+      this.set('columns', this.get('columns').slice(0, -1));
+    });
 
-test('table resizes when columns are removed via mutation', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', A(data.columns));
-  this.on('removeColumn', function() {
-    this.get('columns').popObject();
+    await renderTable(this);
+    await testColumnRemovals(assert, new TablePage());
   });
 
-  await renderTable(this);
-  await testColumnRemovals(assert, new TablePage());
-});
+  test('table resizes when columns are removed via mutation', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', A(data.columns));
+    this.set('removeColumn', () => {
+      this.get('columns').popObject();
+    });
 
-test('table resizes when columns are added', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', data.columns);
-  this.on('addColumn', function() {
-    this.set('columns', [...data.columns, data.newColumn]);
+    await renderTable(this);
+    await testColumnRemovals(assert, new TablePage());
   });
 
-  await renderTable(this);
-  await testColumnAddition(assert, new TablePage());
-});
+  test('table resizes when columns are added', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', data.columns);
+    this.set('addColumn', () => {
+      this.set('columns', [...data.columns, data.newColumn]);
+    });
 
-test('table resizes when columns are added via mutation', async function(assert) {
-  let data = tableData();
-  this.set('rows', data.rows);
-  this.set('columns', A(data.columns));
-  this.on('addColumn', function() {
-    this.get('columns').pushObject(data.newColumn);
+    await renderTable(this);
+    await testColumnAddition(assert, new TablePage());
   });
 
-  await renderTable(this);
-  await testColumnAddition(assert, new TablePage());
-});
+  test('table resizes when columns are added via mutation', async function(assert) {
+    let data = tableData();
+    this.set('rows', data.rows);
+    this.set('columns', A(data.columns));
+    this.set('addColumn', () => {
+      this.get('columns').pushObject(data.newColumn);
+    });
 
-test('if columnKeyPath is set, meta data is preserved when columns are replaced', async function(assert) {
-  let data = tableData();
-
-  data.columns.forEach((column, i) => {
-    // column width is only stored as meta data when it is not specified
-    delete column.width;
-
-    // add a unique key for `columnKeyPath`
-    column.key = `${i}`;
+    await renderTable(this);
+    await testColumnAddition(assert, new TablePage());
   });
 
-  this.set('rows', data.rows);
-  this.set('columns', data.columns);
-  this.set('columnKeyPath', 'key');
+  test('if columnKeyPath is set, meta data is preserved when columns are replaced', async function(assert) {
+    let data = tableData();
 
-  await renderTable(this);
+    data.columns.forEach((column, i) => {
+      // column width is only stored as meta data when it is not specified
+      delete column.width;
 
-  let table = new TablePage();
-  let header = table.headers.objectAt(0);
-  let initialHeaderWidth = header.width;
-  await header.resize(500);
-  let expectedHeaderWidth = header.width; // might not be exactly 500
+      // add a unique key for `columnKeyPath`
+      column.key = `${i}`;
+    });
 
-  // sanity check
-  assert.notEqual(initialHeaderWidth, expectedHeaderWidth, 'header width has changed');
+    this.set('rows', data.rows);
+    this.set('columns', data.columns);
+    this.set('columnKeyPath', 'key');
 
-  // substitute deeply equal, but non-identical columns
-  let newColumns = data.columns.map(column => Object.assign({}, column));
-  this.set('columns', newColumns);
-  await rafFinished();
+    await renderTable(this);
 
-  // without `columnKeyPath`, header would snap back to default width
-  assert.equal(header.width, expectedHeaderWidth, 'meta data is preserved');
+    let table = new TablePage();
+    let header = table.headers.objectAt(0);
+    let initialHeaderWidth = header.width;
+    await header.resize(500);
+    let expectedHeaderWidth = header.width; // might not be exactly 500
+
+    // sanity check
+    assert.notEqual(initialHeaderWidth, expectedHeaderWidth, 'header width has changed');
+
+    // substitute deeply equal, but non-identical columns
+    let newColumns = data.columns.map(column => Object.assign({}, column));
+    this.set('columns', newColumns);
+    await rafFinished();
+
+    // without `columnKeyPath`, header would snap back to default width
+    assert.equal(header.width, expectedHeaderWidth, 'meta data is preserved');
+  });
 });

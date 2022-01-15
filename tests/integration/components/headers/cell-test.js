@@ -1,4 +1,4 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 import { componentModule } from '../../../helpers/module';
 
 import { generateTable } from '../../../helpers/generate-table';

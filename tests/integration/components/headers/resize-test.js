@@ -1,4 +1,4 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 
 import {
   configureTableGeneration,
