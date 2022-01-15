@@ -5,8 +5,6 @@ import { computed } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
 
-import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
-
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 import defaultTo from '../../-private/utils/default-to';
 
@@ -364,10 +362,4 @@ export default Component.extend({
   _containerSelector: computed('containerSelector', 'unwrappedApi.tableId', function() {
     return this.get('containerSelector') || `#${this.get('unwrappedApi.tableId')}`;
   }),
-
-  /**
-   * Determines if the component can yield-to-inverse based on
-   * the version compatability.
-   */
-  shouldYieldToInverse: SUPPORTS_INVERSE_BLOCK,
 });

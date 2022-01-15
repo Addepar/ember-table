@@ -1,11 +1,7 @@
 <div class='font-sans text-black leading-normal'>
-  {{#if this.canShowAddonDocs}}
-    {{docs-header}}
-  {{/if}}
+  {{docs-header}}
 
   {{outlet}}
 
-  {{#if this.canShowAddonDocs}}
-    {{docs-keyboard-shortcuts}}
-  {{/if}}
+  {{docs-keyboard-shortcuts}}
 </div>
