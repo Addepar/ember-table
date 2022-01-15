@@ -7,8 +7,6 @@ import { componentModule } from '../../helpers/module';
 
 import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
 
-import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
-
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
 import wait from 'ember-test-helpers/wait';
@@ -213,30 +211,26 @@ module('Integration | basic', function() {
     });
 
     test('it yields to inverse when tbody rows are empty', async function(assert) {
-      if (!SUPPORTS_INVERSE_BLOCK) {
-        assert.ok(true, 'Does not support yield-to-inverse');
-      } else {
-        this.set('columns', generateColumns(4));
-        this.set('rows', []);
-        this.render(hbs`
-          <div style="height: 500px;">
-            {{#ember-table as |t|}}
-              {{ember-thead api=t columns=columns}}
+      this.set('columns', generateColumns(4));
+      this.set('rows', []);
+      this.render(hbs`
+        <div style="height: 500px;">
+          {{#ember-table as |t|}}
+            {{ember-thead api=t columns=this.columns}}
 
-              {{#ember-tbody api=t rows=rows as |b|}}
-              {{else}}
-                <div data-test-inverse-yield>inverse yield</div>
-              {{/ember-tbody}}
-            {{/ember-table}}
-          </div>
-        `);
+            {{#ember-tbody api=t rows=this.rows as |b|}}
+            {{else}}
+              <div data-test-inverse-yield>inverse yield</div>
+            {{/ember-tbody}}
+          {{/ember-table}}
+        </div>
+      `);
 
-        await wait();
-        assert.ok(
-          find('[data-test-inverse-yield]'),
-          'expected the inverse yield content to be displayed'
-        );
-      }
+      await wait();
+      assert.ok(
+        find('[data-test-inverse-yield]'),
+        'expected the inverse yield content to be displayed'
+      );
     });
 
     test('Text can be aligned left, center or right', async function(assert) {
