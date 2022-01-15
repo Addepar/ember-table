@@ -7,7 +7,7 @@ import PageObject, {
 } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 
-import { click } from 'ember-native-dom-helpers';
+import { click } from '@ember/test-helpers';
 
 /**
  * Page object for single table `td` cell; also used by the footer page object

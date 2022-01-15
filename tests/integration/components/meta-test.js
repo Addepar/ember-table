@@ -1,8 +1,8 @@
 import hbs from 'htmlbars-inline-precompile';
-import wait from 'ember-test-helpers/wait';
-import { module, test } from 'ember-qunit';
+import { settled } from '@ember/test-helpers';
+import { module, test } from 'qunit';
 import { set } from '@ember/object';
-import { scrollTo } from 'ember-native-dom-helpers';
+import scrollTo from '../../helpers/scroll-to';
 
 import { generateTableValues } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
@@ -63,7 +63,7 @@ module('Integration | meta', function() {
         </div>
       `);
 
-      await wait();
+      await settled();
       await table.getCell(0, 0).click();
 
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta property set correctly');
@@ -197,7 +197,7 @@ module('Integration | meta', function() {
         </div>
       `);
 
-      await wait();
+      await settled();
       await table.getCell(0, 0).click();
 
       // ensure we trigger property updates by scrolling around a bit
@@ -256,7 +256,7 @@ module('Integration | meta', function() {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       // single cell in first header row
       assert.ok(table.headers.objectAt(0).text.includes('0'));

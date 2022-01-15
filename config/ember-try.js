@@ -14,8 +14,12 @@ module.exports = function() {
           name: 'ember-lts-2.18',
           npm: {
             devDependencies: {
+              '@ember/jquery': '^1.1.0',
+              '@ember/test-helpers': '^1.7.0',
               'ember-angle-bracket-invocation-polyfill': '^3.0.1',
+              'ember-qunit': '^4.0.0',
               'ember-source': '~2.18.0',
+              qunit: null,
             },
           },
         },

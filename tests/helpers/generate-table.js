@@ -1,5 +1,5 @@
 import hbs from 'htmlbars-inline-precompile';
-import wait from 'ember-test-helpers/wait';
+import { settled } from '@ember/test-helpers';
 import {
   configureTableGeneration,
   generateColumns,
@@ -160,5 +160,5 @@ export async function generateTable(testContext, ...args) {
 
   testContext.render(fullTable);
 
-  await wait();
+  await settled();
 }

@@ -1,4 +1,4 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -7,7 +7,7 @@ import { generateTable } from '../../helpers/generate-table';
 import { generateRows } from 'dummy/utils/generators';
 import { A as emberA } from '@ember/array';
 import { run } from '@ember/runloop';
-import { scrollTo } from 'ember-native-dom-helpers';
+import scrollTo from '../../helpers/scroll-to';
 import { registerTestWarnHandler } from '../../helpers/warn-handlers';
 
 import { runInDebug } from '@ember/debug';
