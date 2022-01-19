@@ -149,6 +149,13 @@ export default Component.extend({
 
   updateTransform() {
     let scrollElement = this.get('scrollElement');
+
+    // this method can be triggered by the resize sensor before the element
+    // (and `scrollElement`) exists
+    if (!scrollElement) {
+      return;
+    }
+
     let translateX = 0;
 
     if (this.get('center')) {
