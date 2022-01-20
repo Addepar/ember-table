@@ -148,5 +148,11 @@
     "name": "v3.3.0",
     "sha": "3550d21f1a48177c31161c744fd3988ae2081df9",
     "tag": "v3.3.0"
+  },
+  "v4.0.0-beta.3": {
+    "path": "versions/v4.0.0-beta.3",
+    "name": "v4.0.0-beta.3",
+    "sha": "0cf9d350ec8bac4fa44de0cdce4dc94c63a8b84b",
+    "tag": "v4.0.0-beta.3"
   }
 }
