@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { click } from '@ember/test-helpers';
+import { click, render } from '@ember/test-helpers';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { A } from '@ember/array';
 import RSVP from 'rsvp';
@@ -38,8 +38,8 @@ function sumHeaderWidths(table) {
   return table.headers.map(h => h.width).reduce((sum, w) => sum + w, 0);
 }
 
-async function renderTable(context) {
-  await context.render(hbs`
+async function renderTable() {
+  await render(hbs`
     <button id="add-column" {{action this.addColumn}}>Add Column</button>
     <button id="remove-column" {{action this.removeColumn}}>Remove Column</button>
     {{#ember-table data-test-ember-table=true as |t|}}

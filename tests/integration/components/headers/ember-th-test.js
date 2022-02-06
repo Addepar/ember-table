@@ -1,7 +1,7 @@
 import { module, test } from 'qunit';
 import { setupRenderingTest } from 'ember-qunit';
 import hbs from 'htmlbars-inline-precompile';
-import { settled } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 
 import { generateTableValues, generateColumns } from '../../../helpers/generate-table';
 import TablePage from 'ember-table/test-support/pages/ember-table';
@@ -32,7 +32,7 @@ module('[Unit] ember-th', function(hooks) {
 
     let firstHeader = table.headers.objectAt(0);
 
-    await this.render(hbs`
+    await await render(hbs`
     {{#ember-table data-test-ember-table=true as |t|}}
       {{#ember-thead
         api=t
@@ -79,7 +79,7 @@ module('[Unit] ember-th', function(hooks) {
     this.set('columns', generateColumns(columnCount));
     this.set('rows', rows);
 
-    this.render(hbs`
+    await render(hbs`
       {{#ember-table as |t|}}
         {{ember-thead api=t columns=this.columns}}
         {{ember-tbody api=t rows=this.rows}}
@@ -112,7 +112,7 @@ module('[Unit] ember-th', function(hooks) {
     this.set('columns', generateColumns(columnCount));
     this.set('rows', rows);
 
-    this.render(hbs`
+    await render(hbs`
       {{#ember-table as |t|}}
         {{ember-thead
           api=t

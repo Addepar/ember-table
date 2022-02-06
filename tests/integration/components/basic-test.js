@@ -9,7 +9,7 @@ import scrollTo from '../../helpers/scroll-to';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
-import { find, findAll, settled } from '@ember/test-helpers';
+import { find, findAll, render, settled } from '@ember/test-helpers';
 
 let table = new TablePage({
   body: {
@@ -184,7 +184,7 @@ module('Integration | basic', function() {
       this.set('estimateRowHeight', rowHeight);
       this.set('containerHeight', containerHeight);
 
-      await this.render(hbs`
+      await render(hbs`
         <style>
           .ember-table {
             max-height: initial;
@@ -213,7 +213,7 @@ module('Integration | basic', function() {
     test('it yields to inverse when tbody rows are empty', async function(assert) {
       this.set('columns', generateColumns(4));
       this.set('rows', []);
-      this.render(hbs`
+      await render(hbs`
         <div style="height: 500px;">
           {{#ember-table as |t|}}
             {{ember-thead api=t columns=this.columns}}
@@ -288,7 +288,7 @@ module('Integration | basic', function() {
       this.set('rows', generateRows(rowCount));
       this.set('showComponent', true);
 
-      this.render(hbs`
+      await render(hbs`
         {{#if this.showComponent}}
           <div id="container" style="height: 500px;">
             {{#ember-table as |t|}}
