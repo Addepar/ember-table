@@ -115,7 +115,7 @@ const TableColumnMeta = EmberObject.extend({
     }
   }),
 
-  isLastRendered: computed.readOnly('_node.isLastRendered'),
+  isLastRendered: readOnly('_node.isLastRendered'),
 
   sortIndex: computed('_node.{tree.sorts.[],column.valuePath}', function() {
     let valuePath = this.get('_node.column.valuePath');
