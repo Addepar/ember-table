@@ -2,7 +2,7 @@ import { module, test } from 'qunit';
 import { componentModule } from '../../helpers/module';
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import hbs from 'htmlbars-inline-precompile';
-import { settled } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import { generateColumns } from '../../helpers/generate-table';
 import scrollTo from '../../helpers/scroll-to';
 
@@ -11,7 +11,7 @@ let table = new TablePage();
 module('Integration | loading more', function() {
   componentModule('basic', function() {
     test('it renders a custom spinner', async function(assert) {
-      await this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead columns=this.columns api=t}}
           {{ember-tbody api=t}}
@@ -28,7 +28,7 @@ module('Integration | loading more', function() {
     });
 
     test('it is shown when isLoading is true', async function(assert) {
-      await this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead columns=this.columns api=t}}
           {{ember-tbody api=t}}
@@ -42,7 +42,7 @@ module('Integration | loading more', function() {
     });
 
     test('it is not shown when isLoading is false', async function(assert) {
-      await this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead columns=this.columns api=t}}
           {{ember-tbody api=t}}
@@ -56,7 +56,7 @@ module('Integration | loading more', function() {
     });
 
     test('it is included in layout when canLoadMore is true', async function(assert) {
-      await this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead columns=this.columns api=t}}
           {{ember-tbody api=t}}
@@ -70,7 +70,7 @@ module('Integration | loading more', function() {
     });
 
     test('it is not included in layout when canLoadMore is false', async function(assert) {
-      await this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead columns=this.columns api=t}}
           {{ember-tbody api=t}}
@@ -91,7 +91,7 @@ module('Integration | loading more', function() {
       let indicatorWidth = 10;
 
       this.set('columns', generateColumns(4, { width: 1000 }));
-      await this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead columns=this.columns api=t}}
           {{ember-tbody api=t}}
