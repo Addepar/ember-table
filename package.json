@@ -75,7 +75,7 @@
     "ember-load-initializers": "^2.0.0",
     "ember-math-helpers": "~2.11.3",
     "ember-qunit": "^5.0.0",
-    "ember-radio-button": "^1.2.3",
+    "ember-radio-button": "^2.0.1",
     "ember-resolver": "^8.0.2",
     "ember-source": "~3.28.0",
     "ember-source-channel-url": "^1.0.1",
