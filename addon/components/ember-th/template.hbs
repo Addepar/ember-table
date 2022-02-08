@@ -1,9 +1,10 @@
-{{#if (has-block)}}
-  {{yield this.columnValue this.columnMeta this.rowMeta}}
-{{else}}
-  {{this.columnValue.name}}
 
-  {{ember-th/sort-indicator columnMeta=this.columnMeta}}
-
-  {{ember-th/resize-handle columnMeta=this.columnMeta}}
-{{/if}}
+  {{#if (has-block)}}
+    {{yield this.columnValue this.columnMeta this.rowMeta}}
+  {{else}}
+    {{this.columnValue.name}}
+  
+    {{ember-th/sort-indicator columnMeta=this.columnMeta}}
+  
+    {{ember-th/resize-handle columnMeta=this.columnMeta}}
+  {{/if}}

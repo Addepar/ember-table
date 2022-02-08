@@ -12,7 +12,7 @@ export { configureTableGeneration, resetTableGenerationConfig, generateColumns, 
 
 const fullTable = hbs`
   <div style="height: 500px;">
-    {{#ember-table data-test-ember-table=true as |t|}}
+    {{#ember-table as |t|}}
       {{#ember-thead
         api=t
 

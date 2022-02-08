@@ -11,6 +11,8 @@ export default Component.extend({
     'indeterminate',
     'type',
     'value',
+    'dataTestSelectRow:data-test-select-row',
+    'dataTestCollapseRow:data-test-collapse-row',
   ],
 
   ariaLabel: undefined,

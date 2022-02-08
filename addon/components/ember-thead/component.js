@@ -218,7 +218,8 @@ export default Component.extend({
   */
   onResize: null,
 
-  'data-test-row-count': readOnly('wrappedRows.length'),
+  attributeBindings: ['dataTestRowCount:data-test-row-count'],
+  dataTestRowCount: readOnly('wrappedRows.length'),
 
   init() {
     this._super(...arguments);

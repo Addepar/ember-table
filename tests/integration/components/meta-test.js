@@ -9,8 +9,8 @@ import { componentModule } from '../../helpers/module';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
-let table = new TablePage('[data-test-main-table]');
-let otherTable = new TablePage('[data-test-other-table]');
+let table = new TablePage('.dataTestMainTable');
+let otherTable = new TablePage('.dataTestOtherTable');
 
 module('Integration | meta', function() {
   componentModule('basic', function() {
@@ -25,7 +25,7 @@ module('Integration | meta', function() {
 
       await render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
+          {{#ember-table class="dataTestMainTable" as |t|}}
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
@@ -121,7 +121,7 @@ module('Integration | meta', function() {
 
       await render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
+          {{#ember-table class="dataTestMainTable" as |t|}}
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
@@ -159,7 +159,7 @@ module('Integration | meta', function() {
         </div>
 
         <div style="height: 500px;">
-          {{#ember-table data-test-other-table=true as |t|}}
+          {{#ember-table class="dataTestOtherTable" as |t|}}
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
@@ -201,7 +201,7 @@ module('Integration | meta', function() {
       await table.getCell(0, 0).click();
 
       // ensure we trigger property updates by scrolling around a bit
-      let scrollSelector = '[data-test-other-table] [data-test-ember-table-overflow]';
+      let scrollSelector = '.dataTestOtherTable [data-test-ember-table-overflow]';
       await scrollTo(scrollSelector, 0, 10000);
       await scrollTo(scrollSelector, 0, 1000);
       await scrollTo(scrollSelector, 0, 100);
@@ -243,7 +243,7 @@ module('Integration | meta', function() {
       generateTableValues(this, { columnCount, columnOptions: { subcolumnCount } });
 
       await render(hbs`
-        {{#ember-table data-test-main-table=true as |t|}}
+        {{#ember-table class="dataTestMainTable" as |t|}}
           {{#ember-thead api=t columns=columns as |h|}}
             {{#ember-tr api=h as |r|}}
               {{#ember-th api=r as |column columnMeta rowMeta|}}
