@@ -1,6 +1,5 @@
 import Component from '@ember/component';
-
-import { run } from '@ember/runloop';
+import { scheduleOnce } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
@@ -287,7 +286,7 @@ export default Component.extend({
     ) {
       this._isObservingDebugRowCount = true;
       let scheduleUpdate = (this._scheduleUpdate = () => {
-        run.scheduleOnce('actions', this, this._updateDataTestRowCount);
+        scheduleOnce('actions', this, this._updateDataTestRowCount);
       });
       this.collapseTree.addObserver('rows', scheduleUpdate);
       this.collapseTree.addObserver('[]', scheduleUpdate);
