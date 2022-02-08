@@ -15,6 +15,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               '@ember/jquery': '^1.1.0',
+              'ember-a11y-testing': '^0.5.0',
               '@ember/test-helpers': '^1.7.0',
               'ember-angle-bracket-invocation-polyfill': '^3.0.1',
               'ember-qunit': '^4.0.0',
