@@ -30,7 +30,8 @@ import { next, run, schedule, scheduleOnce } from '@ember/runloop';
 export default Component.extend({
   classNames: ['ember-table-loading-more'],
 
-  'data-test-ember-table-loading-more': true,
+  attributeBindings: ['dataTestEmberTableLoadingMore:data-test-ember-table-loading-more'],
+  dataTestEmberTableLoadingMore: true,
 
   unwrappedApi: or('api.api', 'api'),
   scrollElement: readOnly('unwrappedApi.columnTree.container'),

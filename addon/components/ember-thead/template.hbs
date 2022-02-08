@@ -1,13 +1,14 @@
-{{#each this.wrappedRows as |api|}}
-  {{#if (has-block)}}
-    {{yield (hash
-      cells=api.cells
-      isHeader=api.isHeader
-      rowsCount=api.rowsCount
 
-      row=(component "ember-tr" api=api)
-    )}}
-  {{else}}
-    {{ember-tr api=api}}
-  {{/if}}
-{{/each}}
+  {{#each this.wrappedRows as |api|}}
+    {{#if (has-block)}}
+      {{yield (hash
+        cells=api.cells
+        isHeader=api.isHeader
+        rowsCount=api.rowsCount
+  
+        row=(component "ember-tr" api=api)
+      )}}
+    {{else}}
+      {{ember-tr api=api}}
+    {{/if}}
+  {{/each}}

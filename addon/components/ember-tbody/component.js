@@ -251,7 +251,7 @@ export default Component.extend({
 
   dataTestRowCount: null,
 
-  'data-test-row-count': readOnly('dataTestRowCount'),
+  attributeBindings: ['dataTestRowCount:data-test-row-count'],
 
   init() {
     this._super(...arguments);
@@ -281,7 +281,10 @@ export default Component.extend({
      * In an actual app build, `this.attributeBindings` may be undefined.
      * Guard against it being `undefined` before checking for the attribute.
      */
-    if (this.attributeBindings && this.attributeBindings.includes('data-test-row-count')) {
+    if (
+      this.attributeBindings &&
+      this.attributeBindings.includes('dataTestRowCount:data-test-row-count')
+    ) {
       this._isObservingDebugRowCount = true;
       let scheduleUpdate = (this._scheduleUpdate = () => {
         run.scheduleOnce('actions', this, this._updateDataTestRowCount);
