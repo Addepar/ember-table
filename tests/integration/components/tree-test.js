@@ -126,8 +126,8 @@ module('Integration | Tree', () => {
 
       await render(hbs`
         {{#ember-table as |t|}}
-          {{ember-thead api=t columns=columns}}
-          {{#ember-tbody api=t rows=rows as |b|}}
+          {{ember-thead api=t columns=this.columns}}
+          {{#ember-tbody api=t rows=this.rows as |b|}}
             {{#ember-tr api=b as |r|}}
               {{#ember-td api=r as |c|}}
                 {{b.rowsCount}}

@@ -48,7 +48,8 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tbody}}
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
+
+            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -127,11 +128,13 @@ module('Integration | meta', function() {
                 {{/ember-th}}
               {{/ember-tr}}
             {{/ember-thead}}
-            {{#ember-tbody api=t rows=rows as |b|}}
+
+            {{#ember-tbody api=t rows=this.rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick=(action onClick)
+                  onClick=(action this.onClick)
+
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
                   {{#if cellMeta.wasClicked}}cell{{/if}}
@@ -141,7 +144,8 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tbody}}
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
+
+            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -161,11 +165,13 @@ module('Integration | meta', function() {
                 {{/ember-th}}
               {{/ember-tr}}
             {{/ember-thead}}
-            {{#ember-tbody api=t rows=rows as |b|}}
+
+            {{#ember-tbody api=t rows=this.rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick=(action onClick)
+                  onClick=(action this.onClick)
+
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
                   {{#if cellMeta.wasClicked}}cell{{/if}}
@@ -175,7 +181,8 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tbody}}
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
+
+            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}

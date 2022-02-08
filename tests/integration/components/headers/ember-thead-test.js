@@ -46,14 +46,14 @@ async function renderTable() {
       {{#ember-thead
         api=t
         widthConstraint='eq-container'
-        columns=columns
-        columnKeyPath=columnKeyPath as |h|}}
+        columns=this.columns
+        columnKeyPath=this.columnKeyPath as |h|}}
         {{#ember-tr api=h as |r|}}
           {{ember-th api=r}}
         {{/ember-tr}}
       {{/ember-thead}}
 
-      {{#ember-tbody api=t rows=rows as |b|}}
+      {{#ember-tbody api=t rows=this.rows as |b|}}
         {{#ember-tr api=b as |r|}}
           {{#ember-td api=r as |cellValue|}}
             {{cellValue}}
