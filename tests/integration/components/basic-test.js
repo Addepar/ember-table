@@ -190,15 +190,15 @@ module('Integration | basic', function() {
             max-height: initial;
           }
         </style>
-        <div id="container" style="height: {{containerHeight}}px; overflow: auto;">
+        <div id="container" style="height: {{this.containerHeight}}px; overflow: auto;">
           {{#ember-table as |t|}}
-            {{ember-thead api=t columns=columns}}
+            {{ember-thead api=t columns=this.columns}}
 
             {{ember-tbody
               api=t
               containerSelector="#container"
-              rows=rows
-              estimateRowHeight=estimateRowHeight
+              rows=this.rows
+              estimateRowHeight=this.estimateRowHeight
               renderAll=false
               bufferSize=0
             }}

@@ -15,13 +15,13 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSorted: true,
       });
 
-      await render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.ok(sort.indicator.isPresent);
 
       // Template block usage:
       await render(hbs`
-      {{#ember-th/sort-indicator columnMeta=columnMeta}}
+      {{#ember-th/sort-indicator columnMeta=this.columnMeta}}
         template block text
       {{/ember-th/sort-indicator}}
     `);
@@ -34,13 +34,13 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSorted: false,
       });
 
-      await render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.notOk(sort.indicator.isPresent);
 
       // Template block usage:
       await render(hbs`
-      {{#ember-th/sort-indicator columnMeta=columnMeta}}
+      {{#ember-th/sort-indicator columnMeta=this.columnMeta}}
         template block text
       {{/ember-th/sort-indicator}}
     `);
@@ -54,7 +54,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSortedAsc: true,
       });
 
-      await render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
       // asc sort
       assert.ok(sort.indicator.isAscending);
       assert.notOk(sort.indicator.isDescending);
@@ -72,7 +72,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         sortIndex: 2,
       });
 
-      await render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.equal(sort.indicator.text, '2');
 
@@ -86,7 +86,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSortable: true,
       });
 
-      await render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.ok(sort.toggle.isPresent);
       assert.equal(sort.toggle.text, 'Toggle Sort');
