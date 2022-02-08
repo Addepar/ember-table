@@ -79,7 +79,7 @@
     "ember-resolver": "^8.0.2",
     "ember-source": "~3.28.0",
     "ember-source-channel-url": "^1.0.1",
-    "ember-truth-helpers": "^2.0.0",
+    "ember-truth-helpers": "^3.0.0",
     "ember-try": "^1.4.0",
     "eslint-plugin-ember": "^6.2.0",
     "eslint-plugin-node": "^8.0.1",
