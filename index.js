@@ -20,7 +20,7 @@ module.exports = {
   included() {
     this._super.included.apply(this, arguments);
 
-    this.checker = new VersionChecker(this.project).forEmber();
+    this.checker = new VersionChecker(this.project);
 
     let importOptions;
 
@@ -44,7 +44,7 @@ module.exports = {
   isDevelopingAddon() {
     // this prevents templates from being cached before we can strip them out
     // they get cached by jshintAddonTree before we can intervene
-    if (this.checker.gte('2.3.0')) {
+    if (this.checker.for('ember-source').gte('2.3.0')) {
       return this._super.isDevelopingAddon.apply(this, arguments);
     }
 
@@ -53,7 +53,7 @@ module.exports = {
 
   treeForAddon(tree) {
     // strip out contextual components in versions that don't support them
-    if (!this.checker.gte('2.3.0')) {
+    if (!this.checker.for('ember-source').gte('2.3.0')) {
       tree = replace(tree, {
         files: ['**/*.hbs'],
         patterns: [
