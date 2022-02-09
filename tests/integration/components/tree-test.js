@@ -1,13 +1,12 @@
 import { module, test } from 'qunit';
 import { componentModule } from '../../helpers/module';
 import hbs from 'htmlbars-inline-precompile';
-import { find } from '@ember/test-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import { generateTable, generateColumns, generateRows } from '../../helpers/generate-table';
 
-import { settled } from '@ember/test-helpers';
+import { find, render, settled } from '@ember/test-helpers';
 
 let table = new TablePage();
 
@@ -125,7 +124,7 @@ module('Integration | Tree', () => {
       this.set('columns', generateColumns(columnCount));
       this.set('rows', generateRows(rowCount, rowDepth));
 
-      this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead api=t columns=columns}}
           {{#ember-tbody api=t rows=rows as |b|}}

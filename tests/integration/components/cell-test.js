@@ -5,7 +5,7 @@ import { generateTable, generateColumns } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 import { set, get } from '@ember/object';
 
-import { fillIn, settled } from '@ember/test-helpers';
+import { fillIn, render, settled } from '@ember/test-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { run } from '@ember/runloop';
@@ -94,7 +94,7 @@ module('Integration | cell', function() {
       this.set('columns', generateColumns(columnCount));
       this.set('rows', rows);
 
-      this.render(hbs`
+      await render(hbs`
         <div id="container" style="height: 500px;">
           {{#ember-table as |t|}}
             {{ember-thead api=t columns=this.columns}}
@@ -132,7 +132,7 @@ module('Integration | cell', function() {
       this.set('columns', generateColumns(columnCount));
       this.set('rows', rows);
 
-      this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead api=t columns=this.columns}}
           {{ember-tbody api=t rows=this.rows}}
@@ -166,7 +166,7 @@ module('Integration | cell', function() {
       this.set('columns', generateColumns(columnCount));
       this.set('rows', rows);
 
-      this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
           {{ember-thead
             api=t

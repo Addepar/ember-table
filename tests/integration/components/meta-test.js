@@ -1,5 +1,5 @@
 import hbs from 'htmlbars-inline-precompile';
-import { settled } from '@ember/test-helpers';
+import { render, settled } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { set } from '@ember/object';
 import scrollTo from '../../helpers/scroll-to';
@@ -23,7 +23,7 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { rowCount: 100, footerRowCount: 1 });
 
-      this.render(hbs`
+      await render(hbs`
         <div style="height: 500px;">
           {{#ember-table data-test-main-table=true as |t|}}
             {{#ember-thead api=t columns=columns as |h|}}
@@ -119,7 +119,7 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { rowCount: 100, footerRowCount: 1 });
 
-      this.render(hbs`
+      await render(hbs`
         <div style="height: 500px;">
           {{#ember-table data-test-main-table=true as |t|}}
             {{#ember-thead api=t columns=columns as |h|}}
@@ -242,7 +242,7 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { columnCount, columnOptions: { subcolumnCount } });
 
-      this.render(hbs`
+      await render(hbs`
         {{#ember-table data-test-main-table=true as |t|}}
           {{#ember-thead api=t columns=columns as |h|}}
             {{#ember-tr api=h as |r|}}
