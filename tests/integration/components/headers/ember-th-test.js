@@ -32,7 +32,7 @@ module('[Unit] ember-th', function(hooks) {
 
     let firstHeader = table.headers.objectAt(0);
 
-    await await render(hbs`
+    await render(hbs`
     {{#ember-table data-test-ember-table=true as |t|}}
       {{#ember-thead
         api=t

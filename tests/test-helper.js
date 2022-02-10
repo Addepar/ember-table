@@ -9,7 +9,7 @@ import {
   teardown as teardownWarnHandlers,
 } from './helpers/warn-handlers';
 import { gte } from 'ember-compatibility-helpers';
-
+import { setupForTest as setupEmberTableForTest } from 'ember-table/test-support';
 /*
  * see tests/index.html
  */
@@ -32,6 +32,7 @@ registerRAFWaiter();
 setApplication(Application.create(config.APP));
 
 QUnit.testStart(() => {
+  setupEmberTableForTest();
   setupWarnHandlers();
 });
 
