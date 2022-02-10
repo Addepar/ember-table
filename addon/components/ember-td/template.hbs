@@ -6,10 +6,10 @@
         data-test-select-row-container
       >
         {{-ember-table-private/simple-checkbox
-          dataTestSelectRow=true
           checked=this.rowMeta.isGroupSelected
           onClick=(action "onSelectionToggled")
           ariaLabel="Select row"
+          dataTestSelectRow=this.isTesting
         }}
         <span></span>
       </span>
@@ -17,11 +17,12 @@
 
     {{#if this.canCollapse}}
       <span class="et-toggle-collapse et-depth-indent {{this.depthClass}}">
+
         {{-ember-table-private/simple-checkbox
-          dataTestCollapseRow=true
           checked=this.rowMeta.isCollapsed
           onChange=(action "onCollapseToggled")
           ariaLabel="Collapse row"
+          dataTestCollapseRow=this.isTesting
         }}
         <span></span>
       </span>

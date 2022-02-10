@@ -25,7 +25,7 @@ module('Integration | meta', function() {
 
       await render(hbs`
         <div style="height: 500px;">
-          <EmberTable data-test-main-table as |t|>
+          <EmberTable data-test-main-table=true as |t|>
             <EmberThead @api={{t}} @columns={{columns}} as |h|>
               <EmberTr @api={{h}} as |r|>
                 <EmberTh @api={{r}} as |column columnMeta|>
@@ -121,7 +121,7 @@ module('Integration | meta', function() {
 
       await render(hbs`
         <div style="height: 500px;">
-          <EmberTable data-test-main-table as |t|>
+          <EmberTable data-test-main-table=true as |t|>
             <EmberThead @api={{t}} @columns={{columns}} as |h|>
               <EmberTr @api={{h}} as |r|>
                 <EmberTh @api={{r}} as |column columnMeta|>
@@ -159,7 +159,7 @@ module('Integration | meta', function() {
         </div>
 
         <div style="height: 500px;">
-          <EmberTable data-test-other-table as |t|>
+          <EmberTable data-test-other-table=true as |t|>
             <EmberThead @api={{t}} @columns={{columns}} as |h|>
               <EmberTr @api={{h}} as |r|>
                 <EmberTh @api={{r}} as |column columnMeta|>
@@ -243,7 +243,7 @@ module('Integration | meta', function() {
       generateTableValues(this, { columnCount, columnOptions: { subcolumnCount } });
 
       await render(hbs`
-        <EmberTable data-test-main-table as |t|>
+        <EmberTable data-test-main-table=true as |t|>
           <EmberThead @api={{t}} @columns={{columns}} as |h|>
             <EmberTr @api={{h}} as |r|>
               <EmberTh @api={{r}} as |column columnMeta rowMeta|>
