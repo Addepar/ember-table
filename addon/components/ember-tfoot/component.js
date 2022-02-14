@@ -33,8 +33,6 @@ export default EmberTBody.extend({
   layout,
   tagName: 'tfoot',
 
-  attributeBindings: ['wrappedRowArray.length:data-test-row-count'],
-
   wrappedRowArray: computed('wrappedRows.[]', function() {
     let wrappedRows = this.get('wrappedRows');
     let wrappedRowsLength = wrappedRows.get('length');

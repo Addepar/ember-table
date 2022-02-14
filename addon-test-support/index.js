@@ -1,11 +1,11 @@
 import TablePage from './pages/ember-table';
 
 import { setSetupRowCountForTest } from 'ember-table/components/ember-tbody/component';
-import { setSimpleCheckboxForTest } from 'ember-table/components/ember-td/component';
+import { setupTHeadForTest } from 'ember-table/components/ember-thead/component';
 
 function setupForTest() {
   setSetupRowCountForTest(true);
-  setSimpleCheckboxForTest(true);
+  setupTHeadForTest(true);
 }
 
 export { TablePage, setupForTest };
