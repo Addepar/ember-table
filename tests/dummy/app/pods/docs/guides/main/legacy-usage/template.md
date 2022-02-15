@@ -17,14 +17,14 @@ extra features. To see the differences, check out the
 or the original [angle bracket invocation rfc](https://github.com/emberjs/rfcs/blob/master/text/0311-angle-bracket-invocation.md).
 
 ```hbs
-{{#ember-table as |t|}}
-  {{#t.head columns=this.columns as |h|}}
+{{#ember-table data-test-ember-table=true as |t|}}
+  {{#t.head columns=columns as |h|}}
     {{#h.row as |r|}}
       {{r.cell}}
     {{/h.row}}
   {{/t.head}}
 
-  {{#t.body rows=this.rows as |b|}}
+  {{#t.body rows=rows as |b|}}
     {{#b.row as |r|}}
       {{#r.cell as |cellValue|}}
         {{cellValue}}
@@ -32,7 +32,7 @@ or the original [angle bracket invocation rfc](https://github.com/emberjs/rfcs/b
     {{/b.row}}
   {{/t.body}}
 
-  {{#t.foot rows=this.footerRows as |f|}}
+  {{#t.foot rows=footerRows as |f|}}
     {{#f.row as |r|}}
       {{#r.cell as |cellValue|}}
         {{cellValue}}
