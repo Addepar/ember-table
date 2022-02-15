@@ -1,4 +1,3 @@
-import { A as emberA } from '@ember/array';
 import { get, set } from '@ember/object';
 import { run } from '@ember/runloop';
 import ColumnTree from 'ember-table/-private/column-tree';
@@ -6,22 +5,6 @@ import MetaCache from 'ember-table/-private/meta-cache';
 import { module, test } from 'qunit';
 
 let columnMetaCache, tree;
-
-function generateTree(seq) {
-  let children = emberA();
-
-  seq.forEach(item => {
-    if (Array.isArray(item)) {
-      let lastNode = children[children.length - 1];
-
-      lastNode.children = generateTree(item);
-    } else {
-      children.pushObject({ value: item });
-    }
-  });
-
-  return children;
-}
 
 module('Unit | Private | ColumnTree', function(hooks) {
   hooks.beforeEach(function() {
@@ -50,7 +33,6 @@ module('Unit | Private | ColumnTree', function(hooks) {
     tree = ColumnTree.create({
       columns,
       columnMetaCache,
-      rows: generateTree([0, [1, [2, 3], 4, [5, 6]]]),
       enableTree: true,
     });
 
