@@ -83,6 +83,9 @@ module.exports = function() {
         {
           name: 'ember-4.0',
           npm: {
+            dependencies: {
+              'ember-classy-page-object': 'Addepar/ember-classy-page-object#6f57252',
+            },
             devDependencies: {
               'ember-source': '~4.0.1',
             },
