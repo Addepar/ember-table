@@ -232,7 +232,7 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { columnCount, columnOptions: { subcolumnCount } });
 
-      this.render(hbs`
+      await render(hbs`
         <EmberTable data-test-main-table as |t| >
           {{#ember-thead api=t columns=columns as |h|}}
             {{#ember-tr api=h as |r|}}

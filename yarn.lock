@@ -5234,16 +5234,6 @@ ember-a11y-testing@^5.0.0:
     fs-extra "^10.0.0"
     validate-peer-dependencies "^2.0.0"
 
-ember-angle-bracket-invocation-polyfill@^3.0.1:
-  version "3.0.1"
-  resolved "https://registry.npmjs.org/ember-angle-bracket-invocation-polyfill/-/ember-angle-bracket-invocation-polyfill-3.0.1.tgz#d346692bd75489e49af95e6727b2817d839f7f22"
-  integrity sha512-zxG6yazA7X9+itp3rir+aK6h+NDRJ/COgFmMWgY+Ol8z81MVj5+tgB4ZXDz7e8cCM0S6cUwv82rC6Bb/P7K0ow==
-  dependencies:
-    ember-cli-babel "^7.0.0"
-    ember-cli-version-checker "^2.1.2"
-    ember-compatibility-helpers "^1.0.2"
-    silent-error "^1.1.1"
-
 ember-assign-polyfill@^2.2.0:
   version "2.7.2"
   resolved "https://registry.npmjs.org/ember-assign-polyfill/-/ember-assign-polyfill-2.7.2.tgz#58f6f60235126cb23df248c846008fa9a3245fc1"
@@ -5829,17 +5819,6 @@ ember-cli@~3.28.0:
     watch-detector "^1.0.0"
     workerpool "^6.1.4"
     yam "^1.0.0"
-
-ember-compatibility-helpers@^1.0.2:
-  version "1.2.6"
-  resolved "https://registry.npmjs.org/ember-compatibility-helpers/-/ember-compatibility-helpers-1.2.6.tgz#603579ab2fb14be567ef944da3fc2d355f779cd8"
-  integrity sha512-2UBUa5SAuPg8/kRVaiOfTwlXdeVweal1zdNPibwItrhR0IvPrXpaqwJDlEZnWKEoB+h33V0JIfiWleSG6hGkkA==
-  dependencies:
-    babel-plugin-debug-macros "^0.2.0"
-    ember-cli-version-checker "^5.1.1"
-    find-up "^5.0.0"
-    fs-extra "^9.1.0"
-    semver "^5.4.1"
 
 ember-compatibility-helpers@^1.2.0, ember-compatibility-helpers@^1.2.1:
   version "1.2.5"
