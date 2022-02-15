@@ -6,6 +6,11 @@ import { alias, readOnly } from '@ember/object/computed';
 import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
+let setupSimpleCheckboxForTest = false;
+export function setSimpleCheckboxForTest(bool) {
+  setupSimpleCheckboxForTest = bool;
+}
+
 /**
  The table cell component. This component manages cell level concerns, yields
  the cell value, column value, row value, and all of their associated meta
@@ -39,6 +44,13 @@ export default BaseTableCell.extend({
   layout,
   tagName: 'td',
 
+  init() {
+    this._super(...arguments);
+
+    if (setupSimpleCheckboxForTest) {
+      this.set('isTesting', true);
+    }
+  },
   /**
    The API object passed in by the table row
    @argument api
