@@ -16,7 +16,7 @@ import layout from './template';
     <t.head @columns={{this.columns}} />
     <t.body @rows={{this.rows}} />
 
-    <t.foot @rows={{footerRows}} as |f|>
+    <t.foot @rows={{this.footerRows}} as |f|>
       <f.row />
     </t.foot>
   </EmberTable>
