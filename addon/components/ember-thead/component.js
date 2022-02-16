@@ -6,7 +6,7 @@ import { assert } from '@ember/debug';
 import defaultTo from '../../-private/utils/default-to';
 import { addObserver } from '../../-private/utils/observer';
 import EmberObject, { computed, get } from '@ember/object';
-import { notEmpty, or, readOnly } from '@ember/object/computed';
+import { and, notEmpty, or } from '@ember/object/computed';
 import { isPresent } from '@ember/utils';
 
 import { closest } from '../../-private/utils/element';
@@ -17,6 +17,11 @@ import { scheduleOnce } from '@ember/runloop';
 import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
 
 import layout from './template';
+
+let isTestingThead = false;
+export function setupTHeadForTest(bool) {
+  isTestingThead = bool;
+}
 
 /**
   The table header component. This component manages and receives the column
@@ -218,10 +223,15 @@ export default Component.extend({
   */
   onResize: null,
 
-  'data-test-row-count': readOnly('wrappedRows.length'),
+  attributeBindings: ['wrappedRowsCount:data-test-row-count'],
+  wrappedRowsCount: and('isTesting', 'wrappedRows.length'),
 
   init() {
     this._super(...arguments);
+
+    if (isTestingThead) {
+      this.set('isTesting', true);
+    }
 
     /**
      * A sensor object that sends events to this table component when table size changes. When table

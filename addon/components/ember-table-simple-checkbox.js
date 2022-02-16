@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import defaultTo from '../../-private/utils/default-to';
+import defaultTo from '../-private/utils/default-to';
 
 export default Component.extend({
   tagName: 'input',
@@ -11,6 +11,8 @@ export default Component.extend({
     'indeterminate',
     'type',
     'value',
+    'dataTestSelectRow:data-test-select-row',
+    'dataTestCollapseRow:data-test-collapse-row',
   ],
 
   ariaLabel: undefined,

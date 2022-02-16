@@ -25,7 +25,7 @@ module('Integration | meta', function() {
 
       await render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
+          <EmberTable data-test-main-table as |t| >
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
@@ -34,13 +34,11 @@ module('Integration | meta', function() {
                 {{/ember-th}}
               {{/ember-tr}}
             {{/ember-thead}}
-
             {{#ember-tbody api=t rows=this.rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
                   onClick=(action this.onClick)
-
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
                   {{#if cellMeta.wasClicked}}cell{{/if}}
@@ -50,7 +48,6 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tbody}}
-
             {{#ember-tfoot api=t rows=footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
@@ -59,7 +56,7 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tfoot}}
-          {{/ember-table}}
+          </EmberTable>
         </div>
       `);
 
@@ -121,7 +118,7 @@ module('Integration | meta', function() {
 
       await render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
+          <EmberTable data-test-main-table as |t| >
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
@@ -130,13 +127,11 @@ module('Integration | meta', function() {
                 {{/ember-th}}
               {{/ember-tr}}
             {{/ember-thead}}
-
             {{#ember-tbody api=t rows=rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
                   onClick=(action onClick)
-
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
                   {{#if cellMeta.wasClicked}}cell{{/if}}
@@ -146,7 +141,6 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tbody}}
-
             {{#ember-tfoot api=t rows=footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
@@ -155,11 +149,10 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tfoot}}
-          {{/ember-table}}
+          </EmberTable>
         </div>
-
         <div style="height: 500px;">
-          {{#ember-table data-test-other-table=true as |t|}}
+          <EmberTable data-test-other-table as |t| >
             {{#ember-thead api=t columns=columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
@@ -168,13 +161,11 @@ module('Integration | meta', function() {
                 {{/ember-th}}
               {{/ember-tr}}
             {{/ember-thead}}
-
             {{#ember-tbody api=t rows=rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
                   onClick=(action onClick)
-
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
                   {{#if cellMeta.wasClicked}}cell{{/if}}
@@ -184,7 +175,6 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tbody}}
-
             {{#ember-tfoot api=t rows=footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
@@ -193,7 +183,7 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tfoot}}
-          {{/ember-table}}
+          </EmberTable>
         </div>
       `);
 
@@ -243,7 +233,7 @@ module('Integration | meta', function() {
       generateTableValues(this, { columnCount, columnOptions: { subcolumnCount } });
 
       await render(hbs`
-        {{#ember-table data-test-main-table=true as |t|}}
+        <EmberTable data-test-main-table as |t| >
           {{#ember-thead api=t columns=columns as |h|}}
             {{#ember-tr api=h as |r|}}
               {{#ember-th api=r as |column columnMeta rowMeta|}}
@@ -251,9 +241,8 @@ module('Integration | meta', function() {
               {{/ember-th}}
             {{/ember-tr}}
           {{/ember-thead}}
-
           {{ember-tbody api=t rows=rows}}
-        {{/ember-table}}
+        </EmberTable>
       `);
 
       await settled();

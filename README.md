@@ -143,6 +143,18 @@ You can also use the `ember-tfoot` component, which has the same API as
   {{/ember-table}}
 ```
 
+## Writing tests for Ember Table in your application
+
+Ember Table comes with test helpers, for example:
+
+To use these helpers, you should setup Ember Table for testing in your application's `tests/test-helper.js` file. For example:
+
+```js
+import { setupForTest as setupEmberTableForTest } from 'ember-table/test-support';
+
+setupEmberTableForTest();
+```
+
 ## Migrating from old Ember table
 
 To support smooth migration from old version of Ember table (support only till ember 1.11), we have

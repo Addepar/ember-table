@@ -10,6 +10,11 @@ import defaultTo from '../../-private/utils/default-to';
 import layout from './template';
 import { assert } from '@ember/debug';
 
+let setupRowCountForTest = false;
+export function setSetupRowCountForTest(bool) {
+  setupRowCountForTest = bool;
+}
+
 /**
   The table body component. This component manages the main bulk of the rows of
   the table, provided occlusion for them and managing their behavior. It yields
@@ -250,7 +255,7 @@ export default Component.extend({
 
   dataTestRowCount: null,
 
-  'data-test-row-count': readOnly('dataTestRowCount'),
+  attributeBindings: ['dataTestRowCount:data-test-row-count'],
 
   init() {
     this._super(...arguments);
@@ -275,12 +280,11 @@ export default Component.extend({
      * Ember test selectors will remove data-test-row-count from the bindings,
      * so if it is missing there is no need to all the count.
      *
-     * Even when ember-table is testing a production build, the test selectors
-     * addon remains enabled and causes `this.attributeBindings` to be present.
-     * In an actual app build, `this.attributeBindings` may be undefined.
-     * Guard against it being `undefined` before checking for the attribute.
+     * Even when ember-table is testing a production build, the you may want to
+     * run tests which make assertions about row count. To implement that capability
+     * reference a boolean variable controlled by the test helpers.
      */
-    if (this.attributeBindings && this.attributeBindings.includes('data-test-row-count')) {
+    if (setupRowCountForTest) {
       this._isObservingDebugRowCount = true;
       let scheduleUpdate = (this._scheduleUpdate = () => {
         scheduleOnce('actions', this, this._updateDataTestRowCount);

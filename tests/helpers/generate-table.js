@@ -12,56 +12,55 @@ export { configureTableGeneration, resetTableGenerationConfig, generateColumns, 
 
 const fullTable = hbs`
   <div style="height: 500px;">
-    {{#ember-table data-test-ember-table=true as |t|}}
-      {{#ember-thead
-        api=t
-
-        columns=this.columns
-        columnKeyPath=this.columnKeyPath
-        containerWidthAdjustment=this.containerWidthAdjustment
-        enableReorder=this.enableReorder
-        enableResize=this.enableResize
-        scrollIndicators=this.scrollIndicators
-        fillColumnIndex=this.fillColumnIndex
-        fillMode=this.fillMode
-        initialFillMode=this.initialFillMode
-        resizeMode=this.resizeMode
-        sorts=this.sorts
-        sortEmptyLast=this.sortEmptyLast
-        widthConstraint=this.widthConstraint
-        onUpdateSorts=(action this.onUpdateSorts)
-        onReorder=(action this.onReorder)
-        onResize=(action this.onResize)
+    <EmberTable data-test-main-table as |t|>
+      <EmberThead
+        @api={{t}}
+        @columns={{this.columns}}
+        @columnKeyPath={{this.columnKeyPath}}
+        @containerWidthAdjustment={{this.containerWidthAdjustment}}
+        @enableReorder={{this.enableReorder}}
+        @enableResize={{this.enableResize}}
+        @scrollIndicators={{this.scrollIndicators}}
+        @fillColumnIndex={{this.fillColumnIndex}}
+        @fillMode={{this.fillMode}}
+        @initialFillMode={{this.initialFillMode}}
+        @resizeMode={{this.resizeMode}}
+        @sorts={{this.sorts}}
+        @sortEmptyLast={{this.sortEmptyLast}}
+        @widthConstraint={{this.widthConstraint}}
+        @onUpdateSorts={{action this.onUpdateSorts}}
+        @onReorder={{action this.onReorder}}
+        @onResize={{action this.onResize}}
 
         as |h|
-      }}
-        {{#ember-tr api=h as |r|}}
-          {{ember-th
-            api=r
-            onContextMenu=(action this.onHeaderCellContextMenu)
-          }}
-        {{/ember-tr}}
-      {{/ember-thead}}
+      >
+        <EmberTr @api={{h}} as |r|>
+          <EmberTh
+            @api={{r}}
+            @onContextMenu={{action this.onHeaderCellContextMenu}}
+          />
+        </EmberTr>
+      </EmberThead>
 
-      {{#ember-tbody
-        api=t
-        rows=this.rows
-        estimateRowHeight=this.estimateRowHeight
-        staticHeight=this.staticHeight
-        enableCollapse=this.enableCollapse
-        enableTree=this.enableTree
-        key=this.key
-        bufferSize=this.bufferSize
-        idForFirstItem=this.idForFirstItem
-        onSelect=(action this.onSelect)
-        selectingChildrenSelectsParent=this.selectingChildrenSelectsParent
-        checkboxSelectionMode=this.checkboxSelectionMode
-        rowSelectionMode=this.rowSelectionMode
-        rowToggleMode=this.rowToggleMode
-        selection=this.selection
-        selectionMatchFunction=this.selectionMatchFunction
+      <EmberTbody
+        @api={{t}}
+        @rows={{this.rows}}
+        @estimateRowHeight={{this.estimateRowHeight}}
+        @staticHeight={{this.staticHeight}}
+        @enableCollapse={{this.enableCollapse}}
+        @enableTree={{this.enableTree}}
+        @key={{this.key}}
+        @bufferSize={{this.bufferSize}}
+        @idForFirstItem={{this.idForFirstItem}}
+        @onSelect={{action this.onSelect}}
+        @selectingChildrenSelectsParent={{this.selectingChildrenSelectsParent}}
+        @checkboxSelectionMode={{this.checkboxSelectionMode}}
+        @rowSelectionMode={{this.rowSelectionMode}}
+        @rowToggleMode={{this.rowToggleMode}}
+        @selection={{this.selection}}
+        @selectionMatchFunction={{this.selectionMatchFunction}}
         as |b|
-      }}
+      >
         {{#component this.rowComponent
           api=b
           onClick=(action this.onRowClick)
@@ -69,29 +68,29 @@ const fullTable = hbs`
 
           as |r|
         }}
-          {{#ember-td
-            api=r
-            onClick=(action this.onCellClick)
-            onDoubleClick=(action this.onCellDoubleClick)
+          <EmberTd
+            @api={{r}}
+            @onClick={{action this.onCellClick}}
+            @onDoubleClick={{action this.onCellDoubleClick}}
             as |value|
-          }}
+          >
             {{value}}
-          {{/ember-td}}
+          </EmberTd>
         {{/component}}
-      {{/ember-tbody}}
+      </EmberTbody>
 
-      {{#ember-tfoot
-        api=t
-        rows=this.footerRows
+      <EmberTfoot
+        @api={{t}}
+        @rows={{this.footerRows}}
         as |f|
-      }}
-        {{#ember-tr api=f as |r|}}
-          {{#ember-td api=r as |value|}}
+      >
+        <EmberTr @api={{f}} as |r|>
+          <EmberTd @api={{r}} as |value|>
             {{value}}
-          {{/ember-td}}
-        {{/ember-tr}}
-      {{/ember-tfoot}}
-    {{/ember-table}}
+          </EmberTd>
+        </EmberTr>
+      </EmberTfoot>
+    </EmberTable>
   </div>
 `;
 
