@@ -37,6 +37,10 @@ settings. The current options are:
   whether an array mutation is an append, prepend, or complete replacement. It
   defaults to the object identity `"@identity"`.
 
+* `containerSelector`: A selector string used by the vertical-collection to select
+  the element from which to calculate the viewable height. It defaults to the
+  table id `"#{tableId}"`.
+
 {{#docs-demo as |demo|}}
   {{#demo.example}}
     {{! BEGIN-SNIPPET docs-example-occlusion.hbs }}
