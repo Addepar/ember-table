@@ -42,7 +42,8 @@ jobs:
 
     strategy:
       matrix:
-        ember-version: [
+        ember-version:
+          [
             ember-lts-2.18,
             ember-lts-3.4,
             ember-lts-3.8,
@@ -51,10 +52,9 @@ jobs:
             ember-lts-3.20,
             ember-lts-3.24,
             ember-lts-3.28,
-            ember-4.0,
-            # ember-release,
+            ember-release,
             # ember-production,
-            ember-default-docs,
+            ember-default-docs
           ]
 
     steps:
