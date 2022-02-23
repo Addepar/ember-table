@@ -5381,13 +5381,14 @@ ember-auto-import@^2.2.4, ember-auto-import@^2.4.0:
     typescript-memoize "^1.0.0-alpha.3"
     walk-sync "^3.0.0"
 
-ember-classy-page-object@Addepar/ember-classy-page-object#6f57252:
-  version "0.7.0"
-  resolved "https://codeload.github.com/Addepar/ember-classy-page-object/tar.gz/6f572525ba75ef054c4cc6c43944d30ef80ab20c"
+ember-classy-page-object@^0.8.0-beta:
+  version "0.8.0-beta"
+  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.8.0-beta.tgz#1e388e90e5205c617f48450fae764c6f90c38217"
+  integrity sha512-jO6t7KJWnSSBy/gbOtO0lXEnh/7tm/tNJB0KC6ZZOT9ich67rY46N+6Ras5uqeU0rPdyuiPBeKYSCxtEdcsacQ==
   dependencies:
     broccoli-funnel "^2.0.1"
-    ember-cli-babel "^7.26.0"
-    ember-cli-page-object v2.0.0-beta.3
+    ember-cli-babel "^7.12.0"
+    ember-cli-page-object "~v2.0.0-beta.3"
 
 ember-cli-babel-plugin-helpers@^1.0.0, ember-cli-babel-plugin-helpers@^1.1.1:
   version "1.1.1"
@@ -5413,7 +5414,7 @@ ember-cli-babel@^6.11.0, ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.2, ember-c
     ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
-ember-cli-babel@^7.0.0, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.20.5, ember-cli-babel@^7.22.1, ember-cli-babel@^7.23.0, ember-cli-babel@^7.24.0, ember-cli-babel@^7.26.0, ember-cli-babel@^7.26.4, ember-cli-babel@^7.26.6, ember-cli-babel@^7.26.8, ember-cli-babel@^7.7.3:
+ember-cli-babel@^7.0.0, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.20.5, ember-cli-babel@^7.22.1, ember-cli-babel@^7.23.0, ember-cli-babel@^7.24.0, ember-cli-babel@^7.26.4, ember-cli-babel@^7.26.6, ember-cli-babel@^7.26.8, ember-cli-babel@^7.7.3:
   version "7.26.11"
   resolved "https://registry.npmjs.org/ember-cli-babel/-/ember-cli-babel-7.26.11.tgz#50da0fe4dcd99aada499843940fec75076249a9f"
   integrity sha512-JJYeYjiz/JTn34q7F5DSOjkkZqy8qwFOOxXfE6pe9yEJqWGu4qErKxlz8I22JoVEQ/aBUO+OcKTpmctvykM9YA==
@@ -5612,7 +5613,7 @@ ember-cli-normalize-entity-name@^1.0.0:
   dependencies:
     silent-error "^1.0.0"
 
-ember-cli-page-object@v2.0.0-beta.3:
+ember-cli-page-object@~v2.0.0-beta.3:
   version "2.0.0-beta.3"
   resolved "https://registry.npmjs.org/ember-cli-page-object/-/ember-cli-page-object-2.0.0-beta.3.tgz#49ecc2239f061d801ad208d6a933db1d3906c088"
   integrity sha512-swUbl4HnHEK3H6s+ivhEN+RBNgznIxHt3AHT4qQqSIQFrUdEck/s1/Z5lDl1rPOxuWvz5nnKt+W4GOu27muTMA==
