@@ -20,6 +20,9 @@ For older platforms, the final release of Ember Table 2.x (2.2.3) supports:
 ```bash
 ember install ember-table
 ```
+### Using ember-table with Ember <= 3.24
+Use resolutions in your package.json to pin down `ember-classy-page-object` to version `0.7.0`.
+Newer versions are used to support Ember >= 3.28
 
 ## Features
 
