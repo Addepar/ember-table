@@ -32,8 +32,9 @@ import layout from './template';
 export default Component.extend({
   layout,
   classNames: ['ember-table'],
-  attributeBindings: ['dataTestEmberTable:data-test-ember-table'],
+  attributeBindings: ['dataTestEmberTable:data-test-ember-table', 'role'],
   dataTestEmberTable: true,
+  role: 'grid',
 
   didInsertElement() {
     this._super(...arguments);

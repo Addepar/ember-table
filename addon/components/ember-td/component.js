@@ -43,6 +43,8 @@ export function setSimpleCheckboxForTest(bool) {
 export default BaseTableCell.extend({
   layout,
   tagName: 'td',
+  attributeBindings: ['role'],
+  role: 'gridcell',
 
   init() {
     this._super(...arguments);

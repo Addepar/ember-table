@@ -255,7 +255,8 @@ export default Component.extend({
 
   dataTestRowCount: null,
 
-  attributeBindings: ['dataTestRowCount:data-test-row-count'],
+  attributeBindings: ['dataTestRowCount:data-test-row-count', 'role'],
+  role: 'rowgroup',
 
   init() {
     this._super(...arguments);

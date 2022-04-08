@@ -223,8 +223,9 @@ export default Component.extend({
   */
   onResize: null,
 
-  attributeBindings: ['wrappedRowsCount:data-test-row-count'],
+  attributeBindings: ['wrappedRowsCount:data-test-row-count', 'role'],
   wrappedRowsCount: and('isTesting', 'wrappedRows.length'),
+  role: 'rowgroup',
 
   init() {
     this._super(...arguments);
