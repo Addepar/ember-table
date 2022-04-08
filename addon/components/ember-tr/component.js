@@ -49,8 +49,11 @@ export default Component.extend({
   tagName: 'tr',
   classNames: ['et-tr'],
   classNameBindings: ['isSelected', 'isGroupSelected', 'isSelectable'],
-  attributeBindings: ['role'],
+  attributeBindings: ['role', 'ariaSelected'],
   role: 'row',
+  ariaSelected: computed('isSelected', function() {
+    return this.isSelected ? 'true' : 'false';
+  }),
 
   /**
     The API object passed in by the table body, header, or footer
