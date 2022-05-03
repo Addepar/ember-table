@@ -665,7 +665,10 @@ export default EmberObject.extend({
   }),
 
   scrollBounds: computed('leftFixedNodes.@each.width', 'rightFixedNodes.@each.width', function() {
-    let { left: containerLeft, right: containerRight } = getInnerClientRect(this.container);
+    let { left: containerLeft, right: containerRight } = getInnerClientRect(
+      this.container,
+      this.scale
+    );
 
     containerLeft += get(this, 'leftFixedNodes').reduce((sum, n) => sum + get(n, 'width'), 0);
     containerRight -= get(this, 'rightFixedNodes').reduce((sum, n) => sum + get(n, 'width'), 0);
@@ -847,14 +850,16 @@ export default EmberObject.extend({
 
   getContainerWidth() {
     let containerWidthAdjustment = get(this, 'containerWidthAdjustment') || 0;
-    return getInnerClientRect(this.container).width * this.scale + containerWidthAdjustment;
+    return (
+      getInnerClientRect(this.container, this.scale).width * this.scale + containerWidthAdjustment
+    );
   },
 
   getReorderBounds(node) {
     let parent = get(node, 'parent');
     let { scale } = this;
     let { scrollLeft } = this.container;
-    let { left: containerLeft } = getInnerClientRect(this.container);
+    let { left: containerLeft } = getInnerClientRect(this.container, this.scale);
 
     let leftBound, rightBound, nodes;
 
@@ -903,7 +908,7 @@ export default EmberObject.extend({
 
   registerContainer(container) {
     this.container = container;
-    this.scale = getScale(container);
+    this.scale = getScale(container.querySelector('table'));
 
     get(this, 'root').registerElement(container);
 
@@ -918,7 +923,7 @@ export default EmberObject.extend({
     } else if (isFixed === 'right') {
       left += this.container.scrollWidth;
       left -= this.container.scrollLeft;
-      left -= getInnerClientRect(this.container).width * this.scale;
+      left -= getInnerClientRect(this.container, this.scale).width * this.scale;
     }
 
     let subcolumns = get(column.parent, 'subcolumnNodes');
@@ -945,7 +950,7 @@ export default EmberObject.extend({
     } else if (isFixed === 'right') {
       offsetLeft -= this.container.scrollWidth;
       offsetLeft += this.container.scrollLeft;
-      offsetLeft += getInnerClientRect(this.container).width * this.scale;
+      offsetLeft += getInnerClientRect(this.container, this.scale).width * this.scale;
     }
 
     return offsetLeft;
@@ -973,8 +978,18 @@ export default EmberObject.extend({
 
     let bounds = this.getReorderBounds(node);
 
-    this._reorderMainIndicator = new MainIndicator(this.container, node.element, bounds);
-    this._reorderDropIndicator = new DropIndicator(this.container, node.element, bounds);
+    this._reorderMainIndicator = new MainIndicator(
+      this.container,
+      this.scale,
+      node.element,
+      bounds
+    );
+    this._reorderDropIndicator = new DropIndicator(
+      this.container,
+      this.scale,
+      node.element,
+      bounds
+    );
 
     this.container.classList.add('is-reordering');
   },
@@ -991,7 +1006,7 @@ export default EmberObject.extend({
 
   _updateReorder(node) {
     let { scrollLeft } = this.container;
-    let realContainerLeft = getInnerClientRect(this.container).left * this.scale;
+    let realContainerLeft = getInnerClientRect(this.container, this.scale).left * this.scale;
     let offset = this.clientX * this.scale - realContainerLeft + scrollLeft;
 
     let width = get(node, 'width');
@@ -1013,7 +1028,7 @@ export default EmberObject.extend({
 
   endReorder(node) {
     let { scrollLeft } = this.container;
-    let realContainerLeft = getInnerClientRect(this.container).left * this.scale;
+    let realContainerLeft = getInnerClientRect(this.container, this.scale).left * this.scale;
     let offset = this.clientX * this.scale - realContainerLeft + scrollLeft;
 
     let { leftBound, rightBound } = this.getReorderBounds(node);

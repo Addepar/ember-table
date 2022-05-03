@@ -51,7 +51,7 @@ export async function scrollToEdge(targetElement, edgeOffset, direction) {
   /*
    * Below a certain number of steps, Hammer (the gesture library
    * which recognizes panning) will not pick up the pointermove
-   * events emitted by `mouseMove` before the gestrure completes.
+   * events emitted by `mouseMove` before the gesture completes.
    *
    * 5 seems a reasonable number.
    */
