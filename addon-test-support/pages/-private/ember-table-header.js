@@ -5,6 +5,17 @@ import { click } from '@ember/test-helpers';
 import { mouseDown, mouseMove, mouseUp } from '../../helpers/mouse';
 import { getScale } from '../../helpers/element';
 
+function computedStyleInPixels(target, property) {
+  let stringValue = window.getComputedStyle(target)[property];
+  let numberValue = Number(stringValue.substring(0, stringValue.length - 2));
+  if (isNaN(numberValue)) {
+    throw new Error(
+      `computedStyleInPixels failed to convert the computed style property of '${property}' into a Number. Value was '${stringValue}'`
+    );
+  }
+  return numberValue;
+}
+
 export const SortPage = PageObject.extend({
   indicator: {
     scope: '[data-test-sort-indicator]',
@@ -29,6 +40,11 @@ const Header = PageObject.extend({
 
   /**
    * Retrieves selected header cell width.
+   *
+   * offsetWidth returns a rounded integer, and so can
+   * result in unreliable tests.
+   *
+   * @returns {number}
    */
   get width() {
     return findElement(this).offsetWidth;
@@ -36,9 +52,32 @@ const Header = PageObject.extend({
 
   /**
    * Retrieves selected header cell height.
+   *
+   * offsetHeight returns a rounded integer, and so can
+   * result in unreliable tests.
+   *
+   * @returns {number}
    */
   get height() {
     return findElement(this).offsetHeight;
+  },
+
+  /**
+   * Retrieves selected header cell logical width.
+   *
+   * @returns {number}
+   */
+  get logicalWidth() {
+    return computedStyleInPixels(findElement(this), 'width');
+  },
+
+  /**
+   * Retrieves the rendered width of the selected header cell.
+   *
+   * @returns {number}
+   */
+  get renderedWidth() {
+    return findElement(this).getBoundingClientRect().width;
   },
 
   get isLeaf() {
@@ -59,10 +98,26 @@ const Header = PageObject.extend({
   contextMenu: triggerable('contextmenu'),
 
   /**
-   * Resizes this column by dragging right border several pixels.
+   * Resize the table header. This API isn't clear about if a logical
+   * or rendered size is being passed. It defers to the more explicit
+   * logicalResize which should probably be preferred in future use.
    */
   async resize(targetSize) {
-    let resizeHandle = findElement(this, '.et-header-resize-area');
+    await this.logicalResize(targetSize);
+  },
+
+  async logicalResize(targetSize) {
+    let renderedTargetSize =
+      targetSize / getScale(document.getElementById('ember-testing-container').firstElementChild);
+    await this.renderedResize(renderedTargetSize);
+  },
+
+  /**
+   * Resizes this column by dragging right border several pixels,
+   * unless the column is fixed right in quick case it drags left.
+   */
+  async renderedResize(targetSize) {
+    let resizeHandle = findElement(this, '[data-test-resize-handle]');
 
     if (!resizeHandle) {
       return;
@@ -70,16 +125,31 @@ const Header = PageObject.extend({
 
     let box = resizeHandle.getBoundingClientRect();
     let startX = (box.right + box.left) / 2;
-    let deltaX = (targetSize - this.width) / getScale(resizeHandle);
+    let y = box.top + (box.bottom - box.top) / 2;
+    let deltaX = targetSize - this.renderedWidth;
 
     if (this.isFixedRight) {
       deltaX = -deltaX;
     }
 
-    await mouseDown(resizeHandle, startX, resizeHandle.clientHeight / 2);
-    await mouseMove(resizeHandle, startX + 20, resizeHandle.clientHeight / 2);
-    await mouseMove(resizeHandle, startX + deltaX, resizeHandle.clientHeight / 2);
-    await mouseUp(resizeHandle, startX + deltaX, resizeHandle.clientHeight / 2);
+    let finalX = startX + deltaX;
+
+    await mouseDown(resizeHandle, startX, y);
+
+    /**
+     * Below a certain number of steps, Hammer (the gesture library
+     * which recognizes panning) will not pick up the pointermove
+     * events emitted by `mouseMove` before the gestrure completes.
+     *
+     * 5 seems a reasonable number.
+     */
+    let current = startX;
+    for (let steps = 5; steps > 0; steps--) {
+      await mouseMove(resizeHandle, current, y);
+      current = current + (finalX - current) / steps;
+    }
+    await mouseMove(resizeHandle, finalX, y);
+    await mouseUp(resizeHandle, finalX, y);
   },
 
   /**

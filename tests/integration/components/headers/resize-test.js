@@ -69,14 +69,17 @@ module('Integration | header | resize', function() {
     });
 
     test('column resize action is sent up to controller', async function(assert) {
-      this.set('onResize', function(column) {
-        assert.equal(column.name, 'B', 'action is sent to controller after resizing');
+      let calls = [];
+      this.set('onResize', (...args) => {
+        calls.push(args);
       });
 
       await generateTable(this, { widthConstraint: 'eq-container' });
 
       let originalWidth = table.headers.objectAt(1).width;
-      await table.headers.objectAt(1).resize(originalWidth + 20);
+      await table.headers.objectAt(1).resize(originalWidth + 30);
+      assert.equal(calls.length, 1, 'resize called once');
+      assert.equal(calls[0][0].name, 'B', 'The correct resized column ("B") is passed');
     });
 
     test('can disable resize per column', async function(assert) {

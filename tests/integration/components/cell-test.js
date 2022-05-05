@@ -193,8 +193,16 @@ module('Integration | cell', function() {
       assert.ok(cell.isLastColumn, 'is-last-column applied to normal cell');
       assert.notOk(slackCell.isLastColumn, 'is-last-column not applied to slack cell');
 
-      // shrink cell "A"; now slack column gets the `is-last-column` class
-      await header.resize(header.width - 1);
+      /**
+       * shrink cell "A"; now slack column gets the `is-last-column`
+       * class.
+       *
+       * The number 27 here for the resize is fairly arbitrary, it may be
+       * tied to the size of the resize handle or another drag/drop
+       * threshold.
+       */
+      await header.logicalResize(header.logicalWidth - 27);
+
       assert.notOk(cell.isLastColumn, 'is-last-column not applied to normal cell');
       assert.ok(slackCell.isLastColumn, 'is-last-column applied to slack cell');
     });
