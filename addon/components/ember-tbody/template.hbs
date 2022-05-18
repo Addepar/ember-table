@@ -30,7 +30,7 @@
 
     as |api|
   }}
-    {{#if hasBlock}}
+    {{#if (has-block)}}
       {{yield (hash
         rowValue=api.rowValue
         rowMeta=api.rowMeta
@@ -46,6 +46,6 @@
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
 
-{{else if this.shouldYieldToInverse}}
+{{else}}
   {{yield to='inverse'}}
 {{/vertical-collection}}

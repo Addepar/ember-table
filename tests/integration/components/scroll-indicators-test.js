@@ -1,10 +1,10 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 
 import { generateTable } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
 import { findElement } from 'ember-classy-page-object/extend';
-import { scrollTo } from 'ember-native-dom-helpers';
+import scrollTo from '../../helpers/scroll-to';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 

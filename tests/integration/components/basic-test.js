@@ -1,17 +1,15 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import a11yAudit from 'ember-a11y-testing/test-support/audit';
 
 import { generateTable, generateColumns, generateRows } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
-import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
-
-import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
+import scrollTo from '../../helpers/scroll-to';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';
-import wait from 'ember-test-helpers/wait';
+import { find, findAll, render, settled } from '@ember/test-helpers';
 
 let table = new TablePage({
   body: {
@@ -186,21 +184,21 @@ module('Integration | basic', function() {
       this.set('estimateRowHeight', rowHeight);
       this.set('containerHeight', containerHeight);
 
-      await this.render(hbs`
+      await render(hbs`
         <style>
           .ember-table {
             max-height: initial;
           }
         </style>
-        <div id="container" style="height: {{containerHeight}}px; overflow: auto;">
+        <div id="container" style="height: {{this.containerHeight}}px; overflow: auto;">
           {{#ember-table as |t|}}
-            {{ember-thead api=t columns=columns}}
+            {{ember-thead api=t columns=this.columns}}
 
             {{ember-tbody
               api=t
               containerSelector="#container"
-              rows=rows
-              estimateRowHeight=estimateRowHeight
+              rows=this.rows
+              estimateRowHeight=this.estimateRowHeight
               renderAll=false
               bufferSize=0
             }}
@@ -208,35 +206,31 @@ module('Integration | basic', function() {
         </div>
       `);
 
-      await wait();
+      await settled();
       assert.equal(table.rows.length, itemsCount, 'renders the correct number of rows');
     });
 
     test('it yields to inverse when tbody rows are empty', async function(assert) {
-      if (!SUPPORTS_INVERSE_BLOCK) {
-        assert.ok(true, 'Does not support yield-to-inverse');
-      } else {
-        this.set('columns', generateColumns(4));
-        this.set('rows', []);
-        this.render(hbs`
-          <div style="height: 500px;">
-            {{#ember-table as |t|}}
-              {{ember-thead api=t columns=columns}}
+      this.set('columns', generateColumns(4));
+      this.set('rows', []);
+      await render(hbs`
+        <div style="height: 500px;">
+          {{#ember-table as |t|}}
+            {{ember-thead api=t columns=this.columns}}
 
-              {{#ember-tbody api=t rows=rows as |b|}}
-              {{else}}
-                <div data-test-inverse-yield>inverse yield</div>
-              {{/ember-tbody}}
-            {{/ember-table}}
-          </div>
-        `);
+            {{#ember-tbody api=t rows=this.rows as |b|}}
+            {{else}}
+              <div data-test-inverse-yield>inverse yield</div>
+            {{/ember-tbody}}
+          {{/ember-table}}
+        </div>
+      `);
 
-        await wait();
-        assert.ok(
-          find('[data-test-inverse-yield]'),
-          'expected the inverse yield content to be displayed'
-        );
-      }
+      await settled();
+      assert.ok(
+        find('[data-test-inverse-yield]'),
+        'expected the inverse yield content to be displayed'
+      );
     });
 
     test('Text can be aligned left, center or right', async function(assert) {
@@ -294,7 +288,7 @@ module('Integration | basic', function() {
       this.set('rows', generateRows(rowCount));
       this.set('showComponent', true);
 
-      this.render(hbs`
+      await render(hbs`
         {{#if this.showComponent}}
           <div id="container" style="height: 500px;">
             {{#ember-table as |t|}}
@@ -306,7 +300,7 @@ module('Integration | basic', function() {
         {{/if}}
       `);
 
-      find('#container').style.height = '600px';
+      document.querySelector('#ember-testing-container').style.height = '600px';
       this.set('showComponent', false);
     });
   });

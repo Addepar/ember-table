@@ -4,8 +4,8 @@ import { A as emberA } from '@ember/array';
 
 import { componentModule } from '../../helpers/module';
 
-import { find, findAll, scrollTo } from 'ember-native-dom-helpers';
-import wait from 'ember-test-helpers/wait';
+import scrollTo from '../../helpers/scroll-to';
+import { find, findAll, render, settled } from '@ember/test-helpers';
 
 import { setupTableStickyPolyfill } from 'ember-table/-private/sticky/table-sticky-polyfill';
 
@@ -22,7 +22,7 @@ const standardTemplate = hbs`
       <div class="ember-table-overflow">
         <table>
           <thead>
-            {{#each headerRows as |row|}}
+            {{#each this.headerRows as |row|}}
               <tr>
                 {{#each row as |item|}}
                   <th style="width: 100px; min-width: 100px; height: 50px;">{{item}}</th>
@@ -31,7 +31,7 @@ const standardTemplate = hbs`
             {{/each}}
           </thead>
           <tbody>
-            {{#each bodyRows as |row|}}
+            {{#each this.bodyRows as |row|}}
               <tr>
                 {{#each row as |item|}}
                   <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
@@ -40,7 +40,7 @@ const standardTemplate = hbs`
             {{/each}}
           </tbody>
           <tfoot>
-            {{#each footerRows as |row|}}
+            {{#each this.footerRows as |row|}}
               <tr>
                 {{#each row as |item|}}
                   <td style="width: 100px; min-width: 100px; height: 50px;">{{item}}</td>
@@ -171,12 +171,19 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('bodyRows', constructMatrix(20, 3, 'tbody'));
     this.set('footerRows', constructMatrix(3, 3, 'tfoot'));
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
     await scrollTo('.ember-table-overflow', 0, 500);
+
+    /*
+     * After a test suite upgrade on the path to Ember
+     * 4.0 support, this test was unreliable without
+     * a sleep here.
+     */
+    await new Promise(r => setTimeout(r, 6));
 
     verifyHeader(assert);
     verifyFooter(assert);
@@ -187,7 +194,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('bodyRows', constructMatrix(20, 3));
     this.set('footerRows', constructMatrix(3, 3));
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
@@ -197,7 +204,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('headerRows', constructMatrix(3, 5));
     this.set('footerRows', constructMatrix(3, 5));
 
-    await wait();
+    await settled();
 
     verifyHeader(assert);
     verifyFooter(assert);
@@ -208,7 +215,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('bodyRows', constructMatrix(20, 3));
     this.set('footerRows', constructMatrix(3, 3));
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
@@ -218,7 +225,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('headerRows', constructMatrix(5, 3));
     this.set('footerRows', constructMatrix(5, 3));
 
-    await wait();
+    await settled();
 
     verifyHeader(assert);
     verifyFooter(assert);
@@ -229,7 +236,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('bodyRows', constructMatrix(20, 3));
     this.set('footerRows', constructMatrix(3, 3));
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
@@ -239,12 +246,12 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('headerRows', constructMatrix(3, 5));
     this.set('footerRows', constructMatrix(3, 5));
 
-    await wait();
+    await settled();
 
     this.set('headerRows', constructMatrix(5, 5));
     this.set('footerRows', constructMatrix(5, 5));
 
-    await wait();
+    await settled();
 
     verifyHeader(assert);
     verifyFooter(assert);
@@ -256,12 +263,12 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('bodyRows', constructMatrix(30, 3, 'body'));
     this.set('footerRows', constructMatrix(30, 3, 'footer'));
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await wait();
+    await settled();
 
     let firstCell = find('tfoot tr:first-child td:first-child');
     let lastCell = find('tfoot tr:last-child td:first-child');
@@ -310,12 +317,12 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('bodyRows', constructMatrix(30, 3, 'body'));
     this.set('footerRows', constructMatrix(3, 3, 'footer'));
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await wait();
+    await settled();
 
     let firstCell = find('thead tr:first-child th:first-child');
     let lastCell = find('thead tr:last-child th:first-child');
@@ -367,12 +374,12 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     this.set('bodyRows', constructMatrix(20, 3, 'body'));
     this.set('footerRows', constructMatrix(1, 3, 'footer'));
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await wait();
+    await settled();
 
     let container = find('.ember-table');
     await scrollTo('.ember-table', 0, container.scrollHeight);
@@ -388,12 +395,12 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
       constructMatrix(2, 3, 'table footer has multiple lines of content', [1])
     );
 
-    await this.render(standardTemplate);
+    await render(standardTemplate);
 
     setupTableStickyPolyfill(find('thead'));
     setupTableStickyPolyfill(find('tfoot'));
 
-    await wait();
+    await settled();
 
     verifyMultiLineFooter(assert);
   });

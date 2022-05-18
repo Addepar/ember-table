@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 import { SortPage } from 'ember-table/test-support/pages/-private/ember-table-header';
@@ -14,13 +15,13 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSorted: true,
       });
 
-      await this.render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.ok(sort.indicator.isPresent);
 
       // Template block usage:
-      await this.render(hbs`
-      {{#ember-th/sort-indicator columnMeta=columnMeta}}
+      await render(hbs`
+      {{#ember-th/sort-indicator columnMeta=this.columnMeta}}
         template block text
       {{/ember-th/sort-indicator}}
     `);
@@ -33,13 +34,13 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSorted: false,
       });
 
-      await this.render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.notOk(sort.indicator.isPresent);
 
       // Template block usage:
-      await this.render(hbs`
-      {{#ember-th/sort-indicator columnMeta=columnMeta}}
+      await render(hbs`
+      {{#ember-th/sort-indicator columnMeta=this.columnMeta}}
         template block text
       {{/ember-th/sort-indicator}}
     `);
@@ -53,7 +54,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSortedAsc: true,
       });
 
-      await this.render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
       // asc sort
       assert.ok(sort.indicator.isAscending);
       assert.notOk(sort.indicator.isDescending);
@@ -71,7 +72,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         sortIndex: 2,
       });
 
-      await this.render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.equal(sort.indicator.text, '2');
 
@@ -85,7 +86,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         isSortable: true,
       });
 
-      await this.render(hbs`{{ember-th/sort-indicator columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/sort-indicator columnMeta=this.columnMeta}}`);
 
       assert.ok(sort.toggle.isPresent);
       assert.equal(sort.toggle.text, 'Toggle Sort');

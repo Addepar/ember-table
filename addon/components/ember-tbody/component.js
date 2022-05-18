@@ -1,17 +1,19 @@
 import Component from '@ember/component';
-
-import { run } from '@ember/runloop';
+import { scheduleOnce } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
-
-import { SUPPORTS_INVERSE_BLOCK } from 'ember-compatibility-helpers';
 
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 import defaultTo from '../../-private/utils/default-to';
 
 import layout from './template';
 import { assert } from '@ember/debug';
+
+let setupRowCountForTest = false;
+export function setSetupRowCountForTest(bool) {
+  setupRowCountForTest = bool;
+}
 
 /**
   The table body component. This component manages the main bulk of the rows of
@@ -253,7 +255,7 @@ export default Component.extend({
 
   dataTestRowCount: null,
 
-  'data-test-row-count': readOnly('dataTestRowCount'),
+  attributeBindings: ['dataTestRowCount:data-test-row-count'],
 
   init() {
     this._super(...arguments);
@@ -278,15 +280,14 @@ export default Component.extend({
      * Ember test selectors will remove data-test-row-count from the bindings,
      * so if it is missing there is no need to all the count.
      *
-     * Even when ember-table is testing a production build, the test selectors
-     * addon remains enabled and causes `this.attributeBindings` to be present.
-     * In an actual app build, `this.attributeBindings` may be undefined.
-     * Guard against it being `undefined` before checking for the attribute.
+     * Even when ember-table is testing a production build, the you may want to
+     * run tests which make assertions about row count. To implement that capability
+     * reference a boolean variable controlled by the test helpers.
      */
-    if (this.attributeBindings && this.attributeBindings.includes('data-test-row-count')) {
+    if (setupRowCountForTest) {
       this._isObservingDebugRowCount = true;
       let scheduleUpdate = (this._scheduleUpdate = () => {
-        run.scheduleOnce('actions', this, this._updateDataTestRowCount);
+        scheduleOnce('actions', this, this._updateDataTestRowCount);
       });
       this.collapseTree.addObserver('rows', scheduleUpdate);
       this.collapseTree.addObserver('[]', scheduleUpdate);
@@ -364,10 +365,4 @@ export default Component.extend({
   _containerSelector: computed('containerSelector', 'unwrappedApi.tableId', function() {
     return this.get('containerSelector') || `#${this.get('unwrappedApi.tableId')}`;
   }),
-
-  /**
-   * Determines if the component can yield-to-inverse based on
-   * the version compatability.
-   */
-  shouldYieldToInverse: SUPPORTS_INVERSE_BLOCK,
 });

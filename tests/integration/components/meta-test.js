@@ -1,8 +1,8 @@
 import hbs from 'htmlbars-inline-precompile';
-import wait from 'ember-test-helpers/wait';
-import { module, test } from 'ember-qunit';
+import { render, settled } from '@ember/test-helpers';
+import { module, test } from 'qunit';
 import { set } from '@ember/object';
-import { scrollTo } from 'ember-native-dom-helpers';
+import scrollTo from '../../helpers/scroll-to';
 
 import { generateTableValues } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
@@ -23,10 +23,10 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { rowCount: 100, footerRowCount: 1 });
 
-      this.render(hbs`
+      await render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
-            {{#ember-thead api=t columns=columns as |h|}}
+          <EmberTable data-test-main-table as |t| >
+            {{#ember-thead api=t columns=this.columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -34,13 +34,11 @@ module('Integration | meta', function() {
                 {{/ember-th}}
               {{/ember-tr}}
             {{/ember-thead}}
-
             {{#ember-tbody api=t rows=this.rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
                   onClick=(action this.onClick)
-
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
                   {{#if cellMeta.wasClicked}}cell{{/if}}
@@ -51,7 +49,7 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
+            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -59,11 +57,11 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tfoot}}
-          {{/ember-table}}
+          </EmberTable>
         </div>
       `);
 
-      await wait();
+      await settled();
       await table.getCell(0, 0).click();
 
       assert.ok(table.getCell(0, 0).text.includes('cell'), 'meta property set correctly');
@@ -119,10 +117,10 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { rowCount: 100, footerRowCount: 1 });
 
-      this.render(hbs`
+      await render(hbs`
         <div style="height: 500px;">
-          {{#ember-table data-test-main-table=true as |t|}}
-            {{#ember-thead api=t columns=columns as |h|}}
+          <EmberTable data-test-main-table as |t| >
+            {{#ember-thead api=t columns=this.columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -131,11 +129,11 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-thead}}
 
-            {{#ember-tbody api=t rows=rows as |b|}}
+            {{#ember-tbody api=t rows=this.rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick=(action onClick)
+                  onClick=(action this.onClick)
 
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
@@ -147,7 +145,7 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
+            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -155,12 +153,11 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tfoot}}
-          {{/ember-table}}
+          </EmberTable>
         </div>
-
         <div style="height: 500px;">
-          {{#ember-table data-test-other-table=true as |t|}}
-            {{#ember-thead api=t columns=columns as |h|}}
+          <EmberTable data-test-other-table as |t| >
+            {{#ember-thead api=t columns=this.columns as |h|}}
               {{#ember-tr api=h as |r|}}
                 {{#ember-th api=r as |column columnMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -169,11 +166,11 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-thead}}
 
-            {{#ember-tbody api=t rows=rows as |b|}}
+            {{#ember-tbody api=t rows=this.rows as |b|}}
               {{#ember-tr api=b as |r|}}
                 {{#ember-td
                   api=r
-                  onClick=(action onClick)
+                  onClick=(action this.onClick)
 
                   as |value column row cellMeta columnMeta rowMeta|
                 }}
@@ -185,7 +182,7 @@ module('Integration | meta', function() {
               {{/ember-tr}}
             {{/ember-tbody}}
 
-            {{#ember-tfoot api=t rows=footerRows as |f|}}
+            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
               {{#ember-tr api=f as |r|}}
                 {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
@@ -193,11 +190,11 @@ module('Integration | meta', function() {
                 {{/ember-td}}
               {{/ember-tr}}
             {{/ember-tfoot}}
-          {{/ember-table}}
+          </EmberTable>
         </div>
       `);
 
-      await wait();
+      await settled();
       await table.getCell(0, 0).click();
 
       // ensure we trigger property updates by scrolling around a bit
@@ -242,21 +239,20 @@ module('Integration | meta', function() {
 
       generateTableValues(this, { columnCount, columnOptions: { subcolumnCount } });
 
-      this.render(hbs`
-        {{#ember-table data-test-main-table=true as |t|}}
-          {{#ember-thead api=t columns=columns as |h|}}
+      await render(hbs`
+        <EmberTable data-test-main-table as |t| >
+          {{#ember-thead api=t columns=this.columns as |h|}}
             {{#ember-tr api=h as |r|}}
               {{#ember-th api=r as |column columnMeta rowMeta|}}
                 {{rowMeta.index}}
               {{/ember-th}}
             {{/ember-tr}}
           {{/ember-thead}}
-
-          {{ember-tbody api=t rows=rows}}
-        {{/ember-table}}
+          {{ember-tbody api=t rows=this.rows}}
+        </EmberTable>
       `);
 
-      await wait();
+      await settled();
 
       // single cell in first header row
       assert.ok(table.headers.objectAt(0).text.includes('0'));

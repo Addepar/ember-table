@@ -20,6 +20,9 @@ For older platforms, the final release of Ember Table 2.x (2.2.3) supports:
 ```bash
 ember install ember-table
 ```
+### Using ember-table with Ember <= 3.24
+Use resolutions in your package.json to pin down `ember-classy-page-object` to version `0.7.0`.
+Newer versions are used to support Ember >= 3.28
 
 ## Features
 
@@ -90,9 +93,9 @@ The following template renders a simple table.
 
 ```
   {{#ember-table as |t|}}
-    {{t.head columns=columns}}
+    {{t.head columns=this.columns}}
 
-    {{t.body rows=rows}}
+    {{t.body rows=this.rows}}
   {{/ember-table}}
 ```
 
@@ -113,9 +116,9 @@ you like):
 
 ```
   {{#ember-table as |t|}}
-    {{t.head columns=columns}}
+    {{t.head columns=this.columns}}
 
-    {{#t.body rows=rows as |b|}}
+    {{#t.body rows=this.rows as |b|}}
       {{#b.row as |r|}}
         {{#r.cell as |value column row|}}
           {{component column.component value=value}}
@@ -135,12 +138,24 @@ You can also use the `ember-tfoot` component, which has the same API as
 
 ```
   {{#ember-table as |t|}}
-    {{t.head columns=columns}}
+    {{t.head columns=this.columns}}
 
-    {{t.body rows=rows}}
+    {{t.body rows=this.rows}}
 
-    {{t.foot rows=footerRows}}
+    {{t.foot rows=this.footerRows}}
   {{/ember-table}}
+```
+
+## Writing tests for Ember Table in your application
+
+Ember Table comes with test helpers, for example:
+
+To use these helpers, you should setup Ember Table for testing in your application's `tests/test-helper.js` file. For example:
+
+```js
+import { setupForTest as setupEmberTableForTest } from 'ember-table/test-support';
+
+setupEmberTableForTest();
 ```
 
 ## Migrating from old Ember table

@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { render } from '@ember/test-helpers';
 import hbs from 'htmlbars-inline-precompile';
 
 import { ResizePage } from 'ember-table/test-support/pages/-private/ember-table-header';
@@ -14,7 +15,7 @@ module('Integration | Component | ember-th/resize-handle', function() {
         isResizable: true,
       });
 
-      await this.render(hbs`{{ember-th/resize-handle columnMeta=columnMeta}}`);
+      await render(hbs`{{ember-th/resize-handle columnMeta=this.columnMeta}}`);
 
       assert.ok(resize.isPresent);
 

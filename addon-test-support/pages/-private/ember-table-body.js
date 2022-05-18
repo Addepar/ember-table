@@ -7,7 +7,7 @@ import PageObject, {
 } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
 
-import { click } from 'ember-native-dom-helpers';
+import { click } from '@ember/test-helpers';
 
 /**
  * Page object for single table `td` cell; also used by the footer page object
@@ -37,7 +37,13 @@ export default PageObject.extend({
     Returns the number of rows in the body.
   */
   get rowCount() {
-    return Number(findElement(this).getAttribute('data-test-row-count'));
+    let element = findElement(this);
+    if (!element.hasAttribute('data-test-row-count')) {
+      throw new Error(
+        'data-test-row-count attribute not found on the Ember Table tbody. Perhaps you need to run setupForTest? See https://github.com/Addepar/ember-table/blob/master/README.md'
+      );
+    }
+    return Number(element.getAttribute('data-test-row-count'));
   },
 
   /**

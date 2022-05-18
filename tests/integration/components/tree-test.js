@@ -1,13 +1,12 @@
-import { module, test } from 'ember-qunit';
+import { module, test } from 'qunit';
 import { componentModule } from '../../helpers/module';
 import hbs from 'htmlbars-inline-precompile';
-import { find } from 'ember-native-dom-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 
 import { generateTable, generateColumns, generateRows } from '../../helpers/generate-table';
 
-import wait from 'ember-test-helpers/wait';
+import { find, render, settled } from '@ember/test-helpers';
 
 let table = new TablePage();
 
@@ -22,7 +21,7 @@ module('Integration | Tree', () => {
       let newRows = generateRows(3, 2);
       this.set('rows', newRows);
 
-      await wait();
+      await settled();
       assert.equal(table.rows.length, 12, 'renders new tree');
     });
 
@@ -37,7 +36,7 @@ module('Integration | Tree', () => {
 
       // can be reenabled
       this.set('enableTree', true);
-      await wait();
+      await settled();
 
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
@@ -59,7 +58,7 @@ module('Integration | Tree', () => {
       let newRows = generateRows(999, 1);
       this.set('rows', newRows);
 
-      await wait();
+      await settled();
 
       assert.equal(table.scrollWidth, table.clientWidth);
 
@@ -71,7 +70,7 @@ module('Integration | Tree', () => {
       newRows = generateRows(1, 1);
       this.set('rows', newRows);
 
-      await wait();
+      await settled();
 
       assert.equal(table.scrollWidth, table.clientWidth);
     });
@@ -110,7 +109,7 @@ module('Integration | Tree', () => {
 
       // can be reenabled
       this.set('enableCollapse', true);
-      await wait();
+      await settled();
 
       assert.ok(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is back');
     });
@@ -125,10 +124,10 @@ module('Integration | Tree', () => {
       this.set('columns', generateColumns(columnCount));
       this.set('rows', generateRows(rowCount, rowDepth));
 
-      this.render(hbs`
+      await render(hbs`
         {{#ember-table as |t|}}
-          {{ember-thead api=t columns=columns}}
-          {{#ember-tbody api=t rows=rows as |b|}}
+          {{ember-thead api=t columns=this.columns}}
+          {{#ember-tbody api=t rows=this.rows as |b|}}
             {{#ember-tr api=b as |r|}}
               {{#ember-td api=r as |c|}}
                 {{b.rowsCount}}
@@ -138,7 +137,7 @@ module('Integration | Tree', () => {
         {{/ember-table}}
       `);
 
-      await wait();
+      await settled();
 
       assert.equal(table.getCell(0, 0).text, '2', 'rowsCount is correct before collapse');
 

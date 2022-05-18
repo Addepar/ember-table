@@ -1,6 +1,6 @@
 import PageObject, { alias, collection, hasClass, triggerable } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
-import { click } from 'ember-native-dom-helpers';
+import { click } from '@ember/test-helpers';
 
 import { mouseDown, mouseMove, mouseUp } from '../../helpers/mouse';
 import { getScale } from '../../helpers/element';
@@ -159,7 +159,13 @@ export default {
     Returns the number of rows in the header.
   */
   get rowCount() {
-    return Number(findElement(this).getAttribute('data-test-row-count'));
+    let element = findElement(this);
+    if (!element.hasAttribute('data-test-row-count')) {
+      throw new Error(
+        'data-test-row-count attribute not found on the Ember Table tbody. Perhaps you need to run setupForTest? See https://github.com/Addepar/ember-table/blob/master/README.md'
+      );
+    }
+    return Number(element.getAttribute('data-test-row-count'));
   },
 
   rows: collection({
