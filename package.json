@@ -1,6 +1,6 @@
 {
   "name": "ember-table",
-  "version": "4.0.0-beta.5",
+  "version": "4.0.0",
   "description": "An addon to support large data set and a number of features around table.",
   "keywords": [
     "ember-addon"
