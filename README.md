@@ -5,15 +5,13 @@
 An addon to support large data set and a number of features around table. Ember Table can
 handle over 100,000 rows without any rendering or performance issues.
 
-Ember Table 3.x supports:
+Ember Table versions each support a range of browsers and framework versions:
 
-* Ember 2.8 to Ember 3.28 (last 3.x version of Ember).
-* Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile.
-
-For older platforms, the final release of Ember Table 2.x (2.2.3) supports:
-
-* Ember 1.11-3.8+
-* IE11+
+| Ember Table Version | Ember Versions Supported     | Browser Support |
+| ------------------- | ---------------------------- | --------------- |
+| 4.x                 | 2.18 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
+| 3.x                 | 2.8 - 3.28 (last 3.x version | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
+| 2.x                 | 1.11 - 3.8 (or around 3.8)   | IE11+ and newer browsers |
 
 ## Install
 
