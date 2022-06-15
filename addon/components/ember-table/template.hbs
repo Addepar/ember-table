@@ -3,7 +3,7 @@
   class="ember-table-overflow"
   id="{{this.elementId}}-overflow"
 >
-  <table>
+  <table class="{{this.tableClassNames}}"
     {{yield (hash
       api=this.api
       head=(component "ember-thead" api=this.api)
