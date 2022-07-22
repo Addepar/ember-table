@@ -137,8 +137,16 @@ module('[Unit] ember-th', function(hooks) {
     assert.ok(header.isLastColumn, 'is-last-column applied to normal header');
     assert.notOk(slackHeader.isLastColumn, 'is-last-column not applied to slack header');
 
-    // shrink header "A"; now slack column gets the `is-last-column` class
-    await header.resize(header.width - 1);
+    /**
+     * shrink header "A"; now slack column gets the `is-last-column`
+     * class.
+     *
+     * The number 27 here for the resize is fairly arbitrary, it may be
+     * tied to the size of the resize handle or another drag/drop
+     * threshold.
+     */
+    await header.logicalResize(header.logicalWidth - 27);
+
     assert.notOk(header.isLastColumn, 'is-last-column not applied to normal header');
     assert.ok(slackHeader.isLastColumn, 'is-last-column applied to slack header');
   });

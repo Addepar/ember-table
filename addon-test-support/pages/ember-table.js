@@ -50,6 +50,11 @@ export default PageObject.extend({
 
   /**
    * Returns the table width.
+   *
+   * offsetWidth returns a rounded integer, and so can
+   * result in unreliable tests.
+   *
+   * @returns {number}
    */
   get width() {
     return findElement(this, 'table').offsetWidth;
@@ -57,6 +62,11 @@ export default PageObject.extend({
 
   /**
    * Returns the table container width.
+   *
+   * offsetWidth returns a rounded integer, and so can
+   * result in unreliable tests.
+   *
+   * @returns {number}
    */
   get containerWidth() {
     return findElement(this).offsetWidth;

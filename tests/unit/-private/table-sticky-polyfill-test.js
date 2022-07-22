@@ -134,7 +134,11 @@ function verifyMultiLineHeader(assert) {
   firstTableCellOfEachHeaderRow.forEach(cell => {
     let firstCellRect = cell.getBoundingClientRect();
     expectedOffset += firstCellRect.height;
-    assert.equal(expectedOffset, firstCellRect.bottom);
+    assert.equal(
+      expectedOffset,
+      firstCellRect.bottom,
+      'bottom of the cell matches based on expected offset'
+    );
   });
 }
 

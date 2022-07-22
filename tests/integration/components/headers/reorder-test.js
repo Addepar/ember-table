@@ -11,34 +11,56 @@ import { parameterizedComponentModule } from '../../../helpers/module';
 import { find, findAll } from '@ember/test-helpers';
 import scrollTo from '../../../helpers/scroll-to';
 import { mouseDown, mouseMove, mouseUp } from 'ember-table/test-support/helpers/mouse';
-import { getScale } from 'ember-table/test-support/helpers/element';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { toBase26 } from 'dummy/utils/base-26';
 
 const table = new TablePage();
 
+/**
+ *
+ * Scroll to a given edge, accepting an offset for how many rendered
+ * pixels to stay from the edge.
+ *
+ */
 export async function scrollToEdge(targetElement, edgeOffset, direction) {
   let targetElementRight = targetElement.getBoundingClientRect().right;
   let container = find('.ember-table');
-  let scale = getScale(container);
-  let edge;
 
+  let initialTargetX, finalTargetX;
   if (direction === 'right') {
-    await mouseDown(targetElement, targetElementRight - 30, 0);
-    await mouseMove(targetElement, targetElementRight - 20, 0);
-    await mouseMove(targetElement, targetElementRight - 10, 0);
-
-    edge = container.getBoundingClientRect().right - edgeOffset / scale;
+    initialTargetX = targetElementRight - 5;
+    finalTargetX = container.getBoundingClientRect().right - edgeOffset;
+    if (initialTargetX >= finalTargetX) {
+      throw new Error(
+        'When dragging right, the starting position X must be smaller than the ending position'
+      );
+    }
   } else {
-    await mouseDown(targetElement, targetElementRight - 10, 0);
-    await mouseMove(targetElement, targetElementRight - 20, 0);
-    await mouseMove(targetElement, targetElementRight - 30, 0);
-
-    edge = container.getBoundingClientRect().left + edgeOffset / scale;
+    initialTargetX = targetElementRight - 5;
+    finalTargetX = container.getBoundingClientRect().left + edgeOffset;
+    if (initialTargetX <= finalTargetX) {
+      throw new Error(
+        'When dragging left, the starting position X must be greater than the ending position'
+      );
+    }
   }
 
-  await mouseMove(targetElement, edge, 0);
+  await mouseDown(targetElement, initialTargetX, 0);
+
+  /*
+   * Below a certain number of steps, Hammer (the gesture library
+   * which recognizes panning) will not pick up the pointermove
+   * events emitted by `mouseMove` before the gestrure completes.
+   *
+   * 5 seems a reasonable number.
+   */
+  let current = initialTargetX;
+  for (let steps = 5; steps > 0; steps--) {
+    await mouseMove(targetElement, current, 0);
+    current = current + (finalTargetX - current) / steps;
+  }
+  await mouseMove(targetElement, finalTargetX, 0);
   await mouseUp(targetElement);
 }
 
@@ -309,7 +331,9 @@ module('Integration | headers | reorder', function() {
       let tableOverflowContainer = find('[data-test-ember-table-overflow]');
       let header = findAll('th')[0];
 
-      await reorderToRightEdge(header, columnWidth);
+      let headerBoundingRect = header.getBoundingClientRect();
+      let headerWidth = headerBoundingRect.right - headerBoundingRect.left;
+      await reorderToRightEdge(header, headerWidth);
 
       assert.ok(tableOverflowContainer.scrollLeft > 0, 'table scrolled');
       assert.equal(table.headers.objectAt(columnCount - 2).text, toBase26(0), 'table scrolled');
@@ -331,7 +355,9 @@ module('Integration | headers | reorder', function() {
       let header = findAll('th')[columnCount - 1];
 
       await scrollTo(tableOverflowContainer, 10000, 0);
-      await reorderToLeftEdge(header, columnWidth);
+      let headerBoundingRect = header.getBoundingClientRect();
+      let headerWidth = headerBoundingRect.right - headerBoundingRect.left;
+      await reorderToLeftEdge(header, headerWidth);
 
       assert.equal(tableOverflowContainer.scrollLeft, 0, 'table scrolled back to the left');
       assert.equal(table.headers.objectAt(1).text, toBase26(columnCount - 1), 'table scrolled');
