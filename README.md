@@ -9,6 +9,7 @@ Ember Table versions each support a range of browsers and framework versions:
 
 | Ember Table Version | Ember Versions Supported     | Browser Support |
 | ------------------- | ---------------------------- | --------------- |
+| 5.x                 | 3.12 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 4.x                 | 2.18 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 3.x                 | 2.8 - 3.28 (last 3.x version | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 2.x                 | 1.11 - 3.8 (or around 3.8)   | IE11+ and newer browsers |
