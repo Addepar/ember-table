@@ -5412,12 +5412,13 @@ ember-auto-import@^2.4.2:
     typescript-memoize "^1.0.0-alpha.3"
     walk-sync "^3.0.0"
 
-ember-classy-page-object@^0.8.0-beta:
-  version "0.8.0-beta"
-  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.8.0-beta.tgz#1e388e90e5205c617f48450fae764c6f90c38217"
-  integrity sha512-jO6t7KJWnSSBy/gbOtO0lXEnh/7tm/tNJB0KC6ZZOT9ich67rY46N+6Ras5uqeU0rPdyuiPBeKYSCxtEdcsacQ==
+ember-classy-page-object@^0.8.0-beta.2:
+  version "0.8.0-beta.2"
+  resolved "https://registry.npmjs.org/ember-classy-page-object/-/ember-classy-page-object-0.8.0-beta.2.tgz#241d71bf7e6d3d5d1efdc18d6ae8bf16a81b5059"
+  integrity sha512-rnGP5/7Gid+ShgTcLB0SR16IlxtTtdZq/pvtAZGwWvEWF8dJOl33vH1/Zc3052mHs9oN2gbZ8mOoBPYbF8ZA2g==
   dependencies:
     broccoli-funnel "^2.0.1"
+    ember-auto-import "^2.4.0"
     ember-cli-babel "^7.12.0"
     ember-cli-page-object "~v2.0.0-beta.3"
 
