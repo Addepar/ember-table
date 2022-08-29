@@ -191,18 +191,17 @@ module('Integration | basic', function() {
           }
         </style>
         <div id="container" style="height: {{this.containerHeight}}px; overflow: auto;">
-          {{#ember-table as |t|}}
-            {{ember-thead api=t columns=this.columns}}
-
-            {{ember-tbody
-              api=t
-              containerSelector="#container"
-              rows=this.rows
-              estimateRowHeight=this.estimateRowHeight
-              renderAll=false
-              bufferSize=0
-            }}
-          {{/ember-table}}
+          <EmberTable as |t|>
+            <EmberThead @api={{t}} @columns={{this.columns}} />
+            <EmberTbody
+              @api={{t}}
+              @containerSelector="#container"
+              @rows={{this.rows}}
+              @estimateRowHeight={{this.estimateRowHeight}}
+              @renderAll=false
+              @bufferSize=0
+            />
+          </EmberTable>
         </div>
       `);
 
@@ -213,6 +212,9 @@ module('Integration | basic', function() {
     test('it yields to inverse when tbody rows are empty', async function(assert) {
       this.set('columns', generateColumns(4));
       this.set('rows', []);
+      // Cannot change to angle-bracket since `{{else}}` is not supported
+      // Can rewrite this using named blocks (via polyfill):
+      // https://github.com/ember-polyfills/ember-named-blocks-polyfill
       await render(hbs`
         <div style="height: 500px;">
           {{#ember-table as |t|}}
@@ -291,11 +293,10 @@ module('Integration | basic', function() {
       await render(hbs`
         {{#if this.showComponent}}
           <div id="container" style="height: 500px;">
-            {{#ember-table as |t|}}
-              {{ember-thead api=t columns=this.columns}}
-
-              {{ember-tbody api=t rows=this.rows estimateRowHeight=13}}
-            {{/ember-table}}
+            <EmberTable as |t|>
+              <EmberThead @api={{t}} @columns={{this.columns}} />
+              <EmberTbody @api={{t}} @rows={{this.rows}} @estimateHeigh={{13}} />
+            </EmberTable>
           </div>
         {{/if}}
       `);

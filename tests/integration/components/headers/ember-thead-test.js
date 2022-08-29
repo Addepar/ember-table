@@ -42,25 +42,26 @@ async function renderTable() {
   await render(hbs`
     <button id="add-column" {{action this.addColumn}}>Add Column</button>
     <button id="remove-column" {{action this.removeColumn}}>Remove Column</button>
-    {{#ember-table data-test-ember-table=true as |t|}}
-      {{#ember-thead
-        api=t
-        widthConstraint='eq-container'
-        columns=this.columns
-        columnKeyPath=this.columnKeyPath as |h|}}
-        {{#ember-tr api=h as |r|}}
-          {{ember-th api=r}}
-        {{/ember-tr}}
-      {{/ember-thead}}
+    <EmberTable @data-test-ember-table={{true}} as |t|>
+      <EmberThead
+        @api={{t}}
+        @widthConstraint="eq-container"
+        @columns={{this.columns}}
+        @columnKeyPath={{this.columnKeyPath}} as |h|
+      >
+        <EmberTr @api={{h}} as |r|>
+          <EmberTh @api={{r}} />
+        </EmberTr>
+      </EmberThead>
 
-      {{#ember-tbody api=t rows=this.rows as |b|}}
-        {{#ember-tr api=b as |r|}}
-          {{#ember-td api=r as |cellValue|}}
+      <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
+        <EmberTr @api={{b}} as |r|>
+          <EmberTd @api={{r}} as |cellValue|>
             {{cellValue}}
-          {{/ember-td}}
-        {{/ember-tr}}
-      {{/ember-tbody}}
-    {{/ember-table}}
+          </EmberTd>
+        </EmberTr>
+      </EmberTbody>
+    </EmberTable>
     `);
 
   await rafFinished();

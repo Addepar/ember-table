@@ -26,37 +26,33 @@ module('Integration | meta', function() {
       await render(hbs`
         <div style="height: 500px;">
           <EmberTable data-test-main-table as |t| >
-            {{#ember-thead api=t columns=this.columns as |h|}}
-              {{#ember-tr api=h as |r|}}
-                {{#ember-th api=r as |column columnMeta|}}
+            <EmberThead @api={{t}} @columns={{this.columns}} as |h|>
+              <EmberTr @api={{h}} as |r|>
+                <EmberTh @api={{r}} as |column columnMeta|>
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   clicked
-                {{/ember-th}}
-              {{/ember-tr}}
-            {{/ember-thead}}
-            {{#ember-tbody api=t rows=this.rows as |b|}}
-              {{#ember-tr api=b as |r|}}
-                {{#ember-td
-                  api=r
-                  onClick=(action this.onClick)
-                  as |value column row cellMeta columnMeta rowMeta|
-                }}
+                </EmberTh>
+              </EmberTr>
+            </EmberThead>
+            <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
+              <EmberTr @api={{b}} as |r|>
+                <EmberTd @api={{r}} @onClick={{action this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if cellMeta.wasClicked}}cell{{/if}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   {{#if rowMeta.wasClicked}}row{{/if}}
                   clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tbody}}
+                </EmberTd>
+              </EmberTr>
+            </EmberTbody>
 
-            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
-              {{#ember-tr api=f as |r|}}
-                {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+            <EmberTfoot @api={{t}} @rows={{this.footerRows}} as |f|>
+              <EmberTr @api={{f}} as |r|>
+                <EmberTd @api={{r}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tfoot}}
+                </EmberTd>
+              </EmberTr>
+            </EmberTfoot>
           </EmberTable>
         </div>
       `);
@@ -120,76 +116,66 @@ module('Integration | meta', function() {
       await render(hbs`
         <div style="height: 500px;">
           <EmberTable data-test-main-table as |t| >
-            {{#ember-thead api=t columns=this.columns as |h|}}
-              {{#ember-tr api=h as |r|}}
-                {{#ember-th api=r as |column columnMeta|}}
+            <EmberThead @api={{t}} @columns={{this.columns}} as |h|>
+              <EmberTr @api={{h}} as |r|>
+                <EmberTh @api={{r}} as |column columnMeta|>
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   clicked
-                {{/ember-th}}
-              {{/ember-tr}}
-            {{/ember-thead}}
+                </EmberTh>
+              </EmberTr>
+            </EmberThead>
 
-            {{#ember-tbody api=t rows=this.rows as |b|}}
-              {{#ember-tr api=b as |r|}}
-                {{#ember-td
-                  api=r
-                  onClick=(action this.onClick)
-
-                  as |value column row cellMeta columnMeta rowMeta|
-                }}
+            <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
+              <EmberTr @api={{b}} as |r|>
+                <EmberTd @api={{r}} @onClick={{action this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if cellMeta.wasClicked}}cell{{/if}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   {{#if rowMeta.wasClicked}}row{{/if}}
                   clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tbody}}
+                </EmberTd>
+              </EmberTr>
+            </EmberTbody>
 
-            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
-              {{#ember-tr api=f as |r|}}
-                {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+            <EmberTfoot @api={{t}} @rows={{this.footerRows}} as |f|>
+              <EmberTr @api={{f}} as |r|>
+                <EmberTd @api={{r}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tfoot}}
+                </EmberTd>
+              </EmberTr>
+            </EmberTfoot>
           </EmberTable>
         </div>
         <div style="height: 500px;">
           <EmberTable data-test-other-table as |t| >
-            {{#ember-thead api=t columns=this.columns as |h|}}
-              {{#ember-tr api=h as |r|}}
-                {{#ember-th api=r as |column columnMeta|}}
+            <EmberThead @api={{t}} @columns={{this.columns}} as |h|>
+              <EmberTr @api={{h}} as |r|>
+                <EmberTh @api={{r}} as |column columnMeta|>
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   clicked
-                {{/ember-th}}
-              {{/ember-tr}}
-            {{/ember-thead}}
+                </EmberTh>
+              </EmberTr>
+            </EmberThead>
 
-            {{#ember-tbody api=t rows=this.rows as |b|}}
-              {{#ember-tr api=b as |r|}}
-                {{#ember-td
-                  api=r
-                  onClick=(action this.onClick)
-
-                  as |value column row cellMeta columnMeta rowMeta|
-                }}
+            <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
+              <EmberTr @api={{b}} as |r|>
+                <EmberTd @api={{r}} @onClick={{action this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if cellMeta.wasClicked}}cell{{/if}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   {{#if rowMeta.wasClicked}}row{{/if}}
                   clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tbody}}
+                </EmberTd>
+              </EmberTr>
+            </EmberTbody>
 
-            {{#ember-tfoot api=t rows=this.footerRows as |f|}}
-              {{#ember-tr api=f as |r|}}
-                {{#ember-td api=r as |value column row cellMeta columnMeta rowMeta|}}
+            <EmberTfoot @api={{t}} @rows={{this.footerRows}} as |f|>
+              <EmberTr @api={{f}} as |r|>
+                <EmberTd @api={{r}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   clicked
-                {{/ember-td}}
-              {{/ember-tr}}
-            {{/ember-tfoot}}
+                </EmberTd>
+              </EmberTr>
+            </EmberTfoot>
           </EmberTable>
         </div>
       `);
@@ -241,14 +227,14 @@ module('Integration | meta', function() {
 
       await render(hbs`
         <EmberTable data-test-main-table as |t| >
-          {{#ember-thead api=t columns=this.columns as |h|}}
-            {{#ember-tr api=h as |r|}}
-              {{#ember-th api=r as |column columnMeta rowMeta|}}
+          <EmberThead @api={{t}} @columns={{this.columns}} as |h|>
+            <EmberTr @api={{h}} as |r|>
+              <EmberTh @api={{r}} as |column columnMeta rowMeta|>
                 {{rowMeta.index}}
-              {{/ember-th}}
-            {{/ember-tr}}
-          {{/ember-thead}}
-          {{ember-tbody api=t rows=this.rows}}
+              </EmberTh>
+            </EmberTr>
+          </EmberThead>
+          <EmberTbody @api={{t}} @rows={{this.rows}} />
         </EmberTable>
       `);
 

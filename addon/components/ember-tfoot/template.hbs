@@ -25,7 +25,7 @@
         row=(component "ember-tr" api=api)
       )}}
     {{else}}
-      {{ember-tr api=api}}
+      <EmberTr @api={{api}} />
     {{/if}}
   {{/-ember-table-private/row-wrapper}}
 {{/each}}

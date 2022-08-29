@@ -3,7 +3,7 @@
 {{else}}
   {{this.columnValue.name}}
 
-  {{ember-th/sort-indicator columnMeta=this.columnMeta}}
+  <EmberTh::SortIndicator @columnMeta={{this.columnMeta}} />
 
-  {{ember-th/resize-handle columnMeta=this.columnMeta}}
+  <EmberTh::ResizeHandle @columnMeta={{this.columnMeta}} />
 {{/if}}

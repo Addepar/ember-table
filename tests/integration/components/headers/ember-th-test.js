@@ -33,26 +33,23 @@ module('[Unit] ember-th', function(hooks) {
     let firstHeader = table.headers.objectAt(0);
 
     await render(hbs`
-    {{#ember-table data-test-ember-table=true as |t|}}
-      {{#ember-thead
-        api=t
-        columns=this.columns
-        sorts=this.sorts
-
-        onUpdateSorts=(action this.onUpdateSorts)
-
-        as |h|}}
-        {{#ember-tr api=h as |r|}}
-          {{#ember-th api=r as |column|}}
+    <EmberTable @data-test-ember-table={{true}} as |t|>
+      <EmberThead @api={{t}}
+        @columns={{this.columns}}
+        @sorts={{this.sorts}}
+        @onUpdateSorts={{action this.onUpdateSorts}} as |h|
+      >
+        <EmberTr @api={{h}} as |r|>
+          <EmberTh @api={{r}} as |column|>
             <div data-test-block>
               {{column.name}}
             </div>
-          {{/ember-th}}
-        {{/ember-tr}}
-      {{/ember-thead}}
+          </EmberTh>
+        </EmberTr>
+      </EmberThead>
 
-      {{ember-tbody api=t rows=this.rows}}
-    {{/ember-table}}
+      <EmberTbody @api={{t}} @rows={{this.rows}} />
+    </EmberTable>
     `);
     await firstHeader.click();
 
@@ -80,10 +77,10 @@ module('[Unit] ember-th', function(hooks) {
     this.set('rows', rows);
 
     await render(hbs`
-      {{#ember-table as |t|}}
-        {{ember-thead api=t columns=this.columns}}
-        {{ember-tbody api=t rows=this.rows}}
-      {{/ember-table}}
+      <EmberTable as |t|>
+        <EmberThead @api={{t}} @columns={{this.columns}} />
+        <EmberTbody @api={{t}} @rows={{this.rows}} />
+      </EmberTable>
     `);
 
     await settled();
@@ -113,15 +110,11 @@ module('[Unit] ember-th', function(hooks) {
     this.set('rows', rows);
 
     await render(hbs`
-      {{#ember-table as |t|}}
-        {{ember-thead
-          api=t
-          columns=this.columns
-          widthConstraint="eq-container-slack"
-          initialFillMode="equal-column"}}
+      <EmberTable as |t|>
+        <EmberThead @api={{t}} @columns={{this.columns}} @widthConstraint="eq-container-slack" @initialFillMode="equal-column" />
 
-        {{ember-tbody api=t rows=this.rows}}
-      {{/ember-table}}
+        <EmberTbody @api={{t}} @rows={{this.rows}} />
+      </EmberTable>
     `);
 
     await settled();

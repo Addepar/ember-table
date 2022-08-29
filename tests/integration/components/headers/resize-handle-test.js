@@ -15,7 +15,7 @@ module('Integration | Component | ember-th/resize-handle', function() {
         isResizable: true,
       });
 
-      await render(hbs`{{ember-th/resize-handle columnMeta=this.columnMeta}}`);
+      await render(hbs`<EmberTh::ResizeHandle @columnMeta={{this.columnMeta}} />`);
 
       assert.ok(resize.isPresent);
 
