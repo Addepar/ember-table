@@ -1,6 +1,5 @@
 'use strict';
 const VersionChecker = require('ember-cli-version-checker');
-const replace = require('broccoli-string-replace');
 
 module.exports = {
   name: 'ember-table',
@@ -49,22 +48,5 @@ module.exports = {
     }
 
     return false;
-  },
-
-  treeForAddon(tree) {
-    // strip out contextual components in versions that don't support them
-    if (!this.checker.for('ember-source').gte('2.3.0')) {
-      tree = replace(tree, {
-        files: ['**/*.hbs'],
-        patterns: [
-          {
-            match: /\w*=\(component.*?\)/gm,
-            replacement: '',
-          },
-        ],
-      });
-    }
-
-    return this._super.treeForAddon.apply(this, [tree]);
   },
 };
