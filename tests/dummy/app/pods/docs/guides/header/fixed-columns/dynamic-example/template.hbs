@@ -2,13 +2,13 @@
   {{! BEGIN-SNIPPET docs-example-dynamic-fixed-columns.hbs }}
   <EmberTable as |t|>
     <t.head @columns={{this.columns}} as |h|>
-      {{#h.row as |r|}}
-        {{#r.cell as |column|}}
+      <h.row as |r|>
+        <r.cell as |column|>
           <input type="checkbox" checked={{eq column.isFixed 'left'}} {{on "click" (fn this.toggleFixed column)}} />
 
           {{column.name}}
-        {{/r.cell}}
-      {{/h.row}}
+        </r.cell>
+      </h.row>
     </t.head>
 
     <t.body @rows={{this.rows}} />
