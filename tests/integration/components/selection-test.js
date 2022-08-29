@@ -7,7 +7,7 @@ import { generateTable } from '../../helpers/generate-table';
 import { generateRows } from 'dummy/utils/generators';
 import { A as emberA } from '@ember/array';
 import { run } from '@ember/runloop';
-import scrollTo from '../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 import { registerTestWarnHandler } from '../../helpers/warn-handlers';
 
 import { runInDebug } from '@ember/debug';

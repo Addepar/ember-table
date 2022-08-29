@@ -5,7 +5,7 @@ import a11yAudit from 'ember-a11y-testing/test-support/audit';
 import { generateTable, generateColumns, generateRows } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
-import scrollTo from '../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 import { collection, hasClass } from 'ember-classy-page-object';

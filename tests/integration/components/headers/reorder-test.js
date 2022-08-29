@@ -9,7 +9,7 @@ import {
 import { parameterizedComponentModule } from '../../../helpers/module';
 
 import { find, findAll } from '@ember/test-helpers';
-import scrollTo from '../../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 import { mouseDown, mouseMove, mouseUp } from 'ember-table/test-support/helpers/mouse';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';

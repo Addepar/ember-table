@@ -4,7 +4,7 @@ import { generateTable } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
 
 import { findElement } from 'ember-classy-page-object/extend';
-import scrollTo from '../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 
 import TablePage from 'ember-table/test-support/pages/ember-table';
 

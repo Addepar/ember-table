@@ -2,7 +2,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { render, settled } from '@ember/test-helpers';
 import { module, test } from 'qunit';
 import { set } from '@ember/object';
-import scrollTo from '../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 
 import { generateTableValues } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';

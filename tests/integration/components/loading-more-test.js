@@ -4,7 +4,7 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 import hbs from 'htmlbars-inline-precompile';
 import { render, settled } from '@ember/test-helpers';
 import { generateColumns } from '../../helpers/generate-table';
-import scrollTo from '../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 
 let table = new TablePage();
 
