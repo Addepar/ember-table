@@ -21,7 +21,7 @@ import { readOnly } from '@ember/object/computed';
     <t.body @rows={{this.rows}} />
   </EmberTable>
   ```
-  @class {{ember-th/resize-handle}}
+  @class <EmberTh::ResizeHandle />
   @public
 */
 export default Component.extend({

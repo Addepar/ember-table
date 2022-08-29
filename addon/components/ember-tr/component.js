@@ -41,7 +41,7 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
   @yield {object} row.rowValue - The value for the currently yielded row
   @yield {object} row.rowMeta - The meta for the currently yielded row
 
-  @class {{ember-tr}}
+  @class <EmberTr />
   @public
 */
 export default Component.extend({

@@ -37,7 +37,7 @@ export function setSimpleCheckboxForTest(bool) {
  @yield {object} cellMeta - The meta object associated with the cell
  @yield {object} columnMeta - The meta object associated with the column
  @yield {object} rowMeta - The meta object associated with the row
- @class {{ember-td}}
+ @class <EmberTd />
  @public
  */
 export default BaseTableCell.extend({

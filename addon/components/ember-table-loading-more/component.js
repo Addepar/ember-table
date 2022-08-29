@@ -24,7 +24,7 @@ import { next, schedule, scheduleOnce } from '@ember/runloop';
   </EmberTable>
   ```
 
-  @class {{ember-table-loading-more}}
+  @class <EmberTableLoadingMore />
   @public
 */
 export default Component.extend({
