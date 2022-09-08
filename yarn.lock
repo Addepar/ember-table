@@ -1363,10 +1363,10 @@
   dependencies:
     babel-plugin-debug-macros "^0.3.4"
 
-"@html-next/vertical-collection@^4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.npmjs.org/@html-next/vertical-collection/-/vertical-collection-4.0.0-beta.1.tgz#e44b32520427fc5e32a4f33bfd7ae7db012caf56"
-  integrity sha512-6JQXRxD6PGAiq+u9jBLd4eJyI65RB4WKdt6Y/oGnX2raUIo//CLj1lVyFNjWzJM7Ox/W5V89AtnnqDx7qyFoPQ==
+"@html-next/vertical-collection@^4.0.0-beta.2":
+  version "4.0.0-beta.2"
+  resolved "https://registry.npmjs.org/@html-next/vertical-collection/-/vertical-collection-4.0.0-beta.2.tgz#bd83cb426e60e230d5b446d3b6baadaa0b5ad87b"
+  integrity sha512-c6VZXd6GMvHxO3UOCM+xHeq73nVnwaNjrDclwe07aay5+nOfQ1FW+9+fnQ904+o/OMkeoqRexYLwk3Q5R1dPbw==
   dependencies:
     babel6-plugin-strip-class-callcheck "^6.0.0"
     broccoli-funnel "^3.0.8"
