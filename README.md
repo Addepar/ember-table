@@ -9,6 +9,7 @@ Ember Table versions each support a range of browsers and framework versions:
 
 | Ember Table Version | Ember Versions Supported     | Browser Support |
 | ------------------- | ---------------------------- | --------------- |
+| 5.x                 | 3.12 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 4.x                 | 2.18 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 3.x                 | 2.8 - 3.28 (last 3.x version | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 2.x                 | 1.11 - 3.8 (or around 3.8)   | IE11+ and newer browsers |
@@ -90,11 +91,11 @@ rows: computed(function() {
 The following template renders a simple table.
 
 ```
-  {{#ember-table as |t|}}
-    {{t.head columns=this.columns}}
+  <EmberTable as |t|>
+    <t.head @columns={{this.columns}} />
 
-    {{t.body rows=this.rows}}
-  {{/ember-table}}
+    <t.body @rows={{this.rows}} />
+  </EmberTable>
 ```
 
 You can use the block form of the table to customize its template. The component
@@ -113,17 +114,17 @@ want to have every cell in a particular column use a component, you can add a
 you like):
 
 ```
-  {{#ember-table as |t|}}
-    {{t.head columns=this.columns}}
+  <EmberTable as |t|>
+    <t.head @columns={{this.columns}} />
 
-    {{#t.body rows=this.rows as |b|}}
-      {{#b.row as |r|}}
-        {{#r.cell as |value column row|}}
+    <t.body @rows={{this.rows}} as |b|>
+      <b.row as |r|>
+        <r.cell as |value column row|>
           {{component column.component value=value}}
-        {{/r.cell}}
-      {{/b.row}}
-    {{/t.body}}
-  {{/ember-table}}
+        </r.cell>
+      </b.row>
+    </t.body>
+  </EmberTable>
 ```
 
 The rendered table is a plain table without any styling. You can define styling for your own table.
@@ -135,13 +136,13 @@ You can also use the `ember-tfoot` component, which has the same API as
 `ember-tbody`:
 
 ```
-  {{#ember-table as |t|}}
-    {{t.head columns=this.columns}}
+  <EmberTable as |t|>
+    <t.head @columns={{this.columns}} />
 
-    {{t.body rows=this.rows}}
+    <t.body @rows={{this.rows}} />
 
-    {{t.foot rows=this.footerRows}}
-  {{/ember-table}}
+    <t.foot @rows={{this.footerRows}} />
+  </EmberTable>
 ```
 
 ## Writing tests for Ember Table in your application

@@ -1,34 +1,19 @@
 <div class="demo-container fixed-width">
-  {{#ember-table as |t|}}
-    {{#ember-thead
-      api=t
-      columns=this.columns
-      sorts=this.sorts
-      onUpdateSorts=(action "onUpdateSorts")
+  <EmberTable as |t|>
+    <EmberThead @api={{t}} @columns={{this.columns}} @sorts={{this.sorts}} @onUpdateSorts={{action "onUpdateSorts"}} as |h|>
+      <EmberTr @api={{h}} as |r|>
+        <EmberTh @api={{r}} />
+      </EmberTr>
+    </EmberThead>
 
-      as |h|
-    }}
-      {{#ember-tr api=h as |r|}}
-        {{ember-th api=r}}
-      {{/ember-tr}}
-    {{/ember-thead}}
-
-    {{#ember-tbody
-      api=t
-      rows=this.rows
-
-      selection=this.selection
-      onSelect=(action "onSelect")
-
-      as |b|
-    }}
-      {{#ember-tr api=b as |r|}}
-        {{#ember-td api=r as |value column row cellMeta columnMeta|}}
+    <EmberTbody @api={{t}} @rows={{this.rows}} @selection={{this.selection}} @onSelect={{action "onSelect"}} as |b|>
+      <EmberTr @api={{b}} as |r|>
+        <EmberTd @api={{r}} as |value column row cellMeta columnMeta|>
           {{value}}
 
           {{#if (eq columnMeta.index 0)}}lorem ipsum dolor{{/if}}
-        {{/ember-td}}
-      {{/ember-tr}}
-    {{/ember-tbody}}
-  {{/ember-table}}
+        </EmberTd>
+      </EmberTr>
+    </EmberTbody>
+  </EmberTable>
 </div>

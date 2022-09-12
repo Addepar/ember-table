@@ -4,7 +4,7 @@ import TablePage from 'ember-table/test-support/pages/ember-table';
 import hbs from 'htmlbars-inline-precompile';
 import { render, settled } from '@ember/test-helpers';
 import { generateColumns } from '../../helpers/generate-table';
-import scrollTo from '../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 
 let table = new TablePage();
 
@@ -12,13 +12,13 @@ module('Integration | loading more', function() {
   componentModule('basic', function() {
     test('it renders a custom spinner', async function(assert) {
       await render(hbs`
-        {{#ember-table as |t|}}
-          {{ember-thead columns=this.columns api=t}}
-          {{ember-tbody api=t}}
-          {{#ember-table-loading-more isLoading=true api=t}}
+        <EmberTable as |t|>
+          <EmberThead @columns={{this.columns}} @api={{t}} />
+          <EmberTbody @api={{t}} />
+          <EmberTableLoadingMore @isLoading={{true}} @api={{t}}>
             <span data-test-custom-spinner></span>
-          {{/ember-table-loading-more}}
-        {{/ember-table}}
+          </EmberTableLoadingMore>
+        </EmberTable>
       `);
 
       await settled();
@@ -29,11 +29,11 @@ module('Integration | loading more', function() {
 
     test('it is shown when isLoading is true', async function(assert) {
       await render(hbs`
-        {{#ember-table as |t|}}
-          {{ember-thead columns=this.columns api=t}}
-          {{ember-tbody api=t}}
-          {{ember-table-loading-more isLoading=true api=t}}
-        {{/ember-table}}
+        <EmberTable as |t|>
+          <EmberThead @columns={{this.columns}} @api={{t}} />
+          <EmberTbody @api={{t}} />
+          <EmberTableLoadingMore @isLoading={{true}} @api={{t}} />
+        </EmberTable>
       `);
 
       await settled();
@@ -43,11 +43,11 @@ module('Integration | loading more', function() {
 
     test('it is not shown when isLoading is false', async function(assert) {
       await render(hbs`
-        {{#ember-table as |t|}}
-          {{ember-thead columns=this.columns api=t}}
-          {{ember-tbody api=t}}
-          {{ember-table-loading-more isLoading=false api=t}}
-        {{/ember-table}}
+        <EmberTable as |t|>
+          <EmberThead @columns={{this.columns}} @api={{t}} />
+          <EmberTbody @api={{t}} />
+          <EmberTableLoadingMore @isLoading={{false}} @api={{t}} />
+        </EmberTable>
       `);
 
       await settled();
@@ -57,11 +57,11 @@ module('Integration | loading more', function() {
 
     test('it is included in layout when canLoadMore is true', async function(assert) {
       await render(hbs`
-        {{#ember-table as |t|}}
-          {{ember-thead columns=this.columns api=t}}
-          {{ember-tbody api=t}}
-          {{ember-table-loading-more canLoadMore=true api=t}}
-        {{/ember-table}}
+        <EmberTable as |t|>
+          <EmberThead @columns={{this.columns}} @api={{t}} />
+          <EmberTbody @api={{t}} />
+          <EmberTableLoadingMore @canLoadMore={{true}} @api={{t}} />
+        </EmberTable>
       `);
 
       await settled();
@@ -71,11 +71,11 @@ module('Integration | loading more', function() {
 
     test('it is not included in layout when canLoadMore is false', async function(assert) {
       await render(hbs`
-        {{#ember-table as |t|}}
-          {{ember-thead columns=this.columns api=t}}
-          {{ember-tbody api=t}}
-          {{ember-table-loading-more canLoadMore=false api=t}}
-        {{/ember-table}}
+        <EmberTable as |t|>
+          <EmberThead @columns={{this.columns}} @api={{t}} />
+          <EmberTbody @api={{t}} />
+          <EmberTableLoadingMore @canLoadMore={{false}} @api={{t}} />
+        </EmberTable>
       `);
 
       await settled();
@@ -92,13 +92,13 @@ module('Integration | loading more', function() {
 
       this.set('columns', generateColumns(4, { width: 1000 }));
       await render(hbs`
-        {{#ember-table as |t|}}
-          {{ember-thead columns=this.columns api=t}}
-          {{ember-tbody api=t}}
-          {{#ember-table-loading-more isLoading=true center=true api=t}}
+        <EmberTable as |t|>
+          <EmberThead @columns={{this.columns}} @api={{t}} />
+          <EmberTbody @api={{t}} />
+          <EmberTableLoadingMore @isLoading={{true}} @center={{true}} @api={{t}}>
             <div style="display: inline-block; width: 10px; height: 10px; background: red"></div>
-          {{/ember-table-loading-more}}
-        {{/ember-table}}
+          </EmberTableLoadingMore>
+        </EmberTable>
       `);
 
       await settled();

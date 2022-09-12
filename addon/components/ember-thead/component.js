@@ -40,7 +40,7 @@ export function setupTHeadForTest(bool) {
 
   @yield {object} head - the API object yielded by the table header
   @yield {Component} head.row - The table row component
-  @class {{ember-thead}}
+  @class <EmberThead />
   @public
 */
 

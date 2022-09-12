@@ -125,16 +125,16 @@ module('Integration | Tree', () => {
       this.set('rows', generateRows(rowCount, rowDepth));
 
       await render(hbs`
-        {{#ember-table as |t|}}
-          {{ember-thead api=t columns=this.columns}}
-          {{#ember-tbody api=t rows=this.rows as |b|}}
-            {{#ember-tr api=b as |r|}}
-              {{#ember-td api=r as |c|}}
+        <EmberTable as |t|>
+          <EmberThead @api={{t}} @columns={{this.columns}} />
+          <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
+            <EmberTr @api={{b}} as |r|>
+              <EmberTd @api={{r}} as |c|>
                 {{b.rowsCount}}
-              {{/ember-td}}
-            {{/ember-tr}}
-          {{/ember-tbody}}
-        {{/ember-table}}
+              </EmberTd>
+            </EmberTr>
+          </EmberTbody>
+        </EmberTable>
       `);
 
       await settled();

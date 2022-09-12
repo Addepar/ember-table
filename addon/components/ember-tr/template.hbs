@@ -32,8 +32,8 @@
       )}}
     {{/if}}
   {{else if this.isHeader}}
-    {{ember-th api=api}}
+    <EmberTh @api={{api}} />
   {{else}}
-    {{ember-td api=api}}
+    <EmberTd @api={{api}} />
   {{/if}}
 {{/each}}

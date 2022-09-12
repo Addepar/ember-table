@@ -1,7 +1,7 @@
 /* global ResizeSensor */
 import Component from '@ember/component';
 import { or, readOnly } from '@ember/object/computed';
-import { next, run, schedule, scheduleOnce } from '@ember/runloop';
+import { next, schedule, scheduleOnce } from '@ember/runloop';
 
 /**
   Renders a custom loading indicator beneath the table body. Can be used to
@@ -24,7 +24,7 @@ import { next, run, schedule, scheduleOnce } from '@ember/runloop';
   </EmberTable>
   ```
 
-  @class {{ember-table-loading-more}}
+  @class <EmberTableLoadingMore />
   @public
 */
 export default Component.extend({
@@ -66,8 +66,7 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    // wrapped in `run` for testing compatibility in ember 2.12, 2.18
-    this._updateTransform = () => run(() => scheduleOnce('afterRender', this, 'updateTransform'));
+    this._updateTransform = () => scheduleOnce('afterRender', this, 'updateTransform');
   },
 
   didReceiveAttrs() {

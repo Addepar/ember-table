@@ -26,7 +26,7 @@ import layout from './template';
   @yield {Component} table.head - The table header component
   @yield {Component} table.body - The table body component
   @yield {Component} table.foot - The table footer component
-  @class {{ember-table}}
+  @class <EmberTable />
   @public
 */
 export default Component.extend({

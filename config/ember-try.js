@@ -11,61 +11,10 @@ module.exports = function() {
       useYarn: true,
       scenarios: [
         {
-          name: 'ember-lts-2.18',
-          npm: {
-            devDependencies: {
-              '@ember/jquery': '^1.1.0',
-              '@ember/test-helpers': '^1.7.0',
-              'ember-a11y-testing': '^0.5.0',
-              'ember-angle-bracket-invocation-polyfill': '^3.0.1',
-              'ember-qunit': '^4.0.0',
-              'ember-source': '~2.18.0',
-              qunit: null,
-            },
-            resolutions: {
-              'ember-classy-page-object': '0.7.0',
-            },
-          },
-        },
-        {
-          name: 'ember-lts-3.4',
-          npm: {
-            devDependencies: {
-              'ember-source': '~3.4.0',
-            },
-            dependencies: {
-              'ember-classy-page-object': '0.7.0',
-            },
-            resolutions: {
-              'ember-classy-page-object': '0.7.0',
-            },
-          },
-        },
-        {
-          name: 'ember-lts-3.8',
-          npm: {
-            devDependencies: {
-              'ember-source': '~3.8.0',
-            },
-            dependencies: {
-              'ember-classy-page-object': '0.7.0',
-            },
-            resolutions: {
-              'ember-classy-page-object': '0.7.0',
-            },
-          },
-        },
-        {
           name: 'ember-lts-3.12',
           npm: {
             devDependencies: {
               'ember-source': '~3.12.0',
-            },
-            dependencies: {
-              'ember-classy-page-object': '0.7.0',
-            },
-            resolutions: {
-              'ember-classy-page-object': '0.7.0',
             },
           },
         },
@@ -75,12 +24,6 @@ module.exports = function() {
             devDependencies: {
               'ember-source': '~3.16.0',
             },
-            dependencies: {
-              'ember-classy-page-object': '0.7.0',
-            },
-            resolutions: {
-              'ember-classy-page-object': '0.7.0',
-            },
           },
         },
         {
@@ -88,12 +31,6 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.20.0',
-            },
-            dependencies: {
-              'ember-classy-page-object': '0.7.0',
-            },
-            resolutions: {
-              'ember-classy-page-object': '0.7.0',
             },
           },
         },
@@ -103,12 +40,6 @@ module.exports = function() {
             devDependencies: {
               'ember-source': '~3.24.0',
             },
-            dependencies: {
-              'ember-classy-page-object': '0.7.0',
-            },
-            resolutions: {
-              'ember-classy-page-object': '0.7.0',
-            },
           },
         },
         {
@@ -116,6 +47,14 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-source': '~3.28.0',
+            },
+          },
+        },
+        {
+          name: 'ember-lts-4.4',
+          npm: {
+            devDependencies: {
+              'ember-source': '~4.4.0',
             },
           },
         },

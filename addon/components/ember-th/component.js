@@ -31,7 +31,7 @@ const COLUMN_REORDERING = 2;
   ```
   @yield {object} columnValue - The column definition
   @yield {object} columnMeta - The meta object associated with this column
-  @class {{ember-th}}
+  @class <EmberTh />
   @public
 */
 export default BaseTableCell.extend({

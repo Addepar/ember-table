@@ -36,7 +36,7 @@ export function setSetupRowCountForTest(bool) {
 
   @yield {object} body.rowValue - The value for the currently yielded row
   @yield {object} body.rowMeta - The meta for the currently yielded row
-  @class {{ember-tbody}}
+  @class <EmberTbody />
   @public
 */
 export default Component.extend({
@@ -294,7 +294,7 @@ export default Component.extend({
     }
 
     assert(
-      'You must create an {{ember-thead}} with columns before creating an {{ember-tbody}}',
+      'You must create an <EmberThead /> with columns before creating an <EmberTbody />',
       !!this.get('unwrappedApi.columnTree')
     );
   },
@@ -359,8 +359,8 @@ export default Component.extend({
 
   /**
     Computed property which calculates container selector for vertical collection.
-    It can be a custom selector provided directly to {{ember-tbody}}.
-    If not, it will be equal to parent {{ember-table}} `id`.
+    It can be a custom selector provided directly to <EmberTbody />.
+    If not, it will be equal to parent <EmberTable /> `id`.
   */
   _containerSelector: computed('containerSelector', 'unwrappedApi.tableId', function() {
     return this.get('containerSelector') || `#${this.get('unwrappedApi.tableId')}`;

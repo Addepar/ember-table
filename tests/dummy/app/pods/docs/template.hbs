@@ -1,5 +1,5 @@
-{{#docs-viewer as |viewer|}}
-  {{#viewer.nav as |nav|}}
+<DocsViewer as |viewer|>
+  <viewer.nav as |nav|>
     {{nav.section 'Introduction'}}
 
     {{nav.item 'Introduction' 'docs.index'}} {{!-- ember-cli-addon-docs requires nav item for 'docs.index', otherwise it will error on the index route --}}
@@ -34,10 +34,10 @@
 
     {{nav.item 'Table Test Page' 'docs.testing.test-page'}}
 
-  {{/viewer.nav}}
+  </viewer.nav>
 
-  {{#viewer.main}}
+  <viewer.main>
     {{outlet}}
-  {{/viewer.main}}
+  </viewer.main>
 
-{{/docs-viewer}}
+</DocsViewer>

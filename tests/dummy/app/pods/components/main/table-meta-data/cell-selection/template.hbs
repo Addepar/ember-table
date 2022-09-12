@@ -1,6 +1,6 @@
 
-{{#docs-demo as |demo|}}
-  {{#demo.example name="cell-selection"}}
+<DocsDemo as |demo|>
+  <demo.example @name="cell-selection">
     <div class="demo-container small">
       {{! BEGIN-SNIPPET table-meta-data-cell-selection.hbs }}
       <EmberTable as |t|>
@@ -36,8 +36,8 @@
       </EmberTable>
       {{! END-SNIPPET }}
     </div>
-  {{/demo.example}}
+  </demo.example>
 
-  {{demo.snippet name='table-meta-data-cell-selection.hbs'}}
-  {{demo.snippet name='table-meta-data-cell-selection.js' label='component.js'}}
-{{/docs-demo}}
+  <demo.snippet @name="table-meta-data-cell-selection.hbs" />
+  <demo.snippet @name="table-meta-data-cell-selection.js" @label="component.js" />
+</DocsDemo>

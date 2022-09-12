@@ -4,7 +4,7 @@ import { A as emberA } from '@ember/array';
 
 import { componentModule } from '../../helpers/module';
 
-import scrollTo from '../../helpers/scroll-to';
+import { scrollTo } from '@ember/test-helpers';
 import { find, findAll, render, settled } from '@ember/test-helpers';
 
 import { setupTableStickyPolyfill } from 'ember-table/-private/sticky/table-sticky-polyfill';

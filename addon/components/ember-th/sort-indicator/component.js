@@ -22,7 +22,7 @@ import { readOnly } from '@ember/object/computed';
   </EmberTable>
   ```
   @yield {object} columnMeta - The meta object associated with this column
-  @class {{ember-th/sort-indicator}}
+  @class <EmberTh::SortIndicator />
 */
 
 export default Component.extend({

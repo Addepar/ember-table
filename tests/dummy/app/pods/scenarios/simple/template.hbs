@@ -1,14 +1,7 @@
 <div class="demo-container fixed-width">
-  {{#ember-table as |t|}}
-    {{ember-thead
-      api=t
-      columns=this.columns
-    }}
+  <EmberTable as |t|>
+    <EmberThead @api={{t}} @columns={{this.columns}} />
 
-    {{ember-tbody
-      api=t
-      rows=this.rows
-      selection=this.selection
-    }}
-  {{/ember-table}}
+    <EmberTbody @api={{t}} @rows={{this.rows}} @selection={{this.selection}} />
+  </EmberTable>
 </div>

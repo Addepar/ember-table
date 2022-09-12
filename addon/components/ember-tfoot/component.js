@@ -26,7 +26,7 @@ import layout from './template';
   @yield {Component} foot.row - The table row component
   @yield {object} foot.rowValue - The value for the currently yielded row
   @yield {object} foot.rowMeta - The meta for the currently yielded row
-  @class {{ember-tfoot}}
+  @class <EmberTfoot />
   @public
 */
 export default EmberTBody.extend({

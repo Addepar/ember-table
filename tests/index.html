@@ -18,15 +18,12 @@
   <body>
     {{content-for "body"}} {{content-for "test-body"}}
 
-    <!--
-      Normally for modern Ember you find the qunit
-      boilerplate here. To maintain compatibility with
-      a broad range of Ember versions, instead the
-      boilerplate is added dynamically in test-heler.js
-
-      After 2.18 support is dropped, the boilerplate can
-      be moved back here.
-    -->
+    <div id="qunit"></div>
+    <div id="qunit-fixture">
+      <div id="ember-testing-container">
+        <div id="ember-testing"></div>
+      </div>
+    </div>
 
     <script src="/testem.js" integrity=""></script>
     <script src="{{rootURL}}assets/vendor.js"></script>
