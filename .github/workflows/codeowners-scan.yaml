@@ -1,0 +1,11 @@
+name: Codeowners Scan
+on:
+  pull_request
+
+jobs:
+  codeowners-scan:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Addepar/codeowners-scan/.github/actions/codeowners-scan@v1
+        with:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
