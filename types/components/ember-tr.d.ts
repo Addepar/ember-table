@@ -2,12 +2,6 @@ import Component from '@ember/component';
 import { Column } from './ember-table';
 import EmberTdComponent, { CellMeta } from './ember-td';
 
-export interface RowClickEvent<R> {
-  event: MouseEvent;
-  rowValue: R;
-  rowMeta: RowMeta<R>;
-}
-
 interface RowMetaSelect {
   toggle?: boolean;
   range?: boolean;
@@ -31,20 +25,20 @@ export interface RowMeta<T> {
   select(arg0: RowMetaSelect): void;
 }
 
-export interface EmberTrSignature {
+export interface EmberTrSignature<RowType> {
   Element: HTMLTableRowElement;
   Args: {
     tableClasses?: string;
+
     /**
      * An action that is called when a row is clicked. Will be called with the row and the event.
      */
-    onClick?: ((rowClickEvent: RowClickEvent<unknown>) => void) | undefined;
+    onClick?: ((row: RowType, event: Event) => void) | undefined;
 
     /**
      * An action that is called when a row is double clicked. Will be called with the row and the event.
-     *
      */
-    onDoubleClick?: ((rowClickEvent: RowClickEvent<unknown>) => void) | undefined;
+    onDoubleClick?: ((row: RowType, event: Event) => void) | undefined;
   };
   Blocks: {
     default: [
@@ -62,4 +56,4 @@ export interface EmberTrSignature {
   };
 }
 
-export default class EmberTrComponent extends Component<EmberTrSignature> {}
+export default class EmberTrComponent<RowType> extends Component<EmberTrSignature<RowType>> {}

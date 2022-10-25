@@ -3,7 +3,7 @@ import Component from '@ember/component';
 export interface ResizeHandleSignature {
   Element: HTMLTableCellElement;
   Args: {
-    columnMeta: any;
+    columnMeta: unknown;
   };
 }
 

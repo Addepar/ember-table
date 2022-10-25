@@ -3,7 +3,7 @@ import Component from '@ember/component';
 export interface SortIndicatorSignature {
   Element: HTMLTableCellElement;
   Args: {
-    columnMeta: any;
+    columnMeta: unknown;
   };
 }
 

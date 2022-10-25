@@ -1,12 +1,11 @@
 import Component from '@ember/component';
 import { Column } from './ember-table';
-import { RowClickEvent } from './ember-tr';
 
 export interface CellMeta {
   selected: boolean;
 }
 
-export interface EmberTdSignature {
+export interface EmberTdSignature<RowType> {
   Element: HTMLTableCellElement;
   Args: {
     /**
@@ -14,8 +13,8 @@ export interface EmberTdSignature {
      *
      * @memberof TBodyArgs
      */
-    onClick?: ((rowClickEvent: RowClickEvent<unknown, unknown>) => void) | undefined;
-    onDoubleClick?: ((rowClickEvent: RowClickEvent<unknown, unknown>) => void) | undefined;
+    onClick?: ((row: RowType, event: Event) => void) | undefined;
+    onDoubleClick?: ((row: RowType, event: Event) => void) | undefined;
   };
   Blocks: {
     default: [
@@ -24,10 +23,11 @@ export interface EmberTdSignature {
       columnMeta: any,
       columnValue: Column,
       rowMeta: any,
-      rowValue: any,
+      rowValue: RowType,
       rowsCount: number
     ];
   };
 }
 
-export default class EmberTdComponent extends Component<EmberTdSignature> {}
+// FIXME: Make RowType more strict without fallback to {}
+export default class EmberTdComponent<RowType = {}> extends Component<EmberTdSignature<RowType>> {}
