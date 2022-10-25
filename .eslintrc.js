@@ -34,7 +34,11 @@ module.exports = {
       files: ['./**/*.ts'],
       parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint'],
-      extends: ['plugin:@typescript-eslint/recommended'],
+      extends: [
+        '@addepar',
+        '@addepar/eslint-config/ember',
+        'plugin:@typescript-eslint/recommended',
+      ],
     },
   ],
 };
