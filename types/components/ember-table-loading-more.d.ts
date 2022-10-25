@@ -1,13 +1,13 @@
 import Component from '@ember/component';
 
 export interface EmberTableLoadingMoreSignature {
-    Args: {
-        api: any;
-        isLoading?: boolean;
-        canLoadMore?: boolean;
-        center?: boolean;
-    };
-    Element: HTMLDivElement;
+  Element: HTMLDivElement;
+  Args: {
+    api: any;
+    isLoading?: boolean;
+    canLoadMore?: boolean;
+    center?: boolean;
+  };
 }
 
 type EmberTableLoadingMoreArgs = EmberTableLoadingMoreSignature['Args'];

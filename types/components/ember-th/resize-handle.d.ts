@@ -1,11 +1,10 @@
 import Component from '@ember/component';
 
 export interface ResizeHandleSignature {
-    Args: {
-        columnMeta: any;
-    };
-
-    Element: HTMLTableCellElement;
+  Element: HTMLTableCellElement;
+  Args: {
+    columnMeta: any;
+  };
 }
 
 type ResizeHandleArgs = ResizeHandleSignature['Args'];

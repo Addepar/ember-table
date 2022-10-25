@@ -1,11 +1,10 @@
 import Component from '@ember/component';
 
 export interface SortIndicatorSignature {
-    Args: {
-        columnMeta: any;
-    };
-
-    Element: HTMLTableCellElement;
+  Element: HTMLTableCellElement;
+  Args: {
+    columnMeta: any;
+  };
 }
 
 type SortIndicatorArgs = SortIndicatorSignature['Args'];
