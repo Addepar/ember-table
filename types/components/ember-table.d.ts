@@ -4,22 +4,6 @@ import EmberTfootComponent from './ember-tfoot';
 import EmberTheadComponent from './ember-thead';
 import EmberTableLoadingMoreComponent from './ember-table-loading-more';
 
-export interface Column {
-  [key: string]: unknown;
-  cellComponent?: string;
-  footerComponent?: string;
-  footerValuePath?: string;
-  headerComponent?: string;
-  isSortable?: boolean;
-  maxWidth?: number;
-  minWidth?: number;
-  name?: string;
-  subcolumns?: Column[];
-  textAlign?: string;
-  valuePath?: string;
-  width?: number;
-}
-
 export interface EmberTableSignature {
   Element: HTMLDivElement;
   Blocks: {

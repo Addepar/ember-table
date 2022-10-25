@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { Column } from './ember-table';
+import { EmberTableColumn } from '../index';
 import EmberTdComponent from './ember-td';
 import EmberTrComponent from './ember-tr';
 
@@ -31,7 +31,7 @@ export interface EmberTheadArgs {
    * @type {NativeArray<ColumnValue>}
    * @memberof THeadArgs
    */
-  columns: Column[];
+  columns: EmberTableColumn[];
 
   /**
    * An ordered array of the sorts applied to the table
@@ -158,8 +158,8 @@ export interface EmberTheadArgs {
    * @memberof THeadArgs
    */
   sortFunction?: (
-    itemA: Column,
-    itemB: Column,
+    itemA: EmberTableColumn,
+    itemB: EmberTableColumn,
     sorts: TableSort[],
     compare: <T>(valueA: T, valueB: T, sortEmptyLast: boolean) => number,
     sortEmptyLast: boolean

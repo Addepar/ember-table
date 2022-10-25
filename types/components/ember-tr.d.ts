@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { Column } from './ember-table';
+import { EmberTableColumn } from '../index';
 import EmberTdComponent, { CellMeta } from './ember-td';
 
 interface RowMetaSelect {
@@ -47,7 +47,7 @@ export interface EmberTrSignature<RowType> {
         cellMeta: CellMeta;
         cellValue: unknown;
         columnMeta: unknown;
-        columnValue: Column;
+        columnValue: EmberTableColumn;
         rowMeta: RowMeta<unknown>;
         rowValue: unknown;
         rowsCount: number;
