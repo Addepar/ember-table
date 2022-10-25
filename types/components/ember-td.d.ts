@@ -1,6 +1,6 @@
 import Component from '@ember/component';
-import { Column, TableMeta } from 'ember-table/components/ember-table';
-import { RowClickEvent } from 'ember-table/components/ember-tr';
+import { Column, TableMeta } from './ember-table';
+import { RowClickEvent } from './ember-tr';
 
 export interface CellMeta {
     selected: boolean;

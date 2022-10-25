@@ -1,8 +1,8 @@
 import Component from '@ember/component';
 import { WithBoundArgs } from '@glint/template';
-import { Column, FillMode, ResizeMode, TableMeta, WidthConstraint } from 'ember-table/components/ember-table';
-import EmberTdComponent from 'ember-table/components/ember-td';
-import EmberTrComponent from 'ember-table/components/ember-tr';
+import { Column, FillMode, ResizeMode, TableMeta, WidthConstraint } from './ember-table';
+import EmberTdComponent from './ember-td';
+import EmberTrComponent from './ember-tr';
 
 export interface TableSort {
     valuePath: string;

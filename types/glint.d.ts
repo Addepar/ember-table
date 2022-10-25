@@ -1,12 +1,12 @@
-import EmberTableComponent from 'ember-table/components/ember-table';
-import EmberTableLoadingMoreComponent from 'ember-table/components/ember-table-loading-more';
-import EmberTbodyComponent from 'ember-table/components/ember-tbody';
-import EmberTdComponent from 'ember-table/components/ember-td';
-import EmberTfootComponent from 'ember-table/components/ember-tfoot';
-import ResizeHandleComponent from 'ember-table/components/ember-th/resize-handle';
-import SortIndicatorComponent from 'ember-table/components/ember-th/sort-indicator';
-import EmberTheadComponent from 'ember-table/components/ember-thead';
-import EmberTrComponent from 'ember-table/components/ember-tr'
+import EmberTableComponent from './components/ember-table';
+import EmberTableLoadingMoreComponent from './components/ember-table-loading-more';
+import EmberTbodyComponent from './components/ember-tbody';
+import EmberTdComponent from './components/ember-td';
+import EmberTfootComponent from './components/ember-tfoot';
+import ResizeHandleComponent from './components/ember-th/resize-handle';
+import SortIndicatorComponent from './components/ember-th/sort-indicator';
+import EmberTheadComponent from './components/ember-thead';
+import EmberTrComponent from './components/ember-tr'
 
 declare module '@glint/environment-ember-loose/registry' {
   export default interface Registry {

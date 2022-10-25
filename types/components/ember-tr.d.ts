@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { WithBoundArgs } from '@glint/template';
-import { Column, TableApi, TableMeta } from 'ember-table/components/ember-table';
-import EmberTdComponent, { CellMeta } from 'ember-table/components/ember-td';
+import { Column, TableApi, TableMeta } from './ember-table';
+import EmberTdComponent, { CellMeta } from './ember-td';
 
 export interface RowClickEvent<R, TM> {
     event: MouseEvent;

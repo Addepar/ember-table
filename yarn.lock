@@ -1514,24 +1514,14 @@
   resolved "https://registry.npmjs.org/@types/cors/-/cors-2.8.12.tgz#6b2c510a7ad7039e98e7b8d3d6598f4359e5c080"
   integrity sha512-vt+kDhq/M2ayberEtJcIN/hxXy1Pk+59g2FV/ZQceeaTyCtCucjL2Q7FXlFjtWn4n15KCr1NE2lNNFhp0lEThw==
 
-"@types/ember-qunit@^5.0.2":
-  version "5.0.2"
-  resolved "https://registry.npmjs.org/@types/ember-qunit/-/ember-qunit-5.0.2.tgz#ea8b3959724c0b190213b748937e4e9ae11165a8"
-  integrity sha512-LXp0Ew4wPhaCMuw49cNDHWs/bROn+Msb4ypMG1t60EMBx0UaEoX0tZlkf5bQJfdD249WZTu5cCtKvl47xbQzxA==
-  dependencies:
-    "@types/ember-resolver" "*"
-    "@types/ember__test" "*"
-    "@types/ember__test-helpers" "*"
-    "@types/qunit" "*"
-
-"@types/ember-resolver@*", "@types/ember-resolver@^5.0.11":
+"@types/ember-resolver@*":
   version "5.0.11"
   resolved "https://registry.npmjs.org/@types/ember-resolver/-/ember-resolver-5.0.11.tgz#db931fb5c2d6bda4e29adea132fb48c7ed17aa62"
   integrity sha512-2BL9d8kBdNUO9Je6KBF7Q34BSwbQG6vzCzTeSopt8FAmLDfaDU9xDDdyZobpfy9GR36mCSeG9b9wr4bgYh/MYw==
   dependencies:
     "@types/ember__object" "*"
 
-"@types/ember@*", "@types/ember@^4.0.1":
+"@types/ember@*":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@types/ember/-/ember-4.0.1.tgz#5fe3dc8219b7e0391b2c97d8db945a9e0881badc"
   integrity sha512-fYCZtkGq1UqD1rWjvdY4bVQpdZvxkHqVx/B6p2M0cUdyheLNjQgwXfx3o1UU0Bk99mls5Or4ZCnW7s1yliABiw==
@@ -1555,7 +1545,7 @@
     "@types/htmlbars-inline-precompile" "*"
     "@types/rsvp" "*"
 
-"@types/ember__application@*", "@types/ember__application@^4.0.2":
+"@types/ember__application@*":
   version "4.0.2"
   resolved "https://registry.npmjs.org/@types/ember__application/-/ember__application-4.0.2.tgz#7cccb221eaaedd0e8cfc8a550fedc9554da2014c"
   integrity sha512-7xxuWoxhMseM3c4iR0EGumcbyaSkGygVwef80G4ALPN3WOmmbIWROzw2JC3O9lZU0H+DtueDYuNfz+U7i0yXyQ==
@@ -1569,7 +1559,7 @@
     "@types/ember__owner" "*"
     "@types/ember__routing" "*"
 
-"@types/ember__array@*", "@types/ember__array@^4.0.2":
+"@types/ember__array@*":
   version "4.0.2"
   resolved "https://registry.npmjs.org/@types/ember__array/-/ember__array-4.0.2.tgz#795b377f6cbb9830413227522680feed674aa126"
   integrity sha512-d2eU8O5QtqDd/ZqMV3yzIbULh8wPx6UMvxwJ0ThnNgCIFcZLO98deM5w6m5aU6K48Xu1wWzjJBa0jktGSFWXJw==
@@ -1587,14 +1577,14 @@
     "@types/ember__component" "*"
     "@types/ember__object" "*"
 
-"@types/ember__controller@*", "@types/ember__controller@^4.0.2":
+"@types/ember__controller@*":
   version "4.0.2"
   resolved "https://registry.npmjs.org/@types/ember__controller/-/ember__controller-4.0.2.tgz#dd30aa1c20116be936d0cf55d6f25a0c55105cac"
   integrity sha512-xrqQ0A0Hd0EExorJLm+xqN9l/c8qGBgxBuv2cdYKkEF2n94FXqj/Bgmu63mGRnJBlY1Z2O4ObgQAj7ksd53OTQ==
   dependencies:
     "@types/ember__object" "*"
 
-"@types/ember__debug@*", "@types/ember__debug@^4.0.1":
+"@types/ember__debug@*":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@types/ember__debug/-/ember__debug-4.0.1.tgz#1e4a8a1045484295dddc7bd4356d0b3014b0d509"
   integrity sha512-qrKk6Ujh6oev7TSB0eB7AEmQWKCt5t84k/K3hDvJXUiLU3YueN0kyt7aPoIAkVjC111A9FqDugl9n60+N5yeEw==
@@ -1603,7 +1593,7 @@
     "@types/ember__debug" "*"
     "@types/ember__object" "*"
 
-"@types/ember__engine@*", "@types/ember__engine@^4.0.2":
+"@types/ember__engine@*":
   version "4.0.2"
   resolved "https://registry.npmjs.org/@types/ember__engine/-/ember__engine-4.0.2.tgz#01a93c38dce6940a7199435c8ab200c965ba8b73"
   integrity sha512-x9c8LtRpYwQnyUiUbGpF2+zrZiA0G3e0lPsprghllWEabnIyvN+GMdtnvt4DmpGQVeUz6JKVdoPAmENBUTTcyg==
@@ -1613,12 +1603,12 @@
     "@types/ember__object" "*"
     "@types/ember__owner" "*"
 
-"@types/ember__error@*", "@types/ember__error@^4.0.0":
+"@types/ember__error@*":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/ember__error/-/ember__error-4.0.0.tgz#c73037e65c1c3d7060b97f98135ba73c712972b1"
   integrity sha512-1WVMR65/QTqPzMWafK2vKEwGafILxRxItbWJng6eEJyKDHRvvHFCl3XzJ4dQjdFcfOlozsn0mmEYCpjKoyzMqA==
 
-"@types/ember__object@*", "@types/ember__object@^4.0.4":
+"@types/ember__object@*":
   version "4.0.4"
   resolved "https://registry.npmjs.org/@types/ember__object/-/ember__object-4.0.4.tgz#646a4b56d1d8279d8b21cd8e8265886a569fb87d"
   integrity sha512-RwiyzQXKTyFVfZvrYQYtZhfrYAXrNEvtO98vdlzak0MHaks/AkOSNxuTU4tjhfzto4dOcfr6mi8C5mN+yz7LFQ==
@@ -1632,12 +1622,12 @@
   resolved "https://registry.npmjs.org/@types/ember__owner/-/ember__owner-4.0.0.tgz#2058a8fbf9636774dc79430abd355b07538c51d7"
   integrity sha512-7ZotJNCkZUvJpcGHYswQlQsHyRITQ3aNOoFPi86NFxmOXEIVAGVKPHB87w8ZlMmhssG2vitCuNzuQCeDwPaokQ==
 
-"@types/ember__polyfills@*", "@types/ember__polyfills@^4.0.0":
+"@types/ember__polyfills@*":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/ember__polyfills/-/ember__polyfills-4.0.0.tgz#d83ae94ff2890ad47798315426d9916f39ff4ae6"
   integrity sha512-Yk85J18y1Ys6agoIBLdJWu6ZkWe68oaC9JPyW7BhOINVNKm89PXrR/yxdOJ1/vN1Hj7ZZQKq+4X6fz3sxebavA==
 
-"@types/ember__routing@*", "@types/ember__routing@^4.0.11":
+"@types/ember__routing@*":
   version "4.0.11"
   resolved "https://registry.npmjs.org/@types/ember__routing/-/ember__routing-4.0.11.tgz#2b76531aaa3ac3ea6c2e256b58d951640498a55c"
   integrity sha512-GNFbCn5Tpqulks6FHzLHilE1W1pp7PKkypXPXx9J9LAmNSPhI/UJU4lIasf+BlInHd/dp/CLUMNrWT3dTogSTQ==
@@ -1648,7 +1638,7 @@
     "@types/ember__routing" "*"
     "@types/ember__service" "*"
 
-"@types/ember__runloop@*", "@types/ember__runloop@^4.0.1":
+"@types/ember__runloop@*":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@types/ember__runloop/-/ember__runloop-4.0.1.tgz#7f6e45af7dbf1158655ef3ad852852b0bf87065f"
   integrity sha512-3HrsavVrdgxUkYptQUv/e9RwJG02cV9WbnJxKSvwl9ZYpeX4JbuDVucjTWk5BAvJUVtbiQLPGzLEHZ6daoCbbg==
@@ -1656,43 +1646,31 @@
     "@types/ember" "*"
     "@types/ember__runloop" "*"
 
-"@types/ember__service@*", "@types/ember__service@^4.0.0":
+"@types/ember__service@*":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/ember__service/-/ember__service-4.0.0.tgz#ae6164e3b5d927fe17513b49867b52dc0222490d"
   integrity sha512-FbN2y6tRb6NIV+kmzQcxRAoB17vH7qHCfzcKlxsmt2EI7fboLTcdeKpZKPBEromRXg83fx67QX1b95WcwSGtaw==
   dependencies:
     "@types/ember__object" "*"
 
-"@types/ember__string@*", "@types/ember__string@^3.0.9":
+"@types/ember__string@*":
   version "3.0.9"
   resolved "https://registry.npmjs.org/@types/ember__string/-/ember__string-3.0.9.tgz#669188ccea5a61777a36bf88a05ba6875dc9b7d7"
   integrity sha512-v9QwhhfTTgJH6PCviWlz3JgcraYdSWQoTg2XN5Z7bPgXMJYXczxB/N22L9FnuFgDYdN87yXdTJv6E9rw2YGEhw==
 
-"@types/ember__template@*", "@types/ember__template@^4.0.0":
+"@types/ember__template@*":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/ember__template/-/ember__template-4.0.0.tgz#3423b6ddc3a6cf0b13a1e0fd5f1a84eec664a095"
   integrity sha512-51bAEQecMKpDYRXMmVVfU7excrtxDJixRU7huUsAm4acBCqL2+TmMgTqZEkOQSNy6qnKUc2ktSzX28a9//C6pA==
 
-"@types/ember__test-helpers@*", "@types/ember__test-helpers@^2.8.1":
-  version "2.8.1"
-  resolved "https://registry.npmjs.org/@types/ember__test-helpers/-/ember__test-helpers-2.8.1.tgz#06414a77bea02bd77a5f849bc1bfd2a9cbe4d86f"
-  integrity sha512-UlzmA3yAynqsj5tklBEnPt3WXCj9vLtLTSY9PJDt/NWkcFsDIssYnTQUzzNUflkO+ngHVHRX3tiYuLzcwpTEmA==
-  dependencies:
-    "@types/ember-resolver" "*"
-    "@types/ember__application" "*"
-    "@types/ember__error" "*"
-    "@types/ember__owner" "*"
-    "@types/ember__test-helpers" "*"
-    "@types/htmlbars-inline-precompile" "*"
-
-"@types/ember__test@*", "@types/ember__test@^4.0.0":
+"@types/ember__test@*":
   version "4.0.0"
   resolved "https://registry.npmjs.org/@types/ember__test/-/ember__test-4.0.0.tgz#1a7dcbe24fedfc34fa60547b03f130a14397c4b6"
   integrity sha512-vI/qhZkexJLN25lp1UAfjJv4R6pPtrQlAmPDXkKd8PNjwRk3KANFVRzdghN7HWhXgQ+s91PbvxEnZ3eZiRPdcQ==
   dependencies:
     "@types/ember__application" "*"
 
-"@types/ember__utils@*", "@types/ember__utils@^4.0.1":
+"@types/ember__utils@*":
   version "4.0.1"
   resolved "https://registry.npmjs.org/@types/ember__utils/-/ember__utils-4.0.1.tgz#106a7a9652bacc44c735ed1ffd6d3651ac03fdce"
   integrity sha512-FhXZ37uY1BNgt63XoPH++PkAsMnF7P5wjPRluXecbFpEFHXP6enFbx1F5vjyoPtFjLEl4R3ftLM5QbEWsuyF5g==
@@ -1803,11 +1781,6 @@
   resolved "https://registry.npmjs.org/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
   integrity sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==
 
-"@types/qunit@*", "@types/qunit@^2.19.3":
-  version "2.19.3"
-  resolved "https://registry.npmjs.org/@types/qunit/-/qunit-2.19.3.tgz#16e975469a36092929627f997c3dafca198a1aea"
-  integrity sha512-Vi47qmJ0viJoxW1kRDbhuYXGd2F0RREDfh69Hd4v/nlDV0YIjXPCAy6OebWKCZIZr680bQVQTJTL1OfhQoTvVw==
-
 "@types/range-parser@*":
   version "1.2.4"
   resolved "https://registry.npmjs.org/@types/range-parser/-/range-parser-1.2.4.tgz#cd667bcfdd025213aafb7ca5915a932590acdcdc"
@@ -1821,7 +1794,7 @@
     "@types/glob" "*"
     "@types/node" "*"
 
-"@types/rsvp@*", "@types/rsvp@^4.0.4":
+"@types/rsvp@*":
   version "4.0.4"
   resolved "https://registry.npmjs.org/@types/rsvp/-/rsvp-4.0.4.tgz#55e93e7054027f1ad4b4ebc1e60e59eb091e2d32"
   integrity sha512-J3Ol++HCC7/hwZhanDvggFYU/GtxHxE/e7cGRWxR04BF7Tt3TqJZ84BkzQgDxmX0uu8IagiyfmfoUlBACh2Ilg==

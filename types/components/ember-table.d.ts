@@ -1,9 +1,9 @@
 import Component from '@ember/component';
 import { ComponentLike, WithBoundArgs } from '@glint/template';
-import EmberTbodyComponent from 'ember-table/components/ember-tbody';
-import EmberTfootComponent from 'ember-table/components/ember-tfoot';
-import EmberTheadComponent from 'ember-table/components/ember-thead';
-import EmberTableLoadingMoreComponent from 'ember-table/components/ember-table-loading-more';
+import EmberTbodyComponent from './ember-tbody';
+import EmberTfootComponent from './ember-tfoot';
+import EmberTheadComponent from './ember-thead';
+import EmberTableLoadingMoreComponent from './ember-table-loading-more';
 
 export enum SelectionMode {
     NONE = 'none',

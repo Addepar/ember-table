@@ -1,8 +1,8 @@
 import Component from '@ember/component';
 import { WithBoundArgs } from '@glint/template';
-import { SelectionMode, TableMeta } from 'ember-table/components/ember-table';
-import EmberTdComponent from 'ember-table/components/ember-td';
-import EmberTrComponent from 'ember-table/components/ember-tr';
+import { SelectionMode, TableMeta } from './ember-table';
+import EmberTdComponent from './ember-td';
+import EmberTrComponent from './ember-tr';
 
 /**
  * T - Table rows

@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { WithBoundArgs } from '@glint/template';
-import EmberTdComponent from 'ember-table/components/ember-td';
-import EmberTrComponent from 'ember-table/components/ember-tr';
+import EmberTdComponent from './ember-td';
+import EmberTrComponent from './ember-tr';
 
 export interface EmberTfootSignature {
     Args: {
