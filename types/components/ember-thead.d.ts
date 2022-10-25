@@ -1,8 +1,24 @@
 import Component from '@ember/component';
 import { WithBoundArgs } from '@glint/template';
-import { Column, FillMode, ResizeMode, TableMeta, WidthConstraint } from './ember-table';
+import { Column, TableMeta } from './ember-table';
 import EmberTdComponent from './ember-td';
 import EmberTrComponent from './ember-tr';
+
+type FillMode =
+  | 'equal-column'
+  | 'first-column'
+  | 'last-column'
+  | 'nth-column';
+
+type ResizeMode =
+  | 'fluid'
+  | 'standard';
+
+type WidthConstraint =
+  | 'eq-container'
+  | 'gte-container'
+  | 'lte-container'
+  | 'none';
 
 export interface TableSort {
     valuePath: string;

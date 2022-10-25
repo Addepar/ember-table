@@ -1,8 +1,13 @@
 import Component from '@ember/component';
 import { WithBoundArgs } from '@glint/template';
-import { SelectionMode, TableMeta } from './ember-table';
+import { TableMeta } from './ember-table';
 import EmberTdComponent from './ember-td';
 import EmberTrComponent from './ember-tr';
+
+type SelectionMode =
+  | 'multiple'
+  | 'none'
+  | 'single';
 
 /**
  * T - Table rows
