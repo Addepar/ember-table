@@ -1,6 +1,5 @@
 import Component from '@ember/component';
-import { WithBoundArgs } from '@glint/template';
-import { Column, TableMeta } from './ember-table';
+import { Column } from './ember-table';
 import EmberTdComponent from './ember-td';
 import EmberTrComponent from './ember-tr';
 
@@ -21,12 +20,11 @@ type WidthConstraint =
   | 'none';
 
 export interface TableSort {
-  valuePath: string;
   isAscending: boolean;
+  valuePath: string;
 }
 
-export interface EmberTheadArgs<TM> {
-  api: any;
+export interface EmberTheadArgs {
   /**
    * The column definitions for the table
    *
@@ -176,14 +174,6 @@ export interface EmberTheadArgs<TM> {
   sorts?: TableSort[];
 
   /**
-   * Table meta object - this is used to pass actions and data to any part of the table from outside
-   *
-   * @type {TableMeta}
-   * @memberof TBodyArgs
-   */
-  tableMeta?: TableMeta<TM>;
-
-  /**
    * Sets a constraint on the table's size, such that it must be greater than, less than, or equal to the size of the containing element.
    *
    * @type {WidthConstraint}
@@ -193,13 +183,13 @@ export interface EmberTheadArgs<TM> {
 }
 
 export interface EmberTheadSignature {
-  Args: EmberTheadArgs<any>;
+  Args: EmberTheadArgs;
   Blocks: {
     default: [
       {
         cells: EmberTdComponent[];
         isHeader: boolean;
-        row: WithBoundArgs<typeof EmberTrComponent, 'api'>;
+        row: typeof EmberTrComponent;
         rowsCount: number;
       }
     ];

@@ -1,13 +1,11 @@
 import Component from '@ember/component';
-import { WithBoundArgs } from '@glint/template';
-import { Column, TableApi, TableMeta } from './ember-table';
+import { Column } from './ember-table';
 import EmberTdComponent, { CellMeta } from './ember-td';
 
-export interface RowClickEvent<R, TM> {
+export interface RowClickEvent<R> {
   event: MouseEvent;
   rowValue: R;
   rowMeta: RowMeta<R>;
-  tableMeta?: TableMeta<TM>;
 }
 
 interface RowMetaSelect {
@@ -33,44 +31,32 @@ export interface RowMeta<T> {
   select(arg0: RowMetaSelect): void;
 }
 
-interface RowApi extends TableApi {
-  cellValue: unknown;
-  cellMeta: CellMeta;
-  columnValue: Column;
-  columnMeta: unknown;
-  rowValue: unknown;
-  rowMeta: RowMeta<unknown>;
-  rowsCount: number;
-  cell: WithBoundArgs<typeof EmberTdComponent, 'api'>;
-}
 export interface EmberTrSignature {
   Element: HTMLTableRowElement;
   Args: {
     tableClasses?: string;
-    api: RowApi;
     /**
      * An action that is called when a row is clicked. Will be called with the row and the event.
      */
-    onClick?: ((rowClickEvent: RowClickEvent<unknown, unknown>) => void) | undefined;
+    onClick?: ((rowClickEvent: RowClickEvent<unknown>) => void) | undefined;
 
     /**
      * An action that is called when a row is double clicked. Will be called with the row and the event.
      *
      */
-    onDoubleClick?: ((rowClickEvent: RowClickEvent<unknown, unknown>) => void) | undefined;
+    onDoubleClick?: ((rowClickEvent: RowClickEvent<unknown>) => void) | undefined;
   };
   Blocks: {
     default: [
       {
-        api: RowApi;
-        cell: WithBoundArgs<typeof EmberTdComponent, 'api'>;
-        cellMeta: RowApi['cellMeta'];
-        cellValue: RowApi['cellValue'];
-        columnMeta: RowApi['columnMeta'];
-        columnValue: RowApi['columnValue'];
-        rowMeta: RowApi['rowMeta'];
-        rowValue: RowApi['rowValue'];
-        rowsCount: RowApi['rowsCount'];
+        cell: typeof EmberTdComponent;
+        cellMeta: CellMeta;
+        cellValue: unknown;
+        columnMeta: unknown;
+        columnValue: Column;
+        rowMeta: RowMeta<unknown>;
+        rowValue: unknown;
+        rowsCount: number;
       }
     ];
   };

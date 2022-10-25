@@ -3,10 +3,9 @@ import Component from '@ember/component';
 export interface EmberTableLoadingMoreSignature {
   Element: HTMLDivElement;
   Args: {
-    api: any;
-    canLoadMore?: boolean;
+    canLoadMore: boolean;
     center?: boolean;
-    isLoading?: boolean;
+    isLoading: boolean;
   };
 }
 

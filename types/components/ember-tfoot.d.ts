@@ -1,12 +1,10 @@
 import Component from '@ember/component';
-import { WithBoundArgs } from '@glint/template';
 import EmberTdComponent from './ember-td';
 import EmberTrComponent from './ember-tr';
 
 export interface EmberTfootSignature {
   Element: HTMLDivElement;
   Args: {
-    api: any;
     rows: any[];
     tableClasses?: string;
   };
@@ -15,7 +13,7 @@ export interface EmberTfootSignature {
       {
         cells: EmberTdComponent[];
         isHeader: boolean;
-        row: WithBoundArgs<typeof EmberTrComponent, 'api'>;
+        row: typeof EmberTrComponent;
         rowsCount: number;
       }
     ];

@@ -1,6 +1,4 @@
 import Component from '@ember/component';
-import { WithBoundArgs } from '@glint/template';
-import { TableMeta } from './ember-table';
 import EmberTdComponent from './ember-td';
 import EmberTrComponent from './ember-tr';
 
@@ -19,8 +17,6 @@ type SelectionMode =
  * @template TM
  */
 export interface EmberTbodyArgs<T, TM> {
-  api: any;
-
   /**
    * The number of extra rows to render on either side of the table's viewport
    *
@@ -190,14 +186,6 @@ export interface EmberTbodyArgs<T, TM> {
    * @memberof TBodyArgs
    */
   staticHeight?: boolean;
-
-  /**
-   * Table meta object - this is used to pass actions and data to any part of the table from outside
-   *
-   * @type {TableMeta}
-   * @memberof TBodyArgs
-   */
-  tableMeta?: TableMeta<TM>;
 }
 
 export interface EmberTbodySignature {
@@ -208,7 +196,7 @@ export interface EmberTbodySignature {
       {
         cells: EmberTdComponent[];
         isHeader: boolean;
-        row: WithBoundArgs<typeof EmberTrComponent, 'api'>;
+        row: typeof EmberTrComponent;
         rowValue: unknown;
         rowsCount: number;
       }
