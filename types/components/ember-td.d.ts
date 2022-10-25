@@ -10,7 +10,6 @@ export interface EmberTdSignature {
   Element: HTMLTableCellElement;
   Args: {
     api: string;
-    tableMeta?: TableMeta<unknown>;
     /**
      * An action that is called when a row is clicked. Will be called with the row and the event.
      *
@@ -18,21 +17,19 @@ export interface EmberTdSignature {
      */
     onClick?: ((rowClickEvent: RowClickEvent<unknown, unknown>) => void) | undefined;
     onDoubleClick?: ((rowClickEvent: RowClickEvent<unknown, unknown>) => void) | undefined;
+    tableMeta?: TableMeta<unknown>;
   };
   Blocks: {
     default: [
-      cellValue: any,
-      columnValue: Column,
-      rowValue: any,
       cellMeta: CellMeta,
+      cellValue: any,
       columnMeta: any,
+      columnValue: Column,
       rowMeta: any,
+      rowValue: any,
       rowsCount: number
     ];
   };
 }
-
-type EmberTdArgs = EmberTdSignature['Args'];
-export default interface EmberTdComponent extends EmberTdArgs {}
 
 export default class EmberTdComponent extends Component<EmberTdSignature> {}

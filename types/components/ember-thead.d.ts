@@ -199,15 +199,12 @@ export interface EmberTheadSignature {
       {
         cells: EmberTdComponent[];
         isHeader: boolean;
-        rowsCount: number;
         row: WithBoundArgs<typeof EmberTrComponent, 'api'>;
+        rowsCount: number;
       }
     ];
   };
   Element: HTMLDivElement;
 }
-
-type Args = EmberTheadSignature['Args'];
-export default interface EmberTheadComponent extends Args {}
 
 export default class EmberTheadComponent extends Component<EmberTheadSignature> {}

@@ -63,20 +63,17 @@ export interface EmberTrSignature {
     default: [
       {
         api: RowApi;
-        cellValue: RowApi['cellValue'];
-        cellMeta: RowApi['cellMeta'];
-        columnValue: RowApi['columnValue'];
-        columnMeta: RowApi['columnMeta'];
-        rowValue: RowApi['rowValue'];
-        rowMeta: RowApi['rowMeta'];
-        rowsCount: RowApi['rowsCount'];
         cell: WithBoundArgs<typeof EmberTdComponent, 'api'>;
+        cellMeta: RowApi['cellMeta'];
+        cellValue: RowApi['cellValue'];
+        columnMeta: RowApi['columnMeta'];
+        columnValue: RowApi['columnValue'];
+        rowMeta: RowApi['rowMeta'];
+        rowValue: RowApi['rowValue'];
+        rowsCount: RowApi['rowsCount'];
       }
     ];
   };
 }
-
-type EmberTrArgs = EmberTrSignature['Args'];
-export default interface EmberTrComponent extends EmberTrArgs {}
 
 export default class EmberTrComponent extends Component<EmberTrSignature> {}

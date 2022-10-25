@@ -6,22 +6,20 @@ import EmberTrComponent from './ember-tr';
 export interface EmberTfootSignature {
   Element: HTMLDivElement;
   Args: {
-    tableClasses?: string;
     api: any;
     rows: any[];
+    tableClasses?: string;
   };
   Blocks: {
     default: [
       {
         cells: EmberTdComponent[];
         isHeader: boolean;
-        rowsCount: number;
         row: WithBoundArgs<typeof EmberTrComponent, 'api'>;
+        rowsCount: number;
       }
     ];
   };
 }
 
-export default class EmberTfootComponent<
-  T extends EmberTfootSignature
-> extends Component<T> {}
+export default class EmberTfootComponent<T extends EmberTfootSignature> extends Component<T> {}

@@ -7,7 +7,4 @@ export interface SortIndicatorSignature {
   };
 }
 
-type SortIndicatorArgs = SortIndicatorSignature['Args'];
-export default interface SortIndicatorComponent extends SortIndicatorArgs {}
-
 export default class SortIndicatorComponent extends Component<SortIndicatorSignature> {}

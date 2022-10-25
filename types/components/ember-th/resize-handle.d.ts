@@ -7,7 +7,4 @@ export interface ResizeHandleSignature {
   };
 }
 
-type ResizeHandleArgs = ResizeHandleSignature['Args'];
-export default interface ResizeHandleComponent extends ResizeHandleArgs {}
-
 export default class ResizeHandleComponent extends Component<ResizeHandleSignature> {}

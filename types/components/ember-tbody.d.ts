@@ -20,6 +20,7 @@ type SelectionMode =
  */
 export interface EmberTbodyArgs<T, TM> {
   api: any;
+
   /**
    * The number of extra rows to render on either side of the table's viewport
    *
@@ -207,15 +208,12 @@ export interface EmberTbodySignature {
       {
         cells: EmberTdComponent[];
         isHeader: boolean;
-        rowsCount: number;
-        rowValue: unknown;
         row: WithBoundArgs<typeof EmberTrComponent, 'api'>;
+        rowValue: unknown;
+        rowsCount: number;
       }
     ];
   };
 }
-
-type Args = EmberTbodySignature['Args'];
-export default interface EmberTbodyComponent<T> extends Args {}
 
 export default class EmberTbodyComponent<T extends EmberTbodySignature> extends Component<T> {}
