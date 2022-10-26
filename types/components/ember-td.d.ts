@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { EmberTableColumn } from '../index';
 
-export interface EmberTdSignature<RowType> {
+export interface EmberTdSignature<RowType, ColumnType> {
   Element: HTMLTableCellElement;
   Args: {
     /**
@@ -17,11 +17,11 @@ export interface EmberTdSignature<RowType> {
   Blocks: {
     default: [
       cellValue: any,
-      columnValue: EmberTableColumn,
+      columnValue: ColumnType,
       rowValue: RowType,
     ];
   };
 }
 
 // FIXME: Make RowType more strict without fallback to {}
-export default class EmberTdComponent<RowType> extends Component<EmberTdSignature<RowType>> {}
+export default class EmberTdComponent<RowType, ColumnType> extends Component<EmberTdSignature<RowType, ColumnType>> {}

@@ -2,7 +2,7 @@ import Component from '@ember/component';
 import { EmberTableColumn } from '../index';
 import EmberTdComponent from './ember-td';
 
-export interface EmberTrSignature<RowType> {
+export interface EmberTrSignature<RowType, ColumnType> {
   Element: HTMLTableRowElement;
   Args: {
     /**
@@ -18,13 +18,13 @@ export interface EmberTrSignature<RowType> {
   Blocks: {
     default: [
       {
-        cell: typeof EmberTdComponent<RowType>;
+        cell: typeof EmberTdComponent<RowType, ColumnType>;
         cellValue: unknown;
-        columnValue: EmberTableColumn;
+        columnValue: ColumnType;
         rowValue: RowType;
       }
     ];
   };
 }
 
-export default class EmberTrComponent<RowType> extends Component<EmberTrSignature<RowType>> {}
+export default class EmberTrComponent<RowType, ColumnType> extends Component<EmberTrSignature<RowType, ColumnType>> {}

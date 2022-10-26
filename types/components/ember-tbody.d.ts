@@ -125,17 +125,17 @@ export interface EmberTbodyArgs<RowType> {
   staticHeight?: boolean;
 }
 
-export interface EmberTbodySignature<RowType> {
+export interface EmberTbodySignature<RowType, ColumnType> {
   Element: HTMLDivElement;
   Args: EmberTbodyArgs<RowType>;
   Blocks: {
     default: [
       {
-        row: typeof EmberTrComponent<RowType>;
+        row: typeof EmberTrComponent<RowType, ColumnType>;
         rowValue: RowType;
       }
     ];
   };
 }
 
-export default class EmberTbodyComponent<RowType> extends Component<EmberTbodySignature<RowType>> {}
+export default class EmberTbodyComponent<RowType, ColumnType> extends Component<EmberTbodySignature<RowType, ColumnType>> {}
