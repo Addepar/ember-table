@@ -4,9 +4,10 @@ import { assert } from '@ember/debug';
 // eslint-disable-next-line no-restricted-imports
 import { observer as emberObserver } from '@ember/object';
 
-// eslint-disable-next-line no-restricted-imports
 import {
+  // eslint-disable-next-line no-restricted-imports
   addObserver as emberAddObserver,
+  // eslint-disable-next-line no-restricted-imports
   removeObserver as emberRemoveObserver,
 } from '@ember/object/observers';
 
