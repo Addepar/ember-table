@@ -1,35 +1,10 @@
 import Component from '@ember/component';
 import { EmberTableColumn } from '../index';
-import EmberTdComponent, { CellMeta } from './ember-td';
-
-interface RowMetaSelect {
-  toggle?: boolean;
-  range?: boolean;
-  single?: boolean;
-}
-
-export interface RowMeta<T> {
-  //attributes
-  readonly index: number;
-  readonly canCollapse: boolean;
-  readonly depth: number;
-  readonly isCollapsed: boolean;
-  readonly isGroupSelected: boolean;
-  readonly isSelected: boolean;
-  readonly first: T;
-  readonly last: T;
-  readonly next?: T | null;
-  readonly prev?: T | null;
-
-  //methods
-  select(arg0: RowMetaSelect): void;
-}
+import EmberTdComponent from './ember-td';
 
 export interface EmberTrSignature<RowType> {
   Element: HTMLTableRowElement;
   Args: {
-    tableClasses?: string;
-
     /**
      * An action that is called when a row is clicked. Will be called with the row and the event.
      */
@@ -43,14 +18,10 @@ export interface EmberTrSignature<RowType> {
   Blocks: {
     default: [
       {
-        cell: typeof EmberTdComponent;
-        cellMeta: CellMeta;
+        cell: typeof EmberTdComponent<RowType>;
         cellValue: unknown;
-        columnMeta: unknown;
         columnValue: EmberTableColumn;
-        rowMeta: RowMeta<unknown>;
-        rowValue: unknown;
-        rowsCount: number;
+        rowValue: RowType;
       }
     ];
   };

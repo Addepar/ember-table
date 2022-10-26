@@ -4,12 +4,12 @@ import EmberTfootComponent from './ember-tfoot';
 import EmberTheadComponent from './ember-thead';
 import EmberTableLoadingMoreComponent from './ember-table-loading-more';
 
-export interface EmberTableSignature {
+export interface EmberTableSignature<RowType> {
   Element: HTMLDivElement;
   Blocks: {
     default: [
       {
-        body: typeof EmberTbodyComponent;
+        body: typeof EmberTbodyComponent<RowType>;
         foot: typeof EmberTfootComponent;
         head: typeof EmberTheadComponent;
         loadingMore: typeof EmberTableLoadingMoreComponent;
@@ -18,4 +18,4 @@ export interface EmberTableSignature {
   };
 }
 
-export default class EmberTableComponent<T extends EmberTableSignature> extends Component<T> {}
+export default class EmberTableComponent<RowType extends Record<string, unknown>> extends Component<EmberTableSignature<RowType>> {}
