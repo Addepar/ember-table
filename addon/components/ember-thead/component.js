@@ -87,7 +87,7 @@ export default Component.extend({
   sorts: defaultTo(() => []),
 
   /**
-    An optional sort. If not specified, defaults to <sortMultiple>, which
+    An optional sort. If not specified, defaults to `<sortMultiple>`, which
     sorts by each `sort` in `sorts`, in order.
     @argument sortFunction
     @type function? (<sortMultiple>)
@@ -194,13 +194,6 @@ export default Component.extend({
     @type number?
   */
   containerWidthAdjustment: null,
-
-  /**
-    An action that is sent when sorts is updated
-    @argument onHeaderAction
-    @type Action?
-  */
-  onHeaderAction: null,
 
   /**
     An action that is sent when sorts is updated

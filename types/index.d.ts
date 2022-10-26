@@ -13,3 +13,8 @@ export interface EmberTableColumn {
 }
 
 export interface EmberTableRow {}
+
+export interface EmberTableSort {
+  isAscending: boolean;
+  valuePath: string;
+}

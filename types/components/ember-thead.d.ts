@@ -1,6 +1,6 @@
 import Component from '@ember/component';
-import { EmberTableColumn } from '../index';
-import EmberTdComponent from './ember-td';
+import { EmberTableSort } from '../index';
+import EmberThComponent from './ember-th';
 import EmberTrComponent from './ember-tr';
 
 type FillMode =
@@ -9,192 +9,128 @@ type FillMode =
   | 'last-column'
   | 'nth-column';
 
-type ResizeMode =
-  | 'fluid'
-  | 'standard';
-
-type WidthConstraint =
-  | 'eq-container'
-  | 'gte-container'
-  | 'lte-container'
-  | 'none';
-
-export interface TableSort {
-  isAscending: boolean;
-  valuePath: string;
-}
-
-export interface EmberTheadArgs {
+export interface EmberTheadArgs<RowType, ColumnType> {
   /**
-   * The column definitions for the table
-   *
-   * @type {NativeArray<ColumnValue>}
-   * @memberof THeadArgs
+   * Specifies the name of the property on the column objects that should be used as the key for caching column metadata.
+   * For example, if columns have a unique `id` property, the value could be set to `id`.
+   * If unspecified, the column object itself is used as a key.
    */
-  columns: EmberTableColumn[];
+  columnKeyPath?: string;
+
 
   /**
-   * An ordered array of the sorts applied to the table
-   *
-   * @memberof THeadArgs
+   * The column definitions for the table.
    */
-  compareFunction?: <T>(valueA: T, valueB: T, sortEmptyLast: boolean) => number;
+  columns: ColumnType[];
+
+  compareFunction?: <T = RowType[keyof RowType]>(valueA: T, valueB: T, sortEmptyLast: boolean) => number;
 
   /**
    * A numeric adjustment to be applied to the constraint on the table's size.
-   *
-   * @type {number}
-   * @memberof THeadArgs
    */
   containerWidthAdjustment?: number;
 
   /**
-   * Flag that toggles reordering in the table
-   *
-   * @type {boolean}
-   * @memberof THeadArgs
+   * Flag that toggles reordering in the table.
    */
   enableReorder?: boolean;
 
   /**
-   * ember-table's resizing must be enabled in order for fill-mode auto column
-   * resizing to work, even if you don't want to allow user-invoked resizing
-   *
-   * @type {boolean}
-   * @memberof THeadArgs
+   * Flag that toggles resizing in the table.
    */
-  readonly enableResize?: boolean;
+  enableResize?: boolean;
 
   /**
-   * A configuration that controls which column shrinks (or extends) when fillMode is 'nth-column'. This is zero indexed.
-   *
-   * @type {number}
-   * @memberof THeadArgs
+   * A configuration that controls which column shrinks (or extends) when `fillMode` is `nth-column`.
+   * This is zero indexed.
    */
   fillColumnIndex?: number;
 
   /**
-       * A configuration that controls how columns shrink (or extend) when total column width does not match table width. Behavior of column modification is as follows:
-
-          "equal-column": extra space is distributed equally among all columns
-
-          "first-column": extra space is added into the first column.
-
-          "last-column": extra space is added into the last column.
-
-          "nth-column": extra space is added into the column defined by fillColumnIndex.
-        *
-        * @type {FillMode}
-        * @memberof THeadArgs
-        */
+   * A configuration that controls how columns shrink (or extend) when total column width does not match table width.
+   * Behavior of column modification is as follows:
+      - `equal-column`: extra space is distributed equally among all columns.
+      - `first-column`: extra space is added into the first column.
+      - `last-column`: extra space is added into the last column.
+      - `nth-column`: extra space is added into the column defined by `fillColumnIndex`.
+    */
   fillMode?: FillMode;
 
   /**
    * Specifies how columns should be sized when the table is initialized.
-   * This only affects eq-container-slack and gte-container-slack width constraint modes. Permitted values are the same as fillMode.
-   *
-   * @type {FillMode}
-   * @memberof THeadArgs
+   * This only affects `eq-container-slack` and `gte-container-slack` width constraint modes.
+   * Permitted values are the same as `fillMode`.
    */
   initialFillMode?: FillMode;
 
   /**
-   * An action that is sent when sorts is updated
+   * An action that is sent when columns are reordered.
    *
    * @memberof THeadArgs
    */
-  onHeaderAction?: () => void;
+  onReorder?: (columnA: ColumnType, columnB: ColumnType) => void;
 
   /**
-   * An action that is sent when columns are reordered
-   *
-   * @memberof THeadArgs
+   * An action that is sent when columns are resized.
    */
-  onReorder?: () => void;
+  onResize?: (column: ColumnType) => void;
 
   /**
-   * An action that is sent when columns are resized
-   *
-   * @memberof THeadArgs
+   * An action that is sent when sorts is updated.
    */
-  onResize?: () => void;
-
-  /**
-   * An action that is sent when sorts is updated
-   *
-   * @memberof THeadArgs
-   */
-  onUpdateSorts?: (sorts: TableSort[]) => void;
+  onUpdateSorts?: (sorts: EmberTableSort[]) => void;
 
   /**
    * Sets which column resizing behavior to use.
-   * Possible values are standard (resizing a column pushes or pulls all other columns) and fluid (resizing a column subtracts width from neighboring columns).
-   *
-   * @type {ResizeMode}
-   * @memberof THeadArgs
+   * Possible values are `standard` (resizing a column pushes or pulls all other columns) and `fluid` (resizing a column subtracts width from neighboring columns).
    */
-  resizeMode?: ResizeMode;
+  resizeMode?: 'standard' | 'fluid';
 
   /**
    * Enables shadows at the edges of the table to show that the user can scroll to view more content.
-   * Possible string values are all, horizontal, vertical, and none. The boolean values true and false are aliased to all and none, respectively.
-   *
-   * @type {(boolean | string)}
-   * @memberof THeadArgs
+   * Possible string values are `all`, `horizontal`, `vertical`, and `none`.
+   * The boolean values `true` and `false` are aliased to `all` and `none`, respectively.
    */
-  scrollIndicators?: boolean | string;
+  scrollIndicators?: 'none' | 'all' | 'horizontal' | 'vertical' | boolean;
 
   /**
-   * Flag that allows to sort empty values after non empty ones
-   *
-   * @type {boolean}
-   * @memberof THeadArgs
+   * Flag that allows to sort empty values after non empty ones.
    */
   sortEmptyLast?: boolean;
 
   /**
-   * An optional sort. If not specified, defaults to , which sorts by each sort in sorts, in order.
-   *
-   * @memberof THeadArgs
+   * An optional sort.
+   * If not specified, defaults to `<sortMultiple>`, which sorts by each `sort` in `sorts`, in order.
    */
-  sortFunction?: (
-    itemA: EmberTableColumn,
-    itemB: EmberTableColumn,
-    sorts: TableSort[],
-    compare: <T>(valueA: T, valueB: T, sortEmptyLast: boolean) => number,
+  sortFunction?: <T = RowType[keyof RowType]>(
+    itemA: T,
+    itemB: T,
+    sorts: EmberTableSort[],
+    compare: (valueA: T, valueB: T, sortEmptyLast: boolean) => number,
     sortEmptyLast: boolean
   ) => number;
 
   /**
-   * An ordered array of the sorts applied to the table
-   *
-   * @type {TableSort[]}
-   * @memberof THeadArgs
+   * An ordered array of the sorts applied to the table.
    */
-  sorts?: TableSort[];
+  sorts?: EmberTableSort[];
 
   /**
    * Sets a constraint on the table's size, such that it must be greater than, less than, or equal to the size of the containing element.
-   *
-   * @type {WidthConstraint}
-   * @memberof THeadArgs
    */
-  widthConstraint?: WidthConstraint;
+  widthConstraint?: 'none' | 'eq-container' | 'gte-container' | 'lte-container';
 }
 
-export interface EmberTheadSignature {
-  Args: EmberTheadArgs;
+export interface EmberTheadSignature<RowType, ColumnType> {
+  Args: EmberTheadArgs<RowType, ColumnType>;
   Blocks: {
     default: [
       {
-        cells: EmberTdComponent[];
-        isHeader: boolean;
-        row: typeof EmberTrComponent;
-        rowsCount: number;
+        row: typeof EmberTrComponent<RowType, ColumnType, typeof EmberThComponent<ColumnType>>;
       }
     ];
   };
   Element: HTMLDivElement;
 }
 
-export default class EmberTheadComponent extends Component<EmberTheadSignature> {}
+export default class EmberTheadComponent<RowType, ColumnType> extends Component<EmberTheadSignature<RowType, ColumnType>> {}
