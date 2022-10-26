@@ -12,7 +12,7 @@ export interface EmberTableSignature<RowType, ColumnType> {
     default: [
       {
         body: typeof EmberTbodyComponent<RowType, ColumnType>;
-        foot: typeof EmberTfootComponent;
+        foot: typeof EmberTfootComponent<RowType, ColumnType>;
         head: typeof EmberTheadComponent<RowType, ColumnType>;
         loadingMore: typeof EmberTableLoadingMoreComponent;
       }

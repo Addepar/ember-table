@@ -1,22 +1,20 @@
 import Component from '@ember/component';
-import EmberTdComponent from './ember-td';
 import EmberTrComponent from './ember-tr';
 
-export interface EmberTfootSignature {
+export interface EmberTfootSignature<RowType, ColumnType> {
   Element: HTMLDivElement;
   Args: {
-    rows: any[];
-    tableClasses?: string;
+    rows: RowType[];
   };
   Blocks: {
     default: [
       {
-        isHeader: boolean;
-        row: typeof EmberTrComponent;
-        rowsCount: number;
+        row: typeof EmberTrComponent<RowType, ColumnType>;
+        rowMeta: unknown;
+        rowValue: RowType;
       }
     ];
   };
 }
 
-export default class EmberTfootComponent<T extends EmberTfootSignature> extends Component<T> {}
+export default class EmberTfootComponent<RowType, ColumnType> extends Component<EmberTfootSignature<RowType, ColumnType>> {}
