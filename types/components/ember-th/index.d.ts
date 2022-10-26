@@ -10,8 +10,8 @@ export interface EmberThSignature<ColumnType> {
   };
   Blocks: {
     default: [
-      columnMeta: unknown,
       columnValue: ColumnType,
+      columnMeta: unknown,
     ];
   };
 }

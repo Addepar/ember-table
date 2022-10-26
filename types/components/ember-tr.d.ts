@@ -19,8 +19,11 @@ export interface EmberTrSignature<RowType, ColumnType, CellComponentType> {
     default: [
       {
         cell: CellComponentType;
+        cellMeta: unknown;
         cellValue: RowType[keyof RowType];
+        columnMeta: unknown;
         columnValue: ColumnType;
+        rowMeta: unknown;
         rowValue: RowType;
       }
     ];

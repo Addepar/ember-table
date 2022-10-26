@@ -18,6 +18,9 @@ export interface EmberTdSignature<RowType, ColumnType> {
       cellValue: RowType[keyof RowType],
       columnValue: ColumnType,
       rowValue: RowType,
+      cellMeta: unknown,
+      columnMeta: unknown,
+      rowMeta: unknown,
     ];
   };
 }
