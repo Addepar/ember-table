@@ -11,3 +11,5 @@ export interface EmberTableColumn {
   textAlign?: 'left' | 'center' | 'right';
   width?: number;
 }
+
+export type EmberTableRow = Record<string, unknown>;

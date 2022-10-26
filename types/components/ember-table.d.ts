@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { EmberTableRow } from '../index';
 import EmberTbodyComponent from './ember-tbody';
 import EmberTfootComponent from './ember-tfoot';
 import EmberTheadComponent from './ember-thead';
@@ -18,4 +19,4 @@ export interface EmberTableSignature<RowType> {
   };
 }
 
-export default class EmberTableComponent<RowType extends Record<string, unknown>> extends Component<EmberTableSignature<RowType>> {}
+export default class EmberTableComponent<RowType extends EmberTableRow> extends Component<EmberTableSignature<RowType>> {}
