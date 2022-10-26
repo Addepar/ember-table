@@ -1,5 +1,6 @@
 import Component from '@ember/component';
-import { EmberTableColumn } from '../index';
+
+type ValueOf<T> = T[keyof T];
 
 export interface EmberTdSignature<RowType, ColumnType> {
   Element: HTMLTableCellElement;
@@ -16,7 +17,7 @@ export interface EmberTdSignature<RowType, ColumnType> {
   };
   Blocks: {
     default: [
-      cellValue: any,
+      cellValue: ValueOf<RowType>,
       columnValue: ColumnType,
       rowValue: RowType,
     ];
