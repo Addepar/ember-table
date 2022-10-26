@@ -11,7 +11,6 @@ export interface EmberTfootSignature {
   Blocks: {
     default: [
       {
-        cells: EmberTdComponent[];
         isHeader: boolean;
         row: typeof EmberTrComponent;
         rowsCount: number;

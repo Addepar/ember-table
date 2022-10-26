@@ -1,7 +1,5 @@
 import Component from '@ember/component';
 
-type ValueOf<T> = T[keyof T];
-
 export interface EmberTdSignature<RowType, ColumnType> {
   Element: HTMLTableCellElement;
   Args: {
@@ -17,12 +15,11 @@ export interface EmberTdSignature<RowType, ColumnType> {
   };
   Blocks: {
     default: [
-      cellValue: ValueOf<RowType>,
+      cellValue: RowType[keyof RowType],
       columnValue: ColumnType,
       rowValue: RowType,
     ];
   };
 }
 
-// FIXME: Make RowType more strict without fallback to {}
 export default class EmberTdComponent<RowType, ColumnType> extends Component<EmberTdSignature<RowType, ColumnType>> {}

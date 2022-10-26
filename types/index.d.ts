@@ -12,4 +12,4 @@ export interface EmberTableColumn {
   width?: number;
 }
 
-export type EmberTableRow = Record<string, unknown>;
+export interface EmberTableRow {}
