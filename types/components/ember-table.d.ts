@@ -4,7 +4,6 @@ import EmberTbodyComponent from './ember-tbody';
 import EmberTfootComponent from './ember-tfoot';
 import EmberTheadComponent from './ember-thead';
 import EmberTableLoadingMoreComponent from './ember-table-loading-more';
-import { WithBoundArgs } from '@glint/template';
 
 export interface EmberTableSignature<RowType, ColumnType> {
   Element: HTMLDivElement;
