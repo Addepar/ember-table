@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import EmberTdComponent from './ember-td';
+import { EmberTableColumn, EmberTableRow } from '../index';
 import EmberTrComponent from './ember-tr';
 
 type SelectionMode =
@@ -7,7 +7,7 @@ type SelectionMode =
   | 'single'
   | 'none';
 
-export interface EmberTbodyArgs<RowType> {
+export interface EmberTbodyArgs<RowType extends EmberTableRow> {
   /**
    * The number of extra rows to render on either side of the table's viewport.
    */
@@ -125,7 +125,10 @@ export interface EmberTbodyArgs<RowType> {
   staticHeight?: boolean;
 }
 
-export interface EmberTbodySignature<RowType, ColumnType> {
+export interface EmberTbodySignature<
+  RowType extends EmberTableRow,
+  ColumnType extends EmberTableColumn
+> {
   Element: HTMLDivElement;
   Args: EmberTbodyArgs<RowType>;
   Blocks: {
@@ -139,4 +142,7 @@ export interface EmberTbodySignature<RowType, ColumnType> {
   };
 }
 
-export default class EmberTbodyComponent<RowType, ColumnType> extends Component<EmberTbodySignature<RowType, ColumnType>> {}
+export default class EmberTbodyComponent<
+  RowType extends EmberTableRow = EmberTableRow,
+  ColumnType extends EmberTableColumn = EmberTableColumn
+> extends Component<EmberTbodySignature<RowType, ColumnType>> {}

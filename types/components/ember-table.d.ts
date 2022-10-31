@@ -5,7 +5,10 @@ import EmberTfootComponent from './ember-tfoot';
 import EmberTheadComponent from './ember-thead';
 import EmberTableLoadingMoreComponent from './ember-table-loading-more';
 
-export interface EmberTableSignature<RowType, ColumnType> {
+export interface EmberTableSignature<
+  RowType extends EmberTableRow,
+  ColumnType extends EmberTableColumn
+> {
   Element: HTMLDivElement;
   Blocks: {
     default: [

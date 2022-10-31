@@ -1,8 +1,12 @@
 import Component from '@ember/component';
-import { EmberTableColumn } from '../index';
+import { EmberTableColumn, EmberTableRow } from '../index';
 import EmberTdComponent from './ember-td';
 
-export interface EmberTrSignature<RowType, ColumnType, CellComponentType> {
+export interface EmberTrSignature<
+  RowType extends EmberTableRow,
+  ColumnType extends EmberTableColumn,
+  CellComponentType
+> {
   Element: HTMLTableRowElement;
   Args: {
     /**
@@ -31,7 +35,7 @@ export interface EmberTrSignature<RowType, ColumnType, CellComponentType> {
 }
 
 export default class EmberTrComponent<
-  RowType,
-  ColumnType,
+  RowType extends EmberTableRow = EmberTableRow,
+  ColumnType extends EmberTableColumn = EmberTableColumn,
   CellComponentType = typeof EmberTdComponent<RowType, ColumnType>
 > extends Component<EmberTrSignature<RowType, ColumnType, CellComponentType>> {}

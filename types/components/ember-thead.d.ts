@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { EmberTableSort } from '../index';
+import { EmberTableColumn, EmberTableRow, EmberTableSort } from '../index';
 import EmberThComponent from './ember-th';
 import EmberTrComponent from './ember-tr';
 
@@ -121,7 +121,10 @@ export interface EmberTheadArgs<RowType, ColumnType> {
   widthConstraint?: 'none' | 'eq-container' | 'gte-container' | 'lte-container';
 }
 
-export interface EmberTheadSignature<RowType, ColumnType> {
+export interface EmberTheadSignature<
+  RowType extends EmberTableRow,
+  ColumnType extends EmberTableColumn
+> {
   Args: EmberTheadArgs<RowType, ColumnType>;
   Blocks: {
     default: [
@@ -133,4 +136,7 @@ export interface EmberTheadSignature<RowType, ColumnType> {
   Element: HTMLDivElement;
 }
 
-export default class EmberTheadComponent<RowType, ColumnType> extends Component<EmberTheadSignature<RowType, ColumnType>> {}
+export default class EmberTheadComponent<
+  RowType extends EmberTableRow = EmberTableRow,
+  ColumnType extends EmberTableColumn = EmberTableColumn
+> extends Component<EmberTheadSignature<RowType, ColumnType>> {}
