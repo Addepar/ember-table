@@ -10,7 +10,7 @@ import { objectAt } from '../../-private/utils/array';
 import { observer } from '../../-private/utils/observer';
 
 const CellWrapper = EmberObject.extend({
-  /* eslint-disable-next-line ember/no-observers */
+  /* eslint-disable-next-line ember/no-observers, ember-best-practices/no-observers */
   columnValueValuePathDidChange: observer('columnValue.valuePath', function() {
     let columnValuePath = get(this, 'columnValue.valuePath');
     let cellValue = columnValuePath ? alias(`rowValue.${columnValuePath}`) : null;
@@ -121,7 +121,7 @@ export default Component.extend({
         let columnValue = objectAt(columns, i);
         let columnMeta = this.get('columnMetaCache').get(columnValue);
 
-        // eslint-disable-next-line ember/no-side-effects
+        // eslint-disable-next-line ember/no-side-effects, ember-best-practices/no-side-effect-cp
         setProperties(cell, {
           checkboxSelectionMode,
           columnMeta,
