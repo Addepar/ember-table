@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { EmberTableColumn,  EmberTableRow } from '../index';
+import { EmberTableColumn,  EmberTableRow } from 'ember-table';
 
 export interface EmberTdSignature<RowType, ColumnType> {
   Element: HTMLTableCellElement;

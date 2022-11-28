@@ -3,9 +3,12 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "*": [
+      "ember-table": [
+        "types"
+      ],
+      "ember-table/*": [
         "types/*"
-      ]
+      ],
     }
   },
   "include": [

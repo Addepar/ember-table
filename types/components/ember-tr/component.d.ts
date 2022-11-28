@@ -1,6 +1,6 @@
 import Component from '@ember/component';
-import { EmberTableColumn, EmberTableRow } from '../index';
-import EmberTdComponent from './ember-td';
+import { EmberTableColumn, EmberTableRow } from 'ember-table';
+import EmberTdComponent from 'ember-table/components/ember-td/component';
 
 export interface EmberTrSignature<
   RowType extends EmberTableRow,

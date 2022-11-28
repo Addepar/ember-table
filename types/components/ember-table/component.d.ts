@@ -1,9 +1,9 @@
 import Component from '@ember/component';
-import { EmberTableColumn, EmberTableRow } from '../index';
-import EmberTbodyComponent from './ember-tbody';
-import EmberTfootComponent from './ember-tfoot';
-import EmberTheadComponent from './ember-thead';
-import EmberTableLoadingMoreComponent from './ember-table-loading-more';
+import { EmberTableColumn, EmberTableRow } from 'ember-table';
+import EmberTbodyComponent from 'ember-table/components/ember-tbody/component';
+import EmberTfootComponent from 'ember-table/components/ember-tfoot/component';
+import EmberTheadComponent from 'ember-table/components/ember-thead/component';
+import EmberTableLoadingMoreComponent from 'ember-table/components/ember-table-loading-more/component';
 
 export interface EmberTableSignature<
   RowType extends EmberTableRow,

@@ -1,6 +1,6 @@
-import EmberTableComponent from './components/ember-table';
-import ResizeHandleComponent from './components/ember-th/resize-handle';
-import SortIndicatorComponent from './components/ember-th/sort-indicator';
+import EmberTableComponent from 'ember-table/components/ember-table/component';
+import ResizeHandleComponent from 'ember-table/components/ember-th/resize-handle/component';
+import SortIndicatorComponent from 'ember-table/components/ember-th/sort-indicator/component';
 
 export default interface Registry {
   EmberTable: typeof EmberTableComponent;
