@@ -157,6 +157,50 @@ import { setupForTest as setupEmberTableForTest } from 'ember-table/test-support
 setupEmberTableForTest();
 ```
 
+## Using Ember Table with Glint
+
+Ember Table provides **experimental** Glint types defined in the `/types/` directory.
+These types may change at any time and are **NOT** covered by Ember Table's semantic versioning.
+They are intended to support standard documented usage of Ember Table and do not attempt to type the internals of the Ember Table addon.
+If you are using Ember Table in a more advanced way (such as extending Ember Table components), you will still need to define your own types for those use cases.
+
+To use the provided Ember Table types for Glint:
+
+1. Define a type interface for your row contents. If your columns contain additional custom attributes, you can type those as well. Ember Table provides default interfaces that can be extended for this purpose.
+1. Extend the base Ember Table component passing in your row and (optional) column interfaces as generics.
+1. Use this extended version of the Ember Table component in your template.
+
+For example:
+
+```ts
+// my-table-component.ts
+import type { EmberTableColumn, EmberTableRow } from 'ember-table';
+import EmberTableComponent from 'ember-table/components/ember-table/component';
+
+interface MyTableColumn extends EmberTableColumn {
+  // Add any custom column attribute types here (optional)
+}
+
+interface MyTableRow extends EmberTableRow {
+  // Add the attributes and types for your table rows here
+}
+
+class MyEmberTableComponent extends EmberTableComponent<MyTableRow, MyTableColumn> {}
+
+export default class MyTableComponent extends Component<MyTableComponentSignature> {
+  emberTableComponent = MyEmberTableComponent;
+}
+```
+
+```hbs
+{{! my-table-component.hbs }}
+<this.emberTableComponent as |t|>
+  {{! Use Ember Table as usual. Row and column arguments will be enforced to match the appropriate types. }}
+  {{! Yielded items (rows, columns) will be typed according to the specified interfaces. }}
+  {{! Cell values will be typed as a union of all defined row attribute types. }}
+</this.emberTableComponent>
+```
+
 ## Migrating from old Ember table
 
 To support smooth migration from old version of Ember table (support only till ember 1.11), we have
