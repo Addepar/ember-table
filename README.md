@@ -157,14 +157,30 @@ import { setupForTest as setupEmberTableForTest } from 'ember-table/test-support
 setupEmberTableForTest();
 ```
 
-## Using Ember Table with Glint
+## EXPERIMENTAL: Using Ember Table with Glint
 
 Ember Table provides **experimental** Glint types defined in the `/types/` directory.
 These types may change at any time and are **NOT** covered by Ember Table's semantic versioning.
 They are intended to support standard documented usage of Ember Table and do not attempt to type the internals of the Ember Table addon.
 If you are using Ember Table in a more advanced way (such as extending Ember Table components), you will still need to define your own types for those use cases.
 
-To use the provided Ember Table types for Glint:
+### Glint Types Installation
+
+Assuming you have the Ember Table addon installed, you can import and register Ember Table's Glint types in the manner [recommended by the Glint docs](https://typed-ember.gitbook.io/glint/using-glint/ember/using-addons#using-glint-enabled-addons):
+
+```ts
+// types/global.d.ts
+import '@glint/environment-ember-loose';
+import EmberTableRegistry from 'ember-table/template-registry';
+
+declare module '@glint/environment-ember-loose/registry' {
+  export default interface Registry extends EmberTableRegistry, /* other addon registries */ {
+    // local entries
+  }
+}
+```
+
+### Glint Types Usage
 
 1. Define a type interface for your row contents. If your columns contain additional custom attributes, you can type those as well. Ember Table provides default interfaces that can be extended for this purpose.
 1. Extend the base Ember Table component passing in your row and (optional) column interfaces as generics.
