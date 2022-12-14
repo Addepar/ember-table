@@ -186,8 +186,6 @@ declare module '@glint/environment-ember-loose/registry' {
 1. Extend the base Ember Table component passing in your row and (optional) column interfaces as generics.
 1. Use this extended version of the Ember Table component in your template.
 
-For example:
-
 ```ts
 // my-table-component.ts
 import type { EmberTableColumn, EmberTableRow } from 'ember-table';
