@@ -1,0 +1,17 @@
+{
+  "extends": "@tsconfig/ember/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "ember-table": [
+        "types"
+      ],
+      "ember-table/*": [
+        "types/*"
+      ],
+    }
+  },
+  "include": [
+    "types/**/*"
+  ]
+}
