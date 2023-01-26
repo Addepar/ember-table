@@ -6,8 +6,6 @@ import {
   teardownTableStickyPolyfill,
 } from '../../-private/sticky/table-sticky-polyfill';
 
-import layout from './template';
-
 /**
   The primary Ember Table component. This component represents the root of the
   table, and manages high level state of all of its subcomponents. It does not
@@ -30,7 +28,6 @@ import layout from './template';
   @public
 */
 export default Component.extend({
-  layout,
   classNames: ['ember-table'],
   attributeBindings: ['dataTestEmberTable:data-test-ember-table'],
   dataTestEmberTable: true,

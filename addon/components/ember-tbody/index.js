@@ -7,7 +7,6 @@ import { bool, readOnly, or } from '@ember/object/computed';
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 import defaultTo from '../../-private/utils/default-to';
 
-import layout from './template';
 import { assert } from '@ember/debug';
 
 let setupRowCountForTest = false;
@@ -40,7 +39,6 @@ export function setSetupRowCountForTest(bool) {
   @public
 */
 export default Component.extend({
-  layout,
   tagName: 'tbody',
 
   /**

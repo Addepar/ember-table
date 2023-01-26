@@ -4,7 +4,6 @@ import { readOnly } from '@ember/object/computed';
 
 import { closest } from '../../-private/utils/element';
 
-import layout from './template';
 import { SELECT_MODE } from '../../-private/collapse-tree';
 
 /**
@@ -45,7 +44,6 @@ import { SELECT_MODE } from '../../-private/collapse-tree';
   @public
 */
 export default Component.extend({
-  layout,
   tagName: 'tr',
   classNames: ['et-tr'],
   classNameBindings: ['isSelected', 'isGroupSelected', 'isSelectable'],
