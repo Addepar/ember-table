@@ -7,7 +7,6 @@ import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
-import layout from './template';
 
 /**
    Computed property macro that builds the CSS styles (position, height)
@@ -122,7 +121,6 @@ const showIndicator = location => {
 };
 
 export default Component.extend({
-  layout,
   tagName: '',
 
   /**

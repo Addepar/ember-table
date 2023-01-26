@@ -1,10 +1,9 @@
 import Component from '@ember/component';
-import layout from './template';
 
 import { readOnly } from '@ember/object/computed';
 
 /**
-  The table header cell resize handle component. This component renders an area to grab to resize a column.
+  The table header cell sort indicator component. This component renders the state of the sort on the column (ascending/descending/none).
 
   ```hbs
   <EmberTable as |t|>
@@ -13,7 +12,7 @@ import { readOnly } from '@ember/object/computed';
         <r.cell as |columnValue columnMeta|>
           {{columnValue.name}}
 
-          <EmberTh::ResizeHandle @columnMeta={{columnMeta}} />
+          <EmberTh::SortIndicator @columnMeta={{columnMeta}} />
         </r.cell>
       </h.row>
     </t.head>
@@ -21,11 +20,11 @@ import { readOnly } from '@ember/object/computed';
     <t.body @rows={{this.rows}} />
   </EmberTable>
   ```
-  @class <EmberTh::ResizeHandle />
-  @public
+  @yield {object} columnMeta - The meta object associated with this column
+  @class <EmberTh::SortIndicator />
 */
+
 export default Component.extend({
-  layout,
   tagName: '',
 
   /**
@@ -36,5 +35,13 @@ export default Component.extend({
   */
   columnMeta: null,
 
-  isResizable: readOnly('columnMeta.isResizable'),
+  isSortable: readOnly('columnMeta.isSortable'),
+
+  isSorted: readOnly('columnMeta.isSorted'),
+
+  isSortedAsc: readOnly('columnMeta.isSortedAsc'),
+
+  isMultiSorted: readOnly('columnMeta.isMultiSorted'),
+
+  sortIndex: readOnly('columnMeta.sortIndex'),
 });

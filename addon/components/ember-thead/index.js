@@ -16,8 +16,6 @@ import { scheduleOnce } from '@ember/runloop';
 
 import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
 
-import layout from './template';
-
 let isTestingThead = false;
 export function setupTHeadForTest(bool) {
   isTestingThead = bool;
@@ -45,7 +43,6 @@ export function setupTHeadForTest(bool) {
 */
 
 export default Component.extend({
-  layout,
   tagName: 'thead',
 
   /**

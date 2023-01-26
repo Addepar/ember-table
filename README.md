@@ -189,7 +189,7 @@ declare module '@glint/environment-ember-loose/registry' {
 ```ts
 // my-table-component.ts
 import type { EmberTableColumn, EmberTableRow } from 'ember-table';
-import EmberTableComponent from 'ember-table/components/ember-table/component';
+import EmberTableComponent from 'ember-table/components/ember-table';
 
 interface MyTableColumn extends EmberTableColumn {
   // Add any custom column attribute types here (optional)
