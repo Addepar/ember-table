@@ -144,7 +144,9 @@ export default Component.extend({
 
   removeListeners() {
     this.get('scrollElement').removeEventListener('scroll', this._updateTransform);
-    this._scrollElementResizeSensor.detach();
+    if (this._scrollElementResizeSensor) {
+      this._scrollElementResizeSensor.detach();
+    }
   },
 
   updateTransform() {
