@@ -101,8 +101,12 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-data': '~3.24.0',
-              'ember-cli-addon-docs': '^1.0.0',
+              'ember-cli-addon-docs': '^5.1.0',
               'ember-cli-addon-docs-yuidoc': '^1.0.0',
+              'ember-cli-deploy': '^1.0.2',
+              'ember-cli-deploy-build': '^1.1.1',
+              'ember-cli-deploy-git': '^1.3.3',
+              'ember-cli-deploy-git-ci': '^1.0.1',
             },
           },
         },
