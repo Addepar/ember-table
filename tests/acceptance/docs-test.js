@@ -74,7 +74,7 @@ module('Acceptance | docs', function(hooks) {
 
     let navItems = Array.from(nav.querySelectorAll('li'));
 
-    let expectedNavItems = ['API REFERENCE', '{{ember-table}}'];
+    let expectedNavItems = ['API REFERENCE', '<EmberTable/​>'];
 
     expectedNavItems.forEach(expectedText => {
       assert.ok(
