@@ -1,6 +1,3 @@
-// Detect if ember-cli-addon-docs is in the project package.json.
-// This is used at test runtime to decide whether to run the docs/
-// acceptance tests.
 const ADDON_DOCS_INSTALLED = Object.keys(require('../../../package.json').devDependencies).includes(
   'ember-cli-addon-docs'
 );
@@ -8,22 +5,15 @@ const ADDON_DOCS_INSTALLED = Object.keys(require('../../../package.json').devDep
 module.exports = function(environment) {
   let ENV = {
     modulePrefix: 'dummy',
-    podModulePrefix: 'dummy/pods',
     environment,
     rootURL: '/',
     locationType: 'history',
-    historySupportMiddleware: true,
-    fastboot: {
-      hostWhitelist: [/^localhost:\d+$/],
-    },
+    ADDON_DOCS_INSTALLED,
     EmberENV: {
+      EXTEND_PROTOTYPES: false,
       FEATURES: {
         // Here you can enable experimental features on an ember canary build
         // e.g. 'with-controller': true
-      },
-      EXTEND_PROTOTYPES: {
-        // Prevent Ember Data from overriding Date.parse.
-        Date: false,
       },
     },
 
@@ -52,14 +42,6 @@ module.exports = function(environment) {
     ENV.APP.rootElement = '#ember-testing';
     ENV.APP.autoboot = false;
   }
-
-  if (environment === 'production') {
-    // Allow ember-cli-addon-docs to update the rootURL in compiled assets
-    ENV.rootURL = 'ADDON_DOCS_ROOT_URL';
-    ENV.locationType = 'router-scroll';
-  }
-
-  ENV.ADDON_DOCS_INSTALLED = ADDON_DOCS_INSTALLED;
 
   return ENV;
 };
