@@ -62,11 +62,12 @@ export default Component.extend({
       this.element.style.minWidth = width;
       this.element.style.maxWidth = width;
 
-      if (this.get('isFixedLeft')) {
-        this.element.style.left = `${Math.round(this.get('columnMeta.offsetLeft'))}px`;
-      } else if (this.get('isFixedRight')) {
-        this.element.style.right = `${Math.round(this.get('columnMeta.offsetRight'))}px`;
-      }
+      this.element.style.left = this.get('isFixedLeft')
+        ? `${Math.round(this.get('columnMeta.offsetLeft'))}px`
+        : null;
+      this.element.style.right = this.get('isFixedRight')
+        ? `${Math.round(this.get('columnMeta.offsetRight'))}px`
+        : null;
 
       if (this.get('isSlack')) {
         this.element.style.paddingLeft = 0;

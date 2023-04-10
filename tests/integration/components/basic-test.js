@@ -1,6 +1,7 @@
 import { module, test } from 'qunit';
 import hbs from 'htmlbars-inline-precompile';
 import a11yAudit from 'ember-a11y-testing/test-support/audit';
+import { set } from '@ember/object';
 
 import { generateTable, generateColumns, generateRows } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
@@ -118,11 +119,6 @@ module('Integration | basic', function() {
           let rect = element.getBoundingClientRect();
           let diff = Math.abs(container[measurement] - rect[measurement]);
 
-          // Travis reports pretty wide differences for some reason, possibly
-          // their Chrome version. It does validate that the elements are moving
-          // and that should be enough to know if we messed something up majorly.
-          //
-          // TODO(sticky): Try to lower the tolerance as sticky becomes more prevalent
           assert.ok(diff < 10, `${diff} is with tolerance`);
         }
       }
@@ -139,6 +135,15 @@ module('Integration | basic', function() {
 
       let tableContainerRect = find('.ember-table').getBoundingClientRect();
 
+      /**
+       * No scroll.
+       *
+       * Assert the special cases:
+       *
+       *   - Horizontally, the last column is stuck at the edge of the
+       *     container.
+       *   - Vertically, the footer is stuck at the edge of the container.
+       */
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
       validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
@@ -146,6 +151,15 @@ module('Integration | basic', function() {
 
       await scrollTo('[data-test-ember-table-overflow]', 10000, 0);
 
+      /**
+       * Scrolled to the far right.
+       *
+       * Assert the special cases:
+       *
+       *   - Horizontally, the first column is stuck at the edge of the
+       *     container.
+       *   - Vertically, the footer is stuck at the edge of the container.
+       */
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
       validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
@@ -153,6 +167,15 @@ module('Integration | basic', function() {
 
       await scrollTo('[data-test-ember-table-overflow]', 10000, 10000);
 
+      /**
+       * Scrolled to the far bottom and far right.
+       *
+       * Assert the special cases:
+       *
+       *   - Horizontally, the first column is stuck at the edge of the
+       *     container.
+       *   - Vertically, the header is stuck at the edge of the container.
+       */
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
       validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
@@ -160,10 +183,82 @@ module('Integration | basic', function() {
 
       await scrollTo('[data-test-ember-table-overflow]', 0, 10000);
 
+      /**
+       * Scrolled to the far bottom.
+       *
+       * Assert the special cases:
+       *
+       *   - Horizontally, the last column is stuck at the edge of the
+       *     container.
+       *   - Vertically, the header is stuck at the edge of the container.
+       */
       validateElements(tableContainerRect, findAll('thead th'), 'top');
       validateElements(tableContainerRect, findAll('tr > *:first-child'), 'left');
       validateElements(tableContainerRect, findAll('tr > *:last-child'), 'right');
       validateElements(tableContainerRect, findAll('tfoot td'), 'bottom');
+    });
+
+    test('mutating fixed cells work', async function(assert) {
+      await generateTable(this, {
+        rowCount: 100,
+        columnCount: 30,
+        footerRowCount: 1,
+        columnOptions: {
+          fixedLeftCount: 1,
+          fixedRightCount: 1,
+        },
+      });
+
+      let tableContainerRect = find('.ember-table').getBoundingClientRect();
+
+      /**
+       * Just scroll around. See the prior test for assertions that the
+       * behaviors after these actions are performed are correct.
+       */
+      await scrollTo('[data-test-ember-table-overflow]', 10000, 10000);
+      await scrollTo('[data-test-ember-table-overflow]', 0, 0);
+
+      /**
+       * Mutate the fixed state of the first and last column
+       */
+      set(this.columns[0], 'isFixed', null);
+      set(this.columns[this.columns.length - 1], 'isFixed', null);
+
+      await settled();
+
+      /**
+       * No scroll.
+       *
+       * Assert the special cases:
+       *
+       *   - Horizontally, the last column is no longer stuck at the edge of
+       *     the container.
+       */
+      let lastColumnRight = this.element.querySelector('tr > *:last-child').getBoundingClientRect()
+        .right;
+      let tableContainerRight = tableContainerRect.right;
+      assert.true(
+        lastColumnRight > tableContainerRight + 20,
+        `last column right (${lastColumnRight}) is safely greater than the container's right (${tableContainerRight} + 20)`
+      );
+
+      await scrollTo('[data-test-ember-table-overflow]', 10000, 0);
+
+      /**
+       * Scrolled to far right.
+       *
+       * Assert the special cases:
+       *
+       *   - Horizontally, the first column is no longer stuck at the edge of
+       *     the container.
+       */
+      let firstColumnLeft = this.element.querySelector('tr > *:first-child').getBoundingClientRect()
+        .left;
+      let tableContainerLeft = tableContainerRect.left;
+      assert.true(
+        firstColumnLeft < tableContainerLeft - 20,
+        `first column left (${firstColumnLeft}) is safely less than the container's left (${tableContainerLeft} - 20)`
+      );
     });
 
     test('Accessibility test', async function(assert) {
