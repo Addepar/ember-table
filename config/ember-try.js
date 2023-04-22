@@ -101,7 +101,7 @@ module.exports = function() {
           npm: {
             devDependencies: {
               'ember-data': '~3.24.0',
-              'ember-cli-addon-docs': '^5.1.0',
+              'ember-cli-addon-docs': 'ember-learn/ember-cli-addon-docs#mixonic/swap-default-fonts',
               'ember-cli-addon-docs-yuidoc': '^1.0.0',
               'ember-cli-deploy': '^1.0.2',
               'ember-cli-deploy-build': '^1.1.1',
