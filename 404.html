@@ -2,39 +2,53 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Single Page Apps for GitHub Pages</title>
+    <title>Redirect</title>
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
-      // MIT License
-      // https://github.com/rafgraph/spa-github-pages
+      // https://github.com/rafrex/spa-github-pages
+      // Copyright (c) 2016 Rafael Pedicini, licensed under the MIT License
+      // ----------------------------------------------------------------------
       // This script takes the current url and converts the path and query
       // string into just a query string, and then redirects the browser
       // to the new url with only a query string and hash fragment,
-      // e.g. https://www.foo.tld/one/two?a=b&c=d#qwe, becomes
-      // https://www.foo.tld/?/one/two&a=b~and~c=d#qwe
+      // e.g. http://www.foo.tld/one/two?a=b&c=d#qwe, becomes
+      // http://www.foo.tld/?p=/one/two&q=a=b~and~c=d#qwe
       // Note: this 404.html file must be at least 512 bytes for it to work
       // with Internet Explorer (it is currently > 512 bytes)
-
       // If you're creating a Project Pages site and NOT using a custom domain,
-      // then set pathSegmentsToKeep to 1 (enterprise users may need to set it to > 1).
+      // then set segmentCount to 1 (enterprise users may need to set it to > 1).
       // This way the code will only replace the route part of the path, and not
       // the real directory in which the app resides, for example:
       // https://username.github.io/repo-name/one/two?a=b&c=d#qwe becomes
-      // https://username.github.io/repo-name/?/one/two&a=b~and~c=d#qwe
-      // Otherwise, leave pathSegmentsToKeep as 0.
-      var pathSegmentsToKeep = 1;
-
+      // https://username.github.io/repo-name/?p=/one/two&q=a=b~and~c=d#qwe
+      // Otherwise, leave segmentCount as 0.
+      var segmentCount = 1;
       var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
+      var segments = l.pathname.split('/');
+      var redirects = {};
 
+      var firstLocalSegment = segments[segmentCount+1];
+      if (redirects[firstLocalSegment] != null) {
+        segments = [""].concat(segments.slice(0, segmentCount+1).concat(redirects[firstLocalSegment]).concat(segments.slice(segmentCount+2)).filter(Boolean).join('/').split('/'))
+      }
+
+      // If we're inside the special "versions" path, we want to load a versioned 
+      // child app, and those are two segments deeper than the top-level app.
+      if (segments[segmentCount+1] === "versions") {
+        segmentCount += 2;
+      }
+
+      // Avoid an infinite loop if we try to direct to a location that doesn't exist
+      if (!/^\?p=\/.*&q=.*/.test(l.search)) {
+        l.replace(
+          l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+          segments.slice(0, 1 + segmentCount).join('/') + '/?p=/' +
+          segments.slice(segmentCount+1).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&q=' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash
+        );
+      }
     </script>
   </head>
-  <body>
-  </body>
+  <body>The requested page wasn't found.</body>
 </html>
