@@ -160,7 +160,7 @@ export default BaseTableCell.extend({
       event.key === 'Enter' &&
       isSortable
     ) {
-      this.updateSort();
+      this.updateSort({ toggle: false });
     }
   },
 

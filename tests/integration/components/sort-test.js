@@ -421,5 +421,32 @@ module('Integration | sort', function() {
 
       assert.equal(findAll('.is-sortable').length, 1, 'only one column is sortable');
     });
+
+    test('can sort a column with keyboard enter on header', async function(assert) {
+      let columns = [
+        {
+          name: 'Name',
+          valuePath: 'name',
+        },
+      ];
+
+      let rows = [{ name: 'Zoe' }, { name: 'Alex' }, { name: 'Liz' }];
+
+      await generateTable(this, { columns, rows });
+
+      let firstHeader = table.headers.objectAt(0);
+
+      assert.ok(firstHeader.isSortable, 'sort class applied correctly');
+      assert.ok(checkRowOrder(table, ['Zoe', 'Alex', 'Liz']));
+
+      await firstHeader.enterKeyup();
+      assert.ok(checkRowOrder(table, ['Zoe', 'Liz', 'Alex']));
+
+      await firstHeader.enterKeyup();
+      assert.ok(checkRowOrder(table, ['Alex', 'Liz', 'Zoe']));
+
+      await firstHeader.enterKeyup();
+      assert.ok(checkRowOrder(table, ['Zoe', 'Alex', 'Liz']));
+    });
   });
 });

@@ -1,6 +1,6 @@
 import PageObject, { alias, collection, hasClass, triggerable } from 'ember-classy-page-object';
 import { findElement } from 'ember-classy-page-object/extend';
-import { click } from '@ember/test-helpers';
+import { click, triggerKeyEvent } from '@ember/test-helpers';
 
 import { mouseDown, mouseMove, mouseUp } from '../../helpers/mouse';
 import { getScale } from '../../helpers/element';
@@ -194,6 +194,10 @@ const Header = PageObject.extend({
   */
   async clickWith(options) {
     await click(findElement(this), options);
+  },
+
+  async enterKeyup() {
+    await triggerKeyEvent(findElement(this), 'keyup', 'Enter');
   },
 
   isSortable: hasClass('is-sortable'),
