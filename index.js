@@ -41,6 +41,7 @@ module.exports = {
   },
 
   isDevelopingAddon() {
+    return true;
     // this prevents templates from being cached before we can strip them out
     // they get cached by jshintAddonTree before we can intervene
     if (this.checker.for('ember-source').gte('2.3.0')) {

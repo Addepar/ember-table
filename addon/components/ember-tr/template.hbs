@@ -1,4 +1,4 @@
-{{#each this.cells as |api|}}
+{{#each this.cells key="@index" as |api|}}
   {{#if (has-block)}}
     {{#if this.isHeader}}
       {{yield (hash

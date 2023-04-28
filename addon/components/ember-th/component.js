@@ -37,7 +37,7 @@ const COLUMN_REORDERING = 2;
 export default BaseTableCell.extend({
   layout,
   tagName: 'th',
-  attributeBindings: ['columnSpan:colspan', 'rowSpan:rowspan'],
+  attributeBindings: ['columnSpan:colspan', 'rowSpan:rowspan', 'tabindex:tabindex'],
   classNameBindings: ['isSortable', 'isResizable', 'isReorderable'],
 
   /**
@@ -60,6 +60,8 @@ export default BaseTableCell.extend({
   columnMeta: readOnly('api.columnMeta'),
 
   rowMeta: readOnly('api.rowMeta'),
+
+  tabindex: 0,
 
   /**
     Any sorts applied to the table.
@@ -113,6 +115,10 @@ export default BaseTableCell.extend({
     hammer.on('panend', this.panEndHandler.bind(this));
 
     this._hammer = hammer;
+  },
+
+  didRender() {
+    this.get('columnMeta').registerElement(this.element);
   },
 
   willDestroyElement() {

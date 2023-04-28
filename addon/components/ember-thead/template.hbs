@@ -1,4 +1,4 @@
-{{#each this.wrappedRows as |api|}}
+{{#each this.wrappedRows key="api.rowMeta.index" as |api|}}
   {{#if (has-block)}}
     {{yield (hash
       cells=api.cells
