@@ -103,8 +103,6 @@ export default BaseTableCell.extend({
   didInsertElement() {
     this._super(...arguments);
 
-    this.get('columnMeta').registerElement(this.element);
-
     let hammer = new Hammer(this.element);
 
     hammer.add(new Hammer.Press({ time: 0 }));
