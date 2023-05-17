@@ -64,7 +64,7 @@ columns: [
 ```
 
 `rows` could be a javascript array, ember array or any data structure that implements `length` and
-`objectAt(index)`. This flexibity gives application to avoid having all data at front but loads more
+`objectAt(index)`. This flexibility gives application to avoid having all data at front but loads more
 data as user scrolls. Each object in the `rows` data structure should contains all fields defined
 by all `valuePath` in `columns` array.
 
