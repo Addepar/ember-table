@@ -62,19 +62,18 @@ module.exports = function() {
           name: 'ember-lts-4.12',
           npm: {
             devDependencies: {
-              'ember-source': '~4.4.0',
+              'ember-source': '~4.12.0',
             },
           },
         },
-        // TEMPORARY DISABLE
-        // {
-        //   name: 'ember-release',
-        //   npm: {
-        //     devDependencies: {
-        //       'ember-source': urls[0],
-        //     },
-        //   },
-        // },
+        {
+          name: 'ember-release',
+          npm: {
+            devDependencies: {
+              'ember-source': urls[0],
+            },
+          },
+        },
         {
           name: 'ember-beta',
           npm: {
