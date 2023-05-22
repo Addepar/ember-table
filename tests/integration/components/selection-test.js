@@ -14,12 +14,12 @@ import { runInDebug } from '@ember/debug';
 
 let table = new TablePage({
   /**
-  * Validates that the given selected indexes correspond to selected rows.
-  * Throws an error if any index does not match the expected selection state.
-  *
-  * @param {...number} selectedIndexes The indexes that should be selected
-  * @returns {boolean} valid
-  */
+   * Validates that the given selected indexes correspond to selected rows.
+   * Throws an error if any index does not match the expected selection state.
+   *
+   * @param {...number} selectedIndexes The indexes that should be selected
+   * @returns {boolean} valid
+   */
   validateSelected(...selectedIndexes) {
     let seenIndexes = new Set();
 
@@ -38,7 +38,7 @@ let table = new TablePage({
     }
 
     return valid;
-  }
+  },
 });
 
 // Return an array filled with the indices for all the rendered rows of the table
