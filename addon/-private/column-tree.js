@@ -589,6 +589,7 @@ export default EmberObject.extend({
     this._super(...arguments);
 
     this.token = new Token();
+    this._root = null;
 
     this._sortColumnsByFixed = this.sortColumnsByFixed.bind(this);
     this._ensureWidthConstraint = this.ensureWidthConstraint.bind(this);
@@ -599,7 +600,10 @@ export default EmberObject.extend({
 
   destroy() {
     this.token.cancel();
-    get(this, 'root').destroy();
+
+    if (this._root) {
+      this._root.destroy();
+    }
 
     removeObserver(this, 'columns.@each.isFixed', this._sortColumnsByFixed);
     removeObserver(this, 'widthConstraint', this._ensureWidthConstraint);
@@ -608,9 +612,14 @@ export default EmberObject.extend({
   },
 
   root: computed('columns', function() {
+    if (this._root) {
+      this._root.destroy();
+    }
+
     let columns = get(this, 'columns');
 
-    return ColumnTreeNode.create({ column: { subcolumns: columns }, tree: this });
+    this._root = ColumnTreeNode.create({ column: { subcolumns: columns }, tree: this });
+    return this._root;
   }),
 
   rows: computed('root.{maxChildDepth,leaves.[]}', function() {
