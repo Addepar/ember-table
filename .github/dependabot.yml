@@ -1,0 +1,26 @@
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm" # See documentation for possible values
+    directory: "/" # Location of package manifests
+    versioning-strategy: lockfile-only
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "@Addepar/web-core"
+    open-pull-requests-limit: 4
+    labels:
+      - "dependencies"
+      
+  - package-ecosystem: "github-actions"
+    # Workflow files stored in the
+    # default location of `.github/workflows`
+    directory: "/.github"
+    schedule:
+      interval: "weekly"
+    reviewers:
+      - "@Addepar/web-core"
+    open-pull-requests-limit: 2
+    labels:
+      - "dependencies"
