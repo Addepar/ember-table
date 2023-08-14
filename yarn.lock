@@ -1441,9 +1441,9 @@
   integrity sha512-RbzJvlNzmRq5c3O09UipeuXno4tA1FE6ikOjxZK0tuxVv3412l64l5t1W5pj4+rJq9vpkm/kwiR07aZXnsKPxw==
 
 "@tsconfig/ember@^1.0.1":
-  version "1.0.1"
-  resolved "https://registry.npmjs.org/@tsconfig/ember/-/ember-1.0.1.tgz#d7556d81f108438c17e4030acb4e1be6b2974e88"
-  integrity sha512-aPzLw5BfQxsFPrh5fNDOK4SbSkp2q5fMlrKVeniVjMz1lAcyOh2eH5THkKKcBi1YN1/fbMdAWN/dKGW6lg2+8g==
+  version "1.1.0"
+  resolved "https://registry.npmjs.org/@tsconfig/ember/-/ember-1.1.0.tgz#43b50df65d3e1236306aa5857e2daa4a1298387e"
+  integrity sha512-VzIrPO7ZpnIEmU+dJe3ubEPhxUIyavwIh2vxg8rXrwSnB99hdVcq0ZFPQ4KRP0LrSNzaPI1QA2sATIPwnBYPQg==
 
 "@types/body-parser@*":
   version "1.19.2"
