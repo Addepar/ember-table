@@ -5918,9 +5918,9 @@ ember-cli-version-checker@^5.1.1, ember-cli-version-checker@^5.1.2:
     silent-error "^1.1.1"
 
 ember-cli@~3.28.0:
-  version "3.28.5"
-  resolved "https://registry.npmjs.org/ember-cli/-/ember-cli-3.28.5.tgz#9c91266e412f6d537b47a88e4b63a2b56db35483"
-  integrity sha512-Y/UdbUOTeKHGMCP3XtE5g14JUTYyeQTdjPvHuv11FFx5HQBtHqqWLY6U1ivMDukDkQ4i2v6TyaUcKVo4e8PtyQ==
+  version "3.28.6"
+  resolved "https://registry.npmjs.org/ember-cli/-/ember-cli-3.28.6.tgz#477a6a134501639d6cb03da6746158501c41efce"
+  integrity sha512-aGHIDXM5KujhU+tHyfp1X5bUp3yj47sIWI0zgybyIw6vv6ErAu/eKWWMSib5PF8cQDdXG9vttBcXnvQ4QBNIPQ==
   dependencies:
     "@babel/core" "^7.13.8"
     "@babel/plugin-transform-modules-amd" "^7.12.1"
