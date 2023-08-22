@@ -6,6 +6,17 @@ import EmberTableFooterPage from './-private/ember-table-footer';
 import EmberTableHeaderPage from './-private/ember-table-header';
 import EmberTableLoadingMorePage from './-private/ember-table-loading-more';
 
+function computedStyleInPixels(target, property) {
+  let stringValue = window.getComputedStyle(target)[property];
+  let numberValue = Number(stringValue.substring(0, stringValue.length - 2));
+  if (isNaN(numberValue)) {
+    throw new Error(
+      `computedStyleInPixels failed to convert the computed style property of '${property}' into a Number. Value was '${stringValue}'`
+    );
+  }
+  return numberValue;
+}
+
 /**
  * Ember Table page object. Use this page object and its nested header/body object to retrieve table
  * data and manipulate table in test.
@@ -61,6 +72,13 @@ export default PageObject.extend({
   },
 
   /**
+   * Retrieves the logical width of the table.
+   */
+  get logicalWidth() {
+    return computedStyleInPixels(findElement(this, 'table'), 'width');
+  },
+
+  /**
    * Returns the table container width.
    *
    * offsetWidth returns a rounded integer, and so can
@@ -70,6 +88,13 @@ export default PageObject.extend({
    */
   get containerWidth() {
     return findElement(this).offsetWidth;
+  },
+
+  /**
+   * Retrieves the logical width of the container.
+   */
+  get logicalContainerWidth() {
+    return computedStyleInPixels(findElement(this), 'width');
   },
 
   /**

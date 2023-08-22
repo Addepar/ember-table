@@ -171,17 +171,21 @@ module('Integration | headers | reorder', function() {
       let firstHeader = table.headers.objectAt(0);
       let secondHeader = table.headers.objectAt(1);
 
-      let originalHeaderWidth = firstHeader.width;
+      let originalHeaderWidth = firstHeader.logicalWidth;
 
       await firstHeader.resize(originalHeaderWidth + 30);
 
-      assert.equal(firstHeader.width, originalHeaderWidth + 30, 'header can be resized larger');
+      assert.equal(
+        firstHeader.logicalWidth,
+        originalHeaderWidth + 30,
+        'header can be resized larger'
+      );
 
       await table.headers.objectAt(0).reorderBy(1);
       assert.equal(table.headers.objectAt(0).text.trim(), 'B', 'First column is swapped forward');
       assert.equal(table.headers.objectAt(1).text.trim(), 'A', 'Second column is swapped backward');
 
-      assert.equal(secondHeader.width, originalHeaderWidth + 30, 'width was not reset');
+      assert.equal(secondHeader.logicalWidth, originalHeaderWidth + 30, 'width was not reset');
     });
 
     test('reordering can be disabled per column', async function(assert) {
