@@ -31,38 +31,50 @@ module('Integration | header | resize', function() {
     test('basic', async function(assert) {
       await generateTable(this);
 
-      let originalWidth = table.headers.objectAt(1).width;
+      let originalWidth = table.headers.objectAt(1).logicalWidth;
 
       await table.headers.objectAt(1).resize(originalWidth + 30);
-      assert.equal(table.headers.objectAt(1).width, originalWidth + 30, 'Can be resized larger');
+      assert.equal(
+        table.headers.objectAt(1).logicalWidth,
+        originalWidth + 30,
+        'Can be resized larger'
+      );
 
       await table.headers.objectAt(1).resize(originalWidth - 30);
-      assert.equal(table.headers.objectAt(1).width, originalWidth - 30, 'Can be resized smaller');
+      assert.equal(
+        table.headers.objectAt(1).logicalWidth,
+        originalWidth - 30,
+        'Can be resized smaller'
+      );
     });
 
     test('respects minWidth', async function(assert) {
       await generateTable(this, { columnOptions: { minWidth: 100, width: 100 } });
 
       await table.headers.objectAt(1).resize(30);
-      assert.equal(table.headers.objectAt(1).width, 100, 'Column size is updated');
+      assert.equal(table.headers.objectAt(1).logicalWidth, 100, 'Column size is updated');
     });
 
     test('respects maxWidth', async function(assert) {
       await generateTable(this, { columnOptions: { maxWidth: 100, width: 100 } });
 
       await table.headers.objectAt(1).resize(200);
-      assert.equal(table.headers.objectAt(1).width, 100, 'Column size is updated');
+      assert.equal(table.headers.objectAt(1).logicalWidth, 100, 'Column size is updated');
     });
 
     test('fluid mode', async function(assert) {
       await generateTable(this, { resizeMode: 'fluid' });
 
-      let originalWidth = table.headers.objectAt(1).width;
+      let originalWidth = table.headers.objectAt(1).logicalWidth;
       await table.headers.objectAt(1).resize(originalWidth + 30);
 
-      assert.equal(table.headers.objectAt(1).width, originalWidth + 30, 'Column size is updated');
       assert.equal(
-        table.headers.objectAt(2).width - originalWidth,
+        table.headers.objectAt(1).logicalWidth,
+        originalWidth + 30,
+        'Column size is updated'
+      );
+      assert.equal(
+        table.headers.objectAt(2).logicalWidth - originalWidth,
         -30,
         'Next column shrinks in fluid mode'
       );
@@ -76,7 +88,7 @@ module('Integration | header | resize', function() {
 
       await generateTable(this, { widthConstraint: 'eq-container' });
 
-      let originalWidth = table.headers.objectAt(1).width;
+      let originalWidth = table.headers.objectAt(1).logicalWidth;
       await table.headers.objectAt(1).resize(originalWidth + 30);
       assert.equal(calls.length, 1, 'resize called once');
       assert.equal(calls[0][0].name, 'B', 'The correct resized column ("B") is passed');
@@ -89,18 +101,18 @@ module('Integration | header | resize', function() {
 
       await generateTable(this, { columns });
 
-      let originalWidth = table.headers.objectAt(0).width;
+      let originalWidth = table.headers.objectAt(0).logicalWidth;
 
       await table.headers.objectAt(0).resize(originalWidth + 30);
       assert.equal(
-        table.headers.objectAt(0).width,
+        table.headers.objectAt(0).logicalWidth,
         originalWidth,
         'disabled column is not resized'
       );
 
       await table.headers.objectAt(1).resize(originalWidth + 30);
       assert.equal(
-        table.headers.objectAt(1).width,
+        table.headers.objectAt(1).logicalWidth,
         originalWidth + 30,
         'not disabled column can be resized'
       );
@@ -113,9 +125,9 @@ module('Integration | header | resize', function() {
 
       let firstHeader = table.headers.objectAt(0);
 
-      let originalWidth = firstHeader.width;
+      let originalWidth = firstHeader.logicalWidth;
       await firstHeader.resize(originalWidth + 30);
-      assert.equal(firstHeader.width, originalWidth + 30, 'Fixed column size is updated');
+      assert.equal(firstHeader.logicalWidth, originalWidth + 30, 'Fixed column size is updated');
     });
 
     test('fixed right column', async function(assert) {
@@ -124,9 +136,9 @@ module('Integration | header | resize', function() {
 
       let lastHeader = table.headers.objectAt(columnCount - 1);
 
-      let originalWidth = lastHeader.width;
+      let originalWidth = lastHeader.logicalWidth;
       await lastHeader.resize(130);
-      assert.equal(lastHeader.width, originalWidth + 30, 'Fixed column size is updated');
+      assert.equal(lastHeader.logicalWidth, originalWidth + 30, 'Fixed column size is updated');
     });
   });
 
@@ -137,28 +149,36 @@ module('Integration | header | resize', function() {
       let firstHeader = table.headers.findOne({ text: 'A' });
       let firstSubheader = table.headers.findOne({ text: 'A A' });
 
-      let originalHeaderWidth = firstHeader.width;
-      let originalSubheaderWidth = firstSubheader.width;
+      let originalHeaderWidth = firstHeader.logicalWidth;
+      let originalSubheaderWidth = firstSubheader.logicalWidth;
 
       await firstSubheader.resize(originalSubheaderWidth + 30);
 
       assert.equal(
-        firstSubheader.width,
+        firstSubheader.logicalWidth,
         originalSubheaderWidth + 30,
         'subheader can be resized larger'
       );
 
-      assert.equal(firstHeader.width, originalHeaderWidth + 30, 'header is resized with subheader');
+      assert.equal(
+        firstHeader.logicalWidth,
+        originalHeaderWidth + 30,
+        'header is resized with subheader'
+      );
 
       await firstSubheader.resize(originalSubheaderWidth - 30);
 
       assert.equal(
-        firstSubheader.width,
+        firstSubheader.logicalWidth,
         originalSubheaderWidth - 30,
         'subheader can be resized smaller'
       );
 
-      assert.equal(firstHeader.width, originalHeaderWidth - 30, 'header is resized with subheader');
+      assert.equal(
+        firstHeader.logicalWidth,
+        originalHeaderWidth - 30,
+        'header is resized with subheader'
+      );
     });
 
     test('headers with subheaders can be resized', async function(assert) {
@@ -168,25 +188,33 @@ module('Integration | header | resize', function() {
       let firstSubheader = table.headers.findOne({ text: 'A A' });
       let secondSubheader = table.headers.findOne({ text: 'A B' });
 
-      let originalHeaderWidth = firstHeader.width;
+      let originalHeaderWidth = firstHeader.logicalWidth;
 
       await firstHeader.resize(originalHeaderWidth + 30);
 
-      assert.equal(firstHeader.width, originalHeaderWidth + 30, 'header can be resized larger');
+      assert.equal(
+        firstHeader.logicalWidth,
+        originalHeaderWidth + 30,
+        'header can be resized larger'
+      );
 
       assert.equal(
-        firstSubheader.width + secondSubheader.width,
-        firstHeader.width,
+        firstSubheader.logicalWidth + secondSubheader.logicalWidth,
+        firstHeader.logicalWidth,
         'resize is distributed among subheaders'
       );
 
       await firstHeader.resize(originalHeaderWidth - 30);
 
-      assert.equal(firstHeader.width, originalHeaderWidth - 30, 'subheader can be resized larger');
+      assert.equal(
+        firstHeader.logicalWidth,
+        originalHeaderWidth - 30,
+        'subheader can be resized larger'
+      );
 
       assert.equal(
-        firstSubheader.width + secondSubheader.width,
-        firstHeader.width,
+        firstSubheader.logicalWidth + secondSubheader.logicalWidth,
+        firstHeader.logicalWidth,
         'resize is distributed among subheaders'
       );
     });
@@ -197,11 +225,15 @@ module('Integration | header | resize', function() {
       });
 
       let firstHeader = table.headers.findOne({ text: 'A' });
-      let originalHeaderWidth = firstHeader.width;
+      let originalHeaderWidth = firstHeader.logicalWidth;
 
       await firstHeader.resize(originalHeaderWidth - 100);
 
-      assert.equal(firstHeader.width, originalHeaderWidth, 'minWidth constraint is respected');
+      assert.equal(
+        firstHeader.logicalWidth,
+        originalHeaderWidth,
+        'minWidth constraint is respected'
+      );
     });
 
     test('resizing headers with subheaders respects maxWidth', async function(assert) {
@@ -210,11 +242,15 @@ module('Integration | header | resize', function() {
       });
 
       let firstHeader = table.headers.findOne({ text: 'A' });
-      let originalHeaderWidth = firstHeader.width;
+      let originalHeaderWidth = firstHeader.logicalWidth;
 
       await firstHeader.resize(originalHeaderWidth + 100);
 
-      assert.equal(firstHeader.width, originalHeaderWidth, 'maxWidth constraint is respected');
+      assert.equal(
+        firstHeader.logicalWidth,
+        originalHeaderWidth,
+        'maxWidth constraint is respected'
+      );
     });
   });
 });
