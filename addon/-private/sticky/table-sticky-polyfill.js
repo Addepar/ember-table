@@ -1,3 +1,5 @@
+import { getScale } from '../utils/element';
+
 /* global ResizeSensor */
 /* eslint-disable ember/no-observers */
 
@@ -171,7 +173,7 @@ class TableStickyPolyfill {
    */
   repositionStickyElements = () => {
     let table = this.element.parentNode;
-    let scale = table.offsetHeight / table.getBoundingClientRect().height;
+    let scale = getScale(table);
     let containerHeight = table.parentNode.offsetHeight;
 
     // exclude ResizeSensor divs

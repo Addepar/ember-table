@@ -65,6 +65,7 @@ export default PageObject.extend({
    * offsetWidth returns a rounded integer, and so can
    * result in unreliable tests.
    *
+   * @deprecated
    * @returns {number}
    */
   get width() {
@@ -73,9 +74,20 @@ export default PageObject.extend({
 
   /**
    * Retrieves the logical width of the table.
+   *
+   * @returns {number}
    */
   get logicalWidth() {
     return computedStyleInPixels(findElement(this, 'table'), 'width');
+  },
+
+  /**
+   * Retrieves the rendered width of the table.
+   *
+   * @returns {number}
+   */
+  get renderedWidth() {
+    return findElement(this, 'table').getBoundingClientRect().width;
   },
 
   /**
@@ -84,6 +96,7 @@ export default PageObject.extend({
    * offsetWidth returns a rounded integer, and so can
    * result in unreliable tests.
    *
+   * @deprecated
    * @returns {number}
    */
   get containerWidth() {
@@ -92,9 +105,20 @@ export default PageObject.extend({
 
   /**
    * Retrieves the logical width of the container.
+   *
+   * @returns {number}
    */
   get logicalContainerWidth() {
     return computedStyleInPixels(findElement(this), 'width');
+  },
+
+  /**
+   * Retrieves the rendered width of the container.
+   *
+   * @returns {number}
+   */
+  get renderedContainerWidth() {
+    return findElement(this).getBoundingClientRect().width;
   },
 
   /**

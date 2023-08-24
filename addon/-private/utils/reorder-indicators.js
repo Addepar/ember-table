@@ -1,4 +1,4 @@
-import { getScale, getOuterClientRect, getInnerClientRect } from './element';
+import { getOuterClientRect, getInnerClientRect } from './element';
 
 function createElement(mainClass, dimensions) {
   let element = document.createElement('div');
@@ -13,25 +13,24 @@ function createElement(mainClass, dimensions) {
 }
 
 class ReorderIndicator {
-  constructor(container, element, bounds, mainClass, child) {
+  constructor(container, scale, element, bounds, mainClass, child) {
     this.container = container;
     this.element = element;
     this.bounds = bounds;
     this.child = child;
-    this.scale = getScale(container);
 
     let scrollTop = this.container.scrollTop;
     let scrollLeft = this.container.scrollLeft;
 
-    let { top: containerTop, left: containerLeft } = getInnerClientRect(this.container);
+    let { top: containerTop, left: containerLeft } = getInnerClientRect(this.container, scale);
 
     let { top: elementTop, left: elementLeft, width: elementWidth } = getOuterClientRect(
       this.element
     );
 
-    let top = (elementTop - containerTop) * this.scale + scrollTop;
-    let left = (elementLeft - containerLeft) * this.scale + scrollLeft;
-    let width = elementWidth * this.scale;
+    let top = (elementTop - containerTop) * scale + scrollTop;
+    let left = (elementLeft - containerLeft) * scale + scrollLeft;
+    let width = elementWidth * scale;
 
     this.originLeft = left;
     this.indicatorElement = createElement(mainClass, { top, left, width });
@@ -81,16 +80,15 @@ class ReorderIndicator {
 }
 
 export class MainIndicator extends ReorderIndicator {
-  constructor(container, element, bounds) {
-    // let width = getOuterClientRect(element).width * getScale(element);
+  constructor(container, scale, element, bounds) {
     let child = element.cloneNode(true);
 
-    super(container, element, bounds, 'et-reorder-main-indicator', child);
+    super(container, scale, element, bounds, 'et-reorder-main-indicator', child);
   }
 }
 
 export class DropIndicator extends ReorderIndicator {
-  constructor(container, element, bounds) {
-    super(container, element, bounds, 'et-reorder-drop-indicator');
+  constructor(container, scale, element, bounds) {
+    super(container, scale, element, bounds, 'et-reorder-drop-indicator');
   }
 }
