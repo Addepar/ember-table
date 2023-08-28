@@ -2640,10 +2640,10 @@ atob@^2.1.2:
   resolved "https://registry.npmjs.org/atob/-/atob-2.1.2.tgz#6d9517eb9e030d2436666651e86bd9f6f13533c9"
   integrity sha512-Wm6ukoaOGJi/73p/cl2GvLjTI5JM1k/O14isD73YML8StrH/7/lRFgmg8nICZgD3bZZvjwCGxtMOD3wWNAu8cg==
 
-axe-core@^4.3.5:
-  version "4.4.1"
-  resolved "https://registry.npmjs.org/axe-core/-/axe-core-4.4.1.tgz#7dbdc25989298f9ad006645cd396782443757413"
-  integrity sha512-gd1kmb21kwNuWr6BQz8fv6GNECPBnUasepcoLbekws23NVBLODdsClRZ+bQ8+9Uomf3Sm3+Vwn0oYG9NvwnJCw==
+axe-core@^4.6.3:
+  version "4.7.2"
+  resolved "https://registry.npmjs.org/axe-core/-/axe-core-4.7.2.tgz#040a7342b20765cb18bb50b628394c21bccc17a0"
+  integrity sha512-zIURGIS1E1Q4pcrMjp+nnEh+16G56eG/MUllJH8yEvw7asDo7Ac9uhC9KIH5jzpITueEZolfYglnCGIuSBz39g==
 
 babel-code-frame@^6.22.0, babel-code-frame@^6.26.0:
   version "6.26.0"
@@ -5489,17 +5489,17 @@ elliptic@^6.5.3:
     minimalistic-crypto-utils "^1.0.1"
 
 ember-a11y-testing@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.npmjs.org/ember-a11y-testing/-/ember-a11y-testing-5.0.0.tgz#710cc55281c8964bef569a1762c1767ea2816a64"
-  integrity sha512-X0pvz3altyeSWBsRozNIzhWKY2IQxrkHrtjjz7C3V/nqgTSY52exQ/eASXHQj2lVANx0Po/oXACwU23s2k9xmA==
+  version "5.2.1"
+  resolved "https://registry.npmjs.org/ember-a11y-testing/-/ember-a11y-testing-5.2.1.tgz#abe1cabd5f692a883df91e280b9731bc4b8bf520"
+  integrity sha512-gYIqSwCw43hRxQtwauln0hChRHyelkVTtmWVYgyvkX0+YKJXz2x+IGmC1MkO62SHOjz4A9wXyNSH13jwOIbJ9A==
   dependencies:
     "@ember/test-waiters" "^2.4.3 || ^3.0.0"
     "@scalvert/ember-setup-middleware-reporter" "^0.1.1"
-    axe-core "^4.3.5"
+    axe-core "^4.6.3"
     body-parser "^1.19.1"
     broccoli-persistent-filter "^3.1.2"
     ember-auto-import "^2.2.4"
-    ember-cli-babel "^7.26.8"
+    ember-cli-babel "^7.26.11"
     ember-cli-typescript "^4.2.1"
     ember-cli-version-checker "^5.1.2"
     ember-destroyable-polyfill "^2.0.1"
@@ -5619,7 +5619,7 @@ ember-cli-babel@^6.6.0, ember-cli-babel@^6.8.2, ember-cli-babel@^6.9.2:
     ember-cli-version-checker "^2.1.2"
     semver "^5.5.0"
 
-ember-cli-babel@^7.0.0, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.20.5, ember-cli-babel@^7.22.1, ember-cli-babel@^7.23.0, ember-cli-babel@^7.24.0, ember-cli-babel@^7.26.11, ember-cli-babel@^7.26.4, ember-cli-babel@^7.26.6, ember-cli-babel@^7.26.8, ember-cli-babel@^7.7.3:
+ember-cli-babel@^7.0.0, ember-cli-babel@^7.12.0, ember-cli-babel@^7.13.0, ember-cli-babel@^7.13.2, ember-cli-babel@^7.20.5, ember-cli-babel@^7.22.1, ember-cli-babel@^7.23.0, ember-cli-babel@^7.24.0, ember-cli-babel@^7.26.11, ember-cli-babel@^7.26.4, ember-cli-babel@^7.26.6, ember-cli-babel@^7.7.3:
   version "7.26.11"
   resolved "https://registry.npmjs.org/ember-cli-babel/-/ember-cli-babel-7.26.11.tgz#50da0fe4dcd99aada499843940fec75076249a9f"
   integrity sha512-JJYeYjiz/JTn34q7F5DSOjkkZqy8qwFOOxXfE6pe9yEJqWGu4qErKxlz8I22JoVEQ/aBUO+OcKTpmctvykM9YA==
