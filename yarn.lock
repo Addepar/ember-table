@@ -1664,9 +1664,9 @@
     "@types/ember__object" "*"
 
 "@types/ember__component@*", "@types/ember__component@^4.0.10":
-  version "4.0.19"
-  resolved "https://registry.npmjs.org/@types/ember__component/-/ember__component-4.0.19.tgz#aa03913a2a09f9bdb597fd2c06f72a0a7922610f"
-  integrity sha512-BrdaubCMGivKvMgcW8GzouWsrrz56nEQMr7iR7hUYfyS47u4fJrB8zzoYAIGhwWth0l8stEqfUMo5U7kIOuy1w==
+  version "4.0.20"
+  resolved "https://registry.npmjs.org/@types/ember__component/-/ember__component-4.0.20.tgz#6be6cb8038a72c5ed029e19736824ccd5a2641c1"
+  integrity sha512-40S/fcY2KQkQivP2GihcF/ZgwW6JO/ZiZANMz97ZTy3R/t85qBmp+/MugUqng4PxjaNBEEOuvpCMqDmin5Jl3g==
   dependencies:
     "@types/ember" "*"
     "@types/ember__object" "*"
