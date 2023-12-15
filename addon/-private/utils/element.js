@@ -30,6 +30,10 @@ export function closest(el, selector) {
   return null;
 }
 
+function parseComputedStyleHeightToPixels(computedHeightStyleValue) {
+  return Number(computedHeightStyleValue.substring(0, computedHeightStyleValue.length - 2));
+}
+
 /*
  * Calculate the scale of difference between an element's logical height
  * (the offsetHeight or getComputedStyle height) compared to its rendered
@@ -61,18 +65,31 @@ export function getScale(element) {
   }
 
   let computedHeightStyleValue = window.getComputedStyle(element).height;
-  let computedHeightInPixels = Number(
-    computedHeightStyleValue.substring(0, computedHeightStyleValue.length - 2)
-  );
+  let computedHeightInPixels = parseComputedStyleHeightToPixels(computedHeightStyleValue);
 
   let offsetHeight = element.offsetHeight;
 
   if (isNaN(computedHeightInPixels)) {
     computedHeightInPixels = offsetHeight;
-  } else if (Math.abs(computedHeightInPixels - offsetHeight) >= 1) {
-    throw new Error(
-      "EmberTable's getScale() utility can only work on elements where height as derived from getComputedStyle is reliable. Usually this means padding is present on the target element."
-    );
+  } else {
+    let [min, max] = [computedHeightInPixels, offsetHeight].sort();
+    let difference = max - min;
+
+    /*
+     * This assertion once used a static comparison of the two
+     * values to make sure they were within 1 number of each
+     * other.
+     *
+     * Chrome has a bug when height is large and caused by many rows
+     * aggregating into that height. This can happen for heights as
+     * low as 100877. To work around this, use a different metric for
+     * comparing heights over 100000.
+     */
+    if ((max <= 100000 && difference >= 1) || (max > 100000 && (max - min) / max > 0.00001)) {
+      throw new Error(
+        "EmberTable's getScale() utility can only work on elements where height as derived from getComputedStyle is reliable. This error flags that offsetHeight and getComputedStyle disagree on the target element dimensions. This can be caused by padding, thead elements, and other cases."
+      );
+    }
   }
 
   if (computedHeightInPixels === renderedHeight) {
