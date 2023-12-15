@@ -61,7 +61,8 @@ jobs:
 
       - name: Use Volta
         uses: volta-cli/action@v4
-- name: Stash yarn.lock for cache key
+
+      - name: Stash yarn.lock for cache key
         run: cp yarn.lock __cache-key
 
       - name: Node Modules Cache
