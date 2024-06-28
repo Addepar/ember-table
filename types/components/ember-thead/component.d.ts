@@ -118,7 +118,7 @@ export interface EmberTheadArgs<RowType, ColumnType> {
   /**
    * Sets a constraint on the table's size, such that it must be greater than, less than, or equal to the size of the containing element.
    */
-  widthConstraint?: 'none' | 'eq-container' | 'gte-container' | 'lte-container';
+  widthConstraint?: 'none' | 'eq-container' | 'eq-container-slack' | 'gte-container' | 'gte-container-slack' | 'lte-container';
 }
 
 export interface EmberTheadSignature<
