@@ -104,7 +104,7 @@ export interface EmberTbodyArgs<RowType extends EmberTableRow> {
   /**
    * When `true`, this option causes selecting all of a node's children to also select the node itself.
    */
-  selectingChildrenSelectsParents?: boolean;
+  selectingChildrenSelectsParent?: boolean;
 
   /**
    * The currently selected rows.
