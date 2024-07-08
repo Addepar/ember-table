@@ -81,6 +81,14 @@ itself.
   {{demo.snippet label='component.js' name='docs-example-selection-modes.js'}}
 {{/docs-demo}}
 
+## Customizing Row Selection
+
+By default, Ember Table renders an input of type `checkbox` alongside an empty `span` element that can be styled to look like a checkbox. If you want to customize the checkbox however, you can pass a named block `:select` to the `EmberTd` component. This block will receive `rowMeta` and the `onSelectionToggled` action as yielded arguments:
+
+{{#docs-demo as |demo|}}
+  {{demo.snippet name='docs-example-customizing-row-selection.hbs'}}
+{{/docs-demo}}
+
 ## Aborting a Selection
 
 Row selection follows a <a href="https://embermap.com/topics/component-side-effects/data-down-actions-up">DDAU</a> pattern, whereby the `onSelect` action handler supplied to Ember Table has control over which rows become selected. To ignore a user selection, it suffices to simply do nothing in the action handler.
