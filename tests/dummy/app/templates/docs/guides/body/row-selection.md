@@ -89,6 +89,14 @@ By default, Ember Table renders an input of type `checkbox` alongside an empty `
   {{demo.snippet name='docs-example-customizing-row-selection.hbs'}}
 {{/docs-demo}}
 
+## Customizing Row Collapse
+
+Similarly, you can customize the row collapse behavior by passing a named block `:collapse` to the `EmberTd` component. This block will receive `rowMeta` and the `onCollapseToggled` action as yielded arguments:
+
+{{#docs-demo as |demo|}}
+  {{demo.snippet name='docs-example-customizing-row-collapse.hbs'}}
+{{/docs-demo}}
+
 ## Aborting a Selection
 
 Row selection follows a <a href="https://embermap.com/topics/component-side-effects/data-down-actions-up">DDAU</a> pattern, whereby the `onSelect` action handler supplied to Ember Table has control over which rows become selected. To ignore a user selection, it suffices to simply do nothing in the action handler.
