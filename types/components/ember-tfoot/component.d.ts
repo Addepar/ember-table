@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { EmberTableColumn,  EmberTableRow } from 'ember-table';
+import { EmberTableColumn,  EmberTableRow, TableRowMeta } from 'ember-table';
 import EmberTrComponent from 'ember-table/components/ember-tr/component';
 
 export interface EmberTfootSignature<
@@ -14,7 +14,7 @@ export interface EmberTfootSignature<
     default: [
       {
         row: typeof EmberTrComponent<RowType, ColumnType>;
-        rowMeta: unknown;
+        rowMeta: TableRowMeta;
         rowValue: RowType;
       }
     ];

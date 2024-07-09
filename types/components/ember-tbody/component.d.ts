@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { EmberTableColumn, EmberTableRow } from 'ember-table';
+import { EmberTableColumn, EmberTableRow, TableRowMeta } from 'ember-table';
 import EmberTrComponent from 'ember-table/components/ember-tr/component';
 
 type SelectionMode =
@@ -135,7 +135,7 @@ export interface EmberTbodySignature<
     default: [
       {
         row: typeof EmberTrComponent<RowType, ColumnType>;
-        rowMeta: unknown;
+        rowMeta: TableRowMeta;
         rowValue: RowType;
       }
     ];

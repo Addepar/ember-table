@@ -18,3 +18,15 @@ export interface EmberTableSort {
   isAscending: boolean;
   valuePath: string;
 }
+
+export interface TableRowMeta {
+  isCollapsed: boolean;
+  isSelected: boolean;
+  isGroupSelected: boolean;
+  canCollapse: boolean;
+  depth: number;
+  first: unknown | null;
+  last: unknown | null;
+  next: unknown | null;
+  prev: unknown | null;
+}
