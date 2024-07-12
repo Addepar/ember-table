@@ -1,5 +1,13 @@
 ![npm version](https://img.shields.io/npm/v/ember-table)
 
+# Changes by Lighthouse
+
+This fork of ember-table is used by Lighthouse where the following changes have been made:
+
+| PR | Short Description |
+| --- | --- |
+| ... | Add ability to customise the row selection and row collapsing/expanding |
+
 # Ember Table
 
 An addon to support large data set and a number of features around table. Ember Table can
