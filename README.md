@@ -6,7 +6,7 @@ This fork of ember-table is used by Lighthouse where the following changes have 
 
 | PR | Short Description |
 | --- | --- |
-| ... | Add ability to customise the row selection and row collapsing/expanding |
+| https://github.com/OTA-Insight/ember-table/pull/1/ | Add ability to customise the row selection and row collapsing/expanding |
 
 # Ember Table
 
