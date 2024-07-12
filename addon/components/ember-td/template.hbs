@@ -1,38 +1,30 @@
 {{#if this.isFirstColumn}}
   <div class="et-cell-container">
     {{#if this.canSelect}}
-      {{#if (has-block "select")}}
-        {{yield this.rowMeta (action "onSelectionToggled") to="select"}}
-      {{else}}
-        <span
-          class="et-toggle-select {{unless this.shouldShowCheckbox 'et-speech-only'}}"
-          data-test-select-row-container
-        >
-          <EmberTableSimpleCheckbox
-            @checked={{this.rowMeta.isGroupSelected}}
-            @onClick={{action "onSelectionToggled"}}
-            @ariaLabel="Select row"
-            @dataTestSelectRow={{this.isTesting}}
-          />
-          <span></span>
-        </span>
-      {{/if}}
+      <span
+        class="et-toggle-select {{unless this.shouldShowCheckbox 'et-speech-only'}}"
+        data-test-select-row-container
+      >
+        <EmberTableSimpleCheckbox
+          @checked={{this.rowMeta.isGroupSelected}}
+          @onClick={{action "onSelectionToggled"}}
+          @ariaLabel="Select row"
+          @dataTestSelectRow={{this.isTesting}}
+        />
+        <span></span>
+      </span>
     {{/if}}
 
     {{#if this.canCollapse}}
-      {{#if (has-block "collapse")}}
-        {{yield this.rowMeta (action "onCollapseToggled") to="collapse"}}
-      {{else}}
-        <span class="et-toggle-collapse et-depth-indent {{this.depthClass}}">
-          <EmberTableSimpleCheckbox
-            @checked={{this.rowMeta.isCollapsed}}
-            @onChange={{action "onCollapseToggled"}}
-            @ariaLabel="Collapse row"
-            @dataTestCollapseRow={{this.isTesting}}
-          />
-          <span></span>
-        </span>
-      {{/if}}
+      <span class="et-toggle-collapse et-depth-indent {{this.depthClass}}">
+        <EmberTableSimpleCheckbox
+          @checked={{this.rowMeta.isCollapsed}}
+          @onChange={{action "onCollapseToggled"}}
+          @ariaLabel="Collapse row"
+          @dataTestCollapseRow={{this.isTesting}}
+        />
+        <span></span>
+      </span>
     {{else}}
       <div class="et-depth-indent et-depth-placeholder {{this.depthClass}}"></div>
     {{/if}}
