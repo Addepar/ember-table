@@ -1,5 +1,5 @@
 import Component from '@ember/component';
-import { EmberTableColumn,  EmberTableRow, TableRowMeta } from 'ember-table';
+import { EmberTableColumn,  EmberTableRow, TableColumnMeta, TableRowMeta } from 'ember-table';
 
 export interface EmberTdSignature<RowType, ColumnType> {
   Element: HTMLTableCellElement;
@@ -20,7 +20,7 @@ export interface EmberTdSignature<RowType, ColumnType> {
       columnValue: ColumnType,
       rowValue: RowType,
       cellMeta: unknown,
-      columnMeta: unknown,
+      columnMeta: TableColumnMeta,
       rowMeta: TableRowMeta,
     ];
   };
