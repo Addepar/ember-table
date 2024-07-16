@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+import { TableColumnMeta } from 'ember-table';
 
 export interface EmberThSignature<ColumnType> {
   Element: HTMLTableCellElement;
@@ -11,7 +12,7 @@ export interface EmberThSignature<ColumnType> {
   Blocks: {
     default: [
       columnValue: ColumnType,
-      columnMeta: unknown,
+      columnMeta: TableColumnMeta,
     ];
   };
 }

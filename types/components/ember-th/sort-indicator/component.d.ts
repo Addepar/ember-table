@@ -1,9 +1,10 @@
 import Component from '@ember/component';
+import { TableColumnMeta } from 'ember-table';
 
 export interface SortIndicatorSignature {
   Element: HTMLTableCellElement;
   Args: {
-    columnMeta: unknown;
+    columnMeta: TableColumnMeta;
   };
 }
 
