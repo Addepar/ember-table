@@ -23,6 +23,7 @@ export interface TableRowMeta {
   isCollapsed: boolean;
   isSelected: boolean;
   isGroupSelected: boolean;
+  isGroupIndeterminate: boolean;
   canCollapse: boolean;
   depth: number;
   first: unknown | null;

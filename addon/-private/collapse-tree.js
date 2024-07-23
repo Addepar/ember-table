@@ -83,6 +83,32 @@ export const TableRowMeta = EmberObject.extend({
     }
   ),
 
+  isGroupIndeterminate: computed(
+    '_tree.{selection.[],selectionMatchFunction}',
+    '_parentMeta.isSelected',
+    function() {
+      let rowValue = get(this, '_rowValue');
+      let selection = get(this, '_tree.selection');
+      let selectionMatchFunction = get(this, '_tree.selectionMatchFunction');
+
+      if (!rowValue.children || !isArray(rowValue.children)) {
+        return false;
+      }
+
+      if (!selection || !isArray(selection)) {
+        return false;
+      }
+
+      if (selectionMatchFunction) {
+        return rowValue.children.some(child =>
+          selection.some(item => selectionMatchFunction(item, child))
+        );
+      }
+
+      return rowValue.children.some(child => selection.includes(child));
+    }
+  ),
+
   canCollapse: computed(
     '_tree.{enableTree,enableCollapse}',
     '_rowValue.{children.[],disableCollapse}',
