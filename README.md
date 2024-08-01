@@ -4,9 +4,10 @@
 
 This fork of ember-table is used by Lighthouse where the following changes have been made:
 
-| PR | Short Description |
-| --- | --- |
-| https://github.com/OTA-Insight/ember-table/pull/1/ | Add ability to customise the row selection and row collapsing/expanding |
+| PR                                                 | Short Description                                                                                          |
+| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| https://github.com/OTA-Insight/ember-table/pull/1/ | Add ability to customise the row selection and row collapsing/expanding                                    |
+| https://github.com/OTA-Insight/ember-table/pull/2  | Prevent table-sticky-polyfill from crashing on destroy when a tfoot is being rendered after initial render |
 
 # Ember Table
 
@@ -15,12 +16,12 @@ handle over 100,000 rows without any rendering or performance issues.
 
 Ember Table versions each support a range of browsers and framework versions:
 
-| Ember Table Version | Ember Versions Supported     | Browser Support |
-| ------------------- | ---------------------------- | --------------- |
+| Ember Table Version | Ember Versions Supported     | Browser Support                                                           |
+| ------------------- | ---------------------------- | ------------------------------------------------------------------------- |
 | 5.x                 | 3.12 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 4.x                 | 2.18 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 3.x                 | 2.8 - 3.28 (last 3.x version | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
-| 2.x                 | 1.11 - 3.8 (or around 3.8)   | IE11+ and newer browsers |
+| 2.x                 | 1.11 - 3.8 (or around 3.8)   | IE11+ and newer browsers                                                  |
 
 ## Install
 
