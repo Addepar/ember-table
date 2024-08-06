@@ -70,6 +70,7 @@
     "ember-faker": "^1.5.0",
     "ember-load-initializers": "^2.0.0",
     "ember-math-helpers": "~2.11.3",
+    "ember-named-blocks-polyfill": "^0.2.5",
     "ember-qunit": "^5.1.5",
     "ember-radio-button": "^2.0.0",
     "ember-resolver": "^8.0.2",
