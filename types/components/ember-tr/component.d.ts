@@ -12,12 +12,12 @@ export interface EmberTrSignature<
     /**
      * An action that is called when a row is clicked. Will be called with the row and the event.
      */
-    onClick?: ((row: RowType, event: Event) => void);
+    onClick?: (event: { event: Event, rowValue: RowType, rowMeta: TableRowMeta }) => void;
 
     /**
      * An action that is called when a row is double clicked. Will be called with the row and the event.
      */
-    onDoubleClick?: ((row: RowType, event: Event) => void);
+    onDoubleClick?: (event: { event: Event, rowValue: RowType, rowMeta: TableRowMeta }) => void;
   };
   Blocks: {
     default: [
