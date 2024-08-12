@@ -399,5 +399,32 @@ module('Integration | basic', function() {
       document.querySelector('#ember-testing-container').style.height = '600px';
       this.set('showComponent', false);
     });
+
+    test('Destroying table with footerRows after initial render does not trigger error', async function(assert) {
+      assert.expect(0);
+
+      this.set('columns', generateColumns(4));
+      this.set('rows', generateRows(10));
+
+      this.set('showComponent', true);
+
+      await render(hbs`
+        {{#if this.showComponent}}
+          <div id="container" style="height: 500px;">
+            <EmberTable as |t|>
+              <EmberThead @api={{t}} @columns={{this.columns}} />
+              <EmberTbody @api={{t}} @rows={{this.rows}} @estimateHeigh={{13}} />
+              {{#if this.footerRows}}
+                <EmberTfoot @api={{t}} @rows={{this.footerRows}} />
+              {{/if}}
+            </EmberTable>
+          </div>
+        {{/if}}
+      `);
+
+      this.set('footerRows', generateRows(1));
+
+      this.set('showComponent', false);
+    });
   });
 });
