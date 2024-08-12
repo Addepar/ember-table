@@ -4,10 +4,9 @@
 
 This fork of ember-table is used by Lighthouse where the following changes have been made:
 
-| PR                                                 | Short Description                                                                                          |
-| -------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
-| https://github.com/OTA-Insight/ember-table/pull/1/ | Add ability to customise the row selection and row collapsing/expanding                                    |
-| https://github.com/OTA-Insight/ember-table/pull/2  | Prevent table-sticky-polyfill from crashing on destroy when a tfoot is being rendered after initial render |
+| PR                                                 | Short Description                                                       |
+| -------------------------------------------------- | ----------------------------------------------------------------------- |
+| https://github.com/OTA-Insight/ember-table/pull/1/ | Add ability to customise the row selection and row collapsing/expanding |
 
 # Ember Table
 
