@@ -1,24 +1,5 @@
 {{#if this.isFirstColumn}}
   <div class="et-cell-container">
-    {{#if this.canSelect}}
-      {{#if (has-block "select")}}
-        {{yield this.rowMeta (action "onSelectionToggled") to="select"}}
-      {{else}}
-        <span
-          class="et-toggle-select {{unless this.shouldShowCheckbox 'et-speech-only'}}"
-          data-test-select-row-container
-        >
-          <EmberTableSimpleCheckbox
-            @checked={{this.rowMeta.isGroupSelected}}
-            @onClick={{action "onSelectionToggled"}}
-            @ariaLabel="Select row"
-            @dataTestSelectRow={{this.isTesting}}
-          />
-          <span></span>
-        </span>
-      {{/if}}
-    {{/if}}
-
     {{#if this.canCollapse}}
       {{#if (has-block "collapse")}}
         {{yield this.rowMeta (action "onCollapseToggled") to="collapse"}}
@@ -37,6 +18,24 @@
       <div class="et-depth-indent et-depth-placeholder {{this.depthClass}}"></div>
     {{/if}}
 
+    {{#if this.canSelect}}
+      {{#if (has-block "select")}}
+        {{yield this.rowMeta (action "onSelectionToggled") to="select"}}
+      {{else}}
+        <span
+          class="et-toggle-select {{unless this.shouldShowCheckbox 'et-speech-only'}}"
+          data-test-select-row-container
+        >
+          <EmberTableSimpleCheckbox
+            @checked={{this.rowMeta.isGroupSelected}}
+            @onClick={{action "onSelectionToggled"}}
+            @ariaLabel="Select row"
+            @dataTestSelectRow={{this.isTesting}}
+          />
+          <span></span>
+        </span>
+      {{/if}}
+    {{/if}}
     <div class="et-cell-content">
       {{#if (has-block)}}
         {{yield this.cellValue this.columnValue this.rowValue this.cellMeta this.columnMeta this.rowMeta this.rowsCount}}
