@@ -1,0 +1,26 @@
+{{! BEGIN-SNIPPET docs-example-customizing-row-selection.hbs }}
+<EmberTable as |t|>
+  <t.head @columns={{this.columns}} />
+
+  <t.body
+    @rows={{this.rows}}
+    @onSelect={{action this.selectRows}}
+    @selection={{this.selection}}
+    as |b|
+  >
+    <b.row as |r|>
+      <r.cell>
+        <:select as |rowMeta onSelectionToggled|>
+          <YourCustomCheckboxComponent
+            @checked={{rowMeta.isGroupSelected}}
+            @onClick={{onSelectionToggled}}
+          />
+        </:select>
+        <:default as |value|>
+          {{value}}
+        </:default>
+      </r.cell>
+    </b.row>
+  </t.body>
+</EmberTable>
+{{! END-SNIPPET }}
