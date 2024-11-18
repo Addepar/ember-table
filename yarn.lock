@@ -5828,9 +5828,9 @@ ember-auto-import@^1.11.3:
     webpack "^4.43.0"
 
 ember-auto-import@^2.2.4, ember-auto-import@^2.4.0, ember-auto-import@^2.4.2:
-  version "2.9.0"
-  resolved "https://registry.npmjs.org/ember-auto-import/-/ember-auto-import-2.9.0.tgz#ce03790ace1441e5474d5efcc10f112b6d1fb887"
-  integrity sha512-iXPq2rJcJaqD+m5Lk1rYAVl7Db2MvT1MMjKJfJbNT3ps4xI2H+3njwwfT6pOKZIUVB/rfeyNPANqbnw3F68Qxg==
+  version "2.10.0"
+  resolved "https://registry.npmjs.org/ember-auto-import/-/ember-auto-import-2.10.0.tgz#2a29b82335eba4375d115570cbe836666ed2e7cc"
+  integrity sha512-bcBFDYVTFHyqyq8BNvsj6UO3pE6Uqou/cNmee0WaqBgZ+1nQqFz0UE26usrtnFAT+YaFZSkqF2H36QW84k0/cg==
   dependencies:
     "@babel/core" "^7.16.7"
     "@babel/plugin-proposal-class-properties" "^7.16.7"
