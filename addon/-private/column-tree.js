@@ -1192,67 +1192,26 @@ export default EmberObject.extend({
     let containerWidth = this.getContainerWidth();
     let leaves = get(this, 'root.leaves').filter(node => !get(node, 'isSlack'));
 
-    // First check if expanding all columns to maxWidth would exceed container width
-    let maxPossibleWidth = leaves.reduce((sum, node) => {
-      return sum + get(node, 'maxWidth');
-    }, 0);
+    // Calculate total min and max widths
+    let totalMinWidth = leaves.reduce((sum, node) => sum + get(node, 'minWidth'), 0);
 
-    // If maxPossibleWidth exceeds container, calculate a scaling factor
-    if (maxPossibleWidth > containerWidth) {
-      // Calculate what percentage of the max width we can actually use
-      let scaleFactor = containerWidth / maxPossibleWidth;
-
+    // If we don't even have space for minWidths, set all to minWidth
+    if (containerWidth <= totalMinWidth) {
       leaves.forEach(node => {
-        let minWidth = get(node, 'minWidth');
-        let maxWidth = get(node, 'maxWidth');
-
-        // Scale the maxWidth, but ensure it doesn't go below minWidth
-        let targetWidth = Math.max(
-          minWidth,
-          Math.floor(maxWidth * scaleFactor)
-        );
-
-        set(node, 'width', targetWidth);
+        set(node, 'width', get(node, 'minWidth'));
       });
-    } else {
-      // If we have enough space, proceed with regular expansion
-      let currentWidth = leaves.reduce((sum, node) => sum + get(node, 'width'), 0);
-      let availableSpace = containerWidth - currentWidth;
-
-      if (availableSpace <= 0) {
-        return;
-      }
-
-      while (availableSpace > 0) {
-        let expandableColumns = leaves.filter(node => {
-          let width = get(node, 'width');
-          let maxWidth = get(node, 'maxWidth');
-          return width < maxWidth;
-        });
-
-        if (expandableColumns.length === 0) {
-          break;
-        }
-
-        let spacePerColumn = Math.floor(availableSpace / expandableColumns.length);
-        let spaceUsed = 0;
-
-        expandableColumns.forEach(node => {
-          let width = get(node, 'width');
-          let maxWidth = get(node, 'maxWidth');
-          let newWidth = Math.min(width + spacePerColumn, maxWidth);
-          let delta = newWidth - width;
-
-          set(node, 'width', newWidth);
-          spaceUsed += delta;
-        });
-
-        if (spaceUsed === 0) {
-          break;
-        }
-
-        availableSpace -= spaceUsed;
-      }
+      return;
     }
+
+    // Calculate equal width based on available space
+    let equalWidth = Math.floor(containerWidth / leaves.length);
+
+    // Set each column to the equal width, respecting min/max constraints
+    leaves.forEach(node => {
+      let minWidth = get(node, 'minWidth');
+      let maxWidth = get(node, 'maxWidth');
+      let width = Math.min(Math.max(equalWidth, minWidth), maxWidth);
+      set(node, 'width', width);
+    });
   },
 });
