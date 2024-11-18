@@ -763,7 +763,6 @@ export default EmberObject.extend({
       return;
     }
 
-    let widthConstraint = get(this, 'widthConstraint');
     let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
 
     // For gte-container-slack, first try to expand columns to their maxWidth
