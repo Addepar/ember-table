@@ -763,8 +763,15 @@ export default EmberObject.extend({
       return;
     }
 
+    let widthConstraint = get(this, 'widthConstraint');
     let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
 
+    // For gte-container-slack, first try to expand columns to their maxWidth
+    if (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK) {
+      this.expandColumnsToMax();
+    }
+
+    // Then handle slack column if needed
     if (isSlackModeEnabled) {
       this.updateSlackColumn();
     }
@@ -1176,5 +1183,76 @@ export default EmberObject.extend({
       },
       this.token
     );
+  },
+
+  /**
+   * Expands columns to their maxWidth when possible, while respecting container width
+   */
+  expandColumnsToMax() {
+    let containerWidth = this.getContainerWidth();
+    let leaves = get(this, 'root.leaves').filter(node => !get(node, 'isSlack'));
+
+    // First check if expanding all columns to maxWidth would exceed container width
+    let maxPossibleWidth = leaves.reduce((sum, node) => {
+      return sum + get(node, 'maxWidth');
+    }, 0);
+
+    // If maxPossibleWidth exceeds container, calculate a scaling factor
+    if (maxPossibleWidth > containerWidth) {
+      // Calculate what percentage of the max width we can actually use
+      let scaleFactor = containerWidth / maxPossibleWidth;
+
+      leaves.forEach(node => {
+        let minWidth = get(node, 'minWidth');
+        let maxWidth = get(node, 'maxWidth');
+
+        // Scale the maxWidth, but ensure it doesn't go below minWidth
+        let targetWidth = Math.max(
+          minWidth,
+          Math.floor(maxWidth * scaleFactor)
+        );
+
+        set(node, 'width', targetWidth);
+      });
+    } else {
+      // If we have enough space, proceed with regular expansion
+      let currentWidth = leaves.reduce((sum, node) => sum + get(node, 'width'), 0);
+      let availableSpace = containerWidth - currentWidth;
+
+      if (availableSpace <= 0) {
+        return;
+      }
+
+      while (availableSpace > 0) {
+        let expandableColumns = leaves.filter(node => {
+          let width = get(node, 'width');
+          let maxWidth = get(node, 'maxWidth');
+          return width < maxWidth;
+        });
+
+        if (expandableColumns.length === 0) {
+          break;
+        }
+
+        let spacePerColumn = Math.floor(availableSpace / expandableColumns.length);
+        let spaceUsed = 0;
+
+        expandableColumns.forEach(node => {
+          let width = get(node, 'width');
+          let maxWidth = get(node, 'maxWidth');
+          let newWidth = Math.min(width + spacePerColumn, maxWidth);
+          let delta = newWidth - width;
+
+          set(node, 'width', newWidth);
+          spaceUsed += delta;
+        });
+
+        if (spaceUsed === 0) {
+          break;
+        }
+
+        availableSpace -= spaceUsed;
+      }
+    }
   },
 });
