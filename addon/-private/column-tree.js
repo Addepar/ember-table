@@ -771,7 +771,6 @@ export default EmberObject.extend({
       this.expandColumnsToMax();
     }
 
-    // Then handle slack column if needed
     if (isSlackModeEnabled) {
       this.updateSlackColumn();
     }
