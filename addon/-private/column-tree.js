@@ -1191,26 +1191,40 @@ export default EmberObject.extend({
     let containerWidth = this.getContainerWidth();
     let leaves = get(this, 'root.leaves').filter(node => !get(node, 'isSlack'));
 
-    // Calculate total min and max widths
-    let totalMinWidth = leaves.reduce((sum, node) => sum + get(node, 'minWidth'), 0);
+    // Calculate total min width and count columns without explicit width
+    let flexibleColumns = leaves.filter(node => !get(node, 'column.width'));
+    let totalFixedWidth = leaves.reduce((sum, node) => {
+      let columnWidth = get(node, 'column.width');
+      return sum + (columnWidth || 0);
+    }, 0);
 
-    // If we don't even have space for minWidths, set all to minWidth
-    if (containerWidth <= totalMinWidth) {
-      leaves.forEach(node => {
+    // If we don't even have space for fixed widths and minWidths, set all flexible columns to minWidth
+    let remainingWidth = containerWidth - totalFixedWidth;
+
+    if (remainingWidth <= 0) {
+      flexibleColumns.forEach(node => {
         set(node, 'width', get(node, 'minWidth'));
       });
       return;
     }
 
-    // Calculate equal width based on available space
-    let equalWidth = Math.floor(containerWidth / leaves.length);
+    // Calculate equal width for flexible columns based on remaining space
+    let equalWidth = Math.floor(remainingWidth / flexibleColumns.length);
 
-    // Set each column to the equal width, respecting min/max constraints
+    // Set widths respecting constraints
     leaves.forEach(node => {
-      let minWidth = get(node, 'minWidth');
-      let maxWidth = get(node, 'maxWidth');
-      let width = Math.min(Math.max(equalWidth, minWidth), maxWidth);
-      set(node, 'width', width);
+      let columnWidth = get(node, 'column.width');
+
+      if (columnWidth) {
+        // Keep explicitly set widths
+        set(node, 'width', columnWidth);
+      } else {
+        // For flexible columns, use equal distribution with min/max constraints
+        let minWidth = get(node, 'minWidth');
+        let maxWidth = get(node, 'maxWidth');
+        let width = Math.min(Math.max(equalWidth, minWidth), maxWidth);
+        set(node, 'width', width);
+      }
     });
   },
 });
