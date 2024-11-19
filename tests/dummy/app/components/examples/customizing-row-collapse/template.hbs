@@ -1,0 +1,26 @@
+{{! BEGIN-SNIPPET docs-example-customizing-row-collapse.hbs }}
+<EmberTable as |t|>
+  <t.head @columns={{this.columns}} />
+
+  <t.body
+    @rows={{this.rows}}
+    @onSelect={{action this.selectRows}}
+    @selection={{this.selection}}
+    as |b|
+  >
+    <b.row as |r|>
+      <r.cell>
+        <:collapse as |rowMeta onCollapseToggled|>
+          <YourCustomButtonComponent
+            @icon={{if rowMeta.isCollapsed "expand" "collapse"}}
+            @onClick={{onCollapseToggled}}
+          />
+        </:collapse>
+        <:default as |value|>
+          {{value}}
+        </:default>
+      </r.cell>
+    </b.row>
+  </t.body>
+</EmberTable>
+{{! END-SNIPPET }}
