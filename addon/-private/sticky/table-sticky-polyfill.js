@@ -210,6 +210,6 @@ export function setupTableStickyPolyfill(element) {
 }
 
 export function teardownTableStickyPolyfill(element) {
-  TABLE_POLYFILL_MAP.get(element).destroy();
+  TABLE_POLYFILL_MAP.get(element)?.destroy();
   TABLE_POLYFILL_MAP.delete(element);
 }
