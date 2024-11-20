@@ -78,7 +78,7 @@ export interface EmberTbodyArgs<RowType extends EmberTableRow> {
    * An action that is called when the row selection of the table changes.
    * Will be called with either an array or individual row, depending on the checkboxSelectionMode.
    */
-  onSelect?: (rows: RowType[] | RowType, options: { abort: boolean }) => void;
+  onSelect?: (rows: RowType[] | RowType, options: { abort: () => void }) => void;
 
   /**
    * A flag that tells the table to render all of its rows at once.
