@@ -1184,40 +1184,79 @@ export default EmberObject.extend({
     );
   },
 
-  /**
+ /**
    * Expands columns to their maxWidth when possible, while respecting container width
    */
   expandColumnsToMax() {
     let containerWidth = this.getContainerWidth();
     let leaves = get(this, 'root.leaves').filter(node => !get(node, 'isSlack'));
 
-    // Calculate total min width and count columns without explicit width
+    // Calculate total fixed width from columns with explicit width
     let flexibleColumns = leaves.filter(node => !get(node, 'column.width'));
     let totalFixedWidth = leaves.reduce((sum, node) => {
       let columnWidth = get(node, 'column.width');
       return sum + (columnWidth || 0);
     }, 0);
 
-    // If we don't even have space for fixed widths and minWidths, set all flexible columns to minWidth
     let remainingWidth = containerWidth - totalFixedWidth;
 
-    if (remainingWidth <= 0) {
+    // First pass: ensure all columns get at least their minWidth
+    let totalMinWidth = 0;
+    flexibleColumns.forEach(node => {
+      let minWidth = get(node, 'minWidth');
+      totalMinWidth += minWidth;
+    });
+
+    // If we don't have space for all minWidths, set all columns to minWidth
+    if (remainingWidth <= totalMinWidth) {
       flexibleColumns.forEach(node => {
         set(node, 'width', get(node, 'minWidth'));
       });
       return;
     }
 
-    // Calculate equal width for flexible columns based on remaining space
-    let equalWidth = Math.floor(remainingWidth / flexibleColumns.length);
+    // Keep track of columns that still need width allocated
+    let columnsNeedingWidth = [...flexibleColumns];
+    let loopCount = 0;
 
-    // Set widths respecting constraints
-    flexibleColumns.forEach(node => {
-      // For flexible columns, use equal distribution with min/max constraints
-      let minWidth = get(node, 'minWidth');
-      let maxWidth = get(node, 'maxWidth');
-      let width = Math.min(Math.max(equalWidth, minWidth), maxWidth);
-      set(node, 'width', width);
-    });
+    // Continue redistributing width until all columns are satisfied or we hit guard
+    while (columnsNeedingWidth.length > 0 && loopCount < LOOP_COUNT_GUARD) {
+      let availableWidth = remainingWidth;
+      columnsNeedingWidth.forEach(node => {
+        availableWidth -= get(node, 'minWidth');
+      });
+
+      let equalExtraWidth = Math.floor(availableWidth / columnsNeedingWidth.length);
+      let columnsToRemove = [];
+
+      // Try to set each column to minWidth + equalExtraWidth
+      columnsNeedingWidth.forEach(node => {
+        let minWidth = get(node, 'minWidth');
+        let maxWidth = get(node, 'maxWidth');
+        let targetWidth = minWidth + equalExtraWidth;
+        let width = Math.min(Math.max(targetWidth, minWidth), maxWidth);
+
+        // If column hits a constraint, remove it from future calculations
+        if (width !== targetWidth) {
+          columnsToRemove.push(node);
+          remainingWidth -= width;
+        }
+
+        set(node, 'width', width);
+      });
+
+      // If no columns hit constraints, we're done
+      if (columnsToRemove.length === 0) {
+        break;
+      }
+
+      // Remove columns that hit constraints and continue redistributing
+      columnsToRemove.forEach(node => {
+        let index = columnsNeedingWidth.indexOf(node);
+        columnsNeedingWidth.splice(index, 1);
+      });
+
+      loopCount++;
+    }
   },
 });
