@@ -1212,19 +1212,12 @@ export default EmberObject.extend({
     let equalWidth = Math.floor(remainingWidth / flexibleColumns.length);
 
     // Set widths respecting constraints
-    leaves.forEach(node => {
-      let columnWidth = get(node, 'column.width');
-
-      if (columnWidth) {
-        // Keep explicitly set widths
-        set(node, 'width', columnWidth);
-      } else {
-        // For flexible columns, use equal distribution with min/max constraints
-        let minWidth = get(node, 'minWidth');
-        let maxWidth = get(node, 'maxWidth');
-        let width = Math.min(Math.max(equalWidth, minWidth), maxWidth);
-        set(node, 'width', width);
-      }
+    flexibleColumns.forEach(node => {
+      // For flexible columns, use equal distribution with min/max constraints
+      let minWidth = get(node, 'minWidth');
+      let maxWidth = get(node, 'maxWidth');
+      let width = Math.min(Math.max(equalWidth, minWidth), maxWidth);
+      set(node, 'width', width);
     });
   },
 });
