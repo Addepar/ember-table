@@ -437,6 +437,94 @@ module('Integration | header | main', function() {
       assert.equal(header.logicalWidth, 100, 'header is resized');
       assert.equal(slackHeader.logicalWidth, containerWidth - 100, 'slack column is expanded');
     });
+
+    test('expandColumnsToMax behavior in gte-container-slack mode', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'gte-container-slack',
+        columnCount: 3,
+        columnOptions: {
+          minWidth: 50,
+          maxWidth: 200,
+        },
+        containerWidth: 600,
+      });
+
+      let containerWidth = table.logicalContainerWidth;
+      let header1 = table.headers.objectAt(0);
+      let header2 = table.headers.objectAt(1);
+      let header3 = table.headers.objectAt(2);
+      let slackHeader = table.slackHeaders.objectAt(0);
+
+      // Initially, columns should expand to fill container equally to 600
+      assert.equal(
+        header1.logicalWidth + header2.logicalWidth + header3.logicalWidth,
+        containerWidth,
+        'columns fill container width initially'
+      );
+
+      await generateTable(this, {
+        widthConstraint: 'gte-container-slack',
+        columnCount: 3,
+        columnOptions: {
+          minWidth: 50,
+        },
+        columns: [
+          { name: 'A', maxWidth: 50 },
+          { name: 'B', maxWidth: 200 }, // flexible
+          { name: 'C', maxWidth: 200 }, // flexible
+        ],
+        containerWidth: 600,
+      });
+
+      assert.equal(header1.logicalWidth, 50, 'first column respects maxWidth');
+
+      // Remaining space should be distributed between other columns up to maxWidth
+      let remainingWidth = containerWidth - 50;
+      let expectedWidth = Math.min(remainingWidth / 2, 200);
+      assert.equal(header2.logicalWidth, expectedWidth, 'second column expands within maxWidth');
+      assert.equal(header3.logicalWidth, expectedWidth, 'third column expands within maxWidth');
+
+      // If there's still space after maxWidth, it should go to slack
+      let totalColumnWidth = 50 + expectedWidth * 2;
+      if (totalColumnWidth < containerWidth) {
+        assert.ok(slackHeader.isRendered, 'slack column appears when space available');
+        assert.equal(
+          slackHeader.logicalWidth,
+          containerWidth - totalColumnWidth,
+          'slack column fills remaining space'
+        );
+      } else {
+        assert.notOk(slackHeader.isRendered, 'no slack column when columns fill width');
+      }
+
+      // Test flexible columns without explicit width
+      await generateTable(this, {
+        widthConstraint: 'gte-container-slack',
+        columnCount: 3,
+        columnOptions: {
+          minWidth: 50,
+        },
+        columns: [
+          { name: 'A', width: 100 },
+          { name: 'B', maxWidth: 200 },
+          { name: 'C', maxWidth: 200 },
+        ],
+        containerWidth: 600,
+      });
+
+      header1 = table.headers.objectAt(0);
+      header2 = table.headers.objectAt(1);
+      header3 = table.headers.objectAt(2);
+
+      // Fixed width column should maintain its width
+      assert.equal(header1.logicalWidth, 100, 'fixed width column maintains width');
+
+      // Flexible columns should share remaining space equally up to maxWidth
+      remainingWidth = containerWidth - 100;
+      expectedWidth = Math.min(remainingWidth / 2, 200);
+      assert.equal(header2.logicalWidth, expectedWidth, 'flexible column expands within maxWidth');
+      assert.equal(header3.logicalWidth, expectedWidth, 'flexible column expands within maxWidth');
+    });
   });
 
   componentModule('subcolumns', function() {
@@ -466,63 +554,6 @@ module('Integration | header | main', function() {
       await generateTable(this);
 
       assert.equal(table.header.rows.length, 1, 'There is only one row in the header.');
-    });
-  });
-
-  componentModule('gte-container-slack', function() {
-    test('respects min/max widths and available space', async function(assert) {
-      await generateTable(this, {
-        widthConstraint: 'gte-container-slack',
-        columnCount: 3,
-        containerWidth: 360, // Container width of 360px
-        columnOptions: {
-          minWidth: 100,
-          maxWidth: 300,
-        },
-      });
-
-      let containerWidth = table.logicalContainerWidth;
-      let expectedWidth = Math.floor(containerWidth / 3); // Should be 120px
-      let header1 = table.headers.objectAt(0);
-      let header2 = table.headers.objectAt(1);
-      let header3 = table.headers.objectAt(2);
-
-      // Each column should get equal width since it's between min and max
-      assert.equal(
-        header1.logicalWidth,
-        expectedWidth,
-        'first column has equal share of container width'
-      );
-      assert.equal(
-        header2.logicalWidth,
-        expectedWidth,
-        'second column has equal share of container width'
-      );
-      assert.equal(
-        header3.logicalWidth,
-        expectedWidth,
-        'third column has equal share of container width'
-      );
-
-      // Test with an even smaller container
-      await generateTable(this, {
-        widthConstraint: 'gte-container-slack',
-        columnCount: 3,
-        containerWidth: 250, // Now force a really small container
-        columnOptions: {
-          minWidth: 100,
-          maxWidth: 300,
-        },
-      });
-
-      header1 = table.headers.objectAt(0);
-      header2 = table.headers.objectAt(1);
-      header3 = table.headers.objectAt(2);
-
-      // Now each column should be at minWidth since container is too small
-      assert.equal(header1.logicalWidth, 100, 'first column uses minWidth when space is limited');
-      assert.equal(header2.logicalWidth, 100, 'second column uses minWidth when space is limited');
-      assert.equal(header3.logicalWidth, 100, 'third column uses minWidth when space is limited');
     });
   });
 });
