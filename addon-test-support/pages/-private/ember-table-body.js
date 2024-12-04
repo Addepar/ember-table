@@ -75,6 +75,7 @@ export default PageObject.extend({
     checkbox: {
       scope: '[data-test-select-row]',
       isChecked: property('checked'),
+      isIndeterminate: property('indeterminate'),
 
       async clickWith(options) {
         await click(findElement(this), options);
@@ -97,6 +98,8 @@ export default PageObject.extend({
     toggleCollapse: alias('collapse.click'),
 
     isSelected: hasClass('is-selected'),
+
+    isGroupIndeterminate: hasClass('is-group-indeterminate'),
 
     /**
       Helper function to click with options like the meta key and ctrl key set
