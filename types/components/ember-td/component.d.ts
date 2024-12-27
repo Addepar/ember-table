@@ -23,6 +23,14 @@ export interface EmberTdSignature<RowType, ColumnType> {
       columnMeta: TableColumnMeta,
       rowMeta: TableRowMeta,
     ];
+    select?: [
+      rowMeta: unknown,
+      onSelectionToggled: () => void,
+    ];
+    collapse?: [
+      rowMeta: unknown,
+      onCollapseToggled: () => void,
+    ];
   };
 }
 
