@@ -52,12 +52,16 @@
     "@addepar/style-toolbox": "~0.8.1",
     "@ember/optional-features": "^2.0.0",
     "@ember/test-helpers": "^2.8.1",
+    "@embroider/compat": "^3.4.8",
+    "@embroider/core": "^3.4.8",
     "@embroider/test-setup": "^4.0.0",
+    "@embroider/webpack": "^4.0.0",
+    "@glimmer/component": "^2.0.0",
     "@tsconfig/ember": "^1.0.1",
     "@types/ember__component": "^4.0.10",
     "babel-eslint": "^10.0.1",
     "broccoli-asset-rev": "^3.0.0",
-    "ember-a11y-testing": "^5.0.0",
+    "ember-a11y-testing": "^5.2.1",
     "ember-auto-import": "^2.4.2",
     "ember-cli": "~3.28.0",
     "ember-cli-dependency-checker": "^3.2.0",
@@ -101,6 +105,7 @@
   },
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
+    "@ember/test-waiters": "^3.0.2",
     "prettier": "1.18.2"
   },
   "typesVersions": {
