@@ -51,7 +51,7 @@
     "@addepar/sass-lint-config": "^2.0.1",
     "@addepar/style-toolbox": "~0.8.1",
     "@ember/optional-features": "^2.0.0",
-    "@ember/string": "^4.0.0",
+    "@ember/string": "^3.0.0",
     "@ember/test-helpers": "^2.8.1",
     "@embroider/compat": "^3.4.8",
     "@embroider/core": "^3.4.8",
