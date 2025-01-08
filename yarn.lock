@@ -1069,6 +1069,11 @@
     mkdirp "^1.0.4"
     silent-error "^1.1.1"
 
+"@ember/string@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/@ember/string/-/string-4.0.0.tgz#24fe5cda227c9e6634e6e0b550944a3a13437878"
+  integrity sha512-IMVyVE72twuAMSYcHzWSgtgYTtzlHlKSGW8vEbztnnmkU6uo7kVHmiqSN9R4RkBhzvh0VD4G76Eph+55t3iNIA==
+
 "@ember/test-helpers@^2.8.1":
   version "2.9.4"
   resolved "https://registry.npmjs.org/@ember/test-helpers/-/test-helpers-2.9.4.tgz#985022e9ba05cfc918bcf08b77cbb355f85b723e"
