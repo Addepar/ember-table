@@ -1218,6 +1218,14 @@
     semver "^7.3.5"
     typescript-memoize "^1.0.1"
 
+"@embroider/test-setup@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.npmjs.org/@embroider/test-setup/-/test-setup-4.0.0.tgz#080dd40314a53cc6f6fcffed41cd24ee0cb48b3d"
+  integrity sha512-1S3Ebk0CEh3XDqD93AWSwQZBCk+oGv03gtkaGgdgyXGIR7jrVyDgEnEuslN/hJ0cuU8TqhiXrzHMw7bJwIGhWw==
+  dependencies:
+    lodash "^4.17.21"
+    resolve "^1.20.0"
+
 "@embroider/util@^1.9.0":
   version "1.12.0"
   resolved "https://registry.npmjs.org/@embroider/util/-/util-1.12.0.tgz#4b7828650b55f8498f1e78bb63e27e77835e926f"

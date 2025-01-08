@@ -44,6 +44,8 @@ jobs:
       matrix:
         ember-version:
           [
+            embroider-safe,
+            embroider-optimized,
             ember-lts-3.12,
             ember-lts-3.20,
             ember-lts-3.24,
