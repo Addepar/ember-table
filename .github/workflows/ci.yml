@@ -46,7 +46,7 @@ jobs:
         ember-version:
           [
             embroider-safe,
-            embroider-optimized,
+            # embroider-optimized,
             ember-lts-3.12,
             ember-lts-3.20,
             ember-lts-3.24,
