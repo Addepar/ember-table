@@ -54,7 +54,7 @@
     "@ember/string": "^3.0.0",
     "@ember/test-helpers": "^2.8.1",
     "@embroider/test-setup": "^4.0.0",
-    "@glimmer/component": "^2.0.0",
+    "@glimmer/component": "^1.1.2",
     "@tsconfig/ember": "^1.0.1",
     "@types/ember__component": "^4.0.10",
     "babel-eslint": "^10.0.1",
