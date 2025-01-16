@@ -240,6 +240,9 @@ We use [`release-it`](https://github.com/release-it/release-it).
 To create a new release, run `yarn run release`. To do a dry-run: `yarn run release --dry-run`.
 The tool will prompt you to select the new release version.
 
+**You must be a member of the @Addepar/web-core team on GitHub to bypass master
+branch protection.**
+
 ### Generating documentation.
 
 This library is documented using Ember Addon Docs. v0.6.3+ of that library
