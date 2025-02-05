@@ -17,7 +17,7 @@
     "docs:deploy": "ember try:one ember-default-docs --- ember deploy production",
     "lint": "npm-run-all --aggregate-output --continue-on-error --parallel lint:*",
     "lint:files": "ember adde-lint --file-names",
-    "lint:js": "ember adde-lint --javascript",
+    "lint:js": "eslint .",
     "lint:sass": "ember adde-lint --sass",
     "release": "release-it",
     "start": "ember serve",
