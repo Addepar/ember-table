@@ -7,6 +7,7 @@
       >
         <EmberTableSimpleCheckbox
           @checked={{this.rowMeta.isGroupSelected}}
+          @indeterminate={{this.rowMeta.isGroupIndeterminate}}
           @onClick={{action "onSelectionToggled"}}
           @ariaLabel="Select row"
           @dataTestSelectRow={{this.isTesting}}
