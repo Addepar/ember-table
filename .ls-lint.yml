@@ -1,0 +1,20 @@
+# Docs on ls-lint: https://ls-lint.org/
+# The linter can be run locally by `npx ls-lint [files]`
+# Pass `--debug` flag to see the list of all files/dirs that are linted
+ls:
+  .js: kebab-case
+  .d.ts: kebab-case
+  .ts: kebab-case
+  .html: kebab-case
+  .md: kebab-case | screamingsnakecase
+  .css: kebab-case
+  .scss: kebab-case
+  .dir: kebab-case
+
+ignore:
+  - .git
+  - node_modules
+  - dist
+  - ./.*
+  - yarn.lock
+  - yarn-error.log
