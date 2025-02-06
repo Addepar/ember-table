@@ -47,7 +47,6 @@
     "hammerjs": "^2.0.8"
   },
   "devDependencies": {
-    "@addepar/ember-toolbox": "^0.3.2",
     "@addepar/eslint-config": "^4.0.2",
     "@addepar/prettier-config": "^1.0.0",
     "@addepar/sass-lint-config": "^2.0.1",
@@ -92,6 +91,7 @@
     "qunit": "^2.19.1",
     "release-it": "^15.5.0",
     "sass": "^1.26.10",
+    "sass-lint": "^1.13.1",
     "typescript": "^4.8.4",
     "webpack": "^5.0.0"
   },
