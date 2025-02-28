@@ -175,6 +175,8 @@ export default BaseTableCell.extend({
       newSortings.push({ valuePath, isAscending: false });
     } else if (existingSorting.isAscending === false) {
       newSortings.push({ valuePath, isAscending: true });
+    } else {
+      newSortings.push({ valuePath });
     }
 
     this.get('api').sendUpdateSort(newSortings);
