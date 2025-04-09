@@ -6,7 +6,7 @@ import { readOnly } from '@ember/object/computed';
 import { closest } from '../../-private/utils/element';
 
 import layout from './template';
-import { get } from '@ember/object';
+import { get, action } from '@ember/object';
 
 const COLUMN_INACTIVE = 0;
 const COLUMN_RESIZING = 1;
@@ -128,11 +128,9 @@ export default BaseTableCell.extend({
     this._super(...arguments);
   },
 
-  actions: {
-    sendDropdownAction(...args) {
-      this.onDropdownAction?.(...args);
-    },
-  },
+  sendDropdownAction: action(function(...args) {
+    this.onDropdownAction?.(...args);
+  }),
 
   click(event) {
     let isSortable = this.get('isSortable');

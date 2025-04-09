@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
+import { computed, action } from '@ember/object';
 import { generateRows, generateColumns } from 'dummy/utils/generators';
 
 export default Controller.extend({
@@ -26,12 +26,10 @@ export default Controller.extend({
     return columns;
   }),
 
-  actions: {
-    onSelect(selection) {
-      this.set('selection', selection);
-    },
-    onUpdateSorts(sorts) {
-      this.set('sorts', sorts);
-    },
-  },
+  onSelect: action(function(selection) {
+    this.set('selection', selection);
+  }),
+  onUpdateSorts: action(function(sorts) {
+    this.set('sorts', sorts);
+  }),
 });

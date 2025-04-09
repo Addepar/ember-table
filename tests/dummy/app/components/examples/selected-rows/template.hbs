@@ -5,7 +5,7 @@
 
     <t.body
       @rows={{this.rowWithChildren}}
-      @onSelect={{action (mut preselection)}}
+      @onSelect={{fn (mut this.preselection)}}
       @selection={{this.preselection}}
     />
   </EmberTable>

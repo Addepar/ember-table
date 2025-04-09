@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { A as emberA } from '@ember/array';
-import { get, set } from '@ember/object';
+import { get, set, action } from '@ember/object';
 
 import { generateRows } from 'dummy/utils/generators';
 import { computed } from '@ember/object';
@@ -64,13 +64,11 @@ export default Controller.extend({
   }),
   // END-SNIPPET
 
-  actions: {
-    toggleFixed(column) {
-      if (get(column, 'isFixed')) {
-        set(column, 'isFixed', false);
-      } else {
-        set(column, 'isFixed', 'left');
-      }
-    },
-  },
+  toggleFixed: action(function(column) {
+    if (get(column, 'isFixed')) {
+      set(column, 'isFixed', false);
+    } else {
+      set(column, 'isFixed', 'left');
+    }
+  }),
 });

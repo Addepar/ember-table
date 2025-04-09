@@ -37,7 +37,7 @@ module('[Unit] ember-th', function(hooks) {
       <EmberThead @api={{t}}
         @columns={{this.columns}}
         @sorts={{this.sorts}}
-        @onUpdateSorts={{action this.onUpdateSorts}} as |h|
+        @onUpdateSorts={{this.onUpdateSorts}} as |h|
       >
         <EmberTr @api={{h}} as |r|>
           <EmberTh @api={{r}} as |column|>

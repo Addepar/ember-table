@@ -15,7 +15,7 @@ or `ctrl`.
           @columns={{this.columns}}
           @sorts={{this.sorts}}
 
-          @onUpdateSorts={{action (mut this.sorts)}}
+          @onUpdateSorts={{fn (mut this.sorts)}}
 
           @widthConstraint='gte-container'
           @fillMode='first-column'
@@ -111,9 +111,9 @@ This demo shows that in action:
       <EmberTable as |t|>
         <t.head
           @columns={{this.columns}}
-          @sorts={{sorts}}
+          @sorts={{this.sorts}}
 
-          @onUpdateSorts={{action "twoStateSorting"}}
+          @onUpdateSorts={{this.twoStateSorting}}
 
           @widthConstraint='gte-container'
           @fillMode='first-column'

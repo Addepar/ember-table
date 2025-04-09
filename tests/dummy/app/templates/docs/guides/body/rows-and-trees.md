@@ -51,7 +51,7 @@ the table body.
     {{! BEGIN-SNIPPET docs-example-tree-rows.hbs }}
     <div class="demo-options">
       <label>
-        {{input type="checkbox" checked=treeEnabled}}
+        {{input type="checkbox" checked=this.treeEnabled}}
         Enable Tree
       </label>
     </div>
@@ -90,7 +90,7 @@ If you want to disable collapsing at a row level, you can pass
     {{! BEGIN-SNIPPET docs-example-rows-with-collapse.hbs }}
     <div class="demo-options">
       <label>
-        {{input type="checkbox" checked=collapseEnabled}}
+        {{input type="checkbox" checked=this.collapseEnabled}}
         Enable Collapse
       </label>
     </div>

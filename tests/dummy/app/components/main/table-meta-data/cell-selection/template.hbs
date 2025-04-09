@@ -27,7 +27,7 @@
 
               as |cell column row cellMeta columnMeta rowMeta|
             >
-              <div onclick={{action "setSelected" cellMeta columnMeta rowMeta}} class="cell-content">
+              <div onclick={{fn this.setSelected cellMeta columnMeta rowMeta}} class="cell-content">
                 {{cell}}
               </div>
             </r.cell>

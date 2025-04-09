@@ -70,6 +70,22 @@ module.exports = function() {
           },
         },
         {
+          name: 'ember-lts-5.4',
+          npm: {
+            devDependencies: {
+              'ember-source': '~5.4.0',
+            },
+          },
+        },
+        {
+          name: 'ember-lts-5.12',
+          npm: {
+            devDependencies: {
+              'ember-source': '~5.12.0',
+            },
+          },
+        },
+        {
           name: 'ember-release',
           npm: {
             devDependencies: {
@@ -118,6 +134,9 @@ module.exports = function() {
               'ember-cli-deploy-build': '^1.1.1',
               'ember-cli-deploy-git': '^1.3.3',
               'ember-cli-deploy-git-ci': '^1.0.1',
+            },
+            resolutions: {
+              '@handlebars/parser': '~2.1.0',
             },
           },
         },
