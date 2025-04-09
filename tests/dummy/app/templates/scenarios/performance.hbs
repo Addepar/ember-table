@@ -1,12 +1,12 @@
 <div class="demo-container fixed-width">
   <EmberTable as |t|>
-    <EmberThead @api={{t}} @columns={{this.columns}} @sorts={{this.sorts}} @onUpdateSorts={{action "onUpdateSorts"}} as |h|>
+    <EmberThead @api={{t}} @columns={{this.columns}} @sorts={{this.sorts}} @onUpdateSorts={{this.onUpdateSorts}} as |h|>
       <EmberTr @api={{h}} as |r|>
         <EmberTh @api={{r}} />
       </EmberTr>
     </EmberThead>
 
-    <EmberTbody @api={{t}} @rows={{this.rows}} @selection={{this.selection}} @onSelect={{action "onSelect"}} as |b|>
+    <EmberTbody @api={{t}} @rows={{this.rows}} @selection={{this.selection}} @onSelect={{this.onSelect}} as |b|>
       <EmberTr @api={{b}} as |r|>
         <EmberTd @api={{r}} as |value column row cellMeta columnMeta|>
           {{value}}

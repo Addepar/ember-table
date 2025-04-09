@@ -28,16 +28,16 @@ const fullTable = hbs`
         @sorts={{this.sorts}}
         @sortEmptyLast={{this.sortEmptyLast}}
         @widthConstraint={{this.widthConstraint}}
-        @onUpdateSorts={{action this.onUpdateSorts}}
-        @onReorder={{action this.onReorder}}
-        @onResize={{action this.onResize}}
+        @onUpdateSorts={{this.onUpdateSorts}}
+        @onReorder={{this.onReorder}}
+        @onResize={{this.onResize}}
 
         as |h|
       >
         <EmberTr @api={{h}} as |r|>
           <EmberTh
             @api={{r}}
-            @onContextMenu={{action this.onHeaderCellContextMenu}}
+            @onContextMenu={{this.onHeaderCellContextMenu}}
           />
         </EmberTr>
       </EmberThead>
@@ -52,7 +52,7 @@ const fullTable = hbs`
         @key={{this.key}}
         @bufferSize={{this.bufferSize}}
         @idForFirstItem={{this.idForFirstItem}}
-        @onSelect={{action this.onSelect}}
+        @onSelect={{this.onSelect}}
         @selectingChildrenSelectsParent={{this.selectingChildrenSelectsParent}}
         @checkboxSelectionMode={{this.checkboxSelectionMode}}
         @rowSelectionMode={{this.rowSelectionMode}}
@@ -63,15 +63,15 @@ const fullTable = hbs`
       >
         {{#component this.rowComponent
           api=b
-          onClick=(action this.onRowClick)
-          onDoubleClick=(action this.onRowDoubleClick)
+          onClick=(fn this.onRowClick)
+          onDoubleClick=(fn this.onRowDoubleClick)
 
           as |r|
         }}
           <EmberTd
             @api={{r}}
-            @onClick={{action this.onCellClick}}
-            @onDoubleClick={{action this.onCellDoubleClick}}
+            @onClick={{this.onCellClick}}
+            @onDoubleClick={{this.onCellDoubleClick}}
             as |value|
           >
             {{value}}

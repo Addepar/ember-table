@@ -1,5 +1,5 @@
 import Controller from '@ember/controller';
-import { computed } from '@ember/object';
+import { computed, action } from '@ember/object';
 import faker from 'faker';
 import { getRandomInt } from 'dummy/utils/generators';
 
@@ -77,31 +77,29 @@ export default Controller.extend({
   }),
 
   // BEGIN-SNIPPET docs-example-2-state-sortings.js
-  actions: {
-    twoStateSorting(sorts) {
-      if (sorts.length > 1) {
-        // multi-column sort, default behavior
-        this.set('sorts', sorts);
-        return;
-      }
-
-      let hasExistingSort = this.sorts && this.sorts.length;
-      let isDefaultSort = !sorts.length;
-
-      if (hasExistingSort && isDefaultSort) {
-        // override empty sorts with reversed previous sort
-        let newSorts = [
-          {
-            valuePath: this.sorts[0].valuePath,
-            isAscending: !this.sorts[0].isAscending,
-          },
-        ];
-        this.set('sorts', newSorts);
-        return;
-      }
-
+  twoStateSorting: action(function(sorts) {
+    if (sorts.length > 1) {
+      // multi-column sort, default behavior
       this.set('sorts', sorts);
-    },
-  },
+      return;
+    }
+
+    let hasExistingSort = this.sorts && this.sorts.length;
+    let isDefaultSort = !sorts.length;
+
+    if (hasExistingSort && isDefaultSort) {
+      // override empty sorts with reversed previous sort
+      let newSorts = [
+        {
+          valuePath: this.sorts[0].valuePath,
+          isAscending: !this.sorts[0].isAscending,
+        },
+      ];
+      this.set('sorts', newSorts);
+      return;
+    }
+
+    this.set('sorts', sorts);
+  }),
   // END-SNIPPET
 });

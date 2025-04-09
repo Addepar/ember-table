@@ -40,8 +40,8 @@ function sumHeaderWidths(table) {
 
 async function renderTable() {
   await render(hbs`
-    <button id="add-column" {{action this.addColumn}}>Add Column</button>
-    <button id="remove-column" {{action this.removeColumn}}>Remove Column</button>
+    <button id="add-column" {{on "click" this.addColumn}}>Add Column</button>
+    <button id="remove-column" {{on "click" this.removeColumn}}>Remove Column</button>
     <EmberTable @data-test-ember-table={{true}} as |t|>
       <EmberThead
         @api={{t}}

@@ -7,7 +7,7 @@
       >
         <EmberTableSimpleCheckbox
           @checked={{this.rowMeta.isGroupSelected}}
-          @onClick={{action "onSelectionToggled"}}
+          @onClick={{this.onSelectionToggled}}
           @ariaLabel="Select row"
           @dataTestSelectRow={{this.isTesting}}
         />
@@ -19,7 +19,7 @@
       <span class="et-toggle-collapse et-depth-indent {{this.depthClass}}">
         <EmberTableSimpleCheckbox
           @checked={{this.rowMeta.isCollapsed}}
-          @onChange={{action "onCollapseToggled"}}
+          @onChange={{this.onCollapseToggled}}
           @ariaLabel="Collapse row"
           @dataTestCollapseRow={{this.isTesting}}
         />

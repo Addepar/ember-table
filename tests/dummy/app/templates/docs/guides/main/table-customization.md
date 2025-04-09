@@ -51,12 +51,12 @@ components:
     {{! BEGIN-SNIPPET table-customization-example-sorting.hbs }}
     <div class='demo-options'>
       <label>
-        <input type='checkbox' checked={{this.showSortIndicator}} onclick={{action (mut this.showSortIndicator) (not this.showSortIndicator)}}>
+        <input type='checkbox' checked={{this.showSortIndicator}} onclick={{fn (mut this.showSortIndicator) (not this.showSortIndicator)}}>
         Show Sort Indicator
         <span class='small'>(Click header to sort)</span>
       </label>
       <label>
-        <input type='checkbox' checked={{this.showResizeHandle}} onclick={{action (mut this.showResizeHandle) (not this.showResizeHandle)}}>
+        <input type='checkbox' checked={{this.showResizeHandle}} onclick={{fn (mut this.showResizeHandle) (not this.showResizeHandle)}}>
         Show Resize Handle <span class='small'>(Only appears on hover)</span>
       </label>
     </div>
@@ -66,7 +66,7 @@ components:
           @columns={{this.columnsForSorting}}
           @sorts={{this.sorts}}
 
-          @onUpdateSorts={{action (mut sorts)}}
+          @onUpdateSorts={{fn (mut this.sorts)}}
           @widthConstraint='gte-container'
           @fillMode='first-column'
 

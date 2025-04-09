@@ -118,15 +118,15 @@ when the column definitions are plain JavaScript arrays. The solution (for now) 
     {{! BEGIN-SNIPPET docs-example-column-resize-reorder.hbs }}
     <div class='demo-options'>
       <label>
-        {{input type="checkbox" checked=resizeEnabled}}
+        {{input type="checkbox" checked=this.resizeEnabled}}
         Enable Resizing
       </label>
       <label>
-        {{input type="checkbox" checked=reorderEnabled}}
+        {{input type="checkbox" checked=this.reorderEnabled}}
         Enable Reordering
       </label>
       <label>
-        {{input type="checkbox" checked=resizeModeFluid}}
+        {{input type="checkbox" checked=this.resizeModeFluid}}
         Resize Mode Fluid
       </label>
     </div>
@@ -180,8 +180,8 @@ reorder has occured.
       <EmberTable as |t|>
         <t.head
           @columns={{this.columns}}
-          @onResize={{action (mut this.resizeCount) (add this.resizeCount 1)}}
-          @onReorder={{action (mut this.reorderCount) (add this.reorderCount 1)}}
+          @onResize={{fn (mut this.resizeCount) (add this.resizeCount 1)}}
+          @onReorder={{fn (mut this.reorderCount) (add this.reorderCount 1)}}
         />
 
         <t.body @rows={{this.rows}} />

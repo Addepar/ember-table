@@ -5,7 +5,7 @@
 
     <t.body
       @rows={{this.rows}}
-      @onSelect={{action (mut selection)}}
+      @onSelect={{fn (mut this.selection)}}
       @selection={{this.selection}}
     />
   </EmberTable>

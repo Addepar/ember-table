@@ -36,7 +36,7 @@ module('Integration | meta', function() {
             </EmberThead>
             <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
               <EmberTr @api={{b}} as |r|>
-                <EmberTd @api={{r}} @onClick={{action this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
+                <EmberTd @api={{r}} @onClick={{this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if cellMeta.wasClicked}}cell{{/if}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   {{#if rowMeta.wasClicked}}row{{/if}}
@@ -127,7 +127,7 @@ module('Integration | meta', function() {
 
             <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
               <EmberTr @api={{b}} as |r|>
-                <EmberTd @api={{r}} @onClick={{action this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
+                <EmberTd @api={{r}} @onClick={{this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if cellMeta.wasClicked}}cell{{/if}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   {{#if rowMeta.wasClicked}}row{{/if}}
@@ -159,7 +159,7 @@ module('Integration | meta', function() {
 
             <EmberTbody @api={{t}} @rows={{this.rows}} as |b|>
               <EmberTr @api={{b}} as |r|>
-                <EmberTd @api={{r}} @onClick={{action this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
+                <EmberTd @api={{r}} @onClick={{this.onClick}} as |value column row cellMeta columnMeta rowMeta|>
                   {{#if cellMeta.wasClicked}}cell{{/if}}
                   {{#if columnMeta.wasClicked}}column{{/if}}
                   {{#if rowMeta.wasClicked}}row{{/if}}

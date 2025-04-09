@@ -10,7 +10,7 @@
       @checkboxSelectionMode={{this.checkboxSelectionMode}}
       @selectingChildrenSelectsParent={{this.selectingChildrenSelectsParent}}
 
-      @onSelect={{action (mut demoSelection)}}
+      @onSelect={{fn (mut this.demoSelection)}}
       @selection={{this.demoSelection}}
     />
   </EmberTable>
@@ -33,7 +33,7 @@
 </div>
 <div class="demo-options-group">
   <h4>selectingChildrenSelectsParent</h4>
-  <label> <Input @type="checkbox" @checked={{selectingChildrenSelectsParent}} /> </label>
+  <label> <Input @type="checkbox" @checked={{this.selectingChildrenSelectsParent}} /> </label>
 </div>
 
 {{! END-SNIPPET }}

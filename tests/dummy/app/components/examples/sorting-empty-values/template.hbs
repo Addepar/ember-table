@@ -14,7 +14,7 @@
           @sorts={{this.sorts}}
           @sortEmptyLast={{this.sortEmptyLast}}
 
-          @onUpdateSorts={{action (mut this.sorts)}}
+          @onUpdateSorts={{fn (mut this.sorts)}}
 
           @widthConstraint='gte-container'
           @fillMode='first-column'

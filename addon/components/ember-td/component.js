@@ -1,6 +1,6 @@
 import BaseTableCell from '../-private/base-table-cell';
 
-import { computed } from '@ember/object';
+import { computed, action } from '@ember/object';
 import { alias, readOnly } from '@ember/object/computed';
 
 import layout from './template';
@@ -121,31 +121,29 @@ export default BaseTableCell.extend({
     );
   }),
 
-  actions: {
-    onSelectionToggled(event) {
-      let rowMeta = this.get('rowMeta');
-      let checkboxSelectionMode = this.get('checkboxSelectionMode') || this.get('rowSelectionMode');
+  onSelectionToggled: action(function(event) {
+    let rowMeta = this.get('rowMeta');
+    let checkboxSelectionMode = this.get('checkboxSelectionMode') || this.get('rowSelectionMode');
 
-      if (rowMeta && checkboxSelectionMode === SELECT_MODE.MULTIPLE) {
-        let toggle = true;
-        let range = event.shiftKey;
+    if (rowMeta && checkboxSelectionMode === SELECT_MODE.MULTIPLE) {
+      let toggle = true;
+      let range = event.shiftKey;
 
-        rowMeta.select({ toggle, range });
-      } else if (rowMeta && checkboxSelectionMode === SELECT_MODE.SINGLE) {
-        rowMeta.select();
-      }
+      rowMeta.select({ toggle, range });
+    } else if (rowMeta && checkboxSelectionMode === SELECT_MODE.SINGLE) {
+      rowMeta.select();
+    }
 
-      this.sendFullAction('onSelect');
-    },
+    this.sendFullAction('onSelect');
+  }),
 
-    onCollapseToggled() {
-      let rowMeta = this.get('rowMeta');
+  onCollapseToggled: action(function() {
+    let rowMeta = this.get('rowMeta');
 
-      rowMeta.toggleCollapse();
+    rowMeta.toggleCollapse();
 
-      this.sendFullAction('onCollapse');
-    },
-  },
+    this.sendFullAction('onCollapse');
+  }),
 
   click(event) {
     this.sendFullAction('onClick', { event });
