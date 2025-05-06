@@ -21,6 +21,7 @@ export const BodyCell = PageObject.extend({
   isFirstColumn: hasClass('is-first-column'),
   isLastColumn: hasClass('is-last-column'),
   isSlack: hasClass('is-slack'),
+  isResizing: hasClass('is-resizing'),
 });
 
 export default PageObject.extend({

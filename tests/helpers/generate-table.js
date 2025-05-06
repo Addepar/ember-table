@@ -38,6 +38,7 @@ const fullTable = hbs`
           <EmberTh
             @api={{r}}
             @onContextMenu={{this.onHeaderCellContextMenu}}
+            @class={{if r.columnMeta.isResizing "is-resizing"}}
           />
         </EmberTr>
       </EmberThead>
@@ -72,6 +73,7 @@ const fullTable = hbs`
             @api={{r}}
             @onClick={{this.onCellClick}}
             @onDoubleClick={{this.onCellDoubleClick}}
+            @class={{if r.columnMeta.isResizing "is-resizing"}}
             as |value|
           >
             {{value}}

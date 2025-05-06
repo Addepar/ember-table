@@ -94,6 +94,7 @@ const Header = PageObject.extend({
   isFirstColumn: hasClass('is-first-column'),
   isLastColumn: hasClass('is-last-column'),
   isSlack: hasClass('is-slack'),
+  isResizing: hasClass('is-resizing'),
 
   contextMenu: triggerable('contextmenu'),
 
