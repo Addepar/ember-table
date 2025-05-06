@@ -80,6 +80,8 @@ const TableColumnMeta = EmberObject.extend({
 
   isResizable: readOnly('_node.isResizable'),
 
+  isResizing: readOnly('_node.isResizing'),
+
   isReorderable: readOnly('_node.isReorderable'),
 
   isSlack: readOnly('_node.isSlack'),
@@ -154,6 +156,8 @@ const ColumnTreeNode = EmberObject.extend({
   _subcolumnNodes: null,
 
   isSlack: false,
+
+  isResizing: false,
 
   init() {
     this._super(...arguments);
@@ -1075,6 +1079,7 @@ export default EmberObject.extend({
 
     // Add the class after at least one update has occured
     this.container.classList.add('is-resizing');
+    node.set('isResizing', true);
 
     this._updateResize(node, delta);
   },
@@ -1127,6 +1132,7 @@ export default EmberObject.extend({
     }
 
     this.container.classList.remove('is-resizing');
+    node.set('isResizing', false);
 
     this.onResize?.(get(node, 'column'));
   },

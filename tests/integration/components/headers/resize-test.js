@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { waitUntil } from '@ember/test-helpers';
 
 import {
   configureTableGeneration,
@@ -115,6 +116,40 @@ module('Integration | header | resize', function() {
         table.headers.objectAt(1).logicalWidth,
         originalWidth + 30,
         'not disabled column can be resized'
+      );
+    });
+
+    test('resizing sets isResizing property on column meta', async function(assert) {
+      await generateTable(this);
+
+      let firstHeader = table.headers.toArray()[0];
+      let firstCell = table.getCell(0, 0);
+
+      assert.notOk(firstHeader.isResizing, 'isResizing is false by default on column header');
+      assert.notOk(firstCell.isResizing, 'isResizing is false by default on column cells');
+
+      let originalWidth = firstHeader.logicalWidth;
+      let resume = firstHeader.resize(originalWidth + 100);
+
+      await waitUntil(() => firstHeader.isResizing);
+      assert.ok(
+        firstHeader.isResizing,
+        'isResizing property is set on corresponding column header when resizing'
+      );
+      assert.ok(
+        firstCell.isResizing,
+        'isResizing property is set on corresponding column cells when resizing'
+      );
+
+      await resume;
+
+      assert.notOk(
+        firstHeader.isResizing,
+        'isResizing is reset to false on column header after resizing'
+      );
+      assert.notOk(
+        firstCell.isResizing,
+        'isResizing is  reset to false on column cells after resizing'
       );
     });
   });
