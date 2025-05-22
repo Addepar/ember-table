@@ -134,12 +134,17 @@ module('Integration | scroll indicators', function() {
         },
       });
 
+      let firstHeader = table.headers.objectAt(0);
+
+      // not necessarily 100px wide because of integer division
+      let lastHeader = table.headers.objectAt(table.headers.length - 1);
+
       assert.equal(
         table.isScrollIndicatorRendered('right'),
         true,
         'right scroll indicator is initially shown'
       );
-      assert.ok(isOffset('right', 100), 'right scroll indicator is offset');
+      assert.ok(isOffset('right', lastHeader.width), 'right scroll indicator is offset');
       assert.equal(
         table.isScrollIndicatorRendered('left'),
         false,
@@ -154,13 +159,13 @@ module('Integration | scroll indicators', function() {
         true,
         'right scroll indicator is shown during partial scroll'
       );
-      assert.ok(isOffset('right', 100), 'right scroll indicator is offset');
+      assert.ok(isOffset('right', lastHeader.width), 'right scroll indicator is offset');
       assert.equal(
         table.isScrollIndicatorRendered('left'),
         true,
         'left scroll indicator is shown during partial scroll'
       );
-      assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
+      assert.ok(isOffset('left', firstHeader.width), 'left scroll indicator is offset');
 
       // scroll horizontally to the end
       await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, 0);
@@ -175,7 +180,7 @@ module('Integration | scroll indicators', function() {
         true,
         'left scroll indicator is still shown at end of scroll'
       );
-      assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
+      assert.ok(isOffset('left', firstHeader.width), 'left scroll indicator is offset');
     });
 
     test('top scroll indicator positioned below header', async function(assert) {

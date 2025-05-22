@@ -736,6 +736,9 @@ export default EmberObject.extend({
       return;
     }
 
+    // cache right scrollbar width so we can detect if it appears or disappears
+    this._scrollbarWidth = this.getScrollbarWidth();
+
     let leaves = get(this, 'root.leaves');
 
     // ensures that min and max widths are respected _before_ `applyFillMode()`
@@ -752,7 +755,8 @@ export default EmberObject.extend({
     let initialFillMode = get(this, 'initialFillMode');
 
     if (isSlackModeEnabled && initialFillMode) {
-      this.applyFillMode(initialFillMode);
+      let containerWidth = this.getContainerWidth();
+      this.applyFillMode(initialFillMode, containerWidth);
     }
 
     this.ensureWidthConstraint();
@@ -767,13 +771,58 @@ export default EmberObject.extend({
       return;
     }
 
-    let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
+    let fillMode = get(this, 'fillMode');
 
+    // accommodate scrollbar as it appears/vanishes
+    let scrollbarDelta = this.getScrollbarWidth() - this._scrollbarWidth;
+    if (scrollbarDelta !== 0) {
+      let treeWidth = get(this, 'root.width');
+      let contentWidth = get(this, 'root.contentWidth');
+      let containerWidth = this.getContainerWidth();
+      let extra = containerWidth - contentWidth;
+
+      // If `scrollbarDelta` is positive, it means the right scrollbar just
+      // appeared; in this case, we shrink the columns if they are within a
+      // scrollbar width of the container. This prevents a bottom scrollbar
+      // from appearing when it is not necessary.
+
+      // If `scrollbarDelta` is negative, it means the right scrollbar just
+      // vanished; in this case, we enlarge if the rightmost column's edge is
+      // between one and two scrollbar widths of the container's edge. This
+      // ensures the inverse action to the above.
+
+      if (
+        (scrollbarDelta > 0 && (0 < -extra && -extra <= scrollbarDelta)) ||
+        (scrollbarDelta < 0 && (-scrollbarDelta <= extra && extra < -2 * scrollbarDelta))
+      ) {
+        let targetWidth = treeWidth - scrollbarDelta;
+        this.applyFillMode(fillMode, targetWidth);
+      }
+    }
+
+    this._scrollbarWidth += scrollbarDelta;
+
+    // if `widthConstraint` is set to a slack variety, fill excess space
+    // with a slack column before applying `fillMode`
+    let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
     if (isSlackModeEnabled) {
       this.updateSlackColumn();
     }
 
-    this.applyFillMode();
+    // only trigger fill mode if `widthConstraint` has been violated
+    let widthConstraint = get(this, 'widthConstraint');
+    let contentWidth = get(this, 'root.contentWidth');
+    let containerWidth = this.getContainerWidth();
+    let delta = containerWidth - contentWidth;
+    if (
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK && delta !== 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && delta < 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
+      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0)
+    ) {
+      this.applyFillMode(fillMode, containerWidth);
+    }
   },
 
   /**
@@ -796,46 +845,34 @@ export default EmberObject.extend({
   },
 
   /**
-    Attempts to satisfy tree's width constraint by resizing columns according
-    to the specifid `fillMode`. If no `fillMode` is specified, the tree's
-    own `fillMode` property will be used.
+    Attempts to fit columns to container size by resizing columns using the
+    specified `fillMode` to fit in the specified target width.
 
     @param {String} fillMode
+    @param {Number} targetWidth
    */
-  applyFillMode(fillMode) {
-    fillMode = fillMode || get(this, 'fillMode');
-
-    let widthConstraint = get(this, 'widthConstraint');
-    let containerWidth = this.getContainerWidth();
+  applyFillMode(fillMode, targetWidth) {
     let contentWidth = get(this, 'root.contentWidth');
-    let delta = containerWidth - contentWidth;
+    let delta = targetWidth - contentWidth;
 
-    if (
-      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER && delta !== 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.EQ_CONTAINER_SLACK && delta !== 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.LTE_CONTAINER && delta < 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER && delta > 0) ||
-      (widthConstraint === WIDTH_CONSTRAINT.GTE_CONTAINER_SLACK && delta > 0)
-    ) {
-      if (fillMode === FILL_MODE.EQUAL_COLUMN) {
-        set(this, 'root.width', containerWidth);
-      } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
-        this.resizeColumn(0, delta);
-      } else if (fillMode === FILL_MODE.LAST_COLUMN) {
-        let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
-        let columns = get(this, 'root.subcolumnNodes');
-        let lastColumnIndex = isSlackModeEnabled ? columns.length - 2 : columns.length - 1;
-        this.resizeColumn(lastColumnIndex, delta);
-      } else if (fillMode === FILL_MODE.NTH_COLUMN) {
-        let fillColumnIndex = get(this, 'fillColumnIndex');
+    if (fillMode === FILL_MODE.EQUAL_COLUMN) {
+      set(this, 'root.width', targetWidth);
+    } else if (fillMode === FILL_MODE.FIRST_COLUMN) {
+      this.resizeColumn(0, delta);
+    } else if (fillMode === FILL_MODE.LAST_COLUMN) {
+      let isSlackModeEnabled = get(this, 'isSlackModeEnabled');
+      let columns = get(this, 'root.subcolumnNodes');
+      let lastColumnIndex = isSlackModeEnabled ? columns.length - 2 : columns.length - 1;
+      this.resizeColumn(lastColumnIndex, delta);
+    } else if (fillMode === FILL_MODE.NTH_COLUMN) {
+      let fillColumnIndex = get(this, 'fillColumnIndex');
 
-        assert(
-          "fillMode 'nth-column' must have a fillColumnIndex defined",
-          !isEmpty(fillColumnIndex)
-        );
+      assert(
+        "fillMode 'nth-column' must have a fillColumnIndex defined",
+        !isEmpty(fillColumnIndex)
+      );
 
-        this.resizeColumn(fillColumnIndex, delta);
-      }
+      this.resizeColumn(fillColumnIndex, delta);
     }
   },
 
@@ -857,6 +894,10 @@ export default EmberObject.extend({
     return (
       getInnerClientRect(this.container, this.scale).width * this.scale + containerWidthAdjustment
     );
+  },
+
+  getScrollbarWidth() {
+    return this.container.offsetWidth - this.container.clientWidth;
   },
 
   getReorderBounds(node) {
