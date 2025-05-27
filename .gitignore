@@ -9,6 +9,8 @@
 /bower_components
 
 # misc
+/.DS_Store
+/.eslintcache
 /.sass-cache
 /connect.lock
 /coverage/*

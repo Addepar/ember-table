@@ -6,6 +6,7 @@
 .bowerrc
 .editorconfig
 .ember-cli
+.eslintcache
 .eslintrc.js
 .gitignore
 .watchmanconfig
