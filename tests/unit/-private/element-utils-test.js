@@ -20,15 +20,15 @@ module('Unit | Private | element', function(hooks) {
     div.style.height = '4px';
     this.element.append(div);
 
-    assert.equal(getScale(div), 1, 'scale on a simple element is correct');
+    assert.strictEqual(getScale(div), 1, 'scale on a simple element is correct');
 
     div.style.transform = 'scale(0.5)';
 
-    assert.equal(getScale(div), 2, 'scale on a scaled element is correct');
+    assert.strictEqual(getScale(div), 2, 'scale on a scaled element is correct');
 
     div.style.height = '1.5px';
 
-    assert.equal(getScale(div), 2, 'scale on a scaled element is correct');
+    assert.strictEqual(getScale(div), 2, 'scale on a scaled element is correct');
   });
 
   test('gets an integer when a scale is very close to its rounded integer value', function(assert) {
@@ -36,15 +36,15 @@ module('Unit | Private | element', function(hooks) {
     div.style.height = '4px';
     this.element.append(div);
 
-    assert.equal(getScale(div), 1, 'scale on a simple element is correct');
+    assert.strictEqual(getScale(div), 1, 'scale on a simple element is correct');
 
     div.style.transform = 'scale(1.000001)';
 
-    assert.equal(getScale(div), 1, 'scale on a scaled element is correct');
+    assert.strictEqual(getScale(div), 1, 'scale on a scaled element is correct');
 
     div.style.height = '1.5px';
 
-    assert.equal(getScale(div), 1, 'scale on a scaled element is correct');
+    assert.strictEqual(getScale(div), 1, 'scale on a scaled element is correct');
   });
 
   test('throws if the height from getComputedStyle is diverged from offsetHeight', function(assert) {
@@ -92,11 +92,11 @@ module('Unit | Private | element', function(hooks) {
 
     this.element.append(table);
 
-    assert.equal(getScale(table), 1, 'scale on a simple element is correct');
+    assert.strictEqual(getScale(table), 1, 'scale on a simple element is correct');
 
     table.style.transform = 'scale(0.5)';
 
-    assert.equal(getScale(table), 2, 'scale on a scaled element is correct');
+    assert.strictEqual(getScale(table), 2, 'scale on a scaled element is correct');
   });
 
   /*
@@ -143,10 +143,10 @@ module('Unit | Private | element', function(hooks) {
 
     this.element.append(table);
 
-    assert.equal(getScale(table), 1, 'scale on a simple element is correct');
+    assert.strictEqual(getScale(table), 1, 'scale on a simple element is correct');
 
     table.style.transform = 'scale(0.5)';
 
-    assert.equal(getScale(table), 2, 'scale on a scaled element is correct');
+    assert.strictEqual(getScale(table), 2, 'scale on a scaled element is correct');
   });
 });

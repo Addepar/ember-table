@@ -20,10 +20,10 @@ module('Integration | cell', function() {
         ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
           assert.ok(event, 'event sent');
 
-          assert.equal(cellValue, '0A', 'cellValue sent');
+          assert.strictEqual(cellValue, '0A', 'cellValue sent');
           assert.ok(cellMeta, 'cellMeta sent');
 
-          assert.equal(columnValue.name, 'A', 'columnValue sent');
+          assert.strictEqual(columnValue.name, 'A', 'columnValue sent');
           assert.ok(columnMeta, 'columnMeta sent');
 
           assert.ok(rowValue, 'rowValue sent');
@@ -41,10 +41,10 @@ module('Integration | cell', function() {
         ({ event, cellValue, cellMeta, columnValue, columnMeta, rowValue, rowMeta }) => {
           assert.ok(event, 'event sent');
 
-          assert.equal(cellValue, '0A', 'cellValue sent');
+          assert.strictEqual(cellValue, '0A', 'cellValue sent');
           assert.ok(cellMeta, 'cellMeta sent');
 
-          assert.equal(columnValue.name, 'A', 'columnValue sent');
+          assert.strictEqual(columnValue.name, 'A', 'columnValue sent');
           assert.ok(columnMeta, 'columnMeta sent');
 
           assert.ok(rowValue, 'rowValue sent');
@@ -69,8 +69,8 @@ module('Integration | cell', function() {
 
       await generateTable(this, { rows, columnCount });
 
-      assert.equal(table.getCell(0, 0).text, 'A', 'renders correct initial value');
-      assert.equal(table.getCell(0, 1).text, 'B', 'renders correct initial value');
+      assert.strictEqual(table.getCell(0, 0).text, 'A', 'renders correct initial value');
+      assert.strictEqual(table.getCell(0, 1).text, 'B', 'renders correct initial value');
 
       run(() => {
         set(rows[0], 'A', 'Y');
@@ -79,8 +79,8 @@ module('Integration | cell', function() {
 
       await settled();
 
-      assert.equal(table.getCell(0, 0).text, 'Y', 'renders correct updated value');
-      assert.equal(table.getCell(0, 1).text, 'Z', 'renders correct updated value');
+      assert.strictEqual(table.getCell(0, 0).text, 'Y', 'renders correct updated value');
+      assert.strictEqual(table.getCell(0, 1).text, 'Z', 'renders correct updated value');
     });
 
     test('Can update cell values directly', async function(assert) {
@@ -113,7 +113,7 @@ module('Integration | cell', function() {
 
       await fillIn('input', 'Z');
 
-      assert.equal(rows[0].A, 'Z', 'value updated successfully');
+      assert.strictEqual(rows[0].A, 'Z', 'value updated successfully');
     });
   });
 
@@ -144,14 +144,14 @@ module('Integration | cell', function() {
       let cells = row.cells.toArray();
 
       // `is-first-column` class only appears on first cell
-      assert.ok(cells[0].isFirstColumn, 'is-first-column applied to first column cell');
-      assert.notOk(cells[1].isFirstColumn, 'is-first-column not applied to middle column cell');
-      assert.notOk(cells[2].isFirstColumn, 'is-first-column not applied to last column cell');
+      assert.true(cells[0].isFirstColumn, 'is-first-column applied to first column cell');
+      assert.false(cells[1].isFirstColumn, 'is-first-column not applied to middle column cell');
+      assert.false(cells[2].isFirstColumn, 'is-first-column not applied to last column cell');
 
       // `is-last-column` class only appears on last cell
-      assert.notOk(cells[0].isLastColumn, 'is-last-column not applied to first column cell');
-      assert.notOk(cells[1].isLastColumn, 'is-last-column not applied to middle column cell');
-      assert.ok(cells[2].isLastColumn, 'is-last-column applied to last column cell');
+      assert.false(cells[0].isLastColumn, 'is-last-column not applied to first column cell');
+      assert.false(cells[1].isLastColumn, 'is-last-column not applied to middle column cell');
+      assert.true(cells[2].isLastColumn, 'is-last-column applied to last column cell');
     });
 
     test('applies positional classes correctly in slack mode', async function(assert) {
@@ -185,12 +185,12 @@ module('Integration | cell', function() {
       let slackCell = row.slackCell;
 
       // slack header should be marked accordingly
-      assert.notOk(cell.isSlack, 'is-slack not applied to normal cell');
-      assert.ok(slackCell.isSlack, 'is-slack applied to slack cell');
+      assert.false(cell.isSlack, 'is-slack not applied to normal cell');
+      assert.true(slackCell.isSlack, 'is-slack applied to slack cell');
 
       // initially, slack column has zero width, so "A" gets `is-last-column` class
-      assert.ok(cell.isLastColumn, 'is-last-column applied to normal cell');
-      assert.notOk(slackCell.isLastColumn, 'is-last-column not applied to slack cell');
+      assert.true(cell.isLastColumn, 'is-last-column applied to normal cell');
+      assert.false(slackCell.isLastColumn, 'is-last-column not applied to slack cell');
 
       /**
        * shrink cell "A"; now slack column gets the `is-last-column`
@@ -202,8 +202,8 @@ module('Integration | cell', function() {
        */
       await header.logicalResize(header.logicalWidth - 27);
 
-      assert.notOk(cell.isLastColumn, 'is-last-column not applied to normal cell');
-      assert.ok(slackCell.isLastColumn, 'is-last-column applied to slack cell');
+      assert.false(cell.isLastColumn, 'is-last-column not applied to normal cell');
+      assert.true(slackCell.isLastColumn, 'is-last-column applied to slack cell');
     });
   });
 });

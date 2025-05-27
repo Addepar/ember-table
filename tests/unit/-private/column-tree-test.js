@@ -43,6 +43,6 @@ module('Unit | Private | ColumnTree', function(hooks) {
     set(firstSubcolumns, 'width', initialWidth);
     let width = firstSubcolumns.width;
 
-    assert.equal(width, 180, 'The width is unchanged');
+    assert.strictEqual(width, 180, 'The width is unchanged');
   });
 });
