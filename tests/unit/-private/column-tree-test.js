@@ -1,4 +1,4 @@
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { run } from '@ember/runloop';
 import ColumnTree from 'ember-table/-private/column-tree';
 import MetaCache from 'ember-table/-private/meta-cache';
@@ -36,13 +36,13 @@ module('Unit | Private | ColumnTree', function(hooks) {
       enableTree: true,
     });
 
-    let root = get(tree, 'root');
-    let subcolumns = get(root, 'subcolumnNodes');
+    let root = tree.root;
+    let subcolumns = root.subcolumnNodes;
     let firstSubcolumns = subcolumns[0];
-    let initialWidth = get(firstSubcolumns, 'width');
+    let initialWidth = firstSubcolumns.width;
     set(firstSubcolumns, 'width', initialWidth);
-    let width = get(firstSubcolumns, 'width');
+    let width = firstSubcolumns.width;
 
-    assert.equal(width, 180, 'The width is unchanged');
+    assert.strictEqual(width, 180, 'The width is unchanged');
   });
 });

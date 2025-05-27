@@ -18,7 +18,7 @@ export default Component.extend({
   centerSpinner: true,
 
   canLoadMore: computed('offset', 'maxRows', function() {
-    return this.get('offset') < this.get('maxRows');
+    return this.offset < this.maxRows;
   }),
 
   columns: computed(function() {
@@ -36,15 +36,15 @@ export default Component.extend({
 
   didInsertElement() {
     this._super(...arguments);
-    this.get('loadMore').perform();
+    this.loadMore.perform();
   },
 
   // ember-concurrency task
   loadMore: task(function*() {
-    let offset = this.get('offset');
-    let limit = this.get('limit');
+    let offset = this.offset;
+    let limit = this.limit;
 
-    if (!this.get('canLoadMore')) {
+    if (!this.canLoadMore) {
       return;
     }
 
@@ -56,7 +56,7 @@ export default Component.extend({
       newRows.push({ id: offset + i + 1, a: 'A', b: 'B', c: 'C' });
     }
 
-    this.get('rows').pushObjects(newRows);
+    this.rows.pushObjects(newRows);
     this.set('offset', offset + limit);
   }).drop(),
 

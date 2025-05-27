@@ -337,6 +337,7 @@ export default Component.extend({
     addObserver(this, 'enabledIndicators', this._updateListeners);
   },
 
+  // eslint-disable-next-line ember/require-super-in-lifecycle-hooks
   willDestroy() {
     if (this._isListening) {
       this._removeListeners();

@@ -74,6 +74,7 @@ export default BaseTableCell.extend({
   onDoubleClick: null,
 
   // only watch `api` due to a bug in Ember
+  // eslint-disable-next-line ember/require-computed-macros
   unwrappedApi: computed('api', function() {
     return this.get('api.api') || this.get('api');
   }),

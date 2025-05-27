@@ -29,19 +29,23 @@ module('Integration | basic', function() {
       await generateTable(this, { columnCount, rowCount });
 
       // Check column header count
-      assert.equal(table.headers.length, columnCount, 'renders the correct number of columns');
-      assert.equal(
+      assert.strictEqual(
+        table.headers.length,
+        columnCount,
+        'renders the correct number of columns'
+      );
+      assert.strictEqual(
         table.header.rowCount,
         1,
         'The total number of rows in the header is available through the page object'
       );
-      assert.equal(table.rows.length, rowCount, 'renders the correct number of rows');
-      assert.equal(
+      assert.strictEqual(table.rows.length, rowCount, 'renders the correct number of rows');
+      assert.strictEqual(
         table.body.rowCount,
         rowCount,
         'The total number of rows in the body is available through the page object'
       );
-      assert.equal(
+      assert.strictEqual(
         table.footer.rowCount,
         0,
         'The total number of rows in the footer is available through the page object'
@@ -54,8 +58,12 @@ module('Integration | basic', function() {
 
       await generateTable(this, { columns, rows });
 
-      assert.equal(table.headers.length, columns.length, 'renders the correct number of columns');
-      assert.equal(table.rows.length, rows.length, 'renders the correct number of rows');
+      assert.strictEqual(
+        table.headers.length,
+        columns.length,
+        'renders the correct number of columns'
+      );
+      assert.strictEqual(table.rows.length, rows.length, 'renders the correct number of rows');
     });
 
     test('occlusion works', async function(assert) {
@@ -64,13 +72,13 @@ module('Integration | basic', function() {
 
       await generateTable(this, { columnCount, rowCount });
 
-      assert.ok(table.rows.length < rowCount, 'not all rows have been rendered');
-      assert.equal(
+      assert.true(table.rows.length < rowCount, 'not all rows have been rendered');
+      assert.strictEqual(
         table.body.rowCount,
         rowCount,
         'The total number of rows in the body is available through the page object'
       );
-      assert.equal(table.getCell(0, 0).text.trim(), '0A', 'correct first row rendered');
+      assert.strictEqual(table.getCell(0, 0).text.trim(), '0A', 'correct first row rendered');
       assert.notEqual(
         table.getCell(table.rows.length - 1, 0).text.trim(),
         '99A',
@@ -85,7 +93,7 @@ module('Integration | basic', function() {
         '0A',
         'first rendered row is not first data row'
       );
-      assert.equal(
+      assert.strictEqual(
         table.getCell(table.rows.length - 1, 0).text.trim(),
         '99A',
         'correct last row rendered'
@@ -104,8 +112,8 @@ module('Integration | basic', function() {
         bufferSize: 0,
       });
 
-      assert.ok(table.rows.length < rowCount, 'not all rows have been rendered');
-      assert.equal(table.getCell(0, 0).text.trim(), '60A', 'correct first row rendered');
+      assert.true(table.rows.length < rowCount, 'not all rows have been rendered');
+      assert.strictEqual(table.getCell(0, 0).text.trim(), '60A', 'correct first row rendered');
       assert.notEqual(
         table.getCell(table.rows.length - 1, 0).text.trim(),
         '99A',
@@ -119,7 +127,7 @@ module('Integration | basic', function() {
           let rect = element.getBoundingClientRect();
           let diff = Math.abs(container[measurement] - rect[measurement]);
 
-          assert.ok(diff < 10, `${diff} is with tolerance`);
+          assert.true(diff < 10, `${diff} is with tolerance`);
         }
       }
 
@@ -265,7 +273,7 @@ module('Integration | basic', function() {
       await generateTable(this, { hasFixedColumn: true });
 
       await a11yAudit();
-      assert.ok(true, 'No accessibility error found');
+      assert.true(true, 'No accessibility error found');
     });
 
     test('custom container selector', async function(assert) {
@@ -300,8 +308,9 @@ module('Integration | basic', function() {
         </div>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
-      assert.equal(table.rows.length, itemsCount, 'renders the correct number of rows');
+      assert.strictEqual(table.rows.length, itemsCount, 'renders the correct number of rows');
     });
 
     test('it yields to inverse when tbody rows are empty', async function(assert) {
@@ -323,11 +332,11 @@ module('Integration | basic', function() {
         </div>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
-      assert.ok(
-        find('[data-test-inverse-yield]'),
-        'expected the inverse yield content to be displayed'
-      );
+      assert
+        .dom('[data-test-inverse-yield]')
+        .exists('expected the inverse yield content to be displayed');
     });
 
     test('Text can be aligned left, center or right', async function(assert) {
@@ -342,7 +351,8 @@ module('Integration | basic', function() {
 
       for (let tagName of ['th', 'td']) {
         classList = find(`${tagName}:nth-of-type(1)`).classList;
-        assert.notOk(
+        assert.false(
+          // eslint-disable-next-line qunit/no-assert-logical-expression
           classList.contains('ember-table__text-align-left') ||
             classList.contains('ember-table__text-align-center') ||
             classList.contains('ember-table__text-align-right'),
@@ -350,19 +360,19 @@ module('Integration | basic', function() {
         );
 
         classList = find(`${tagName}:nth-of-type(2)`).classList;
-        assert.ok(
+        assert.true(
           classList.contains('ember-table__text-align-right'),
           `${tagName} cells can be right aligned`
         );
 
         classList = find(`${tagName}:nth-of-type(3)`).classList;
-        assert.ok(
+        assert.true(
           classList.contains('ember-table__text-align-center'),
           `${tagName} cells can be centered`
         );
 
         classList = find(`${tagName}:nth-of-type(4)`).classList;
-        assert.ok(
+        assert.true(
           classList.contains('ember-table__text-align-left'),
           `${tagName} cells can be left aligned`
         );
@@ -371,7 +381,7 @@ module('Integration | basic', function() {
 
     test('it can be rendered with no columns', async function(assert) {
       await generateTable(this, { rows: [], columns: [] });
-      assert.ok(true, 'The empty table rendered without incident');
+      assert.true(true, 'The empty table rendered without incident');
     });
   });
 

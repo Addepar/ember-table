@@ -289,7 +289,9 @@ export default Component.extend({
       let scheduleUpdate = (this._scheduleUpdate = () => {
         scheduleOnce('actions', this, this._updateDataTestRowCount);
       });
+      // eslint-disable-next-line ember/no-observers
       this.collapseTree.addObserver('rows', scheduleUpdate);
+      // eslint-disable-next-line ember/no-observers
       this.collapseTree.addObserver('[]', scheduleUpdate);
     }
 
@@ -330,6 +332,7 @@ export default Component.extend({
     }
   ),
 
+  // eslint-disable-next-line ember/require-super-in-lifecycle-hooks
   willDestroy() {
     for (let [row, meta] of this.rowMetaCache.entries()) {
       meta.destroy();
@@ -351,7 +354,9 @@ export default Component.extend({
   wrappedRows: computed('rows', function() {
     let rows = this.get('rows');
 
+    // eslint-disable-next-line ember/no-side-effects
     this.collapseTree.set('rowMetaCache', this.rowMetaCache);
+    // eslint-disable-next-line ember/no-side-effects
     this.collapseTree.set('rows', rows);
 
     return this.collapseTree;
