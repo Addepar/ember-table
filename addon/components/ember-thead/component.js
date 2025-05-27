@@ -240,6 +240,7 @@ export default Component.extend({
     let columnKeyPath = this.get('columnKeyPath');
     this.columnMetaCache = new MetaCache({ keyPath: columnKeyPath });
 
+    // eslint-disable-next-line ember/no-assignment-of-untracked-properties-used-in-tracking-contexts
     this.columnTree = ColumnTree.create({
       onReorder: this.onReorder?.bind(this),
       onResize: this.onResize?.bind(this),

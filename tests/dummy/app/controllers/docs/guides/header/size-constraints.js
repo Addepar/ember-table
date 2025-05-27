@@ -23,6 +23,7 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
 
+    // eslint-disable-next-line ember/no-observers
     addObserver(this, 'widthConstraint', this.setDefaultResizeMode);
   },
 

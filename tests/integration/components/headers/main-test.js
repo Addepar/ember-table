@@ -444,6 +444,7 @@ module('Integration | header | main', function() {
       assert.strictEqual(slackHeader.logicalWidth, 50, 'slack column receives the balance');
     });
 
+    // eslint-disable-next-line qunit/no-identical-names
     test('gte-container-slack', async function(assert) {
       await generateTable(this, {
         widthConstraint: 'gte-container-slack',

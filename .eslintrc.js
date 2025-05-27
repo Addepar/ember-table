@@ -28,7 +28,14 @@ module.exports = {
     browser: true,
   },
   rules: {
-    'ember-best-practices/require-dependent-keys': 'off',
+    'ember/no-classic-classes': 'off', // 41 errors
+    'ember/no-classic-components': 'off', // 20 errors
+    'ember/no-component-lifecycle-hooks': 'off', // 12 errors
+    'ember/no-get': 'off', // 406 errors
+    'ember/no-runloop': 'off', // 26 errors
+    'ember/require-computed-property-dependencies': 'off', // 23 errors
+    'ember/require-tagless-components': 'off', // 14 errors
+    'ember-best-practices/require-dependent-keys': 'off', // 56 errors
     'no-restricted-imports': [
       'error',
       {

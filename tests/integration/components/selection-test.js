@@ -305,6 +305,7 @@ module('Integration | selection', () => {
     });
 
     componentModule('single', function() {
+      // eslint-disable-next-line qunit/no-identical-names
       test('Can select a row by clicking on it', async function(assert) {
         await generateTable(this, { rowSelectionMode: 'single' });
 
@@ -363,6 +364,7 @@ module('Integration | selection', () => {
         assert.true(table.validateSelected(3), 'last row only is selected');
       });
 
+      // eslint-disable-next-line qunit/require-expect
       test('selection is a single row', async function(assert) {
         assert.expect(1);
 
@@ -533,6 +535,7 @@ module('Integration | selection', () => {
         assert.true(table.validateSelected(3), 'last row only is selected');
       });
 
+      // eslint-disable-next-line qunit/require-expect
       test('selection is an array', async function(assert) {
         assert.expect(1);
 
@@ -685,6 +688,7 @@ module('Integration | selection', () => {
   });
 
   componentModule('misc', function() {
+    // eslint-disable-next-line qunit/require-expect
     test('Can disable selection by not using an action', async function(assert) {
       assert.expect(3);
 

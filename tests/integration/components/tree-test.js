@@ -137,6 +137,7 @@ module('Integration | Tree', () => {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       assert.strictEqual(table.getCell(0, 0).text, '2', 'rowsCount is correct before collapse');

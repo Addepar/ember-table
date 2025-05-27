@@ -57,6 +57,7 @@ module('Integration | meta', function() {
         </div>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
       await table.getCell(0, 0).click();
 
@@ -180,6 +181,7 @@ module('Integration | meta', function() {
         </div>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
       await table.getCell(0, 0).click();
 
@@ -238,6 +240,7 @@ module('Integration | meta', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       // single cell in first header row

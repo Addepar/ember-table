@@ -21,6 +21,7 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       assert.dom('[data-test-custom-spinner]').exists('Renders a custom spinner');
@@ -35,6 +36,7 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       assert.true(table.loadingMore.isShown, 'Loading more indicator is shown');
@@ -49,6 +51,7 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       assert.false(table.loadingMore.isShown, 'Loading more indicator is not shown');
@@ -63,6 +66,7 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       assert.true(
@@ -80,6 +84,7 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       assert.false(
@@ -103,6 +108,7 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
       await scrollTo(table.overflow(), scrollLeft, 0);
 

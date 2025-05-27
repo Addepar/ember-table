@@ -3,7 +3,7 @@ import hbs from 'htmlbars-inline-precompile';
 
 import { generateTable, generateColumns } from '../../helpers/generate-table';
 import { componentModule } from '../../helpers/module';
-import { set, get } from '@ember/object';
+import { set } from '@ember/object';
 
 import { fillIn, render, settled } from '@ember/test-helpers';
 
@@ -109,6 +109,7 @@ module('Integration | cell', function() {
         </div>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       await fillIn('input', 'Z');
@@ -138,6 +139,7 @@ module('Integration | cell', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       let row = table.rows.objectAt(0);
@@ -177,6 +179,7 @@ module('Integration | cell', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
       let header = table.headers.objectAt(0);
