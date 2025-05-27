@@ -1,1 +1,1 @@
-export { default } from 'ember-table/components/ember-tbody/component';
+export { default } from 'ember-table/components/ember-tbody';

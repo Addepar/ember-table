@@ -1,22 +1,19 @@
 /* global ResizeSensor */
-import Component from '@ember/component';
-import { bind } from '@ember/runloop';
 import { A as emberA } from '@ember/array';
+import Component from '@ember/component';
 import { assert } from '@ember/debug';
-import defaultTo from '../../-private/utils/default-to';
-import { addObserver } from '../../-private/utils/observer';
 import EmberObject, { computed, get } from '@ember/object';
 import { and, notEmpty, or } from '@ember/object/computed';
+import { bind, scheduleOnce } from '@ember/runloop';
 import { isPresent } from '@ember/utils';
 
-import { closest } from '../../-private/utils/element';
-import MetaCache from '../../-private/meta-cache';
-import { sortMultiple, compareValues } from '../../-private/utils/sort';
-import { scheduleOnce } from '@ember/runloop';
+import MetaCache from '../-private/meta-cache';
+import defaultTo from '../-private/utils/default-to';
+import { closest } from '../-private/utils/element';
+import { addObserver } from '../-private/utils/observer';
+import { sortMultiple, compareValues } from '../-private/utils/sort';
 
-import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../../-private/column-tree';
-
-import layout from './template';
+import ColumnTree, { RESIZE_MODE, FILL_MODE, WIDTH_CONSTRAINT } from '../-private/column-tree';
 
 let isTestingThead = false;
 export function setupTHeadForTest(bool) {
@@ -45,7 +42,6 @@ export function setupTHeadForTest(bool) {
 */
 
 export default Component.extend({
-  layout,
   tagName: 'thead',
 
   /**
