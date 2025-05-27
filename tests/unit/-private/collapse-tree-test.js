@@ -61,7 +61,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     });
 
     let expectedDepth = [0, 1, 2, 2, 1, 2, 2];
-    let length = get(tree, 'length');
+    let length = tree.length;
 
     assert.equal(length, 7);
 
@@ -97,7 +97,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
       null,
     ];
 
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(tree.length, 7);
 
     for (let i = 0; i < 7; i++) {
       assert.deepEqual(metaFor(tree.objectAt(i)).get('next'), expectedNext[i]);
@@ -139,7 +139,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
       { value: 5 },
     ];
 
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(tree.length, 7);
 
     for (let i = 0; i < 7; i++) {
       assert.deepEqual(metaFor(tree.objectAt(i)).get('prev'), expectedPrev[i]);
@@ -183,7 +183,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
     let expectedDepth = [0];
 
-    assert.equal(get(tree, 'length'), 1);
+    assert.equal(tree.length, 1);
 
     for (let i = 0; i < 1; i++) {
       assert.equal(tree.objectAt(i).value, i);
@@ -194,7 +194,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
     expectedDepth = [0, 1, 1];
 
-    assert.equal(get(tree, 'length'), 3);
+    assert.equal(tree.length, 3);
 
     for (let i = 0; i < 3; i++) {
       assert.equal(tree.objectAt(i).value, i);
@@ -211,7 +211,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
     let expectedDepth = [0, 1, 2, 2, 1, 2, 2, 0, 1, 1];
 
-    assert.equal(get(tree, 'length'), 10);
+    assert.equal(tree.length, 10);
 
     for (let i = 0; i < 10; i++) {
       assert.equal(tree.objectAt(i).value, i);
@@ -228,7 +228,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
     let expectedDepth = [0, 1, 1, 2, 2, 1, 1, 2, 2];
 
-    assert.equal(get(tree, 'length'), 9);
+    assert.equal(tree.length, 9);
 
     for (let i = 0; i < 9; i++) {
       assert.equal(tree.objectAt(i).value, i);
@@ -251,7 +251,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     let expectedValue = [0, 1, 4, 5, 6];
     let expectedDepth = [0, 1, 1, 2, 2];
 
-    assert.equal(get(tree, 'length'), 5);
+    assert.equal(tree.length, 5);
 
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(
@@ -272,11 +272,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     expectedValue = [0, 1, 2, 3, 4, 5, 6];
     expectedDepth = [0, 1, 2, 2, 1, 2, 2];
 
-    assert.equal(
-      get(tree, 'length'),
-      7,
-      'after un-collapsing rows[0].children[0], tree length is correct'
-    );
+    assert.equal(tree.length, 7, 'after un-collapsing rows[0].children[0], tree length is correct');
 
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(
@@ -309,7 +305,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     let expectedValue = [0, 1, 4, 5, 6];
     let expectedDepth = [0, 1, 1, 2, 2];
 
-    assert.equal(get(tree, 'length'), 5);
+    assert.equal(tree.length, 5);
 
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(tree.objectAt(i).value, expectedValue[i]);
@@ -324,7 +320,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     expectedValue = [0, 1, 2, 3, 4, 5, 6];
     expectedDepth = [0, 1, 2, 2, 1, 2, 2];
 
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(tree.length, 7);
 
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(tree.objectAt(i).value, expectedValue[i]);
@@ -336,7 +332,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     let rows = generateTree([0, [1, [2, 3], 4, [5, 6]]]);
     tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
 
-    assert.equal(metaFor(tree.objectAt(1)).get('canCollapse'), false, 'collapse is disabled');
+    assert.false(metaFor(tree.objectAt(1)).get('canCollapse'), 'collapse is disabled');
 
     metaFor(tree.objectAt(1)).toggleCollapse();
     await settled();
@@ -344,7 +340,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     let expectedValue = [0, 1, 2, 3, 4, 5, 6];
     let expectedDepth = [0, 1, 2, 2, 1, 2, 2];
 
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(tree.length, 7);
 
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(tree.objectAt(i).value, expectedValue[i]);
@@ -358,7 +354,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
     expectedValue = [0, 1, 4, 5, 6];
     expectedDepth = [0, 1, 1, 2, 2];
 
-    assert.equal(get(tree, 'length'), 5);
+    assert.equal(tree.length, 5);
 
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(tree.objectAt(i).value, expectedValue[i]);
@@ -370,16 +366,16 @@ module('Unit | Private | CollapseTree', function(hooks) {
     let rows = generateTree([0, [1, [2, 3], 4, [5, 6]]]);
     tree = CollapseTree.create({ rows, rowMetaCache, enableTree: true });
     let row4Meta = metaFor(tree.objectAt(4));
-    assert.equal(
-      row4Meta.get('_rowValue.disableCollapse') === true,
-      false,
+    assert.notStrictEqual(
+      row4Meta.get('_rowValue.disableCollapse'),
+      true,
       'collapse is not yet disabled'
     );
 
     let expectedValue = [0, 1, 2, 3, 4, 5, 6];
     let expectedDepth = [0, 1, 2, 2, 1, 2, 2];
 
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(tree.length, 7);
 
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(tree.objectAt(i).value, expectedValue[i]);
@@ -390,9 +386,9 @@ module('Unit | Private | CollapseTree', function(hooks) {
     await settled();
 
     // we can no longer collapse the tree at this row
-    assert.equal(get(row4Meta, 'canCollapse'), false);
+    assert.false(row4Meta.canCollapse);
     // but the tree remains unchanged other than the ability to collapse
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(tree.length, 7);
     for (let i = 0; i < expectedValue.length; i++) {
       assert.equal(tree.objectAt(i).value, expectedValue[i]);
       assert.equal(metaFor(tree.objectAt(i)).get('depth'), expectedDepth[i]);
@@ -409,7 +405,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
     let expectedDepth = [0, 1, 2, 2, 2, 2, 1, 2];
 
-    assert.equal(get(tree, 'length'), 8);
+    assert.equal(tree.length, 8);
 
     for (let i = 0; i < expectedDepth.length; i++) {
       assert.equal(tree.objectAt(i).value, i);
@@ -427,7 +423,7 @@ module('Unit | Private | CollapseTree', function(hooks) {
 
     let expectedDepth = [0, 1, 2, 2, 3, 3, 1];
 
-    assert.equal(get(tree, 'length'), 7);
+    assert.equal(tree.length, 7);
 
     for (let i = 0; i < expectedDepth.length; i++) {
       assert.equal(tree.objectAt(i).value, i);

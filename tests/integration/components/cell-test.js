@@ -113,7 +113,7 @@ module('Integration | cell', function() {
 
       await fillIn('input', 'Z');
 
-      assert.equal(get(rows[0], 'A'), 'Z', 'value updated successfully');
+      assert.equal(rows[0].A, 'Z', 'value updated successfully');
     });
   });
 

@@ -149,7 +149,7 @@ module('[Unit] ember-thead', function(hooks) {
     this.set('rows', data.rows);
     this.set('columns', data.columns);
     this.set('removeColumn', () => {
-      this.set('columns', this.get('columns').slice(0, -1));
+      this.set('columns', this.columns.slice(0, -1));
     });
 
     await renderTable(this);
@@ -161,7 +161,7 @@ module('[Unit] ember-thead', function(hooks) {
     this.set('rows', data.rows);
     this.set('columns', A(data.columns));
     this.set('removeColumn', () => {
-      this.get('columns').popObject();
+      this.columns.popObject();
     });
 
     await renderTable(this);
@@ -185,7 +185,7 @@ module('[Unit] ember-thead', function(hooks) {
     this.set('rows', data.rows);
     this.set('columns', A(data.columns));
     this.set('addColumn', () => {
-      this.get('columns').pushObject(data.newColumn);
+      this.columns.pushObject(data.newColumn);
     });
 
     await renderTable(this);

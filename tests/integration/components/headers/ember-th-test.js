@@ -58,7 +58,7 @@ module('[Unit] ember-th', function(hooks) {
       2,
       'Header cells render passed block'
     );
-    assert.ok(!firstHeader.sortIndicator.isPresent, 'No sort indicator is rendered');
+    assert.notOk(firstHeader.sortIndicator.isPresent, 'No sort indicator is rendered');
     assert.notOk(firstHeader.sortToggle.isPresent, 'No sort toggle is rendered');
     assert.notOk(firstHeader.resizeHandle.isPresent, 'No resize area is rendered');
   });

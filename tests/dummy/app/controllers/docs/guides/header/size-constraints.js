@@ -27,7 +27,7 @@ export default Controller.extend({
   },
 
   setDefaultResizeMode() {
-    let widthConstraint = this.get('widthConstraint');
+    let widthConstraint = this.widthConstraint;
     let resizeMode = defaultResizeMode[widthConstraint];
 
     if (resizeMode) {

@@ -65,7 +65,7 @@ export default Controller.extend({
   // END-SNIPPET
 
   toggleFixed: action(function(column) {
-    if (get(column, 'isFixed')) {
+    if (column.isFixed) {
       set(column, 'isFixed', false);
     } else {
       set(column, 'isFixed', 'left');
