@@ -161,5 +161,6 @@ export async function generateTable(testContext, ...args) {
 
   await render(fullTable);
 
+  // eslint-disable-next-line ember/no-settled-after-test-helper
   await settled();
 }

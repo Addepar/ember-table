@@ -101,18 +101,21 @@ module('Acceptance | docs', function(hooks) {
 
     await header.click();
     assert.true(
+      // eslint-disable-next-line qunit/no-assert-logical-expression
       header.sortIndicator.isPresent && header.sortIndicator.isDescending,
       'sort descending'
     );
 
     await header.click();
     assert.true(
+      // eslint-disable-next-line qunit/no-assert-logical-expression
       header.sortIndicator.isPresent && header.sortIndicator.isAscending,
       'sort ascending'
     );
 
     await header.click();
     assert.true(
+      // eslint-disable-next-line qunit/no-assert-logical-expression
       header.sortIndicator.isPresent && header.sortIndicator.isDescending,
       'sort cycles back to descending'
     );

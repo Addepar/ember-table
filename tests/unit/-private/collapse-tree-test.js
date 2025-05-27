@@ -1,6 +1,6 @@
 import { module, test } from 'qunit';
 import { A as emberA } from '@ember/array';
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { run } from '@ember/runloop';
 import { settled } from '@ember/test-helpers';
 

@@ -1,6 +1,6 @@
 import Controller from '@ember/controller';
 import { A as emberA } from '@ember/array';
-import { get, set, action } from '@ember/object';
+import { set, action } from '@ember/object';
 
 import { generateRows } from 'dummy/utils/generators';
 import { computed } from '@ember/object';

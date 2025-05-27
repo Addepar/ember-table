@@ -11,6 +11,7 @@ let table = new TablePage();
 module('[Unit] ember-th', function(hooks) {
   setupRenderingTest(hooks);
 
+  // eslint-disable-next-line qunit/require-expect
   test('A header cell accepts a block', async function(assert) {
     assert.expect(4);
 
@@ -83,6 +84,7 @@ module('[Unit] ember-th', function(hooks) {
       </EmberTable>
     `);
 
+    // eslint-disable-next-line ember/no-settled-after-test-helper
     await settled();
 
     let headers = table.headers.toArray();
@@ -117,6 +119,7 @@ module('[Unit] ember-th', function(hooks) {
       </EmberTable>
     `);
 
+    // eslint-disable-next-line ember/no-settled-after-test-helper
     await settled();
 
     let header = table.headers.objectAt(0);

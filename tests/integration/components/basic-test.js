@@ -308,6 +308,7 @@ module('Integration | basic', function() {
         </div>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
       assert.strictEqual(table.rows.length, itemsCount, 'renders the correct number of rows');
     });
@@ -331,6 +332,7 @@ module('Integration | basic', function() {
         </div>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
       assert
         .dom('[data-test-inverse-yield]')
@@ -350,6 +352,7 @@ module('Integration | basic', function() {
       for (let tagName of ['th', 'td']) {
         classList = find(`${tagName}:nth-of-type(1)`).classList;
         assert.false(
+          // eslint-disable-next-line qunit/no-assert-logical-expression
           classList.contains('ember-table__text-align-left') ||
             classList.contains('ember-table__text-align-center') ||
             classList.contains('ember-table__text-align-right'),

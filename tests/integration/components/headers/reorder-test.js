@@ -23,7 +23,7 @@ const table = new TablePage();
  * pixels to stay from the edge.
  *
  */
-export async function scrollToEdge(targetElement, edgeOffset, direction) {
+async function scrollToEdge(targetElement, edgeOffset, direction) {
   let targetElementRight = targetElement.getBoundingClientRect().right;
   let container = find('.ember-table');
 
@@ -368,6 +368,7 @@ module('Integration | headers | reorder', function() {
       );
     });
 
+    // eslint-disable-next-line qunit/no-identical-names
     test('scroll container scrolls reordering at right edge', async function(assert) {
       let columnCount = 20;
       let columnWidth = 100;
@@ -395,6 +396,7 @@ module('Integration | headers | reorder', function() {
       );
     });
 
+    // eslint-disable-next-line qunit/no-identical-names
     test('scroll container scrolls reordering at left edge', async function(assert) {
       let columnCount = 20;
       let columnWidth = 100;

@@ -1,4 +1,4 @@
-import { get, set } from '@ember/object';
+import { set } from '@ember/object';
 import { run } from '@ember/runloop';
 import ColumnTree from 'ember-table/-private/column-tree';
 import MetaCache from 'ember-table/-private/meta-cache';
