@@ -126,7 +126,7 @@ module('Integration | scroll indicators', function() {
         table.isScrollIndicatorRendered('right'),
         'right scroll indicator is initially shown'
       );
-      assert.ok(isOffset('right', 100), 'right scroll indicator is offset');
+      assert.true(isOffset('right', 100), 'right scroll indicator is offset');
       assert.false(
         table.isScrollIndicatorRendered('left'),
         'left scroll indicator is not initially shown'
@@ -139,12 +139,12 @@ module('Integration | scroll indicators', function() {
         table.isScrollIndicatorRendered('right'),
         'right scroll indicator is shown during partial scroll'
       );
-      assert.ok(isOffset('right', 100), 'right scroll indicator is offset');
+      assert.true(isOffset('right', 100), 'right scroll indicator is offset');
       assert.true(
         table.isScrollIndicatorRendered('left'),
         'left scroll indicator is shown during partial scroll'
       );
-      assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
+      assert.true(isOffset('left', 100), 'left scroll indicator is offset');
 
       // scroll horizontally to the end
       await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, 0);
@@ -157,7 +157,7 @@ module('Integration | scroll indicators', function() {
         table.isScrollIndicatorRendered('left'),
         'left scroll indicator is still shown at end of scroll'
       );
-      assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
+      assert.true(isOffset('left', 100), 'left scroll indicator is offset');
     });
 
     test('top scroll indicator positioned below header', async function(assert) {
@@ -173,7 +173,7 @@ module('Integration | scroll indicators', function() {
       // scroll down a little bit
       await scrollTo('[data-test-ember-table-overflow]', 0, 1);
 
-      assert.ok(isOffset('top', table.header.height), 'top indicator is below header');
+      assert.true(isOffset('top', table.header.height), 'top indicator is below header');
     });
 
     test('bottom scroll indicator positioned above non-scrollable footer', async function(assert) {
@@ -184,7 +184,7 @@ module('Integration | scroll indicators', function() {
         footerRowCount: 2,
       });
 
-      assert.ok(
+      assert.true(
         isOffset('bottom', table.footer.height),
         'bottom indicator is above footer initially'
       );
@@ -194,7 +194,7 @@ module('Integration | scroll indicators', function() {
       let maxScroll = overflow.scrollHeight - overflow.clientHeight;
       await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll * 0.9);
 
-      assert.ok(
+      assert.true(
         isOffset('bottom', table.footer.height),
         'bottom indicator is above footer after scrolling'
       );
@@ -210,7 +210,7 @@ module('Integration | scroll indicators', function() {
 
       let visibleFooterHeight = table.visibleFooterHeight();
 
-      assert.ok(
+      assert.true(
         isOffset('bottom', visibleFooterHeight),
         'bottom indicator is positioned above footer initially'
       );
@@ -222,7 +222,7 @@ module('Integration | scroll indicators', function() {
       let maxScroll = overflow.scrollHeight - overflow.clientHeight;
       await scrollTo('[data-test-ember-table-overflow]', 0, maxScroll * 0.75);
 
-      assert.ok(
+      assert.true(
         isOffset('bottom', 0),
         'bottom indicator is positioned at bottom of table when footer scrolls'
       );

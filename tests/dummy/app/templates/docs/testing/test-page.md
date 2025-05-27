@@ -16,13 +16,13 @@ Usage:
 // ... in an acceptance test:
 const table = new TablePage();
 
-assert.equal(table.body.rowCount, 5, 'the table has 5 body rows');
-assert.equal(table.header.rows.length, 1, 'the table has 1 row of headers');
-assert.equal(table.footer.rows.length, 1, 'the table has 1 row of footers');
+assert.strictEqual(table.body.rowCount, 5, 'the table has 5 body rows');
+assert.strictEqual(table.header.rows.length, 1, 'the table has 1 row of headers');
+assert.strictEqual(table.footer.rows.length, 1, 'the table has 1 row of footers');
 
 await table.selectRow(0); // The first body row is selected
-assert.ok(table.body.rows.objectAt(0).isSelected, 'first row is selected');
-assert.ok(!table.body.rows.objectAt(1).isSelected, 'second row is not selected');
+assert.true(table.body.rows.objectAt(0).isSelected, 'first row is selected');
+assert.false(table.body.rows.objectAt(1).isSelected, 'second row is not selected');
 ```
 
 To learn more about the properties that are present on the table page object, refer to [its source](https://github.com/Addepar/ember-table/blob/master/addon-test-support/pages/ember-table.js) or

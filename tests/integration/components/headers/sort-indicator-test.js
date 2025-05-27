@@ -17,7 +17,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
 
       await render(hbs`<EmberTh::SortIndicator @columnMeta={{this.columnMeta}} />`);
 
-      assert.ok(sort.indicator.isPresent);
+      assert.true(sort.indicator.isPresent);
 
       // Template block usage:
       await render(hbs`
@@ -26,7 +26,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         </EmberTh::SortIndicator>
       `);
 
-      assert.equal(sort.indicator.text, 'template block text');
+      assert.strictEqual(sort.indicator.text, 'template block text');
     });
 
     test('it is hidden when not sorted', async function(assert) {
@@ -36,7 +36,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
 
       await render(hbs`<EmberTh::SortIndicator @columnMeta={{this.columnMeta}} />`);
 
-      assert.notOk(sort.indicator.isPresent);
+      assert.false(sort.indicator.isPresent);
 
       // Template block usage:
       await render(hbs`
@@ -45,7 +45,7 @@ module('Integration | Component | ember-th/sort-indicator', function() {
         </EmberTh::SortIndicator>
       `);
 
-      assert.notOk(sort.indicator.isPresent);
+      assert.false(sort.indicator.isPresent);
     });
 
     test('it displays the sort order', async function(assert) {
@@ -56,13 +56,13 @@ module('Integration | Component | ember-th/sort-indicator', function() {
 
       await render(hbs`<EmberTh::SortIndicator @columnMeta={{this.columnMeta}} />`);
       // asc sort
-      assert.ok(sort.indicator.isAscending);
-      assert.notOk(sort.indicator.isDescending);
+      assert.true(sort.indicator.isAscending);
+      assert.false(sort.indicator.isDescending);
 
       // desc sort
       this.set('columnMeta.isSortedAsc', false);
-      assert.notOk(sort.indicator.isAscending);
-      assert.ok(sort.indicator.isDescending);
+      assert.false(sort.indicator.isAscending);
+      assert.true(sort.indicator.isDescending);
     });
 
     test('it displays the sort index when using multiple sorts', async function(assert) {
@@ -74,11 +74,11 @@ module('Integration | Component | ember-th/sort-indicator', function() {
 
       await render(hbs`<EmberTh::SortIndicator @columnMeta={{this.columnMeta}} />`);
 
-      assert.equal(sort.indicator.text, '2');
+      assert.strictEqual(sort.indicator.text, '2');
 
       // desc sort
       this.set('columnMeta.isMultiSorted', false);
-      assert.equal(sort.indicator.text, '');
+      assert.strictEqual(sort.indicator.text, '');
     });
 
     test('the sort option supports accessibility', async function(assert) {
@@ -88,8 +88,8 @@ module('Integration | Component | ember-th/sort-indicator', function() {
 
       await render(hbs`<EmberTh::SortIndicator @columnMeta={{this.columnMeta}} />`);
 
-      assert.ok(sort.toggle.isPresent);
-      assert.equal(sort.toggle.text, 'Toggle Sort');
+      assert.true(sort.toggle.isPresent);
+      assert.strictEqual(sort.toggle.text, 'Toggle Sort');
     });
   });
 });
