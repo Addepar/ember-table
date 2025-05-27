@@ -358,7 +358,7 @@ module('Integration | selection', () => {
         assert.expect(1);
 
         this.set('onSelect', selection => {
-          assert.ok(!Array.isArray(selection), 'selection is not an array');
+          assert.notOk(Array.isArray(selection), 'selection is not an array');
         });
 
         await generateTable(this, { rowSelectionMode: 'single' });
@@ -461,8 +461,8 @@ module('Integration | selection', () => {
 
         let row = table.body.rows.objectAt(0);
 
-        assert.ok(!row.isSelected, 'the row is not selected');
-        assert.ok(!row.checkbox.isChecked, 'the row checkbox is not checked');
+        assert.notOk(row.isSelected, 'the row is not selected');
+        assert.notOk(row.checkbox.isChecked, 'the row checkbox is not checked');
 
         await row.click();
 
@@ -475,13 +475,13 @@ module('Integration | selection', () => {
 
         let row = table.body.rows.objectAt(0);
 
-        assert.ok(!row.isSelected, 'the row is not selected');
-        assert.ok(!row.checkbox.isChecked, 'the row checkbox is not checked');
+        assert.notOk(row.isSelected, 'the row is not selected');
+        assert.notOk(row.checkbox.isChecked, 'the row checkbox is not checked');
 
         await row.click();
 
         assert.ok(row.isSelected, 'the row is selected');
-        assert.ok(!row.checkbox.isChecked, 'the row checkbox is checked');
+        assert.notOk(row.checkbox.isChecked, 'the row checkbox is checked');
       });
     });
 

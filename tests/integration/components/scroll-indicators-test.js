@@ -34,42 +34,36 @@ module('Integration | scroll indicators', function() {
         columnCount: 30,
       });
 
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('right'),
-        true,
         'right scroll indicator is initially shown'
       );
-      assert.equal(
+      assert.false(
         table.isScrollIndicatorRendered('left'),
-        false,
         'left scroll indicator is not initially shown'
       );
 
       // scroll horizontally just a little bit
       await scrollTo('[data-test-ember-table-overflow]', 1, 0);
 
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('right'),
-        true,
         'right scroll indicator is shown during partial scroll'
       );
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('left'),
-        true,
         'left scroll indicator is shown during partial scroll'
       );
 
       // scroll horizontally to the end
       await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, 0);
 
-      assert.equal(
+      assert.false(
         table.isScrollIndicatorRendered('right'),
-        false,
         'right scroll indicator is not shown at end of scroll'
       );
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('left'),
-        true,
         'left scroll indicator is still shown at end of scroll'
       );
     });
@@ -81,42 +75,36 @@ module('Integration | scroll indicators', function() {
         rowCount: 100,
       });
 
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('bottom'),
-        true,
         'bottom scroll indicator is initially shown'
       );
-      assert.equal(
+      assert.false(
         table.isScrollIndicatorRendered('top'),
-        false,
         'top scroll indicator is not initially shown'
       );
 
       // scroll vertically just a little bit
       await scrollTo('[data-test-ember-table-overflow]', 0, 1);
 
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('top'),
-        true,
         'top scroll indicator is shown during partial scroll'
       );
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('bottom'),
-        true,
         'bottom scroll indicator is shown during partial scroll'
       );
 
       // scroll vertically to the end
       await scrollTo('[data-test-ember-table-overflow]', 0, SCROLL_MAX);
 
-      assert.equal(
+      assert.false(
         table.isScrollIndicatorRendered('bottom'),
-        false,
         'bottom scroll indicator is not shown at end of scroll'
       );
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('top'),
-        true,
         'top scroll indicator is still shown at end of scroll'
       );
     });
@@ -134,30 +122,26 @@ module('Integration | scroll indicators', function() {
         },
       });
 
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('right'),
-        true,
         'right scroll indicator is initially shown'
       );
       assert.ok(isOffset('right', 100), 'right scroll indicator is offset');
-      assert.equal(
+      assert.false(
         table.isScrollIndicatorRendered('left'),
-        false,
         'left scroll indicator is not initially shown'
       );
 
       // scroll horizontally just a little bit
       await scrollTo('[data-test-ember-table-overflow]', 1, 0);
 
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('right'),
-        true,
         'right scroll indicator is shown during partial scroll'
       );
       assert.ok(isOffset('right', 100), 'right scroll indicator is offset');
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('left'),
-        true,
         'left scroll indicator is shown during partial scroll'
       );
       assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
@@ -165,14 +149,12 @@ module('Integration | scroll indicators', function() {
       // scroll horizontally to the end
       await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, 0);
 
-      assert.equal(
+      assert.false(
         table.isScrollIndicatorRendered('right'),
-        false,
         'right scroll indicator is not shown at end of scroll'
       );
-      assert.equal(
+      assert.true(
         table.isScrollIndicatorRendered('left'),
-        true,
         'left scroll indicator is still shown at end of scroll'
       );
       assert.ok(isOffset('left', 100), 'left scroll indicator is offset');
@@ -263,30 +245,17 @@ module('Integration | scroll indicators', function() {
       await scrollTo('[data-test-ember-table-overflow]', 1, 1);
       await scrollTo('[data-test-ember-table-overflow]', 0, 0);
 
-      assert.equal(
-        table.isScrollIndicatorRendered('left'),
-        false,
-        'left scroll indicator is not shown'
-      );
+      assert.false(table.isScrollIndicatorRendered('left'), 'left scroll indicator is not shown');
 
-      assert.equal(
-        table.isScrollIndicatorRendered('top'),
-        false,
-        'top scroll indicator is not shown'
-      );
+      assert.false(table.isScrollIndicatorRendered('top'), 'top scroll indicator is not shown');
 
       // scroll all the way to bottom-right
       await scrollTo('[data-test-ember-table-overflow]', SCROLL_MAX, SCROLL_MAX);
 
-      assert.equal(
-        table.isScrollIndicatorRendered('right'),
-        false,
-        'right scroll indicator is not shown'
-      );
+      assert.false(table.isScrollIndicatorRendered('right'), 'right scroll indicator is not shown');
 
-      assert.equal(
+      assert.false(
         table.isScrollIndicatorRendered('bottom'),
-        false,
         'bottom scroll indicator is not shown'
       );
     });

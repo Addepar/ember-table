@@ -93,7 +93,7 @@ module('Acceptance | docs', function(hooks) {
     let table = new DemoTable();
     let header = table.headers.objectAt(0);
 
-    assert.ok(!header.sortIndicator.isPresent, 'precond - sortIndicator is not present');
+    assert.notOk(header.sortIndicator.isPresent, 'precond - sortIndicator is not present');
 
     await header.click();
     assert.ok(

@@ -134,7 +134,7 @@ module('Integration | sort', function() {
       this.set('onUpdateSorts', sorts => {
         assert.equal(sorts.length, 1);
         assert.equal(sorts[0].valuePath, 'name');
-        assert.equal(sorts[0].isAscending, false);
+        assert.false(sorts[0].isAscending);
       });
 
       let columns = [
@@ -158,7 +158,7 @@ module('Integration | sort', function() {
 
       let firstHeader = table.headers.objectAt(0);
 
-      assert.ok(!firstHeader.sortIndicator.isPresent);
+      assert.notOk(firstHeader.sortIndicator.isPresent);
 
       await firstHeader.click();
 
@@ -172,7 +172,7 @@ module('Integration | sort', function() {
 
       await firstHeader.click();
 
-      assert.ok(!firstHeader.sortIndicator.isPresent);
+      assert.notOk(firstHeader.sortIndicator.isPresent);
     });
 
     test('sort indicator works on second column', async function(assert) {
@@ -181,8 +181,8 @@ module('Integration | sort', function() {
       let firstHeader = table.headers.objectAt(0);
       let secondHeader = table.headers.objectAt(1);
 
-      assert.ok(!firstHeader.sortIndicator.isPresent);
-      assert.ok(!secondHeader.sortIndicator.isPresent);
+      assert.notOk(firstHeader.sortIndicator.isPresent);
+      assert.notOk(secondHeader.sortIndicator.isPresent);
 
       await firstHeader.click();
 
@@ -191,7 +191,7 @@ module('Integration | sort', function() {
 
       await secondHeader.click();
 
-      assert.ok(!firstHeader.sortIndicator.isPresent);
+      assert.notOk(firstHeader.sortIndicator.isPresent);
       assert.ok(secondHeader.sortIndicator.isPresent);
       assert.ok(secondHeader.sortIndicator.isDescending);
     });
@@ -272,7 +272,7 @@ module('Integration | sort', function() {
         'can disable a column withot removing all sorts'
       );
       assert.equal(firstHeader.sortIndicator.text, '', 'no sort number shown');
-      assert.ok(!secondHeader.sortIndicator.isPresent, 'second sort indicator is gone');
+      assert.notOk(secondHeader.sortIndicator.isPresent, 'second sort indicator is gone');
       assert.ok(firstHeader.sortIndicator.isAscending, 'sort indicators show correct direction');
     });
 

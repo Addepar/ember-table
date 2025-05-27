@@ -33,7 +33,7 @@ export default Controller.extend({
   init() {
     this._super(...arguments);
 
-    let [rowWithChildren] = this.get('rowWithChildren');
+    let [rowWithChildren] = this.rowWithChildren;
 
     this.preselection = [rowWithChildren];
   },

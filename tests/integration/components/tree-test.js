@@ -32,7 +32,7 @@ module('Integration | Tree', () => {
       assert.equal(table.getCell(1, 0).text, '1A', 'correct cell rendered');
 
       assert.equal(table.rows.length, 2, 'renders root rows only');
-      assert.ok(!table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is not present');
+      assert.notOk(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is not present');
 
       // can be reenabled
       this.set('enableTree', true);
@@ -105,7 +105,7 @@ module('Integration | Tree', () => {
       assert.equal(table.getCell(0, 0).text, '0A', 'correct cell rendered');
       assert.equal(table.getCell(1, 0).text, '00A', 'correct cell rendered');
 
-      assert.ok(!table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is not present');
+      assert.notOk(table.rows.objectAt(0).collapse.isPresent, 'collapse toggle is not present');
 
       // can be reenabled
       this.set('enableCollapse', true);
