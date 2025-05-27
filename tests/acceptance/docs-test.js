@@ -18,23 +18,23 @@ module('Acceptance | docs', function(hooks) {
   test('visiting / redirects to /docs', async function(assert) {
     await visit('/');
 
-    assert.equal(currentURL(), '/docs');
+    assert.strictEqual(currentURL(), '/docs');
   });
 
   test('pages linked to by /docs nav all render', async function(assert) {
     await visit('/docs');
 
     let nav = this.element.querySelector('nav');
-    assert.ok(!!nav, 'nav exists');
+    assert.true(!!nav, 'nav exists');
 
     let links = Array.from(nav.querySelectorAll('a')).filter(link =>
       link.getAttribute('href').startsWith('/docs')
     );
-    assert.ok(links.length > 0, `${links.length} nav links found`);
+    assert.true(links.length > 0, `${links.length} nav links found`);
     for (let link of links) {
       let href = link.getAttribute('href');
       await visit(href);
-      assert.ok(true, `Visited ${href} successfully`);
+      assert.true(true, `Visited ${href} successfully`);
 
       let buttonCount = 0;
       let docsNavs = Array.from(this.element.querySelectorAll(DOCS_DEMO_SNIPPET_NAV_SELECTOR));
@@ -45,7 +45,7 @@ module('Acceptance | docs', function(hooks) {
           buttonCount++;
         }
       }
-      assert.ok(true, `Clicked ${buttonCount} snippet buttons on "${href}"`);
+      assert.true(true, `Clicked ${buttonCount} snippet buttons on "${href}"`);
 
       await visit('/docs'); // start over
     }
@@ -58,8 +58,12 @@ module('Acceptance | docs', function(hooks) {
 
     await visit('/docs/guides/header/subcolumns');
     let table = new DemoTable();
-    assert.equal(table.header.headers.objectAt(0).text, 'A', 'first header cell renders correctly');
-    assert.equal(
+    assert.strictEqual(
+      table.header.headers.objectAt(0).text,
+      'A',
+      'first header cell renders correctly'
+    );
+    assert.strictEqual(
       table.body.rows.objectAt(0).cells.objectAt(0).text,
       'A A',
       'first body cell renders correclty'
@@ -70,14 +74,14 @@ module('Acceptance | docs', function(hooks) {
     await visit('/docs');
 
     let nav = this.element.querySelector('nav');
-    assert.ok(!!nav, 'nav exists');
+    assert.true(!!nav, 'nav exists');
 
     let navItems = Array.from(nav.querySelectorAll('li'));
 
     let expectedNavItems = ['API REFERENCE', '<EmberTable/​>'];
 
     expectedNavItems.forEach(expectedText => {
-      assert.ok(
+      assert.true(
         navItems.some(li => li.innerText.includes(expectedText)),
         `"${expectedText}" nav item is exists`
       );
@@ -93,19 +97,25 @@ module('Acceptance | docs', function(hooks) {
     let table = new DemoTable();
     let header = table.headers.objectAt(0);
 
-    assert.ok(!header.sortIndicator.isPresent, 'precond - sortIndicator is not present');
+    assert.false(header.sortIndicator.isPresent, 'precond - sortIndicator is not present');
 
     await header.click();
-    assert.ok(
+    assert.true(
+      // eslint-disable-next-line qunit/no-assert-logical-expression
       header.sortIndicator.isPresent && header.sortIndicator.isDescending,
       'sort descending'
     );
 
     await header.click();
-    assert.ok(header.sortIndicator.isPresent && header.sortIndicator.isAscending, 'sort ascending');
+    assert.true(
+      // eslint-disable-next-line qunit/no-assert-logical-expression
+      header.sortIndicator.isPresent && header.sortIndicator.isAscending,
+      'sort ascending'
+    );
 
     await header.click();
-    assert.ok(
+    assert.true(
+      // eslint-disable-next-line qunit/no-assert-logical-expression
       header.sortIndicator.isPresent && header.sortIndicator.isDescending,
       'sort cycles back to descending'
     );

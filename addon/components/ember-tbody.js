@@ -1,14 +1,12 @@
 import Component from '@ember/component';
-import { scheduleOnce } from '@ember/runloop';
-import { computed } from '@ember/object';
-import { observer } from '../../-private/utils/observer';
-import { bool, readOnly, or } from '@ember/object/computed';
-
-import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
-import defaultTo from '../../-private/utils/default-to';
-
-import layout from './template';
 import { assert } from '@ember/debug';
+import { computed } from '@ember/object';
+import { bool, readOnly, or } from '@ember/object/computed';
+import { scheduleOnce } from '@ember/runloop';
+
+import CollapseTree, { SELECT_MODE } from '../-private/collapse-tree';
+import defaultTo from '../-private/utils/default-to';
+import { observer } from '../-private/utils/observer';
 
 let setupRowCountForTest = false;
 export function setSetupRowCountForTest(bool) {
@@ -40,7 +38,6 @@ export function setSetupRowCountForTest(bool) {
   @public
 */
 export default Component.extend({
-  layout,
   tagName: 'tbody',
 
   /**
@@ -289,7 +286,9 @@ export default Component.extend({
       let scheduleUpdate = (this._scheduleUpdate = () => {
         scheduleOnce('actions', this, this._updateDataTestRowCount);
       });
+      // eslint-disable-next-line ember/no-observers
       this.collapseTree.addObserver('rows', scheduleUpdate);
+      // eslint-disable-next-line ember/no-observers
       this.collapseTree.addObserver('[]', scheduleUpdate);
     }
 
@@ -330,6 +329,7 @@ export default Component.extend({
     }
   ),
 
+  // eslint-disable-next-line ember/require-super-in-lifecycle-hooks
   willDestroy() {
     for (let [row, meta] of this.rowMetaCache.entries()) {
       meta.destroy();
@@ -351,7 +351,9 @@ export default Component.extend({
   wrappedRows: computed('rows', function() {
     let rows = this.get('rows');
 
+    // eslint-disable-next-line ember/no-side-effects
     this.collapseTree.set('rowMetaCache', this.rowMetaCache);
+    // eslint-disable-next-line ember/no-side-effects
     this.collapseTree.set('rows', rows);
 
     return this.collapseTree;

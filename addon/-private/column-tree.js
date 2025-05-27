@@ -111,6 +111,7 @@ const TableColumnMeta = EmberObject.extend({
     return this.get('_node.leaves.length');
   }),
 
+  // eslint-disable-next-line ember/require-return-from-computed
   index: computed('isLeaf', '_node.offsetIndex', function() {
     if (this.get('isLeaf')) {
       return this.get('_node.offsetIndex');
@@ -167,6 +168,7 @@ const ColumnTreeNode = EmberObject.extend({
     let column = get(this, 'column');
 
     if (!parent) {
+      // eslint-disable-next-line ember/no-assignment-of-untracked-properties-used-in-tracking-contexts
       this.isRoot = true;
     } else {
       let columnMetaCache = get(tree, 'columnMetaCache');
@@ -222,6 +224,7 @@ const ColumnTreeNode = EmberObject.extend({
     let tree = get(this, 'tree');
     let parent = this;
 
+    // eslint-disable-next-line ember/no-side-effects
     this._subcolumnNodes = emberA(
       get(this, 'column.subcolumns').map(column => ColumnTreeNode.create({ column, tree, parent }))
     );
@@ -622,6 +625,7 @@ export default EmberObject.extend({
 
     let columns = get(this, 'columns');
 
+    // eslint-disable-next-line ember/no-side-effects
     this._root = ColumnTreeNode.create({ column: { subcolumns: columns }, tree: this });
     return this._root;
   }),

@@ -11,6 +11,7 @@ let table = new TablePage();
 module('[Unit] ember-th', function(hooks) {
   setupRenderingTest(hooks);
 
+  // eslint-disable-next-line qunit/require-expect
   test('A header cell accepts a block', async function(assert) {
     assert.expect(4);
 
@@ -53,14 +54,14 @@ module('[Unit] ember-th', function(hooks) {
     `);
     await firstHeader.click();
 
-    assert.equal(
+    assert.strictEqual(
       this.element.querySelectorAll('[data-test-block]').length,
       2,
       'Header cells render passed block'
     );
-    assert.ok(!firstHeader.sortIndicator.isPresent, 'No sort indicator is rendered');
-    assert.notOk(firstHeader.sortToggle.isPresent, 'No sort toggle is rendered');
-    assert.notOk(firstHeader.resizeHandle.isPresent, 'No resize area is rendered');
+    assert.false(firstHeader.sortIndicator.isPresent, 'No sort indicator is rendered');
+    assert.false(firstHeader.sortToggle.isPresent, 'No sort toggle is rendered');
+    assert.false(firstHeader.resizeHandle.isPresent, 'No resize area is rendered');
   });
 
   test('applies is-first-column, is-last-column classes', async function(assert) {
@@ -83,19 +84,20 @@ module('[Unit] ember-th', function(hooks) {
       </EmberTable>
     `);
 
+    // eslint-disable-next-line ember/no-settled-after-test-helper
     await settled();
 
     let headers = table.headers.toArray();
 
     // `is-first-column` class only appears on first header
-    assert.ok(headers[0].isFirstColumn, 'is-first-column applied to first header');
-    assert.notOk(headers[1].isFirstColumn, 'is-first-column not applied to middle header');
-    assert.notOk(headers[2].isFirstColumn, 'is-first-column not applied to last header');
+    assert.true(headers[0].isFirstColumn, 'is-first-column applied to first header');
+    assert.false(headers[1].isFirstColumn, 'is-first-column not applied to middle header');
+    assert.false(headers[2].isFirstColumn, 'is-first-column not applied to last header');
 
     // `is-last-column` class only appears on last header
-    assert.notOk(headers[0].isLastColumn, 'is-last-column not applied to first header');
-    assert.notOk(headers[1].isLastColumn, 'is-last-column not applied to middle header');
-    assert.ok(headers[2].isLastColumn, 'is-last-column applied to last header');
+    assert.false(headers[0].isLastColumn, 'is-last-column not applied to first header');
+    assert.false(headers[1].isLastColumn, 'is-last-column not applied to middle header');
+    assert.true(headers[2].isLastColumn, 'is-last-column applied to last header');
   });
 
   test('applies positional classes correctly in slack mode', async function(assert) {
@@ -117,18 +119,19 @@ module('[Unit] ember-th', function(hooks) {
       </EmberTable>
     `);
 
+    // eslint-disable-next-line ember/no-settled-after-test-helper
     await settled();
 
     let header = table.headers.objectAt(0);
     let slackHeader = table.slackHeaders.objectAt(0);
 
     // slack header should be marked accordingly
-    assert.notOk(header.isSlack, 'is-slack not applied to normal header');
-    assert.ok(slackHeader.isSlack, 'is-slack applied to slack header');
+    assert.false(header.isSlack, 'is-slack not applied to normal header');
+    assert.true(slackHeader.isSlack, 'is-slack applied to slack header');
 
     // initially, slack column has zero width, so "A" gets `is-last-column` class
-    assert.ok(header.isLastColumn, 'is-last-column applied to normal header');
-    assert.notOk(slackHeader.isLastColumn, 'is-last-column not applied to slack header');
+    assert.true(header.isLastColumn, 'is-last-column applied to normal header');
+    assert.false(slackHeader.isLastColumn, 'is-last-column not applied to slack header');
 
     /**
      * shrink header "A"; now slack column gets the `is-last-column`
@@ -140,7 +143,7 @@ module('[Unit] ember-th', function(hooks) {
      */
     await header.logicalResize(header.logicalWidth - 27);
 
-    assert.notOk(header.isLastColumn, 'is-last-column not applied to normal header');
-    assert.ok(slackHeader.isLastColumn, 'is-last-column applied to slack header');
+    assert.false(header.isLastColumn, 'is-last-column not applied to normal header');
+    assert.true(slackHeader.isLastColumn, 'is-last-column applied to slack header');
   });
 });

@@ -17,11 +17,13 @@ function computedStyleInPixels(target, property) {
 }
 
 export const SortPage = PageObject.extend({
+  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   indicator: {
     scope: '[data-test-sort-indicator]',
     isAscending: hasClass('is-ascending'),
     isDescending: hasClass('is-descending'),
   },
+  // eslint-disable-next-line ember/avoid-leaking-state-in-ember-objects
   toggle: {
     scope: '[data-test-sort-toggle]',
   },
