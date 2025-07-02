@@ -7,20 +7,30 @@ updates:
     versioning-strategy: lockfile-only
     schedule:
       interval: "weekly"
-    reviewers:
-      - "@Addepar/web-core"
     open-pull-requests-limit: 4
     labels:
       - "dependencies"
-      
+    groups:
+      babel:
+        applies-to: version-updates
+        patterns:
+          - "@babel/*"
+      embroider:
+        applies-to: version-updates
+        patterns:
+          - "@embroider/*"
+      eslint:
+        applies-to: version-updates
+        patterns:
+          - "@eslint/*"
+          - eslint
+          - eslint-*      
   - package-ecosystem: "github-actions"
     # Workflow files stored in the
     # default location of `.github/workflows`
     directory: "/"
     schedule:
       interval: "weekly"
-    reviewers:
-      - "@Addepar/web-core"
     open-pull-requests-limit: 2
     labels:
       - "dependencies"
