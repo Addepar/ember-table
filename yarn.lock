@@ -1305,9 +1305,9 @@
     "@jridgewell/sourcemap-codec" "^1.4.14"
 
 "@ls-lint/ls-lint@^2.2.3":
-  version "2.2.3"
-  resolved "https://registry.npmjs.org/@ls-lint/ls-lint/-/ls-lint-2.2.3.tgz#a270eacea47a1dfad46f73f664f0e2a8896d88cf"
-  integrity sha512-ekM12jNm/7O2I/hsRv9HvYkRdfrHpiV1epVuI2NP+eTIcEgdIdKkKCs9KgQydu/8R5YXTov9aHdOgplmCHLupw==
+  version "2.3.1"
+  resolved "https://registry.npmjs.org/@ls-lint/ls-lint/-/ls-lint-2.3.1.tgz#a914be734a9947cc429f6a5c183b2fc578cfc060"
+  integrity sha512-vPe6IDByQnQRTxcAYjTxrmga/tSIui50VBFTB5KIJWY3OOFmxE2VtymjeSEfQfiMbhZV/ZPAqYy2lt8pZFQ0Rw==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
