@@ -9,7 +9,8 @@ Ember Table versions each support a range of browsers and framework versions:
 
 | Ember Table Version | Ember Versions Supported     | Browser Support |
 | ------------------- | ---------------------------- | --------------- |
-| 5.x                 | 3.12 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
+| 6.x (prerelease)    | 3.38 - 6.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
+| 5.x                 | 3.12 - 4.x (possibly 5.x?)   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 4.x                 | 2.18 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 3.x                 | 2.8 - 3.28 (last 3.x version | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 2.x                 | 1.11 - 3.8 (or around 3.8)   | IE11+ and newer browsers |
@@ -19,9 +20,6 @@ Ember Table versions each support a range of browsers and framework versions:
 ```bash
 ember install ember-table
 ```
-### Using ember-table with Ember <= 3.24
-Use resolutions in your package.json to pin down `ember-classy-page-object` to version `0.7.0`.
-Newer versions are used to support Ember >= 3.28
 
 ## Features
 
