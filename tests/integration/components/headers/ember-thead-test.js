@@ -72,9 +72,9 @@ async function testColumnRemovals(assert, table) {
   let originalContainerWidth = table.logicalContainerWidth;
 
   let currentColumnCount = table.headers.length;
-  assert.equal(currentColumnCount, 4, 'precond - 4 columns');
-  assert.equal(sumHeaderWidths(table), originalWidth, 'precond - headers sum to table width');
-  assert.equal(
+  assert.strictEqual(currentColumnCount, 4, 'precond - 4 columns');
+  assert.strictEqual(sumHeaderWidths(table), originalWidth, 'precond - headers sum to table width');
+  assert.strictEqual(
     originalWidth,
     originalContainerWidth,
     'precond - table is as wide as its container'
@@ -82,29 +82,29 @@ async function testColumnRemovals(assert, table) {
 
   while (currentColumnCount > 1) {
     await click('button#remove-column');
-    assert.equal(
+    assert.strictEqual(
       table.headers.length,
       currentColumnCount - 1,
       `column count changes from ${currentColumnCount} -> ${currentColumnCount - 1}`
     );
     currentColumnCount -= 1;
 
-    assert.equal(
+    assert.strictEqual(
       table.logicalWidth,
       originalWidth,
       `table width is same after removal of column #${currentColumnCount}.`
     );
-    assert.equal(
+    assert.strictEqual(
       table.logicalContainerWidth,
       originalContainerWidth,
       `new table container is same size as original container after removal of column #${currentColumnCount}.`
     );
-    assert.equal(
+    assert.strictEqual(
       sumHeaderWidths(table),
       originalWidth,
       `headers sum to table width after removal of column #${currentColumnCount}`
     );
-    assert.equal(
+    assert.strictEqual(
       table.logicalWidth,
       table.logicalContainerWidth,
       `new table width is as wide as its container after removal of column #${currentColumnCount}.`
@@ -117,19 +117,23 @@ async function testColumnAddition(assert, table) {
   let originalContainerWidth = table.logicalContainerWidth;
 
   let currentColumnCount = table.headers.length;
-  assert.equal(currentColumnCount, 4, 'precond - 4 columns');
-  assert.equal(sumHeaderWidths(table), originalWidth, 'precond - headers sum to table width');
-  assert.equal(
+  assert.strictEqual(currentColumnCount, 4, 'precond - 4 columns');
+  assert.strictEqual(sumHeaderWidths(table), originalWidth, 'precond - headers sum to table width');
+  assert.strictEqual(
     originalWidth,
     originalContainerWidth,
     'precond - table is as wide as its container'
   );
 
   await click('#add-column');
-  assert.equal(table.headers.length, 5, 'column is added');
-  assert.equal(sumHeaderWidths(table), originalWidth, 'headers sum to table width after adding');
-  assert.equal(table.logicalWidth, originalWidth, 'table width is unchanged');
-  assert.equal(
+  assert.strictEqual(table.headers.length, 5, 'column is added');
+  assert.strictEqual(
+    sumHeaderWidths(table),
+    originalWidth,
+    'headers sum to table width after adding'
+  );
+  assert.strictEqual(table.logicalWidth, originalWidth, 'table width is unchanged');
+  assert.strictEqual(
     table.logicalContainerWidth,
     originalContainerWidth,
     'table container width is unchanged'
@@ -149,7 +153,7 @@ module('[Unit] ember-thead', function(hooks) {
     this.set('rows', data.rows);
     this.set('columns', data.columns);
     this.set('removeColumn', () => {
-      this.set('columns', this.get('columns').slice(0, -1));
+      this.set('columns', this.columns.slice(0, -1));
     });
 
     await renderTable(this);
@@ -161,7 +165,7 @@ module('[Unit] ember-thead', function(hooks) {
     this.set('rows', data.rows);
     this.set('columns', A(data.columns));
     this.set('removeColumn', () => {
-      this.get('columns').popObject();
+      this.columns.popObject();
     });
 
     await renderTable(this);
@@ -185,7 +189,7 @@ module('[Unit] ember-thead', function(hooks) {
     this.set('rows', data.rows);
     this.set('columns', A(data.columns));
     this.set('addColumn', () => {
-      this.get('columns').pushObject(data.newColumn);
+      this.columns.pushObject(data.newColumn);
     });
 
     await renderTable(this);
@@ -224,6 +228,6 @@ module('[Unit] ember-thead', function(hooks) {
     await rafFinished();
 
     // without `columnKeyPath`, header would snap back to default width
-    assert.equal(header.logicalWidth, expectedHeaderWidth, 'meta data is preserved');
+    assert.strictEqual(header.logicalWidth, expectedHeaderWidth, 'meta data is preserved');
   });
 });

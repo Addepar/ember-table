@@ -4,9 +4,10 @@ import { assert } from '@ember/debug';
 // eslint-disable-next-line no-restricted-imports
 import { observer as emberObserver } from '@ember/object';
 
-// eslint-disable-next-line no-restricted-imports
 import {
+  // eslint-disable-next-line no-restricted-imports
   addObserver as emberAddObserver,
+  // eslint-disable-next-line no-restricted-imports
   removeObserver as emberRemoveObserver,
 } from '@ember/object/observers';
 
@@ -17,6 +18,7 @@ function asyncObserver(...args) {
   let dependentKeys = args;
   let sync = false;
 
+  // eslint-disable-next-line ember/no-observers
   return emberObserver({ dependentKeys, fn, sync });
 }
 
@@ -37,6 +39,7 @@ function asyncAddObserver(...args) {
     method = args[3];
   }
 
+  // eslint-disable-next-line ember/no-observers
   return emberAddObserver(obj, path, target, method, sync);
 }
 

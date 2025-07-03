@@ -13,14 +13,14 @@ module('Unit | Private | MetaCache', function(hooks) {
     let b = { id: 1 };
 
     metaCache.set(a, 1);
-    assert.equal(metaCache.get(a), 1, 'gets value by added object key');
-    assert.ok(metaCache.has(a), 'contains added object key');
-    assert.equal(metaCache.get(b), undefined, 'gets undefined value when object key unknown');
-    assert.notOk(metaCache.has(b), 'does not contain unknown object key');
+    assert.strictEqual(metaCache.get(a), 1, 'gets value by added object key');
+    assert.true(metaCache.has(a), 'contains added object key');
+    assert.strictEqual(metaCache.get(b), undefined, 'gets undefined value when object key unknown');
+    assert.false(metaCache.has(b), 'does not contain unknown object key');
 
     metaCache.delete(a);
-    assert.equal(metaCache.get(a), undefined, 'gets undefined value when object key removed');
-    assert.notOk(metaCache.has(a), 'does not contain removed object key');
+    assert.strictEqual(metaCache.get(a), undefined, 'gets undefined value when object key removed');
+    assert.false(metaCache.has(a), 'does not contain removed object key');
   });
 
   test('it uses keyPath for cache lookup', function(assert) {
@@ -30,15 +30,19 @@ module('Unit | Private | MetaCache', function(hooks) {
     metaCache.keyPath = 'id';
 
     metaCache.set(a, 1);
-    assert.equal(metaCache.get(a), 1, 'gets value by added object key');
-    assert.ok(metaCache.has(a), 'contains added object key');
-    assert.equal(metaCache.get(b), 1, 'gets same value with equivalent object key');
-    assert.ok(metaCache.has(b), 'contains equivalent object key');
+    assert.strictEqual(metaCache.get(a), 1, 'gets value by added object key');
+    assert.true(metaCache.has(a), 'contains added object key');
+    assert.strictEqual(metaCache.get(b), 1, 'gets same value with equivalent object key');
+    assert.true(metaCache.has(b), 'contains equivalent object key');
 
     metaCache.delete(a);
-    assert.equal(metaCache.get(a), undefined, 'gets undefined value when object key removed');
-    assert.notOk(metaCache.has(a), 'does not contain removed object key');
-    assert.equal(metaCache.get(b), undefined, 'gets undefined value when equivalent key removed');
-    assert.notOk(metaCache.has(b), 'does not contain equivalent object key');
+    assert.strictEqual(metaCache.get(a), undefined, 'gets undefined value when object key removed');
+    assert.false(metaCache.has(a), 'does not contain removed object key');
+    assert.strictEqual(
+      metaCache.get(b),
+      undefined,
+      'gets undefined value when equivalent key removed'
+    );
+    assert.false(metaCache.has(b), 'does not contain equivalent object key');
   });
 });

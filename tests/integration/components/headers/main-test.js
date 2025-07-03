@@ -20,7 +20,7 @@ module('Integration | header | main', function() {
       });
 
       let header = table.headers.objectAt(0);
-      assert.equal(header.logicalWidth, 200, 'column has min width');
+      assert.strictEqual(header.logicalWidth, 200, 'column has min width');
     });
 
     test('max column widths respected', async function(assert) {
@@ -33,7 +33,7 @@ module('Integration | header | main', function() {
       });
 
       let header = table.headers.objectAt(0);
-      assert.equal(header.logicalWidth, 100, 'column has max width');
+      assert.strictEqual(header.logicalWidth, 100, 'column has max width');
     });
   });
 
@@ -51,12 +51,12 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
 
-      assert.notOk(slackHeader.isPresent, 'slack column does not exist');
+      assert.false(slackHeader.isPresent, 'slack column does not exist');
     });
 
     test('eq-container when larger', async function(assert) {
@@ -72,12 +72,12 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
 
-      assert.notOk(slackHeader.isPresent, 'slack column does not exist');
+      assert.false(slackHeader.isPresent, 'slack column does not exist');
     });
 
     test('eq-container with containerWidthAdjustment', async function(assert) {
@@ -92,13 +92,13 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.equal(
+      assert.strictEqual(
         tableWidth - containerWidth,
         adjustmentValue,
         'Table width is adjusted from container width by the specified amount.'
       );
 
-      assert.notOk(slackHeader.isPresent, 'slack column does not exist');
+      assert.false(slackHeader.isPresent, 'slack column does not exist');
     });
 
     test('gte-container', async function(assert) {
@@ -114,12 +114,12 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
 
-      assert.notOk(slackHeader.isPresent, 'slack column does not exist');
+      assert.false(slackHeader.isPresent, 'slack column does not exist');
     });
 
     test('lte-container', async function(assert) {
@@ -135,12 +135,12 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - containerWidth) <= 5,
         'First column takes extra space in first column resize mode.'
       );
 
-      assert.notOk(slackHeader.isPresent, 'slack column does not exist');
+      assert.false(slackHeader.isPresent, 'slack column does not exist');
     });
 
     test('eq-container-slack', async function(assert) {
@@ -156,25 +156,33 @@ module('Integration | header | main', function() {
       let header = table.headers.objectAt(0);
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.equal(table.logicalWidth, containerWidth, 'table fits container exactly');
-      assert.ok(slackHeader.isRendered, 'slack column is rendered');
-      assert.equal(slackHeader.logicalWidth, containerWidth - 100, 'slack column fills whitespace');
+      assert.strictEqual(table.logicalWidth, containerWidth, 'table fits container exactly');
+      assert.true(slackHeader.isRendered, 'slack column is rendered');
+      assert.strictEqual(
+        slackHeader.logicalWidth,
+        containerWidth - 100,
+        'slack column fills whitespace'
+      );
 
       // expand column a little bit
       await header.resize(200);
-      assert.equal(table.logicalWidth, containerWidth, 'table fits container exactly');
-      assert.ok(slackHeader.isRendered, 'slack column is rendered');
-      assert.equal(slackHeader.logicalWidth, containerWidth - 200, 'slack column fills whitespace');
+      assert.strictEqual(table.logicalWidth, containerWidth, 'table fits container exactly');
+      assert.true(slackHeader.isRendered, 'slack column is rendered');
+      assert.strictEqual(
+        slackHeader.logicalWidth,
+        containerWidth - 200,
+        'slack column fills whitespace'
+      );
 
       // expand column to fill container
       await header.resize(containerWidth);
-      assert.equal(table.logicalWidth, containerWidth, 'table fits container exactly');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(table.logicalWidth, containerWidth, 'table fits container exactly');
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
 
       // try to expand column beyond container
       await header.resize(containerWidth + 100);
-      assert.equal(table.logicalWidth, containerWidth, 'table fits container exactly');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(table.logicalWidth, containerWidth, 'table fits container exactly');
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
     });
 
     test('gte-container-slack', async function(assert) {
@@ -190,25 +198,37 @@ module('Integration | header | main', function() {
       let header = table.headers.objectAt(0);
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.equal(table.logicalWidth, containerWidth, 'table fits container exactly');
-      assert.ok(slackHeader.isRendered, 'slack column is rendered');
-      assert.equal(slackHeader.logicalWidth, containerWidth - 100, 'slack column fills whitespace');
+      assert.strictEqual(table.logicalWidth, containerWidth, 'table fits container exactly');
+      assert.true(slackHeader.isRendered, 'slack column is rendered');
+      assert.strictEqual(
+        slackHeader.logicalWidth,
+        containerWidth - 100,
+        'slack column fills whitespace'
+      );
 
       // expand column a little bit
       await header.resize(200);
-      assert.equal(table.logicalWidth, containerWidth, 'table fits container exactly');
-      assert.ok(slackHeader.isRendered, 'slack column is rendered');
-      assert.equal(slackHeader.logicalWidth, containerWidth - 200, 'slack column fills whitespace');
+      assert.strictEqual(table.logicalWidth, containerWidth, 'table fits container exactly');
+      assert.true(slackHeader.isRendered, 'slack column is rendered');
+      assert.strictEqual(
+        slackHeader.logicalWidth,
+        containerWidth - 200,
+        'slack column fills whitespace'
+      );
 
       // expand column to fill container
       await header.resize(containerWidth);
-      assert.equal(table.logicalWidth, containerWidth, 'table fits container exactly');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(table.logicalWidth, containerWidth, 'table fits container exactly');
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
 
       // expand column beyond container
       await header.resize(containerWidth + 100);
-      assert.equal(table.logicalWidth, containerWidth + 100, 'table extends beyond container');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(
+        table.logicalWidth,
+        containerWidth + 100,
+        'table extends beyond container'
+      );
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
     });
   });
 
@@ -219,7 +239,7 @@ module('Integration | header | main', function() {
       let expectedWidth = table.logicalWidth / table.headers.length;
 
       table.headers.forEach(header => {
-        assert.ok(
+        assert.true(
           Math.abs(header.logicalWidth - expectedWidth) <= 1,
           'Table header have same width in equal resize mode.'
         );
@@ -242,12 +262,12 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let firstColumnWidth = table.headers.objectAt(0).logicalWidth;
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - firstColumnWidth - columnWidth) <= 1,
         'First column takes extra space in first column resize mode.'
       );
 
-      assert.ok(
+      assert.true(
         Math.abs(table.headers.objectAt(1).logicalWidth - columnWidth) <= 0,
         'Other columns keep same width in first column resize mode.'
       );
@@ -269,12 +289,12 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let lastColumnWidth = table.headers.objectAt(1).logicalWidth;
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - lastColumnWidth - columnWidth) <= 1,
         'Last column takes extra space in last column resize mode.'
       );
 
-      assert.ok(
+      assert.true(
         Math.abs(table.headers.objectAt(0).logicalWidth - columnWidth) <= 0,
         'Other columns keep same width in last column resize mode.'
       );
@@ -297,7 +317,7 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let middleColumnWidth = table.headers.objectAt(0).logicalWidth;
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - middleColumnWidth - 2 * columnWidth) <= 1,
         'nth column takes extra space in nth column resize mode.'
       );
@@ -320,17 +340,17 @@ module('Integration | header | main', function() {
       let tableWidth = table.logicalWidth;
       let middleColumnWidth = table.headers.objectAt(1).logicalWidth;
 
-      assert.ok(
+      assert.true(
         Math.abs(table.headers.objectAt(0).logicalWidth - columnWidth) <= 0,
         'First column keeps same width in nth column resize mode.'
       );
 
-      assert.ok(
+      assert.true(
         Math.abs(table.headers.objectAt(2).logicalWidth - columnWidth) <= 0,
         'Last column keeps same width in nth column resize mode.'
       );
 
-      assert.ok(
+      assert.true(
         Math.abs(tableWidth - middleColumnWidth - 2 * columnWidth) <= 1,
         'nth column takes extra space in nth column resize mode.'
       );
@@ -354,9 +374,9 @@ module('Integration | header | main', function() {
       let slackHeader = table.slackHeaders.objectAt(0);
 
       // `fillMode` is ignored because we are in slack mode
-      assert.equal(header1.logicalWidth, 100, 'first column is default size');
-      assert.equal(header2.logicalWidth, 100, 'second column is default size');
-      assert.equal(
+      assert.strictEqual(header1.logicalWidth, 100, 'first column is default size');
+      assert.strictEqual(header2.logicalWidth, 100, 'second column is default size');
+      assert.strictEqual(
         slackHeader.logicalWidth,
         containerWidth - 200,
         'slack column fills remaining space'
@@ -364,21 +384,25 @@ module('Integration | header | main', function() {
 
       // expand first column to eliminate slack
       await header1.resize(containerWidth - 100);
-      assert.equal(header1.logicalWidth, containerWidth - 100, 'first column is resized');
-      assert.equal(header2.logicalWidth, 100, 'second column remains default size');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(header1.logicalWidth, containerWidth - 100, 'first column is resized');
+      assert.strictEqual(header2.logicalWidth, 100, 'second column remains default size');
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
 
       // expand second column beyond container; `equal-column` fill mode is applied
       await header2.resize(200);
-      assert.equal(header1.logicalWidth, containerWidth - 150, 'first column receives equal share');
-      assert.equal(header2.logicalWidth, 150, 'second column receives equal share');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(
+        header1.logicalWidth,
+        containerWidth - 150,
+        'first column receives equal share'
+      );
+      assert.strictEqual(header2.logicalWidth, 150, 'second column receives equal share');
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
 
       // shrink second column to original size; slack is applied
       await header2.resize(100);
-      assert.equal(header1.logicalWidth, containerWidth - 150, 'first column is unaffected');
-      assert.ok(slackHeader.isRendered, 'slack column is rendered');
-      assert.equal(slackHeader.logicalWidth, 50, 'slack column receives the balance');
+      assert.strictEqual(header1.logicalWidth, containerWidth - 150, 'first column is unaffected');
+      assert.true(slackHeader.isRendered, 'slack column is rendered');
+      assert.strictEqual(slackHeader.logicalWidth, 50, 'slack column receives the balance');
     });
 
     test('eq-container-slack with initialFillMode', async function(assert) {
@@ -398,24 +422,29 @@ module('Integration | header | main', function() {
       let slackHeader = table.slackHeaders.objectAt(0);
 
       // `first-column` initial fill mode is applied
-      assert.equal(header1.logicalWidth, containerWidth - 100, 'first column receives fill');
-      assert.equal(header2.logicalWidth, 100, 'second column remains default size');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(header1.logicalWidth, containerWidth - 100, 'first column receives fill');
+      assert.strictEqual(header2.logicalWidth, 100, 'second column remains default size');
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
 
       // expand second column beyond container; `equal-column` fill mode is applied
       await header2.resize(200);
-      assert.equal(header1.logicalWidth, containerWidth - 150, 'first column receives equal share');
-      assert.equal(header2.logicalWidth, 150, 'second column receives equal share');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(
+        header1.logicalWidth,
+        containerWidth - 150,
+        'first column receives equal share'
+      );
+      assert.strictEqual(header2.logicalWidth, 150, 'second column receives equal share');
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
 
       // shrink second column to original size; slack is applied
       await header2.resize(100);
-      assert.equal(header1.logicalWidth, containerWidth - 150, 'first column is unaffected');
-      assert.equal(header2.logicalWidth, 100, 'second column is resized');
-      assert.ok(slackHeader.isRendered, 'slack column is rendered');
-      assert.equal(slackHeader.logicalWidth, 50, 'slack column receives the balance');
+      assert.strictEqual(header1.logicalWidth, containerWidth - 150, 'first column is unaffected');
+      assert.strictEqual(header2.logicalWidth, 100, 'second column is resized');
+      assert.true(slackHeader.isRendered, 'slack column is rendered');
+      assert.strictEqual(slackHeader.logicalWidth, 50, 'slack column receives the balance');
     });
 
+    // eslint-disable-next-line qunit/no-identical-names
     test('gte-container-slack', async function(assert) {
       await generateTable(this, {
         widthConstraint: 'gte-container-slack',
@@ -430,12 +459,20 @@ module('Integration | header | main', function() {
       let header = table.headers.objectAt(0);
       let slackHeader = table.slackHeaders.objectAt(0);
 
-      assert.equal(header.logicalWidth, containerWidth, 'fill mode is applied on initial run');
-      assert.notOk(slackHeader.isRendered, 'slack column is not rendered');
+      assert.strictEqual(
+        header.logicalWidth,
+        containerWidth,
+        'fill mode is applied on initial run'
+      );
+      assert.false(slackHeader.isRendered, 'slack column is not rendered');
 
       await header.resize(100);
-      assert.equal(header.logicalWidth, 100, 'header is resized');
-      assert.equal(slackHeader.logicalWidth, containerWidth - 100, 'slack column is expanded');
+      assert.strictEqual(header.logicalWidth, 100, 'header is resized');
+      assert.strictEqual(
+        slackHeader.logicalWidth,
+        containerWidth - 100,
+        'slack column is expanded'
+      );
     });
   });
 
@@ -448,7 +485,7 @@ module('Integration | header | main', function() {
         },
       });
 
-      assert.equal(table.header.rows.length, 2, 'There are 2 rows in the header.');
+      assert.strictEqual(table.header.rows.length, 2, 'There are 2 rows in the header.');
 
       for (let i = 0; i < 4; i++) {
         assert.ok(table.headers.findOne({ text: toBase26(i) }), 'group exists');
@@ -465,7 +502,7 @@ module('Integration | header | main', function() {
     test('they do not render by default', async function(assert) {
       await generateTable(this);
 
-      assert.equal(table.header.rows.length, 1, 'There is only one row in the header.');
+      assert.strictEqual(table.header.rows.length, 1, 'There is only one row in the header.');
     });
   });
 });

@@ -17,10 +17,10 @@ module('Integration | Component | ember-th/resize-handle', function() {
 
       await render(hbs`<EmberTh::ResizeHandle @columnMeta={{this.columnMeta}} />`);
 
-      assert.ok(resize.isPresent);
+      assert.true(resize.isPresent);
 
       this.set('columnMeta.isResizable', false);
-      assert.notOk(resize.isPresent);
+      assert.false(resize.isPresent);
     });
   });
 });

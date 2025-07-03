@@ -21,10 +21,10 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
-      let customSpinner = document.querySelector('[data-test-custom-spinner]');
-      assert.ok(customSpinner, 'Renders a custom spinner');
+      assert.dom('[data-test-custom-spinner]').exists('Renders a custom spinner');
     });
 
     test('it is shown when isLoading is true', async function(assert) {
@@ -36,9 +36,10 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
-      assert.ok(table.loadingMore.isShown, 'Loading more indicator is shown');
+      assert.true(table.loadingMore.isShown, 'Loading more indicator is shown');
     });
 
     test('it is not shown when isLoading is false', async function(assert) {
@@ -50,9 +51,10 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
-      assert.notOk(table.loadingMore.isShown, 'Loading more indicator is not shown');
+      assert.false(table.loadingMore.isShown, 'Loading more indicator is not shown');
     });
 
     test('it is included in layout when canLoadMore is true', async function(assert) {
@@ -64,9 +66,13 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
-      assert.ok(table.loadingMore.isIncludedInLayout, 'Loading more indicator included in layout');
+      assert.true(
+        table.loadingMore.isIncludedInLayout,
+        'Loading more indicator included in layout'
+      );
     });
 
     test('it is not included in layout when canLoadMore is false', async function(assert) {
@@ -78,9 +84,10 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
 
-      assert.notOk(
+      assert.false(
         table.loadingMore.isIncludedInLayout,
         'Loading more indicator not included in layout'
       );
@@ -101,11 +108,16 @@ module('Integration | loading more', function() {
         </EmberTable>
       `);
 
+      // eslint-disable-next-line ember/no-settled-after-test-helper
       await settled();
       await scrollTo(table.overflow(), scrollLeft, 0);
 
       let expectedTranslateX = scrollLeft + (table.containerWidth - indicatorWidth) / 2;
-      assert.equal(table.loadingMore.translateX, expectedTranslateX, 'X translation is correct');
+      assert.strictEqual(
+        table.loadingMore.translateX,
+        expectedTranslateX,
+        'X translation is correct'
+      );
     });
   });
 });

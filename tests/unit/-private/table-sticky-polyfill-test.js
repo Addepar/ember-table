@@ -88,7 +88,9 @@ function verifyHeader(assert) {
       let cellRect = cell.getBoundingClientRect();
       let containerRect = find('.ember-table').getBoundingClientRect();
 
-      assert.ok(Math.abs(cellRect.top - containerRect.top - expectedOffset) < HEADER_PIXEL_EPSILON);
+      assert.true(
+        Math.abs(cellRect.top - containerRect.top - expectedOffset) < HEADER_PIXEL_EPSILON
+      );
     }
   });
 }
@@ -104,7 +106,7 @@ function verifyFooter(assert) {
         let cellRect = cell.getBoundingClientRect();
         let containerRect = find('.ember-table').getBoundingClientRect();
 
-        assert.ok(
+        assert.true(
           Math.abs(containerRect.bottom - cellRect.bottom - expectedOffset) < FOOTER_PIXEL_EPSILON
         );
       }
@@ -126,7 +128,7 @@ function verifyMultiLineHeader(assert) {
   let firstCellRect = find('thead tr:first-child th:first-child').getBoundingClientRect();
   let expectedOffset = firstCellRect.top;
 
-  assert.notOk(
+  assert.false(
     isAllHeaderCellsIdenticalHeights,
     'precond - header table rows have varying heights'
   );
@@ -134,7 +136,7 @@ function verifyMultiLineHeader(assert) {
   firstTableCellOfEachHeaderRow.forEach(cell => {
     let firstCellRect = cell.getBoundingClientRect();
     expectedOffset += firstCellRect.height;
-    assert.equal(
+    assert.strictEqual(
       expectedOffset,
       firstCellRect.bottom,
       'bottom of the cell matches based on expected offset'
@@ -157,7 +159,7 @@ function verifyMultiLineFooter(assert) {
   let firstCellRect = find('tfoot tr:first-child td:first-child').getBoundingClientRect();
   let expectedOffset = firstCellRect.top;
 
-  assert.notOk(
+  assert.false(
     isAllFooterCellsIdenticalHeights,
     'precond - footer table rows have varying heights'
   );
@@ -165,7 +167,7 @@ function verifyMultiLineFooter(assert) {
   firstTableCellOfEachFooterRow.forEach(cell => {
     let firstCellRect = cell.getBoundingClientRect();
     expectedOffset += firstCellRect.height;
-    assert.equal(expectedOffset, firstCellRect.bottom);
+    assert.strictEqual(expectedOffset, firstCellRect.bottom);
   });
 }
 
@@ -282,17 +284,17 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     let lastCellRect = lastCell.getBoundingClientRect();
     let containerRect = container.getBoundingClientRect();
 
-    assert.ok(
+    assert.true(
       find('tfoot').getBoundingClientRect().height > maxStickyProportion * containerRect.height,
       'precond - footer is > 50% of the table height'
     );
 
-    assert.ok(
+    assert.true(
       isNearTo((firstCellRect.top - containerRect.top) / containerRect.height, maxStickyProportion),
       'the top of the first footer cell is close to 50% of the way up the table'
     );
 
-    assert.ok(
+    assert.true(
       isNearTo(
         (containerRect.bottom - firstCellRect.top) / containerRect.height,
         maxStickyProportion
@@ -300,7 +302,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
       'the top of the first footer cell is close to 50% of the way down the table'
     );
 
-    assert.ok(lastCellRect.top > containerRect.bottom, 'last footer cell is out of view');
+    assert.true(lastCellRect.top > containerRect.bottom, 'last footer cell is out of view');
 
     await scrollTo('.ember-table-overflow', 0, container.scrollHeight);
 
@@ -308,7 +310,7 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     lastCellRect = lastCell.getBoundingClientRect();
     containerRect = container.getBoundingClientRect();
 
-    assert.equal(
+    assert.strictEqual(
       lastCellRect.bottom,
       containerRect.bottom,
       'after scroll, last footer cell is at bottom of table'
@@ -336,17 +338,17 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     let lastCellRect = lastCell.getBoundingClientRect();
     let containerRect = container.getBoundingClientRect();
 
-    assert.ok(
+    assert.true(
       find('thead').getBoundingClientRect().height > maxStickyProportion * containerRect.height,
       'precond - header is > 50% of the table height'
     );
 
-    assert.equal(
+    assert.strictEqual(
       firstCellRect.top,
       containerRect.top,
       'top of first header cell is at top of table'
     );
-    assert.ok(lastCellRect.top > containerRect.bottom, 'last header cell is out of view');
+    assert.true(lastCellRect.top > containerRect.bottom, 'last header cell is out of view');
 
     await scrollTo('.ember-table-overflow', 0, container.scrollHeight);
 
@@ -354,14 +356,14 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     lastCellRect = lastCell.getBoundingClientRect();
     containerRect = container.getBoundingClientRect();
 
-    assert.ok(
+    assert.true(
       isNearTo(
         (lastCellRect.bottom - containerRect.top) / containerRect.height,
         maxStickyProportion
       ),
       'the bottom of the last header cell is close to 50% of the way up the table'
     );
-    assert.ok(
+    assert.true(
       isNearTo(
         (containerRect.bottom - lastCellRect.bottom) / containerRect.height,
         maxStickyProportion

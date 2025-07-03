@@ -9,6 +9,8 @@
 /bower_components
 
 # misc
+/.DS_Store
+/.eslintcache
 /.sass-cache
 /connect.lock
 /coverage/*
@@ -16,9 +18,3 @@
 npm-debug.log*
 yarn-error.log
 testem.log
-
-# ember-try
-.node_modules.ember-try/
-bower.json.ember-try
-package.json.ember-try
-yarn.lock.ember-try

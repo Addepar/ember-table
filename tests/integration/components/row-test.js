@@ -39,7 +39,7 @@ module('Integration | row', function() {
         rowComponent: 'custom-row',
       });
 
-      assert.ok(table.rows.objectAt(0).isCustomRow, 'Table has custom row');
+      assert.true(table.rows.objectAt(0).isCustomRow, 'Table has custom row');
     });
 
     test('sends onClick action', async function(assert) {

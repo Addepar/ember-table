@@ -24,6 +24,7 @@ export const TableRowMeta = EmberObject.extend({
     get() {
       let rowValue = get(this, '_rowValue');
 
+      // eslint-disable-next-line no-prototype-builtins
       if (rowValue.hasOwnProperty('isCollapsed')) {
         return get(rowValue, 'isCollapsed');
       } else {
@@ -34,6 +35,7 @@ export const TableRowMeta = EmberObject.extend({
     set(key, isCollapsed) {
       let rowValue = get(this, '_rowValue');
 
+      // eslint-disable-next-line no-prototype-builtins
       if (rowValue.hasOwnProperty('isCollapsed')) {
         set(rowValue, 'isCollapsed', isCollapsed);
       } else {
@@ -588,6 +590,7 @@ const CollapseTreeNode = EmberObject.extend({
       children.push(sortedChildren.slice(sliceStart));
     }
 
+    // eslint-disable-next-line ember/no-side-effects
     this._childNodes = children;
 
     return children;
@@ -813,6 +816,7 @@ export default EmberObject.extend(EmberArray, {
 
     let rows = get(this, 'rows');
 
+    // eslint-disable-next-line ember/no-side-effects
     this._root = CollapseTreeNode.create({ value: { children: rows }, tree: this });
 
     return this._root;
