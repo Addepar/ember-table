@@ -1,12 +1,10 @@
 /* global Hammer */
-import BaseTableCell from '../-private/base-table-cell';
 import { next } from '@ember/runloop';
-
-import { readOnly } from '@ember/object/computed';
-import { closest } from '../../-private/utils/element';
-
-import layout from './template';
 import { get, action } from '@ember/object';
+import { readOnly } from '@ember/object/computed';
+
+import BaseTableCell from './-private/base-table-cell';
+import { closest } from '../-private/utils/element';
 
 const COLUMN_INACTIVE = 0;
 const COLUMN_RESIZING = 1;
@@ -35,7 +33,6 @@ const COLUMN_REORDERING = 2;
   @public
 */
 export default BaseTableCell.extend({
-  layout,
   tagName: 'th',
   attributeBindings: ['columnSpan:colspan', 'rowSpan:rowspan'],
   classNameBindings: ['isSortable', 'isResizable', 'isReorderable'],

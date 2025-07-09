@@ -1,9 +1,7 @@
-import EmberTBody from '../ember-tbody/component';
 import { A as emberA } from '@ember/array';
-
 import { computed } from '@ember/object';
 
-import layout from './template';
+import EmberTBody from './ember-tbody';
 
 /**
   The table footer component. This component manages any footer rows which may
@@ -30,7 +28,6 @@ import layout from './template';
   @public
 */
 export default EmberTBody.extend({
-  layout,
   tagName: 'tfoot',
 
   wrappedRowArray: computed('wrappedRows.[]', function() {
