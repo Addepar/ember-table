@@ -1,1 +1,1 @@
-export { default } from 'ember-table/components/ember-th/component';
+export { default } from 'ember-table/components/ember-th';
