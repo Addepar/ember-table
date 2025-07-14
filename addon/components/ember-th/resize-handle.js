@@ -1,6 +1,4 @@
 import Component from '@ember/component';
-import layout from './template';
-
 import { readOnly } from '@ember/object/computed';
 
 /**
@@ -25,7 +23,6 @@ import { readOnly } from '@ember/object/computed';
   @public
 */
 export default Component.extend({
-  layout,
   tagName: '',
 
   /**
