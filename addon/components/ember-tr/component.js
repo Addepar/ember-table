@@ -48,7 +48,7 @@ export default Component.extend({
   layout,
   tagName: 'tr',
   classNames: ['et-tr'],
-  classNameBindings: ['isSelected', 'isGroupSelected', 'isSelectable'],
+  classNameBindings: ['isEven:is-even:is-odd', 'isGroupSelected', 'isSelectable', 'isSelected'],
 
   /**
     The API object passed in by the table body, header, or footer
@@ -87,6 +87,11 @@ export default Component.extend({
   isSelected: readOnly('rowMeta.isSelected'),
 
   isGroupSelected: readOnly('rowMeta.isGroupSelected'),
+
+  isEven: computed('rowMeta.index', function() {
+    let index = this.rowMeta?.index ?? 0;
+    return index % 2 === 0;
+  }),
 
   isSelectable: computed('rowSelectionMode', function() {
     let rowSelectionMode = this.get('rowSelectionMode');
