@@ -13,25 +13,27 @@ import { registerTestWarnHandler } from '../../helpers/warn-handlers';
 import { runInDebug } from '@ember/debug';
 
 let table = new TablePage({
+  /**
+   * Validates that the given selected indexes correspond to selected rows.
+   * Throws an error if any index does not match the expected selection state.
+   *
+   * @param {...number} selectedIndexes The indexes that should be selected
+   * @returns {boolean} valid
+   */
   validateSelected(...selectedIndexes) {
-    let valid = true;
+    let seenIndexes = new Set();
 
-    let indexesSeen = [];
-    this.rows.forEach((row, index) => {
-      indexesSeen.push(index);
-      if (selectedIndexes.includes(index)) {
-        valid = valid && row.isSelected;
-      } else {
-        valid = valid && !row.isSelected;
-      }
+    // Check if every selected index corresponds to a selected row
+    let valid = selectedIndexes.every((row, index) => {
+      seenIndexes.add(index);
+      return row.isSelected;
     });
 
-    let unseenIndexes = selectedIndexes.filter(i => !indexesSeen.includes(i));
-    if (unseenIndexes.length) {
+    // Get any indexes we missed
+    let unseenIndexes = new Set(selectedIndexes.filter(i => !seenIndexes.has(i)));
+    if (unseenIndexes.size) {
       throw new Error(
-        `could not validateSelected because these indexes were not checked: ${unseenIndexes.join(
-          ','
-        )}`
+        `Could not validate selected indexes: ${[...unseenIndexes].join(',')} were not checked`
       );
     }
 
