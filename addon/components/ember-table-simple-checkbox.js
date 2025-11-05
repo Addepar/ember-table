@@ -1,4 +1,5 @@
 import Component from '@ember/component';
+
 import defaultTo from '../-private/utils/default-to';
 
 export default Component.extend({

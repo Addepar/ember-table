@@ -1,10 +1,8 @@
-import BaseTableCell from '../-private/base-table-cell';
-
 import { computed, action } from '@ember/object';
 import { alias, readOnly } from '@ember/object/computed';
 
-import layout from './template';
-import { SELECT_MODE } from '../../-private/collapse-tree';
+import BaseTableCell from './-private/base-table-cell';
+import { SELECT_MODE } from '../-private/collapse-tree';
 
 let setupSimpleCheckboxForTest = false;
 export function setSimpleCheckboxForTest(bool) {
@@ -41,7 +39,6 @@ export function setSimpleCheckboxForTest(bool) {
  @public
  */
 export default BaseTableCell.extend({
-  layout,
   tagName: 'td',
 
   init() {

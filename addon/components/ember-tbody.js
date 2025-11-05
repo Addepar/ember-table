@@ -1,15 +1,13 @@
 import Component from '@ember/component';
-import { scheduleOnce } from '@ember/runloop';
+import { assert } from '@ember/debug';
 import { computed } from '@ember/object';
-import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
+import { scheduleOnce } from '@ember/runloop';
 import { VerticalCollection } from '@html-next/vertical-collection';
 
-import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
-import defaultTo from '../../-private/utils/default-to';
-
-import layout from './template';
-import { assert } from '@ember/debug';
+import CollapseTree, { SELECT_MODE } from '../-private/collapse-tree';
+import defaultTo from '../-private/utils/default-to';
+import { observer } from '../-private/utils/observer';
 
 let setupRowCountForTest = false;
 export function setSetupRowCountForTest(bool) {
@@ -41,7 +39,6 @@ export function setSetupRowCountForTest(bool) {
   @public
 */
 export default Component.extend({
-  layout,
   tagName: 'tbody',
 
   VerticalCollection,

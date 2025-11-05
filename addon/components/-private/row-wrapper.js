@@ -1,12 +1,10 @@
+import { A as emberA } from '@ember/array';
 import Component from '@ember/component';
-import hbs from 'htmlbars-inline-precompile';
-
 import EmberObject, { get, setProperties, computed, defineProperty } from '@ember/object';
 import { alias } from '@ember/object/computed';
-import { A as emberA } from '@ember/array';
 
-import { notifyPropertyChange } from '../../-private/utils/ember';
 import { objectAt } from '../../-private/utils/array';
+import { notifyPropertyChange } from '../../-private/utils/ember';
 import { observer } from '../../-private/utils/observer';
 
 const CellWrapper = EmberObject.extend({
@@ -31,10 +29,7 @@ const CellWrapper = EmberObject.extend({
   }),
 });
 
-const layout = hbs`{{yield this.api}}`;
-
 export default Component.extend({
-  layout,
   tagName: '',
 
   canSelect: undefined,
