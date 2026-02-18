@@ -187,9 +187,10 @@ componentModule('Unit | Private | TableStickyPolyfill', function() {
     /*
      * After a test suite upgrade on the path to Ember
      * 4.0 support, this test was unreliable without
-     * a sleep here.
+     * a sleep here. Increased from 6ms to 10ms after
+     * Babel 7.29.0 update to address timing changes.
      */
-    await new Promise(r => setTimeout(r, 6));
+    await new Promise(r => setTimeout(r, 10));
 
     verifyHeader(assert);
     verifyFooter(assert);
