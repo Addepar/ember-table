@@ -3,11 +3,14 @@ import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { readOnly } from '@ember/object/computed';
 import { bind, scheduleOnce } from '@ember/runloop';
-import { capitalize } from '@ember/string';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
 import { addObserver } from 'ember-table/-private/utils/observer';
 import layout from './template';
+
+function capitalize(s) {
+  return s.charAt(0).toUpperCase() + s.slice(1);
+}
 
 /**
    Computed property macro that builds the CSS styles (position, height)
