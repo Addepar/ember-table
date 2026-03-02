@@ -114,6 +114,7 @@ module.exports = async function() {
             '@handlebars/parser': '~2.1.0',
             'broccoli-plugin': '^4.0.0',
             'broccoli-merge-trees': '^4.2.0',
+            'broccoli-funnel': '^3.0.8',
           },
         },
       },
