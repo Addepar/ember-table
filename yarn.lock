@@ -5743,9 +5743,9 @@ ember-math-helpers@~2.11.3:
     ember-cli-htmlbars "^3.0.1"
 
 ember-qunit@^9.0.3:
-  version "9.0.3"
-  resolved "https://registry.npmjs.org/ember-qunit/-/ember-qunit-9.0.3.tgz#ce1d3bd03a4adb3ee4a460dfd238d64c5557bdf9"
-  integrity sha512-t+FD5/EWAR3WvGVj1etblFJJ6CaJqddDxusNcYYFZmW7zrQpCnQ9ziwpXM5/sw1sWabkhJZgYPXCn8bDRRhOfg==
+  version "9.0.4"
+  resolved "https://registry.npmjs.org/ember-qunit/-/ember-qunit-9.0.4.tgz#3b16131c2b03f657a231b9768b78b57ca18dd9ea"
+  integrity sha512-rv6gKvrdXdPBTdSZC5co82eIcDWWVR7RjafU/c+5TTz290oXhIHPoVuZbcO2F5RiAqkTW0jKzwkCP8y+2tCjFw==
   dependencies:
     "@embroider/addon-shim" "^1.9.0"
     "@embroider/macros" "^1.16.12"
