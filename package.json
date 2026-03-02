@@ -75,7 +75,7 @@
     "ember-faker": "^1.5.0",
     "ember-load-initializers": "^2.0.0",
     "ember-math-helpers": "~2.11.3",
-    "ember-qunit": "^9.0.3",
+    "ember-qunit": "^9.0.4",
     "ember-radio-button": "^2.0.0",
     "ember-resolver": "^8.0.2",
     "ember-source": "~3.28.0",
@@ -110,7 +110,8 @@
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
     "@ember/test-waiters": "^3.0.2",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "broccoli-funnel": "^3.0.8"
   },
   "typesVersions": {
     "*": {
