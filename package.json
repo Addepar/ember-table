@@ -111,7 +111,8 @@
   "resolutions": {
     "@ember/test-waiters": "^3.0.2",
     "prettier": "1.18.2",
-    "broccoli-funnel": "^3.0.8"
+    "broccoli-funnel": "^3.0.8",
+    "broccoli-file-creator": "^2.1.1"
   },
   "typesVersions": {
     "*": {
