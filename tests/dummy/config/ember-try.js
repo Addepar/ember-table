@@ -115,6 +115,7 @@ module.exports = async function() {
             'broccoli-plugin': '^4.0.0',
             'broccoli-merge-trees': '^4.2.0',
             'broccoli-funnel': '^3.0.8',
+            'broccoli-file-creator': '^2.1.1',
           },
         },
       },
