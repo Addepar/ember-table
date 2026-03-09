@@ -1101,12 +1101,12 @@
     ember-cli-babel "^7.26.6"
 
 "@ember/test-helpers@^5.2.2":
-  version "5.2.2"
-  resolved "https://registry.npmjs.org/@ember/test-helpers/-/test-helpers-5.2.2.tgz#275e47154b62915105da0681cc6e7ede80e4e1aa"
-  integrity sha512-Cclqeh0j6RnYvoaElAVC3Nd1fsSUkc3oUTwTsLlNiC3riyPq8lNYxh96VM59/yji2ntrd/cJQ7qhhSZWd6hsEw==
+  version "5.4.1"
+  resolved "https://registry.npmjs.org/@ember/test-helpers/-/test-helpers-5.4.1.tgz#7b7e837560e289356c7ac241483db5bc4cceb461"
+  integrity sha512-BUdT91ra+QibEWAUwtZmvTGFoDHJCxDU+fkQENA8Zs0FR3pZiICxxP/fgdlNExCjjdm1letut7ENoueBuDdixQ==
   dependencies:
     "@ember/test-waiters" "^3.1.0 || ^4.0.0"
-    "@embroider/addon-shim" "^1.8.7"
+    "@embroider/addon-shim" "^1.10.2"
     "@embroider/macros" "^1.16.5"
     "@simple-dom/interface" "^1.4.0"
     decorator-transforms "^2.0.0"
@@ -1122,12 +1122,12 @@
     ember-cli-version-checker "^5.1.2"
     semver "^7.3.5"
 
-"@embroider/addon-shim@^1.8.0", "@embroider/addon-shim@^1.8.7", "@embroider/addon-shim@^1.9.0":
-  version "1.10.0"
-  resolved "https://registry.npmjs.org/@embroider/addon-shim/-/addon-shim-1.10.0.tgz#7c3325e0939674290a9ca4ad7d744ee69313c0a0"
-  integrity sha512-gcJuHiXgnrzaU8NyU+2bMbtS6PNOr5v5B8OXBqaBvTCsMpXLvKo8OBOQFCoUN0rPX2J6VaFqrbi/371sMvzZug==
+"@embroider/addon-shim@^1.10.2", "@embroider/addon-shim@^1.8.0", "@embroider/addon-shim@^1.9.0":
+  version "1.10.2"
+  resolved "https://registry.npmjs.org/@embroider/addon-shim/-/addon-shim-1.10.2.tgz#5164c65de0fd242422594c2f94b3c5eab4ab8e36"
+  integrity sha512-EfI9cJ5/3QSUJtwm7x1MXrx3TEa2p7RNgSHefy7fvGm8/DP1xUFL25nST1NaHbHcqR1UhMlrTtv5iUIDoVzeQQ==
   dependencies:
-    "@embroider/shared-internals" "^3.0.0"
+    "@embroider/shared-internals" "^3.0.1"
     broccoli-funnel "^3.0.8"
     common-ancestor-path "^1.0.1"
     semver "^7.3.8"
@@ -1146,7 +1146,7 @@
     resolve "^1.20.0"
     semver "^7.3.2"
 
-"@embroider/shared-internals@3.0.0", "@embroider/shared-internals@^3.0.0":
+"@embroider/shared-internals@3.0.0":
   version "3.0.0"
   resolved "https://registry.npmjs.org/@embroider/shared-internals/-/shared-internals-3.0.0.tgz#98251e6b99d36d64120361a449569ef5384b3812"
   integrity sha512-5J5ipUMCAinQS38WW7wedruq5Z4VnHvNo+ZgOduw0PtI9w0CQWx7/HE+98PBDW8jclikeF+aHwF317vc1hwuzg==
@@ -1180,6 +1180,25 @@
     minimatch "^3.0.4"
     pkg-entry-points "^1.1.0"
     resolve-package-path "^4.0.1"
+    semver "^7.3.5"
+    typescript-memoize "^1.0.1"
+
+"@embroider/shared-internals@^3.0.1":
+  version "3.0.2"
+  resolved "https://registry.npmjs.org/@embroider/shared-internals/-/shared-internals-3.0.2.tgz#0e10926956f682e3dd5621b911e4c3eb36df3816"
+  integrity sha512-/SusdG+zgosc3t+9sPFVKSFOYyiSgLfXOT6lYNWoG1YtnhWDxlK4S8leZ0jhcVjemdaHln5rTyxCnq8oFLxqpQ==
+  dependencies:
+    babel-import-util "^3.0.1"
+    debug "^4.3.2"
+    ember-rfc176-data "^0.3.17"
+    fs-extra "^9.1.0"
+    is-subdir "^1.2.0"
+    js-string-escape "^1.0.1"
+    lodash "^4.17.21"
+    minimatch "^3.0.4"
+    pkg-entry-points "^1.1.1"
+    resolve-package-path "^4.0.1"
+    resolve.exports "^2.0.2"
     semver "^7.3.5"
     typescript-memoize "^1.0.1"
 
@@ -10372,6 +10391,11 @@ pkg-entry-points@^1.1.0:
   version "1.1.0"
   resolved "https://registry.npmjs.org/pkg-entry-points/-/pkg-entry-points-1.1.0.tgz#f38e6fe0770ee7ace5a6c1eecad14fd4bedb8c0d"
   integrity sha512-9vL2T/he5Kb97GVY+V3Ih4jCC1lF3PQGIDUJIUqKM4Q6twmhrUSAa0OFj+kb8IEs4wYzEgB6kcc4oYy21kZnQw==
+
+pkg-entry-points@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.npmjs.org/pkg-entry-points/-/pkg-entry-points-1.1.1.tgz#d5cd87f934e873bf73143ed1d0baf637e5f8fda4"
+  integrity sha512-BhZa7iaPmB4b3vKIACoppyUoYn8/sFs17VJJtzrzPZvEnN2nqrgg911tdL65lA2m1ml6UI3iPeYbZQ4VXpn1mA==
 
 pkg-up@^2.0.0:
   version "2.0.0"
