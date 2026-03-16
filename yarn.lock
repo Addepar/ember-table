@@ -1082,9 +1082,9 @@
   integrity sha512-VmVq/8saCaPdesQmftPqbFtxJWrzxNGSQ+e8x8LLe3Hjm36pJ04Q8LeORGZkAeOhldoUX9seLGmSaHeXkIqoog==
 
 "@ember/optional-features@^2.0.0":
-  version "2.2.0"
-  resolved "https://registry.npmjs.org/@ember/optional-features/-/optional-features-2.2.0.tgz#61305ea5397e9a712185e4cf4722a2862ea2b9da"
-  integrity sha512-a1OQ+w9vDvMXd9BNA9r779yr8MAPguGaMGbIeTMPWACeWBdD6bACBB5iKE3gNyrJAYKMq2wab6BKmRFS3Qw3hw==
+  version "2.3.0"
+  resolved "https://registry.npmjs.org/@ember/optional-features/-/optional-features-2.3.0.tgz#ea743c76f2448e836beac31a00891e98c38e6f7e"
+  integrity sha512-+M8CkPledQEaDbfIlwlq6Phgpm5jdT3a6WVDJk7b/zadw5xAJkuQKVK7DgR0SFgHGiWlyn6a8AU5p2mCA706RA==
   dependencies:
     chalk "^4.1.2"
     ember-cli-version-checker "^5.1.2"
