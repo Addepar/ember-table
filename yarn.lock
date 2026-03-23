@@ -11403,9 +11403,9 @@ qunit-theme-ember@^1.0.0:
   integrity sha512-vdMVVo6ecdCkWttMTKeyq1ZTLGHcA6zdze2zhguNuc3ritlJMhOXY5RDseqazOwqZVfCg3rtlmL3fMUyIzUyFQ==
 
 qunit@^2.24.1:
-  version "2.24.1"
-  resolved "https://registry.npmjs.org/qunit/-/qunit-2.24.1.tgz#03e39ec00824cc45cabcedf6d2603fedbc7c46af"
-  integrity sha512-Eu0k/5JDjx0QnqxsE1WavnDNDgL1zgMZKsMw/AoAxnsl9p4RgyLODyo2N7abZY7CEAnvl5YUqFZdkImzbgXzSg==
+  version "2.25.0"
+  resolved "https://registry.npmjs.org/qunit/-/qunit-2.25.0.tgz#a9bc86543971f378a0af64e81292fbef6c12e1b8"
+  integrity sha512-MONPKgjavgTqArCwZOEz8nEMbA19zNXIp5ZOW9rPYj5cbgQp0fiI36c9dPTSzTRRzx+KcfB5eggYB/ENqxi0+w==
   dependencies:
     commander "7.2.0"
     node-watch "0.7.3"
