@@ -34,7 +34,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
     "@babel/plugin-proposal-optional-catch-binding": "^7.12.13",
     "@babel/plugin-proposal-optional-chaining": "^7.12.13",
-    "@html-next/vertical-collection": "^4.0.0",
+    "@html-next/vertical-collection": "^5.0.3",
     "css-element-queries": "^0.4.0",
     "ember-auto-import": "^2.4.2",
     "ember-classy-page-object": "^0.8.0",
