@@ -5346,7 +5346,7 @@ ember-a11y-testing@^7.1.2:
     fs-extra "^11.2.0"
     validate-peer-dependencies "^2.0.0"
 
-ember-auto-import@^2.10.0, ember-auto-import@^2.2.4, ember-auto-import@^2.4.2:
+ember-auto-import@^2.10.0, ember-auto-import@^2.13.1, ember-auto-import@^2.2.4:
   version "2.13.1"
   resolved "https://registry.npmjs.org/ember-auto-import/-/ember-auto-import-2.13.1.tgz#d939af31eb711c75c94b74a33ac2c8e5c57c2686"
   integrity sha512-MjxJK2nfCJmmQI/rju2TrycmAa1AxmTarfvygbcrrgW0s4WeZHtbGXCO2z1lW9wfrShqeTo/o+3Mgk+9xcDTWg==
