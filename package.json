@@ -110,7 +110,8 @@
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
     "@ember/test-waiters": "^3.0.2",
-    "prettier": "1.18.2"
+    "prettier": "1.18.2",
+    "testem/execa": "^1.0.0"
   },
   "typesVersions": {
     "*": {
