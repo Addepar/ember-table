@@ -10,11 +10,17 @@ jobs:
     timeout-minutes: 7
 
     steps:
+      - name: "Install StepSecurity Action"
+        id: step_security
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Use Volta
-        uses: volta-cli/action@v4
+        uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
 
       - name: Node Modules Cache
         id: cache-npm
@@ -58,11 +64,17 @@ jobs:
           ]
 
     steps:
+      - name: "Install StepSecurity Action"
+        id: step_security
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+
       - name: Checkout
         uses: actions/checkout@v6
 
       - name: Use Volta
-        uses: volta-cli/action@v4
+        uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
 
       - name: Stash yarn.lock for cache key
         run: cp yarn.lock __cache-key
