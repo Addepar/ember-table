@@ -11,7 +11,7 @@ import {
 export { configureTableGeneration, resetTableGenerationConfig, generateColumns, generateRows };
 
 const fullTable = hbs`
-  <div style="height: 500px;">
+  <div style="height: 500px; {{if this.containerWidth (concat 'width: ' this.containerWidth 'px;')}}">
     <EmberTable data-test-main-table as |t|>
       <EmberThead
         @api={{t}}
@@ -129,7 +129,7 @@ export function generateTableValues(
     footerRowCount = 0,
     columnCount = 10,
     columnOptions,
-
+    containerWidth,
     rowComponent = 'ember-tr',
 
     ...options
@@ -139,6 +139,7 @@ export function generateTableValues(
     testContext.set(property, options[property]);
   }
   testContext.set('rowComponent', rowComponent);
+  testContext.set('containerWidth', containerWidth);
 
   columns = columns || generateColumns(columnCount, columnOptions);
 
