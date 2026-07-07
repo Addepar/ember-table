@@ -20,7 +20,10 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Use Volta
-        uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
+        name: Setup Node toolchain
+        uses: Addepar/web-templates/actions/setup-node-toolchain@main
+        with:
+          jfrog-auth-token: ${{ secrets.JFROG_AUTH_TOKEN }}
 
       - name: Node Modules Cache
         id: cache-npm
@@ -74,7 +77,10 @@ jobs:
         uses: actions/checkout@v6
 
       - name: Use Volta
-        uses: volta-cli/action@5c175f92dea6f48441c436471e6479dbc192e194 # v4
+        name: Setup Node toolchain
+        uses: Addepar/web-templates/actions/setup-node-toolchain@main
+        with:
+          jfrog-auth-token: ${{ secrets.JFROG_AUTH_TOKEN }}
 
       - name: Stash yarn.lock for cache key
         run: cp yarn.lock __cache-key

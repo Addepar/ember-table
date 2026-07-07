@@ -1,0 +1,5 @@
+[tools]
+node = "18.20.5"
+
+[settings.node]
+corepack = true
