@@ -65,7 +65,7 @@
     "broccoli-asset-rev": "^3.0.0",
     "concurrently": "^9.1.2",
     "ember-a11y-testing": "^7.1.2",
-    "ember-cli": "~3.28.0",
+    "ember-cli": "~5.12.0",
     "ember-cli-dependency-checker": "^3.2.0",
     "ember-cli-inject-live-reload": "^2.0.1",
     "ember-cli-sass": "^10.0.0",
@@ -78,7 +78,7 @@
     "ember-qunit": "^9.0.3",
     "ember-radio-button": "^2.0.0",
     "ember-resolver": "^8.0.2",
-    "ember-source": "~3.28.0",
+    "ember-source": "~5.12.0",
     "ember-truth-helpers": "^3.0.0",
     "ember-try": "^4.0.0",
     "eslint": "^8.57.1",
@@ -99,7 +99,7 @@
     "webpack": "^5.0.0"
   },
   "engines": {
-    "node": ">= 14.*"
+    "node": ">= 20.19.0"
   },
   "ember": {
     "edition": "octane"
@@ -110,8 +110,7 @@
   "homepage": "https://Addepar.github.io/ember-table",
   "resolutions": {
     "@ember/test-waiters": "^3.0.2",
-    "prettier": "1.18.2",
-    "testem": "^3.2.0 <3.19.0"
+    "prettier": "1.18.2"
   },
   "typesVersions": {
     "*": {
