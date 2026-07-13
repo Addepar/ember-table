@@ -19,11 +19,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Use Volta
-        name: Setup Node toolchain
-        uses: Addepar/web-templates/actions/setup-node-toolchain@main
+      - name: Install mise and tools
+        uses: jdx/mise-action@v4
         with:
-          jfrog-auth-token: ${{ secrets.JFROG_AUTH_TOKEN }}
+          install: true
+          cache: true
+      - name: Enable corepack
+        run: corepack enable
 
       - name: Node Modules Cache
         id: cache-npm
@@ -76,11 +78,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Use Volta
-        name: Setup Node toolchain
-        uses: Addepar/web-templates/actions/setup-node-toolchain@main
+      - name: Install mise and tools
+        uses: jdx/mise-action@v4
         with:
-          jfrog-auth-token: ${{ secrets.JFROG_AUTH_TOKEN }}
+          install: true
+          cache: true
+      - name: Enable corepack
+        run: corepack enable
 
       - name: Stash yarn.lock for cache key
         run: cp yarn.lock __cache-key
