@@ -1,5 +1,5 @@
 [tools]
-node = "18.20.5"
+node = "24.19.0"
 
 [settings.node]
 corepack = true
