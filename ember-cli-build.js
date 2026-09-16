@@ -14,6 +14,7 @@ module.exports = function(defaults) {
         '@babel/plugin-proposal-nullish-coalescing-operator',
         '@babel/plugin-proposal-numeric-separator',
         '@babel/plugin-proposal-optional-catch-binding',
+        '@babel/plugin-transform-class-static-block',
       ],
     },
     'ember-faker': {
