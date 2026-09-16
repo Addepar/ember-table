@@ -102,11 +102,11 @@ module.exports = async function() {
         command: 'ember test --filter="Acceptance | docs"',
         npm: {
           devDependencies: {
-            'ember-data': '~3.24.0',
+            'ember-data': '~3.28.13',
             'ember-cli-addon-docs': '^5.2.0',
             'ember-cli-addon-docs-yuidoc': '^1.0.0',
-            'ember-cli-deploy': '^1.0.2',
-            'ember-cli-deploy-build': '^1.1.1',
+            'ember-cli-deploy': '^2.0.0',
+            'ember-cli-deploy-build': '^3.0.0',
             'ember-cli-deploy-git': '^1.3.3',
             'ember-cli-deploy-git-ci': '^1.0.1',
           },
