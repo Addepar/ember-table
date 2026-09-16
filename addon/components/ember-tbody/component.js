@@ -3,6 +3,7 @@ import { scheduleOnce } from '@ember/runloop';
 import { computed } from '@ember/object';
 import { observer } from '../../-private/utils/observer';
 import { bool, readOnly, or } from '@ember/object/computed';
+import { VerticalCollection } from '@html-next/vertical-collection';
 
 import CollapseTree, { SELECT_MODE } from '../../-private/collapse-tree';
 import defaultTo from '../../-private/utils/default-to';
@@ -42,6 +43,8 @@ export function setSetupRowCountForTest(bool) {
 export default Component.extend({
   layout,
   tagName: 'tbody',
+
+  VerticalCollection,
 
   /**
     The API object passed in by the table
