@@ -226,5 +226,11 @@
     "name": "v6.0.0-9",
     "sha": "5d70fc82dfe50c238aabb4995a0ea62dadb3a944",
     "tag": "v6.0.0-9"
+  },
+  "v6.0.0-12": {
+    "path": "versions/v6.0.0-12",
+    "name": "v6.0.0-12",
+    "sha": "6704f9301e0534fdae9cdf3235373f86fa7ddc98",
+    "tag": "v6.0.0-12"
   }
 }

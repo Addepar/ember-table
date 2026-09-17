@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="64px" height="64px" viewBox="0 0 64 64" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <!-- Generator: Sketch 49.3 (51167) - http://www.bohemiancoding.com/sketch -->
+    <title>git-sha</title>
+    <desc>Created with Sketch.</desc>
+    <defs></defs>
+    <g id="git-sha" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <path d="M18.3221795,28 C19.69552,21.709636 25.2977628,17 32,17 C38.7022372,17 44.30448,21.709636 45.6778205,28 L58,28 L58,34 L45.6778205,34 C44.30448,40.290364 38.7022372,45 32,45 C25.2977628,45 19.69552,40.290364 18.3221795,34 L6,34 L6,28 L18.3221795,28 Z M32,39 C36.418278,39 40,35.418278 40,31 C40,26.581722 36.418278,23 32,23 C27.581722,23 24,26.581722 24,31 C24,35.418278 27.581722,39 32,39 Z" id="Combined-Shape" fill="#22292F"></path>
+    </g>
+</svg>

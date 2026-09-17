@@ -1,0 +1,40 @@
+.occluded-content {
+  display: block;
+  position: relative;
+  width: 100%;
+
+  /* prevents margin overflow on item container */
+  min-height: 0.01px;
+
+  /* hides text visually while still being readable by screen readers */
+  color: rgb(0 0 0 / 0%);
+
+  /*
+   * Prevents the debug text ("And X items before/after") from affecting
+   * the element's layout height. Without this, inherited line-height values
+   * can cause the text to create a line box that inflates the element's
+   * actual height above its inline style height, especially when used
+   * inside tables with display: table-row.
+   */
+  font-size: 0;
+  line-height: 0;
+}
+
+table .occluded-content,
+tbody .occluded-content,
+thead .occluded-content,
+tfoot .occluded-content {
+  display: table-row;
+  position: relative;
+  width: 100%;
+}
+
+ul .occluded-content,
+ol .occluded-content {
+  display: list-item;
+  position: relative;
+  width: 100%;
+  list-style-type: none;
+  height: 0;
+}
+
