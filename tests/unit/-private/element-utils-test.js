@@ -47,15 +47,23 @@ module('Unit | Private | element', function(hooks) {
     assert.strictEqual(getScale(div), 1, 'scale on a scaled element is correct');
   });
 
-  test('throws if the height from getComputedStyle is diverged from offsetHeight', function(assert) {
+  test('warns if the height from getComputedStyle is diverged from offsetHeight', function(assert) {
     let div = document.createElement('div');
     div.textContent = 'aBc';
     div.style.padding = '10px';
     this.element.append(div);
 
-    assert.throws(() => {
+    let originalWarn = console.warn; // eslint-disable-line no-console
+    let warnings = [];
+    console.warn = message => warnings.push(message); // eslint-disable-line no-console
+
+    try {
       getScale(div);
-    });
+    } finally {
+      console.warn = originalWarn; // eslint-disable-line no-console
+    }
+
+    assert.strictEqual(warnings.length, 1, 'a warning is logged instead of throwing');
   });
 
   test('can get the scale of element with table header', function(assert) {

@@ -86,7 +86,8 @@ export function getScale(element) {
      * comparing heights over 100000.
      */
     if ((max <= 100000 && difference >= 1) || (max > 100000 && (max - min) / max > 0.00001)) {
-      throw new Error(
+      // eslint-disable-next-line no-console
+      console.warn(
         "EmberTable's getScale() utility can only work on elements where height as derived from getComputedStyle is reliable. This error flags that offsetHeight and getComputedStyle disagree on the target element dimensions. This can be caused by padding, thead elements, and other cases."
       );
     }
