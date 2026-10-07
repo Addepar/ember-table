@@ -1,4 +1,3 @@
-import { gte } from 'ember-compatibility-helpers';
 import { assert } from '@ember/debug';
 
 // eslint-disable-next-line no-restricted-imports
@@ -11,9 +10,7 @@ import {
   removeObserver as emberRemoveObserver,
 } from '@ember/object/observers';
 
-const USE_ASYNC_OBSERVERS = gte('3.13.0');
-
-function asyncObserver(...args) {
+export function observer(...args) {
   let fn = args.pop();
   let dependentKeys = args;
   let sync = false;
@@ -22,7 +19,7 @@ function asyncObserver(...args) {
   return emberObserver({ dependentKeys, fn, sync });
 }
 
-function asyncAddObserver(...args) {
+export function addObserver(...args) {
   let obj, path, target, method;
   let sync = false;
   obj = args[0];
@@ -43,7 +40,7 @@ function asyncAddObserver(...args) {
   return emberAddObserver(obj, path, target, method, sync);
 }
 
-function asyncRemoveObserver(...args) {
+export function removeObserver(...args) {
   let obj, path, target, method;
   let sync = false;
   obj = args[0];
@@ -61,7 +58,3 @@ function asyncRemoveObserver(...args) {
   }
   return emberRemoveObserver(obj, path, target, method, sync);
 }
-
-export const observer = USE_ASYNC_OBSERVERS ? asyncObserver : emberObserver;
-export const addObserver = USE_ASYNC_OBSERVERS ? asyncAddObserver : emberAddObserver;
-export const removeObserver = emberRemoveObserver ? asyncRemoveObserver : emberRemoveObserver;
