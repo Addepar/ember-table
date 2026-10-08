@@ -1,0 +1,126 @@
+@import './tables';
+@import './fixes';
+@import '@addepar/style-toolbox/styles/onyx/index';
+
+// Override the url for the checkmark that indicates row selection.
+// This overrides a style in style-toolbox that uses the absolute url
+// '/@addepar/style-toolbox/assets/images/checkmark.svg'. When addon docs
+// are deployed, the root URL is '/ember-table/', and thus the checkmark asset
+// is not able to be loaded.
+// So instead we override the style and use a checkmark svg that has been added to this project:
+// See https://github.com/Addepar/ember-table/issues/593
+// The style-toolbox style is here: https://github.com/Addepar/addepar-style-toolbox/blob/640825d7722571c223f4b93e78a5c528018521e5/styles/onyx/elements/inputs/checkbox/_checkbox-core.scss#L68
+.ember-table .et-toggle-select input[type='checkbox'] + *:after {
+  background-image: url('/assets/images/checkmark.svg');
+}
+
+$colors: (
+  navy: #001f3f,
+  blue: #0074d9,
+  aqua: #7fdbff,
+  teal: #39cccc,
+  olive: #3d9970,
+  green: #2ecc40,
+  lime: #01ff70,
+  yellow: #ffdc00,
+  orange: #ff851b,
+  red: #ff4136,
+  maroon: #85144b,
+  fuchsia: #f012be,
+  purple: #b10dc9,
+  black: #111111,
+  grey: #aaaaaa,
+  silver: #dddddd,
+);
+
+@each $color-name, $color-value in $colors {
+  .bg-#{'' + $color-name} {
+    background-color: #{$color-value};
+    color: white;
+  }
+  .text-#{'' + $color-name} {
+    color: #{$color-value};
+  }
+}
+
+.resize-container {
+  resize: both;
+  overflow: scroll;
+  border: solid 1px #dae1e7;
+  width: 400px;
+  height: 200px;
+  padding: 10px;
+
+  &.w-100 {
+    width: 100%;
+  }
+}
+
+.docs-hero {
+  > div {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+
+  h1 {
+    display: flex;
+    justify-content: center;
+    line-height: 1.5;
+
+    > div {
+      margin: 0;
+
+      > span {
+        height: 4rem;
+      }
+    }
+  }
+
+  p {
+    margin-top: 0;
+  }
+}
+
+tr {
+  &.has-children {
+    td {
+      background-color: #f7f7f7;
+    }
+  }
+
+  &.is-row-selected {
+    td {
+      background-color: #e5f5ff;
+    }
+  }
+
+  td.is-column-selected,
+  th.is-column-selected {
+    background-color: #e5f5ff;
+    border-bottom-color: #d2e2ec;
+  }
+
+  td.is-cell-selected {
+    background-color: #b8ddf5;
+  }
+}
+
+.cell-content {
+  margin: -4px;
+  padding: 4px;
+  height: 30px;
+}
+
+.small {
+  font-size: small;
+}
+
+.custom-header {
+  padding: 0.25em;
+}
+
+.spinner {
+  margin-top: 7px;
+  width: 50%;
+  height: 50%;
+}

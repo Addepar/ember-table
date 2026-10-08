@@ -1,16 +1,16 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # compiled output
-/dist
-/tmp
+dist/
+tmp/
 
 # dependencies
-/node_modules
+node_modules/
 /bower_components
 
 # misc
 /.DS_Store
-/.eslintcache
+.eslintcache
 /.sass-cache
 /connect.lock
 /coverage/*
@@ -18,3 +18,7 @@
 npm-debug.log*
 yarn-error.log
 testem.log
+
+# pnpm content store (created next to the repo when the global store is on another filesystem)
+.pnpm-store/
+.vercel

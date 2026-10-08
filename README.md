@@ -9,7 +9,7 @@ Ember Table versions each support a range of browsers and framework versions:
 
 | Ember Table Version | Ember Versions Supported     | Browser Support |
 | ------------------- | ---------------------------- | --------------- |
-| 6.x (prerelease)    | 3.28 - 6.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
+| 6.x (prerelease)    | 5.12 - 7.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 5.x                 | 3.12 - 4.x (possibly 5.x?)   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 4.x                 | 2.18 - 4.x                   | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
 | 3.x                 | 2.8 - 3.28 (last 3.x version | Last two versions of Chrome, Safari, Edge, Firefox on desktop and mobile. |
@@ -18,8 +18,18 @@ Ember Table versions each support a range of browsers and framework versions:
 ## Install
 
 ```bash
-ember install ember-table
+pnpm add ember-table
 ```
+
+Ember Table is a [v2 addon](https://rfcs.emberjs.com/id/0507-embroider-v2-package-format/).
+It works in Vite apps and, through `ember-auto-import`, in classic ember-cli apps. In `.gjs`/`.gts`
+templates, import the components from the package:
+
+```gjs
+import { EmberTable, EmberThead, EmberTbody } from 'ember-table';
+```
+
+Classic apps can also invoke them by name (`<EmberTable>`) from loose-mode templates.
 
 ## Features
 
@@ -35,8 +45,14 @@ ember install ember-table
 
 Documentation is available at: https://opensource.addepar.com/ember-table/docs
 
-Ember Table uses [ember-cli-addon-docs](https://github.com/ember-learn/ember-cli-addon-docs) for its documentation.
-To run the docs locally, clone the repo, run `yarn && yarn start` and then navigate to `http://localhost:4200/docs`.
+The documentation site deploys to [Vercel](https://vercel.com) from the repository root
+(`vercel.json`): it installs the workspace, builds the addon, and serves the test app's
+production build. It is built with [Docfy](https://docfy.dev) from the Markdown in
+[`test-app/docs`](./test-app/docs). Every example is a live `gjs` component whose source is shown
+alongside it, highlighted with Shiki's Glimmer grammars. The API reference pages are generated
+from the addon's type declarations (`test-app/scripts/api-docs.mjs`), so argument tables, defaults
+and descriptions come from the doc comments in `ember-table/src`. To run the docs locally, clone the repo, run `pnpm install && pnpm start`, and open
+the URL Vite prints (`/docs`).
 
 ## Usage
 
@@ -126,7 +142,14 @@ you like):
 ```
 
 The rendered table is a plain table without any styling. You can define styling for your own table.
-If you want to use default table style, import the `ember-table/default` SASS file.
+If you want to use the default table style, import the `ember-table/default.scss` Sass file:
+
+```scss
+@use 'ember-table/default.scss';
+```
+
+Vite resolves this through the package's `exports`. With the classic `ember-cli-sass`
+pipeline, add `node_modules` to its `includePaths` and import `ember-table/dist/styles/default`.
 
 ### Optional Footer
 
@@ -155,62 +178,89 @@ import { setupForTest as setupEmberTableForTest } from 'ember-table/test-support
 setupEmberTableForTest();
 ```
 
-## EXPERIMENTAL: Using Ember Table with Glint
+### Stripping test selectors from production builds
 
-Ember Table provides **experimental** Glint types defined in the `/types/` directory.
-These types may change at any time and are **NOT** covered by Ember Table's semantic versioning.
-They are intended to support standard documented usage of Ember Table and do not attempt to type the internals of the Ember Table addon.
-If you are using Ember Table in a more advanced way (such as extending Ember Table components), you will still need to define your own types for those use cases.
+Ember Table's templates carry `data-test-*` attributes for its page objects. They are compiled by
+your app, so your app decides whether to strip them. In a Vite app, add
+[`strip-test-selectors`](https://github.com/mainmatter/ember-test-selectors/tree/master/strip-test-selectors)
+to the template transforms for production builds; it strips your own templates' selectors too:
 
-### Glint Types Installation
+```js
+// babel.config.mjs
+export default function (api) {
+  return {
+    plugins: [
+      [
+        'babel-plugin-ember-template-compilation',
+        {
+          transforms: [
+            ...macros.templateMacros,
+            ...(api.env('production') ? ['strip-test-selectors'] : []),
+          ],
+        },
+      ],
+      // ...
+    ],
+  };
+}
+```
 
-Assuming you have the Ember Table addon installed, you can import and register Ember Table's Glint types in the manner [recommended by the Glint docs](https://typed-ember.gitbook.io/glint/using-glint/ember/using-addons#using-glint-enabled-addons):
+Build your tests in a non-production mode (e.g. `vite build --mode development`) so the
+selectors stay.
+
+## Using Ember Table with TypeScript and Glint
+
+Ember Table is written in TypeScript, and its type declarations are generated from the
+source. Components, their signatures (`EmberTableSignature`, `EmberTheadArgs`,
+`EmberTbodyArgs`, ...) and the shared interfaces (`EmberTableColumn`, `EmberTableRow`,
+`EmberTableSort`, `TableColumnMeta`, `TableRowMeta`) are importable from the package.
+
+### Template-tag components (`.gts`)
+
+Import the components and type your rows by specializing `EmberTable` with an
+instantiation expression. Rows passed to the body and values yielded by rows are then
+checked against your interface:
+
+```gts
+import EmberTable from 'ember-table/components/ember-table/component';
+import type { EmberTableColumn, EmberTableRow } from 'ember-table';
+
+interface Person extends EmberTableRow {
+  firstName: string;
+  age: number;
+}
+
+const PeopleTable = EmberTable<Person>;
+
+const columns: EmberTableColumn[] = [{ name: 'First Name', valuePath: 'firstName' }];
+
+<template>
+  <PeopleTable as |t|>
+    <t.head @columns={{columns}} />
+    <t.body @rows={{@people}} as |b|>
+      <b.row as |r|>
+        <r.cell>{{r.rowValue.firstName}} ({{r.rowValue.age}})</r.cell>
+      </b.row>
+    </t.body>
+  </PeopleTable>
+</template>
+```
+
+Without a row type, yielded cell values are untyped.
+
+### Loose-mode templates (`.hbs`)
+
+Apps type-checking loose-mode templates can merge Ember Table's template registry into
+their own:
 
 ```ts
 // types/global.d.ts
 import '@glint/environment-ember-loose';
-import EmberTableRegistry from 'ember-table/template-registry';
+import type EmberTableRegistry from 'ember-table/template-registry';
 
 declare module '@glint/environment-ember-loose/registry' {
-  export default interface Registry extends EmberTableRegistry, /* other addon registries */ {
-    // local entries
-  }
+  export default interface Registry extends EmberTableRegistry /* other addon registries */ {}
 }
-```
-
-### Glint Types Usage
-
-1. Define a type interface for your row contents. If your columns contain additional custom attributes, you can type those as well. Ember Table provides default interfaces that can be extended for this purpose.
-1. Extend the base Ember Table component passing in your row and (optional) column interfaces as generics.
-1. Use this extended version of the Ember Table component in your template.
-
-```ts
-// my-table-component.ts
-import type { EmberTableColumn, EmberTableRow } from 'ember-table';
-import EmberTableComponent from 'ember-table/components/ember-table/component';
-
-interface MyTableColumn extends EmberTableColumn {
-  // Add any custom column attribute types here (optional)
-}
-
-interface MyTableRow extends EmberTableRow {
-  // Add the attributes and types for your table rows here
-}
-
-class MyEmberTableComponent extends EmberTableComponent<MyTableRow, MyTableColumn> {}
-
-export default class MyTableComponent extends Component<MyTableComponentSignature> {
-  emberTableComponent = MyEmberTableComponent;
-}
-```
-
-```hbs
-{{! my-table-component.hbs }}
-<this.emberTableComponent as |t|>
-  {{! Use Ember Table as usual. Row and column arguments will be enforced to match the appropriate types. }}
-  {{! Yielded items (rows, columns) will be typed according to the specified interfaces. }}
-  {{! Cell values will be typed as a union of all defined row attribute types. }}
-</this.emberTableComponent>
 ```
 
 ## Migrating from old Ember table
@@ -234,30 +284,34 @@ one table at at time. The recommended migration steps are as follows (if you are
 
 ### Releasing new versions (for maintainers)
 
-We use [`release-it`](https://github.com/release-it/release-it).
-To create a new release, run `yarn run release`. To do a dry-run: `yarn run release --dry-run`.
+We use [`release-it`](https://github.com/release-it/release-it) from the `ember-table` package
+directory. To create a new release, run `pnpm release` there. To do a dry-run: `pnpm release --dry-run`.
 The tool will prompt you to select the new release version.
 
 **You must be a member of the @Addepar/web-core team on GitHub to bypass master
 branch protection.**
 
-### Generating documentation.
+### Development
 
-This library is documented using Ember Addon Docs. v0.6.3+ of that library
-bring a CSS reset files into the test suite of Ember Table, meaning many
-tests would be corrupted away from the useragent styles they were written
-against.
+This repository is a pnpm workspace:
 
-Because of this, building the docs requires going through Ember Try. For
-example to run tests asserting the docs build:
+- `ember-table/` is the published v2 addon (`pnpm --filter ember-table build`).
+- `test-app/` is a Vite app that hosts both the test suite and the documentation site.
 
-```
-ember try:one ember-default-docs
-```
+In VS Code, install the recommended extensions (`.vscode/extensions.json`), notably
+[Glint](https://marketplace.visualstudio.com/items?itemName=typed-ember.glint2-vscode), for types and
+go-to-definition in `.gts` files, and use the workspace TypeScript version when prompted. Run
+`pnpm build` once so the test app's project reference can follow imports into the addon's source.
 
-You might also want to run a command with the addon docs libraries installed,
-for example to create a production build, and you can do so like this:
+Run `pnpm test` from the root to build the addon and run the test suite. Where no local Chrome is
+available, point Testem at a containerized Chromium:
+`CHROME_BIN=$PWD/test-app/scripts/docker-chrome pnpm test`.
 
-```
-ember try:one ember-default-docs --- ember build -e production
+Compatibility scenarios use [`@embroider/try`](https://github.com/embroider-build/embroider/tree/main/packages/try).
+Apply a scenario to both packages (see `.github/workflows/ci.yml`), reinstall, and test:
+
+```bash
+(cd test-app && pnpm dlx @embroider/try apply ember-lts-6.4)
+(cd ember-table && pnpm dlx @embroider/try apply ember-lts-6.4)
+pnpm install --no-frozen-lockfile && pnpm test
 ```

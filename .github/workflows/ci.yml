@@ -3,108 +3,90 @@ on:
   pull_request:
     types: [opened, synchronize, reopened, ready_for_review]
 
+concurrency:
+  group: ci-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  test:
-    name: Run Tests
-    runs-on: ubuntu-latest
-    timeout-minutes: 7
-
-    steps:
-      - name: "Install StepSecurity Action"
-        id: step_security
-        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
-        with:
-          egress-policy: audit
-
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Install mise and tools
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c
-        with:
-          install: true
-          cache: true
-      - name: Enable corepack
-        run: corepack enable
-
-      - name: Node Modules Cache
-        id: cache-npm
-        uses: actions/cache@v5
-        with:
-          path: '**/node_modules'
-          key: ci-yarn-${{ hashFiles('**/yarn.lock') }}
-
-      - name: Install Dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
-
-      - name: Lint
-        run: yarn lint
-
-      - name: Run Tests
-        run: yarn test
-        env:
-          CI: true
-
-  test-ember-try:
-    name: Run Tests
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     timeout-minutes: 10
 
-    strategy:
-      fail-fast: false
-      matrix:
-        ember-version:
-          [
-            embroider-safe,
-            # embroider-optimized,
-            ember-lts-3.28,
-            ember-lts-4.4,
-            ember-lts-4.12,
-            ember-lts-5.4,
-            ember-lts-5.12,
-            ember-release,
-            # ember-production,
-            ember-default-docs
-          ]
-
     steps:
       - name: "Install StepSecurity Action"
-        id: step_security
         uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
         with:
           egress-policy: audit
-
-      - name: Checkout
-        uses: actions/checkout@v6
-
-      - name: Install mise and tools
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c
         with:
           install: true
           cache: true
-      - name: Enable corepack
-        run: corepack enable
-
-      - name: Stash yarn.lock for cache key
-        run: cp yarn.lock __cache-key
-
-      - name: Node Modules Cache
-        id: cache-npm
-        uses: actions/cache@v5
-        with:
-          path: |
-            node_modules
-            package.json
-            yarn.lock
-            __env
-          key: ci-yarn-v3-${{ matrix.ember-version }}-${{ hashFiles('tests/dummy/config/ember-try.js', '__cache-key') }}
-          restore-keys: |
-            ci-yarn-${{ hashFiles('yarn.lock') }}
-
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
       - name: Install Dependencies
-        if: steps.cache-npm.outputs.cache-hit != 'true'
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
+      - name: Lint
+        run: pnpm lint
 
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+
+    steps:
+      - name: "Install StepSecurity Action"
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c
+        with:
+          install: true
+          cache: true
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      - name: Install Dependencies
+        run: pnpm install --frozen-lockfile
       - name: Run Tests
-        run: yarn test:ember-compatibility ${{ matrix.ember-version }} --skip-cleanup
+        run: pnpm test
+        env:
+          CI: true
+      - id: set-matrix
+        working-directory: test-app
+        run: echo "matrix=$(pnpm -s dlx @embroider/try list)" >> $GITHUB_OUTPUT
+
+  try-scenarios:
+    name: ${{ matrix.name }}
+    runs-on: ubuntu-latest
+    needs: test
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.test.outputs.matrix) }}
+
+    steps:
+      - name: "Install StepSecurity Action"
+        uses: step-security/harden-runner@8d3c67de8e2fe68ef647c8db1e6a09f647780f40 # v2.19.0
+        with:
+          egress-policy: audit
+      - uses: actions/checkout@v6
+      - uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c
+        with:
+          install: true
+          cache: true
+      - uses: pnpm/action-setup@fc06bc1257f339d1d5d8b3a19a8cae5388b55320 # v4.4.0
+      # Applied to both packages so the addon's dev copy of ember-source matches
+      # the app under test; otherwise the addon's modules resolve a second Ember.
+      - name: Apply Scenario
+        run: |
+          (cd test-app && pnpm dlx @embroider/try apply ${{ matrix.name }})
+          (cd ember-table && pnpm dlx @embroider/try apply ${{ matrix.name }})
+      - name: Install Dependencies
+        run: pnpm install --no-frozen-lockfile
+      - name: Run Tests
+        working-directory: test-app
+        run: pnpm test
+        env:
+          CI: true

@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Testem supplies Chrome flags and its test URL as arguments. Host networking
+# lets the ARM64 Chromium container reach Testem at the supplied localhost URL.
+exec docker run --rm --network host \
+  --entrypoint /usr/bin/chromium \
+  selenium/standalone-chromium:latest \
+  "$@"

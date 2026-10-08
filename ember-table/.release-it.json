@@ -1,0 +1,11 @@
+{
+  "git": {
+    "tagName": "v${version}"
+  },
+  "github": {
+    "release": false
+  },
+  "hooks": {
+    "after:bump": "npx auto-changelog -p --output ../CHANGELOG.md"
+  }
+}

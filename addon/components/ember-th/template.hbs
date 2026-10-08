@@ -1,9 +1,0 @@
-{{#if (has-block)}}
-  {{yield this.columnValue this.columnMeta this.rowMeta}}
-{{else}}
-  {{this.columnValue.name}}
-
-  <EmberTh::SortIndicator @columnMeta={{this.columnMeta}} />
-
-  <EmberTh::ResizeHandle @columnMeta={{this.columnMeta}} />
-{{/if}}

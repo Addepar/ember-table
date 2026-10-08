@@ -1,3 +1,7 @@
 {
-  "eslint.enable": true
+  "eslint.enable": true,
+  // TypeScript server plugins (Glint's, for `.gts`) load only in the JS-based
+  // TypeScript server, so use the workspace's TypeScript.
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "typescript.enablePromptUseWorkspaceTsdk": true
 }

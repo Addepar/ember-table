@@ -1,0 +1,9 @@
+/dist/
+/node_modules/
+/.eslintcache
+/declarations/
+# copied from the repository root at build time
+/README.md
+/LICENSE.md
+# written by the TypeScript build (`composite`, for the test app's project reference)
+/tsconfig.tsbuildinfo

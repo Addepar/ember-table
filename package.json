@@ -1,125 +1,26 @@
 {
-  "name": "ember-table",
-  "version": "6.0.0-12",
-  "description": "An addon to support large data set and a number of features around table.",
-  "keywords": [
-    "ember-addon"
-  ],
-  "license": "BSD-3-Clause",
-  "author": "",
-  "directories": {
-    "doc": "doc",
-    "test": "tests"
-  },
+  "private": true,
   "repository": "https://github.com/Addepar/ember-table",
+  "license": "BSD-3-Clause",
   "scripts": {
-    "build": "ember build",
-    "docs:deploy": "ember try:one ember-default-docs --- ember deploy production",
-    "lint": "concurrently \"yarn:lint:*(!fix)\" --names \"lint:\"",
-    "lint:files": "ls-lint",
-    "lint:js": "eslint . --cache",
-    "lint:js:fix": "eslint . --fix",
-    "lint:sass": "concurrently \"yarn:lint:sass:*\"",
-    "lint:sass:sass-lint": "sass-lint -c .sass-lint.yml --verbose --no-exit",
-    "lint:sass:prettier": "prettier --list-different '{addon,app}/styles/**/*.scss' 'tests/dummy/app/styles/**/*.scss'",
-    "release": "release-it",
-    "start": "ember serve",
-    "test": "ember test",
-    "test:ember-compatibility": "ember try:one"
+    "build": "pnpm --filter ember-table build",
+    "lint": "pnpm --filter '*' lint",
+    "lint:fix": "pnpm --filter '*' lint:fix",
+    "prepare": "pnpm build",
+    "start": "concurrently 'pnpm:start:*' --restart-after 5000 --prefixColors auto",
+    "start:addon": "pnpm --filter ember-table start --no-watch.clearScreen",
+    "start:test-app": "pnpm --filter test-app start",
+    "test": "pnpm --filter '*' test"
   },
-  "dependencies": {
-    "@babel/core": "^7.0.0-0",
-    "@babel/plugin-proposal-nullish-coalescing-operator": "^7.12.13",
-    "@babel/plugin-proposal-numeric-separator": "^7.12.13",
-    "@babel/plugin-proposal-object-rest-spread": "^7.12.13",
-    "@babel/plugin-proposal-optional-catch-binding": "^7.12.13",
-    "@babel/plugin-proposal-optional-chaining": "^7.12.13",
-    "@babel/plugin-transform-class-static-block": "^7.29.7",
-    "@html-next/vertical-collection": "^5.0.0",
-    "css-element-queries": "^0.4.0",
-    "ember-auto-import": "^2.4.2",
-    "ember-classy-page-object": "^0.8.0",
-    "ember-cli-babel": "^7.12.0",
-    "ember-cli-htmlbars": "^6.0.0",
-    "ember-cli-node-assets": "^0.2.2",
-    "ember-cli-version-checker": "^5.1.2",
-    "ember-compatibility-helpers": "^1.2.6",
-    "ember-raf-scheduler": "^0.5.0",
-    "ember-test-selectors": "^7.1.0",
-    "hammerjs": "^2.0.8"
-  },
+  "packageManager": "pnpm@11.28.2",
   "devDependencies": {
-    "@addepar/eslint-config": "^4.0.2",
-    "@addepar/prettier-config": "^1.0.0",
-    "@addepar/sass-lint-config": "^2.0.1",
-    "@addepar/style-toolbox": "~0.8.1",
-    "@babel/eslint-parser": "^7.27.1",
-    "@babel/plugin-proposal-decorators": "^7.27.1",
-    "@ember/string": "^3.0.0",
-    "@ember/optional-features": "^2.0.0",
-    "@ember/test-helpers": "^5.2.2",
-    "@embroider/test-setup": "^4.0.0",
-    "@glimmer/component": "^1.1.2",
-    "@ls-lint/ls-lint": "^2.2.3",
-    "@tsconfig/ember": "^1.0.1",
-    "@types/ember__component": "^4.0.10",
-    "broccoli-asset-rev": "^3.0.0",
-    "concurrently": "^9.1.2",
-    "ember-a11y-testing": "^7.1.2",
-    "ember-cli": "~3.28.0",
-    "ember-cli-dependency-checker": "^3.2.0",
-    "ember-cli-inject-live-reload": "^2.0.1",
-    "ember-cli-sass": "^10.0.0",
-    "ember-cli-sri": "^2.1.0",
-    "ember-cli-terser": "^4.0.0",
-    "ember-disable-prototype-extensions": "^1.1.2",
-    "ember-faker": "^1.5.0",
-    "ember-load-initializers": "^2.0.0",
-    "ember-math-helpers": "~2.11.3",
-    "ember-qunit": "^9.0.3",
-    "ember-radio-button": "^2.0.0",
-    "ember-resolver": "^8.0.2",
-    "ember-source": "~3.28.0",
-    "ember-truth-helpers": "^3.0.0",
-    "ember-try": "^4.0.0",
-    "eslint": "^8.57.1",
-    "eslint-config-prettier": "^10.1.5",
-    "eslint-plugin-ember": "^12.5.0",
-    "eslint-plugin-n": "^17.18.0",
-    "eslint-plugin-prettier": "^5.4.0",
-    "eslint-plugin-qunit": "^8.1.2",
-    "husky": "^1.3.1",
-    "latest-version": "^9.0.0",
-    "loader.js": "^4.2.3",
-    "qunit": "^2.24.1",
-    "qunit-dom": "^3.4.0",
-    "release-it": "^15.5.0",
-    "sass": "^1.26.10",
-    "sass-lint": "^1.13.1",
-    "typescript": "^4.8.4",
-    "webpack": "^5.0.0"
+    "@glint/tsserver-plugin": "^2.7.9",
+    "concurrently": "^9.2.4",
+    "prettier": "^3.9.6",
+    "prettier-plugin-ember-template-tag": "^2.1.8",
+    "typescript": "~6.0.3"
   },
   "engines": {
-    "node": ">= 14.*"
-  },
-  "ember": {
-    "edition": "octane"
-  },
-  "ember-addon": {
-    "configPath": "tests/dummy/config"
-  },
-  "homepage": "https://Addepar.github.io/ember-table",
-  "resolutions": {
-    "@ember/test-waiters": "^3.0.2",
-    "prettier": "1.18.2",
-    "testem": "^3.2.0 <3.19.0"
-  },
-  "typesVersions": {
-    "*": {
-      "*": [
-        "types/*"
-      ]
-    }
-  },
-  "packageManager": "yarn@1.22.19+sha512.ff4579ab459bb25aa7c0ff75b62acebe576f6084b36aa842971cf250a5d8c6cd3bc9420b22ce63c7f93a0857bc6ef29291db39c3e7a23aab5adfd5a4dd6c5d71"
+    "node": "22.x"
+  }
 }

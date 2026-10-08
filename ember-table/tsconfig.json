@@ -1,0 +1,13 @@
+{
+  "extends": "@ember/library-tsconfig",
+  "include": ["src/**/*", "unpublished-development-types/**/*"],
+  "compilerOptions": {
+    // Lets the test app reference this project (see test-app/tsconfig.json).
+    "composite": true,
+    "declarationDir": "declarations",
+    // Declarations mirror the rollup output, so `package.json#exports` maps
+    // `ember-table/*` to `declarations/*.d.ts` and `dist/*.js` alike.
+    "rootDir": "./src",
+    "types": ["ember-source/types", "@glint/ember-tsc/types"]
+  }
+}

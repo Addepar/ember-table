@@ -1,0 +1,6 @@
+packages:
+  - 'ember-table'
+  - 'test-app'
+allowBuilds:
+  '@parcel/watcher': false
+  core-js: false

@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    // Types, completions and go-to-definition in `.gts`/`.gjs` templates.
+    "typed-ember.glint2-vscode",
+    "dbaeumer.vscode-eslint"
+  ]
+}
