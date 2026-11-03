@@ -362,7 +362,7 @@ export default Component.extend({
   },
 
   willDestroyElement() {
-    this._tableResizeSensor.detach(this._container);
+    this._tableResizeSensor?.detach(this._container);
 
     this.columnTree.destroy();
 
