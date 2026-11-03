@@ -1,12 +1,11 @@
 import Component from '@ember/component';
 import { computed } from '@ember/object';
 import { htmlSafe } from '@ember/template';
+
 import {
   setupTableStickyPolyfill,
   teardownTableStickyPolyfill,
-} from '../../-private/sticky/table-sticky-polyfill';
-
-import layout from './template';
+} from '../-private/sticky/table-sticky-polyfill';
 
 /**
   The primary Ember Table component. This component represents the root of the
@@ -30,7 +29,6 @@ import layout from './template';
   @public
 */
 export default Component.extend({
-  layout,
   classNames: ['ember-table'],
   attributeBindings: ['dataTestEmberTable:data-test-ember-table'],
   dataTestEmberTable: true,

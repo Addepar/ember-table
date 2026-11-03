@@ -1,7 +1,7 @@
 import TablePage from './pages/ember-table';
-import { setSetupRowCountForTest } from 'ember-table/components/ember-tbody/component';
-import { setupTHeadForTest } from 'ember-table/components/ember-thead/component';
-import { setSimpleCheckboxForTest } from 'ember-table/components/ember-td/component';
+import { setSetupRowCountForTest } from 'ember-table/components/ember-tbody';
+import { setupTHeadForTest } from 'ember-table/components/ember-thead';
+import { setSimpleCheckboxForTest } from 'ember-table/components/ember-td';
 
 function setupForTest() {
   setSetupRowCountForTest(true);

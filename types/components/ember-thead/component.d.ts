@@ -1,7 +1,7 @@
 import Component from '@ember/component';
 import { EmberTableColumn, EmberTableRow, EmberTableSort } from 'ember-table';
-import EmberThComponent from 'ember-table/components/ember-th/component';
-import EmberTrComponent from 'ember-table/components/ember-tr/component';
+import EmberThComponent from 'ember-table/components/ember-th';
+import EmberTrComponent from 'ember-table/components/ember-tr';
 
 type FillMode =
   | 'equal-column'

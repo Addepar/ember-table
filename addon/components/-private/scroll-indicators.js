@@ -5,8 +5,8 @@ import { readOnly } from '@ember/object/computed';
 import { bind, scheduleOnce } from '@ember/runloop';
 import { htmlSafe } from '@ember/template';
 import { isEmpty, isNone } from '@ember/utils';
-import { addObserver } from 'ember-table/-private/utils/observer';
-import layout from './template';
+
+import { addObserver } from '../../-private/utils/observer';
 
 function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
@@ -125,7 +125,6 @@ const showIndicator = location => {
 };
 
 export default Component.extend({
-  layout,
   tagName: '',
 
   /**
