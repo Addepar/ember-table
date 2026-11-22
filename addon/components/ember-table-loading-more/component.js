@@ -153,8 +153,8 @@ export default Component.extend({
     let scrollElement = this.get('scrollElement');
 
     // this method can be triggered by the resize sensor before the element
-    // (and `scrollElement`) exists
-    if (!scrollElement) {
+    // (and `scrollElement`) exists, or after it has been torn down
+    if (!scrollElement || !this.element) {
       return;
     }
 
@@ -170,15 +170,27 @@ export default Component.extend({
     this.setTranslateX(translateX);
   },
 
+  // These setters can run from deferred callbacks (e.g. the delayed removal in
+  // `canLoadMoreChanged`) after the component has been destroyed, at which
+  // point `this.element` is null.
   setIncludedInLayout(value) {
+    if (!this.element) {
+      return;
+    }
     this.element.style.display = value ? '' : 'none';
   },
 
   setVisible(value) {
+    if (!this.element) {
+      return;
+    }
     this.element.style.visibility = value ? '' : 'hidden';
   },
 
   setTranslateX(value) {
+    if (!this.element) {
+      return;
+    }
     this.element.style.transform = value === 0 ? '' : `translateX(${value}px)`;
   },
 });

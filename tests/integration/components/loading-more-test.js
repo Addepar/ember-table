@@ -5,6 +5,7 @@ import hbs from 'htmlbars-inline-precompile';
 import { render, settled } from '@ember/test-helpers';
 import { generateColumns } from '../../helpers/generate-table';
 import { scrollTo } from '@ember/test-helpers';
+import { run } from '@ember/runloop';
 
 let table = new TablePage();
 
@@ -118,6 +119,36 @@ module('Integration | loading more', function() {
         expectedTranslateX,
         'X translation is correct'
       );
+    });
+
+    test('it does not throw when destroyed before canLoadMore removal runs', async function(assert) {
+      this.set('showTable', true);
+      this.set('canLoadMore', true);
+
+      await render(hbs`
+        {{#if this.showTable}}
+          <EmberTable as |t|>
+            <EmberThead @columns={{this.columns}} @api={{t}} />
+            <EmberTbody @api={{t}} />
+            <EmberTableLoadingMore @canLoadMore={{this.canLoadMore}} @api={{t}} />
+          </EmberTable>
+        {{/if}}
+      `);
+
+      // Turning off canLoadMore defers removal to a later run loop. Tearing the
+      // table down in the same run loop used to make that deferred callback
+      // read `style` on a null element (issue #993).
+      run(() => {
+        this.set('canLoadMore', false);
+      });
+      this.set('showTable', false);
+
+      // eslint-disable-next-line ember/no-settled-after-test-helper
+      await settled();
+
+      assert
+        .dom('.ember-table-loading-more')
+        .doesNotExist('component was torn down without errors');
     });
   });
 });
