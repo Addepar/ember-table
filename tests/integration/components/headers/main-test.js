@@ -1,4 +1,5 @@
 import { module, test } from 'qunit';
+import { findAll, settled } from '@ember/test-helpers';
 
 import { generateTable } from '../../../helpers/generate-table';
 import { componentModule } from '../../../helpers/module';
@@ -229,6 +230,38 @@ module('Integration | header | main', function() {
         'table extends beyond container'
       );
       assert.false(slackHeader.isRendered, 'slack column is not rendered');
+    });
+
+    test('appended columns are visible with a slack constraint', async function(assert) {
+      await generateTable(this, {
+        widthConstraint: 'gte-container-slack',
+        columnCount: 1,
+        columnOptions: {
+          width: 100,
+        },
+      });
+
+      // Appending a column can reuse the element that previously rendered the
+      // slack column. The slack-only inline styles (no padding, display) must
+      // not carry over to the new, non-slack cells (issue #960).
+      this.set('columns', [...this.get('columns'), { name: 'B', valuePath: 'B', width: 100 }]);
+
+      // eslint-disable-next-line ember/no-settled-after-test-helper
+      await settled();
+
+      let cells = findAll(
+        'th:not([data-test-ember-table-slack]), td:not([data-test-ember-table-slack])'
+      );
+      assert.ok(cells.length > 0, 'non-slack cells are rendered');
+
+      let leaked = cells.filter(
+        cell =>
+          cell.style.display === 'none' ||
+          cell.style.paddingLeft === '0px' ||
+          cell.style.paddingRight === '0px'
+      );
+      assert.strictEqual(leaked.length, 0, 'no non-slack cell keeps slack styles');
+      assert.strictEqual(table.headers.length, 2, 'both columns have headers');
     });
   });
 

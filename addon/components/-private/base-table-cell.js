@@ -48,6 +48,7 @@ export default Component.extend({
     'columnMeta.{width,offsetLeft,offsetRight}',
     'isFixedLeft',
     'isFixedRight',
+    'isSlack',
 
     function() {
       scheduleOnce('actions', this, 'updateStyles');
@@ -73,6 +74,12 @@ export default Component.extend({
         this.element.style.paddingLeft = 0;
         this.element.style.paddingRight = 0;
         this.element.style.display = width === '0px' ? 'none' : 'table-cell';
+      } else {
+        // Cell elements can be reused when columns change, so clear any styles
+        // left over from a previous slack column.
+        this.element.style.paddingLeft = null;
+        this.element.style.paddingRight = null;
+        this.element.style.display = null;
       }
     }
   },
